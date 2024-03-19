@@ -2,58 +2,74 @@
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <!-- MainContent iq-favorites-->
-<section id="">
+<section id="iq-favorites">
             <div class="">
                <div class="row">
                   <div class="col-sm-12 ">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens ml-2">
+
+                     <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                          <?php if(isset($recomended)) :
+                            foreach($recomended as $watchlater_video): ?>
+                                <li class="slide-item">
+                                    <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="block-description">
+                                                <h6> <?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?> </h6>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                      <?php echo $watchlater_video->age_restrict.' '.'+' ?>
+                                                    </div>
+
+                                                    <span class="text-white">
+                                                      <?= gmdate('H:i:s', $watchlater_video->duration); ?>
+                                                    </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Play Now
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    <li><span><i class="ri-heart-fill"></i></span></li>
+                                                    <li><span><i class="ri-add-line"></i></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php endforeach; 
+                          endif; ?>
+                        </ul>
+                    </div>
+
+
+
+
+
+                     <!-- <div class="favorites-contens ml-2">
                         <ul class="favorites-slider list-inline row mb-0">
                             <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
-
                            <li class="slide-item">
-                             <div class="block-images position-relative">
-                              <!-- block-images -->
-                              
-                              <div class="border-bg">
-                                  <div class="img-box">
-                                    <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
-                                    </a>
-                                  </div>
-                                </div>
+                              <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
+                                 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
+                                    </div>
                                     <div class="block-description">
-                                      <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
-                                          <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid w-100" alt="recom">
-                                      </a>
-
-                                      <div class="hover-buttons text-white">
-                                          <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?> ">
-                                              <p class="epi-name text-left m-0">
-                                                <?php echo __($watchlater_video->title); ?>
-                                              </p>
-                                                
-                                                <div class="movie-time d-flex align-items-center my-2">
-                                                  <!-- <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div> -->
-                                                  <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                                </div>
-                                          </a>
-
-                                      
-                                            <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?> ">
-                                                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                  <?= __('Play Now') ?>
-                                            </a>
-                                        </div>
-
-
-
-
-
-                                       <!-- <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
+                                       <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
                                        <div class="movie-time  align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
@@ -62,24 +78,24 @@
                                            <a  href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">	
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          <?= __('Play Now') ?>
+                                          Play Now
                                           </span>
                                            </a>
-                                       </div> -->
-                                        <!--<div>
+                                       </div>
+                                        <div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
-                                                    </button></div>-->
+                                                    </button></div>
                                         </div>
-                                <!--    <div class="block-social-info">
+                                   <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -87,7 +103,7 @@
                             <?php endforeach; 
 		                          endif; ?>
                         </ul>
-                     </div>
+                     </div> -->
                   </div>
                </div>
             </div>
@@ -113,10 +129,10 @@ foreach($latest_videos as $watchlater_video): ?>
                                             <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
                                             <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
 
-                                            <p class="vjs-no-js"><?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video') ?></a></p>
+                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
                                         </video>
                                         <div class="playertextbox hide">
-                                        <h2><?= __('Up Next') ?></h2>
+                                        <h2>Up Next</h2>
                                         <p><?php if(isset($videonext)){ ?>
                                         <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
                                         <?php }elseif(isset($videoprev)){ ?>
@@ -140,7 +156,7 @@ foreach($latest_videos as $watchlater_video): ?>
 
 
                                         <div class="playertextbox hide">
-                                        <h2><?= __('Play Now') ?>Up Next</h2>
+                                        <h2>Up Next</h2>
                                         <p><?php if(isset($videonext)){ ?>
                                         <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
                                         <?php }elseif(isset($videoprev)){ ?>
@@ -497,13 +513,13 @@ foreach($latest_videos as $watchlater_video): ?>
                                                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
-                                                  <p><?= __('Welcome') ?></p>
+                                                  <p>Welcome</p>
                                            	
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
                                         <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
-                                 aria-hidden="true"></i><?= __('Play Now') ?></a>
+                                 aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -548,26 +564,26 @@ foreach($latest_videos as $watchlater_video): ?>
     </div>
     <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
      
-           <h2><?= __('More Like This') ?></h2>
+           <h2>More Like This</h2>
     </div>
      <div id="details<?= $watchlater_video->id;?>" class="container tab-pane "><br>
-        <h2><?= __('Description') ?></h2>
+        <h2>Description</h2>
 
     </div>
 	</div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>"><?= __('OVERVIEW') ?></a>
+                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>"><?= __('TRAILER AND MORE') ?></a>
+                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>"><?= __('MORE LIKE THIS') ?></a>
+                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
                     </li>
                      <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>"><?= __('DETAILS') ?> </a>           
+                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
                     </li>
               </ul>
         </div>

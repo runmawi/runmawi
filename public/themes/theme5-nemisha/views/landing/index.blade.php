@@ -1753,7 +1753,7 @@
 
                 <div class="col-lg-7 vid">
                     <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
-                        <source src="<?php echo URL::to('/assets/img/Dance(1).mp4'); ?>" type="video/mp4">
+                        <source src="<?php echo URL::to('/assets/img/Danc.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
 

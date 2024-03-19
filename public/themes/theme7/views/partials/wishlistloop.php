@@ -26,10 +26,10 @@ foreach($wishlist_movies as $wishlist_movie): ?>
 </div>
 <?php endforeach;
 else: ?>
-            <h3 class="vid-title"><?= __('No Videos/Movies Added to Wishlist') ?>.</h3>
+            <h3 class="vid-title">No Videos/Movies Added to Wishlist.</h3>
             <div>
-                <a class="btn btn-play"><?= __('Add Now') ?></a>
-                <a class="btn btn-play"><?= __('Go Home') ?></a>
+                <a class="btn btn-play">Add Now</a>
+                <a class="btn btn-play">Go Home</a>
             </div>
 <?php endif; ?>
 
@@ -70,7 +70,7 @@ endif; ?>
 <div class="clear"></div>
 
         <?php  if(isset($wishlist_audeos)) : ?>
-            <h3 class="vid-title"> <?= __('Wishlist Audios') ?>. </h3>
+            <h3 class="vid-title"> Wishlist Audios. </h3>
 		<?php	foreach($wishlist_audeos as $audio): 
         
         $slugID = DB::table('audio_albums')->where('id', $audio->album_id)->pluck('slug');

@@ -114,15 +114,21 @@
                                 </div>
                             </div>
 
-                            @if (!empty($Advertisement->created_at))
-                                <div class="col-sm-6">
-                                    <label class="m-0">Published Date</label>
-                                    <p class="p1">Advertisement Published on Date/Time Below</p>
-                                    <div class="panel-body">
-                                        <input type="text" class="form-control" name="created_at" id="created_at"  value="@if (!empty($Advertisement->created_at)) {{ $Advertisement->created_at }} @endif" />
-                                    </div>
+                            <div class="col-sm-6">
+                                <label class="m-0">Advertisement Devices</label>
+                                <p class="p1">Select the Advertisement Devices </p>
+                                <div class="panel-body">
+                                    <select  name="ads_devices[]" class="js-example-basic-multiple" style="width:100%" multiple="multiple">
+                                        <option value="website" @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'website',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif > {{ ucwords('website') }} </option>
+                                        <option value="android" @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'android',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif  > {{ ucwords('android') }} </option>
+                                        <option value="IOS"     @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'IOS',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif> {{ ucwords('IOS') }} </option>
+                                        <option value="TV"      @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'TV',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif> {{ ucwords('TV') }} </option>
+                                        <option value="roku"    @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'roku',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif> {{ ucwords('roku') }} </option>
+                                        <option value="lg"      @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'lg',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif> {{ ucwords('lg') }} </option>
+                                        <option value="samsung" @if ( !is_null( $Advertisement->ads_devices ) &&  in_array( 'samsung',json_decode( $Advertisement->ads_devices)) ) selected="true" @endif> {{ ucwords('samsung') }} </option>
+                                    </select>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                         
                         <div class="row mt-3">
@@ -295,6 +301,8 @@
         });
 
         $(document).ready(function() {
+
+            $('.js-example-basic-multiple').select2();
 
             $(".ads_type").change(function() {
                 $('.tag_url, .ads_video_upload').hide();

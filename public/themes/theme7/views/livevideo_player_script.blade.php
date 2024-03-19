@@ -202,7 +202,7 @@
                 availableQualities.unshift(0) 
 
                 defaultOptions.quality = {
-                    default: 0, //theme7 - AUTO
+                    default: 0, //Default - AUTO
                     options: availableQualities,
                     forced: true,        
                     onChange: (e) => updateQuality(e),
@@ -375,7 +375,7 @@
                 availableQualities.unshift(0) 
 
                 defaultOptions.quality = {
-                    default: 0, //theme7 - AUTO
+                    default: 0, //Default - AUTO
                     options: availableQualities,
                     forced: true,        
                     onChange: (e) => updateQuality(e),
@@ -572,15 +572,15 @@
                      <div style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('public/uploads/images/' . $video->player_image) ?>);background-repeat: no-repeat;background-size: cover;height: 25vh;background-position: center;border-top-left-radius: 5px;border-top-right-radius: 5px;"></div>
                      <div class="row freebwrapper" style="">
                            <div class="col-md-9">
-                              <h2 class="mb-3" style="">{{ __('Pay now to watch') }} <br/><?php echo $video->title; ?></h2>
+                              <h2 class="mb-3" style="">Pay now to watch <br/><?php echo $video->title; ?></h2>
 
                               <?php if(Auth::guest()){ ?>
                                  <a href="<?= URL::to('/login') ?>" class="btn btn-primary btn-block">
-                                    <?=$currency->symbol.''.$video->ppv_price; ?> {{ __('Purchase Now') }}
+                                    <?=$currency->symbol.''.$video->ppv_price; ?> Purchase Now
                                  </a>
                               <?php }else{ ?>
                                  <button class="btn btn-primary btn-block" onclick="pay(<?= $video->ppv_price; ?>)"><?= $currency->symbol.''.$video->ppv_price; ?>
-                                 {{ __('Purchase Now') }}
+                                    Purchase Now
                                  </button>
                               <?php } ?>
                            </div>
@@ -588,7 +588,7 @@
                            <?php if( $video->ppv_price != null ){ ?>
                                 <div class="col-md-3 text-right" style="">
                                     <p class="free_price"> <?php echo $currency->symbol.' '.$video->ppv_price; ?> </p>
-                                    <small style="color: #fff;">{{ __('Per') }} <?php echo $video->ppv_hours; ?> Hrs</small>
+                                    <small style="color: #fff;">Per <?php echo $video->ppv_hours; ?> Hrs</small>
                                 </div>
                            <?php }?>
                      </div>
@@ -598,21 +598,21 @@
                             
                             <?php if(Auth::guest()){ ?>
                                 <div class="col-md-8">
-                                    <p>{{ __('If you are already a member Login using this link') }}</p> 
+                                    <p>If you are already a member Login using this link</p> 
                                 </div>
 
                                 <div class="col-md-4 text-right" style="">
-                                    <a href="<?= URL::to('/login'); ?>" class="btn btn-primary btn-block">{{ __('Login') }} </a>
+                                    <a href="<?= URL::to('/login'); ?>" class="btn btn-primary btn-block">Login </a>
                                 </div>
 
                             <?php }else{ ?>
 
                                 <div class="col-md-8">
-                                    <h3><a href="<?=URL::to('/stripe/billings-details') ?>">{{ __('Get a Subscription and Watch unlimited Contents') }}</a></h3>
+                                    <h3><a href="<?=URL::to('/stripe/billings-details') ?>">Get a Subscription and Watch unlimited Contents</a></h3>
                                 </div>
 
                                 <div class="col-md-4 text-right" style="">
-                                    <a class="btn btn-primary btn-block" href="<?=URL::to('stripe/billings-details') ?>">{{ __('Subscribe Now') }}</a>
+                                    <a class="btn btn-primary btn-block" href="<?=URL::to('stripe/billings-details') ?>">Subscribe Now</a>
                                 </div>
                             <?php } ?>
                         </div>

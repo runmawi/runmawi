@@ -74,7 +74,7 @@
                availableQualities.unshift(0) 
 
                defaultOptions.quality = {
-                   default: 0, //theme7 - AUTO
+                   default: 0, //Default - AUTO
                    options: availableQualities,
                    forced: true,        
                    onChange: (e) => updateQuality(e),

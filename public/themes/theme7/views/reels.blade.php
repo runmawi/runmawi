@@ -2,139 +2,59 @@
 @php
     include(public_path('themes/theme7/views/header.php'));
 @endphp
-
-<style>
-    .plyr__controls{
-        top: 0px !important;
-        bottom: 100% !important;
-    }
-    .plyr__progress{
-        top: 0px !important;
-        bottom: 100% !important;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
-
-    .favorites-contens {
-        display: grid !important;
-        justify-content: center;
-    }
-
-    .reels-video {
-        margin: 10px;
-        position: relative;
-        width: 20%;
-        he
-    }
-
-    .video-controls {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        display: flex;
-        align-items: center;
-        color: #fff;
-    }
-    .play-video{
-        height: 100vh !important;
-    }
-    .control-button,
-    .share-button {
-        margin-right: 10px;
-        cursor: pointer;
-        color: #fff; /* Add color for the icons */
-    }
-</style>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
-</head>
-<body>
-
-<div class="favorites-contens">
-    @foreach ($Reels_videos as $video)
-        <div class="reels-video" data-src="{{ URL::to('public/uploads/reelsVideos/shorts') . '/' . $video->reels_videos }}">
-            <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" alt="Video Thumbnail">
-            <div class="video-controls">
-                <!-- <span class="share-button" onclick="shareVideo('{{ URL::to('public/uploads/reelsVideos/shorts') . '/' . $video->reels_videos }}')">&#128279;</span> -->
-            </div>
-        </div>
-    @endforeach
+<div class="iq-main-header d-flex align-items-center justify-content-between">
+    <h4 class="main-title">Reels</h4>                                          
 </div>
+<div class="favorites-contens">
+    
+    <!-- Reels Modal -->
+    <?php  foreach($Reels_videos as $video): ?>
+                <div  id="Reels_player"  data-name=<?php echo $video->reels_videos ?>  onclick="addvidoes(this)"  style="margin-left: 25%;width: 50%">
+                    <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->reels_thumbnail;  ?>"  data-play="hover">
+                        <source  src="<?php //echo URL::to('public/uploads/reelsVideos').'/'.$video->reels_videos;?>" type="video/mp4" label='720p' res='720'/> 
+                    </video> -->
+                    <video   id="videoPlayer" class=""
+                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" 
+                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' 
+                    src="<?php echo  URL::to('public/uploads/reelsVideos').'/'.$video->reels_videos; ?>"  type="video/mp4" >
+                </div>
+                <br>
+                <input type="hidden" id="reelsvideos" value="<?php echo $video->reels_videos ?>">
+            </div>
+    <?php endforeach; ?>
 
-<script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+<!-- Reels Player -->
+
+<?php $ReelVideos = URL::to('public/uploads/reelsVideos').'/';  ?>
+<script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const reelsVideos = document.querySelectorAll('.reels-video');
-        let currentVideoIndex = 0;
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const visibleVideoIndex = Array.from(reelsVideos).indexOf(entry.target);
-                    playVideo(visibleVideoIndex);
-                }
-            });
-        });
-
-        reelsVideos.forEach(videoContainer => {
-            observer.observe(videoContainer);
-        });
-
-        function playVideo(index) {
-            const videoContainers = document.querySelectorAll('.reels-video');
-            videoContainers.forEach((container, i) => {
-                const video = container.querySelector('video');
-                if (i === index) {
-                    if (!video) {
-                        const videoSrc = container.getAttribute('data-src');
-                        const videoElement = document.createElement('video');
-                        videoElement.controls = false;
-                        videoElement.width = '100%';
-                        videoElement.height = 'auto';
-                        videoElement.classList.add('play-video');
-                        videoElement.poster = '{{ URL::to('/') }}/public/uploads/images/{{ @$Reels_videos[$index]->reels_thumbnail }}';
-                        videoElement.innerHTML = `<source src="${videoSrc}" type="video/mp4" label='720p' res='720'/>`;
-
-                        container.innerHTML = '';
-                        container.appendChild(videoElement);
-
-                        const player = new Plyr(videoElement, {
-                            controls: ['progress'], // Only show the progress bar
-                            autoplay: true,
-                        });
-                    } else {
-                        video.play();
-                    }
-                } else {
-                    const otherVideo = container.querySelector('video');
-                    if (otherVideo) {
-                        otherVideo.pause();
-                    }
-                }
-            });
+      function addvidoes(ele) 
+        {
+            // var Reels_videos = $(ele).attr('data-name');
+            // var Reels_url = <?php echo json_encode($ReelVideos); ?>;
+            // var Reels = Reels_url+Reels_videos;
+            // var player = new Playerjs({id:"Reels_player", file:Reels,autoplay:1});
+            // alert(Reels_videos);
         }
 
-        window.togglePlayPause = function (button) {
-            const videoContainer = button.closest('.reels-video');
-            const video = videoContainer.querySelector('video');
-            if (video) {
-                if (video.paused) {
-                    video.play();
-                } else {
-                    video.pause();
-                }
-            }
-        };
+            $(document).ready(function(){
 
-        window.shareVideo = function (videoSrc) {
-            // Implement your share functionality here
-            console.log('Share video:', videoSrc);
-        };
-    });
+            //   const player = new Plyr('#videoPlayer');
+              var players_multiple = Plyr.setup('#videoPlayer');
+});
+
+// var player = new Playerjs({id:"Reels_player",autoplay:1});
+
+    // $(document).ready(function(){
+    //     $(".reelsclose").click(function(){
+    //         var player = new Playerjs({id:"Reels_player", file:Reels,stop:1});
+    //     });
+    // });
 </script>
+
+
 @php
     include(public_path('themes/theme7/views/footer.blade.php'));
 @endphp
