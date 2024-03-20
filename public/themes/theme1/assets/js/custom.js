@@ -122,10 +122,11 @@ Index Of Script
 		$('#home-slider').slick({
 			autoplay: true,
 			autoplaySpeed: 10000, // 10 seconds
-			// speed: 800,
+			// speed: 800, (You can remove this line if not needed)
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: true,
+			fade: true,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			responsive: [
