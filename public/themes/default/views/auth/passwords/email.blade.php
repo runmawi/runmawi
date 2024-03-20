@@ -93,7 +93,7 @@
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
                                 <img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style="margin-bottom:1rem;">
-                                <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
+                                <h2 class="mb-3 text-center h">{{ __('Reset Password') }}</h2>
 
                                 <div class="">
                                     @if (session('status'))
