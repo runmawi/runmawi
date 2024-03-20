@@ -78,46 +78,34 @@ class AdminFFplayoutController extends Controller
 
              $responseData = json_decode($bodyresponse, true);
 
-        
+            // dd($responseData);
 
-             $presetData = [
-                "name" => "Test Present",
-                "text" => "TEXT>",
-                "x" => "<X>",
-                "y" => "<Y>",
-                "fontsize" => '24',
-                "line_spacing" => '4',
-                "fontcolor" => "#ffffff",
-                "box" => 1,
-                "boxcolor" => "#000000",
-                "boxborderw" => '4',
-                "alpha" => '1.0',
-                "channel_id" => '12' // Convert integer to string
-            ];
+            // $filePath= 'https://localhost/staging/storage/app/public/gHLM7yEQGFKtWjpH.mp4';
+            // $myfile =  fopen(storage_path('app/public/gHLM7yEQGFKtWjpH.mp4'), "r");
+            //     // dd($myfile);
+            // $response = $client->post($this->baseUrl . '/api/file/' . $channelId . '/upload/', [
+            //     'headers' => [
+            //         'Authorization' => 'Bearer ' . $this->token,
+            //     ],
+            //     'multipart' => [
+            //         [
+            //             'name' => 'file',
+            //             'contents' => $myfile,
+            //         ],
+            //     ],
+            // ]);
             
-             $response = $client->post($this->baseUrl .'/api/presets/', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $this->token,
-                ],
-                'json' => $presetData,
-            ]);
-    
-            // Get the response body
-            $body = $response->getBody()->getContents();
-    
-            // Decode JSON response
-            $responseData = json_decode($body, true);
-    
-    
 
-            dd($responseData);
-
-        
+            // $body = $response->getBody()->getContents();
+            // $responseData = json_decode($body, true);
             $dateString = "3-19-2024";
             $date = \DateTime::createFromFormat('m-d-Y', $dateString);
             $formattedDate = $date->format('Y-m-d');
-            
+            // $dateString = "3-19-2024";
+
+            $date = \DateTime::createFromFormat('m-d-Y', $dateString);
+            $CurrentDate = $date->format('Y-m-d');
+
             $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id', 1)
                 ->where('choosed_date', "3-19-2024")
                 ->orderBy('socure_order', 'ASC')
@@ -140,22 +128,22 @@ class AdminFFplayoutController extends Controller
                 'playlist_items' => $playlistItems,
             ];
             
-                // $playlistId = 1;
-            // $response = $client->post($this->baseUrl . '/api/playlist/' . $playlistId.'/generate/'.$formattedDate, [
-            //     'headers' => [
-            //         'Content-Type' => 'application/json',
-            //         'Authorization' => 'Bearer ' . $this->token,
-            //     ],
-            //     'json' => $jsonData,
-            // ]);
+                $playlistId = 1;
+                
+            $response = $client->post($this->baseUrl.'/api/playlist/1/generate/'.$CurrentDate, [
+                    'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->token,
+                ],
+            ]);
             
-            // $body = $response->getBody()->getContents();
-            // $responseData = json_decode($body, true);
+            $body = $response->getBody()->getContents();
+            $responseData = json_decode($body, true);
             
     
             // return response()->json($responseData);
             
-            // dd($responseData);
+            dd($responseData);
     // CREATE NEW CHANNEL
             // $channelData = [
             //     'name' => 'Channel '.$channelId, 
