@@ -120,8 +120,9 @@ Index Of Script
 		----------------------------------------------------------------------- */
          
 		$('#home-slider').slick({
-			autoplay: false,
-			speed: 800,
+			autoplay: true,
+			autoplaySpeed: 10000, // 10 seconds
+			// speed: 800,
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: true,
