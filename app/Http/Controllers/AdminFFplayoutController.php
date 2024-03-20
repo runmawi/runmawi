@@ -101,28 +101,11 @@ class AdminFFplayoutController extends Controller
             $dateString = "3-19-2024";
             $date = \DateTime::createFromFormat('m-d-Y', $dateString);
             $formattedDate = $date->format('Y-m-d');
+            // $dateString = "3-19-2024";
 
+            $date = \DateTime::createFromFormat('m-d-Y', $dateString);
+            $CurrentDate = $date->format('Y-m-d');
 
-            
-        $response = $client->post($this->baseUrl.'127.0.0.1:7012/api/playlist/generate', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->token,
-        ],
-            'json' => [
-                'date' => '2024-03-20',
-                'options' => [
-                    'infinit' => false,
-                    'log' => '/path/to/logfile',
-                    'play_mode' => 'playlist',
-                ],
-            ],
-        ]);
-
-        // Handle response
-        $body = $response->getBody()->getContents();
-        $responseData = json_decode($body, true);
-                dd($responseData);
             $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id', 1)
                 ->where('choosed_date', "3-19-2024")
                 ->orderBy('socure_order', 'ASC')
@@ -147,8 +130,8 @@ class AdminFFplayoutController extends Controller
             
                 $playlistId = 1;
                 
-            $response = $client->post($this->baseUrl . '/api/playlist/1/generate/2024-03-20'  , [
-                'headers' => [
+            $response = $client->post($this->baseUrl.'/api/playlist/1/generate/'.$CurrentDate, [
+                    'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Bearer ' . $this->token,
                 ],
