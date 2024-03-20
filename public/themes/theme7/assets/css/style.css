@@ -159,7 +159,7 @@ li.slide-item:hover .block-images{transform:scale(1.1);transform-origin:40% 50%;
 #iq-upcoming-movie .block-description {position: absolute; left:20px; top: 72px; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column;  opacity: 0; }
 #iq-upcoming-movie .block-description > h6{font-size: 0.5em;}
 li.slide-item .block-images::before { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); width: 100%; height: 100%;opacity: 0;}
-li.slide-item:hover .block-images::before { opacity: 1; z-index: 9; }
+li.slide-item:hover .block-images::before { opacity: 0; z-index: 9; }
 .img-description{width: 100%; height: 78px; display:none; object-fit: cover;}
 li.slide-item:hover .img-description{width: 100%; display:block; opacity: 2; z-index: 999; object-fit: cover; position: absolute; top: 0;}
 li.slide-item:hover .img-description img{height: 70px; width: 100%; object-fit: cover;}
