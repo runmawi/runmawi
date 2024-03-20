@@ -1208,7 +1208,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <img class="lazyload" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" width="140" height="60">
+                <img class="lazyload" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="img" width="140" height="60">
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -1275,7 +1275,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" style="">
+                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555" heiht="343" style="">
                     </div>
                 </div>
             </div>
@@ -1289,7 +1289,7 @@
                         <div class="col-lg-6 p-0">
 
                             <video id="player" height="618" controls autoplay muted
-                                poster="<?php echo URL::to('/assets/img/lan/tv.webp'); ?>">
+                                poster="<?php //echo URL::to('/assets/img/lan/tv.webp'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/Youthtech-2.mp4'); ?>"
                                     type="video/mp4">
                                 <source src="" type="video/ogg">
@@ -1758,7 +1758,7 @@
 
                 <div class="col-lg-7 vid">
                     <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
-                        <source src="<?php echo URL::to('/assets/img/Danc.mp4'); ?>" type="video/mp4">
+                        <source src="<?php echo URL::to('/assets/img/danc.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
 
