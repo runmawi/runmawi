@@ -1,4 +1,11 @@
 <?php  $settings = App\Setting::first(); ?>
+<?php
+    $settings = App\Setting::find(1);
+    $system_settings = App\SystemSetting::find(1);
+
+    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    $theme = App\SiteTheme::first();
+?>
 
 <html>
 
@@ -92,7 +99,13 @@
                     <div class="sign-user_card ">
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
-                                <img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style="margin-bottom:1rem;">
+                                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                    <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
+                                <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                    <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
+                                <?php }else { ?> 
+                                    <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  ></div></div>
+                                <?php } ?>
                                 <h2 class="mb-3 text-center h">{{ __('Reset Password') }}</h2>
 
                                 <div class="">
