@@ -43,30 +43,34 @@
     <!-- <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet"> -->
-        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" priority="high">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
+    <link  rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>"  as="style" priority="high" />
+    <link  rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" />
 
     <!-- Typography CSS -->
+    <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" as="style" priority="high" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
-    <!-- <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" /> -->
+    <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" as="style" priority="high" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
 
 
     <!-- Responsive -->
+    <link rel="preload" href="<?php echo URL::to('assets/css/responsive.css'); ?>" as="style" priority="high" />
     <link rel="stylesheet" href="<?php echo URL::to('assets/css/responsive.css'); ?>" />
+    <link rel="preload" href="https://cdn.plyr.io/3.7.3/plyr.css" as="style" priority="high" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" defer></script>
 
     <style>
         h1,
@@ -1204,7 +1208,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
+                <img class="lazyload" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" width="140" height="60">
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -1285,7 +1289,7 @@
                         <div class="col-lg-6 p-0">
 
                             <video id="player" height="618" controls autoplay muted
-                                poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
+                                poster="<?php echo URL::to('/assets/img/lan/tv.webp'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/Youthtech-2.mp4'); ?>"
                                     type="video/mp4">
                                 <source src="" type="video/ogg">
