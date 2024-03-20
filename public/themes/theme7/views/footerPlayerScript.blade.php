@@ -259,7 +259,7 @@
                     availableQualities.unshift(0) //prepend 0 to quality array
 
                     defaultOptions.quality = {
-                        default: 0, //theme7 - AUTO
+                        default: 0, //Default - AUTO
                         options: availableQualities,
                         forced: true,
                         onChange: (e) => updateQuality(e),
@@ -488,7 +488,7 @@
 
                     // Add new qualities to option
                     defaultOptions.quality = {
-                        default: 0, //theme7 - AUTO
+                        default: 0, //Default - AUTO
                         options: availableQualities,
                         forced: true,
                         onChange: (e) => updateQuality(e),
@@ -632,7 +632,7 @@
 
                     // Add new qualities to option
                     defaultOptions.quality = {
-                        default: 0, //theme7 - AUTO
+                        default: 0, //Default - AUTO
                         options: availableQualities,
                         forced: true,
                         onChange: (e) => updateQuality(e),

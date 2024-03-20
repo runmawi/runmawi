@@ -15,34 +15,51 @@
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); ?>
 
-    <title><?php echo $uppercase . ' | ' . $settings->website_name; ?></title>
+    <title><?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?></title>
 
     <meta name="description" content="<?php echo $settings->website_description; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <meta name="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?>">
+    <meta itemprop="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_name   ;} ?>">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>">
+    <meta name="twitter:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>" />
+    <meta property="og:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
+    <!-- <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
+    <!-- <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" /> -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
 
 
     <!-- Responsive -->
-    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="stylesheet" href="<?php echo URL::to('assets/css/responsive.css'); ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
 
@@ -1186,7 +1203,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
+                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -1253,7 +1270,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style="">
+                        <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" style="">
                     </div>
                 </div>
             </div>
@@ -1268,7 +1285,7 @@
 
                             <video id="player" height="618" controls autoplay muted
                                 poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
-                                <source src="https://dev.nemisatv.co.za/public/uploads/videos/youthtech-2.mp4"
+                                <source src="<?php echo URL::to('/assets/img/Youthtech-2.mp4'); ?>"
                                     type="video/mp4">
                                 <source src="" type="video/ogg">
                             </video>
@@ -1406,7 +1423,7 @@
                         <div class="row align-items-center justify-content-center mt-4">
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href=" https://dev.nemisatv.co.za/live/category/live-radio">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/radio.jpg'); ?>" style=>
+                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/radio.webp'); ?>" style=>
                                     <p class="io">Radio</p>
                                 </a>
                             </div>
@@ -1414,13 +1431,13 @@
                             <div class="col-lg-2 p-0 ">
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/series/category/Education"> <img
-                                            class="w-100" src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
+                                            class="w-100" src="<?php echo URL::to('/assets/img/lan/education.webp'); ?>" style=>
                                         <p class="io">Education</p>
                                     </a>
                                 </div>
 
                                 <div class="position-relative mn"> <a href="https://dev.nemisatv.co.za/Live-list">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.jpg'); ?>" style=>
+                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.webp'); ?>" style=>
                                         <p class="io">Live <br>Streaming</p>
                                     </a>
                                 </div>
@@ -1428,7 +1445,7 @@
 
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/audios">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/podcast.jpg'); ?>" style=>
+                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/podcast.webp'); ?>" style=>
                                     <p class="io">Podcast</p>
                                 </a>
                             </div>
@@ -1436,14 +1453,14 @@
                             <div class="col-lg-2 p-0">
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/live/category/live-tv">
-                                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/online.jpg'); ?>" style=>
+                                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/online.webp'); ?>" style=>
                                         <p class="io">Online <br>Streaming </p>
                                     </a>
                                 </div>
 
                                 <div class="position-relative mn">
                                     <a href=" https://dev.nemisatv.co.za/series/category/Movie">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/movies.jpg'); ?>" style=>
+                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/movies.webp'); ?>" style=>
                                         <p class="io">Movies</p>
                                     </a>
                                 </div>
@@ -1451,7 +1468,7 @@
 
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/series/category/Animation">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.jpg'); ?>" style=>
+                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.webp'); ?>" style=>
                                     <p class="io">Animation</p>
                                 </a>
                             </div>
@@ -1582,7 +1599,7 @@
                             <div class="" style="margin:4px;">
                                 <video id="player1" height="800" controls autoplay muted
                                     poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
-                                    <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
+                                    <source src="<?php echo URL::to('/assets/img/Vq(1).mp4'); ?>" type="video/mp4">
                                     <source src="" type="video/ogg">
                                 </video>
 
@@ -1691,7 +1708,7 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c1.png'); ?>" style="">
+                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c1.webp'); ?>" style="">
                         </div>
 
                         <p class=" map">“Salute has inspired me to work smarter on
@@ -1702,7 +1719,7 @@
 
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c2.png'); ?>" style="">
+                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c2.webp'); ?>" style="">
                         </div>
                         <p class=" map">“Through the digital marketing course on NEMISA TV. I was able to create a
                             successful online skateboard.”</p>
@@ -1712,7 +1729,7 @@
 
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c3.png'); ?>" style="">
+                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c3.webp'); ?>" style="">
                         </div>
                         <p class=" map">“A data free content is the next big
                             thing. I love NEMISA TV.”</p>
@@ -1736,7 +1753,7 @@
 
                 <div class="col-lg-7 vid">
                     <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
-                        <source src="<?php echo URL::to('/assets/img/dance.mp4'); ?>" type="video/mp4">
+                        <source src="<?php echo URL::to('/assets/img/Danc.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
 
@@ -1814,7 +1831,7 @@
 
     </section>
 
-    <section style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+    <section style=" no-repeat scroll 0 0; background-size: cover;">
         @section('content')
 
             <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1829,7 +1846,7 @@
         </section>
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> 
         <script>
             function toggleMute() {
                 var button = document.getElementById("MuteButton")

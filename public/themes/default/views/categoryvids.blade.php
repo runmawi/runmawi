@@ -53,12 +53,10 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
                 <div class="col-sm-12 ">
-                    <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h2 class="ml-3"><?php echo __($categoryVideos['category_title']); ?></h2>
-                    </div>
+                   
 
                     <!-- BREADCRUMBS -->
-                    <div class="row d-flex">
+                    <div class=" d-flex">
                         <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
@@ -80,9 +78,14 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                     </div>
 
 
+                    
+
                     @partial('categoryvids_section_filter')
 
                     {{-- Main Content  --}}
+                    <div class="iq-main-header align-items-center d-flex justify-content-between">
+                        <h4 class=""><?php echo __($categoryVideos['category_title']); ?></h4>
+                    </div>
 
                     <div class="data">
                         @partial('categoryvids_section')
@@ -167,7 +170,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Remove From Wishlist');
                             $("body").append(
-                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.add_watch').slideUp('fast');
@@ -177,7 +180,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Add To Wishlist');
                             $("body").append(
-                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
+                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.remove_watch').slideUp('fast');

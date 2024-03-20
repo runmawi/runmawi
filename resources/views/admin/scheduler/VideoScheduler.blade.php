@@ -50,7 +50,7 @@
         text-overflow: ellipsis;
         width: 100px;
     }
-    body.dark .drop-zone{background-color: <?php echo GetAdminDarkBg(); ?>;}
+    /* body.dark .drop-zone{background-color: <?php echo GetAdminDarkBg(); ?>;} */
     body.dark input#video_id{background-color: <?php echo GetAdminDarkBg(); ?> !important; color: <?php echo GetAdminDarkText(); ?>!important;}
 
     .drop-zone {
@@ -188,6 +188,11 @@
         width: 100%;
         text-align: left;
     }
+    input{
+        color:#000 !important;
+    }
+    body.dark table.dataTable.no-footer{border-bottom: 1px solid <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+
 </style>
 
     @section('content')

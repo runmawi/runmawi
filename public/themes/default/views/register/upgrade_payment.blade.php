@@ -14,7 +14,7 @@
 
     <style>
         .round {
-            background-color: #8a0303 !important;
+            /* background-color: #8a0303 !important; */
             color: #fff !important;
 
         }
@@ -114,11 +114,11 @@
             background-color: #111;
         }
 
-        .toggle {
+        /* .toggle {
             display: flex;
             justify-content: space-between;
             width: 43%;
-        }
+        } */
 
         /* Create an active/current tablink class */
         .tab button.active {
@@ -437,7 +437,7 @@
         }
 
         .btn1 {
-            background: rgba(138, 3, 3, 1) !important;
+            /* background: rgba(138, 3, 3, 1) !important; */
             border: none;
             border-radius: 30px;
             padding: 15px;
@@ -445,7 +445,7 @@
 
         label {
             color: #fff !important;
-            line-height: 0;
+            /* line-height: 0; */
 
         }
 
@@ -518,7 +518,7 @@
         }
 
         .blk {
-            height: 200px;
+            /* height: 200px; */
             padding: 10px;
         }
 
@@ -526,6 +526,17 @@
             background-color: #000;
             padding: 10px !important;
         }
+        body.light-theme p{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        body.light-theme p{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        body.light-theme .text-white{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        p{color: #fff !important;} 
+
     </style>
 
 
@@ -571,7 +582,7 @@
                         
                         <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
 
-                        <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+                        <p style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
                         <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
 
@@ -702,14 +713,14 @@
                            
                             {{-- Stripe --}}  
                             <div class="col-md-12 stripe_payment">
-                                <button type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
+                                <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
                             </div>
                            
 
                             {{-- Razorpay --}}
                             <div class="col-md-12 Razorpay_payment">
                                 <button type="submit"
-                                    class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
+                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
                                     Pay Now
                                 </button>
                             </div>
@@ -717,7 +728,7 @@
                             {{-- Paystack --}}
                             <div class="col-md-12 paystack_payment">
                                 <button type="submit"
-                                    class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
+                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
                                     Pay Now
                                 </button>
                             </div>
@@ -725,16 +736,21 @@
                             {{-- CinetPay --}}
                             <div class="col-md-12 cinetpay_payment">
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
-                                    class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
+                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
                                     Pay Now
                                 </button>
                             </div>
 
                             {{-- Paydunya --}}
                             <div class="col-md-12 Paydunya_payment">
-                                <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
+                                <button  type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
                                     {{ __('Pay Now') }}
                                 </button>
+                            </div>
+                            <div class="d-flex justify-content-center" style="margin-right:auto;margin-left:auto;">
+                                <a class="btn bd  text-white mt-3" href="{{ URL::to('/home') }}">
+                                    <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
+                                </a>
                             </div>
 
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">

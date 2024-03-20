@@ -12,9 +12,6 @@ $uppercase =  ucfirst($request_url);
 $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 $theme = App\SiteTheme::first();
 
-@$translate_language = App\Setting::pluck('translate_language')->first();
-\App::setLocale(@$translate_language);
-
 // print_r($uppercase);
 // exit();
       ?>
@@ -26,9 +23,18 @@ $theme = App\SiteTheme::first();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
+    
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -42,9 +48,6 @@ $theme = App\SiteTheme::first();
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
-    /*.sign-user_card {
-        background: none !important;
-    }*/
 #ck-button {
     margin:4px;
 /*    background-color:#EFEFEF;*/
@@ -102,25 +105,12 @@ $theme = App\SiteTheme::first();
     }*/.verify-buttons{
         margin-left: 36%;
     }
-    
+    .container{
+        margin-top: 70px;
+    }
     .panel-heading {
     margin-bottom: 1rem;
 }
-   /* .form-control {
-    background-color: var(--iq-body-text) !important;
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-bg) !important;
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-    a {
-    color: var(--iq-body-text);
-    text-decoration: none;
-}*/
 .phselect{
     width: 100%;
     height: 45px !important;
@@ -150,9 +140,6 @@ $theme = App\SiteTheme::first();
     padding: 6px 12px;
     cursor: pointer;
 }
-/*input[type="file"] {
-    display: none;
-}*/
     .catag {
     padding-right: 150px !important;
 }
@@ -163,14 +150,14 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -60px;
+        margin-left: -102px;
         height: 45px !important;
         background: transparent !important;
         color: #fff !important;
     }
     .error {
-    color: brown;
-    font-family: 'remixicon';
+    color: #d30abe;
+    font-family: 'Sen', sans-serif !important;
     }
     #fileLabel{
         position: absolute;
@@ -186,9 +173,96 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         color-scheme: dark;
     }
+    body{
+        font-family: "Inter", sans-serif !important;
+    }
+    h1, h2, h3, h4, h5, h6, p, input, select, .form-control{
+        font-family: "Inter", sans-serif !important;
+        font-weight:300;
+    }
+.sign-in-from {
+    padding: 21px;
+}
+.sign-user_card input, .sign-user_card select{
+    border: 1px solid #5B5B5B !important;
+}
+.sign-user_card input::placeholder{
+    color:#fff !important;
+}
+.form-control{
+    margin-bottom: 0.4rem !important;
+}
+h4.mb-3.text-center {
+    margin-bottom: 1.5rem !important;
+}
+button.btn.btn-hover.btn-primary.btn-block.signup {
+    font-weight: 500;
+    font-size: 25px;
+}
+.sign-up-buttons.col-md-12 button.btn.btn-primary{
+    font-size:25px;
+    border-radius:5px !important;
+}
+@media (max-width:425px){
+    .col-form-label{
+        font-size:12px;
+    }
+    .d-flex.justify-content-center.links.mt-2 {
+        font-size: 12px;
+    }
+    h4.mb-3.text-center {
+        font-size: 14px;
+    }
+    img.apps {
+        width: 150px;
+    }
+}
+@media (max-width:320px){
+    .col-form-label{
+        font-size:12px;
+    }
+    .d-flex.justify-content-center.links.mt-2 {
+        font-size: 12px;
+    }
+    h4.mb-3.text-center {
+    font-size: 12px;
+}
+}
+</style>
+<style>
+    .sign-user_card{
+        background-color: transparent;
+        border-radius: 15px;
+        margin-top: 2rem;
+    }
+    button.btn.btn-default.reveal {
+        background: transparent !important;
+    }
+    @media screen and (max-width: 767px) {
+  .col-md-4.recaptcha {
+    width: 100%; 
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .col-md-4.recaptcha {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .col-md-4.recaptcha {
+    width: 33.33%;
+  }
+}
+@media screen and (max-width: 370px) {
+    iframe {
+    width: 70%;
+  }
+}
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section >
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -200,9 +274,10 @@ i.fa.fa-google-plus {
     $coupon = Request::get('coupon');
     // dd($SignupMenu);
 ?>
-<div class="container">
+
+<div class="container loginbackground mt-0">
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+         <div class="col-sm-9 col-md-7 col-lg-5 text-center align-self-center">
 
                             {{-- recaptcha --}}
                 <div class="col-md-12">
@@ -213,21 +288,25 @@ i.fa.fa-google-plus {
                      @endif
                 </div>
 
+                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                    <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:0.3rem;">  
+                <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                    <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:0.3rem;">  
+                <?php }else { ?> 
+                    <img class="apps" alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:0.3rem;"></div></div>
+                <?php } ?>
+
+
+
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
 
                       <div align="center">
                                       
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
-                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
-                            <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php } ?>
+                            
 
-                          <h3 class="mb-3 text-center">{{ __('Sign Up') }}</h3>
+                          <h4 class="mb-3 text-center"><?= "Sign up to your NXS account" ?></h4>
                       </div>
                       <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
@@ -235,7 +314,7 @@ i.fa.fa-google-plus {
                             
                                 @if (!empty($SignupMenu) && $SignupMenu->username == 1)
                                     <div class="col-md-12">
-                                        <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
+                                        <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
                                         @error('username')
                                             <span class="invalid-feedback" role="alert">
@@ -243,21 +322,21 @@ i.fa.fa-google-plus {
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif
                                 
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
-                                    <input id="email" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                    <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
+                                        <input id="email" type="email" placeholder="Email"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                        <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
                                     </span>
 
-                                    @error('email')
-                                        <span class="invalid-feedback" id="email_error" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                        @error('email')
+                                            <span class="invalid-feedback" id="email_error" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 @endif
                             
                             
@@ -267,7 +346,7 @@ i.fa.fa-google-plus {
                                
                             <div class="col-md-5 col-sm-12">
                               <select class="phselect form-control" name="ccode" id="ccode" >
-                              <option>{{ __('Select Country') }}</option>
+                              <option>Select Country</option>
                               @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
@@ -275,8 +354,8 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
+                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                 
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
@@ -293,40 +372,40 @@ i.fa.fa-google-plus {
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
+                                <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <label id="fileLabel">Choose Profile Image</label>
                                  </div>
                                  @endif
                            
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="{{ __('Choose DOB') }}"  >
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
 
-                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
-                                <label id="fileLabel">Choose Profile DOB</label> -->
-                                 </div>
+                                        <!-- <input type="date" name="dob"  id ='dob' class="form-control">
+                                        <label id="fileLabel">Choose Profile DOB</label> -->
+                                    </div>
                                  @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
-                                         </div>
-                                         <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                         </div>
-                                        <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>{{ __('Password Not matching') }}.</strong>
-                                        </span>
-                                     
-                                         </div>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                            </div>
+                                            <div >
+                                                <span class="input-group-btn" id="eyeSlash">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                            <span class="text-danger error_password" id='error_password' style='padding-left: 22px;font-size:14px;' >
+                                                <p>Password Not matching.</p>
+                                            </span>
+                                        
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
@@ -345,71 +424,71 @@ i.fa.fa-google-plus {
                                  </span>
                                     </div>
                                 </div>
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
+                                <!-- <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span> -->
                             </div>
      
                             </div>            
                                 @endif
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->country == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                    <select class="phselect form-control" name="country" id="country" >
-                                        <option>{{ __('Select Country') }}</option>
-                                            @foreach($AllCountry as $code)
-                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
-                                            @endforeach
-                                    </select>  
-                                </div>
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <select class="phselect form-control" name="country" id="country" >
+                                            <option>Select Country</option>
+                                                @foreach($AllCountry as $code)
+                                                <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                                @endforeach
+                                        </select>  
+                                    </div>
                                  @endif
                             
                                  @if (!empty($SignupMenu) && $SignupMenu->state == 1)
                                     <div class="col-md-12">
                                         <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
                                         <select class="phselect form-control" name="state" id="state-dropdown" >
-                                        <option>{{ __('Select State') }}</option>
-                                            <!-- @foreach($State as $code)
+                                            <option>Select State</option>
+                                            @foreach($State as $code)
                                             <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
-                                            @endforeach -->
-                                    </select>  
+                                            @endforeach
+                                        </select>  
                                         @error('state')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif
 
                                     
                                 @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
                                         <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
                                         <select class="phselect form-control" name="city" id="city-dropdown" >
-                                        <option>{{ __('Select City') }}</option>
-                                            <!-- @foreach($State as $code)
+                                            <option>Select City</option>
+                                            @foreach($State as $code)
                                             <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
-                                            @endforeach -->
-                                    </select>  
+                                            @endforeach
+                                        </select>  
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif
 
                                     
                                 @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                    <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>{{ __('Select Support Musician') }}</option>
-                                            @foreach($Artists as $Artist)
-                                            <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
-                                            @endforeach
-                                    </select>  
-                                </div>
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <select class="phselect form-control" name="support_username" id="support_username" >
+                                            <option>Select Support Musician</option>
+                                                @foreach($Artists as $Artist)
+                                                <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
+                                                @endforeach
+                                        </select>  
+                                    </div>
                                  @endif
                             
-                       <div class="form-group row">
+                       <div class="form-group row" style="display:none;">
                         </div>
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
@@ -420,6 +499,7 @@ i.fa.fa-google-plus {
                                     </div>
                                 </div>
                             <?php } ?>
+                            <div class="col-md-4 recaptcha pl-0" id="g-recaptcha1"></div> 
                         
                         <div class="form-group" >
 	                             {{-- reCAPTCHA  --}}
@@ -432,31 +512,34 @@ i.fa.fa-google-plus {
                                 @endif
                             </div>
 
-							<div class="col-md-12 d-flex" id="mob">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;text-decoration: underline;
-    cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3 pl-3" id="mob">
+                                <input id="password-confirm" type="checkbox"  name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right pl-2" style="display: inline-block;
+    cursor: pointer;">{{ __('I accept') }} <a class="text-primary" data-toggle="modal" data-target="#terms" style="text-decoration:none;"> {{ __('Terms and  Conditions' ) }}</a></label>
                             </div>
 
                             <div class="sign-up-buttons col-md-12 ">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button class="btn btn-primary w-100" style="display: block; color:#fff !important;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
                         
                     </form>
-                       <div class="mt-3">
-                  <div class="d-flex justify-content-center links">
-                  {{ __('Already have an account?') }} <a href="<?= URL::to('/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
-                  </div>                        
-               </div>
+                    <!-- <div class="mt-3">
+                        <div class="d-flex justify-content-center links">
+                            Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                        </div>                        
+                    </div> -->
                   </div>
                   
                </div>    
                
             </div>
+            <div class="d-flex justify-content-center links mt-2">
+                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                  </div>
          </div>
       </div>
    </div>
@@ -507,7 +590,7 @@ i.fa.fa-google-plus {
 						<input type="text" class="form-control" maxlength="4" name="otp" id="otp" value="" style="background-color: #000;" />
 						<input type="hidden" class="form-control" name="verify" id="verify_id" value="" />
 						<div class="row timerco" >
-						 	<p> {{ __('OTP will Expire in') }} <span id="countdowntimer"></span>
+						 	<p> OTP will Expire in <span id="countdowntimer"></span>
 					 	</div>
 						<div class="text-center"> 
 							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="Please Enter OTP" class="btn btn-primary btn-login" style="">
@@ -532,6 +615,108 @@ i.fa.fa-google-plus {
   </div>
 </div>
     </section>
+
+      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI library -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+
+    
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
+
+$('form[id="stripe_plan"]').validate({
+    ignore: [],
+    rules: {
+        username: 'required',
+        email: {
+            required: true,
+            email: true,
+            normalizer: function(value) {
+                // Trim leading and trailing spaces from the email address
+                return $.trim(value);
+            }
+        },
+    },
+    messages: {
+        username: 'This field is required',
+        email: {
+            required: 'Email address is required',
+            email: 'Please enter a valid email address',
+        },
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+
+
+    $(document).ready(function(){
+        $('#email_error').hide();
+
+        $('#email').change(function(){
+
+            var email = $('#email').val();
+            $.ajax({
+                url:"{{ URL::to('/emailvalidation') }}",
+                method:'GET',
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        email: $('#email').val()
+
+                },        success: function(value){
+                    // console.log(value);
+                    if(value == "false"){
+                    $('#email_error').show();
+                    }else{
+                    $('#email_error').hide();
+                    }
+                }
+            });
+        })
+
+    });
+
+    setTimeout(function() {
+
+    $('.recaptcha').each(function() {
+    grecaptcha.render(this.id, {
+        'sitekey': '6LdVkwkUAAAAACeeETRX--v9Js0vWyjQOTIZxxeB',
+        "theme":"light"
+    });
+    });
+
+    }, 2000);
+</script>
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- Include jQuery library -->

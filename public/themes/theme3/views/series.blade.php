@@ -128,6 +128,20 @@
     .nav-link{
         margin: 0 1rem !important;
     }
+    .text-detail .trending-year:before{
+        background:#7A7A7A;
+    }
+    div.text-white p{
+        color: #fff !important;
+    }
+    .e-item.col-lg-12.col-sm-12.col-md-12:hover{
+        background-color:#232222;
+        
+    }
+    .e-item.col-lg-12.col-sm-12.col-md-12 {
+        border-radius: 15px;
+        padding:20px;
+    }
 </style>
 
 <?php
@@ -145,7 +159,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
         <div id="home-slider">
             <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $series->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
-                <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+                <div class="container-fluid position-relative">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center  h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
@@ -158,8 +172,8 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                                     </select>
                                 </div>
 
-                                <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($series)->details) !!} </p>
-                                <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <div class="text-white" data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($series)->details) !!} </div>
+                                <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date" style="color:#7A7A7A !important;list-style:none;">
                                     <span >{{ optional($series)->year }}</span>
                                     <span class="trending-year"> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
                                 </div>

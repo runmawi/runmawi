@@ -251,10 +251,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                    
-                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1 || $series->access != 'ppv'){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                                  <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <?php }elseif(!empty($seasons->ppv_price) && $series->access == 'ppv'){?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                                <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
@@ -293,11 +293,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
                                    
-                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1 && $series->access == 'ppv'){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <?php }elseif(!empty($seasons->ppv_price) && $series->access == 'ppv'){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php }else{ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                             </div>

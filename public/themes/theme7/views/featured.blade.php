@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title"><?php echo __('Featured Videos'); ?> </h3>                     
+                    <h3 class="vid-title">Featured Videos </h3>                     
                 </div>
 
                 <div class="favorites-contens">
@@ -24,13 +24,13 @@
 
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$featured_video->image;  ?>" class="img-fluid" alt="">
-                                        <!-- <?php  if(!empty($featured_video->ppv_price)){?>
+                                        <?php  if(!empty($featured_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $currency->symbol.' '.$featured_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($featured_video->global_ppv || !empty($featured_video->global_ppv) && $featured_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $featured_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($featured_video->global_ppv == null && $featured_video->ppv_price == null ){ ?>
-                                            <p class="p-tag" ><?php echo __("Free"); ?></p>
-                                        <?php } ?> -->
+                                            <p class="p-tag" ><?php echo "Free"; ?></p>
+                                        <?php } ?>
                                     </div>
                                  
                                     <div class="block-description" >
@@ -91,7 +91,7 @@
                                             <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $featured_video->slug ?>">	
                                                 <span class="text-white">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                    <?php echo __('Watch Now'); ?>
+                                                    Watch Now
                                                 </span>
                                             </a>
                                         <div>
@@ -120,7 +120,7 @@
                         @endif
                         @else
                             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                                <p ><h3 class="text-center"><?php echo __('No Featured Available'); ?></h3>
+                                <p ><h3 class="text-center">No Featured Available</h3>
                             </div>
                         @endif
                     </ul>

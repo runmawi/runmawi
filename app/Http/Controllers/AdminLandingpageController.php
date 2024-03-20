@@ -54,6 +54,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -69,6 +72,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -84,6 +90,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -99,6 +108,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -121,7 +133,7 @@ class AdminLandingpageController extends Controller
             'footer' => !empty( $request->footer &&  $request->footer == "on" ) ? 1 : 0 ,
             'header' => !empty( $request->header &&  $request->header == "on" ) ? 1 : 0 ,
           ]);
-
+          
         return Redirect::route('landing_page_index')->with('message', 'Successfully! Created Landing Page');
       } 
         catch (\Throwable $th) {
@@ -138,6 +150,9 @@ class AdminLandingpageController extends Controller
             'section_4' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',4)->get(),
             'title'     => AdminLandingPage::where('landing_page_id',$id)->pluck('title')->first(),
             'slug'      => AdminLandingPage::where('landing_page_id',$id)->pluck('slug')->first(),
+            'meta_title'      => AdminLandingPage::where('landing_page_id',$id)->pluck('meta_title')->first(),
+            'meta_keywords'      => AdminLandingPage::where('landing_page_id',$id)->pluck('meta_keywords')->first(),
+            'meta_description'      => AdminLandingPage::where('landing_page_id',$id)->pluck('meta_description')->first(),
             'custom_css'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'stript_content'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('script_content')->first(),
@@ -167,6 +182,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -182,6 +200,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -197,6 +218,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }
@@ -212,6 +236,9 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
                     $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
+                    $AdminLandingPage->meta_title = $request->meta_title;
+                    $AdminLandingPage->meta_description = $request->meta_description;
+                    $AdminLandingPage->meta_keywords = $request->meta_keywords;
                     $AdminLandingPage->save();
             }
           }

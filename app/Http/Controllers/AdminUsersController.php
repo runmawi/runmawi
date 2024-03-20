@@ -887,12 +887,14 @@ class AdminUsersController extends Controller
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
             $file->move($path, $input['avatar']);
+            
+            $user_update = User::find($id);
+            $user_update->avatar = $file->getClientOriginalName();
+            $user_update->save();
 
         }
 
-        $user_update = User::find($id);
-        $user_update->avatar = $file->getClientOriginalName();
-        $user_update->save();
+
 
         return Redirect::back();
 

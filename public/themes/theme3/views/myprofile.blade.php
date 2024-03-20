@@ -290,7 +290,7 @@ $settings = App\Setting::first();
            
             <div class="col-lg-4 col-md-4 mb-3 bdr">
                 <h3>Account Settings</h3>
-                <div class="mt-5 text-white p-0">
+                <div class="mt-5 mb-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
                           <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
@@ -331,6 +331,28 @@ $settings = App\Setting::first();
                         <div class="edit-butns col-3">
                            <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary">Edit</a>
                         </div>
+
+                        <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        @csrf
+                           <div class="row align-items-center mt-4">
+                              <h6>Update Profile:</h6>
+                              <div class="col-sm-4">
+                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                 <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
+                                 <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                              </div>
+                              <div class="col-sm-4">
+                                    <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                              </div>
+                           </div>
+                                    
+                        </form>	
+
+
+
+
+
                      </div>
                      <div class="">
                      <!-- <div class="" id="personal_det">

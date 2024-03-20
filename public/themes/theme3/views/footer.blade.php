@@ -25,17 +25,18 @@
     ul.list-inline.m-0 {
         height: 100%;
     }
-    input[type="text"] {
-        border-radius: 50px 0 0 50px;
+    #join-com input[type="text"] {
+        border-radius: 50px 0 0 50px !important;
         border-right: none;
         padding: 5px;
         border:none;
+        height:auto;
     }
     input[type="text"]::placeholder{
         color: #000;
     }
     button.join {
-        border-radius: 0 50px 50px 0;
+        border-radius: 0 50px 50px 0 !important;
         border-left: none;
         padding: 5px 22px;
         border:none;
@@ -55,18 +56,15 @@
 
 
 </style>
-<footer class="mb-0">
+<footer class="mb-3" style="margin-top:5rem;">
         <div class="logo-content">
             
             <div class="row m-0">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-3">
                     <div class="text-center">
-                        <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                        <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="80%"/> </a>
                         <p class="music-text" style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     </div>
-                    <!-- <a class="navbar-brand" href="<?php URL::to('/home'); ?>">
-                        <img class="img-fluid logo" src="<?= front_end_logo() ?>" />
-                    </a> -->
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9 col-9 text-right m-0">
                     <ul class="list-inline m-0">
@@ -168,93 +166,33 @@
                     </div>
                 <?php } ?>
 
-                <div class="col-lg-3 col-md-12 r-mt-15 p-1 text-right">
+                    <div class="col-lg-3 col-md-12 r-mt-15 p-1 text-right">
 
-                    <h5><?= "Join the community" ?></h5>
-                    <p><?= "For the latest news and offers signup below" ?></p>
-                    <div class="d-flex justify-content-end">
-                        <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-7 col-7 p-0">
-                                <input type="text" placeholder="Your Email">
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-3 col-3 p-0">
-                                <button class="join btn-primary">Join</button>
+                        <h5><?= "Join the community" ?></h5>
+                        <p class="font-size-12"><?= "For the latest news and offers signup below" ?></p>
+                        <div class="d-flex justify-content-end" id="join-com">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-7 col-7 p-0">
+                                    <input type="text" placeholder="Your Email">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-3 col-3 p-0">
+                                    <button class="join btn text-white">Join</button>
+                                </div>
                             </div>
                         </div>
+                        
+                        <!-- <div class="d-flex">
+                            <?php if (!empty($app_settings->android_url)) { ?>
+                                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <?php } ?>
+                            <?php if (!empty($app_settings->ios_url)) { ?>
+                                <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <?php } ?>
+                            <?php if (!empty($app_settings->android_tv)) { ?>
+                                <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <?php } ?>
+                        </div> -->
                     </div>
-
-
-                    <!-- <div class="d-flex">
-
-                        <?php if (!empty($settings->instagram_page_id)) { ?>
-                            <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-instagram-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->twitter_page_id)) { ?>
-                            <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-threads-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->facebook_page_id)) { ?>
-                            <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-facebook-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->skype_page_id)) { ?>
-                            <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-skype-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->linkedin_page_id)) { ?>
-
-                            <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-linkedin-fill"></i>
-                            </a>
-
-                        <?php } ?>
-
-                        <?php if (!empty($settings->whatsapp_page_id)) { ?>
-                            <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon">
-                                <i class="ri-whatsapp-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->youtube_page_id)) { ?>
-                            <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-youtube-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->google_page_id)) { ?>
-                            <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->tiktok_page_id)) { ?>
-                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
-                                <i class="ri-tiktok-fill"></i>
-                            </a>
-                        <?php } ?>
-                    </div> -->
-                    
-                    <div class="d-flex">
-                        <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
-                        <?php } ?>
-                        <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
-                        <?php } ?>
-                        <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
-                        <?php } ?>
-                    </div>
-                </div>
 
                 
             </div>

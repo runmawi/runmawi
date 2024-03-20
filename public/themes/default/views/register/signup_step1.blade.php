@@ -28,7 +28,6 @@ $theme = App\SiteTheme::first();
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -188,7 +187,7 @@ i.fa.fa-google-plus {
     }
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;background-attachment: fixed;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -205,13 +204,19 @@ i.fa.fa-google-plus {
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
                             {{-- recaptcha --}}
-                <div class="col-md-12">
-                    @if ($errors->has('g-recaptcha-response'))
-                        <span class="alert alert-danger display-hide" id="successMessage" >
-                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                        </span>
-                     @endif
-                </div>
+                    @if (Session::has('message'))
+                        <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                    @endif
+                        
+
+                    @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                            <div class="alert alert-danger display-hide" id="successMessage" >
+                            <button id="successMessage" class="close" data-close="alert"></button>
+                            <span>{{ $message }}</span>
+                            </div>
+                        @endforeach
+                    @endif
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
@@ -275,14 +280,13 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
+                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror                                    
+                                @enderror                               
                             </div></div>
 						
 
@@ -293,7 +297,7 @@ i.fa.fa-google-plus {
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
                                  </div>
                                  @endif
@@ -441,7 +445,7 @@ i.fa.fa-google-plus {
                             <div class="sign-up-buttons col-md-12 ">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button id = "profileUpdate"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
@@ -468,8 +472,8 @@ i.fa.fa-google-plus {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1;">&times;</button>
         </div>
         <div class="modal-body" style='color: white;' >
             <?php
@@ -541,6 +545,102 @@ i.fa.fa-google-plus {
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
+
+<script>
+        $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 5000);
+    })
+        var onloadCallback = function(){
+      
+    }
+$('form[id="stripe_plan"]').validate({
+    ignore: [],
+    rules: {
+        username: 'required',
+        email: {
+            required: true,
+            email: true,
+            normalizer: function(value) {
+                // Trim leading and trailing spaces from the email address
+                return $.trim(value);
+            }
+        },
+    },
+    messages: {
+        username: 'This field is required',
+        email: {
+            required: 'Email address is required',
+            email: 'Please enter a valid email address',
+        },
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+
+     </script>
+
+<script>
+
+    
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
+
+    $('#email_error').hide();
+    $("#profileUpdate").click(function(){
+
+        var email = $('#email').val();
+            $.ajax({
+                url:"{{ URL::to('/emailvalidation') }}",
+                method:'GET',
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        email: $('#email').val()
+
+                },        success: function(value){
+                    // console.log(value);
+                    if(value == "false"){
+                        $('#email_error').show();
+                        return false; // Prevent form submission
+
+                    }else{
+                    $('#email_error').hide();
+                    }
+                }
+            });
+
+            // mobile
+    });
+
+</script>
+
 <script>
     jQuery.noConflict();
     (function($) {
@@ -549,6 +649,7 @@ i.fa.fa-google-plus {
         });
     })(jQuery);
 </script>  
+
 <script>
 
 $(document).ready(function() {
@@ -672,31 +773,30 @@ $.ajaxSetup({
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
     });
-=
 
 	$(document).ready(function(){
         $('#email_error').hide();
 
-// $('#email').change(function(){
+ $('#email').change(function(){
 
-// 	var email = $('#email').val();
-// 	$.ajax({
-//         url:"{{ URL::to('/emailvalidation') }}",
-//         method:'GET',
-//         data: {
-//                _token: '{{ csrf_token() }}',
-//                email: $('#email').val()
+ 	var email = $('#email').val();
+ 	$.ajax({
+         url:"{{ URL::to('/emailvalidation') }}",
+         method:'GET',
+         data: {
+                _token: '{{ csrf_token() }}',
+                email: $('#email').val()
 
-//          },        success: function(value){
-// 			console.log(value.email);
-//             if(value.user_exits == "yes"){
-//             $('#email_error').show();
-//             }else{
-//             $('#email_error').hide();
-//             }
-//         }
-//     });
-// })
+          },        success: function(value){
+ 			// console.log(value);
+             if(value == "false"){
+             $('#email_error').show();
+             }else{
+             $('#email_error').hide();
+             }
+         }
+     });
+ })
 
 });
 	

@@ -26,6 +26,12 @@
         color: #fff !important;
         box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
     }
+    li.no-results{
+        color:#000 !important;
+    }
+    body.light-theme input{
+        color: <?php echo GetLightText(); ?> !important;
+    }
 
 </style>
 

@@ -91,15 +91,21 @@ div#url_linkdetails {
     font-size: x-large;
   
 }
-   .intro_skips,.Recap_skip {
+   .intro_skips {
    position: absolute;
        z-index: 5;
        top: 60%;
        right: 0;
        display: flex;
        justify-content: flex-end;
-   
-        
+}
+.Recap_skip {
+   position: absolute;
+       z-index: 5;
+       top: 60%;
+       right: 0;
+       display: flex;
+       justify-content: flex-end;
 }
       .skips{
           position: absolute;
@@ -247,6 +253,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
+
+  <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  </div>
+
    <div class=" page-height">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
@@ -444,28 +455,47 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 /* For Registered User */       
    else {  ?>   
     <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-  <div id="subscribers_only">
-  <div class="clear"></div>
-  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-  <h4 class="text-center"><?php echo $video->title ; ?></h4>
-  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
-  <h2 ><p style ="margin-left:14%"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
-    <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"><?= __('Purchase to watch this video') ?></button>
-    </form>
-    <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-  <button  style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                           <?php echo __('Purchase Now');?> </button>
- <?php } ?>
-  <?php }else{ ?>
-    <form method="get" action="<?= URL::to('signup') ?>">
-      <button id="button" style="margin-top: 0%;"><?= __('Signup Now ') ?><?php if($video->access == 'subscriber'): ?><?= __('to Purchase this video') ?> <?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
-    </form>
-  <?php } ?>
-  </div>
-</div>
-</div>   
+      <div id="subscribers_only">
+        <div class="clear"></div>
+        <div style="position: absolute;top: 20%;width: 100%;">
+
+          <h4 class="text-center"><?php echo $video->title ; ?></h4>
+          <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
+          
+          <h2>
+            <?php
+              if($video->access == 'subscriber') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Subscribers' ?> </p>
+            <?php
+              } elseif($video->access == 'registered') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Registered' ?> </p>
+            <?php
+              } elseif( $video->access == 'ppv'){ ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to PPV users' ?> </p>
+            <?php
+              }
+            ?>
+          </h2>
+
+          <?php if(!Auth::guest() && $video->access == 'subscriber' ){ ?>
+            <div style="text-align:center">
+              <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                <button style="" class="btn btn-primary"id="button"><?= __('Become a subscriber to watch this video') ?></button>
+              </form>
+           </div><br>
+          <?php } ?>
+
+          <?php if(!Auth::guest() &&  !Auth::guest() && $video->access == 'ppv' && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+            <div style="text-align:center">
+              <button   data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <?= __('Purchase to watch this video for ' . $currency->symbol .$video->ppv_price) ?>
+              </button>
+            </div>
+          <?php } ?>
+        </div>
+      </div>
+    </div> 
+
        <!-- <div id="video" class="fitvid" style="margin: 0 auto;"> -->
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
@@ -528,24 +558,42 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
      <div id="subscribers_only">
      <div class="clear"></div>
-     <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+     <div style="position: absolute;top: 20%;width: 100%;">
      <h4 class="text-center"><?php echo $video->title ; ?></h4>
-     <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+     <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
     
-     <h2 ><p style ="margin-left:14%"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
-     <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-       <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-         <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"><?= __('Purchase to watch this video') ?></button>
-       </form>
-       <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-  <button  style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                           <?php echo __('Purchase Now');?> </button>
- <?php } ?>
-     <?php }else{ ?>
-       <form method="get" action="<?= URL::to('signup') ?>">
-         <button id="button" style="margin-top: 0%;"><?= __('Signup Now ') ?><?php if($video->access == 'subscriber'): ?><?= __('to Purchase this video ') ?><?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
-       </form>
-     <?php } } ?>
+     <h2>
+            <?php
+              if($video->access == 'subscriber') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Subscribers' ?> </p>
+            <?php
+              } elseif($video->access == 'registered') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Registered' ?> </p>
+            <?php
+              } elseif( $video->access == 'ppv'){ ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to PPV users' ?> </p>
+            <?php
+              }
+            ?>
+      </h2>
+
+      <?php if(!Auth::guest() && $video->access == 'subscriber' ){ ?>
+            <div style="text-align:center">
+              <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                <button style="" class="btn btn-primary"id="button"><?= __('Become a subscriber to watch this video') ?></button>
+              </form>
+           </div><br>
+          <?php } ?>
+
+          <?php if(!Auth::guest() &&  !Auth::guest() && $video->access == 'ppv' && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+            <div style="text-align:center">
+              <button   data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <?= __('Purchase to watch this video for ' . $currency->symbol .$video->ppv_price) ?>
+              </button>
+            </div>
+          <?php } 
+
+             } ?>
   </div>
 </div>
 </div>
@@ -1068,9 +1116,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           height: 20%;
         }
       </style>
-  <div class="col-sm-12 Recap_skip">
-      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-  </div>
+  
 
 <!--End Intro Skip and Recap Skip 
 
@@ -1673,11 +1719,13 @@ location.reload();
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
 if( SkipIntroPermissions == 1 ){
-  button.addEventListener("click", function(e) {
-    video.currentTime = IntroskipEnd;
-       $("#intro_skip").remove();  // Button Shows only one tym
-    video.play();
-  })
+
+    button.addEventListener("click", function(e) {
+      video.currentTime = IntroskipEnd;
+      video.play();
+      document.getElementById("intro_skip").hidden = true;
+    });
+
     if(AutoSkip != 1){
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
@@ -1685,10 +1733,10 @@ if( SkipIntroPermissions == 1 ){
             var RemoveSkipbutton = End + 1;
 
             if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+                  document.getElementById("intro_skip").style.display = "block"; // Manual skip
             } 
             if(RemoveSkipbutton  <= e.target.currentTime){
-                  $("#intro_skip").remove();   // Button Shows only one tym
+                  document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
             }
         });
     }
@@ -1738,9 +1786,10 @@ if( SkipIntroPermissions == 1 ){
 
   button.addEventListener("click", function(e) {
     videoId.currentTime = RecapskipEnd;
-    $("#Recaps_Skip").remove();   // Button Shows only one tym
     videoId.play();
-  })
+    document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
+  });
+  
       this.videoId.addEventListener('timeupdate', (e) => {
         document.getElementById("Recaps_Skip").style.display = "none";
 
@@ -1750,7 +1799,7 @@ if( SkipIntroPermissions == 1 ){
               }
                
               if(RemoveRecapsbutton  <= e.target.currentTime){
-                  $("#Recaps_Skip").remove();   // Button Shows only one tym
+                document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
               }
     });
 </script>
