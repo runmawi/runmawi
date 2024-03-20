@@ -1872,7 +1872,9 @@ public function verifyandupdatepassword(Request $request)
                                                       ->whereTime('ads_events.end', '>=', $current_time);
                                                   })
                                           
-                                          ->pluck('ads_path');
+                                          ->pluck('ads_path')->map(function ($item) {
+                                            return (object) ['ads_path' => $item];
+                                        });
 
                   // Post-advertisement 
 
