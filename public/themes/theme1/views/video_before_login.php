@@ -277,13 +277,13 @@ if(!empty($request_url)){
       <h2>
         <?php
           if($video->access == 'subscriber') { ?>
-            <p style="text-align:center"> <?=  'Sorry, this video is only available to Subscribers' ?> </p>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to Subscribers') ?> </p>
         <?php
           } elseif($video->access == 'registered') { ?>
-            <p style="text-align:center"> <?=  'Sorry, this video is only available to Registered' ?> </p>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to Registered') ?> </p>
         <?php
           } elseif( $video->access == 'ppv'){ ?>
-            <p style="text-align:center"> <?=  'Sorry, this video is only available to PPV users' ?> </p>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to PPV users') ?> </p>
         <?php
           }
         ?>
@@ -307,7 +307,7 @@ if(!empty($request_url)){
         <?php }elseif ( Auth::guest() && ( $video->access == "ppv" ) ) {?>
 
           <form method="get" action="<?= URL::to('login') ?>">
-            <button  class="btn btn-primary" id="button"><?= __('Purchase to watch this video for ' . $currency->symbol .$video->ppv_price) ?></button>
+            <button  class="btn btn-primary" id="button"><?= __('Purchase to watch this video for') .' '. $currency->symbol .$video->ppv_price ?></button>
           </form>
 
         <?php } ?>

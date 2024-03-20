@@ -1872,7 +1872,9 @@ public function verifyandupdatepassword(Request $request)
                                                       ->whereTime('ads_events.end', '>=', $current_time);
                                                   })
                                           
-                                          ->pluck('ads_path');
+                                          ->pluck('ads_path')->map(function ($item) {
+                                            return (object) ['ads_path' => $item];
+                                        });
 
                   // Post-advertisement 
 
@@ -23001,16 +23003,19 @@ public function TV_login(Request $request)
               if (isset($exchangeRates['rates'][$targetCurrency])) {
                   $conversionRate = $exchangeRates['rates'][$targetCurrency];
                   $convertedAmount = $amount * $conversionRate;
-  
+                  $formattedAmount = number_format($convertedAmount, 2);
+
                   // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
               } else {
                   // echo "Conversion rate for {$targetCurrency} not available.";
                   $convertedAmount = '';
+                  $formattedAmount = '';
               }
           } else {
               // echo "Exchange rates data not found in the API response.";
               $convertedAmount = '';
-          }
+              $formattedAmount = '';
+            }
       }
       curl_close($ch);
 
@@ -23018,7 +23023,7 @@ public function TV_login(Request $request)
 
         'status'  => true,
         'Message' => 'Retrieve the Currency Converter',
-        'Currency_Converted' => $Currency_symbol.' '.$convertedAmount ,
+        'Currency_Converted' => $Currency_symbol.' '.$formattedAmount ,
 
       );
 
