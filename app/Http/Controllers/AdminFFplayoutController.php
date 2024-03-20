@@ -129,7 +129,7 @@ class AdminFFplayoutController extends Controller
     
             // return response()->json($responseData);
             
-            dd($responseData);
+            // dd($responseData);
     // CREATE NEW CHANNEL
             // $channelData = [
             //     'name' => 'Channel '.$channelId, 
