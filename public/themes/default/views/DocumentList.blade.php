@@ -12,7 +12,7 @@
          @if(isset($DocumentList['latest_Documents']) && count($DocumentList['latest_Documents']) > 0 )
 
             <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title">{{ __('Latest Videos') }}</h3>
+               <h3 class="vid-title">{{ __('Documents') }}</h3>
             </div>
             
             <div class="favorites-contens">
