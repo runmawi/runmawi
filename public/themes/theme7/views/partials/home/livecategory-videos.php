@@ -67,40 +67,13 @@ $currency = App\CurrencySetting::first();
                             
                         ?>
                             <li class="slide-item">
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                    <div class="block-images position-relative">
-                                        <div class="img-box">
+                                <div class="block-images position-relative">
+                                    <div class="img-box">
+                                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="">
-                                        </div>
-                                        <div class="block-description">
-                                            <p> <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>   </p>
-                                            <div class="movie-time d-flex align-items-center my-2">
-
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                    <?php echo $category_video->age_restrict.' '.'+' ?>
-                                                </div>
-
-                                                <span class="text-white">
-                                                    <?= gmdate('H:i:s', $category_video->duration); ?>
-                                                </span>
-                                            </div>
-
-                                            <div class="hover-buttons">
-                                                <span class="btn btn-hover">
-                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                    Play Now
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="block-social-info">
-                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                <li><span><i class="ri-heart-fill"></i></span></li>
-                                                <li><span><i class="ri-add-line"></i></span></li>
-                                            </ul>
-                                        </div>
+                                        </a>
                                     </div>
-                                </a>
+                                </div>
                             </li>
                         <?php           
                         endforeach; 

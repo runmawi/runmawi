@@ -56,26 +56,14 @@ include public_path('themes/theme6/views/header.php');
                         @if (isset($SeriesGenre))
                             @foreach ($SeriesGenre as $Series_Genre)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('play_series/' . $Series_Genre->slug) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a href="{{ URL::to('play_series/' . $Series_Genre->slug) }}">
                                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . @$Series_Genre->image }}"
                                                     class="img-fluid" alt="">
-                                            </div>
-
-                                            <div class="block-description">
-                                                <p> {{ strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title }}
-                                                </p>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Visit Series
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
                             @endforeach
                         @endif

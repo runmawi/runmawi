@@ -53,57 +53,12 @@
                             @foreach ($data as $key => $Going_to_expiry_videos)
                                 <li class="slide-item">
                                     <div class="block-images position-relative">
-                                        
-                                        <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug ) }}">
-
-                                            <div class="img-box">
+                                        <div class="img-box">
+                                            <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug ) }}">
                                                 <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span>
-                                            </div>
-
-                                            <div class="block-description">
-                                                <p> {{ strlen($Going_to_expiry_videos->title) > 17 ? substr($Going_to_expiry_videos->title, 0, 18) . '...' : $Going_to_expiry_videos->title }}
-                                                </p>
-
-                                                @if ( videos_expiry_date_status() == 1 && optional($Going_to_expiry_videos)->expiry_date)
-                                                    <ul class="vod-info">
-                                                        <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
-                                                    </ul>
-                                                @endif
-
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($Going_to_expiry_videos)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $Going_to_expiry_videos->duration != null ? gmdate('H:i:s', $Going_to_expiry_videos->duration) : null }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                                {{-- WatchLater & wishlist --}}
-
-                                        @php
-                                            $inputs = [
-                                                'source_id'     => $Going_to_expiry_videos->id ,
-                                                'type'          => 'channel',  // for videos - channel
-                                                'wishlist_where_column'    => 'video_id',
-                                                'watchlater_where_column'  => 'video_id',
-                                            ];
-                                        @endphp
-
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
-
+                                            </a>
+                                        </div>
                                     </div>
                                 </li>
                             @endforeach
