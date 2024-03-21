@@ -215,21 +215,27 @@
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
    <!-- Bootstrap CSS -->
+         <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style">
          <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>">
 
    <!-- Typography CSS -->
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" fetchpriority="high">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
 
    <!-- Style -->
+      <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
       
    <!-- Responsive -->
+      <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>">
 
    <!-- slick -->
+      <link rel="preload" fetchpriority="low" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
+      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="font">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
    <!-- Remixicon -->
