@@ -4,7 +4,7 @@ if(count($latest_video) > 0) : ?>
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php if ($order_settings_list[11]->header_name) { echo URL::to('/').'/'.$order_settings_list[11]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[11]->header_name) { echo ($order_settings_list[11]->header_name) ;} else { echo "" ; } ?>
+                    <?php if ($order_settings_list[11]->header_name) { echo (__($order_settings_list[11]->header_name)) ;} else { echo "" ; } ?>
                     </a></h4>                      
                  </div>
                  <div class="favorites-contens">
@@ -34,7 +34,7 @@ if(count($latest_video) > 0) : ?>
                               </div>
                               <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                  <a  href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
-                                    <h6><?php  echo (strlen($Categories->name) > 17) ? substr($Categories->name,0,18).'...' : $Categories->name; ?></h6>
+                                    <h6><?php  echo (strlen( __($Categories->name)) > 17) ? substr( __($Categories->name,0,18)).'...' : ( __($Categories->name)); ?></h6>
                                  </a>
                                 <?php } ?> 
                           </a>

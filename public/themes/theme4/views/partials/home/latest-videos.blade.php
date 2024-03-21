@@ -2,7 +2,7 @@
 
 $check_Kidmode = 0;
     
-$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
+$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
                                 'player_image','expiry_date')
 
                         ->where('active',1)->where('status', 1)->where('draft',1);
@@ -19,7 +19,7 @@ $data = App\Video::select('id','title','slug','year','rating','access','publish_
                             $data = $data->whereBetween('videos.age_restrict', [0, 12]);
                         }
 
-$data = $data->latest()->limit(30)->get();
+$data = $data->latest()->limit(15)->get();
                                                                     
 @endphp
                                                                     
@@ -94,7 +94,7 @@ $data = $data->latest()->limit(30)->get();
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li>   
                             @endforeach
                         </ul>
                     </div>
@@ -106,7 +106,7 @@ $data = $data->latest()->limit(30)->get();
             <div class="modal fade info_model" id="{{ "Home-latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">
@@ -154,7 +154,7 @@ $data = $data->latest()->limit(30)->get();
     $(document).ready(function() {
 
         $('.latest-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
             fade: true,

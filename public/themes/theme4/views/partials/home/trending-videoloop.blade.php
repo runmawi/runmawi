@@ -20,7 +20,7 @@ $data = App\Video::select('id','title','slug','year','rating','access','publish_
                             $data = $data->whereBetween('videos.age_restrict', [0, 12]);
                         }
 
-$data = $data->latest()->limit(30)->get();
+$data = $data->latest()->limit(15)->get();
                                                                     
 @endphp
 
@@ -108,7 +108,7 @@ $data = $data->latest()->limit(30)->get();
             <div class="modal fade info_model" id="{{ "Home-Trending-videoloop-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">

@@ -268,44 +268,51 @@ if(!empty($request_url)){
       if(!empty($video->path) && $video->path != "public"){ $hls = "hls" ;}else{ $hls = "" ;}
      ?>
   <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
-    <!-- <div id="video" class="fitvid" style="margin: 0 auto;">
-        
-        <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin vjs-big-play-centered" 
-        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" 
-        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-         src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
-        <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-        <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-        <?php } if($value['sub_language'] == "German"){ ?>
-        <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-        <?php } if($value['sub_language'] == "Spanish"){ ?>
-        <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-        <?php } if($value['sub_language'] == "Hindi"){ ?>
-        <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-        <?php } } } else { } ?>  
-        </video>  
-    </div> -->
     <div id="subscribers_only" style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-      <h4 class="text-center"><?php echo $video->title; ?></h4>
-      <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-         <?php echo $video->description; ?></p>
-      <h2><?= __('Sorry, this video is only available to') ?>
-         <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered' ): ?><?= __('Registered') ?>
-          <?= __('Users') ?><?php endif; ?></h2>
-      <div class="clear"></div>
-      <?php if(Auth::guest() && $video->access == 'registered'): ?>
-      <form method="get"
-         action="<?= URL::to('/signup') ?>">
-         <button   class="btn btn-primary" id="button"><?= __('Become a Registered to watch this video') ?></button>
-      </form>
-      <?php else: ?>
-      <form method="get" action="<?= URL::to('signup') ?>">
-      </form>
-      <?php endif; ?>
+      <h4 class="text-center"><?= $video->title; ?></h4><br>
 
-</div>
+      <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
+
+      <h2>
+        <?php
+          if($video->access == 'subscriber') { ?>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to Subscribers') ?> </p>
+        <?php
+          } elseif($video->access == 'registered') { ?>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to Registered') ?> </p>
+        <?php
+          } elseif( $video->access == 'ppv'){ ?>
+            <p style="text-align:center"> <?=  __('Sorry, this video is only available to PPV users') ?> </p>
+        <?php
+          }
+        ?>
+      </h2>
+
+      <div class="clear"></div> <br>
+
+      <div style="text-align:center">
+        <?php if( Auth::guest() && ( $video->access == "registered")){ ?>
+
+          <form method="get" action="<?= URL::to('signup') ?>">
+            <button  class="btn btn-primary" id="button"><?= __('Become a '. $video->access .' to watch this video') ?></button>
+          </form>
+
+        <?php }elseif ( Auth::guest() && ( $video->access == "subscriber" ) ) { ?>
+
+          <form method="get" action="<?= route('payment_becomeSubscriber')  ?>">
+            <button  class="btn btn-primary" id="button"><?= __('Become a '. $video->access .' to watch this video') ?></button>
+          </form>
+            
+        <?php }elseif ( Auth::guest() && ( $video->access == "ppv" ) ) {?>
+
+          <form method="get" action="<?= URL::to('login') ?>">
+            <button  class="btn btn-primary" id="button"><?= __('Purchase to watch this video for') .' '. $currency->symbol .$video->ppv_price ?></button>
+          </form>
+
+        <?php } ?>
+      </div>
+    </div>
   <?php  } ?>
             
 
@@ -320,7 +327,7 @@ if(!empty($request_url)){
                           <div class="col-md-12">
                               <div class="bc-icons-2">
                                   <ol class="breadcrumb">
-                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= __(ucwords('videos')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                       </li>
 
@@ -328,7 +335,7 @@ if(!empty($request_url)){
                                         <?php $category_name_length = count($category_name); ?>
                                         <li class="breadcrumb-item">
                                             <a class="black-text" href="<?php echo route('video_categories',[ $video_category_name->categories_slug ])?>">
-                                                <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                                <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                             </a>
                                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                         </li>

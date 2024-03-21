@@ -3,37 +3,20 @@
 
             @if (count($categoryVideos['categoryVideos']) > 0)         
                 @foreach($categoryVideos['categoryVideos']  as $category_video) 
-                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 ">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
-                                </div>
-                            </div>
-
-                            <div class="block-description" >
-                                <div class="hover-buttons">
-                                    <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                      
-                                    
-                                        {{-- @if($categoryVideos['ThumbnailSetting']->free_or_cost_label == 1) 
-                                            @if(!empty($category_video->ppv_price))
-                                                <p class="p-tag1">
-                                                    {{ $currency->symbol.' '.$category_video->ppv_price }}
-                                                </p>
-                                            @elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                                <p class="p-tag1">
-                                                    {{ $category_video->global_ppv.' '.$currency->symbol }} 
-                                                </p>
-                                            @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
-                                                <p class="p-tag">
-                                                    {{ "Free" }}
-                                                </p>
-                                            @endif
-                                        @endif --}}
-
+                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                     </a>
                                 </div>
+                                <div class="block-description">
+                                    <div class="hover-buttons">
+                                        <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                                    </div>
+                                </div>
+
                                 </div>
 
                                 <div>
@@ -84,30 +67,32 @@
                                         <?php echo __($category_video->year); ?>
                                         </span>
                                         <?php } ?>
-                                </div>
+                                    </div>
 
-                                <div class="movie-time my-2">
-                                    <!-- Category Thumbnail  setting -->
-                                    <?php
-                                    $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                ->where('categoryvideos.video_id',$category_video->video_id)
-                                                ->pluck('video_categories.name');       
+                                    <div class="movie-time my-2">
+                                        <!-- Category Thumbnail  setting -->
+                                        <?php
+                                        $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                    ->where('categoryvideos.video_id',$category_video->video_id)
+                                                    ->pluck('video_categories.name');       
 
-                                    ?>
-                                    <?php  if ( ($categoryVideos['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                    <span class="text-white">
-                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                    <?php
-                                        $Category_Thumbnail = array();
-                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                }
-                                        echo implode(','.' ', $Category_Thumbnail);
-                                    ?>
-                                    </span>
-                                    <?php } ?>
+                                        ?>
+                                        <?php  if ( ($categoryVideos['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                        <span class="text-white">
+                                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                        <?php
+                                            $Category_Thumbnail = array();
+                                                    foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                    echo (__($CategoryThumbnail).' ');
+                                                    }
+                                            // echo implode(','.' ', $Category_Thumbnail);
+                                        ?>
+                                        </span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                            </div>
+                            
                         </a>
                     </li>
                 @endforeach

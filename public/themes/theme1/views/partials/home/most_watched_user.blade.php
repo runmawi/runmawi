@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?= __('Most Watching Videos - User')  ?></a></h4>
+    <h4 class="main-title"><a href=""><?= (__('Most Watching Videos')).'-'. (__( 'User'))  ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -104,8 +104,9 @@
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                 $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

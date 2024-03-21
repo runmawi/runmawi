@@ -11,22 +11,18 @@
         margin: 0;
     }
     .page-body h2{
-        color: #000!important;
         font-size: 22px;
         margin-bottom: 10px;
     }
     .page-body h3{
-        color: #000!important;
         font-size: 18px;
         font-weight: 400;
     }
 
     .page-body h1{
-        color: #000!important;
         font-size: 27px;
         font-weight: 400;
     }
-    .page-wrapper .page-body ul li {color: #000;}
 </style>
 
     <div class="container">

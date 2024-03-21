@@ -19,13 +19,41 @@
                               <!-- block-images -->
                               
                               <div class="border-bg">
-                                <div class="img-box">
-                                  <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
-                                  </a>
+                                  <div class="img-box">
+                                    <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
+                                    </a>
+                                  </div>
                                 </div>
                                     <div class="block-description">
-                                       <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
+                                      <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
+                                          <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid w-100" alt="recom">
+                                      </a>
+
+                                      <div class="hover-buttons text-white">
+                                          <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?> ">
+                                              <p class="epi-name text-left m-0">
+                                                <?php echo __($watchlater_video->title); ?>
+                                              </p>
+                                                
+                                                <div class="movie-time d-flex align-items-center my-2">
+                                                  <!-- <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div> -->
+                                                  <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
+                                                </div>
+                                          </a>
+
+                                      
+                                            <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?> ">
+                                                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                  <?= __('Play Now') ?>
+                                            </a>
+                                        </div>
+
+
+
+
+
+                                       <!-- <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
                                        <div class="movie-time  align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
@@ -37,7 +65,7 @@
                                           <?= __('Play Now') ?>
                                           </span>
                                            </a>
-                                       </div>
+                                       </div> -->
                                         <!--<div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">

@@ -26,7 +26,7 @@
         } ?>">
 
             <?php if ($order_settings_list[16]->header_name) {
-                echo __($order_settings_list[16]->header_name);
+                echo (__($order_settings_list[16]->header_name));
             } else {
                 echo '';
             } ?></a>
@@ -188,9 +188,10 @@
                         <?php
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

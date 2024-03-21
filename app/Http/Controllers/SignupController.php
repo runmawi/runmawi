@@ -407,7 +407,7 @@ public function createStep2(Request $request)
         $website_name = Setting::pluck('website_name')->first();  // Note - Free Registration 
         if(@$free_registration == 1) {
             // session()->put('message',"You have successfully registered your account. Please login below.");
-            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
+            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment.");
             return Theme::view('auth.login');
         }
 

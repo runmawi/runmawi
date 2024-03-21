@@ -408,6 +408,13 @@ hr {
         /* margin: 0 auto !important;  */
         object-fit: contain;
     }
+    .text-white.col-lg-7.p-0 p{
+        color: #fff !important;
+    }
+    body.light-theme li{
+        color: <?php echo GetLightText(); ?>!important;
+    }
+
 
 </style>
 
@@ -777,18 +784,19 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <div class="container-fluid">
 
                             <div style="padding-top:8%;">
-                                <h4 class=""><?php echo $video->title; ?></h4>
+                                <h4 class="text-white"><?php echo $video->title; ?></h4>
                                 <div class="text-white col-lg-7 p-0">
                                     <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
                                 </div>
 
-                                <h4>
-                                <?php echo __('Sorry, this video is only available to Subscribers or PPV users'); ?>
-                                    <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
-                                </h4>
+                         
 
-                                <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-                                    
+                                <?php $videodetails = App\Video::where('id',$video->id)->first();  
+                                    if(!Auth::guest() && $videodetails->access == 'subscriber'  && $videodetails->access != 'ppv'  ){ //|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ?> 
+                                    <h4 class="text-white">
+                                        <?php echo __('Sorry, this video is only available to Subscribers '); ?>
+                                    </h4>
+
                                     <div class="d-flex align-items-baseline">
                                         <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
                                             <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?php echo __('subscribe to watch this video'); ?></button>
@@ -801,9 +809,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                             <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
                                     </form>
 
-                                <?php } ?>
-
-                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                <?php } elseif(!Auth::guest() && $videodetails->ppv_price != '' && $videodetails->ppv_price != null || $videodetails->global_ppv == 1 ){ ?>
+                                    <h4 class="text-white">
+                                        <?php echo __('Sorry, this video is only available to PPV users'); ?>
+                                    </h4>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                                         <?php echo __('Rent Now'); ?> 
                                     </button>
@@ -823,11 +832,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                 <div id="subscribers_only">
                     <div class="clear"></div>
                     <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-                        <h4 class="text-center"><?php echo $video->title; ?></h4>
+                        <h4 class="text-center text-white"><?php echo $video->title; ?></h4>
                         <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
-                        <h6>
-                            <p style="margin-left:14%"><?php echo __('Sorry, this video is only available to'); ?></p>
+                        <h6 class="text-white">
+                            <p class="text-white" style="margin-left:14%"><?php echo __('Sorry, this video is only available to'); ?></p>
                             <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                         </h6>
                         
@@ -858,10 +867,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div id="subscribers_only">
                         <div class="clear"></div>
                         <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
-                            <h4 class="text-center"><?php echo $video->title; ?></h4>
+                            <h4 class="text-center text-white"><?php echo $video->title; ?></h4>
                             <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
-                            <h2>
-                                <p style="margin-left:14%"><?php echo __('Purchase to watch this PPV video'); ?></p>
+                            <h2 class="text-white">
+                                <p class="text-white" style="margin-left:14%"><?php echo __('Purchase to watch this PPV video'); ?></p>
                             </h2>
                             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                                 
@@ -894,13 +903,13 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
                                     <div class="container-fluid">
-                                        <h2 class="text-left"><?php echo $video->title; ?></h2>
+                                        <h2 class="text-left text-white"><?php echo $video->title; ?></h2>
 
                                         <div class="text-white col-lg-7 p-0">
                                         <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
                                         </div>
 
-                                        <h4 class="mb-3">  <?php echo __('PPV Rent'); ?> </h4>
+                                        <h4 class="mb-3 text-white">  <?php echo __('PPV Rent'); ?> </h4>
                                         
                                         <div>
                                         <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" ><?php echo __('Become a Subscriber to watch this video'); ?></a> 
@@ -1686,7 +1695,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div class="col-sm-9 p-0">
                                     <div>
-                                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+                                        <?php if($video->trailer != '' && $video->trailer_type != " " && $video->trailer_type != "null"   && $ThumbnailSetting->trailer == 1 ){ ?>
 
                                         <div class="img__wrap">
                                             <img class="img__img " src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>" class="img-fluid"
@@ -1730,7 +1739,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <div class="modal-body">
 
-                                                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+                                                <?php  if($video->trailer_type != null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
 
                                                 <video id="videoPlayer1" class=""
                                                     poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
@@ -1874,6 +1883,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         <p class="trending-dec w-100 mb-0  mt-2"><?php echo __($video->details); ?></p>
                                     </div>
                                 <?php  }?>
+                                <li>Heal From the Inside Out: Learn how to bring lasting healing into your body and life by tapping into the power of your emotions and soul.</li>
 
                                 <?php if(!empty($video->pdf_files) ) { ?>
                                 <h4><?php echo __('E-Paper'); ?>:</h4>
@@ -2203,7 +2213,7 @@ $artists = [];
                         <?php endif; ?>
 
                         <div class=" container-fluid video-list you-may-like overflow-hidden">
-                            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos'); ?></h4>
+                            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recommended Videos'); ?></h4>
                             <div class="slider"
                                 data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
                                 <?php include 'partials/video-loop.php'; ?>
@@ -2256,6 +2266,7 @@ $artists = [];
                     <script src="https://checkout.stripe.com/checkout.js"></script>
                     <div class="clear"></div>
                     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $client_id; ?>"></script>
+                    <script src="https://js.stripe.com/v3/"></script>
 
                     <script>
 
@@ -2580,7 +2591,7 @@ $artists = [];
                                     $(".add_data_test").empty();
                                     $(".add_data_test").append("<div>Remove from Wishlist</div> ");
                                     $("body").append(
-                                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
+                                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 15%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
                                     );
                                     setTimeout(function() {
                                         $('.add_watch').slideUp('fast');
@@ -2591,7 +2602,7 @@ $artists = [];
                                     //  $(this).html('<i class="ri-heart-line"></i>');
                                     $(".add_data_test").append("<div>Added to  Wishlist</div> ");
                                     $("body").append(
-                                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
+                                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 15%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
                                     );
                                     setTimeout(function() {
                                         $('.remove_watch').slideUp('fast');
@@ -2619,7 +2630,7 @@ $artists = [];
                                     $(".add_data_test").empty();
                                     $(".add_data_test").append("<div>Remove from Watchlater</div> ");
                                     $("body").append(
-                                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to watchlater </div>'
+                                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 15%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to watchlater </div>'
                                     );
                                     setTimeout(function() {
                                         $('.add_watch').slideUp('fast');
@@ -2633,7 +2644,7 @@ $artists = [];
                                     //  $(this).html('<i class="ri-heart-line"></i>');
                                     $(".add_data_test").append("<div>Added to Watchlater</div> ");
                                     $("body").append(
-                                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from watchlater</div>'
+                                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 15%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from watchlater</div>'
                                     );
                                     setTimeout(function() {
                                         $('.remove_watch').slideUp('fast');
@@ -2942,7 +2953,9 @@ $artists = [];
 
                     $(document).ready(function() {
 
+                       
                         $(".payment_btn").click(function() {
+
 
                             $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
@@ -2950,14 +2963,12 @@ $artists = [];
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();
-                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
-                                $('.payment_card_payment').hide();
+                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Razorpay") {
 
-                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button').hide();
+                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
                                 $('.Razorpay_button').show();
-                                $('.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Paystack") {
 
@@ -2971,10 +2982,19 @@ $artists = [];
                                 $('.payment_card_payment').hide();
                             }else if (payment_gateway == "PayPal") {
                                 $('.Stripe_button,.Razorpay_button,.paystack_button,.cinetpay_button').hide();
-                                $('.paypal_button').show();
-                                $('.payment_card_payment').show();
-                                // $('.paypal_button').hide();
+                                    var wasChecked = $(this).data('wasChecked') || false;
+                                    if (wasChecked) {
+                                        $('.paypal_button').hide();
+                                        $('.payment_card_payment').show();
+                                    } else {
+                                        $('.paypal_button').show();
+                                        $('.payment_card_payment').show();
+                                    }
+
+                                    $(this).data('wasChecked', $(this).prop('checked'));
                             }
+                            // $(".payment_btn").not(this).data('wasChecked', false);
+
                         });
                     });
                 </script>

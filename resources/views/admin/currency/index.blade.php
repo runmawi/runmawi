@@ -26,9 +26,9 @@ border-radius: 0px 4px 4px 0px;
 
     }
 
-body.dark .table-bordered td, .table-bordered th {
+/* body.dark .table-bordered td, .table-bordered th {
     color: black;
-}
+} */
 </style>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
 <div id="content-page" class="content-page">

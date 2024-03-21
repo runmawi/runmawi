@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="row sumbit_btn">
-                        <button type="cancel" class="btn btn-success" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >Cancel</button>
+                        <a href="{{ url('choose-profile') }}"><button type="button"  class="btn btn-hover ab">{{ __('Cancel') }}</button></a>
                         <button type="submit" class="btn btn-success ml-2" >Save Changes</button>
                     </div>
 

@@ -1,5 +1,6 @@
 <?php 
-    include(public_path('themes/theme3/views/header.php'));   ?>
+   include(public_path('themes/theme3/views/header.php'));
+   ?>
 <!-- MainContent -->
 <section id="iq-favorites">
 <div class="container-fluid">

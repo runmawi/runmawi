@@ -178,8 +178,27 @@
                                             <input type="text" id="ios_plan_price" name="ios_plan_price" value="" class="form-control" placeholder="IOS Plan Price">
                                         </div>
 
+                                                {{--  coupon on checkout --}}
+
+                                        <div class="d-flex form-group">
+                                            <div class="form-group">
+                                                <label> {{ ucwords('enable promo code on checkout') }} : <br> <small> (only for Stripe Payment) </small> </label>
+                                                <div class="mt-1">
+                                                    <label class="switch">
+                                                        <input name="auto_stripe_promo_code_status" class="auto_stripe_promo_code_status" id="auto_stripe_promo_code_status" type="checkbox">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+    
+                                            <div class="form-group">
+                                                <label> {{ ucwords('Apply promo code on checkout') }} : <br> <small> (only for Stripe Payment) </small> </label>
+                                                <input type="text" id="auto_stripe_promo_code" name="auto_stripe_promo_code"  class="form-control" placeholder="Promo Code">
+                                            </div>
+                                        </div>
+
                                         <div class="form-group ">
-                                            <label> {{ ucwords('enable ads') }}</label>
+                                            <label> {{ ucwords('enable ads') }} :</label>
                                             <div class="mt-1">
                                                 <label class="switch">
                                                     <input name="ads_status" class="ads_status" id="ads_status" type="checkbox">

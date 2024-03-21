@@ -27,12 +27,12 @@
                     <div class="form-group">
                         <label class="m-0">Season Trailer :</label>
                         <p class="p1">Drop and drag the video file</p>
-                        <div style="position: relative;" class="form_video-upload">
+                        <div style="position: relative;" class="form_video-upload mb-3">
                             <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
-                            <p class="p1">Drop and drag the video file</p>
+                            <!-- <p class="p1">Drop and drag the video file</p> -->
                         </div>
                         <?php if(!empty($season->trailer)){ ?>
-                        <video width="200" height="200" controls>
+                        <video width="100%" height="200" controls>
                             <source src="<?php echo $season->trailer; ?>" type="video/mp4" />
                         </video>
                         <?php }else{  } ?>
@@ -44,6 +44,7 @@
                             <option value="free" @if(!empty($season->access) && $season->access == 'free'){{ 'selected' }}@endif>Free (everyone)</option>
                             <option value="ppv" @if(!empty($season->access) && $season->access == 'ppv'){{ 'selected' }}@endif>PPV (Pay Per Season(Episodes))</option>
                         </select>
+                        <span class="ErrorText"> *User Access Series is set as Subscriber. </span>
                     </div>
                     <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price">
                         <label class="m-0">PPV Price:</label>
@@ -54,7 +55,7 @@
                         <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                             <option value= "" >Select IOS PPV Price: </option>
                             @foreach($InappPurchase as $Inapp_Purchase)
-                                <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->product_id) && $season->product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+                                <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_product_id) && $season->ios_product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
                             @endforeach
                         </select>
                     </div>
@@ -70,7 +71,7 @@
                     <div class="modal-footer form-group">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/series/edit'.'/'.$season->series_id) }}">Close</a>
-                        <button type="submit" class="btn btn-primary" id="submit-update-cat" action="{{ URL::to('admin/sliders/update') }}">Update</button>
+                        <button type="submit" class="btn btn-primary" id="submit-update-cat" >Update</button>
                     </div>
                 </form>
             </div>
@@ -81,11 +82,16 @@
 
 @section('javascript')
 <script>
+        
     $(document).ready(function () {
         $("#submit-update-cat").click(function () {
             $("#update-cat-form").submit();
         });
     });
+
+    
+    
+
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
@@ -146,9 +152,29 @@
 
 
     });
+
+    $('.ErrorText').hide();
+        $('#ppv_access').change(function () {
+            // alert();
+            var series_access = '<?= @$series->access ?>';
+            if (series_access == 'subscriber' && $('#ppv_access').val() == "ppv") {
+                $('#ppv_price').hide();
+                $('.ErrorText').show();
+                $('#submit-update-cat').prop('disabled', true);
+            } else {
+                $('#submit-update-cat').prop('disabled', false);
+                $('.ErrorText').hide();
+            }
+        });
 </script>
 <script src="<?= URL::to('/'). '/assets/css/vue.min.js';?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<style>
+    .form_video-upload input{
+        position:relative;
+    }
+</style>
 
 @stop @stop
 

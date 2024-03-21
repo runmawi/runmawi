@@ -157,7 +157,6 @@
    .modal {
       position: fixed;
       top: 0;
-      right: auto;
       bottom: 0;
       left: 0;
       z-index: 1050;
@@ -229,7 +228,7 @@ if(empty($new_date)){
 
 if(!Auth::guest()){
     if(!empty($password_hash)){ ?>
-        <?php if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+        <?php if ($ppv_exist > 0 ||  ( Auth::user()->role == "subscriber" && $video->access != "ppv" ) || ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 ) || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
             <div id="video_bg"> 
                 <div class="">
                     <div id="video sda" class="fitvid" style="margin: 0 auto;">

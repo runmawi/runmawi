@@ -160,6 +160,14 @@
     display: inline-block;
     cursor: pointer;
 } 
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
+.gridItem{
+   padding:5px;
+}
+
 
 </style>
 <div id=" content_videopage" class="content-page">
@@ -212,7 +220,7 @@
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
                      </div>
                   </div>
-
+                  
                                     <!-- BunnyCDN Video -->        
                   <div id="bunnycdnvideo" style="">
                      <div class="new-audio-file mt-3">
@@ -278,8 +286,10 @@
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code   
+                  @if(@$theme_settings->enable_bunny_cdn == 1):
                      <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
+                  @endif
                   </div>
                </div>
          </div>
@@ -675,40 +685,47 @@ border-radius: 0px 4px 4px 0px;
                                     placeholder="Link , and details">@if(!empty($video->details)){{ strip_tags($video->details) }}@endif</textarea>
                               </div>
                            </div>
+                           
                             <div class="row">
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
                                  <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ gmdate('H:i:s', $video->skip_intro) }}@endif">
-                                 <span><p id="error_skip_intro_time" style="color:red;">* Fill Skip Intro Time </p></span>
+                                 <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
                               </div>
+
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
                                  <input type="text" class="form-control" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ gmdate('H:i:s', $video->intro_start_time) }}@endif">
-                                 <span><p id="error_intro_start_time" style="color:red;">* Fill Intro Start Time </p></span>
+                                 <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
                               </div>
+
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
                                  <input type="text" class="form-control" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ gmdate('H:i:s', $video->intro_end_time) }}@endif">
-                                 <span><p id="error_intro_end_time" style="color:red;">* Fill Intro End Time </p></span>
+                                 <span><p id="error_intro_end_time" style="color:red !important;">* Fill Intro End Time </p></span>
                               </div>
                            </div>
+
                            <div class="row">
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Skip Recap <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                                 <span> <small> Recap Time Always Lesser than video duration </small> </span>
                                  <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ gmdate('H:i:s', $video->skip_recap) }}@endif">
-                                 <span><p id="error_skip_recap_time" style="color:red;">* Fill Skip Recap Time </p></span>
                               </div>
+
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                                 <span> <small> Start Time Always Lesser Than End Time </small> </span>
                                  <input type="text" class="form-control" id="recap_start_time" name="recap_start_time" value="@if(!empty($video->recap_start_time)){{ gmdate('H:i:s', $video->recap_start_time) }}@endif">
-                                 <span><p id="error_recap_start_time" style="color:red;" >* Fill Recap Start Time </p></span>
                               </div>
+
                               <div class="col-sm-4 form-group">
-                                 <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label>
+                                 <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                                 <span> <small> Recap Time Always Greater than video duration </small> </span>
                                  <input type="text" class="form-control" id="recap_end_time" name="recap_end_time" value="@if(!empty($video->recap_end_time)){{ gmdate('H:i:s', $video->recap_end_time) }}@endif">
-                                 <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
                               </div>
                            </div>
+
                            <div class="row">
                               {{-- <div class="col-sm-6 form-group">
                                  <label class="m-0">Video Duration:</label>
@@ -776,7 +793,7 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                  </select>
-                                 <span><p id="error_video_Category" style="color:red;" >* Choose the Video Category </p></span>
+                                 <span><p id="error_video_Category" style="color:red !important; " >* Choose the Video Category </p></span>
                               </div>
                               <div class="col-sm-6 form-group" >
                                  <div class="panel panel-primary" data-collapsed="0">
@@ -812,7 +829,7 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="{{ $language->id }}" >{{ $language->name }}</option>
                                     @endforeach
                                  </select>
-                                 <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+                                 <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
 
                               </div>
                               
@@ -832,6 +849,16 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
+                                 <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                                    <div style="color:red;">Decode Reels </div>
+                                    <div class="mt-1">
+                                          <label class="switch">
+                                             <input name="enable_reel_conversion"  type="checkbox"  >
+                                             <span class="slider round"></span>
+                                          </label>
+                                    </div>
+                                    <div style="color:green;">Encode Reels </div>
+                                 </div>
                                  <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
                               </div>
 
@@ -1004,6 +1031,14 @@ border-radius: 0px 4px 4px 0px;
                                           <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                        </div>
                                        <div class="clear"></div>
+
+                                       <div>
+                                          <label class="" for="banner">Enable this Today Top Video :</label>
+                                          <input type="checkbox" name="today_top_video" @if(!empty($video->today_top_video) && $video->today_top_video == 1){{ 'checked="checked"' }}@elseif(!isset($video->today_top_video)){{ 'checked="checked"' }}@endif name="today_top_video" value="1" id="today_top_video" />
+                                       </div>
+
+                                       <div class="clear"></div>
+
                                     </div>
                                  </div>
                               </div>
@@ -1029,6 +1064,7 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div id="ImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
@@ -1038,10 +1074,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
-                                 <div class="col-md-3">
-                                    <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
-                                          {{-- Video TV Thumbnail --}}
-                                    </div>
+                                <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                  <input type="file" name="player_image" id="player_image" >
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
@@ -1053,6 +1086,8 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                <div id="TVImagesContainer" class="gridContainer mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
                                  <label class="mb-1">  Video TV Thumbnail  </label><br>
                                  <input type="file" name="video_tv_image" id="video_tv_image" >
                                  <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920  x 1080  pixels dimension or 16:9 ratio </p></span>
@@ -1163,8 +1198,7 @@ border-radius: 0px 4px 4px 0px;
                </fieldset>
 
                               {{-- ADS Management --}}
-               <fieldset>
-                  <div class="form-card">
+                  @include('admin.videos.fileupload_ads_fieldset'); 
 
                      @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
 
@@ -1462,6 +1496,8 @@ border-radius: 0px 4px 4px 0px;
     object-fit: cover
 }
 #msform input[type="file"]{border: 0; width: 100%;}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -1675,78 +1711,6 @@ $(document).ready(function($){
    });
 
 
-   // validation Recap 
-
-      $('#error_recap_start_time').hide();
-      $('#error_recap_end_time').hide();
-      $('#error_skip_recap_time').hide();
-
-   $('#recap_start_time').on('keyup keypress change', function(event) {
-          $('#error_recap_start_time').hide();
-
-      if($('#skip_recap').val() == ""){
-         $('#error_skip_recap_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#skip_recap').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-
-            $("#error_recap_start_time").empty();
-            $("#error_recap_start_time").append("Skip intro time always greater than intro Start time");
-            $('#error_recap_start_time').show();
-            $('#error_recap_end_time').show();
-            $('#error_recap_start_time').hide();
-
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#skip_recap').on('keyup keypress change', function(event) {
-      if($('#recap_start_time').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-            $("#error_skip_recap_time").empty();
-            $("#error_skip_recap_time").append("Skip Recap time always lesser than recap Start time ");
-            $('#error_skip_recap_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#recap_end_time').on('keyup keypress change', function(event) {
-
-      if($('#skip_recap').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#recap_start_time').val() >= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End intro time always greater than intro start time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End recap time always lesser than Skip recap time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_recap_end_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
 // video category
    $('#error_video_Category').hide();
    $('#error_language').hide();
@@ -1822,6 +1786,54 @@ $(document).ready(function($){
       $('#url_linktym').mask("00:00:00");
       $('#free_duration').mask("00:00:00");
       $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
+
+      $("#andriod_mid_sequence_time").mask("00:00:00");
+      $("#ios_mid_sequence_time").mask("00:00:00");
+      $("#tv_mid_sequence_time").mask("00:00:00");
+      $("#samsung_mid_sequence_time").mask("00:00:00");
+      $("#lg_mid_sequence_time").mask("00:00:00");
+      $("#roku_mid_sequence_time").mask("00:00:00");
+   });
+
+   $(document).ready(function() {
+
+      $('.ads_devices').select2();
+
+      $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
+
+      $('.ads_devices').on('change', function() {
+         var selectedValues = $(this).val();
+         
+         $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
+         
+         selectedValues.forEach(function(value) {
+               switch(value) {
+                  case 'website':
+                     $('.website-ads-button').show();
+                     break;
+                  case 'android':
+                     $('.Andriod-ads-button').show();
+                     break;
+                  case 'IOS':
+                     $('.IOS-ads-button').show();
+                     break;
+                  case 'TV':
+                     $('.TV-ads-button').show();
+                     break;
+                  case 'roku':
+                     $('.Roku-ads-button').show();
+                     break;
+                  case 'lg':
+                     $('.LG-ads-button').show();
+                     break;
+                  case 'samsung':
+                     $('.Samsung-ads-button').show();
+                     break;
+                  default:
+                     break;
+               }
+         });
+      });
    });
    
    
@@ -2011,6 +2023,7 @@ $(document).ready(function($){
      Dropzone.autoDiscover = false;
      var myDropzone = new Dropzone(".dropzone",{ 
        //   maxFilesize: 900,  // 3 mb
+         parallelUploads: 10,
          maxFilesize: 150000000,
          acceptedFiles: "video/mp4,video/x-m4v,video/*",
      });
@@ -2068,7 +2081,7 @@ $(document).ready(function($){
    //          var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+`-=[]\{}|;':,./<>?", //random data prevents gzip effect
    //              iterations = sizeInMb * 1024 * 1024, //get byte count
    //              result = '';
-   //          for( var index = 0; index < iterations; index++ ) {
+   //          for( var index = 0; index <div iterations; index++ ) {
    //              result += chars.charAt( Math.floor( Math.random() * chars.length ) );
    //          };     
    //          return result;
@@ -2103,28 +2116,89 @@ $(document).ready(function($){
 
             if (value && value.ExtractedImage.length > 0) {
                 $('#ajaxImagesContainer').empty();
+                $('#ImagesContainer').empty();
                 var ExtractedImage = value.ExtractedImage;
+                var previouslySelectedElement = null;
+                var previouslySelectedVideoImag = null;
+                var previouslySelectedTVImage = null;
 
-                ExtractedImage.forEach(function(Image) {
-                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                ExtractedImage.forEach(function(Image, index) {
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var ImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var TVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
 
                     imgElement.click(function() {
                         $('.ajax-image').css('border', 'none');
-                        
+                        // Remove border from the previously selected image
+                        if (previouslySelectedElement) {
+                           previouslySelectedElement.css('border', 'none');
+                        }
                         imgElement.css('border', '2px solid red');
                         var clickedImageUrl = Image.image_path;
 
                         var SelectedImageUrl = Image.image_original_name;
                         // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedElement = $(this);
 
                         $('#selectedImageUrlInput').val(SelectedImageUrl);
                     });
+                                    // Default selection for the first image
+                     if (index === 0) {
+                           imgElement.click();
+                     }
                     $('#ajaxImagesContainer').append(imgElement);
+
+                    ImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        if (previouslySelectedVideoImag) {
+                           previouslySelectedVideoImag.css('border', 'none');
+                        }
+                        ImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedVideoImag = $(this);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+
+                    if (index === 0) {
+                     ImagesContainer.click();
+                     }
+
+                    $('#ImagesContainer').append(ImagesContainer);
+
+                    TVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        if (previouslySelectedTVImage) {
+                           previouslySelectedTVImage.css('border', 'none');
+                        }
+                        TVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+                        previouslySelectedTVImage = $(this);
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+
+                  if (index === 0) {
+                     TVImagesContainer.click();
+                  }
+
+                  $('#TVImagesContainer').append(TVImagesContainer);
+
+
                 });
             } else {
                      var SelectedImageUrl = '';
 
                      $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
                //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
             }
         },
@@ -2133,6 +2207,8 @@ $(document).ready(function($){
             var SelectedImageUrl = '';
 
             $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
             console.error(error);
         }
     });

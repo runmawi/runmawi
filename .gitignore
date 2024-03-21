@@ -9,3 +9,8 @@
 /pma/*
 /public/multiprofile/*
 /resources/lang/*
+/resources/lang/*.json
+/resources/lang/en.json
+/resources/lang/fr.json
+/resources/lang/it.json
+/resources/lang/pl.json

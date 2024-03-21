@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@filmgardi/videojs-skip-button": "^2.0.2",
         "@videojs/plugin-concat": "^1.0.0",
         "laravel-echo": "^1.15.1",
         "video.js": "^5.8.0",

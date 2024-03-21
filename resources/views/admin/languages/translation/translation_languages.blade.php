@@ -23,6 +23,7 @@
             border-color: #66afe9;
             box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
             }
+            body.dark #translator-table_filter input[type="search"]{color: <?php echo GetLightText(); ?> !important;}
    </style>
 
 @section('content')
@@ -74,8 +75,10 @@
                         </tr>
                         </thead>
                         <tbody>
+      
                             @if($columnsCount > 0)
                                 @foreach($columns[0] as $columnKey => $columnValue)
+                         
                                     <tr>
                                         <td><a href="#" class="translate-key" data-title="Enter Key" data-type="text" data-pk="{{ $columnKey }}" data-url="{{ route('translation.update.json.key') }}">{{ $columnKey }}</a></td>
                                         @for($i=1; $i<=$columnsCount; ++$i)

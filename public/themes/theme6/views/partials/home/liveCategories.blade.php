@@ -8,6 +8,7 @@
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ optional($order_settings_list[12])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
@@ -20,7 +21,7 @@
                                                 <img src="{{  $livecategories->image ? URL::to('public/uploads/livecategory/'.$livecategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($livecategories->name ) > 17 ? substr($livecategories->name , 0, 18) . '...' : $livecategories->name  }}</h6>
+                                                <p> {{ strlen($livecategories->name ) > 17 ? substr($livecategories->name , 0, 18) . '...' : $livecategories->name  }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 

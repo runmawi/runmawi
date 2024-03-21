@@ -8,6 +8,7 @@ if (Auth::guest() != true) {
         ->join('series', 'series.id', '=', 'episodes.series_id')
         ->where('recent_views.user_id', Auth::user()->id)
         ->groupBy('recent_views.episode_id')
+        ->limit(15)
         ->get();
 } else {
     $data = [];
@@ -95,7 +96,7 @@ if (Auth::guest() != true) {
             <div class="modal fade info_model" id="{{ "Home-Latest-viewed_episode-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">

@@ -22,7 +22,13 @@ class ContactController extends Controller
    
     public function index()
     {
-     return Theme::view('contact-us');
+        $settings = Setting::first();
+
+        $data = array(
+            'settings' => $settings,
+        );
+
+            return Theme::view('contact-us',$data);
     }
 
     public function Store(Request $request)

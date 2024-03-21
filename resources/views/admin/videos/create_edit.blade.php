@@ -180,13 +180,16 @@ border-radius: 0px 4px 4px 0px;
 }
 .tags-input-wrapper .tag{
     display: inline-block;
-    background-color: #20222c;
-    color: white;
-    border-radius: 40px;
     padding: 0px 3px 0px 7px;
     margin-right: 5px;
     margin-bottom:5px;
-    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+    /* box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7) */
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
 }
 .tags-input-wrapper .tag a {
     margin: 0 7px 3px;
@@ -206,6 +209,10 @@ border-radius: 0px 4px 4px 0px;
 	}
 }
  
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -461,36 +468,36 @@ border-radius: 0px 4px 4px 0px;
                </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
-                        <span><p id="error_skip_intro_time" style="color:red;">* Fill Skip Intro Time </p></span>
+                        <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
-                        <span><p id="error_intro_start_time" style="color:red;">* Fill Intro Start Time </p></span>
+                        <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" placeholder="HH:MM:SS" >
+                        <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
-                        <span><p id="error_intro_end_time" style="color:red;">* Fill Intro End Time </p></span>
+                        <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_intro_end_time" style="color:red !important; ">* Fill Intro End Time </p></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
-                        <span><p id="error_skip_recap_time" style="color:red;">* Fill Skip Recap Time </p></span>
+                        <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                        <span> <small> Recap Time Always Lesser than video duration </small> </span>
+                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif" placeholder="HH:MM:SS" >
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
-                        <span><p id="error_recap_start_time" style="color:red;" >* Fill Recap Start Time </p></span>
+                        <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label><br>
+                        <span> <small> Start Time Always Lesser Than End Time </small> </span>
+                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif" placeholder="HH:MM:SS" >
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
-                        <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
+                        <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label><br> 
+                        <span> <small> Recap Time Always Greater than video duration </small> </span>
+                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" placeholder="HH:MM:SS">
                     </div>
                 </div>
 
@@ -576,7 +583,7 @@ border-radius: 0px 4px 4px 0px;
                @endif      
                @endforeach
                </select>
-               <span><p id="error_video_Category" style="color:red;" >* Choose the Video Category </p></span>
+               <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span>
                </div>
                <div class="col-sm-6 form-group" >                               
                <div class="panel panel-primary" data-collapsed="0"> 
@@ -617,7 +624,7 @@ border-radius: 0px 4px 4px 0px;
                         @endif 
                      @endforeach
                   </select>
-               <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+               <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
 
                </div> 
                <div class="col-sm-4 form-group">
@@ -645,13 +652,23 @@ border-radius: 0px 4px 4px 0px;
                </div> 
                   <div class="col-sm-6 form-group">
                      <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                           <div style="color:red;">Decode Reels </div>
+                           <div class="mt-1">
+                                 <label class="switch">
+                                    <input name="enable_reel_conversion"  type="checkbox"  >
+                                    <span class="slider round"></span>
+                                 </label>
+                           </div>
+                           <div style="color:green;">Encode Reels </div>
+                        </div>
                      <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
 
                      @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
                         <div class="d-flex">
                               @foreach($Reels_videos as $reelsVideo)
                                  <video width="200" height="200" controls style="padding: 6px;">
-                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/shorts/' . $reelsVideo->reels_videos }}" type="video/mp4">
                                  </video>
                               @endforeach
                            </div>
@@ -666,8 +683,7 @@ border-radius: 0px 4px 4px 0px;
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
                         @endif
                   </div>
-
-               </div>   
+                    </div>
 
             
             <div class="row">
@@ -867,16 +883,27 @@ border-radius: 0px 4px 4px 0px;
                                         <label class="" for="featured">Enable this video as Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
+
                                    <div class="clear"></div>
+
                                    <div>
                                        <label class="" for="active">Enable this Video:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
+
                                     <div class="clear"></div>
                                    <div>
+
                                        <label class="" for="banner">Enable this Video as Slider:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
+                                   <div class="clear"></div>
+
+                                    <div>
+                                       <label class="" for="banner">Enable this Today Top Video :</label>
+                                       <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
+                                    </div>
+
                                     <div class="clear"></div>
                                </div> 
                            </div>
@@ -901,6 +928,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div id="VideoImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br />
                                  <input type="file" name="image" id="image" />
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 9:16 ratio </p></span>
@@ -912,6 +940,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
+                                <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
                                  <input type="file" name="player_image" id="player_image" />
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
@@ -928,6 +957,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                            <div class="col-sm-6 form-group">
+                              <div id="VideoTVImagesContainer" class="gridContainer mt-3"></div>
                               <label class="mb-1">  Video TV Thumbnail  </label><br>
                               <input type="file" name="video_tv_image" id="video_tv_image" >
                               <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920 X 1080 pixels dimension or 16:9 ratio </p></span>
@@ -1187,6 +1217,8 @@ border-radius: 0px 4px 4px 0px;
                   <!-- <input type="button" name="next" class="next action-button" value="Submit" />  -->
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                </fieldset>
+                           {{-- ADS Management --}}
+                  @include('admin.videos.create_edit_ads_fieldset'); 
             </form>
          </div>
       </div>
@@ -1614,80 +1646,7 @@ $(document).ready(function($){
             $('#next2').removeAttr('disabled');
       }
    });
-
-
-   // validation Recap 
-
-      $('#error_recap_start_time').hide();
-      $('#error_recap_end_time').hide();
-      $('#error_skip_recap_time').hide();
-
-   $('#recap_start_time').on('keyup keypress change', function(event) {
-          $('#error_recap_start_time').hide();
-
-      if($('#skip_recap').val() == ""){
-         $('#error_skip_recap_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#skip_recap').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-
-            $("#error_recap_start_time").empty();
-            $("#error_recap_start_time").append("Skip intro time always greater than intro Start time");
-            $('#error_recap_start_time').show();
-            $('#error_recap_end_time').show();
-            $('#error_recap_start_time').hide();
-
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#skip_recap').on('keyup keypress change', function(event) {
-      if($('#recap_start_time').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-            $("#error_skip_recap_time").empty();
-            $("#error_skip_recap_time").append("Skip Recap time always lesser than recap Start time ");
-            $('#error_skip_recap_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#recap_end_time').on('keyup keypress change', function(event) {
-
-      if($('#skip_recap').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#recap_start_time').val() >= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End intro time always greater than intro start time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End recap time always lesser than Skip recap time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_recap_end_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
+   
 // video category
 $('#error_video_Category').hide();
    $('#error_language').hide();
@@ -1745,7 +1704,14 @@ $('#error_video_Category').hide();
       $('#skip_recap').mask("00:00:00");
       $('#url_linktym').mask("00:00:00");
       $("#free_duration").mask("00:00:00");
+
       $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
+      $("#andriod_mid_sequence_time").mask("00:00:00");
+      $("#ios_mid_sequence_time").mask("00:00:00");
+      $("#tv_mid_sequence_time").mask("00:00:00");
+      $("#samsung_mid_sequence_time").mask("00:00:00");
+      $("#lg_mid_sequence_time").mask("00:00:00");
+      $("#roku_mid_sequence_time").mask("00:00:00");
    });
 </script>
 
@@ -1811,6 +1777,115 @@ $('#error_video_Category').hide();
    
 
    $(document).ready(function(){
+
+      $.ajax({
+        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        type: "post",
+        data: {
+            _token: '{{ csrf_token() }}',
+            video_id : "{{ $video->id }}",
+        },
+        success: function(value) {
+            // console.log(value.ExtractedImage.length);
+
+            if (value && value.ExtractedImage.length > 0) {
+                $('#VideoImagesContainer').empty();
+                $('#VideoPlayerImagesContainer').empty();
+                var ExtractedImage = value.ExtractedImage;
+                var previouslySelectedElement = null;
+                var previouslySelectedVideoImag = null;
+                var previouslySelectedTVImage = null;
+
+                ExtractedImage.forEach(function(Image, index) {
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var VideoPlayerImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var VideoTVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
+
+                    imgElement.click(function() {
+                        $('.ajax-image').css('border', 'none');
+                        // Remove border from the previously selected image
+                        if (previouslySelectedElement) {
+                           previouslySelectedElement.css('border', 'none');
+                        }
+                        imgElement.css('border', '2px solid red');
+                        var clickedImageUrl = Image.image_path;
+
+                        var SelectedImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedElement = $(this);
+
+                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    });
+                                    // Default selection for the first image
+                     // if (index === 0) {
+                     //       imgElement.click();
+                     // }
+                    $('#VideoImagesContainer').append(imgElement);
+
+                    VideoPlayerImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        if (previouslySelectedVideoImag) {
+                           previouslySelectedVideoImag.css('border', 'none');
+                        }
+                        VideoPlayerImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedVideoImag = $(this);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+
+                  //   if (index === 0) {
+                  //    VideoPlayerImagesContainer.click();
+                  //    }
+
+                    $('#VideoPlayerImagesContainer').append(VideoPlayerImagesContainer);
+
+                    VideoTVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        if (previouslySelectedTVImage) {
+                           previouslySelectedTVImage.css('border', 'none');
+                        }
+                        VideoTVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+                        previouslySelectedTVImage = $(this);
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+
+                  // if (index === 0) {
+                  //    VideoTVImagesContainer.click();
+                  // }
+
+                  $('#VideoTVImagesContainer').append(VideoTVImagesContainer);
+
+
+                });
+            } else {
+                     var SelectedImageUrl = '';
+
+                     $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            }
+        },
+        error: function(error) {
+
+            var SelectedImageUrl = '';
+
+            $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            console.error(error);
+        }
+    });
+
       // $('#player_data').hide();
       // $('#slug_validate').hide();
       // $('#videocategory_data').hide();
@@ -1890,11 +1965,51 @@ $('#error_video_Category').hide();
       
       $('.js-example-basic-multiple').select2();
       $('.js-example-basic-single').select2();
-   
-      // $('#duration').mask("00:00:00");
-
    });
-   
+
+   $(document).ready(function() {
+
+      $('.ads_devices').select2();
+
+      $('.ads_devices').on('change', function() {
+         var selectedValues = $(this).val();
+         
+         $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
+         
+         selectedValues.forEach(function(value) {
+               switch(value) {
+                  case 'website':
+                     $('.website-ads-button').show();
+                     break;
+                  case 'android':
+                     $('.Andriod-ads-button').show();
+                     break;
+                  case 'IOS':
+                     $('.IOS-ads-button').show();
+                     break;
+                  case 'TV':
+                     $('.TV-ads-button').show();
+                     break;
+                  case 'roku':
+                     $('.Roku-ads-button').show();
+                     break;
+                  case 'lg':
+                     $('.LG-ads-button').show();
+                     break;
+                  case 'samsung':
+                     $('.Samsung-ads-button').show();
+                     break;
+                     
+                     
+                  // Add cases for other devices if needed
+                  default:
+                     break;
+               }
+         });
+      });
+   });
+
+
    
    $('#publishlater').hide();
    

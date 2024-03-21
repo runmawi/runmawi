@@ -34,10 +34,11 @@ class User extends Authenticatable
 	 */
     
     protected $fillable = [
-                            'username', 'active', 'email', 'name', 'paypal_id', 'subscription_start','plan_name',
-                            'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile','city','country',
+                            'username', 'active', 'email', 'name', 'paypal_id', 'subscription_start','plan_name','preference_language',
+                            'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile','city','country','preference_genres',
                             'avatar','terms','stripe_active','sub_admin','referral_token', 'password', 'role', 'status', 'disabled', 'activation_code','provider',
-                            'provider_id','g-recaptcha-response','subscription_ends_at','package','package_ends','provider_avatar','gender','DOB','Password_Pin','ios_avatar'
+                            'provider_id','g-recaptcha-response','subscription_ends_at','package','package_ends','provider_avatar','gender','DOB','Password_Pin','ios_avatar',
+                            'otp','otp_request_id','otp_through'
                         ];
    
         /**

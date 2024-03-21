@@ -38,6 +38,8 @@ use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Illuminate\Support\Facades\Storage;
+use App\UserTranslation;
+use Session;
 
 class AdminDashboardController extends Controller
 {
@@ -449,8 +451,58 @@ class AdminDashboardController extends Controller
     public function TranslateLanguage(Request $request){
 
         try {
+            
 
-            $Setting = Setting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            if(!Auth::guest()){
+
+                $Setting =  Setting::first();
+                $data = Session::all();
+                $subuser_id = (!empty($data['subuser_id'])) ? $data['subuser_id'] : null ;
+                $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                $UserTranslation = UserTranslation::where('user_id',Auth::user()->id)->first();
+
+                if($subuser_id != null){
+                    $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                    if(!empty($Subuserranslation)){
+                        UserTranslation::where('multiuser_id',$subuser_id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                    }else{
+                        UserTranslation::create([
+                            'multiuser_id'        =>  $subuser_id,
+                            'translate_language'  => $request->languageCode ,
+                        ]);
+                    }
+                }else if(!empty($UserTranslation)){
+                    UserTranslation::where('user_id',Auth::user()->id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }else{
+                    UserTranslation::create([
+                        'user_id'               =>  Auth::user()->id,
+                        'translate_language'    => $request->languageCode ,
+                    ]);
+                }
+            }else{
+
+                $UserTranslation = UserTranslation::where('ip_address',$userIp)->first();
+
+                if(!empty($UserTranslation)){
+                    UserTranslation::where('ip_address',$userIp)->first()->update([
+                    'translate_language'  => $request->languageCode ,
+                ]);
+                }else{
+                    UserTranslation::create([
+                        'ip_address'        =>  $userIp,
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }
+
+            }
+
             Setting::first()
             ->update([
                     'translate_language'  => $request->languageCode ,
@@ -607,5 +659,81 @@ class AdminDashboardController extends Controller
             ]);
 
 
+        }
+
+    public function FFplayoutlogin(Request $request)
+        {
+            // Get username and password from the request
+            $username = 'admin';
+            $password = 'o737{@&|3TCr';
+
+            // Create a Guzzle client instance
+            $client = new Client();
+
+            try {
+                // Send a POST request to the authentication endpoint
+                $response = $client->post('http://69.197.189.34:8787/auth/login/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'username' => $username,
+                        'password' => $password,
+                    ],
+                ]);
+
+                // Get the response body
+                $body = $response->getBody()->getContents();
+
+                // Decode the JSON response
+                $responseData = json_decode($body, true);
+
+                // Extract the token from the response data
+                $token = $responseData['user']['token'];
+            
+                // Get channel data from the request
+                $channelData = [
+                    'name' => 'Channel 2',
+                    'preview_url' => 'http://69.197.189.34:8787/live/stream.m3u8',
+                    'config_path' => '/etc/ffplayout/channel2.yml',
+                    'extra_extensions' => 'jpg,jpeg,png,mp4,mov,avi',
+                    'service' => 'ffplayout@channel2.service',
+                ];
+            
+
+                // Send a POST request to the channel creation endpoint
+                $responses = $client->post('http://69.197.189.34:8787/api/channel/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                    'json' => $channelData,
+                ]);
+
+                // Get the response body
+                $bodys = $responses->getBody()->getContents();
+                // Send a GET request to the channel endpoint
+                $responsechannels = $client->get('http://69.197.189.34:8787/api/channels', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                ]);
+
+                // Get the response body
+                $bodyresponsechannels = $responsechannels->getBody()->getContents();
+
+                // Decode the JSON response
+
+                // Decode the JSON response
+                $channelsresponseData = json_decode($bodyresponsechannels, true);
+            dd($channelsresponseData);
+            
+                // Return the JSON response
+                return response()->json(json_decode($bodys), $responses->getStatusCode());
+            } catch (RequestException $e) {
+                // Handle request exceptions (e.g., connection errors, 4xx, 5xx errors)
+                // You can customize the error handling based on your requirements
+                return $e->getMessage();
+            }
         }
 }

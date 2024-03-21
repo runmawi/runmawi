@@ -26,6 +26,9 @@
         border-bottom: 0px !important;
         border-top: 0px !important;
     }
+    body.light-theme li{
+        color: <?php echo GetAdminDarkText(); ?> !important;
+    } 
 </style>
 <div class="container-fluid overflow-hidden">
     <div class="row">
@@ -41,6 +44,9 @@
                         }
                         ?>
                     </h4>
+                </a>
+                <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
+                    <h4 class="movie-title"><?php echo('View all') ?>  </h4>
                 </a>
             </div>
             <div class="favorites-contens">
@@ -360,7 +366,7 @@
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Remove From Wishlist');
                             $("body").append(
-                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.add_watch').slideUp('fast');
@@ -370,7 +376,7 @@
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Add To Wishlist');
                             $("body").append(
-                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
+                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.remove_watch').slideUp('fast');

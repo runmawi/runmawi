@@ -77,7 +77,7 @@
             <div class="modal fade info_model" id="{{ "Home-continue-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">
@@ -173,9 +173,19 @@
             ],
         });
 
-        $('.cnt-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.cnt-videos-slider').show();
+        $(document).ready(function() {
+            var sliderVisible = false;
+
+            $('.cnt-videos-slider-nav').on('click', function() {
+                $(".drp-close").trigger("click");
+                if (!sliderVisible) {
+                    $('.cnt-videos-slider').show();
+                    sliderVisible = true;
+                } else {
+                    $('.cnt-videos-slider').hide();
+                    sliderVisible = false;
+                }
+            });
         });
 
         $('body').on('click', '.drp-close', function() {

@@ -2,6 +2,13 @@
 <?php include(public_path('themes/theme3/views/header.php')); ?>
 @extends('multiprofile.style')
 
+<style>
+    input[type="text"]{
+        border-radius:50px !important;
+        border: 1px solid !important;
+        padding: 0 20px !important;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row  align-items-center height-self-center">

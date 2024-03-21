@@ -91,15 +91,21 @@ div#url_linkdetails {
     font-size: x-large;
   
 }
-   .intro_skips,.Recap_skip {
+   .intro_skips {
    position: absolute;
        z-index: 5;
        top: 60%;
        right: 0;
        display: flex;
        justify-content: flex-end;
-   
-        
+}
+.Recap_skip {
+   position: absolute;
+       z-index: 5;
+       top: 60%;
+       right: 0;
+       display: flex;
+       justify-content: flex-end;
 }
       .skips{
           position: absolute;
@@ -247,6 +253,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
+
+  <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  </div>
+
    <div class=" page-height">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
@@ -444,28 +455,47 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 /* For Registered User */       
    else {  ?>   
     <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-  <div id="subscribers_only">
-  <div class="clear"></div>
-  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-  <h4 class="text-center"><?php echo $video->title ; ?></h4>
-  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
-  <h2 ><p style ="margin-left:14%"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
-    <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"><?= __('Purchase to watch this video') ?></button>
-    </form>
-    <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-  <button  style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                           <?php echo __('Purchase Now');?> </button>
- <?php } ?>
-  <?php }else{ ?>
-    <form method="get" action="<?= URL::to('signup') ?>">
-      <button id="button" style="margin-top: 0%;"><?= __('Signup Now ') ?><?php if($video->access == 'subscriber'): ?><?= __('to Purchase this video') ?> <?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
-    </form>
-  <?php } ?>
-  </div>
-</div>
-</div>   
+      <div id="subscribers_only">
+        <div class="clear"></div>
+        <div style="position: absolute;top: 20%;width: 100%;">
+
+          <h4 class="text-center"><?php echo $video->title ; ?></h4>
+          <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
+          
+          <h2>
+            <?php
+              if($video->access == 'subscriber') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Subscribers' ?> </p>
+            <?php
+              } elseif($video->access == 'registered') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Registered' ?> </p>
+            <?php
+              } elseif( $video->access == 'ppv'){ ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to PPV users' ?> </p>
+            <?php
+              }
+            ?>
+          </h2>
+
+          <?php if(!Auth::guest() && $video->access == 'subscriber' ){ ?>
+            <div style="text-align:center">
+              <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                <button style="" class="btn btn-primary"id="button"><?= __('Become a subscriber to watch this video') ?></button>
+              </form>
+           </div><br>
+          <?php } ?>
+
+          <?php if(!Auth::guest() &&  !Auth::guest() && $video->access == 'ppv' && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+            <div style="text-align:center">
+              <button   data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <?= __('Purchase to watch this video for ' . $currency->symbol .$video->ppv_price) ?>
+              </button>
+            </div>
+          <?php } ?>
+        </div>
+      </div>
+    </div> 
+
        <!-- <div id="video" class="fitvid" style="margin: 0 auto;"> -->
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
@@ -528,24 +558,42 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
      <div id="subscribers_only">
      <div class="clear"></div>
-     <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+     <div style="position: absolute;top: 20%;width: 100%;">
      <h4 class="text-center"><?php echo $video->title ; ?></h4>
-     <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+     <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
     
-     <h2 ><p style ="margin-left:14%"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
-     <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-       <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-         <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"><?= __('Purchase to watch this video') ?></button>
-       </form>
-       <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-  <button  style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                           <?php echo __('Purchase Now');?> </button>
- <?php } ?>
-     <?php }else{ ?>
-       <form method="get" action="<?= URL::to('signup') ?>">
-         <button id="button" style="margin-top: 0%;"><?= __('Signup Now ') ?><?php if($video->access == 'subscriber'): ?><?= __('to Purchase this video ') ?><?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
-       </form>
-     <?php } } ?>
+     <h2>
+            <?php
+              if($video->access == 'subscriber') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Subscribers' ?> </p>
+            <?php
+              } elseif($video->access == 'registered') { ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to Registered' ?> </p>
+            <?php
+              } elseif( $video->access == 'ppv'){ ?>
+                <p style="text-align:center"> <?=  'Sorry, this video is only available to PPV users' ?> </p>
+            <?php
+              }
+            ?>
+      </h2>
+
+      <?php if(!Auth::guest() && $video->access == 'subscriber' ){ ?>
+            <div style="text-align:center">
+              <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                <button style="" class="btn btn-primary"id="button"><?= __('Become a subscriber to watch this video') ?></button>
+              </form>
+           </div><br>
+          <?php } ?>
+
+          <?php if(!Auth::guest() &&  !Auth::guest() && $video->access == 'ppv' && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+            <div style="text-align:center">
+              <button   data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <?= __('Purchase to watch this video for ' . $currency->symbol .$video->ppv_price) ?>
+              </button>
+            </div>
+          <?php } 
+
+             } ?>
   </div>
 </div>
 </div>
@@ -818,12 +866,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <div class="container-fluid video-details" >
 
                                                          <!-- BREADCRUMBS -->
-        <div class="col-sm-12 col-md-12 col-xs-12">
+        <div class="col-sm-12 col-md-12 col-xs-12 pl-0">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 pl-0">
                     <div class="bc-icons-2">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= __(ucwords('videos')) ?></a>
                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
 
@@ -831,7 +879,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                             <?php $category_name_length = count($category_name); ?>
                             <li class="breadcrumb-item">
                                 <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
-                                    <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                 </a>
                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
@@ -839,7 +887,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                             
 
-                            <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                            <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?> </a></li>
                         </ol>
                     </div>
                 </div>
@@ -857,7 +905,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                                         <!-- Video Title  -->
                   <?php }else{ ?>
                     <h1 class="trending-text big-title text-uppercase mt-3">
-                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                        <?php echo (strlen($video->title) > 15) ? __(substr($video->title,0,80)).'...' : __($video->title);  if( Auth::guest() ) { } ?>
                       </h1>
                   <?php } ?>
 
@@ -897,10 +945,35 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <?php if (empty($video->year)) { ?>  <?php } else { ?><span class="trending-year"> <?php echo $video->year;} ?></span>
             <span class="trending-year"><?php
             foreach($category_name as $value){
-              echo $value->categories_name. ',';  
+              echo __($value->categories_name). ',';  
             }
              ?></span>
-
+          <?php if(!Auth::guest()) { ?>
+              <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xs-12">
+                      <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                          <!-- Watchlater -->
+                          <li><span
+                                  class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>"
+                                  data-authenticated="<?= !Auth::guest() ?>"
+                                  data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?>
+                                      class="ri-add-circle-fill" <?php else: ?>
+                                      class="ri-add-circle-line"
+                                      <?php endif; ?>></i></span></li>
+                          <!-- Wishlist -->
+                          <li><span
+                                  class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
+                                  data-authenticated="<?= !Auth::guest() ?>"
+                                  data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?>
+                                      class="ri-heart-fill" <?php else: ?>
+                                      class="ri-heart-line" <?php endif; ?>></i></span>
+                          </li>
+                          <!-- Social Share, Like Dislike -->
+                          <?php include 'partials/social-share.php'; ?>
+                      </ul>
+                  </div>
+                  <?php } ?>
+              </div>
 
             <!-- Trailer Description -->
 
@@ -966,8 +1039,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove Whislist') ?>   <?php else: ?><?= __('+ Add to Wishlist') ?>  <?php endif; ?>
-                        </div>
+                        <!-- <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer add_data_test mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove wishlist') ?>   <?php else: ?><?= __('Add to Wishlist') ?>  <?php endif; ?>
+                        </div> -->
 
                         <?php
                            $user = Auth::user(); 
@@ -989,7 +1062,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                          <!-- Watchlater -->
                         <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                          <!-- Wishlist -->
-                        <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                        <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?> add_data_test" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
                          <!-- Social Share, Like Dislike -->
                             <?php include('partials/social-share.php'); ?>                     
                      </ul>
@@ -1043,9 +1116,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           height: 20%;
         }
       </style>
-  <div class="col-sm-12 Recap_skip">
-      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-  </div>
+  
 
 <!--End Intro Skip and Recap Skip 
 
@@ -1089,7 +1160,7 @@ $artists = [];
          <div class="row">
                 <div class="favorites-contens">
                     
-                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                    <ul class="category-page list-inline">
                        <?php foreach($artists as $key => $artist){  ?>
                        <li class="slide-item ">
                         <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
@@ -1218,28 +1289,33 @@ $artists = [];
             </div>
 
             <div class="modal-footer">
-              <div class="Stripe_button">  <!-- Stripe Button -->
-                <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                  <button type="button" class="btn2  btn-outline-primary" ><?= __('Continue') ?></button>
-                </a>
-              </div>
-                         
               <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
-                <div class="Razorpay_button">   <!-- Razorpay Button -->
-                  <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+
+                <div class="Stripe_button">  <!-- Stripe Button -->
+                    <?php if( $Stripepayment != null && $Stripepayment->payment_type == "Stripe" ){?>
+                      <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_video_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                    <?php } ?>
                 </div>
-              <?php }?>
-                
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
-                <div class="paystack_button">  <!-- Paystack Button -->
-                  <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
-                </div>
-              <?php }?>
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
-                <div class="cinetpay_button">  <!-- CinetPay Button -->
-                  <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary"><?= __('Continue') ?></button>
-                </div>
-              <?php }?>
+                          
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                  <div class="Razorpay_button">   <!-- Razorpay Button -->
+                    <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+                  
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                  <div class="paystack_button">  <!-- Paystack Button -->
+                    <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
+                  <div class="cinetpay_button">  <!-- CinetPay Button -->
+                    <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary"><?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+
+              <?php } ?>
             </div>
           </div>
       </div>
@@ -1278,8 +1354,8 @@ $artists = [];
 <?php } ?>
 
         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class="video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
@@ -1288,7 +1364,7 @@ $artists = [];
 
 
   <?php if( $settings->show_recommended_videos == 1 ): ?>
-    <div class="container-fluid video-list you-may-like  overflow-hidden">
+    <div class="video-list you-may-like  overflow-hidden">
         <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
             <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
                 <?php include('partials/video-loop.php');?>
@@ -1370,7 +1446,7 @@ $artists = [];
           // Play Trailer
             $('#videoplay').click(function(){
               // alert('test');
-              $('#video_container').hide();
+              // $('#video_container').hide();
               const player = new Plyr('.videoPlayers');
               $('#watch_trailer').show();
               $('#videoplay').hide();
@@ -1493,37 +1569,40 @@ location.reload();
      // });
 
      //My Wishlist
-     $('.mywishlist').click(function(){
-       if($(this).data('authenticated')){
-         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-         $(this).toggleClass('active');
-         $(this).html("");
-             if($(this).hasClass('active')){
-              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
-            
-              $(".add_data_test").empty();
-              $(".add_data_test").append("<div>Remove from Wishlist</div> ");
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-             }else{
-              $(this).html('+ Add to Whislist');
-              $(".add_data_test").empty();
-              //  $(this).html('<i class="ri-heart-line"></i>');
-               $(".add_data_test").append("<div>Added to  Wishlist</div> ");
-              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
-               setTimeout(function() {
-                $('.remove_watch').slideUp('fast');
-               }, 3000);
+     $('.mywishlist').click(function () {
+                if ($(this).data('authenticated')) {
+                    $.post('<?= URL::to('mywishlist') ?>', {
+                        video_id: $(this).data('videoid'),
+                        _token: '<?= csrf_token(); ?>'
+                    }, function (data) {
+                        // Handle the response data if needed
+                    });
 
-             }
-             
-       } else {
-         window.location = '<?= URL::to('login') ?>';
-       }
-     });
+                    $(this).toggleClass('active');
+                    $(this).html("");
 
+                    if ($(this).hasClass('active')) {
+                        $(this).html('<i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Wishlist');
+                        $(".add_data_test").empty();
+                        $(".add_data_test").append("<div>Remove from Wishlist</div> ");
+                        $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                        setTimeout(function () {
+                            $('.add_watch').slideUp('fast');
+                        }, 3000);
+                    } else {
+                        $(this).html('<i class="fa fa-heart" aria-hidden="true"></i> Add to Wishlist');
+                        $(".add_data_test").empty();
+                        $(".add_data_test").append("<div>Added to Wishlist</div> ");
+                        $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                        setTimeout(function () {
+                            $('.remove_watch').slideUp('fast');
+                        }, 3000);
+                    }
+                } else {
+                    window.location = '<?= URL::to('login') ?>';
+                }
+            });
+        
 
      $('.watchlater').click(function(){
        if($(this).data('authenticated')){
@@ -1640,11 +1719,13 @@ location.reload();
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
 if( SkipIntroPermissions == 1 ){
-  button.addEventListener("click", function(e) {
-    video.currentTime = IntroskipEnd;
-       $("#intro_skip").remove();  // Button Shows only one tym
-    video.play();
-  })
+
+    button.addEventListener("click", function(e) {
+      video.currentTime = IntroskipEnd;
+      video.play();
+      document.getElementById("intro_skip").hidden = true;
+    });
+
     if(AutoSkip != 1){
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
@@ -1652,10 +1733,10 @@ if( SkipIntroPermissions == 1 ){
             var RemoveSkipbutton = End + 1;
 
             if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+                  document.getElementById("intro_skip").style.display = "block"; // Manual skip
             } 
             if(RemoveSkipbutton  <= e.target.currentTime){
-                  $("#intro_skip").remove();   // Button Shows only one tym
+                  document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
             }
         });
     }
@@ -1705,9 +1786,10 @@ if( SkipIntroPermissions == 1 ){
 
   button.addEventListener("click", function(e) {
     videoId.currentTime = RecapskipEnd;
-    $("#Recaps_Skip").remove();   // Button Shows only one tym
     videoId.play();
-  })
+    document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
+  });
+  
       this.videoId.addEventListener('timeupdate', (e) => {
         document.getElementById("Recaps_Skip").style.display = "none";
 
@@ -1717,7 +1799,7 @@ if( SkipIntroPermissions == 1 ){
               }
                
               if(RemoveRecapsbutton  <= e.target.currentTime){
-                  $("#Recaps_Skip").remove();   // Button Shows only one tym
+                document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
               }
     });
 </script>
@@ -1856,7 +1938,7 @@ location.reload();
 
 <script>
   window.onload = function(){ 
-       $('.Razorpay_button,.paystack_button').hide();
+       $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
     }
 
      $(document).ready(function(){

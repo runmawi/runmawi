@@ -5,7 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <title>{{  $title ? $title.' | '.GetWebsiteName() : 'Landing-page'.' | '.GetWebsiteName() }}</title>
+        <title>{{  $meta_title ? $meta_title.' | '.GetWebsiteName() : 'Landing-page'.' | '.GetWebsiteName() }}</title>
+        
+        <meta name="title" content="{{  $meta_title ? $meta_title : GetWebsiteName() }}">
+        <meta name="description" content="{{  $meta_description ? $meta_description : Getwebsitedescription() }}" />
+        <meta name="keywords" content="{{  $meta_keywords ? $meta_keywords : $meta_keywords }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
                             {{-- Boostrap --}}
          <?php  echo  $bootstrap_link ;  ?>
@@ -27,7 +33,7 @@
 
             {{-- Header --}}
         @if ( $header == 1)
-            @php include(public_path('themes/default/views/header.php'))  @endphp 
+            @php include(public_path('themes/theme3/views/header.php'))  @endphp 
         @endif
 
                 {{-- Section 1 --}}
@@ -65,7 +71,7 @@
 
                 {{-- Footer --}}
         @if ( $footer == 1)
-          @php include(public_path('themes/default/views/footer.blade.php')); @endphp 
+          @php include(public_path('themes/theme3/views/footer.blade.php')); @endphp 
         @endif
 
     </body>

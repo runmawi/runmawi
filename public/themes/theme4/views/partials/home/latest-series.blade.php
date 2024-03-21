@@ -1,6 +1,6 @@
 @php
     $data->map(function($item){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->theme4_Series_depends_episodes
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                         return $item;
@@ -24,12 +24,12 @@
                         <h4 class="main-title">
                             <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'view all' }}</a>
                         </h4>                   
-                     </div>
+                    </div>
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 mar-left row align-items-center"  >
                             @foreach ($data as $series_key => $latest_series)
-                                <li  onclick="series_slider_nav(this)" >
+                                <li>
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -40,7 +40,7 @@
                         </ul>
 
                         <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
-                            @forelse ($data as $key => $latest_series )
+                            @foreach ($data as $series_key => $latest_series)
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
@@ -66,24 +66,24 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('play_series/'.$latest_series->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="trending-contens sub_dropdown_image mt-3">
                                                             <ul id="{{ 'trending-slider-nav' }}"  class= "latest-series-depends-episode-slider pl-4 m-0">
-                                                                @foreach ($latest_series->Series_depends_episodes as $episode )
+                                                                @foreach ($latest_series->Series_depends_episodes as $episode_key => $episode )
                                                                     <li>
                                                                         <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
                                                                             <div class=" position-relative">
                                                                                 <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                 <div class="controls">
+                                                                                    
                                                                                     <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-Modal-'.$key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ "#Home-Latest-series-episode-Modal-".$series_key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     @php
                                                                                         $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
@@ -117,47 +117,46 @@
                                         </div>
                                     </div>
                                 </li>
-                            @empty
-
-                            @endforelse
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
+        {{-- Series Based Episode Modal --}}
 
-
-        @foreach ($latest_series->Series_depends_episodes as $episode )
-            <div class="modal fade info_model" id="{{ "Home-Latest-series-Modal-".$key }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                    <div class="container">
-                        <div class="modal-content" style="border:none;">
-                            <div class="modal-body">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
-
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                    </button>
-                                                </div>
+        @foreach ($data as $series_key => $latest_series )
+            @foreach ($latest_series->Series_depends_episodes as $episode_key =>  $episode )
+                <div class="modal fade info_model" id="{{ "Home-Latest-series-episode-Modal-".$series_key.'-'.$episode_key   }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none; background:transparent;">
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
                                             </div>
-                                            
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
+                                                    </div>
 
-                                            @if (optional($episode)->description)
-                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->description) !!}</div>
-                                            @endif
+                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
 
-                                            <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                @if (optional($episode)->episode_description)
+                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->episode_description) !!}</div>
+                                                @endif
+
+                                                <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,9 +164,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         @endforeach
-
 
     </section>
 @endif

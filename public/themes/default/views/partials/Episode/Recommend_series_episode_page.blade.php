@@ -1,4 +1,4 @@
-<div class="iq-main-header ">
+<div class="iq-main-header pl-3">
     <h4 class="main-title"> <?= __('Series') ?></h4>
 </div>
 
@@ -21,16 +21,16 @@
                                 <p class="date" style="color:#fff;font-size:14px;">
                                     <?= date('F jS, Y', strtotime($series_list->created_at)) ?>
                                     <?php if($series_list->access == 'guest'): ?>
-                                    <span class="label label-info">{{ __('Free') }}</span>
+                                    <span class="label label-info"><?= __('Free') ?></span>
                                     <?php elseif($series_list->access == 'subscriber'): ?>
-                                    <span class="label label-success">{{ __('Subscribers Only') }}</span>
+                                    <span class="label label-success"><?= __('Subscribers Only') ?></span>
                                     <?php elseif($series_list->access == 'registered'): ?>
-                                    <span class="label label-warning">{{ __('Registered Users') }}</span>
+                                    <span class="label label-warning"><?= __('Registered Users') ?></span>
                                     <?php endif; ?>
                                 </p>
                             <?php endif; ?>
 
-                            <div class="movie-time d-flex align-items-center my-2">
+                            <div class="movie-time align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2">
                                     <?php
                                         $SeriesSeason = App\SeriesSeason::where('series_id', $series_list->id)->count();
@@ -47,7 +47,7 @@
                                 <div class="hover-buttons">
                                     <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                         <span class="text-white">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Series') }} 
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> <?= __('Watch Series') ?> 
                                         </span>
                                     </a>
                                 </div>

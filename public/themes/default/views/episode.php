@@ -6,6 +6,8 @@ $autoplay = $episode_ads == null ? 'autoplay' : '';
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
+$CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
+
 ?>
 
 <style>
@@ -20,6 +22,17 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             color: white;
             background-color: transparent !important  ;
             font-size: revert;
+      }
+      @media (max-width:768px){
+        .col-6 p{
+            font-size: 12px;
+        }
+        button#button {
+            font-size: 12px;
+        }
+        div#subscribers_only{
+            padding-top: 40px !important;
+        }
       }
 </style>
 
@@ -58,14 +71,20 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 <div id="series_bg">
     <div class="">
         <?php 
-			   if(!Auth::guest()){
-			      if($free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
-                   || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
+			   if(!Auth::guest()){  
 
-                  if($episode->access == 'guest' || $video_access == 'free' || ( ($episode->access == 'subscriber' || 
-                     $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && 
-                     (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' 
-                     && $settings->free_registration && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+                if( $free_episode > 0){
+                    
+                    if( $free_episode > 0):
+
+			    //   if( $free_episode > 0 ||  $ppv_exits > 0 && @$checkseasonppv_exits == 0
+                //    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber'){ 
+                    // dd($free_episode);
+                //   if($free_episode > 0  || $free_episode > 0 && Auth::user()->role == 'registered' 
+                //     || $episode->access == 'registered' && !Auth::guest() && Auth::user()->subscribed()
+                //     || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
+                //     (!Auth::guest()  && $settings->free_registration 
+                //     && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
@@ -170,18 +189,28 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <div class="container-fluid">
                 <h4 class=""><?php echo $episode->title; ?></h4>
                 <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                <h4 class=""><?php echo __('Subscribe to view more'); ?><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?>
+                <h4 class=""><?php if ($SeriesSeason->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                     <?php endif; ?></h4>
                 <div class="clear"></div>
             </div>
-            <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
-            <div class=" mt-3">
-                <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+            <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv'):  ?>
+            <div class="container-fluid mt-3">
+                <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
+                <button type="button"
+                    class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
+                </a>
+                <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                </form> -->
+            </div>
+            <?php elseif( !Auth::guest() && $SeriesSeason->access == 'subscriber'):  ?>
+            <div class="container-fluid mt-3">
+            <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                     <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                 </form>
             </div>
             <?php else: ?>
-            <div class=" mt-3">
+            <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                     <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                         <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
@@ -192,7 +221,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         </div>
 
         <?php endif; 
-			}else if($checkseasonppv_exits == 0){  ?>
+			}else if(@$checkseasonppv_exits == 0 && $free_episode > 0){ 
+                 ?>
 
         <div id="series_container">
             <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
@@ -227,7 +257,49 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
    <div>
    </div> -->
 
-            <?php } } ?>
+            <?php } else{   ?>
+                
+                <div
+                id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                <div class="container-fluid">
+                    <div class="col-12 col-md-6 col-sm-6 p-0">
+                        <h4 class=""><?php echo $episode->title; ?></h4>
+                        <p class=" text-white col-lg-8"><?php echo $episode->episode_description; ?></p>
+                    </div>
+                    <div class="col-6"></div>
+                    
+                    <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                        <?php endif; ?></h4> -->
+                    <div class="clear"></div>
+                </div>
+                <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
+                <div class="container-fluid mt-3">
+                    <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
+                    <button type="button"
+                        class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
+                    </a>
+                    <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                    </form> -->
+                </div>
+                <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
+                <div class="container-fluid mt-3">
+                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                    </form>
+                </div>
+                <?php else: ?>
+                <div class="container-fluid mt-3">
+                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                    </form>
+                </div>
+                <?php endif; ?>
+        
+            </div>
+        
+                <?php      }  } ?>
         </div>
     </div>
 
@@ -235,10 +307,10 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="row">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="">
+        <div class="container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pl-3">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords( __('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -270,43 +342,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div class="container-fluid series-details">
         <div id="series_title">
             <div class="">
-            <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
-?>
-                <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                    
-                    <div class="col-md-12 p-0">
-                        <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>
-                            :</span>
-                        <?php 
-                  if($series->access == 'subscriber'): ?>  <?php elseif($series->access == 'registered'): ?>   <?php endif; ?>
-                        </p>
-                    </div>
-
-                    <?php if (!empty($season)) {   ;?>
-                    <div class="col-md-6">
-                        <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
-                        <?php if (@$Stripepayment->stripe_status == 1 ) {  ?>
-                        <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
-                        <?php } else if(@$PayPalpayment->paypal_status == 1){  ?> 
-
-                            <?php }else if(@$Razorpay_payment_settings->status == 1){ ?> 
-
-                            <?php } else if(@$Paystack_payment_settings->status == 1){ ?> 
-
-                            <?php } else if(@$CinetPay_payment_settings->status == 1){ ?> 
-                        <input type="hidden" id="ppv_price" name="ppv_price" value="<?php echo $season[0]->ppv_price; ?>">
-
-                                <button onclick="cinetpay_checkout()" id=""
-                                                        class="btn2  btn-outline-primary"><?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
-                                                </div>
-                            <?php }  else{ ?> 
-                        <button class="btn btn-primary" id ="enable_any_payment">
-                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
-                            <?php } ?>
-                    </div>
-                    <?php	} } ?>
 
                     </div>
                     <div class="col-md-12">
@@ -330,7 +366,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;">
                             <?= $episode->title ?></p>
-                        <p class="desc"><?php echo $series->details; ?></p>
+                        <p class="desc"><?php echo $episode->episode_description; ?></p>
                     </div>
 
                     <!-- <div class="col-md-2 text-center text-white">
@@ -457,7 +493,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <div class="row align-items-center justify-content-between">
                     <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-6 pl-4">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>
                             :</span>
                         <?php if($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
@@ -466,8 +502,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <div class="col-md-6">
                         <?php if (!empty($season)) {   ;?>
                         <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
-                        <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <!-- <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
+                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button> -->
                     </div>
                     <?php	} } ?>
 
@@ -500,8 +536,6 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 ?>
             </div>
 
-            <div class="series-details-container"><?= $episode->details ?></div>
-
             <?php if(isset($episodenext)){ ?>
             <div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>
             <div class="next_url" style="display: none;"><?= $url ?></div>
@@ -521,12 +555,13 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
             <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class=" container-fluid pl-4 video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                     <?php include 'comments/index.blade.php'; ?>
                 </div>
             </div>
             <?php endif; ?>
+            
 
                      <!-- Remaing Episodes -->
 
@@ -559,6 +594,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     $free_content_duration = $episode->free_content_duration;
     $user_access = $episode->access;
     $Auth = Auth::guest();
+    $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
+
     ?>
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -640,7 +677,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
+                    <a onclick="pay(<?php echo $SeriesSeason->ppv_price; ?>)">
                         <button type="button" class="btn btn-primary" id="submit-new-cat"><?php echo __('Continue'); ?></button>
                     </a>
                     <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo __('Close'); ?></button>

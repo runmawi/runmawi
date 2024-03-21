@@ -15,6 +15,50 @@ $theme = App\SiteTheme::first();
 @$translate_language = App\Setting::pluck('translate_language')->first();
 \App::setLocale(@$translate_language);
 
+
+    
+$translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+
+if(Auth::guest()){
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+    if(!empty($UserTranslation)){
+        $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+    }else{
+        $translate_language = GetWebsiteName().'en';
+    }
+}else if(!Auth::guest()){
+
+    $subuser_id=Session::get('subuser_id');
+    if($subuser_id != ''){
+        $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+        if(!empty($Subuserranslation)){
+            $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else if(Auth::user()->id != ''){
+        $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+        if(!empty($UserTranslation)){
+            $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else{
+        $translate_language = GetWebsiteName().'en';
+    }
+
+}else{
+    $translate_language = GetWebsiteName().'en';
+}
+
+\App::setLocale(@$translate_language);
+
+
 // print_r($uppercase);
 // exit();
       ?>
@@ -185,6 +229,13 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         font-size: 12px;
     }
+    button.close {
+        color: #fff;
+        opacity: 1;
+    }
+    .close:not(:disabled):not(.disabled):hover{
+        color: red;
+    }
 </style>
 
 <section /*style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;"*/>
@@ -216,14 +267,17 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                        
-                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                            <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
-                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                            <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
-                        <?php }else { ?> 
-                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                        <?php } ?>
+
+                        <a href="{{ URL::to('home') }}">
+                            
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                            <?php }else { ?> 
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php } ?>
+                        </a>
 
                       <h3 class="mb-3 text-center"><?php echo __('Sign Up'); ?></h3>
                       </div>
@@ -416,7 +470,7 @@ i.fa.fa-google-plus {
 
 							<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" class="text-primary" data-target="#terms" style="text-decoration:none;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
 
                             <div class="sign-up-buttons col-md-12" align="right">
@@ -449,14 +503,14 @@ i.fa.fa-google-plus {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color:#000;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
         </div>
         <div class="modal-body" >
             <?php
                 $terms_page = App\Page::where('slug','terms-and-conditions')->pluck('body');
              ?>
-            <p style='color: white;'><?php echo $terms_page[0];?></p>
+            <div class="termsandconditiontexts" style="color:#fff;"><?php echo $terms_page[0];?></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>

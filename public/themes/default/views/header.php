@@ -10,6 +10,44 @@
       $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
+
+
+
+      if(Auth::guest()){
+         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+         $userIp = $geoip->getip();
+         $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+         if(!empty($UserTranslation)){
+             $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+         }else{
+             $translate_language = GetWebsiteName().'en';
+         }
+     }else if(!Auth::guest()){
+
+         $subuser_id=Session::get('subuser_id');
+         if($subuser_id != ''){
+             $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+             if(!empty($Subuserranslation)){
+                 $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
+         }else if(Auth::user()->id != ''){
+             $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+             if(!empty($UserTranslation)){
+                 $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
+         }else{
+             $translate_language = GetWebsiteName().'en';
+         }
+
+     }else{
+         $translate_language = GetWebsiteName().'en';
+     }
+
       \App::setLocale(@$translate_language);
 
 
@@ -65,7 +103,8 @@
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       // }
       ?>
-   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first(); ?>
+   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
+   //dd($request_url); ?>
 
    <?php    $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first(); 
             $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first(); ?>
@@ -79,7 +118,7 @@
       elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
       else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?></title>
 <meta name="description" content="<?php 
@@ -88,8 +127,11 @@
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
+      elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+      
+ <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="<?php
@@ -418,6 +460,12 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    }  
+   body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme li.breadcrumb-item{
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme .p-tag1{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
@@ -432,6 +480,9 @@
    body.light-theme .block-description a{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
+   } 
+   body.light-theme .list-group-item a{
+   color: <?php echo GetAdminDarkText(); ?> !important;
    } 
     body.light-theme .block-description{
   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
@@ -785,70 +836,111 @@
 
                               <?php  } } ?>
 
+
+
                               
-                              
+                              <?php if(Auth::guest()):  ?>
+                                       <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
+                                          <!-- <div class="row "> -->
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                                <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon">
+                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                            <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
+                                                            <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
+                                                         </svg>
+                                                      </div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 "><?php echo (__('Signin'));?></h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                          </li> 
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                <div class="media align-items-center">
+                                                   <div class="right-icon">
+                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                         <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
+                                                         <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
+                                                      </svg>
+                                                   </div>
+                                                   <div class="media-body">
+                                                      <h6 class="mb-0 "><?php echo (__('Signup'));?></h6>
+                                                   </div>
+                                                </div>
+                                             </a>
+                                          </li>      
+                                       </div>
+                                 <?php endif; ?>
+
                      <?php if(!Auth::guest()){ ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
-                              <?php echo __('Logout');?>
-                                       </a> </li>      
-                           </div>
+                                       <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                       <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
+                                       <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                       <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                       <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                       <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
+                                    </form>
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                                   </a> </li>      
+                                 </div>
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
-                                          <?php echo __('My Profile');?>
-                                       </a> </li>      
-                           </div>
+                                    <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                    <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
+                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
+                                 </form>
+                                    <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                                   <?php echo __('My Profile');?>
+                                                </a> </li>      
+                                 </div>
+
+                                 
+
+                                 
                            
                            
                            <!-- Mobile responsive buttons -->
-                           <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                           <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn">
                               <div class="row ">
-                              <div class="col-sm-6  menu-item pt-3">
-                              <li class="menu-item dk" style="display:none;">
-                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                 <div class="col-sm-6  menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none;">
+                                          <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
-                              </div>
-                              <div class="col-sm-6 menu-item pt-3">
-                              <li class="menu-item dk" style="display:none">
-                                       <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 <div class="col-sm-6 menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none">
+                                          <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 
                               </div>
-                              
-                           </div>
                            </div> 
 
                               <!-- </div> -->
@@ -949,14 +1041,12 @@
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
                                  <li class="hidden-xs">
                                     <div id="navbar-search-form">
-                                       <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="POST">
-                                          <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                          <div>
-                                             <i class="fa fa-search">
-                                             </i>
-                                             <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
-                                          </div>
-                                       </form>
+                                    <form role="search" action="<?= route('searchResult') ?>" method="get">
+                                       <div>
+                                          <i class="fa fa-search"></i>
+                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                       </div>
+                                    </form>
                                     </div>
                                     <div id="search_list" class="search_list" style="position: absolute;">
                                     </div>
@@ -1001,8 +1091,7 @@
                               </a>
 
                               <div class="search-box iq-search-bar d-search">
-                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
-                                    <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="get" class="searchbox">
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
                                        <i class="search-link ri-search-line"></i>
@@ -1020,7 +1109,7 @@
                               
                            </li>
                            
-                           <?php if(!Auth::guest()){ ?>
+                           <?php //if(!Auth::guest()){ ?>
 
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
@@ -1048,7 +1137,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if(GetWebsiteName().$Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1065,7 +1154,7 @@
                               </div>
                            </li>
    
-                           <?php } ?>
+                           <?php // } ?>
 
                            <li class="nav-item nav-icon">
 
@@ -1739,7 +1828,7 @@
          // console.log(currentdate);
          
          if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
-         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
          setTimeout(function() {
          $('.add_watch').slideUp('fast');
          }, 3000);
@@ -1853,7 +1942,7 @@
          var languageCode = $(this).data("language-code");
 
       $.ajax({
-            url: '<?php echo URL::to("admin/translate_language") ;?>',
+            url: '<?php echo URL::to("/translate_language") ;?>',
             method: 'post',
             data: 
                {
@@ -1862,7 +1951,7 @@
                },
                success: (response) => {
                   console.log(response);
-                  alert("Changed The Language !");
+                  // alert("Changed The Language !");
                   location.reload();
 
                },

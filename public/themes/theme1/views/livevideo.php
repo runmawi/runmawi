@@ -5,58 +5,61 @@
     .close{
         color: red;
         text-shadow: none;
+
+
     }
+
     .come-from-modal.left .modal-dialog,
-.come-from-modal.right .modal-dialog {
-   
-    margin: auto;
-    width: 400px;
-    background-color: #000!important;
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
+    .come-from-modal.right .modal-dialog {
+        margin: auto;
+        width: 400px;
+        background-color: #000!important;
+        height: 100%;
+        -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+    }
 
-.come-from-modal.left .modal-content,
-.come-from-modal.right .modal-content {
-    height: 100%;
-    overflow-y: auto;
-    border-radius: 0px;
-}
+    .come-from-modal.left .modal-content,
+    .come-from-modal.right .modal-content {
+        height: 100%;
+        overflow-y: auto;
+        border-radius: 0px;
+    }
 
-.come-from-modal.left .modal-body,
-.come-from-modal.right .modal-body {
-    padding: 15px 15px 80px;
-}
-.come-from-modal.right.fade .modal-dialog {
-    right: 0;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
+    .come-from-modal.left .modal-body,
+    .come-from-modal.right .modal-body {
+        padding: 15px 15px 80px;
+    }
+    .come-from-modal.right.fade .modal-dialog {
+        right: 0;
+        -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+        transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
 
-.come-from-modal.right.fade.in .modal-dialog {
-    right: 0;
-}
+    .come-from-modal.right.fade.in .modal-dialog {
+        right: 0;
+    }
+
     #sidebar-wrapper {
-  height: calc(100vh - 80px - 75px)!important;
+        height: calc(100vh - 80px - 75px)!important;
   /*background-color: #000;*/
         border-radius: 10px;
         box-shadow: inset 0 0 10px #000000;
         color: #fff;
-  transition: margin 0.25s ease-out;
+        transition: margin 0.25s ease-out;
     }.list-group-item-action:hover {
         color: #000!important;
     }
     .list-group-item-light{
-         background-color:transparent;
-       
-         
+        background-color:transparent;
+
+
     }
-     .list-group-item-light:hover{
+    .list-group-item-light:hover{
         background-color: #fff;
         color: #000!important;
     }
@@ -197,8 +200,8 @@ if(empty($new_date)){
 
 if(!Auth::guest()){
 if(!empty($password_hash)){
-if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-<div id="video_bg"> 
+    if ( ($ppv_exist > 0 )|| ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 ) || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" ) || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+        <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
 

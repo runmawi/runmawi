@@ -568,7 +568,7 @@ $uppercase =  ucfirst($request_url);
                     <div class="targetDiv mt-5" id="div5">
                         <div class=" mb-3">
                       <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
-                      <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                      <form action="{{ URL::to('/profilePreference') }}" method="POST"  >
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
@@ -576,7 +576,7 @@ $uppercase =  ucfirst($request_url);
                         <label><h5>{{ __('Preference Language') }}</h5></label>
                         <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($preference_languages as $preference_language)
-                                <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                                <option value="{{ $preference_language->id }}" >{{ __($preference_language->name) }}</option>
                             @endforeach
                         </select>
                      </div>
@@ -585,7 +585,7 @@ $uppercase =  ucfirst($request_url);
                         <label><h5>{{ __('Preference Genres') }}</h5></label>
                         <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($videocategory as $preference_genres)
-                                <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                                <option value="{{ $preference_genres->id }}" >{{ __($preference_genres->name)}}</option>
                             @endforeach
                         </select>
                      </div>

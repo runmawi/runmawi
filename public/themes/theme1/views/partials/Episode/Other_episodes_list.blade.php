@@ -1,11 +1,11 @@
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title">
+<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
+    <h6 class="main-title">
     <?= __('Episode') ?>
-    </h4>
+    </h6>
 </div>
 
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens container-fluid">
+    <ul class="favorites-slider list-inline  row p-0 m-0">
         <?php  
         foreach($season as $key => $seasons):
                 foreach($seasons->episodes as $key => $episodes):
@@ -18,15 +18,16 @@
                     <div class="img-box">
                         <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100" alt="">
                     </div>
-                </div>
-                <div class="block-description">
+                    <div class="block-description">
 
-                    <div class="hover-buttons d-flex">
-                        <a class="text-white " href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ; ?> ">
-                            <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" />
-                        </a>
+                        <div class="hover-buttons d-flex">
+                            <a class="text-white " href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ; ?> ">
+                                <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" />
+                            </a>
+                        </div>
                     </div>
                 </div>
+                
 
                 <div class="mt-2">
 
@@ -43,7 +44,12 @@
                 </div>
 
                 <div>
-                    <small class="date" style="color:#fff;"><?= date('F jS, Y', strtotime($episodes->created_at)) ?>
+                    <small class="date" style="color:#fff;"><?php
+                      $originalDate = $episodes->created_at;
+                        $publishdate = explode(' ', date('F jS, Y', strtotime($originalDate)));
+                        $translatedMonth = __($publishdate[0]);
+                        $publishdate = implode(' ', [ $translatedMonth,$publishdate[1], $publishdate[2]]);
+                        echo $publishdate ; ?>
                     </small>
                 </div>
             </a>

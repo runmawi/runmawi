@@ -79,10 +79,17 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3 align-items-center">
-		<?php if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
-		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
-	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ):  ?>
+  <?php  if ( $ppv_exits > 0 || $video_access == 'free' ||
+                ($series->access == 'guest' && $series->ppv_status != 1) ||
+                (($series->access == 'subscriber' || $series->access == 'registered') &&
+                    !Auth::guest() &&
+                    Auth::user()->subscribed() &&
+                    $series->ppv_status != 1) ||
+                (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
+                ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() && $series->access == 'registered' &&
+                    $settings->free_registration && $series->ppv_status != 1)
+            ) :  ?>
 		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
@@ -187,7 +194,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= __(ucwords('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -196,14 +203,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                     <li class="breadcrumb-item">
                         <a class="black-text"
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            <?= __(ucwords($series_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
                     <?php } ?>
                     
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? __(ucwords(substr($series->title, 0, 120) . '...')) : __(ucwords($series->title)); ?> </a></li>
                 </ol>
             </div>
         </div>
@@ -244,10 +251,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                    
-                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1 || $series->access != 'ppv'){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                                  <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <?php }elseif(!empty($seasons->ppv_price) && $series->access == 'ppv'){?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                                <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
@@ -286,11 +293,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
                                    
-                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1 && $series->access == 'ppv'){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <?php }elseif(!empty($seasons->ppv_price) && $series->access == 'ppv'){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php }else{ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                             </div>
@@ -322,38 +331,251 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 						                      endforeach; ?>
                         </ul>
                      </div></div>
-			<?php elseif( Auth::guest() && $series->access == "subscriber"):
+			<?php elseif( Auth::guest() && $series->access == "subscriber" ||  Auth::guest() && $series->access == "registered"): ?>
 						
-					// }
-						?>
-				</div> 
+        <div class="col-md-7">
+          <div id="series_title">
+          <div class="container">
+          <h1><?= $series->title ?></h1>
 
-          <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-			<div class="col-sm-12">
-					<div id="ppv">
-				<h2 class="text-center" style="margin-top:80px;"><?= __('Purchase to Watch the Series') ?> <?php if($series->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($series->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
-				<div class="clear"></div>
-				</div> 
-				<!-- </div>  -->
+          <div class="row p-2 text-white">
+          <div class="col-md-7">
+          <?= __("Season") ?>  <span class="sea"> 1 </span> -<?= __("U/A English") ?> 
+          <p class="desc" style="color:#fff!important;"><?php echo $series->details; ?></p>
+          <b><p class="desc" style="color:#fff;"><?php echo $series->description; ?></p></b>
+          <div class="row p-0 mt-3 align-items-center">
+          <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer; ?>" data-toggle="modal" data-target="#videoModal">	
+          <img class="ply" src="<?php echo URL::to("/") .
+              "/assets/img/default_play_buttons.svg"; ?>" /> </a></div>
+          <div class="col-md-1 pls  d-flex text-center mt-2">
+          <div></div><ul>
+          <li class="share">
+          <span><i class="ri-share-fill"></i></span>
+          <div class="share-box">
+          <div class="d-flex align-items-center"> 
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+          class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+          class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i
+          class="ri-links-fill"></i></a>
+          </div>
+          </div>
+          </li><?= __("Share") ?>
+          </ul></div>
 
 
-				<div class="col-md-2 text-center text-white">
-                <div class="col-md-4">
-			<?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
-			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
-      <?= __('Purchase For') ?>	 <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
-			<?php } ?>
-            <br>
-			<!-- </div> -->
 
-        <!-- </div> -->
-				</div>
-				</div>
-                </div>
-            </div>
-        </div>
-        </div></div>
-		</section>
+
+
+
+          </div>
+          <div class="modal fade modal-xl videoModal" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+          <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="modal-body videoModalbody">
+
+
+          <video id="videoPlayer1" class="" poster="<?= URL::to("/") .
+              "/public/uploads/images/" .
+              $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
+          </video>
+
+
+
+          <video  id="videos" class=""  
+          poster="<?= URL::to("/") . "/public/uploads/images/" . $series->player_image ?>"
+          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+          type="application/x-mpegURL">
+
+          <source id="m3u8urlsource"
+          type="application/x-mpegURL" 
+          src=""
+          >
+
+          </video>
+          </div>
+          </div>
+          </div>
+          </div>
+          <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
+          <script>  const player = new Plyr('#videoPlayer1'); </script>
+          </div>
+          </div>
+          </div>
+
+          </div>
+          </div>
+          <div class="col-md-6 text-center" id="theDiv">
+
+          </div>
+          </div>
+          </div>
+          </div>
+          <section id="tabs" class="project-tab">
+
+          <div class="row d-flex">
+          <div class="container-fluid " >
+          <div class="bc-icons-2">
+          <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a class="black-text"
+          href="<?= route("series.tv-shows") ?>"><?= __(ucwords("Series")) ?></a>
+          <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+          </li>
+
+          <?php foreach ($category_name as $key => $series_category_name) { ?>
+          <?php $category_name_length = count($category_name); ?>
+          <li class="breadcrumb-item">
+          <a class="black-text"
+          href="<?= route("SeriesCategory", [$series_category_name->categories_slug]) ?>">
+          <?= __(ucwords($series_category_name->categories_name)) .
+              ($key != $category_name_length - 1 ? " - " : "") ?>
+          </a>
+          <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+          </li>
+          <?php } ?>
+
+
+          <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(
+              $series->title
+          ) > 50
+              ? __(ucwords(substr($series->title, 0, 120) . "..."))
+              : __(ucwords($series->title)); ?> </a></li>
+          </ol>
+          </div>
+          </div>
+          <div>
+
+          <div class="">
+          <div class="row">
+          <div class="col-md-12 mt-4">
+          <nav class="nav-justified">
+          <div class="container-fluid " id="nav-tab" role="tablist">
+          <h4 class="ml-3"><?= __("Episode") ?></h4>
+
+          </div>
+          </nav>
+          <div >
+          <div >
+          <div class="container-fluid">
+          <div class="favorites-contens">
+          <div class="col-md-3 p-0">
+          <select class="form-control" id="season_id" name="season_id">
+          <?php foreach ($season as $key => $seasons): ?>
+          <option value="season_<?= $seasons->id ?>"><?= __("Season") ?> <?= $key +
+              1 ?></option>
+          <?php endforeach; ?>
+          </select></div>
+          <ul class="category-page list-inline row p-3 mb-0">
+          <?php foreach ($season as $key => $seasons):
+              foreach ($seasons->episodes as $key => $episodes):
+                  if ($seasons->ppv_interval > $key): ?>
+
+          <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+          <a href="<?php echo URL::to("episode") .
+              "/" .
+              $series->slug .
+              "/" .
+              $episodes->slug; ?>">
+          <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+          <div class="img-box">
+          <img src="<?php echo URL::to("/") .
+              "/public/uploads/images/" .
+              $episodes->image; ?>" class="img-fluid w-100" >
+
+          <?php if (!empty($series->ppv_price) && $series->ppv_status == 1) { ?>
+          <p class="p-tag"><?php echo "Free"; ?></p>
+
+          <?php } elseif (!empty($seasons->ppv_price)) { ?>
+          <p class="p-tag"><?php echo "Free"; ?></p>
+
+          <?php } elseif ($series->ppv_status == null && $series->ppv_status == 0) { ?>
+          <p class="p-tag"><?php echo "Free"; ?></p>
+          <?php } ?>
+
+          </div>
+
+          <div class="block-description" >
+
+
+
+
+          <div class="hover-buttons">
+          <a href="<?php echo URL::to("episode") .
+              "/" .
+              $series->slug .
+              "/" .
+              $episodes->slug; ?>">
+          <span class="text-white">
+          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+          <?= __("Watch Now") ?> 
+          </span>
+          </a>
+          <div>
+
+          </div>
+          </div>
+          </div>
+          </div>
+          </a>
+          </li>
+
+          <?php else: ?>
+          <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+          <a href="<?php echo URL::to("episode") .
+              "/" .
+              $series->slug .
+              "/" .
+              $episodes->slug; ?>">
+          <div class="block-images position-relative" >
+          <div class="img-box">
+          <img src="<?php echo URL::to("/") .
+              "/public/uploads/images/" .
+              $episodes->image; ?>" class=" img-fluid w-100" >
+
+
+          <?php if (!empty($series->ppv_price) && $series->ppv_status == 1) { ?>
+          <p class="p-tag1"><?php echo $currency->symbol .
+              " " .
+              $settings->ppv_price; ?></p>
+          <?php } elseif (!empty($seasons->ppv_price)) { ?>
+          <p class="p-tag1"><?php echo $currency->symbol .
+              " " .
+              $seasons->ppv_price; ?></p>
+          <?php } elseif ($series->ppv_status == null && $series->ppv_status == 0) { ?>
+          <p class="p-tag"><?php echo "Free"; ?></p>
+          <?php } ?>
+          </div>
+
+          <div class="block-description" >
+
+          <div class="hover-buttons">
+          <a href="<?php echo URL::to("episode") .
+              "/" .
+              $series->slug .
+              "/" .
+              $episodes->slug; ?>">
+
+          <span class="text-white">
+          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+          <?= __("Watch Now") ?> 
+          </span>
+          </a>
+          <div>
+
+          </div>
+          </div>
+          </div>
+          </div>
+          </a>
+          </li>
+          <?php endif;
+              endforeach;
+          endforeach; ?>
+          </ul>
+          </div></div>
 		
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>

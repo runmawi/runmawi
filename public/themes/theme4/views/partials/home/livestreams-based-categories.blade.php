@@ -1,6 +1,6 @@
 <?php
 
-$data = App\LiveCategory::query()
+$data = App\LiveCategory::query()->limit(15)
     ->whereHas('category_livestream', function ($query) {
         $query->where('live_streams.active', 1)->where('live_streams.status', 1);
     })
@@ -11,7 +11,8 @@ $data = App\LiveCategory::query()
                 ->select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type', 'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image', 'live_streams.description')
                 ->where('live_streams.active', 1)
                 ->where('live_streams.status', 1)
-                ->latest('live_streams.created_at');
+                ->latest('live_streams.created_at')
+                ->limit(15);
         },
     ])
     ->select('live_categories.id', 'live_categories.name', 'live_categories.slug', 'live_categories.order')
@@ -132,7 +133,7 @@ $data->each(function ($category) {
             <div class="modal fade info_model" id="{{ "Home-Livestream-basedcategory-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">

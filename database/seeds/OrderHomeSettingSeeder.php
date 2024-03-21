@@ -203,7 +203,7 @@ class OrderHomeSettingSeeder extends Seeder
                     'order_id' => 20,
                     'video_name' => 'Series_Genre' ,
                     'header_name' => 'SeriesGenre', 
-                    'url' => '',
+                    'url' => 'Series/category/list',
                     'created_at' => Carbon::now(),
                     'updated_at' => null,
                 ],
@@ -337,6 +337,33 @@ class OrderHomeSettingSeeder extends Seeder
                     'updated_at' => null,
                 ],
 
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 34,
+                    'video_name' => 'EPG' ,
+                    'header_name' => 'EPG', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 35,
+                    'video_name' => 'Document' ,
+                    'header_name' => 'Document', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 36,
+                    'video_name' => 'Document_Category' ,
+                    'header_name' => 'Document Based on Category', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
             ];
 
             OrderHomeSetting::insert($Menu);

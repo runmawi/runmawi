@@ -12,7 +12,7 @@
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-category-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $seriesGenre)
+                            @foreach ($data as $key => $seriesGenre )
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -57,10 +57,10 @@
                                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                                                                                     ->where('active', '1')->whereIn('id',$SeriesCategory);
 
-                                                                    $series = $series->latest()->limit(30)->get()->map(function ($item) {
-                                                                                $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
-                                                                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
-                                                                                $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       
+                                                                    $series = $series->latest()->limit(15)->get()->map(function ($item) {
+                                                                                $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                                                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                                                                $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
                                                                                 $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
                                                                                 $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
                                                                                 return $item;
@@ -68,7 +68,7 @@
                                                                     
                                                                 ?>
 
-                                                                @foreach ($series as $series_details )
+                                                                @foreach ($series as $series_key => $series_details )
                                                                     <li>
                                                                         <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
                                                                             <div class=" position-relative">
@@ -78,7 +78,7 @@
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesGenre-series-Modal-'.$key.'-'.$series_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     <p class="trending-dec" >
                                                                                         {{ $series_details->season_count ." S ".$series_details->episode_count .' E' }} <br>
@@ -109,6 +109,75 @@
                 </div>
             </div>
         </div>
+
+        
+        {{-- Series Modal --}}
+
+        @foreach ($data as  $key => $seriesGenre )
+
+            <?php
+
+                $SeriesCategory = App\SeriesCategory::where('category_id',$seriesGenre->id)->groupBy('series_id')->pluck('series_id'); 
+
+                $series = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+                                                'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
+                                                ->where('active', '1')->whereIn('id',$SeriesCategory);
+
+                $series = $series->latest()->limit(15)->get()->map(function ($item) {
+                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
+                            $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
+                            $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
+                            return $item;
+                        });  
+                
+            ?>
+
+            @foreach ($series as $series_key => $series_details )
+                <div class="modal fade info_model" id="{{ 'Home-SeriesGenre-series-Modal-'.$key.'-'.$series_key }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none; background:transparent;">
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2">{{ optional($series_details)->title }}</h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="trending-dec mt-4" >
+                                                    {{ $series_details->season_count ." Series ".$series_details->episode_count .' Episodes' }} 
+                                                </div>
+
+                                                @if (optional($series_details)->details)
+                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($series_details)->details) !!}</div>
+                                                @endif
+
+                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
     </section>
 @endif
 

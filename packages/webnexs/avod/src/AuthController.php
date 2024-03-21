@@ -42,6 +42,7 @@ use Mail;
 use DB;
 use URL;
 use File;
+use getID3;
 
 class AuthController extends Controller
 {
@@ -851,7 +852,6 @@ class AuthController extends Controller
 
     public function store_ads(Request $request)
     {
-
         if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
             return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
         }
@@ -865,9 +865,8 @@ class AuthController extends Controller
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
         $Ads->ads_upload_type =  $request->ads_upload_type;
-        // $Ads->age = $request->age;
-        // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
+        $Ads->ads_devices = !empty($request->ads_devices) ? json_encode($request->ads_devices) : null;
 
         if ($request->location == 'all_countries' || $request->location == 'India') {
             $Ads->location = $request->location;
@@ -1067,6 +1066,13 @@ class AuthController extends Controller
 
         $Ads_upload_url = URL::to('public/uploads/AdsVideos/'.$Ads_upload_filename);
 
+        $Ads_upload_path = public_path('/uploads/AdsVideos/'.$Ads_upload_filename);
+
+            //  Video duration
+        $getID3 = new getID3();
+        $VideoInfo = $getID3->analyze($Ads_upload_path);
+        $Video_duration = $VideoInfo["playtime_seconds"];
+
         $factory = new \Sokil\Vast\Factory();
         $document = $factory->create('4.1');
 
@@ -1078,7 +1084,7 @@ class AuthController extends Controller
 
         $linearCreative = $ad1
             ->createLinearCreative()
-            ->setDuration(128)
+            ->setDuration($Video_duration)
             ->setId( Str::random(23) );
             // ->setAdId('pre-'.Str::random(23));
 
@@ -1155,7 +1161,8 @@ class AuthController extends Controller
             'ads_position' => $request->ads_position,
             'ads_upload_type' => $request->ads_upload_type,
             'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
-            'gender' => !empty($request['gender']) ? json_encode($request['gender']) : ' ',
+            'gender' => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
+            'ads_devices' => !empty($request['ads_devices']) ? json_encode($request['ads_devices']) : null,
             'status' => 0,
         ];
 
@@ -1192,23 +1199,22 @@ class AuthController extends Controller
 
     private function Ads_xml_file_update( $data )
     {
-        
-            $Ads_videos = $data["ads_videos"] ;
-            $ads_redirection_url = $data["ads_redirection_url"];
-            $advertisement_id = $data["advertisement_id"];
+    
+        $Ads_videos = $data["ads_videos"] ;
+        $ads_redirection_url = $data["ads_redirection_url"];
+        $advertisement_id = $data["advertisement_id"];
 
-            $Advertisement = Advertisement::find($advertisement_id);
+        $Advertisement = Advertisement::find($advertisement_id);
 
-            $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
+        $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
 
-            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."xml"  ))) {
-                File::delete(base_path('public/uploads/AdsVideos/'. $filename."xml"  ));
-            }
+        if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."xml"  ))) {
+            File::delete(base_path('public/uploads/AdsVideos/'. $filename."xml"  ));
+        }
 
-            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ))) {
-                File::delete(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ));
-            }
-
+        if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ))) {
+            File::delete(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ));
+        }
         
         $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
         $Ads_video_ext   = $Ads_videos->extension();
@@ -1220,6 +1226,12 @@ class AuthController extends Controller
 
         $Ads_upload_url = URL::to('public/uploads/AdsVideos/'.$Ads_upload_filename);
 
+        $Ads_upload_path = public_path('/uploads/AdsVideos/'.$Ads_upload_filename);
+
+            //  Video duration
+        $getID3 = new getID3();
+        $VideoInfo = $getID3->analyze($Ads_upload_path);
+        $Video_duration = $VideoInfo["playtime_seconds"];
 
         $factory = new \Sokil\Vast\Factory();
         $document = $factory->create('4.1');
@@ -1232,7 +1244,7 @@ class AuthController extends Controller
 
         $linearCreative = $ad1
             ->createLinearCreative()
-            ->setDuration(128)
+            ->setDuration($Video_duration)
             ->setId( Str::random(23) );
             // ->setAdId('pre-'.Str::random(23))
 

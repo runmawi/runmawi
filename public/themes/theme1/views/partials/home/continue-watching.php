@@ -2,7 +2,7 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>"><?= __('Continue Watching')  ?></a></h4>
+    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>"><?php echo (__('Continue watching')); ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -48,7 +48,7 @@
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($cont_video->title) > 17) ? mb_substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
@@ -108,9 +108,10 @@
                         <?php
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

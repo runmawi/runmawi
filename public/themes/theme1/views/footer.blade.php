@@ -5,16 +5,16 @@
  use Carbon\Carbon;
 
 ?>
-<footer class=" py-4 mt-auto">
-        <div class="container-fluid px-5">
+<footer class=" mt-auto">
+        <div class="container-fluid">
             <div class="row  justify-content-between flex-column flex-sm-row">
-                <div class="col-sm-3"> 
-                    <div class="small m-0 text-white"><p><?php echo  __('The Best Streaming Platform') ?></p></div>
-                    <div class="d-flex p-0 text-white icon mt-4">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-12"> 
+                    <p><?php echo  __('The Best Streaming Platform') ?></p>
+                    <div class="d-flex p-0 text-white icon mb-4">
 
                     <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
-                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px 0 0;"></i>
                         </a>
                     <?php } ?>
 
@@ -26,19 +26,19 @@
 
                     <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
-                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px 0 0;"></i>
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
-                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px 0 0;"></i>
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
-                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px 0 0;"></i>
                         </a>
                     <?php } ?>
 
@@ -63,14 +63,15 @@
 
                 </div>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo __('Explore') ?></p>
-                    <ul class="text-white p-0 mt-3 ">
+                <div class="col-lg-3 col-md-4 col-sm-12 small m-0 text-white exp">
+                  <p class="m-0"> <?php echo __('Explore') ?></p>
+                    <ul class="text-white p-0">
                       
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
                         foreach ($column2_footer as $key => $footer_link){ ?>
 
                           <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
-                                  <?php echo  $footer_link->name ; ?>
+                                  <?php echo  __($footer_link->name) ; ?>
                               </a>
                           </li>
                       
@@ -80,8 +81,9 @@
 
                     </ul>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo  __('Company') ?></p>
-                    <ul class="text-white p-0 mt-3">
+                <div class="col-lg-3 col-md-4 col-sm-12 small m-0 text-white exp">
+                  <p class="m-0"> <?php echo  __('Company') ?></p>
+                    <ul class="text-white p-0">
 
                         <?php
                         
@@ -97,7 +99,7 @@
                           
                           foreach ($column3_footer as $key => $footer_link){ ?>
                               <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
-                                      <?php echo  $footer_link->name ; ?>
+                                      <?php echo  __($footer_link->name) ; ?>
                                   </a>
                               </li>
                               
@@ -105,7 +107,7 @@
                     </ul>
                 </div>
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
-                <div class="col-sm-3 small m-0 text-white"><p> <?= __('Download App') ?></p>
+                <div class="col-lg-3 col-md-4 col-sm-12 small m-0 text-white"><p> <?= __('Download App') ?></p>
                     <p><?= __('Available on Play Store') ?></p>
                     <!-- <img src="<?php //echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class=""> -->
                     <?php if(!empty($app_settings->android_url)){ ?> 
@@ -373,7 +375,6 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
         
 <?php

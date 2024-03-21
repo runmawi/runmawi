@@ -82,7 +82,7 @@
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <!-- Title -->
                  
-                        <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
+                        <p><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></p>
                 
                     <?php } ?>
 

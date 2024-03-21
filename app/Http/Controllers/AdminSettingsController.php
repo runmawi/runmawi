@@ -246,8 +246,15 @@ class AdminSettingsController extends Controller
         $settings->show_subtitle = $request['show_subtitle'];
         $settings->show_views = $request['show_views'];
 
+        $settings->search_title_status  = $request['search_title_status'];
+        $settings->search_category_status = $request['search_category_status'];
+        $settings->search_tags_status = $request['search_tags_status'];
+        $settings->search_description_status = $request['search_description_status'];
+        $settings->search_details_status = $request['search_details_status'];
 
         $settings->ppv_status = $request['ppv_status'];
+        $settings->system_address = $request['system_address'];
+        $settings->system_phone_number = $request['system_phone_number'];
 
         $path = storage_path('app/public/');
 
@@ -726,7 +733,7 @@ class AdminSettingsController extends Controller
         $playerui->watermar_link = $request['watermar_link'];
         $playerui->watermar_width = $request['watermar_width'];
         $playerui->video_watermark_enable = $request['video_watermark_enable'];
-        $playerui->ads_maker_status = $request['ads_maker_status'];
+        $playerui->ads_marker_status = $request['ads_marker_status'];
 
         // dd($request['video_watermark_enable']);
         $logopath = URL::to('/public/uploads/settings/');

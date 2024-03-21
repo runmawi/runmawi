@@ -102,7 +102,7 @@
 
                 @foreach($devices as $val)
                     <div class="col-md-7 p-0 d-flex justify-content-between align-items-center" style="float:left;">                                           
-                        <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
+                        <div>  <label  >{{ $val->devices_name }}</label></div>
                         <div>
                             <label class="switch">
                                 <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
@@ -119,6 +119,28 @@
                     <label> Plan Content :</label>
                     <textarea class="form-control" id="plan_content" name="plan_content" > @if(!empty( $plan->plan_content )){{ ( $plan->plan_content  ) }}@endif </textarea>
                 </div>  
+            </div>
+
+            <div class="row d-flex col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label> {{ ucwords('enable promo code on checkout') }} : <br> <small> (only for Stripe Payment) </small> </label>
+                        <div class="mt-1">
+                            <label class="switch">
+                                <input name="auto_stripe_promo_code_status" class="auto_stripe_promo_code_status" id="auto_stripe_promo_code_status" type="checkbox" @if( $plan->auto_stripe_promo_code_status != null &&  $plan->auto_stripe_promo_code_status == 1 ) checked @endif>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div> 
+                </div> 
+
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label> {{ ucwords('Apply promo code on checkout') }} : <br> <small> (only for Stripe Payment) </small> </label>
+                        <input type="text" id="auto_stripe_promo_code" name="auto_stripe_promo_code"  class="form-control" placeholder="Promo Code" value="{{ $plan->auto_stripe_promo_code }}" >
+                    </div> 
+                </div> 
+
             </div>
 
             <div class="row d-flex col-md-12">

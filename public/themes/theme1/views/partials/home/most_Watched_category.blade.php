@@ -8,7 +8,7 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo __(('Most watched videos from').' ' .$category->name.' '. __('Genre'));?>
+                         echo (__(('Most watched videos from')) .' ' . (__($category->name)).' '. (__('Genre')));?>
                 </h4>
             </a>
         </div>
@@ -142,8 +142,9 @@
                                 $Category_Thumbnail = array();
                                     foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                     $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                        echo (__($CategoryThumbnail).' ');
                                     }
-                                echo implode(','.' ', $Category_Thumbnail);
+                                // echo implode(','.' ', $Category_Thumbnail);
                             ?>
                         </span>
                         <?php } ?>
