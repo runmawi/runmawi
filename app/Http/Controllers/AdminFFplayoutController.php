@@ -104,7 +104,9 @@ class AdminFFplayoutController extends Controller
             // $dateString = "3-19-2024";
 
             $date = \DateTime::createFromFormat('m-d-Y', $dateString);
-            $CurrentDate = $date->format('Y-m-d');
+            $CurrentDate = date("Y-m-d");
+            // dd($current_date);
+            // $CurrentDate = $current_date->format('Y-m-d');
 
             $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id', 1)
                 ->where('choosed_date', "3-19-2024")
@@ -129,7 +131,7 @@ class AdminFFplayoutController extends Controller
             ];
             
                 $playlistId = 1;
-                
+                // dd($CurrentDate);
             $response = $client->post($this->baseUrl.'/api/playlist/1/generate/'.$CurrentDate, [
                     'headers' => [
                     'Content-Type' => 'application/json',
