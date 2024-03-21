@@ -1208,7 +1208,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <img class="lazy" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
+                <img class="lazy" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
