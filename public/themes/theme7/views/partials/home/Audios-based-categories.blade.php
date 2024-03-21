@@ -50,51 +50,13 @@
                                 @foreach ($audios_genre->category_audios as $key => $audios_details)
                                     <li class="slide-item">
                                         <div class="block-images position-relative">
-
-                                            <a href="{{ URL::to('audio/' . $audios_details->slug) }}">
-
+                                            <div class="border-bg">
                                                 <div class="img-box">
-                                                    <img src="{{ $audios_details->image ? URL::to('public/uploads/images/' . $audios_details->image) : default_vertical_image_url() }}"
-                                                        class="img-fluid" alt="">
+                                                    <a class="playTrailer" href="{{ URL::to('audio/' . $audios_details->slug) }}">
+                                                        <img src="{{ $audios_details->image ? URL::to('public/uploads/images/' . $audios_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                    </a>
                                                 </div>
-
-                                                <div class="block-description">
-                                                    <p> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
-                                                    </p>
-
-                                                    <div class="movie-time d-flex align-items-center my-2">
-
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($audios_details)->age_restrict . '+' }}
-                                                        </div>
-
-                                                        <span class="text-white">
-                                                            {{ $audios_details->duration != null ? gmdate('H:i:s', $audios_details->duration) : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            
-                                                {{-- WatchLater & wishlist --}}
-
-                                            @php
-                                                $inputs = [
-                                                    'source_id'     => $audios_details->id ,
-                                                    'type'          => null,  
-                                                    'wishlist_where_column'    => 'audio_id',
-                                                    'watchlater_where_column'  => 'audio_id',
-                                                ];
-                                            @endphp
-
-                                            {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
-                                    
+                                            </div>
                                         </div>
                                     </li>
                                 @endforeach
