@@ -31,7 +31,7 @@
 
                 @else
                     <a href="{{ URL::to('play_series/'.  $Series_Category->slug )}}">
-                        <img class="w-100 " src="{{ URL::to('/public/uploads/images/' . $Series_Category->image )}}" style="">
+                        <img class="lazy" data-src="{{ URL::to('/public/uploads/images/' . $Series_Category->image )}}" alt="series-img" width="340" height="180">
                     </a>
                 @endif
 
