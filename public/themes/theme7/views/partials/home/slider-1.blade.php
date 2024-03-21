@@ -13,7 +13,7 @@
         <div class="slide slick-bg s-bg-2 admin-slide1" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center  h-100">
+                    <div class="row align-items-end  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
 
                             <!-- <a href="#">
@@ -52,11 +52,11 @@
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center  h-100">
+                    <div class="row align-items-end  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
+                            <div class="d-flex align-items-center r-mb-23" >
+                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-primary"><i class="fa fa-play mr-2"
+                                aria-hidden="true"></i>Watch video</a>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center  h-100">
+                    <div class="row align-items-end  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
                             <!-- <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
@@ -90,9 +90,9 @@
                             <div class="descript">
                                 <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
                             </div> -->
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
+                            <div class="d-flex align-items-center r-mb-23">
+                                <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-primary"><i class="fa fa-play mr-2"
+                                aria-hidden="true"></i>Watch video</a>
                                 {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>
                         </div>
@@ -119,7 +119,7 @@
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center  h-100">
+                    <div class="row align-items-end  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
                             <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
@@ -135,9 +135,9 @@
                                 <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
                             </div>
 
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('live'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
+                            <div class="d-flex align-items-center r-mb-23">
+                                <a href="{{ URL::to('live'.$item->slug) }}" class="btn btn-primary"><i class="fa fa-play mr-2"
+                                aria-hidden="true"></i>Watch video</a>
                                 {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>
                         </div>
@@ -154,7 +154,7 @@
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
-                    <div class="row align-items-center  h-100">
+                    <div class="row align-items-end  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
                             <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
@@ -170,9 +170,9 @@
                             <div class="descript">
                                 <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
                             </div>
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
+                            <div class="d-flex align-items-center r-mb-23">
+                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-primary"><i class="fa fa-play mr-2"
+                                aria-hidden="true"></i>Watch video</a>
                                 {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>
                         </div>

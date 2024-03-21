@@ -28,25 +28,6 @@
                                                 <img src="{{ URL::to('public/uploads/images/' . $featured_videos->image) }}"
                                                     class="img-fluid w-100" alt="">
                                             </a>
-                                            <div class="block-description">
-                                                <h5> {{ strlen($featured_videos->title) > 17 ? substr($featured_videos->title, 0, 18) . '...' : $featured_videos->title }}
-
-                                                    <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($featured_videos)->age_restrict . '+' }}
-                                                        </div>
-                                                        <span class="text-white">
-                                                            {{ $featured_videos->duration !=null ? Carbon\CarbonInterval::seconds($featured_videos->duration)->cascade()->format('%im %ss') : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}" class="btn btn-hover"
-                                                            tabindex="0">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
-                                                        </a>
-                                                    </div>
-                                            </div>
                                         </div>
                                     </li>
                                 @endforeach

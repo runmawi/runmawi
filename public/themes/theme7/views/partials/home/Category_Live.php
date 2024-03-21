@@ -1,5 +1,5 @@
 <?php
-   include(public_path('themes/default/views/header.php'));
+   include(public_path('themes/theme7/views/header.php'));
  ?>
 
 <style>
@@ -55,28 +55,14 @@ ol.breadcrumb {
                         <?php if(isset($Live_Category)) {
                         foreach($Live_Category as $LiveCategory){ ?>
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
-                                <div class="block-images position-relative">
-                                    <div class="img-box">
+                            <div class="block-images position-relative">
+                                <div class="img-box">
+                                    <a href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$LiveCategory->image;  ?>"
                                             class="img-fluid w-100" alt="">
-                                    </div>
-
-                                    <div class="block-description">
-                                        <a href="<?php echo URL::to('live').'/'.$LiveCategory->slug  ?>">
-                                            <p class="epi-name text-left m-0">
-                                                <?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
-                                            </p>
-                                        </a>
-                                        <div>
-                                            <button type="button" class="show-details-button" data-toggle="modal"
-                                                data-target="#myModal<?= @$LiveCategory->id;?>">
-                                                <span class="text-center thumbarrow-sec"></span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
+                            </div>
                         </li>
 
                         <?php } } ?>
@@ -89,5 +75,5 @@ ol.breadcrumb {
 
 
 <?php
-   include(public_path('themes/default/views/footer.blade.php'));
+   include(public_path('themes/theme7/views/footer.blade.php'));
    ?>
