@@ -182,14 +182,14 @@
         $('.series-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: true,
             fade: true,
             draggable: false,
             asNavFor: '.series-slider-nav',
         });
 
         $('.series-slider-nav').slick({
-            slidesToShow: 6,
+            slidesToShow: 4,
             slidesToScroll: 1,
             asNavFor: '.series-slider',
             dots: false,
