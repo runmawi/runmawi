@@ -1431,11 +1431,21 @@
             ->where('category_id','=',$category->id)->where('live_streams.active', '=', '1')
             ->where('live_streams.status', '=', '1');
          
-         if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-            $live_streams = $live_streams  ->whereNotIn('live_streams.id',Block_videos());
-               }
-         
-         $live_streams = $live_streams->orderBy('live_streams.created_at','desc')->get();
+               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                     $BlockLiveStream = App\BlockLiveStream::where('country',$countryName)->get();
+                     
+                     if(!$BlockLiveStream->isEmpty()){
+                        foreach($BlockLiveStream as $block_LiveStream){
+                           $blockLiveStreams[]=$block_LiveStream->live_id;
+                        }
+                     }else{
+                        $blockLiveStreams[]='';
+                     }
+                     $live_streams =   $live_streams->whereNotIn('live_streams.id',$blockLiveStreams);
+            } 
+
+            $live_streams = $live_streams->orderBy('live_streams.created_at','desc')->get();
          
          ?>
       <?php if (count($live_streams) > 0 ) { 
