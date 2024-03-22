@@ -552,7 +552,7 @@ function current_timezone()
 
     $apiUrl = "http://ip-api.com/php/{$current_ip}";
 
-    $response = Http::get($apiUrl);
+    $response = \Http::get($apiUrl);
 
     $data = unserialize($response->body());
 

@@ -107,11 +107,17 @@
 
                                                             $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
 
-                                                            $initial_start_time   = carbon\Carbon::createFromFormat('H:i:s', $item->start_time , $TimeZone->time_zone);
-                                                            $converted_start_time = $initial_start_time->setTimezone( current_timezone() )->format('h:i A');
+                                                            $Channel_video_timezone = new DateTimeZone( $TimeZone->time_zone);
+                                                            $current_timezone = new DateTimeZone(current_timezone());
 
-                                                            $initial_end_time   = carbon\Carbon::createFromFormat('H:i:s', $item->end_time , $TimeZone->time_zone);
-                                                            $converted_end_time = $initial_end_time->setTimezone( current_timezone() )->format('h:i A');
+                                                            // Time to convert
+                                                            $initial_start_time = new DateTime($item->start_time , $Channel_video_timezone);
+                                                            $initial_start_time_diff = $Channel_video_timezone->getOffset($initial_start_time) - $current_timezone->getOffset($initial_start_time);
+                                                            $converted_start_time = $initial_start_time->add(new DateInterval('PT' . abs($initial_start_time_diff) . 'S'))->format('h:i A');
+
+                                                            $initial_end_time = new DateTime($item->end_time , $Channel_video_timezone);
+                                                            $initial_end_time_diff = $Channel_video_timezone->getOffset($initial_end_time) - $current_timezone->getOffset($initial_end_time);
+                                                            $converted_end_time = $initial_end_time->add(new DateInterval('PT' . abs($initial_end_time_diff) . 'S'))->format('h:i A');
 
                                                             $item['converted_start_time'] = $converted_start_time ;
                                                             $item['converted_end_time'] = $converted_end_time ;
@@ -128,7 +134,6 @@
                                                                     return $item;
                                                                 });
 
-                                                                
                                                         
                     $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::now(current_timezone())->format('n-j-Y') )
 
@@ -138,16 +143,22 @@
 
                                                                         $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
 
-                                                                        $initial_start_time   = carbon\Carbon::createFromFormat('H:i:s', $item->start_time , $TimeZone->time_zone);
-                                                                        $converted_start_time = $initial_start_time->setTimezone( current_timezone() )->format('H:i:s');
+                                                                        $Channel_video_timezone = new DateTimeZone( $TimeZone->time_zone);
+                                                                        $current_timezone = new DateTimeZone(current_timezone());
 
-                                                                        $initial_end_time   = carbon\Carbon::createFromFormat('H:i:s', $item->end_time , $TimeZone->time_zone);
-                                                                        $converted_end_time = $initial_end_time->setTimezone( current_timezone() )->format('H:i:s');
+                                                                        // Time to convert
+                                                                        $initial_start_time = new DateTime($item->start_time , $Channel_video_timezone);
+                                                                        $initial_start_time_diff = $Channel_video_timezone->getOffset($initial_start_time) - $current_timezone->getOffset($initial_start_time);
+                                                                        $converted_start_time = $initial_start_time->add(new DateInterval('PT' . abs($initial_start_time_diff) . 'S'))->format('h:i A');
 
-                                                                        if(( $converted_start_time <= carbon\carbon::now()->setTimezone( current_timezone() )->format('H:i:s') ) && ( $converted_end_time >= carbon\carbon::now()->setTimezone( current_timezone() )->format('H:i:s')) ){
+                                                                        $initial_end_time = new DateTime($item->end_time , $Channel_video_timezone);
+                                                                        $initial_end_time_diff = $Channel_video_timezone->getOffset($initial_end_time) - $current_timezone->getOffset($initial_end_time);
+                                                                        $converted_end_time = $initial_end_time->add(new DateInterval('PT' . abs($initial_end_time_diff) . 'S'))->format('h:i A');
+
+                                                                        if(( $converted_start_time <= $initial_start_time ) && ( $converted_end_time >= $initial_end_time ) ){
                                                                             $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
-                                                                            $item['converted_start_time'] = $initial_start_time->setTimezone( current_timezone() )->format('h:i A');
-                                                                            $item['converted_end_time'] = $initial_end_time->setTimezone( current_timezone() )->format('h:i A');
+                                                                            $item['converted_start_time'] = $converted_start_time;
+                                                                            $item['converted_end_time'] = $converted_end_time;
                                                                             return $item ;
                                                                         }
 
