@@ -15,28 +15,13 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $video_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('schedule/videos/embed/'.$video_details->slug ) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a href="{{ URL::to('schedule/videos/embed/'.$video_details->slug ) }}">
                                                 <img src="{{ $video_details->image ?  $video_details->image : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <p> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
-                                                </p>
-
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

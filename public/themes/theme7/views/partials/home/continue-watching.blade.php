@@ -16,10 +16,13 @@
                             @foreach ($data as $key => $video_details)
                                 <li class="slide-item">
                                     <div class="block-images position-relative">
-                                        <a href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
+                                        <div class="border-bg">
                                             <div class="img-box">
-                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <a class="playTrailer" href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
+                                                    <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                </a>
                                             </div>
+                                        </div>
                                     </div>
                                 </li>
                             @endforeach
