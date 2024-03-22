@@ -200,7 +200,7 @@ Index Of Script
 		jQuery('#top-ten-slider').slick({
 			slidesToShow: 1,
 			slidesToScroll: 1,
-			arrows: false,
+			arrows: true,
 			fade: true,
 			asNavFor: '#top-ten-slider-nav',
 			responsive: [
@@ -216,7 +216,7 @@ Index Of Script
 			]
 		});
 		jQuery('#top-ten-slider-nav').slick({
-			slidesToShow: 6,
+			slidesToShow: 4,
 			slidesToScroll: 1,
 			asNavFor: '#top-ten-slider',
 			dots: false,

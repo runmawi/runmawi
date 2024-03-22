@@ -214,10 +214,16 @@
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
+
+
+                        <!-- font -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
    <!-- Bootstrap CSS -->
@@ -257,6 +263,12 @@
 </head>
 
 <style>
+   body{
+      font-family: "Inter", sans-serif !important;
+   }
+   h1, h2, h3, h4, h5, h6, p, button, input{
+      font-family: "Inter", sans-serif !important;
+   }
    @media (max-width:1100px){
       img.img-fluid.logo{
          width:56%;
@@ -332,7 +344,7 @@
   <div class="main-header">
       <div class="container-fluid">
           <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-12 p-0">
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                     
                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
