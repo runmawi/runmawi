@@ -25,7 +25,7 @@
                 <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="w-100">
             </div>
             <div class=" col-md-9 abu p-0">
-                <h2><?php echo __('About');?></h2>
+                <h2>About</h2>
                 <p><?php echo $artist->description;?></p>
                 <div class=" mt-3 mb-5">
                      
@@ -100,7 +100,7 @@
         <?php if(count($latest_audios) > 0) { ?>
 
             <div class="container-fluid mt-3">
-                <h4 class="main-title"><?php echo __('Latest Release');?></h4>
+                <h4 class="main-title">Latest Release</h4>
             </div>
 
             <div class="container-fluid mt-2">
@@ -143,7 +143,7 @@
         <?php if(count($albums) > 0) { ?>
 
             <div class="container-fluid mt-3">
-                <h4 class="main-title"><?php echo __('Album');?></h4>
+                <h4 class="main-title">Album</h4>
             </div>
 
             <div class="container-fluid mt-2">
@@ -185,7 +185,7 @@
 
         <?php if(count($artist_audios) > 0) { ?>
             <div class="container-fluid mt-3">
-                <h4 class="main-title"><?php echo __('Audio');?></h4>
+                <h4 class="main-title">Audio</h4>
             </div>
 
             <div class="container-fluid mt-2">
@@ -228,7 +228,7 @@
         <?php if(count($artist_series) > 0) { ?>
 
             <div class="container-fluid mt-3">
-                <h4 class="main-title"><?php echo __('Series');?></h4>
+                <h4 class="main-title">Series</h4>
             </div>
 
             <div class="container-fluid mt-2">
@@ -273,7 +273,7 @@
         <?php if(count($artist_videos) > 0) { ?>
 
             <div class="container-fluid mt-3">
-                <h4 class="main-title"><?php echo __('Videos');?></h4>
+                <h4 class="main-title">Videos</h4>
             </div>
 
             <div class="container-fluid mt-2">

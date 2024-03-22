@@ -170,7 +170,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Remove From Wishlist');
                             $("body").append(
-                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.add_watch').slideUp('fast');
@@ -180,7 +180,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Add To Wishlist');
                             $("body").append(
-                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
+                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.remove_watch').slideUp('fast');

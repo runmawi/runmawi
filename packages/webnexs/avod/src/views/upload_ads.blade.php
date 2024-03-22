@@ -74,7 +74,6 @@
                                                                 </label>
                                                             </div>
 
-
                                                             <div class="row ages">
                                                                 <label class="checkbox-inline">
                                                                     <input type="checkbox" class="age"  name="age[]" value="35-44" /> 35-44
@@ -107,13 +106,11 @@
                                                         </div>
                                                     </div>
 
-                                                  
                                                     <div class="row">
-                                                        <div
-                                                            class="form-group mb-0 col-md-8 d-flex align-items-baseline">
+                                                        <div class="form-group mb-0 col-md-8 d-flex align-items-baseline">
                                                             <label>Gender:</label>
                                                         </div>
-                                                        <div class="col-md-5">
+                                                        <div class="col-md-6">
                                                             <select class="js-example-basic-multiple form-control"
                                                                 name="gender[]" multiple="multiple" id="gender">
                                                                 <option value="male">Male</option>
@@ -121,9 +118,26 @@
                                                                 <option value="kids">Kids</option>
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> <br>
 
+                                                    <div class="row">                            
+                                                        <div class="col-sm-6">
+                                                            <label class="m-0">Advertisement Devices</label>
+                                                            <div class="panel-body">
+                                                                <select  name="ads_devices[]" class="js-example-basic-multiple" style="width:100%" multiple="multiple">
+                                                                    <option value="website"> {{ ucwords('website') }} </option>
+                                                                    <option value="android"> {{ ucwords('android') }} </option>
+                                                                    <option value="IOS"> {{ ucwords('IOS') }} </option>
+                                                                    <option value="TV"> {{ ucwords('TV') }} </option>
+                                                                    <option value="roku"> {{ ucwords('roku') }} </option>
+                                                                    <option value="lg"> {{ ucwords('lg') }} </option>
+                                                                    <option value="samsung"> {{ ucwords('samsung') }} </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                                 <input type="button" name="next" class="next action-button"
                                                     value="Next Step" id="Next1" />
                                             </fieldset>

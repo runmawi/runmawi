@@ -93,6 +93,7 @@ use FFMpeg\Filters\Video\Resizer;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
+use App\AdminVideoAds;
 
 class AdminVideosController extends Controller
 {
@@ -904,7 +905,6 @@ class AdminVideosController extends Controller
 
                 $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
-
                 // Bunny Cdn get Videos 
                 
                 $storage_settings = StorageSetting::first();
@@ -1007,6 +1007,7 @@ class AdminVideosController extends Controller
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => $theme_settings ,
+                'advertisements_category' => Adscategory::get(),
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -1559,7 +1560,9 @@ class AdminVideosController extends Controller
 
             $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
-            
+
+            $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
+
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
                 "page"     => "Edit",
@@ -1607,7 +1610,8 @@ class AdminVideosController extends Controller
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
                 "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
                 'video_js_Advertisements' => $video_js_Advertisements ,
-
+                'admin_videos_ads'        => $admin_videos_ads ,
+                'advertisements_category' => Adscategory::get(),
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -1683,7 +1687,7 @@ class AdminVideosController extends Controller
             $tinyplayer_image = $request->file('player_image');
 
             if (compress_image_enable() == 1) {
-                $player_image_filename = time() . '.' . compress_image_format();
+                $image_filename = time() . '.' . compress_image_format();
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
             } else {
@@ -2748,6 +2752,84 @@ class AdminVideosController extends Controller
                     $video_subtitle->save();
                 }
             }
+        }
+
+        // Admin Video Ads inputs
+
+        if( !empty($request->ads_devices)){
+
+            $Admin_Video_Ads_inputs = array(
+
+                'video_id' => $video->id ,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+                'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+                'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+
+                'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+                'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+                'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+                'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+
+                'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+                'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+                'ios_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+
+                'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+                'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+                'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+                'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+
+                'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+                'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+                'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+                'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+
+                'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+                'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+                'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+                'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+
+                'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+                'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+                'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+                'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+
+                // plyr.io
+
+                'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+                'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                
+                'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+                'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+
+                'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+                'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+
+                'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+                'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+
+                'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+                'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+
+                'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+                'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                
+                'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+                'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+
+                'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            );
+
+            $AdminVideoAds = AdminVideoAds::where('video_id', $video->id )->first();
+
+
+            is_null($AdminVideoAds) ? AdminVideoAds::create( $Admin_Video_Ads_inputs ) : AdminVideoAds::where('video_id',$video->id)->update( $Admin_Video_Ads_inputs) ;
+           
+        }else{
+
+            AdminVideoAds::where('video_id',$video->id)->delete();
         }
 
         \LogActivity::addVideoUpdateLog("Update Video.", $video->id);
@@ -3826,6 +3908,78 @@ class AdminVideosController extends Controller
         //         $ad_video->save();
         // }
         /*Advertisement Video update End*/
+
+                // Admin Video Ads inputs
+
+        if( !empty($request->ads_devices)){
+
+            $Admin_Video_Ads_inputs = array(
+
+                'video_id' => $video->id ,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+                'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+                'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+
+                'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+                'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+                'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+                'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+
+                'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+                'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+                'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+
+                'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+                'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+                'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+                'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+
+                'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+                'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+                'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+                'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+
+                'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+                'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+                'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+                'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+
+                'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+                'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+                'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+                'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+
+                // plyr.io
+
+                'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+                'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                
+                'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+                'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+
+                'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+                'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+
+                'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+                'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+
+                'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+                'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+
+                'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+                'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                
+                'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+                'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+
+                'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            );
+
+            AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
+            
+        }
 
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 

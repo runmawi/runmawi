@@ -243,14 +243,14 @@
   <?php if (!Auth::guest() && Auth::user()->id == $album->user_id){ ?>
           <div class="pull-right" >
             <a href="<?php echo URL::to('/delete-station').'/'. @$album->id  ?>">
-                          <button  class="btn btn-primary"> <?php echo __('Delete Station'); ?></button>
+                          <button  class="btn btn-primary"> Delete Station</button>
                 </a>
           </div>
         <?php } ?>
         <br><br>
 
   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-      <p ><h3 class="text-center"><?php echo __('No Audio Available'); ?></h3>
+      <p ><h3 class="text-center">No Audio Available</h3>
   </div>
   
 <?php }else{ ?>
@@ -271,13 +271,13 @@
          <?php if (!Auth::guest() && Auth::user()->id == $album->user_id){ ?>
           <div class="pull-right" >
             <a href="<?php echo URL::to('/delete-station').'/'. @$album->id  ?>">
-                          <button  class="btn btn-primary"> <?php echo __('Delete Station'); ?></button>
+                          <button  class="btn btn-primary"> Delete Station</button>
                 </a>
           </div>
         <?php } ?>
         <br><br>
           <audio id="myAudio" ontimeupdate="onTimeUpdate()"  >
-            <source id="source-audio" src=""  type="audio/mpeg"> <?php echo __('Your browser does not support the audio element'); ?>.
+            <source id="source-audio" src=""  type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
               <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
@@ -296,12 +296,12 @@
               <div class="stripe_button">
                   <!-- stripe Button -->
                   <button onclick="stripe_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
-                      class="btn2  btn-outline-primary"><?php echo __('Purchase to Play Audio'); ?></button>
+                      class="btn2  btn-outline-primary">Purchase to Play Audio</button>
 
                                      <!-- Subscriber Button -->
                          
                                       <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 66%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
                       </a>
 
               </div>
@@ -326,7 +326,7 @@
                       <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
 
                         <div onclick="toggleAudio()">
-                          <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> <?php echo __('Play'); ?></button>
+                          <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
                         </div>
 
                       <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
@@ -349,7 +349,7 @@
                       <div>
                     <?php if(!Auth::guest()){ ?>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    <?php echo __('Create PlayList'); ?> 
+                      Create PlayList
                     </button>
                     <?php } ?>
                     </div>
@@ -415,7 +415,7 @@
 
       <div class="col-lg-4 music-station">
         <div class="play-border">
-          <div class="playlist-ctn"> <h6 class="mb-2 font-weight-bold"><?php echo __('AUDIO LIST'); ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></h6>
+          <div class="playlist-ctn"> <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i></h6>
         </div>
       </div>
         </div>
@@ -473,7 +473,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-black" id="exampleModalLabel"><?php echo __('Create PlayList'); ?></h4>
+        <h4 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -483,12 +483,12 @@
       <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
       
       <div class="col-sm-10 p-0">
-            <label for="name"><?php echo __('PlayList Title'); ?></label>
-            <input name="title" id="title" placeholder="<?php echo __('PlayList Title'); ?>" class="form-control text-black"  />
+            <label for="name">PlayList Title</label>
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
           </div>
           <div class="col-sm-10 p-0">
 		
-            <label for="name"><?php echo __('PlayList Image'); ?></label>
+            <label for="name">PlayList Image</label>
             <input type="file" name="image" id="image" />
           </div>
      
@@ -496,7 +496,7 @@
 <br>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-        <button type="button" id="store-play-list" class="btn btn-primary"><?php echo __('Save'); ?></button>
+        <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
       </div>
     </form>
     </div>

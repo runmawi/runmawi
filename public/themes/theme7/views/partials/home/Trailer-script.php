@@ -1,7 +1,7 @@
 <!-- Trailer(videos)M3U8 - Player  -->
 
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> 
 
 <script>
 
@@ -56,7 +56,7 @@
                     ],
                 });
 
-                $('#MP4_Trailer-videos').attr('src', trailer_url);
+                // $('#MP4_Trailer-videos').attr('src', trailer_url);
 
             }else if( trailer_type == "embed_url"  ){
 
@@ -160,18 +160,6 @@
                         'pip','airplay','fullscreen'
                     ],
                 });
-
-                // players.source = {
-                //     type: 'video',
-                //     sources: [
-                //         {
-                //             src: trailer_url,
-                //             type: type,
-                //             size: 720
-                //         }
-                //     ],
-                //     poster: poster_url
-                // }
 
                 $('#Series_MP4_Trailer-videos').attr('src', trailer_url);
             }

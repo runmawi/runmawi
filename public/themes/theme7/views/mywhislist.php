@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 overflow-hidden">
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h2 class="Continue Watching"><?= __('Media in My Wishlist') ?></h2>
+                    <h2 class="Continue Watching">Media in My Wishlist</h2>
                 </div>
             </div>
         </div>
@@ -28,13 +28,13 @@
                                             <!-- <div class="corner-text-wrapper">
                                                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                                     <div class="corner-text">
-                                                        <?php  // if(!empty($channelwatchlater_videos->ppv_price)){?>
-                                                            <p class="p-tag1"><?php // echo $currency->symbol.' '.$channelwatchlater_videos->ppv_price; ?></p>
-                                                        <?php // }elseif( !empty($channelwatchlater_videos->global_ppv || !empty($channelwatchlater_videos->global_ppv) && $channelwatchlater_videos->ppv_price == null)){ ?>
-                                                            <p class="p-tag1"><?php // echo $channelwatchlater_videos->global_ppv.' '.$currency->symbol; ?></p>
-                                                        <?php // }elseif($channelwatchlater_videos->global_ppv == null && $channelwatchlater_videos->ppv_price == null ){ ?>
-                                                            <p class="p-tag"><?php // echo "Free"; ?></p>
-                                                        <?php // } ?>
+                                                        <?php  if(!empty($channelwatchlater_videos->ppv_price)){?>
+                                                            <p class="p-tag1"><?php echo $currency->symbol.' '.$channelwatchlater_videos->ppv_price; ?></p>
+                                                        <?php }elseif( !empty($channelwatchlater_videos->global_ppv || !empty($channelwatchlater_videos->global_ppv) && $channelwatchlater_videos->ppv_price == null)){ ?>
+                                                            <p class="p-tag1"><?php echo $channelwatchlater_videos->global_ppv.' '.$currency->symbol; ?></p>
+                                                        <?php }elseif($channelwatchlater_videos->global_ppv == null && $channelwatchlater_videos->ppv_price == null ){ ?>
+                                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                                        <?php } ?>
                                                     </div>
                                                 <?php } ?>
                                             </div> -->
@@ -116,7 +116,7 @@
                                             
                                         <div class="hover-buttons">
                                             <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>" >
-                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme7_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                             </a>
                                             <div>
                                             <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $channelwatchlater_videos->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
@@ -198,7 +198,7 @@
 
                                             <div class="hover-buttons">
                                                 <a class="text-white d-flex align-items-center" href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
-                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme7_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                                 </a>
                                             <div>
                                         </div>

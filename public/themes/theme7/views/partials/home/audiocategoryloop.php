@@ -34,15 +34,12 @@
         <h4 class="movie-title">
             <?php
             if (!empty($category->name)) {
-                echo __($category->name);
+                echo $category->name;
             } else {
-                echo __($category->name);
+                echo $category->name;
             }
             ?>
         </h4>
-        <h4 class="main-title"><a href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>">
-                <?php echo (__('View All')); ?>
-            </a></h4>
     </a>
 </div>
 <div class="favorites-contens">
@@ -57,36 +54,13 @@
                 ?>
                 <li class="slide-item">
                     <div class="block-images position-relative">
-                        <!-- block-images -->
-                        <div class="border-bg">
-                            <div class="img-box">
-                                <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>"
-                                        class="img-fluid w-100" alt="cate">
-                                </a>
-
-
-                                <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php if ($audio->access == 'subscriber') { ?>
-                                        </p>
-                                        <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php } elseif ($audio->access == 'registered') { ?>
-                                        <p class="p-tag">
-                                            <?php echo (__('Register Now')); ?>
-                                        </p>
-                                    <?php } elseif (!empty($audio->ppv_price)) {
-                                            echo $currency->symbol . ' ' . $audio->ppv_price;
-                                        } elseif ($audio->ppv_price == null) {
-                                            echo "Free";
-                                        }
-                                        ?>
-
-                                <?php } ?>
-
-                            </div>
+                        <div class="img-box">
+                            <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
+                                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>"
+                                    class="img-fluid w-100" alt="cate">
+                            </a>
                         </div>
-                        
+
                     </div>
                 </li>
             <?php endforeach; endif; ?>

@@ -131,7 +131,7 @@
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
       
- <meta name="keywords" content="<?php  $dynamic_page->meta_keywords ? $dynamic_page->meta_keywords : $dynamic_page->meta_keywords?>">
+ <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="<?php
@@ -461,6 +461,9 @@
    font-weight: 400;
    }  
    body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme li.breadcrumb-item{
    color: <?php echo GetLightText(); ?>;
    }
    body.light-theme .p-tag1{
@@ -1825,7 +1828,7 @@
          // console.log(currentdate);
          
          if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
-         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
          setTimeout(function() {
          $('.add_watch').slideUp('fast');
          }, 3000);
