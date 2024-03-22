@@ -381,7 +381,7 @@ class AdminUsersController extends Controller
         }else{
 
             return Redirect::to('admin/user/create')->with(array(
-                'note' => 'Need to Add Plan',
+                'note' => 'Need to Add User',
                 'note_type' => 'failed'
             ));
         }
@@ -412,7 +412,7 @@ class AdminUsersController extends Controller
 
         }else{
             return Redirect::to('admin/user/create')->with(array(
-                'message' => 'Need to Add Plan',
+                'message' => 'Added User Successfully',
                 'note_type' => 'failed'
             ));
         }
