@@ -356,7 +356,7 @@ class AdminUsersController extends Controller
             $avatar = $file->getClientOriginalName();
 
         }else{
-            $avatar = null;
+            $avatar = $user->avatar;
         }
         $string = Str::random(60);
 
