@@ -683,8 +683,24 @@ border-radius: 0px 4px 4px 0px;
                         <div class="clear"></div>
                     </div>
                 </div>
+            <!-- </div> -->
+            <div class="col-sm-6">
+                    <label class="m-0">Block Country</label>
+                    <p class="p1">( Choose the countries for block the Live Stream )</p>
+                    <div class="panel-body">
+                        <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                @foreach($countries as $country)
+                                @if(in_array($country->country_name, $block_countries))
+                                    <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
+                                @else
+                                    <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
+                                @endif 
+                                @endforeach
+                            </select>
+                        <div class="clear"></div>
+                    </div>
+                </div>
             </div>
-
             <div class="row" id="ppv_price">
                 <div class="col-sm-6">
                     <label class="m-0">PPV Price</label>
