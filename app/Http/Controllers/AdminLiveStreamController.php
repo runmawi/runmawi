@@ -43,6 +43,8 @@ use Hash;
 use App\PPVFreeDurationLogs;
 use App\Channel;
 use App\LivePurchase;
+use App\BlockLiveStream;
+use App\CountryCode;
 
 class AdminLiveStreamController extends Controller
 {
@@ -196,6 +198,8 @@ class AdminLiveStreamController extends Controller
                 'ppv_gobal_price' => $settings->ppv_price != null ?  $settings->ppv_price : " ",
                 'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
                 'ads_category' => Adscategory::all(),
+                "countries" => CountryCode::all(),
+
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -624,6 +628,22 @@ class AdminLiveStreamController extends Controller
         $shortcodes = $request['short_code'];
         $languages = $request['language'];
 
+        if(!empty($data['country'])){
+            $country = $data['country'];
+            unset($data['country']);
+            /*save country*/
+            if(!empty($country)){
+                BlockLiveStream::where('live_id',$movie->id)->delete();
+                foreach ($country as $key => $value) {
+                    $country = new BlockLiveStream;
+                    $country->live_id = $movie->id;
+                    $country->country = $value;
+                    $country->save();
+                }
+
+            }
+        }
+
             /*save CategoryLive*/
             if(!empty($category_id)){
                 CategoryLive::where('live_id', $movie->id)->delete();
@@ -726,7 +746,8 @@ class AdminLiveStreamController extends Controller
             'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
             'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
             'ads_category' => Adscategory::all(),
-
+            "countries" => CountryCode::all(),
+            "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -1156,6 +1177,24 @@ class AdminLiveStreamController extends Controller
         $video->acc_audio_url  = $request->acc_audio_url;
         $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
         $video->save();
+
+
+        
+        if(!empty($data['country'])){
+            $country = $data['country'];
+            unset($data['country']);
+            /*save country*/
+            if(!empty($country)){
+                BlockLiveStream::where('live_id',$video->id)->delete();
+                foreach ($country as $key => $value) {
+                    $country = new BlockLiveStream;
+                    $country->live_id = $video->id;
+                    $country->country = $value;
+                    $country->save();
+                }
+
+            }
+        }
 
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];

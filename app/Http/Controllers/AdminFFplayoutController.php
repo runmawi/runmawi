@@ -24,6 +24,8 @@ use GuzzleHttp\Client;
 class AdminFFplayoutController extends Controller
 {
     protected $baseUrl = 'http://69.197.189.34:8787';
+    // protected $baseUrl = 'http://209.127.118.222:8787';
+    
     protected $token;
 
     
@@ -31,6 +33,7 @@ class AdminFFplayoutController extends Controller
     {
         $username = 'admin';
         $password = 'o737{@&|3TCr';
+        // $password = '0SgS9<28.9qo';
 
         $client = new Client();
 
@@ -48,7 +51,7 @@ class AdminFFplayoutController extends Controller
             $body = $response->getBody()->getContents();
             $responseData = json_decode($body, true);
             $this->token  = $responseData['user']['token'];
-
+            // dd($responseData['user']['token']);
             $responsechannels = $client->get($this->baseUrl .'/api/channels', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->token,
@@ -130,17 +133,41 @@ class AdminFFplayoutController extends Controller
                 'playlist_items' => $playlistItems,
             ];
             
+                     // Delete Playlist 
+                     
+                     
+                // $response = $client->delete($this->baseUrl.'/api/playlist/1/2024-03-20', [
+                //     'headers' => [
+                //         'Content-Type' => 'application/json',
+                //         'Authorization' => 'Bearer ' . $this->token,
+                //     ],
+                // ]);
+
+                // // Handle response
+                // $body = $response->getBody()->getContents();
+
+                // dd($body);
+
+                // exit;
+
+                     // Generate Playlist 
+
                 $playlistId = 1;
-                // dd($CurrentDate);
-            $response = $client->post($this->baseUrl.'/api/playlist/1/generate/'.$CurrentDate, [
-                    'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $this->token,
-                ],
-            ]);
+            // $response = $client->post($this->baseUrl.'/api/playlist/1/generate/'.$CurrentDate, [
+            //     // $response = $client->post($this->baseUrl.'/api/playlist/1/generate/2024-03-17', [
+            //         'headers' => [
+            //         'Content-Type' => 'application/json',
+            //         'Authorization' => 'Bearer ' . $this->token,
+            //     ],
+            //     // 'json' => [
+            //     //     'channel' => $channelname,
+            //     //     'date' => $formattedDate,
+            //     //     'playlist_items' => $playlistItems,
+            //     // ],
+            // ]);
             
-            $body = $response->getBody()->getContents();
-            $responseData = json_decode($body, true);
+            // $body = $response->getBody()->getContents();
+            // $responseData = json_decode($body, true);
             
     
             // return response()->json($responseData);
