@@ -15,27 +15,13 @@
                         <ul class="favorites-slider list-inline row p-0 mb-0">
                             @foreach ($data as $playlist_videos)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('video-playlist/' . $playlist_videos->slug) }}">
-                                        <div class="block-images position-relative">
-                                          
-                                            <div class="img-box">
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a href="{{ URL::to('video-playlist/' . $playlist_videos->slug) }}">
                                                 <img src="{{ $playlist_videos->image ? URL::to('public/uploads/images/'.$playlist_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-
-                                            <div class="block-description">
-
-                                                <p> {{ strlen($playlist_videos->title) > 17 ? substr($playlist_videos->title, 0, 18) . '...' : $playlist_videos->title }} </p>
-
-                                                <div class="movie-time d-flex align-items-center my-2"></div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Visit Video PlayList
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

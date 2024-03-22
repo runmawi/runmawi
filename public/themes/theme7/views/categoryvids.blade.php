@@ -8,12 +8,12 @@
     <section id="home" class="iq-main-slider p-0">
         <div id="home-slider" class="slider m-0 p-0">
             @foreach ($categoryVideos['video_banners'] as $item)
-                <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
+                <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');background-repeat: no-repeat;background-size: cover;" >
                     <div class="container-fluid position-relative h-100">
                         <div class="slider-inner h-100">
                             <div class="row align-items-center  h-100">
                                 <div class="col-xl-6 col-lg-12 col-md-12">
-                                    <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft" data-delay-in="0.6">{{ strlen($item->title) > 13 ? substr($item->title, 0, 14) . '...' : $item->title }}</h1>
+                                    <h1 class="slider-text title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 13 ? substr($item->title, 0, 14) . '...' : $item->title }}</h1>
 
                                     <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                         <span class="badge  p-2">
@@ -39,10 +39,10 @@
                                         <li class="ml-3">{{ $item->publish_type == "publish_now" ? Carbon\Carbon::createFromDate($item->created_at)->toFormattedDateString()  : Carbon\Carbon::createFromDate($item->publish_time)->toFormattedDateString() }}</li>
                                     </div>
                                     <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!}  </p>
-                                    <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp"
-                                        data-delay-in="1.2">
-                                        <a href="{{ URL::to('category/videos/'.$item->slug ) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                aria-hidden="true"></i>Play Now</a>
+                                    <div class="d-flex align-items-center r-mb-23" id="cat-slider" data-animation-in="fadeInUp"  data-delay-in="1.2">
+                                        <a href="{{ URL::to('category/videos/'.$item->slug ) }}" class="btn btn-primary">
+                                            <i class="fa fa-play mr-2" aria-hidden="true"></i>Watch Video
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
         <section id="iq-favorites">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12 overflow-hidden p-0">
                         
                                     {{-- Section Header Title --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -91,37 +91,13 @@
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                @foreach ($categoryVideos['categoryVideos'] as $item)
                                     <li class="slide-item">
-                                        <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
-                                            <div class="block-images position-relative">
-
-                                                <div class="img-box">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                                     <img src="{{ URL::to('public/uploads/images/' . $item->image) }}" class="img-fluid" alt="">
-                                                </div>
-
-                                                <div class="block-description">
-
-                                                    <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}</h6>
-
-                                                    <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
-                                                        <span class="text-white"> {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }} </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                    <div class="block-social-info">
-                                                        <ul class="list-inline p-0 m-0 music-play-lists">
-                                                            {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                            <li><span><i class="ri-heart-fill"></i></span></li>
-                                                            <li><span><i class="ri-add-line"></i></span></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                </a>
                                             </div>
-                                        </a>
+                                        </div>
                                     </li>
                                @endforeach
                             </ul>
@@ -141,7 +117,7 @@
                 <div class="row">
 
                                     {{-- Section Header Title --}}
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12 overflow-hidden p-0">
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <div class="left-content">
                                 <h4 class="main-title">{{ 'Top 10 Movies in ' . country_name() .' Today'  }} </h4>
@@ -152,41 +128,13 @@
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                 @foreach ( $categoryVideos['Most_watched_country'] as $item)
                                     <li class="slide-item">
-                                        <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                                     <img src="{{ URL::to('public/uploads/images/' . $item->image) }}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="block-description">
-                                                    <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}
-                                                    </h6>
-                                                    <div class="movie-time d-flex align-items-center my-2">
-
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($item)->age_restrict.'+' }}
-                                                        </div>
-
-                                                        <span class="text-white">
-                                                            {{ $item->duration != null ? gmdate('H:i:s', $item->duration) : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
+                                                </a>
                                             </div>
-                                        </a>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
@@ -274,7 +222,7 @@
                 <div class="row">
 
                                     {{-- Section Header Title --}}
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12 overflow-hidden p-0">
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <div class="left-content">
                                 <h4 class="main-title">Movies Recommended For You</h4>
@@ -285,39 +233,13 @@
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                 @foreach ($categoryVideos['top_most_watched'] as $item)
                                     <li class="slide-item">
-                                        <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
-                                            <div class="block-images position-relative">
-
-                                                <div class="img-box">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                                     <img src="{{ URL::to('public/uploads/images/' . $item->image) }}" class="img-fluid" alt="">
-                                                </div>
-
-                                                <div class="block-description">
-
-                                                    <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}</h6>
-                                                    
-                                                    <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
-                                                        <span class="text-white">
-                                                            {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                    <div class="block-social-info">
-                                                        <ul class="list-inline p-0 m-0 music-play-lists">
-                                                            {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                            <li><span><i class="ri-heart-fill"></i></span></li>
-                                                            <li><span><i class="ri-add-line"></i></span></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                </a>
                                             </div>
-                                        </a>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>

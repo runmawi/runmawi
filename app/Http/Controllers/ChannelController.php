@@ -64,6 +64,7 @@ use App\ModeratorsUser;
 use App\StorageSetting;
 use App\AdminLandingPage;
 use App\CommentSection;
+use App\BlockLiveStream;
 
 
 class ChannelController extends Controller
@@ -3988,9 +3989,26 @@ class ChannelController extends Controller
         try {
 
             $LiveCategoryData = LiveCategory::where('slug', $slug)->first();
-            $Live_Category = LiveCategory::find($LiveCategoryData->id) != null ? LiveCategory::find($LiveCategoryData->id)->specific_category_live : [];
+          
+            $Live_Category = LiveCategory::find($LiveCategoryData->id)->specific_category_live ?? [];
+
             $category_title = LiveCategory::where('id', $LiveCategoryData->id)->pluck('name')->first();
 
+            if(Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                
+                $countryName = Country_name();
+
+                $BlockLiveStream = BlockLiveStream::where('country', $countryName)->get();
+
+                $blockLiveStreams = [];
+
+                if(!$BlockLiveStream->isEmpty()) {
+                    foreach($BlockLiveStream as $block_LiveStream) {
+                        $blockLiveStreams[] = $block_LiveStream->live_id;
+                    }
+                    $Live_Category = $Live_Category->whereNotIn('id', $blockLiveStreams); // Remove get()
+                } 
+            }
 
             $data = array(
                 'Live_Category' => $Live_Category,

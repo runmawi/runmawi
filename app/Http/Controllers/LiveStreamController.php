@@ -34,6 +34,7 @@ use App\Channel;
 use App\ModeratorsUser;
 use App\M3UFileParser;
 use App\AdminLandingPage;
+use App\BlockLiveStream;
 
 class LiveStreamController extends Controller
 {
@@ -392,7 +393,23 @@ class LiveStreamController extends Controller
             $parentCategories_name = $parentCategories->name;
             $live_videos = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
                ->where('livecategories.category_id','=',$parentCategories_id)
-               ->where('active', '=', '1')->get();
+               ->where('active', '=', '1');
+
+               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                
+                if(!$BlockLiveStream->isEmpty()){
+                   foreach($BlockLiveStream as $block_LiveStream){
+                      $blockLiveStreams[]=$block_LiveStream->live_id;
+                   }
+                }else{
+                   $blockLiveStreams[]='';
+                }
+                $live_videos =   $live_videos->whereNotIn('live_streams.id',$blockLiveStreams);
+            }
+            $live_videos = $live_videos->orderBy('live_streams.created_at','desc')->get();
+
           }else{
             $parentCategories_id = '';
             $parentCategories_name = '';
