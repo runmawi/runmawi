@@ -412,17 +412,22 @@ class HomeController extends Controller
             {   
                 $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
 
-                    $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                   
-                    if(!$BlockLiveStream->isEmpty()){
-                      foreach($BlockLiveStream as $block_LiveStream){
-                          $blockLiveStreams[]=$block_LiveStream->live_id;
-                      }
-                    }else{
-                        $blockLiveStreams[]='';
+                        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                            $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                            
+                            if(!$BlockLiveStream->isEmpty()){
+                                foreach($BlockLiveStream as $block_LiveStream){
+                                    $blockLiveStreams[]=$block_LiveStream->live_id;
+                                }
+                            }else{
+                                $blockLiveStreams[]='';
+                            }
+                            $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                            $livetreams =$livetreams->get();
+                    } else{
+                        $livetreams =$livetreams->get();
                     }
-                    $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
-                    $livetreams =$livetreams->get();
                 }
             else
             {
@@ -1332,18 +1337,23 @@ class HomeController extends Controller
                     {
                         $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
         
-                            $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                            
-                            if(!$BlockLiveStream->isEmpty()){
-                                foreach($BlockLiveStream as $block_LiveStream){
-                                    $blockLiveStreams[]=$block_LiveStream->live_id;
+                        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                                
+                                if(!$BlockLiveStream->isEmpty()){
+                                    foreach($BlockLiveStream as $block_LiveStream){
+                                        $blockLiveStreams[]=$block_LiveStream->live_id;
+                                    }
+                                }else{
+                                    $blockLiveStreams[]='';
                                 }
-                            }else{
-                                $blockLiveStreams[]='';
-                            }
-                            $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
-                            $livetreams =$livetreams->get();
+                                $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
                         }
+                        
+                        $livetreams =$livetreams->get();
+
+                    }
                     else
                     {
                         $livetreams = [];
@@ -2316,17 +2326,22 @@ class HomeController extends Controller
                 {
                     $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
 
-                        $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                       
-                        if(!$BlockLiveStream->isEmpty()){
-                          foreach($BlockLiveStream as $block_LiveStream){
-                              $blockLiveStreams[]=$block_LiveStream->live_id;
-                          }
-                        }else{
-                            $blockLiveStreams[]='';
+                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                                
+                                if(!$BlockLiveStream->isEmpty()){
+                                    foreach($BlockLiveStream as $block_LiveStream){
+                                        $blockLiveStreams[]=$block_LiveStream->live_id;
+                                    }
+                                }else{
+                                    $blockLiveStreams[]='';
+                                }
+                                $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
                         }
-                        $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+
                         $livetreams =$livetreams->get();
+
                     }
                 else
                 {
