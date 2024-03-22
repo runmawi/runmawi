@@ -457,7 +457,7 @@
             <div class="col-md-8 targetDiv" id="div4">
                 <div class=" mb-3">
                     <h4 class="card-title mb-0">Preference for videos</h4>
-                    <form action="{{ URL::to('admin/profilePreference') }}" method="POST">
+                    <form action="{{ route('users-profile-Preference') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 
