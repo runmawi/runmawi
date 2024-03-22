@@ -280,7 +280,7 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="12" minlength="10" class="form-control" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
@@ -601,8 +601,8 @@ var specialKeys = new Array();
 
     var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
 
-    if (digitCount >= 10) {
-        alert('Please enter at least 10 characters');
+    if (digitCount >= 12) {
+        alert('Please enter atleast 12 characters');
         ret = ret || specialKeys.indexOf(keyCode) !== -1;
         document.getElementById("error").style.display = ret ? "none" : "inline";
         return false;
@@ -1002,7 +1002,7 @@ function format(item, state) {
     <script>
 
     var SignupMenu = '<?= $SignupMenu ?>'; 
-    console.log(SignupMenu);
+    // console.log(SignupMenu);
     if(SignupMenu && SignupMenu ==""){
         var username = 0;
         var password = 0;
