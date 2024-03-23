@@ -329,7 +329,7 @@ if(!Auth::guest()){
                             <!-- PPV button -->
                                     <?php $users = Auth::user();  ?>
 
-                                    <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                    <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  && ($video->access == "ppv")   ) { ?>
                                         <button  data-toggle="modal" data-target="#exampleModalCenter" style="width:50%;" class="view-count btn btn-primary btn-block rent-video">
                                         <?php echo __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price;  ;?> </button>
                                     <?php } ?>
