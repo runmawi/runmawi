@@ -237,9 +237,9 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 /*-----------------------*/
 #trending-slider-nav .slick-list { padding-bottom: 35px !important; }
 #trending-slider-nav .movie-slick { border: 12px solid transparent; transition: all 0.4s ease; }
-#trending-slider-nav .slick-current.slick-active .movie-slick { border-color: var(--iq-bg1); transition: all 0.4s ease; }
+/* #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: var(--iq-bg1); transition: all 0.4s ease; } */
 #trending-slider-nav .movie-slick:before { content: ''; position: absolute; left: 50%; bottom: -31px; transform: translateX(-50%); width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 26px solid var(--iq-bg1); opacity: 0; transition: all 0.4s ease; z-index: 999; }
-#trending-slider-nav .slick-current.slick-active .movie-slick:before { opacity: 1; }
+#trending-slider-nav .slick-current.slick-active .movie-slick:before { opacity: 0; }
 .e-item:hover .episodes-description { color: var(--iq-white) !important; }
 .episodes-description a:hover { color: var(--iq-primary); }
 .show-movie .block-image .episode-number {
@@ -429,10 +429,10 @@ span.text-white.rel-date {
 
 
 /*-----------------------*/
-.topten-contens { position: relative; overflow: hidden; }
+.topten-contens { position: relative; overflow: hidden;height:100vh; }
 .topten-title { position: absolute; left: 0; top: 50px; z-index: 99; }
 .topten-title-sm { display: none; }
-.vertical_s { position: absolute; top: 95px; right: 0; bottom: 0; left: 0; overflow: hidden; }
+.vertical_s { position: absolute; top: 95px; right: 0; bottom: 0; left: 0; overflow: hidden; /*height:60%;*/ }
 #top-ten-slider-nav { width: 300px; height: 100%; position: relative; }
 #top-ten-slider-nav .slick-list.draggable { height: 100% !important }
 #top-ten-slider-nav .slick-prev, #top-ten-slider-nav .slick-next { left: 0; right: 0; margin: 0 auto; }

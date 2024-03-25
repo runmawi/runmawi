@@ -43,7 +43,7 @@
   .mobile-more-menu .iq-user-dropdown img { width: 40px; }
   .iq-search-bar .search-input { background: var(--iq-body-bg); color: var(--iq-body-text); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); }
   .navbar-right li { position: static !important; }
-  .container-fluid { padding-left: 30px; padding-right: 30px; }
+  .container-fluid { padding-left: 30px !important; padding-right: 30px !important; }
   .main-header { padding: 10px 0; }
   .vertical_s { display: none; }
   .r-mt-15 { margin-top: 15px; }
