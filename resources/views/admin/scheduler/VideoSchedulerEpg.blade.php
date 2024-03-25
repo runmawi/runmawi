@@ -335,7 +335,7 @@
                                                 <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                                                 <a class="btn btn-default">{{ $value->title }}</a>
                                             </span>
-                                            <p style="margin:auto">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
+                                            <p style="margin-top:auto; margin-bottom:auto;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
                                         </div>
                                     @endforeach
                                 </div>
