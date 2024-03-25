@@ -552,7 +552,7 @@ function current_timezone()
 
     $apiUrl = "http://ip-api.com/php/{$current_ip}";
 
-    $response = Http::get($apiUrl);
+    $response = \Http::get($apiUrl);
 
     $data = unserialize($response->body());
 
@@ -1755,4 +1755,23 @@ function Tv_Logged_User_List()
 {
     $Tv_Logged_User_List = App\SiteTheme::pluck('Tv_Logged_User_List')->first();
     return  $Tv_Logged_User_List; 
+}
+
+
+function Block_LiveStreams()
+{
+     // blocked Audio
+     $block_live_stream = App\BlockLiveStream::where('country',Country_name())->get();
+        
+     if(!$block_live_stream->isEmpty()){
+         foreach($block_live_stream as $blocked_live_stream){
+            $blocked_live_stream[]=$blocked_live_stream->live_id;
+         }
+     } 
+     else{
+        $blocked_live_stream[]='';
+     }   
+
+   return $blocked_live_stream;
+
 }
