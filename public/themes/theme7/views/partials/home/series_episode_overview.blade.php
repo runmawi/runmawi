@@ -93,11 +93,11 @@ $data = App\Series::where('active', '=', '1')
                                                 <ul class="trending-pills d-flex nav nav-pills justify-content-center align-items-center text-center"
                                                     role="tablist">
 
-                                                    <li class="nav-item">
+                                                    <!-- <li class="nav-item">
                                                         <a class="nav-link active show" data-toggle="pill"  href="{{'#trending-data-overview-'.$key }}" role="tab"
                                                             aria-selected="true">Overview</a>
-                                                    </li>
-
+                                                    </li> -->
+<!-- 
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Episodes-'.$key }}"
                                                             role="tab" aria-selected="false">Episodes</a>
@@ -111,7 +111,7 @@ $data = App\Series::where('active', '=', '1')
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Similar-'.$key }}"
                                                             role="tab" aria-selected="false">Similar Like This</a>
-                                                    </li>
+                                                    </li> -->
                                                     
                                                 </ul>
                                             </div>
@@ -130,7 +130,7 @@ $data = App\Series::where('active', '=', '1')
                                                             </div>
                                                         </a>
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
+                                                        <h1 class="trending-text text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="d-flex align-items-center text-white text-detail">
                                                             <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
@@ -188,7 +188,7 @@ $data = App\Series::where('active', '=', '1')
                                                 </div>
 
                                                                 {{--  Episode --}}
-                                                <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
+                                                <!-- <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
                                                         <a href="#" tabindex="0">
                                                             <div class="channel-logo">
@@ -196,15 +196,15 @@ $data = App\Series::where('active', '=', '1')
                                                             </div>
                                                         </a>
 
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1></h1>
+                                                        <h1 class="trending-text text-uppercase"> {{ optional($series_details)->title }}</h1></h1>
 
-                                                        {{-- <div class="iq-custom-select d-inline-block sea-epi">
+                                                        <div class="iq-custom-select d-inline-block sea-epi">
                                                             <select name="cars" class="form-control season-select">
                                                                 @foreach ( $series_details->season as $key =>  $item )
                                                                     <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </div> --}}
+                                                        </div> 
 
                                                         <div class="episodes-contens mt-4">
                                                             <div
@@ -240,17 +240,17 @@ $data = App\Series::where('active', '=', '1')
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                                 {{-- Trailers --}}
-                                                <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
+                                                <!-- <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
                                                         <a href="#" tabindex="0">
                                                             <div class="channel-logo">
                                                                 <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                             </div>
                                                         </a>
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
+                                                        <h1 class="trending-text text-uppercase"> {{ optional($series_details)->title }}</h1>
 
                                                         <div class="episodes-contens mt-4">
                                                             <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
@@ -280,7 +280,7 @@ $data = App\Series::where('active', '=', '1')
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                                     
                                                                     {{-- Similar --}}
                                                 <div id="{{ 'trending-data-Similar-'.$key }}" class="overlay-tab tab-pane fade">
@@ -291,7 +291,7 @@ $data = App\Series::where('active', '=', '1')
                                                             </div>
                                                         </a>
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
+                                                        <h1 class="trending-text text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="episodes-contens mt-4">
                                                             <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
@@ -338,7 +338,7 @@ $data = App\Series::where('active', '=', '1')
 
     {{-- Trailer Modal --}}
 
-    @foreach ($data as $key => $series_details )
+    <!-- @foreach ($data as $key => $series_details )
         @foreach ($series_details->Season_Trailer_details as $Season_Trailer_details_key =>   $item)
 
             <div class="modal fade" id='{{ "series_episode_overview-trailer-".$key.'-'.$Season_Trailer_details_key }}'  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="video-js-trailer-modalLabel" aria-hidden="true">
@@ -362,7 +362,7 @@ $data = App\Series::where('active', '=', '1')
                 </div>
             </div>
         @endforeach
-    @endforeach
+    @endforeach -->
 @endif
 
 {{-- Style Link--}}

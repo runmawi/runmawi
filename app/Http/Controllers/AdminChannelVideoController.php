@@ -115,7 +115,7 @@ class AdminChannelVideoController extends Controller
             throw $th;
         }
         
-        return view('admin.scheduler.VideoScheduler',$data);
+        return view('admin.scheduler.VideoSchedulerEpg',$data);
     }
 
 

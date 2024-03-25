@@ -324,27 +324,29 @@
                             </div>
                         </div>
                     </div>
-                     <div class="row mt-4">
-                        <div class="col-md-3 p-0">
-                            <div class="drop-zone ScrollStyle MainData main-data-scr" >
-                                @foreach(@$VideoCollection as $value)
-
-                                <div class="draggable" draggable="true" ondragstart="drag(event)">
-                                    <div class="drag-container" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
-                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
-                                        <input type="text" class="form-control  video_{{ $value->id }}" value="{{ $value->title }}" readonly>
-                                        <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
-                                        <p>{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
-                                    </div>
+                    <!-- codepen -->
+                    <div class="container mt-4">
+                        <div class="row">
+                            <div class="col-md-3 p-0">
+                                <div id="modules">
+                                    @foreach(@$VideoCollection as $value)
+                                        <div class="drag d-flex justify-content-between" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
+                                            <span class="d-flex overflow-hidden">
+                                                <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
+                                                <a class="btn btn-default">{{ $value->title }}</a>
+                                            </span>
+                                            <p>{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
+                            </div>
+
+                            <div class="col-md-9 p-0">
+                                <div id="dropzone"></div>
                             </div>
                         </div>
-                        <div class="col-md-9 drop-side p-0">
-                                <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)" style="height:100%;"></div>
-
-                        </div>
-                </div>
+                    </div>
+                    <!-- end -->
             </div>
             <br>
             <!-- <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button> -->
@@ -401,10 +403,136 @@
         <!-- Include DataTables CSS and JS files -->
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<!-- codepen -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<style>
+#modules {
+    padding: 10px;
+    background: #eee;
+    margin-bottom: 20px;
+    z-index: 1;
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+
+#dropzone {
+  padding: 10px;
+  background: #eee;
+  min-height: 100px;
+  margin-bottom: 0;
+  z-index: 0;
+  height:250px;
+  overflow-y: auto;
+}
+
+.active {
+  outline: 1px solid red;
+}
+
+.hover {
+  outline: 1px solid blue;
+}
+
+.drop-item {
+  cursor: pointer;
+  margin-bottom: 0;
+  padding: 5px 10px;
+  border-radisu: 3px;
+  position: relative;
+}
+
+.drop-item .remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+.drop-item img{
+    width:25px;
+}
+.drag.ui-draggable.ui-draggable-handle img{
+    width: 30px;
+    height: 30px;
+}
+a.btn.btn-default {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+summary{
+    display:block;
+}
+details{
+    margin-left:10px;
+}
+.dur-drop{
+    position:absolute;
+    right: 0;
+}
+.col-md-3.p-0{
+    padding: 0 5px !important;
+}
+</style>
+
+
+
+
+<script>
+  $(".drag").draggable({
+    appendTo: "body",
+    helper: "clone"
+});
+
+$("#dropzone").droppable({
+    activeClass: "active",
+    hoverClass: "hover",
+    accept: ":not(.ui-sortable-helper)",
+    drop: function(event, ui) {
+    var videoId = ui.draggable.data('class');
+    var sourceType = ui.draggable.data('socure_type');
+    var sourceTitle = ui.draggable.data('title');
+    var sourceDuration = ui.draggable.data('duration');
+    dropepg(videoId, sourceType);
+
+    // Extract image source from the draggable element
+    var imgSrc = ui.draggable.find('img').attr('src');
+
+    // Create the drop item with image and other details
+    var $dropItem = $('<div class="drop-item d-flex">' +
+        '<img src="' + imgSrc + '" alt="Image">' + // Append the image
+        '<details><summary>' + sourceTitle +  '</summary>' +
+        
+        '</details>' +
+        '<p class="dur-drop">' + sourceDuration + '</p>' +
+        '</div>');
+
+    // Append the drop item to the dropzone
+    $(this).append($dropItem);
+
+    // Bind remove action to the remove button
+    $dropItem.find('.remove').click(function() {
+        $(this).closest('.drop-item').remove();
+    });
+}
+
+})
+.sortable({
+    items: ".drop-item",
+    sort: function() {
+        $(this).removeClass("active");
+    }
+});
+
+</script>
+
+
     <script type="text/javascript">
-
-
-
      $(document).on('click', '.remove-btn', function () {
 
             var dataId = $(this).data('id');
@@ -790,9 +918,7 @@
         $('.js-example-basic-single').select2();
 
 //     </script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+   
 
 
     <script src="<?=URL::to("/assets/js/jquery.mask.min.js") ?>"></script>
@@ -933,12 +1059,17 @@
     function drag(ev) {
         var container = ev.target.closest('.draggable');
         var video_id = container.querySelector('.drag-container').getAttribute('data-class');
-        var socure_type = container.querySelector('.drag-container').getAttribute('data-socure_type');
-        drop(video_id, socure_type);
+        var source_type = container.querySelector('.drag-container').getAttribute('data-socure_type');
+        
+        // Set attributes to the draggable div
+        container.setAttribute('data-video_id', video_id);
+        container.setAttribute('data-source_type', source_type);
+        
+        dropepg(video_id, source_type);
     }
 
 
-    function drop(video_id,socure_type) {
+    function dropepg(video_id,socure_type) {
 
         console.log(video_id);
         console.log(socure_type);

@@ -109,7 +109,7 @@
          <div class="rightnav">
                      {{-- Right Ads Banners --}}
 
-            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
+            <!-- @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
                @if (optional($admin_advertistment_banners)->right_image_url )
                   
                      <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
@@ -119,12 +119,12 @@
                @if (optional($admin_advertistment_banners)->right_script_url )
                   <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
                @endif
-            @endif
+            @endif -->
             
 
          </div>
       <div class="main">
-            <div class="bottom-nav">
+            <!-- <div class="bottom-nav">
 
                @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
 
@@ -139,12 +139,12 @@
                   @endif
                   
                @endif
-            </div>
+            </div> -->
 
          <div class="sidenav">
                      {{-- Left Ads Banners --}}
 
-            @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
+            <!-- @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
 
                @if (optional($admin_advertistment_banners)->left_image_url )
                   
@@ -155,7 +155,7 @@
                @if (optional($admin_advertistment_banners)->left_script_url )
                   <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
                @endif
-            @endif
+            @endif -->
 
             
 
