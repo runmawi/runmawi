@@ -1131,7 +1131,15 @@
 
             }
         }
-
+        @media (max-width:425px){
+            .bp{
+                padding:5px 10px;
+                font-size:12px;
+            }
+            .land-logo{
+                width:100px;
+            }
+        }
         .lan h4 {
             font-weight: 700;
         }
@@ -1200,6 +1208,10 @@
             line-height: 2.8rem;
             text-align: center;
         }
+        .collapse:not(.show){
+            display:flex !important;
+            flex-basis: auto;
+        }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1208,15 +1220,10 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <img class="lazy" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <a type="button" class="btn btn-outline-danger bp mr-3" href="{{ route('login') }}">Sign In </a>
+                <img class="lazy land-logo" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
+               
+                <div class="collapse justify-content-end" id="navbarSupportedContent">
+                    <a type="button" class="btn btn-outline-danger bp my-2 mr-2 my-sm-0" href="{{ route('login') }}">Sign In </a>
                     <a class="btn btn-success1  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign
                         Up</a>
                 </div>
@@ -1726,9 +1733,9 @@
                         <div class="">
                             <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/c2.webp'); ?>" alt="c2" width="146" height="146">
                         </div>
-                        <p class=" map">“Through the digital marketing course on NEMISA TV. I was able to create a
+                        <p class=" map" style="margin-bottom:0;">“Through the digital marketing course on NEMISA TV. I was able to create a
                             successful online skateboard.”</p>
-                        <h4 class="text-black">MUSA BALOYI</h4>
+                        <h4 class="text-black" style="margin-bottom:0;">MUSA BALOYI</h4>
                         <p>Sound</p>
                     </div>
 
