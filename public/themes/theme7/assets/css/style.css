@@ -185,7 +185,7 @@ li.slide-item.slick-current:hover .block-images{ transform: scale(1.1);transform
 /*-------------------*/
 .movie-content li { position: relative; padding-right: 20px; }
 .m.movie-content li:last-child { padding-right: 0px; }
-.movie-content li:before { content: ""; height: 3px; width: 3px; background: #dddddd; position: absolute; top: 10px; right: 8px; border-radius: 50%; }
+.movie-content li:before { content: ""; height: 50%; width: 3px; background: #fff; position: absolute; right: 8px; top:7px;}
 .movie-detail .movie-content li:before { width: 5px; height: 5px; }
 .movie-content li:last-child:before { display: none; }
 li.slide-item .block-description .ratting-start { font-size: 12px; }

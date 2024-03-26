@@ -135,6 +135,12 @@
         /* margin-right: auto; */
         margin-left: 5rem;
     }
+    .text-uppercase{
+        margin-bottom:30px;
+    }
+    .slider-ratting.d-flex.align-items-center {
+        margin-bottom: 30px;
+    }
 </style>
 
 <?php
@@ -152,7 +158,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;max-width:100%;">
+style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;max-width:100%;height:calc(100vh - 80px);">
 
     <div> </div>
     <div class="container-fluid pt-5">
@@ -210,15 +216,29 @@ style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))
                                                        
 
                                                         {{-- Details --}}
-                            <div class="trending-">
-                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
-                            </div>
+                                                        <?php
+$description = $series->details;
+$maxLength = 300;
+
+// Check if the description is longer than the maximum length
+if (strlen($description) > $maxLength) {
+    // Display only the first 300 characters
+    $shortDescription = substr($description, 0, $maxLength);
+    echo "<p id='artistDescription'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
+    echo "<p id='fullDescription' style='display:none;'>$description <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></p>";
+} else {
+    // If the description is not longer than 300 characters, display it as is
+    echo "<p id='artistDescription'>$description</p>";
+}
+?>
+
+
                         </div>
 
                            {{-- Category --}}
                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
                                 @foreach ($Series_Category as $key => $Series_Category_details)
-                                    <li class="trending-list"><a class="text-primary title"
+                                    <li class="trending-list"><a class="text-white title"
                                             href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
                                     </li>
                                 @endforeach
@@ -866,6 +886,24 @@ style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
+<script>
+    function toggleDescription() {
+        var shortDesc = document.getElementById('artistDescription');
+        var fullDesc = document.getElementById('fullDescription');
+
+        if (shortDesc.style.display === 'none') {
+            shortDesc.style.display = 'block';
+            fullDesc.style.display = 'none';
+        } else {
+            shortDesc.style.display = 'none';
+            fullDesc.style.display = 'block';
+        }
+    }
+</script>
+
+
 
 <script type="text/javascript">
     var purchase_series = $('#purchase_url').val();
