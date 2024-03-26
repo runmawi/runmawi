@@ -10,6 +10,20 @@
     $app_settings = App\AppSetting::where('id', '=', 1)->first(); 
 
 ?>
+<style>
+   .block-space .col-lg-6.col-md-6:nth-child(n+2):nth-child(-n+3){
+        display:none;
+    }
+    ul.f-link.list-unstyled.mb-0 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    p.font-size-14.mt-3.footer-desc{
+        opacity: 0.8;
+        line-height:1.8;
+    }
+</style>
 
 <footer class="mb-0">
     <div class="container-fluid">
@@ -23,18 +37,19 @@
                         ->get();
                 ?>
 
-                    <div class="col-lg-3 col-md-4">
+                    <div class="col-lg-6 col-md-6">
                         <ul class="f-link list-unstyled mb-0">
                             <?php foreach ($footerLinks as $key => $footerLink) { ?>
                                 <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
                             <?php } ?>
                         </ul>
+                        <p class="font-size-14 mt-3 footer-desc">All Rights Reserved. All videos and shows on this platform are trademarks of Watchnexs and all related images and content are the property of Watchnexs Inc. Duplication and copy of this is strictly prohibited. All rights reserved.</p>
                     </div>
                 <?php } ?>
 
                 <div class="col-lg-3 col-md-12 r-mt-15 p-1">
+                    <p>Follow Us:</p>
                     <div class="d-flex">
-
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
                                 <i class="ri-instagram-fill"></i>
@@ -91,7 +106,9 @@
                             </a>
                         <?php } ?>
                     </div>
-                    
+                </div>
+                <div class="col-lg-3">
+                    <p>On Playstore</p>
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
                             <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
@@ -109,13 +126,13 @@
             </div>
         </div>
     </div>
-    <div class="copyright py-2">
+    <!-- <div class="copyright py-2">
         <div class="container-fluid">
             <p class="mb-0 text-center font-size-14 text-body">
                 <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved
             </p>
         </div>
-    </div>
+    </div> -->
 </footer>
 
    <!-- jQuery, Popper JS -->
