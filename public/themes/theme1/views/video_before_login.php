@@ -37,7 +37,7 @@ include (public_path('themes/theme1/views/header.php')); ?>
    .img__wrap {
       position: relative;
       height: 200px;
-      widows: 250px;
+      width: 300px;
    }
 
    .img__wrap {
@@ -592,7 +592,7 @@ if (!empty ($request_url)) {
           </ul>
         </div>
         <div class="col-sm-3 col-md-3 col-xs-12">
-          <div class=" d-flex mt-4 pull-right">
+          <!-- <div class=" d-flex mt-4 pull-right">
             <?php if ($video->trailer != '') { ?>
               <div class="watchlater btn btn-secondary btn-lg btn-block watch_trailer"><i class="ri-film-line"></i>
                 <?= __('Watch Trailer') ?>
@@ -601,7 +601,7 @@ if (!empty ($request_url)) {
                 <?= __('Skip') ?>
               </div>
             <?php } ?>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -1042,7 +1042,7 @@ if (!empty ($request_url)) {
         </div>
       <?php endif; ?>
 
-      <?php if ($settings->show_recommended_videos == 1): ?>
+      <!-- <?php //if ($settings->show_recommended_videos == 1): ?> -->
         <div class="video-list you-may-like overflow-hidden">
           <h4 class="Continue Watching" style="color:#fffff;">
             <?php echo __('Recomended Videos'); ?>
@@ -1051,7 +1051,7 @@ if (!empty ($request_url)) {
             <?php include ('partials/video-loop.php'); ?>
           </div>
         </div>
-      <?php endif; ?>
+      <!-- <?php //endif; ?> -->
 
     </div>
     <script type="text/javascript">

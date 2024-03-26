@@ -23,7 +23,7 @@
    .img__wrap {
       position: relative;
       height: 200px;
-      widows: 250px;
+      width: 300px;
    }
 
    .img__wrap {
