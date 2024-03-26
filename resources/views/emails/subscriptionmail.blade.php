@@ -12,7 +12,7 @@
     $subscription_type = $subscription_type;
     $website_name = GetWebsiteName();
 	$role = 'Subscription';
-	$current_payment = "$".$plan_price ;
+	$current_payment = currency_symbol().$plan_price ;
     $next_date = "on ".$next_billing;
     $next_payment = $next_date.', you will be automatically charged '.$current_payment.' for a '.$billing_interval;
 	$plan_type =  $billing_interval."(" .$current_payment . ")"  ;
