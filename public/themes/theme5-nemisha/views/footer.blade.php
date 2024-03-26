@@ -41,6 +41,11 @@
 .android-tv-logo {
     background-position: -200px 0; /* Position of Android TV logo in sprite */
 }
+@media(max-width:425px){
+  .col-lg-6.d-flex.align-items-center.justify-content-center{
+    display:block !important;
+  }
+}
 
 </style>
 <footer class="py-4 mt-auto">
@@ -49,27 +54,27 @@
       <div class="row justify-content-center align-items-center">
          
           <div class="col-lg-6 d-flex align-items-center justify-content-center">
-          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+            <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
-          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  ">Download App</h5>
-          <?php } ?>
-          <div class=" small m-0 text-white ">
-            <div class="store-logos"> 
-              <?php if(!empty($app_settings->android_url)){ ?>
-                  <a href="<?= $app_settings->android_url ?>">
-                      <div class="android-logo"></div>
-                  </a>
-              <?php } ?>
-              <?php if(!empty($app_settings->ios_url)){ ?>
-                  <a href="<?= $app_settings->ios_url ?>">
-                      <div class="ios-logo"></div>
-                  </a>
-              <?php } ?>
-              <?php if(!empty($app_settings->android_tv)){ ?>
-                  <div class="android-tv-logo"></div>
-              <?php } ?>
-          </div>
+            <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+                <h5 class="font-weight-bold mb-0  ">Download App</h5>
+            <?php } ?>
+            <div class=" small m-0 text-white ">
+              <div class="store-logos"> 
+                <?php if(!empty($app_settings->android_url)){ ?>
+                    <a href="<?= $app_settings->android_url ?>">
+                        <div class="android-logo"></div>
+                    </a>
+                <?php } ?>
+                <?php if(!empty($app_settings->ios_url)){ ?>
+                    <a href="<?= $app_settings->ios_url ?>">
+                        <div class="ios-logo"></div>
+                    </a>
+                <?php } ?>
+                <?php if(!empty($app_settings->android_tv)){ ?>
+                    <div class="android-tv-logo"></div>
+                <?php } ?>
+            </div>
 
               
             <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
