@@ -57,7 +57,7 @@ use GuzzleHttp\Message\Response;
 use App\Videoartist;
 use App\RelatedVideo;
 use App\LanguageVideo;
-use App\Blockvideo;
+use App\BlockVideo;
 use App\ReelsVideo;
 use App\PlayerAnalytic;
 use App\CategoryVideo;
@@ -1087,7 +1087,7 @@ public function destroy($id)
     Videoartist::where('video_id', $Video_id)->delete();
     RelatedVideo::where('video_id', $Video_id)->delete();
     LanguageVideo::where('video_id', $Video_id)->delete();
-    Blockvideo::where('video_id', $Video_id)->delete();
+    BlockVideo::where('video_id', $Video_id)->delete();
     ReelsVideo::where("video_id", $Video_id)->delete();
     PlayerAnalytic::where("videoid", $Video_id)->delete();
     CategoryVideo::where("video_id", $Video_id)->delete();
