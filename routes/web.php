@@ -25,7 +25,7 @@ Route::get('/ffplayout-channel', 'AdminFFplayoutController@GetChannels');
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
-Route::post('/profilePreference', 'AdminUsersController@profilePreference');
+Route::post('/profilePreference', 'AdminUsersController@profilePreference')->name('users-profile-Preference');
 
 Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');

@@ -1688,7 +1688,7 @@ class AdminVideosController extends Controller
             $tinyplayer_image = $request->file('player_image');
 
             if (compress_image_enable() == 1) {
-                $player_image_filename = time() . '.' . compress_image_format();
+                $image_filename = time() . '.' . compress_image_format();
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
             } else {

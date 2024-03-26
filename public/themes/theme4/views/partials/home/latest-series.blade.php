@@ -182,7 +182,7 @@
         $('.series-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: true,
             fade: true,
             draggable: false,
             asNavFor: '.series-slider-nav',

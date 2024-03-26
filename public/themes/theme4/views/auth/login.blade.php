@@ -17,8 +17,8 @@
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
+        <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
       <link rel="stylesheet" href="" />
       <!-- Typography CSS -->
       <link rel="stylesheet" href="<?= typography_link()?>" />
@@ -82,11 +82,17 @@ border-radius: 15px;
 border: 2px dashed #51bce8;
 text-align: left;
 }    
+    .sign-in-page {
+        background: url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;
+        background-size: cover;
+    }
 </style>
+
+        <link rel="preload" href="<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>" as="image">
     </head>
 
 <body>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page">
    <div class="container">
       <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">

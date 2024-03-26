@@ -494,7 +494,7 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div5">
                     <div class=" mb-3">
                   <h4 class="card-title mb-0 text-white">{{ __('Preference for videos') }}</h4>
-                  <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                  <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                   @csrf
                   <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 
@@ -598,7 +598,28 @@ $settings = App\Setting::first();
                                    </div>
                                 </td>
                                 <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
-                                <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
+
+                                 <td>
+                                    <!-- Genres -->
+                                    @php
+                                        $category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                                                       ->where('categoryvideos.video_id', $val->id)->get();
+                                    @endphp
+
+                                       @foreach ($category_name as $key => $video_category_name) 
+                                          <?php $category_name_length = count($category_name); ?>
+                                          
+                                              <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
+                                                  <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' , ' : '') ?> 
+                                  
+                                       @endforeach
+                                       </td>
+
+
+                                    </p>
+                                 </td>
+                        
+                             
                                <!-- <td>{{ $val->views }}</td> 
                               
                                  <td>{{ $val->created_at }}</td>

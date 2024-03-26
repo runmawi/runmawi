@@ -81,6 +81,7 @@ use App\Wishlist;
 use App\TimeZone;
 use App\Document;
 use App\DocumentGenre;
+use App\BlockLiveStream;
 
 class HomeController extends Controller
 {
@@ -405,6 +406,34 @@ class HomeController extends Controller
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get();
             $currency = CurrencySetting::first();
+            $livetreams_count = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
+            ->count();
+            if ($livetreams_count > 0)
+            {   
+                $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
+
+                        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                            $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                            
+                            if(!$BlockLiveStream->isEmpty()){
+                                foreach($BlockLiveStream as $block_LiveStream){
+                                    $blockLiveStreams[]=$block_LiveStream->live_id;
+                                }
+                            }else{
+                                $blockLiveStreams[]='';
+                            }
+                            $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                            $livetreams =$livetreams->get();
+                    } else{
+                        $livetreams =$livetreams->get();
+                    }
+                }
+            else
+            {
+                $livetreams = [];
+            }
+
             $data = array(
                 'currency' => $currency,
 
@@ -451,8 +480,10 @@ class HomeController extends Controller
                 'suggested_videos' => $suggested_videos,
                 'video_categories' => VideoCategory::all() ,
                 'home_settings' => HomeSetting::first() ,
-                'livetream' => LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')
-                    ->get() ,
+                // 'livetream' => LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')
+                //     ->get() ,
+
+                'livetream' => $livetreams,
                 'audios' => Audio::where('active', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get() ,
@@ -1300,12 +1331,28 @@ class HomeController extends Controller
                     }
 
                     $currency = CurrencySetting::first();
-                    $livetreams_count = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
-                        ->count();
+                    $livetreams_count = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+
                     if ($livetreams_count > 0)
                     {
-                        $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
-                            ->get();
+                        $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
+        
+                        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                                
+                                if(!$BlockLiveStream->isEmpty()){
+                                    foreach($BlockLiveStream as $block_LiveStream){
+                                        $blockLiveStreams[]=$block_LiveStream->live_id;
+                                    }
+                                }else{
+                                    $blockLiveStreams[]='';
+                                }
+                                $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                        }
+                        
+                        $livetreams =$livetreams->get();
+
                     }
                     else
                     {
@@ -1367,7 +1414,7 @@ class HomeController extends Controller
                         'suggested_videos' => $suggested_videos,
                         'video_categories' => VideoCategory::all() ,
                         'home_settings' => HomeSetting::first() ,
-                        'livetream' => LiveStream::where("active","=","1")->orderBy('created_at', 'DESC')->get() ,
+                        'livetream' => $livetreams ,
                         'audios' => Audio::where('active', '=', '1')
                             ->orderBy('created_at', 'DESC')
                             ->get() ,
@@ -2264,17 +2311,34 @@ class HomeController extends Controller
                 }
 
                 $currency = CurrencySetting::first();
-                $livetreams_count = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
-                    ->count();
+                $livetreams_count = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
+
                 if ($livetreams_count > 0)
                 {
-                    $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
-                        ->get();
-                }
+                    $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC');
+
+                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                                
+                                if(!$BlockLiveStream->isEmpty()){
+                                    foreach($BlockLiveStream as $block_LiveStream){
+                                        $blockLiveStreams[]=$block_LiveStream->live_id;
+                                    }
+                                }else{
+                                    $blockLiveStreams[]='';
+                                }
+                                $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                        }
+
+                        $livetreams =$livetreams->get();
+
+                    }
                 else
                 {
                     $livetreams = [];
                 }
+                // dd($livetreams);
 
                 //  $currency->symbol
                 //  dd($currency);
@@ -2328,7 +2392,8 @@ class HomeController extends Controller
                     'suggested_videos' => $suggested_videos,
                     'video_categories' => VideoCategory::all() ,
                     'home_settings' => HomeSetting::first() ,
-                    'livetream' => LiveStream::where('active','=','1')->orderBy('created_at', 'DESC')->get() ,
+                    // 'livetream' => LiveStream::where('active','=','1')->orderBy('created_at', 'DESC')->get() ,
+                    'livetream' => $livetreams,
                     'audios' => Audio::where('active', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->get() ,
