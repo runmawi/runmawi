@@ -2026,9 +2026,9 @@
             }
 
             // Onload - Active First Series category 
-            $(window).load(function() {
-                $(".series-category-key-id-1").addClass("active show").attr("aria-selected", "true");
-            });
+                $(window).on('load', function() {
+                    $(".series-category-key-id-1").addClass("active show").attr("aria-selected", "true");
+                });
         </script>
 
         @php
