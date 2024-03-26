@@ -221,18 +221,18 @@ Index Of Script
 			asNavFor: '#top-ten-slider',
 			dots: false,
 			arrows: true,
-			infinite: true,
+			infinite: false,
 			vertical: true,
 			verticalSwiping: true,
-			centerMode: false,
+			centerMode: true,
 			nextArrow: '<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
 			prevArrow: '<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
-			focusOnSelect: false,
+			focusOnSelect: true,
 			responsive: [
 				{
 					breakpoint: 1024,
 					settings: {
-						slidesToShow: 5,
+						slidesToShow: 4,
 						slidesToScroll: 1,
 						infinite: true,
 						dots: true,
@@ -241,7 +241,7 @@ Index Of Script
 				{
 					breakpoint: 600,
 					settings: {
-						slidesToShow: 5,
+						slidesToShow: 4,
 						slidesToScroll: 1,
 					}
 				},

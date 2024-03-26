@@ -349,15 +349,18 @@ if(!empty($password_hash)){
                     <div class="ppv-block">
                         <h2 class="mb-3"> <?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
 
-                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
+
+                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
 
                            <!-- PPV button -->
                             <?php $users = Auth::user();  ?>
 
-                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin") && ($video->access == "ppv")  ) { ?>
                                     <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
-                                    <?php echo __('Purchase Now ');?> </button>
+                                    <?php echo __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price;  ;?> </button>
                             <?php } ?>
+
+
                     </div>
                 </div>
             </div>
@@ -367,7 +370,7 @@ if(!empty($password_hash)){
 
 else{  
 
-        if (Auth::guest() && empty($video->ppv_price)) {  ?>
+        if (Auth::guest() && $video->access == "guest" ) {  ?>
        <div id="video_bg"> 
 <div class="">
     <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -491,7 +494,7 @@ else{
 
      <?php } ?>
 
-    <?php  } else { ?>       
+    <?php  } else {  ?>       
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
             <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
             <div class="row justify-content-center pay-live">
@@ -499,8 +502,12 @@ else{
                     <div class="ppv-block">
                         <h2 class="mb-3"><?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
+
                         <?php if(Auth::guest()){ ?>
-                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" ><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
+                            <?php if($video->access == "ppv"): ?>
+                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" ><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <?php endif; ?>
                         <?php }else{ ?>
                         <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                         <?php } ?>
@@ -650,7 +657,7 @@ else{
                             </li>
                         <?php } ?>
                             <!-- PPV button -->
-                        <?php if ($video->access != 'guest' ) { ?>
+                        <?php if ($video->access == 'ppv' ) { ?>
                             <li>
                                 <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                                     <?php echo __('Rent');?> </a>

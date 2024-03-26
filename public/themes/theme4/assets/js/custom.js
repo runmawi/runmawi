@@ -159,9 +159,9 @@ Index Of Script
 			slidesToShow: 4,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
-			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class="ri-arrow-right-s-line"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class="ri-arrow-left-s-line"></i></a>',
 			responsive: [
 			{
 				breakpoint: 1200,
@@ -370,12 +370,14 @@ Index Of Script
 			asNavFor: '.trending-slider',
 			dots: false,
 			arrows: true,
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+			// nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
+			// prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
 			infinite: true,
 			centerMode: true,
 			centerPadding: 0,
 			focusOnSelect: true,
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class="ri-arrow-right-s-line"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class="ri-arrow-left-s-line"></i></a>',
 			responsive: [
 				{
 					breakpoint: 1200,

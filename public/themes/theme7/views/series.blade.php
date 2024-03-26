@@ -116,6 +116,31 @@
         line-height: calc(1.5em + 1.2em);
         padding-left: 0.625em;
     }
+    a.d-flex.align-items-center.w-50 {
+        padding: 15px 20px;
+        background: white;
+        color: #000;
+        border-radius:5px;
+    }
+    h4.text-white.font-weight-700 {
+        color: #282828!important;
+        font-weight:500;
+    }
+    a.share-icons.music-play-lists li{
+        width: 57px;
+        height: 57px;
+        background-color:rgba(41, 41, 41, 0.78);
+    }
+    a.list-inline.p-0.share-icons.music-play-lists {
+        /* margin-right: auto; */
+        margin-left: 5rem;
+    }
+    .text-uppercase{
+        margin-bottom:30px;
+    }
+    .slider-ratting.d-flex.align-items-center {
+        margin-bottom: 30px;
+    }
 </style>
 
 <?php
@@ -133,7 +158,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 50%), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;">
+style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;max-width:100%;height:calc(100vh - 80px);">
 
     <div> </div>
     <div class="container-fluid pt-5">
@@ -158,9 +183,16 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                         <div class="trending-info p-0">
                                                         
                                                         {{-- Ṭitle --}}
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                            <h1 class="slider-text  title text-uppercase" data-animation-in="fadeInLeft">
                                 {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
                             </h1>
+
+                             {{-- year & season Count --}}
+                             <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                 <span >{{ optional($series)->year }}</span>
+                                 <span class="trending-year"> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                            </div>
+
 
                                                         {{-- Rating --}}
                             <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
@@ -181,40 +213,52 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                                 @endif
                                 <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
                             </div>
+                                                       
 
-                                                        {{-- Category --}}
-                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                                        {{-- Details --}}
+                                                        <?php
+$description = $series->details;
+$maxLength = 300;
+
+// Check if the description is longer than the maximum length
+if (strlen($description) > $maxLength) {
+    // Display only the first 300 characters
+    $shortDescription = substr($description, 0, $maxLength);
+    echo "<p id='artistDescription'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
+    echo "<p id='fullDescription' style='display:none;'>$description <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></p>";
+} else {
+    // If the description is not longer than 300 characters, display it as is
+    echo "<p id='artistDescription'>$description</p>";
+}
+?>
+
+
+                        </div>
+
+                           {{-- Category --}}
+                           <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
                                 @foreach ($Series_Category as $key => $Series_Category_details)
-                                    <li class="trending-list"><a class="text-primary title"
+                                    <li class="trending-list"><a class="text-white title"
                                             href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                                                        {{-- year & season Count --}}
-                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
-                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
-                                <span class="trending-year">{{ optional($series)->year }}</span>
-                            </div>
-
-                                                        {{-- Details --}}
-                            <div class="trending-">
-                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
-                            </div>
-                        </div>
-
                                                         {{-- Episode --}}
                         @if( $latest_Episode != null )
-                            <div class="position-relative mt-5">
-                                <a href="{{ URL::to('episode/'. $series->slug.'/'.$latest_Episode->slug ) }}" class="d-flex align-items-center">
-                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
-                                    <h4 class="w-name text-white font-weight-700">Watch latest Episode</h4>
+                            <div class="position-relative d-flex mt-5">
+                                <a href="{{ URL::to('episode/'. $series->slug.'/'.$latest_Episode->slug ) }}" class="d-flex align-items-center justify-content-around w-50">
+                                    <div class="play"> <img src="<?php echo URL::to('/assets/img/triangle.webp') ?>" alt=""></div>
+                                    <h4 class="text-white font-weight-700">Watch Latest Episode</h4>
+                                </a>
+                                <a class="list-inline p-0 share-icons music-play-lists">
+                                    <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
                                 </a>
                             </div>
                         @endif
 
                         <div class="col-12 mt-auto mb-auto mt-3 p-0">
-                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                            <!-- <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
                                 <li class="share mb-0">
                                     <span><i class="ri-share-fill"></i></span>
                                     <div class="share-box">
@@ -227,7 +271,7 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                                 </li>
                                 <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
                                 <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
-                            </ul>
+                            </ul> -->
 
                             <ul
                                 class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
@@ -396,7 +440,7 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                         <div class="trending-info p-0">
                                                         
                                                         {{-- Ṭitle --}}
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                            <h1 class="slider-text title text-uppercase" data-animation-in="fadeInLeft">
                                 {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
                             </h1>
 
@@ -570,7 +614,7 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                         <div class="trending-info p-0">
                                                         
                                                         {{-- Ṭitle --}}
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                            <h1 class="slider-text title text-uppercase" data-animation-in="fadeInLeft">
                                 {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
                             </h1>
 
@@ -842,6 +886,24 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
+<script>
+    function toggleDescription() {
+        var shortDesc = document.getElementById('artistDescription');
+        var fullDesc = document.getElementById('fullDescription');
+
+        if (shortDesc.style.display === 'none') {
+            shortDesc.style.display = 'block';
+            fullDesc.style.display = 'none';
+        } else {
+            shortDesc.style.display = 'none';
+            fullDesc.style.display = 'block';
+        }
+    }
+</script>
+
+
 
 <script type="text/javascript">
     var purchase_series = $('#purchase_url').val();
