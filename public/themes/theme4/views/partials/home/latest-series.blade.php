@@ -170,15 +170,16 @@
     </section>
 @endif
 
+    <!-- Slick JS -->
+    <script rel="preload" fetchpriority="high" src="{{ asset('public/themes/theme4/assets/js/slick.min.js') }}"></script>
+    <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>" defer></script>
 
-<script>
-    
-    $( window ).on("load", function() {
-        $('.series-slider').fadeOut();
-    });
+   <script>
+    $(window).on('load', function() {
+        // Show the slider after the page has fully loaded
+        $('.series-slider').fadeIn();
 
-    $(document).ready(function() {
-
+        // Initialize slick slider
         $('.series-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -223,7 +224,6 @@
             ],
         });
 
-        
         $('.latest-series-depends-episode-slider').slick({
             slidesToShow: 6,
             slidesToScroll: 1,
