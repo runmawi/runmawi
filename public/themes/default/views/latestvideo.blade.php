@@ -20,10 +20,12 @@
                      @forelse($latestvideo['latest_videos'] as $latest_video)
 
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
-                              <div class="block-images position-relative">
+                           <div class="block-images position-relative">
+                              <div class="border-bg">
                                  <div class="img-box">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid w-100" alt="">
+                                    <a  class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid w-100" alt="">
+                                    </a>
                                     @if( $latestvideo['ThumbnailSetting']->free_or_cost_label == 1)
                                        @if(!empty($latest_video->ppv_price))
                                           <p class="p-tag1" ><?php echo $latestvideo['currency']->symbol.' '.$latest_video->ppv_price; ?></p>
@@ -34,65 +36,89 @@
                                        @endif
                                     @endif
                                  </div>
+                              </div>
 
                                  <div class="block-description">
-                                    @if( $latestvideo['ThumbnailSetting']->title == 1)  <!-- Title -->
-                                       <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
-                                          <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
-                                       </a>
-                                    @endif  
-
-                                    <div class="movie-time d-flex align-items-center pt-1">
-                                       @if($latestvideo['ThumbnailSetting']->age == 1) 
-                                                   <!-- Age -->
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
+                                    <a  class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->player_image;  ?>" class="img-fluid w-100" alt="">
+                                    
+                                       @if( $latestvideo['ThumbnailSetting']->free_or_cost_label == 1)
+                                          @if(!empty($latest_video->ppv_price))
+                                             <p class="p-tag1" ><?php echo $latestvideo['currency']->symbol.' '.$latest_video->ppv_price; ?></p>
+                                          @elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)) 
+                                             <p class="p-tag1"><?php echo $latest_video->global_ppv.' '. $latestvideo['currency']->symbol; ?></p>
+                                          @elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null )
+                                             <p class="p-tag" ><?php echo __("Free"); ?></p>
+                                          @endif
                                        @endif
-
-                                       @if($latestvideo['ThumbnailSetting']->duration == 1) 
-                                                   <!-- Duration -->
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                    </a>
+                                    @if( $latestvideo['ThumbnailSetting']->free_or_cost_label == 1)
+                                       @if(!empty($latest_video->ppv_price))
+                                          <p class="p-tag1" ><?php echo $latestvideo['currency']->symbol.' '.$latest_video->ppv_price; ?></p>
+                                       @elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)) 
+                                          <p class="p-tag1"><?php echo $latest_video->global_ppv.' '. $latestvideo['currency']->symbol; ?></p>
+                                       @elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null )
+                                          <p class="p-tag" ><?php echo __("Free"); ?></p>
                                        @endif
-                                    </div>
+                                    @endif
+                                    <div class="hover-buttons text-white">
+                                       @if( $latestvideo['ThumbnailSetting']->title == 1)  <!-- Title -->
+                                          <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
+                                          <p class="epi-name text-left m-0"><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></p>
+                                          </a>
+                                       @endif  
 
-                                    @if(($latestvideo['ThumbnailSetting']->published_year == 1) || ($latestvideo['ThumbnailSetting']->rating == 1))
                                        <div class="movie-time d-flex align-items-center pt-1">
-                                          @if($latestvideo['ThumbnailSetting']->rating == 1) <!--Rating  -->
-                                             <div class="badge badge-secondary p-1 mr-2">
-                                                <span class="text-white">
-                                                   <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                      {{ $latest_video->rating }}
-                                                </span>
-                                             </div>
+                                          @if($latestvideo['ThumbnailSetting']->age == 1) 
+                                                      <!-- Age -->
+                                             <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
                                           @endif
 
-                                          @if($latestvideo['ThumbnailSetting']->published_year == 1)   <!-- published_year -->
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                   <span class="text-white">
-                                                      <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                         {{ ($latest_video->year) }}
-                                                   </span>
-                                                </div>
-                                          @endif
-
-                                          @if($latestvideo['ThumbnailSetting']->featured == 1 &&  $latest_video->featured == 1) <!-- Featured -->
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                   <span class="text-white">
-                                                      <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                   </span>
-                                                </div>
+                                          @if($latestvideo['ThumbnailSetting']->duration == 1) 
+                                                      <!-- Duration -->
+                                             <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
                                           @endif
                                        </div>
-                                    @endif
 
-                                    <div class="hover-buttons">
-                                       <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
-                                          <span class="text-white">
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
-                                          </span>
-                                       </a>
-                                    <div>
+                                       @if(($latestvideo['ThumbnailSetting']->published_year == 1) || ($latestvideo['ThumbnailSetting']->rating == 1))
+                                          <div class="movie-time d-flex align-items-center pt-1">
+                                             @if($latestvideo['ThumbnailSetting']->rating == 1) <!--Rating  -->
+                                                <div class="badge badge-secondary p-1 mr-2">
+                                                   <span class="text-white">
+                                                      <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                         {{ $latest_video->rating }}
+                                                   </span>
+                                                </div>
+                                             @endif
+
+                                             @if($latestvideo['ThumbnailSetting']->published_year == 1)   <!-- published_year -->
+                                                   <div class="badge badge-secondary p-1 mr-2">
+                                                      <span class="text-white">
+                                                         <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                            {{ ($latest_video->year) }}
+                                                      </span>
+                                                   </div>
+                                             @endif
+
+                                             @if($latestvideo['ThumbnailSetting']->featured == 1 &&  $latest_video->featured == 1) <!-- Featured -->
+                                                   <div class="badge badge-secondary p-1 mr-2">
+                                                      <span class="text-white">
+                                                         <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                      </span>
+                                                   </div>
+                                             @endif
+                                          </div>
+                                       @endif
+
+                                       <div class="hover-buttons">
+                                          <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
+                                             <span class="text-white">
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
+                                             </span>
+                                          </a>
+                                       <div>
+                                    </div>
                                  </div>
-                              </div>
 
                               <div>
                                  <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $latest_video->id;?>">
