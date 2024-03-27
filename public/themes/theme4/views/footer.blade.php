@@ -146,10 +146,7 @@
    <!-- Slick Animation-->
     <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
    
-   <!-- Custom JS-->
-    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
-    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
-    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
+  
 
 <script>
     $(document).ready(function () {
