@@ -42,8 +42,15 @@
     background-position: -200px 0; /* Position of Android TV logo in sprite */
 }
 @media(max-width:425px){
-  .col-lg-6.d-flex.align-items-center.justify-content-center{
-    display:block !important;
+  
+  .container-fluid.px-5.mt-5{
+    padding:0 !important;
+  }
+  h5.font-weight-bold.mb-0 {
+      font-size: 12px;
+  }
+  footer p {
+      font-size: 15px;
   }
 }
 
