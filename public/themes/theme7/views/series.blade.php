@@ -136,10 +136,34 @@
         margin-left: 5rem;
     }
     .text-uppercase{
-        margin-bottom:30px;
+        margin-bottom:20px;
     }
     .slider-ratting.d-flex.align-items-center {
         margin-bottom: 30px;
+    }
+    a.nav-link.m-0.active.show {
+        opacity: 1;
+    }
+    a.nav-link.m-0 {
+        opacity: 0.5;
+    }
+    .nav-tabs{
+        border-bottom:0;
+    }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+        opacity: 1;
+        background-color: transparent;
+        border: none;
+        color:#fff;
+    }
+    .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+        border:none;
+    }
+    .nav-tabs .nav-item a{
+        border-bottom:none;
+    }
+    li::marker{
+        margin-right:1px;
     }
 </style>
 
@@ -190,6 +214,7 @@ style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))
                              {{-- year & season Count --}}
                              <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
                                  <span >{{ optional($series)->year }}</span>
+                                 <!-- <span class="trending-year"> {{$series->language }} </span> -->
                                  <span class="trending-year"> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
                             </div>
 
@@ -216,21 +241,9 @@ style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))
                                                        
 
                                                         {{-- Details --}}
-                                                        <?php
-$description = $series->details;
-$maxLength = 300;
-
-// Check if the description is longer than the maximum length
-if (strlen($description) > $maxLength) {
-    // Display only the first 300 characters
-    $shortDescription = substr($description, 0, $maxLength);
-    echo "<p id='artistDescription'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
-    echo "<p id='fullDescription' style='display:none;'>$description <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></p>";
-} else {
-    // If the description is not longer than 300 characters, display it as is
-    echo "<p id='artistDescription'>$description</p>";
-}
-?>
+                                <div class="trending-">
+                                    <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
+                                </div>
 
 
                         </div>
@@ -342,13 +355,17 @@ if (strlen($description) > $maxLength) {
 
                 @if(($season)->isNotEmpty())
 
-                    <div class="col-md-3 p-0" style="width:150px">
-                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                    
+                    <!-- <div class="col-md-12 p-0">
+                        <ul class="nav nav-tabs" id="seasonTabs" role="tablist">
                             @foreach ($season as $key => $seasons)
-                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link{{ $key == 0 ? ' active' : '' }}" id="season{{ $seasons->id }}-tab" data-toggle="tab" href="#season{{ $seasons->id }}" role="tab" aria-controls="season{{ $seasons->id }}" aria-selected="{{ $key == 0 ? 'true' : 'false' }}">{{ 'Season '. ($key + 1) }}</a>
+                                </li>
                             @endforeach
-                        </select>
-                    </div>
+                        </ul>
+                    </div> -->
+
                 
                     <div class="data">
                         @partial('season_depends_episode_section')
@@ -888,20 +905,6 @@ if (strlen($description) > $maxLength) {
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
-<script>
-    function toggleDescription() {
-        var shortDesc = document.getElementById('artistDescription');
-        var fullDesc = document.getElementById('fullDescription');
-
-        if (shortDesc.style.display === 'none') {
-            shortDesc.style.display = 'block';
-            fullDesc.style.display = 'none';
-        } else {
-            shortDesc.style.display = 'none';
-            fullDesc.style.display = 'block';
-        }
-    }
-</script>
 
 
 
