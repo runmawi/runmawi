@@ -131,8 +131,7 @@
    <!-- Bootstrap JS -->
    <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
    
-   <!-- Slick JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
+   
    
    <!-- owl carousel Js -->
    <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
