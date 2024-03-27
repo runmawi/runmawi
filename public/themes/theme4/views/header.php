@@ -200,6 +200,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!-- Custom JS-->
+    <script rel="preload" fetchpriority="high" src="{{ asset('public/themes/theme4/assets/js/custom.js') }}"></script>
+
+    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
+    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
+    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
+
+    
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 

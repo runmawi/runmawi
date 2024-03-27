@@ -231,7 +231,7 @@ i.fa.fa-google-plus {
     line-height: 18px;
     display: flex;
     align-items: center;
-    color: #000;
+    /* color: #000; */
 }
     .get{
    color: #fff;
@@ -338,7 +338,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
+  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -551,7 +551,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                 <div class="col-md-12 d-flex align-items-center links" id="mob">
                                     <input id="password-confirm" type="checkbox" name="terms" value="1" required>
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
-                                        <p class="text-left agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                        <p class="text-left text-white agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
                                         </a>
                                     </label>
                                 </div>
