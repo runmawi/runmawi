@@ -35,8 +35,8 @@
 }
 @media(max-width:991px) {
     video {
-    object-fit: fill;
-}
+        object-fit: fill;
+    }
   li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 10px; }
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }
@@ -75,6 +75,9 @@
   .iq-main-slider{/*padding-top:60px!important;*/}
   .m-profile {padding-top: 100px;padding-bottom: 60px;}
   .trending-info .trending-dec{width: 52%;}
+  .ml-auto, .mx-auto {
+      margin-left: unset !important;
+  }
 }
 @media(max-width:768px) {
   li.slide-item .block-images::before { content: none; }
