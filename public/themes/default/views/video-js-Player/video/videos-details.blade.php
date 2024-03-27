@@ -414,9 +414,9 @@
                                                         @endif
                                                      @endif
         
-                                                     @if ($ThumbnailSetting->published_on == 1)
+                                                     <!-- @if ($ThumbnailSetting->published_on == 1)
                                                        <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
+                                                    @endif -->
                                                 </div>
                                             </div>
                                                     
@@ -439,9 +439,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 </a>
                                                            <!-- PPV price -->
                                                         @if ($ThumbnailSetting->free_or_cost_label == 1)
@@ -458,9 +458,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
 
@@ -527,7 +527,7 @@
                                                         @endif
                                                     </a>
 
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">{{ __('Watch Now') }}</a>
+                                                    <a class="epi-name text-white mb-0 btn btn-primary" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">{{ __('Watch Now') }}</a>
 
                                                 </div>
                                             </div>
