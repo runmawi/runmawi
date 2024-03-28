@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use App\Subscription;
 use App\SubscriptionPlan;
 use App\PaymentSetting;
-use App\AppEmailTemplate;
+use App\EmailTemplate;
 use App\CurrencySetting;
 use App\HomeSetting;
 use App\ModeratorsUser;
