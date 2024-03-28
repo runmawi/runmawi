@@ -1181,7 +1181,7 @@
             border: none !important;
             background-color: transparent !important;
             /* padding: 6px 15px; */
-            padding: 10px 0 !important;
+            /* padding: 10px 0 !important; */
         }
 
         #MuteButton::before {
@@ -1282,7 +1282,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555" heiht="343" style="">
+                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555" heiht="343" alt="v1">
                     </div>
                 </div>
             </div>
@@ -1333,7 +1333,7 @@
 
                             @foreach ($SeriesGenre as $key => $category)
                                 @if ($key <= 8)
-                                    <li class="nav-item">
+                                    <li class="nav-item" role="tab">
                                         <a class="{{ 'nav-link' . ' ' . 'series-category-key-id-' . ($key + 1) }}"
                                             id="pills-profile-tab" data-toggle="pill"
                                             data-category-id={{ $category->id }} onclick="Series_Category(this)"
@@ -1356,23 +1356,22 @@
                                         style="display: flex; justify-content: start; flex-direction: column;">
                                         @foreach ($SeriesGenre as $key => $category)
                                             @if ($key > 8)
-                                                <li class="nav-item">
+                                                <li class="nav-item" role="tab">
                                                     <a class="nav-link " id="pills-kids-tab" data-toggle="pill"
                                                         data-category-id={{ $category->id }}
                                                         onclick="Series_Category(this)" href="#pills-kids"
                                                         role="tab" aria-controls="pills-kids"
-                                                        aria-selected="false">{{ $category->name }}</a>
+                                                        aria-selected="false">{{ $category->name }}
+                                                    </a>
+                                                </li>
                                             @endif
                                         @endforeach
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>
-                    </li>
                 </div>
-            </div>
-            </div>
-
-            </ul>
             </div>
             <div class="container">
 
@@ -1636,7 +1635,7 @@
                                 <div class="col-lg-6 pa">
                                     <div></div>
                                     <div class=" lan">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" alt="v3">
                                         <h4 class="">User Feedback and Interaction</h4>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
@@ -1646,7 +1645,7 @@
                                 <div class="col-lg-6 p-0">
                                     <div></div>
                                     <div class="lan ">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" alt="v4">
                                         <h4 class="">Aggregated User generated content</h4>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
@@ -1654,7 +1653,7 @@
                                 </div>
 
                                 <div class=" col-lg-6 rated mt-3">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" alt="v5">
                                     <h4 class="">Curated multiformat<br> training content</h4>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
@@ -1725,7 +1724,7 @@
 
                         <p class=" map">“Salute has inspired me to work smarter on
                             my craft using Technology as a Dj.”</p>
-                        <h4 class="text-black">LIYA NDAMASE</h4>
+                        <p class="text-white">LIYA NDAMASE</p>
                         <p>Television</p>
                     </div>
 
@@ -1735,7 +1734,7 @@
                         </div>
                         <p class=" map" style="margin-bottom:0;">“Through the digital marketing course on NEMISA TV. I was able to create a
                             successful online skateboard.”</p>
-                        <h4 class="text-black" style="margin-bottom:0;">MUSA BALOYI</h4>
+                        <p class="text-white" style="margin-bottom:0;">MUSA BALOYI</p>
                         <p>Sound</p>
                     </div>
 
@@ -1745,7 +1744,7 @@
                         </div>
                         <p class=" map">“A data free content is the next big
                             thing. I love NEMISA TV.”</p>
-                        <h4 class="text-black">JOEY MANGKA</h4>
+                        <p class="text-white">JOEY MANGKA</p>
                         <p>Web Developer</p>
                     </div>
                 </div>
@@ -1790,7 +1789,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="comp">
-                                <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" style="">
+                                <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" alt="comp">
                             </div>
                             <h3>Watch Everywhere</h3>
                             <p>Watch videos, podcasts and live events
@@ -1802,7 +1801,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color1" style="min-height: 266px;">
                             <div class="clive">
-                                <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" style="">
+                                <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" alt="clive">
                             </div>
                             <h3>Stream Live </h3>
                             <p>Stream unlimited videos, podcasts
@@ -1816,7 +1815,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="set">
-                                <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" style="">
+                                <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" alt="set">
                             </div>
                             <h3>Quality Videos</h3>
                             <p>Explore our edutainment video
