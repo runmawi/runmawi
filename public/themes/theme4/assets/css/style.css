@@ -1204,4 +1204,7 @@ section#iq-favorites .img-fluid{
     height: 120px;
     width:100%;
 }
+ul#trending-slider-nav {
+    flex-flow: nowrap;
+}
 
