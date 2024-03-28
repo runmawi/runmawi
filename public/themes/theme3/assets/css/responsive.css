@@ -82,7 +82,7 @@
   .trending-info .trending-dec { width: 100%; }
   .banner-wrapper .trending-info .trending-dec { text-align: left; }
   .trending-pills { flex-direction: column; }
-  .container-fluid { padding-left: 15px; padding-right: 15px; }
+  .container-fluid { padding-left: 15px !important; padding-right: 15px !important; }
   #home-slider h1.slider-text {line-height: 62px; margin: 0px; }
   .trending-info .block-social.social1 { margin-left: 0 !important; }
   .trending-info .trending-text { font-size: 35px !important; line-height: 1.3; }
