@@ -6,8 +6,7 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <th scope="row" class="time"> {{ $item->converted_start_time }}  -  {{ $item->converted_end_time }}  </th>
-                                </th>
+                                <td  class="time"> {{ $item->converted_start_time }}  -  {{ $item->converted_end_time }}  <small> {{ $item->TimeZone->time_zone }}</small> </td>
                                 <td><h6>{{ ucwords($item->socure_title) }}</h6></td>
                             </tr>
                         </tbody>

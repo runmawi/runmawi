@@ -800,6 +800,9 @@ header#main-header.menu-sticky{
 nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
    display:none !important;
 }
+div#search_list ul.list-group{
+   height: calc(100vh - 120px);
+}
 
 </style>
 
@@ -928,7 +931,7 @@ nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
     flex-direction: column;
     align-items: flex-start;
     /* text-align: left; */
-    width: 200px;
+    /* width: 200px; */
     height: auto;
     position:relative;
     top:-50px;

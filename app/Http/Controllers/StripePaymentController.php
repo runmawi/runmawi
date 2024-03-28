@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use App\Subscription;
 use App\SubscriptionPlan;
 use App\PaymentSetting;
-use App\AppEmailTemplate;
+use App\EmailTemplate;
 use App\CurrencySetting;
 use App\HomeSetting;
 use App\ModeratorsUser;
@@ -222,7 +222,7 @@ class StripePaymentController extends Controller
                     \Mail::send('emails.subscriptionmail', array(
 
                         'name'          => ucwords($user->username),
-                        'paymentMethod' => $paymentMethod,
+                        'paymentMethod' => ucwords('recurring'),
                         'plan'          => ucfirst($plandetail->plans_name),
                         'price'         => $subscription->plan['amount_decimal'] / 100 ,
                         'plan_id'       => $subscription['plan']['id'] ,
