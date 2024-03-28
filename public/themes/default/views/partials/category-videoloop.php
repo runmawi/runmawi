@@ -128,7 +128,11 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                <?php if(!empty($category_video->player_image)) { ?>
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid loading w-100" alt="playerimage">
+                                <?php } else { ?>
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid loading w-100" alt="l-img">
+                                <?php } ?>
                                 
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
