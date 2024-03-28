@@ -32,7 +32,7 @@
                                 <li data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" >
                                         </div>
                                     </a>
                                 </li>

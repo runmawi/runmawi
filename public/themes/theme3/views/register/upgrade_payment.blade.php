@@ -849,7 +849,7 @@
 
                         <div class="plan-card">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-lg-6 col-12">
                                     @foreach ($plans_data_signup_checkout as $key => $plan)
                                         <div class="card" >
                                             <div class="card-body">
@@ -865,6 +865,11 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
 
 
 
