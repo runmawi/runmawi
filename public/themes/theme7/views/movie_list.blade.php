@@ -43,8 +43,58 @@
                                            foreach($videos as $category_video): 
                                         ?>
 
-                                        <li class="slide-item">
-                                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+
+
+                                <li class="slide-item">
+                                    <div class="block-images position-relative">
+                                        
+                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+
+                                            <div class="img-box">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="">
+                                            </div>
+
+                                            <div class="block-description">
+                                                <p> {{ strlen($category_video->title) > 17 ? substr($category_video->title, 0, 18) . '...' : $category_video->title }}
+                                                </p>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                        {{ optional($category_video)->age_restrict.'+' }}
+                                                    </div>
+
+                                                    <span class="text-white">
+                                                        {{ $category_video->duration != null ? gmdate('H:i:s', $category_video->duration) : null }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Play Now
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                                {{-- WatchLater & wishlist --}}
+
+                                        @php
+                                            $inputs = [
+                                                'source_id'     => $latest_video->id ,
+                                                'type'          => 'channel',  // for videos - channel
+                                                'wishlist_where_column'    => 'video_id',
+                                                'watchlater_where_column'  => 'video_id',
+                                            ];
+                                        @endphp
+
+                                        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+
+                                    </div>
+                                </li>
+
+                                        <!-- <li class="slide-item">
+                                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                 <div class="block-images position-relative">
                                               
                                                 <div class="img-box">
@@ -65,7 +115,7 @@
                                                                 </p>
                                                             @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
                                                                 <p class="p-tag" > 
-                                                                    {{  __("Free") }} 
+                                                                    {{  "Free"}} 
                                                                 </p>
                                                             @endif
                                                         @endif 
@@ -73,7 +123,7 @@
 
                                                 <div class="block-description">
                     
-                                                        @if($ThumbnailSetting->title == 1)          <!-- Title -->
+                                                        @if($ThumbnailSetting->title == 1)         
                                                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                                 <h6>
                                                                     <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
@@ -82,13 +132,13 @@
                                                         @endif
                     
                                                         <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->age == 1)   <!-- Age -->            
+                                                            @if($ThumbnailSetting->age == 1)    
                                                                 <div class="badge badge-secondary p-1 mr-2">
                                                                     {{ $category_video->age_restrict.' '.'+' }} 
                                                                 </div>
                                                             @endif
                         
-                                                            @if($ThumbnailSetting->duration == 1)    <!-- Duration -->
+                                                            @if($ThumbnailSetting->duration == 1)  
                                                                 <span class="text-white">
                                                                     <i class="fa fa-clock-o"></i>
                                                                  {{ gmdate('H:i:s', $category_video->duration) }}
@@ -98,7 +148,7 @@
                                                        
                                                         @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) 
                                                             <div class="movie-time d-flex align-items-center pt-1">
-                                                                @if($ThumbnailSetting->rating == 1)   <!--Rating  -->   
+                                                                @if($ThumbnailSetting->rating == 1)      
                                                                     <div class="badge badge-secondary p-1 mr-2">
                                                                         <span class="text-white">
                                                                             <i class="fa fa-star-half-o" aria-hidden="true"></i>
@@ -107,7 +157,7 @@
                                                                     </div>
                                                                 @endif
                     
-                                                                @if($ThumbnailSetting->published_year == 1)    <!-- published_year -->                                               
+                                                                @if($ThumbnailSetting->published_year == 1)                                           
                                                                     <div class="badge badge-secondary p-1 mr-2">
                                                                         <span class="text-white">
                                                                             <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -116,7 +166,7 @@
                                                                     </div>
                                                                 @endif
                     
-                                                                @if($ThumbnailSetting->featured == 1 && $category_video->featured == 1) <!-- Featured -->
+                                                                @if($ThumbnailSetting->featured == 1 && $category_video->featured == 1) 
                                                                     <div class="badge badge-secondary p-1 mr-2">
                                                                         <span class="text-white">
                                                                             <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -126,7 +176,7 @@
                                                             </div>
                                                         @endif
                     
-                                                        <div class="movie-time d-flex align-items-center pt-1">  <!-- Category Thumbnail  setting -->        
+                                                        <div class="movie-time d-flex align-items-center pt-1">  
                                                           <?php
                                                           $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
                                                                       ->where('categoryvideos.video_id',$category_video->video_id)
@@ -150,13 +200,13 @@
                                                     <div class="hover-buttons">
                                                         <a type="button" class="text-white d-flex align-items-center"
                                                              href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme7_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
+                                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                                         </a>
                                                         <div class="d-flex"></div>  
                                                     </div>                
                                                 </div>
-                                                 </a>
-                                        </li>
+                                            </a>
+                                        </li> -->
 
                                         <?php  endforeach;    endif; ?>
                                     </ul>

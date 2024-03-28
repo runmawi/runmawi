@@ -6,29 +6,83 @@
   use Carbon\Carbon;
 ?>
 
+<style>
+  .store-logos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.store-logos a {
+    display: inline-block;
+}
+
+.android-logo, .ios-logo, .android-tv-logo {
+    /* width: 100px;
+    height: 60px; */
+    background-image: url(<?php echo URL::to('/assets/img/spritesheet.webp')?>);
+    background-repeat: no-repeat;
+}
+
+.android-logo {
+    background-position: 0 0;
+    width: 120px;
+    height: 60px;
+    background-size: cover;
+}
+
+.ios-logo {
+    background-position: -118px 0;
+    width: 120px;
+    height: 60px;
+    background-size: cover;
+}
+
+.android-tv-logo {
+    background-position: -200px 0; /* Position of Android TV logo in sprite */
+}
+@media(max-width:425px){
+  
+  .container-fluid.px-5.mt-5{
+    padding:0 !important;
+  }
+  h5.font-weight-bold.mb-0 {
+      font-size: 12px;
+  }
+  footer p {
+      font-size: 15px;
+  }
+}
+
+</style>
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
          
           <div class="col-lg-6 d-flex align-items-center justify-content-center">
-          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+            <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
-          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  ">Download App</h5>
-          <?php } ?>
-          <div class=" small m-0 text-white ">
-             <div class="map1"> 
-              <?php if(!empty($app_settings->android_url)){ ?>
-                 <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.webp')?>" /></a>
-              <?php } ?>
-              <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.webp')?>"  /></a>
-              <?php } ?>
-              <?php if(!empty($app_settings->android_tv)){ ?>
-              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" />
-              <?php } ?>
-              </div>
+            <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+                <h5 class="font-weight-bold mb-0  ">Download App</h5>
+            <?php } ?>
+            <div class=" small m-0 text-white ">
+              <div class="store-logos"> 
+                <?php if(!empty($app_settings->android_url)){ ?>
+                    <a href="<?= $app_settings->android_url ?>">
+                        <div class="android-logo"></div>
+                    </a>
+                <?php } ?>
+                <?php if(!empty($app_settings->ios_url)){ ?>
+                    <a href="<?= $app_settings->ios_url ?>">
+                        <div class="ios-logo"></div>
+                    </a>
+                <?php } ?>
+                <?php if(!empty($app_settings->android_tv)){ ?>
+                    <div class="android-tv-logo"></div>
+                <?php } ?>
+            </div>
+
               
             <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
           </div>
@@ -81,10 +135,6 @@ entertainment.</p>
                           <i class="fa fa-skype"></i>
                       </a>
                       <?php } ?>
-
-                     
-
-                   
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1">

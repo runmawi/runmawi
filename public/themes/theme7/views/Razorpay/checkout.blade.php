@@ -1,6 +1,6 @@
-@php  include(public_path('themes/theme7/views/header.php')); @endphp
+@php  include(public_path('themes/theme6/views/header.php')); @endphp
 
-<button id="rzp-button1" hidden>{{ __('Pay')  }}</button>
+<button id="rzp-button1" hidden>Pay</button>
 
 <div class="col-lg-12  h-100">
     <div class="d-flex justify-content-center">
@@ -16,7 +16,7 @@ var options = {
     "currency": "INR",
     "name": "{{$respond['name']}}",
     "description": "{{$respond['description']}}",
-    "image": "{{ front_end_logo() }}",
+    "image": "https://example.com/your_logo",
     "handler": function (response){
 
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
@@ -24,18 +24,6 @@ var options = {
         document.getElementById('razorpay_signature').value = response.razorpay_signature;
 
         document.getElementById('razorpay_respond').click();
-    },
-    "modal": {
-        "ondismiss": function(){
-            let pop_close_confirm = confirm('Are you sure to close the Payment ?');
-
-            if (pop_close_confirm === true) {
-                let redirection_back = "{{ $respond['redirection_back'] }}";
-                window.location.href = redirection_back;
-            } else {
-                location.reload();
-            }
-        }
     },
     "prefill": {
         "name": "{{$respond['user_name']}}",
@@ -49,9 +37,12 @@ var options = {
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
         alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
         alert(response.error.reason);
-            // alert(response.error.metadata.order_id);
-            // alert(response.error.metadata.payment_id);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
 });
 window.onload = function(){
     document.getElementById('rzp-button1').click();
@@ -73,9 +64,9 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="cityName"    id="cityName" value= {{ $respond['cityName'] }} />
     <input type="text"  name="regionName"  id="regionName" value= {{ $respond['regionName'] }}   />
 
-    <button type="submit" id="razorpay_respond">{{ __('Pay')  }}</button>
+    <button type="submit" id="razorpay_respond">Pay</button>
 </form>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp

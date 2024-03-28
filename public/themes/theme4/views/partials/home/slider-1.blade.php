@@ -232,7 +232,7 @@
 
 {{-- Tv-shows Episode Slider  --}}
 
-@if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
+<!-- @if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
     @foreach ($Episode_sliders as $item)
 
         <div class="slide slick-bg s-bg-1" style="background: url('{{ $item->image ? URL::to('public/uploads/images/'.$item->player_image) : default_vertical_image_url() }}'); background-repeat: no-repeat;background-size: cover;" >
@@ -252,13 +252,11 @@
                                 <span class="ml-3"> {{ 'E '.$item->episode_order }}  </span>
                             </div>
 
-                            {{-- Description with "See more" option --}}
                             <div class="description-container">
                                 <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
                                     {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
                                 </p>
                             </div>
-                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->description, 0, 150))) !!} </p> -->
 
                             <div class="p-btns">
                                 <div class="d-flex align-items-center p-0">
@@ -272,7 +270,7 @@
             </div>
         </div>
     @endforeach
-@endif
+@endif -->
 
         {{-- Video Category Banner --}}
 

@@ -24,18 +24,20 @@
 
     .ScrollStyle {
         overflow-y: auto;
-        max-height: 200px; /* Set a maximum height for the scrollable area */
+        max-height: 250px; /* Set a maximum height for the scrollable area */
     }
 
     .main-data-scr .draggable {
-        margin-bottom: 10px;
+        margin-bottom: 0;
          width: 100%;
          flex-basis:45%;
+         padding:0;
         /* display:flex;
         align-items:center; */
     }
     .draggable{
         width:100%;
+        padding:0;
     }
     .drop-side .drag-container{
         display:flex;
@@ -57,12 +59,14 @@
         min-height: 100px; /* Set a minimum height for the drop zone */
         border: none;
         margin-bottom: 10px;
-        display: flex;
+        display: list-item;
         flex-wrap:wrap;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust the column width as needed */
         gap: 10px;
         padding: 10px;
         overflow-x:hidden;
+        margin:2px;
+        border-radius:0;
     }
 
     .form-control {
@@ -98,12 +102,14 @@
         background-color: transparent !important;
         padding: 10px 5px;
         font-size: 14px;
+        border:none;
+        text-align:left;
     }
 
     .drag-container img {
         /* object-fit: cover !important; */
         height: auto !important;
-        /* width: 100%; */
+        width: 3%;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
     }
@@ -113,6 +119,7 @@
         border: 0px solid #cecece;
         border-radius: 5px;
         box-shadow: none;
+        display:flex;
     }
     .filterButton{
         display: flex;
@@ -136,7 +143,7 @@
         text-align:center;
     }
     .main-data-scr img{
-        width: 100%;
+        width: 10%;
     }
     tbody{
         border: 1px solid #dee2e6;
@@ -317,8 +324,8 @@
                             </div>
                         </div>
                     </div>
-                     <div class="row">
-                        <div class="col-md-5 p-0">
+                     <div class="row mt-4">
+                        <div class="col-md-3 p-0">
                             <div class="drop-zone ScrollStyle MainData main-data-scr" >
                                 @foreach(@$VideoCollection as $value)
 
@@ -327,12 +334,13 @@
                                         <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                                         <input type="text" class="form-control  video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                         <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
+                                        <p>{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
                         </div>
-                        <div class="col-md-7 drop-side">
+                        <div class="col-md-9 drop-side p-0">
                                 <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)" style="height:100%;"></div>
 
                         </div>

@@ -242,24 +242,29 @@ font-weight: 600;
     .bg-light{
         background-color: #fff!important;
     }
+    @media (max-width:425px){
+    .my-sm-0{
+        font-size:14px;
+    }
+    .login-header-logo{
+        width:100px;
+    }
+}
 </style>
     </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> -->
 
-  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-    
-
-      <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
-      <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
-    
-  </div>
+    <div class="justify-content-end" id="navbarSupportedContent">
+        <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
+        <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
+    </div>
 </div></nav>
 <section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;display: flex;
     justify-content: center;
@@ -361,16 +366,17 @@ font-weight: 600;
                            <div class="sign-info mt-1">
                               <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 1px;font-size:20px;font-weight: 600;">START EXPLORING TODAY</button>
                            </div> 
-                                  <div class="mt-3">
-                  <div class="d-flex   links">
-                     
-                      <p class="text-left agree mb-0">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
-                      
-                  </div>
-                                     <!--  <div class=" pt-4 mb-2">
-                          <hr style="border-color:#fff;" >
-                          <p class="bg-white" style="position: relative;top: -23px;left: ;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
-                      </div>-->
+                           <!-- <div class="col-md-12 d-flex align-items-center links" id="mob">
+                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
+                                    <p class="text-left agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                    </a>
+                                </label>
+                            </div> -->
+                            <div class="mt-3">
+                                <div class="d-flex   links">
+                                    <p class="text-left agree mb-0">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                </div>
                                         <div class="form-group row mb-0 justify-content-center mt-4">
 						@if ( config('social.google') == 1 )
                            

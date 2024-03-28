@@ -144,6 +144,7 @@ use App\TranslationLanguage as TranslationLanguage;
 use App\AdminOTPCredentials ;
 use App\Document ;
 use App\DocumentGenre ;
+use App\AdminVideoAds;
 
 
 class ApiAuthController extends Controller
@@ -1651,7 +1652,8 @@ public function verifyandupdatepassword(Request $request)
 
       $choose_player = SiteTheme::pluck('choose_player')->first();
   
-      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request,$choose_player){
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player){
+
           $item['details']        = strip_tags($item->details);
           $item['description']    = strip_tags($item->description);
           $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
@@ -1728,7 +1730,7 @@ public function verifyandupdatepassword(Request $request)
           $current_time = Carbon::now()->format('H:i:s');
           $advertisement_plays_24hrs = Setting::pluck('ads_play_unlimited_period')->first();
 
-          $video_js_mid_advertisement_sequence_time = $item->video_js_mid_advertisement_sequence_time != null ? Carbon::parse( $item->video_js_mid_advertisement_sequence_time )->secondsSinceMidnight()  : '300';
+          $video_js_mid_advertisement_sequence_time = $item->video_js_mid_advertisement_sequence_time != null ? Carbon::parse( $item->video_js_mid_advertisement_sequence_time )->secondsSinceMidnight()  : '0';
 
           $item['video_js_pre_position_ads_url']  = null ;
           $item['video_js_mid_position_ads_urls']  = array() ;
@@ -1739,19 +1741,94 @@ public function verifyandupdatepassword(Request $request)
 
           if( $plans_ads_enable_status  == 1  && $choose_player == 1 ){
 
+                $admin_video_ads = AdminVideoAds::where('video_id',$item->id)->whereJsonContains('ads_devices',['android'])->first();
+
+                if( isset($request->ads_devices)){
+
+                  switch ($request->ads_devices) {
+
+                    case 'android':
+                      $ads_devices = 'andriod';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->andriod_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->andriod_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->andriod_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->andriod_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->andriod_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+  
+                    case 'IOS':
+                      $ads_devices = 'IOS';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->ios_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->ios_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->ios_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->ios_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->ios_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+                      
+                    case 'roku':
+                      $ads_devices = 'roku';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->roku_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->roku_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->roku_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->roku_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->roku_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+  
+                    case 'lg':
+                      $ads_devices = 'lg';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->lg_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->lg_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->lg_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->lg_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->lg_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+  
+                    case 'samsung':
+                      $ads_devices = 'samsung';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->samsung_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->samsung_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->samsung_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->samsung_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->samsung_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+  
+                    case 'tv':
+                      $ads_devices = 'tv';
+                      $ads_devices_vj_pre_position_ads  = !is_null($admin_video_ads) ? $admin_video_ads->tv_vj_pre_postion_ads   : null  ;
+                      $ads_devices_vj_post_position_ads = !is_null($admin_video_ads) ? $admin_video_ads->tv_vj_post_position_ads  : null ;
+                      $ads_devices_vj_mid_ads_category  = !is_null($admin_video_ads) ? $admin_video_ads->tv_vj_mid_ads_category  : null ;
+                      $ads_devices_vj_mid_sequence      = !is_null($admin_video_ads) && $admin_video_ads->tv_mid_sequence_time  != null ? Carbon::parse( $admin_video_ads->tv_mid_sequence_time  )->secondsSinceMidnight()  : '300';
+                      break;
+  
+                    default:
+                      $ads_devices_vj_pre_position_ads  = null ;
+                      $ads_devices_vj_post_position_ads = null ;
+                      $ads_devices_vj_mid_ads_category  = null ;
+                      $ads_devices_vj_mid_sequence      = '0';
+                      break;
+                  }
+
+                }else{
+                    $ads_devices_vj_pre_position_ads  = $item->video_js_pre_position_ads  ;
+                    $ads_devices_vj_post_position_ads = $item->video_js_post_position_ads ;
+                    $ads_devices_vj_mid_ads_category  = $item->video_js_mid_position_ads_category ;
+                    $ads_devices_vj_mid_sequence      = $video_js_mid_advertisement_sequence_time ;
+                }
+               
+
                   // Pre-advertisement 
 
                 $item['video_js_pre_position_ads_url']  = Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
                                               ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
                                               ->where('advertisements.status', 1)
 
-                                              ->when( $item->video_js_pre_position_ads == 'Random', function ($query) {
+                                              ->when( isset($request->ads_devices) , function ($query) use ($request) {
+
+                                                return $query->whereJsonContains('advertisements.ads_devices',[ $request->ads_devices ]);
+                                              })
+
+                                              ->when( $ads_devices_vj_pre_position_ads == 'Random', function ($query) {
 
                                                   return $query->inRandomOrder();
 
-                                              }, function ($query) use ($item) {
+                                              }, function ($query) use ($item , $ads_devices_vj_pre_position_ads ) {
 
-                                                  return $query->where('advertisements.id', $item->video_js_pre_position_ads );
+                                                  return $query->where('advertisements.id', $ads_devices_vj_pre_position_ads  );
 
                                               })
 
@@ -1772,14 +1849,19 @@ public function verifyandupdatepassword(Request $request)
                                           ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
                                           ->where('advertisements.status', 1)
                                           ->groupBy('advertisements.id')
+                                          
+                                          ->when( isset($request->ads_devices) , function ($query) use ($request) {
 
-                                          ->when( $item->video_js_mid_position_ads_category == 'random_category', function ($query) {
+                                            return $query->whereJsonContains('advertisements.ads_devices',[ $request->ads_devices ]);
+                                          })
+
+                                          ->when( $ads_devices_vj_mid_ads_category == 'random_category', function ($query) {
 
                                                   return $query ;
 
-                                              }, function ($query) use ($item) {
+                                              }, function ($query) use ($item , $ads_devices_vj_mid_ads_category) {
 
-                                                  return $query->where('advertisements.ads_category', $item->video_js_mid_position_ads_category);
+                                                  return $query->where('advertisements.ads_category', $ads_devices_vj_mid_ads_category );
 
                                               })
 
@@ -1790,7 +1872,9 @@ public function verifyandupdatepassword(Request $request)
                                                       ->whereTime('ads_events.end', '>=', $current_time);
                                                   })
                                           
-                                          ->pluck('ads_path');
+                                          ->pluck('ads_path')->map(function ($item) {
+                                            return (object) ['ads_path' => $item];
+                                        });
 
                   // Post-advertisement 
 
@@ -1798,13 +1882,18 @@ public function verifyandupdatepassword(Request $request)
                                               ->join('ads_events','ads_events.ads_id','=','advertisements.id')
                                               ->where('advertisements.status', 1 )
 
-                                              ->when( $item->video_js_pre_position_ads == 'Random', function ($query) {
+                                              ->when( isset($request->ads_devices) , function ($query) use ($request) {
+
+                                                return $query->whereJsonContains('advertisements.ads_devices',[ $request->ads_devices ]);
+                                              })
+
+                                              ->when( $ads_devices_vj_post_position_ads == 'Random', function ($query) {
 
                                                   return $query->inRandomOrder();
 
-                                                  }, function ($query) use ($item) {
+                                                  }, function ($query) use ($item , $ads_devices_vj_post_position_ads) {
 
-                                                  return $query->where('advertisements.id', $item->video_js_post_position_ads);
+                                                  return $query->where('advertisements.id', $ads_devices_vj_post_position_ads );
 
                                                   })
 
@@ -1819,12 +1908,13 @@ public function verifyandupdatepassword(Request $request)
                                               ->pluck('ads_path')
                                               ->first();
 
-              $item['video_js_mid_advertisement_sequence_time_second'] = $video_js_mid_advertisement_sequence_time ; 
+              $item['video_js_mid_advertisement_sequence_time_second'] = $ads_devices_vj_mid_sequence ; 
 
           }
 
           return $item;
         });
+
 
         $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
         
@@ -22913,16 +23003,19 @@ public function TV_login(Request $request)
               if (isset($exchangeRates['rates'][$targetCurrency])) {
                   $conversionRate = $exchangeRates['rates'][$targetCurrency];
                   $convertedAmount = $amount * $conversionRate;
-  
+                  $formattedAmount = number_format($convertedAmount, 2);
+
                   // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
               } else {
                   // echo "Conversion rate for {$targetCurrency} not available.";
                   $convertedAmount = '';
+                  $formattedAmount = '';
               }
           } else {
               // echo "Exchange rates data not found in the API response.";
               $convertedAmount = '';
-          }
+              $formattedAmount = '';
+            }
       }
       curl_close($ch);
 
@@ -22930,7 +23023,7 @@ public function TV_login(Request $request)
 
         'status'  => true,
         'Message' => 'Retrieve the Currency Converter',
-        'Currency_Converted' => $Currency_symbol.' '.$convertedAmount ,
+        'Currency_Converted' => $Currency_symbol.' '.$formattedAmount ,
 
       );
 

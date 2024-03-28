@@ -13,8 +13,8 @@
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
-                            <h3 class="vid-title"  > {{  __("Showing Videos for") }} "{{  $search_value }}"</h3>  
-                            <h3 class="vid-title"> <a href="{{ route('searchResult_videos', $search_value) }}"> {{  __("view all") }} </a></h3> 
+                            <h3 class="vid-title"  > Showing  videos for "{{  $search_value }}"</h3>  
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_videos', $search_value) }}"> view all </a></h3> 
                         </div>                 
                     </div>
                     
@@ -38,7 +38,7 @@
                                                             </p>
                                                         @elseif($video_search->global_ppv == null && $video_search->ppv_price == null )
                                                             <p class="p-tag" > 
-                                                                {{  __("Free")}} 
+                                                                {{  "Free"}} 
                                                             </p>
                                                         @endif
                                                     </div>
@@ -121,7 +121,7 @@
                                                             <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video_search->slug ?>">	
                                                                 <span class="text-white">
                                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                        {{ __("Watch Now") }}
+                                                                        {{ "Watch Now" }}
                                                                 </span>
                                                             </a>
                                                         <div>
@@ -147,8 +147,8 @@
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
-                            <h3 class="vid-title"> {{  __("Showing  Episode for") }} "{{  $search_value }}"</h3>    
-                            <h3 class="vid-title"> <a href="{{ route('searchResult_episode', $search_value) }}"> {{  __("view all") }} </a></h3> 
+                            <h3 class="vid-title"> Showing  Episode for "{{  $search_value }}"</h3>    
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_episode', $search_value) }}"> view all </a></h3> 
                         </div>                         
                     </div>
                     
@@ -177,7 +177,7 @@
                                                             </p>
                                                         @elseif($episode_search->global_ppv == null && $episode_search->ppv_price == null )
                                                             <p class="p-tag" > 
-                                                                {{  __("Free")}} 
+                                                                {{  "Free"}} 
                                                             </p>
                                                         @endif
                                                 </div>
@@ -238,7 +238,7 @@
                                                         <a  href="{{ URL::to('episode') .'/'.$series_slug.'/'. $episode_search->slug }}" >	
                                                             <span class="text-white">
                                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                    {{ __("Watch Now") }}
+                                                                    {{ "Watch Now" }}
                                                             </span>
                                                         </a>
                                                     <div>
@@ -266,8 +266,8 @@
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
-                            <h3 class="vid-title"> {{  __("Showing  Series for") }} "{{  $search_value }}"</h3>   
-                            <h3 class="vid-title"> <a href="{{ route('searchResult_series', $search_value) }}">{{  __("view all") }}  </a></h3> 
+                            <h3 class="vid-title"> Showing  Series for "{{  $search_value }}"</h3>   
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_series', $search_value) }}"> view all </a></h3> 
                         </div>                     
                     </div>
                     
@@ -335,7 +335,7 @@
                                                     <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">	
                                                         <span class="text-white">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ __("Watch Now") }}
+                                                                {{ "Watch Now" }}
                                                         </span>
                                                     </a>
                                                 <div>
@@ -363,8 +363,8 @@
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
-                            <h3 class="vid-title"> {{  __("Showing  Live Stream for") }} "{{  $search_value }}"</h3>  
-                            <h3 class="vid-title"> <a href="{{ route('searchResult_livestream', $search_value) }}"> {{  __("view all") }} </a></h3> 
+                            <h3 class="vid-title"> Showing  Live Stream for "{{  $search_value }}"</h3>  
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_livestream', $search_value) }}"> view all </a></h3> 
                         </div>                       
                     </div>
                     
@@ -389,7 +389,7 @@
                                                         </p>
                                                     @elseif($livestream_search->global_ppv == null && $livestream_search->ppv_price == null )
                                                         <p class="p-tag" > 
-                                                            {{  __("Free")}} 
+                                                            {{  "Free"}} 
                                                         </p>
                                                     @endif
                                             </div>
@@ -446,7 +446,7 @@
                                                     <a  href="{{  URL::to('live') .'/' .$livestream_search->slug }} ">	
                                                         <span class="text-white">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ __("Watch Now") }}
+                                                                {{ "Watch Now" }}
                                                         </span>
                                                     </a>
                                                 <div>
@@ -473,8 +473,8 @@
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
-                            <h3 class="vid-title"> {{ __("Showing  Audios for") }} "{{  $search_value }}"</h3>    
-                            <h3 class="vid-title"> <a href="{{ route('searchResult_audios', $search_value) }}"> {{ __("view all") }} </a></h3> 
+                            <h3 class="vid-title"> Showing  Audios for "{{  $search_value }}"</h3>    
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_audios', $search_value) }}"> view all </a></h3> 
                         </div>                     
                     </div>
                     
@@ -500,7 +500,7 @@
                                                     </p>
                                                 @elseif($audio_search->global_ppv == null && $audio_search->ppv_price == null )
                                                     <p class="p-tag" > 
-                                                        {{  __("Free")}} 
+                                                        {{  "Free"}} 
                                                     </p>
                                                 @endif
                                         </div>
@@ -557,7 +557,7 @@
                                                 <a  href="<?php echo URL::to('audio') ?><?= '/' . $audio_search->slug ?>">		
                                                     <span class="text-white">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            {{ __("Watch Now") }}
+                                                            {{ "Watch Now" }}
                                                     </span>
                                                 </a>
                                             <div>

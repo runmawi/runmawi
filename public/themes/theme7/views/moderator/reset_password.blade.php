@@ -1,10 +1,6 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
-
-@$translate_language = App\Setting::pluck('translate_language')->first();
-\App::setLocale(@$translate_language);
-
 ?>
 <html>
 <head>
@@ -13,7 +9,7 @@ $system_settings = App\SystemSetting::find(1);
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>{{ __('Forgot Password Content Partner') }} | <?php echo $settings->website_name ; ?></title>
+      <title>Forgot Password Content Partner | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -97,8 +93,8 @@ $system_settings = App\SystemSetting::find(1);
                                 <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
                             </span>
                         </div>                         -->
-                        <p class="reset-help text-center">
-                        {{ __('We will send you an email with instructions on how to reset your password.') }}</p>
+                        <p class="reset-help text-center">We will send you an email with instructions on
+                                            how to reset your password.</p>
                            <div class="sign-info">
                               <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;">{{ __('Send Password Reset Link') }}</button>
                                                             
@@ -153,7 +149,7 @@ $system_settings = App\SystemSetting::find(1);
 </script>
                        {{-- Footer --}}
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
 
       <!-- jQuery, Popper JS -->

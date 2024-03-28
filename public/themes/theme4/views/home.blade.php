@@ -109,7 +109,7 @@
          <div class="rightnav">
                      {{-- Right Ads Banners --}}
 
-            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
+            <!-- @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
                @if (optional($admin_advertistment_banners)->right_image_url )
                   
                      <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
@@ -119,12 +119,12 @@
                @if (optional($admin_advertistment_banners)->right_script_url )
                   <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
                @endif
-            @endif
+            @endif -->
             
 
          </div>
       <div class="main">
-            <div class="bottom-nav">
+            <!-- <div class="bottom-nav">
 
                @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
 
@@ -139,12 +139,12 @@
                   @endif
                   
                @endif
-            </div>
+            </div> -->
 
          <div class="sidenav">
                      {{-- Left Ads Banners --}}
 
-            @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
+            <!-- @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
 
                @if (optional($admin_advertistment_banners)->left_image_url )
                   
@@ -155,7 +155,7 @@
                @if (optional($admin_advertistment_banners)->left_script_url )
                   <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
                @endif
-            @endif
+            @endif -->
 
             
 
@@ -187,49 +187,6 @@
 
          <div class="main-content">
             
-            <!-- {{-- Left Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
-
-               @if (optional($admin_advertistment_banners)->left_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->left_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->left_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
-               @endif
-            @endif
-
-            {{-- Right Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->right_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->right_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
-               @endif
-            @endif
-            
-            {{-- Top Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->top_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->top_script_url )
-                     <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
-               @endif
-            @endif -->
-
                                           {{-- continue watching videos --}}
             @if( !Auth::guest() && !is_null($continue_watching_setting) &&  $continue_watching_setting == 1 )
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list ])->content() !!}
@@ -393,7 +350,82 @@
                @endif
 
                @if(  $item == 'EPG' && $home_settings->epg == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', ['order_settings_list' => $order_settings_list ])->content() !!}
+                                    
+                     @php    
+                        $AdminEPGChannel =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+                                    
+                                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                                    
+                                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                                    
+                                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+
+                                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::now(current_timezone())->format('n-j-Y') )->orderBy('start_time')->get()->map(function ($item) {
+
+                                                                           $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                                           $Channel_video_timezone = new DateTimeZone( $TimeZone->time_zone);
+                                                                           $current_timezone = new DateTimeZone(current_timezone());
+
+                                                                           // Time to convert
+                                                                           $initial_start_time = new DateTime($item->start_time , $Channel_video_timezone);
+                                                                           $initial_start_time_diff = $Channel_video_timezone->getOffset($initial_start_time) - $current_timezone->getOffset($initial_start_time);
+                                                                           $converted_start_time = $initial_start_time->add(new DateInterval('PT' . abs($initial_start_time_diff) . 'S'))->format('h:i A');
+
+                                                                           $initial_end_time = new DateTime($item->end_time , $Channel_video_timezone);
+                                                                           $initial_end_time_diff = $Channel_video_timezone->getOffset($initial_end_time) - $current_timezone->getOffset($initial_end_time);
+                                                                           $converted_end_time = $initial_end_time->add(new DateInterval('PT' . abs($initial_end_time_diff) . 'S'))->format('h:i A');
+
+                                                                           $item['converted_start_time'] = $converted_start_time ;
+                                                                           $item['converted_end_time'] = $converted_end_time ;
+
+                                                                           $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                           $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+
+                                                                           return $item;
+                                                                        });
+
+                                                                        
+                                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::now(current_timezone())->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                                                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                                    return $item;
+                                                                                 });
+
+                                                                        
+                                    $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::now(current_timezone())->format('n-j-Y') )
+
+                                                                                    ->get()->map(function ($item) {
+
+                                                                                             // Change the Time Zone
+
+                                                                                       $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                                                       $Channel_video_timezone = new DateTimeZone( $TimeZone->time_zone);
+                                                                                       $current_timezone = new DateTimeZone(current_timezone());
+
+                                                                                       // Time to convert
+                                                                                       $initial_start_time = new DateTime($item->start_time , $Channel_video_timezone);
+                                                                                       $initial_start_time_diff = $Channel_video_timezone->getOffset($initial_start_time) - $current_timezone->getOffset($initial_start_time);
+                                                                                       $converted_start_time = $initial_start_time->add(new DateInterval('PT' . abs($initial_start_time_diff) . 'S'))->format('h:i A');
+
+                                                                                       $initial_end_time = new DateTime($item->end_time , $Channel_video_timezone);
+                                                                                       $initial_end_time_diff = $Channel_video_timezone->getOffset($initial_end_time) - $current_timezone->getOffset($initial_end_time);
+                                                                                       $converted_end_time = $initial_end_time->add(new DateInterval('PT' . abs($initial_end_time_diff) . 'S'))->format('h:i A');
+
+                                                                                       if(( $converted_start_time <= $initial_start_time ) && ( $converted_end_time >= $initial_end_time ) ){
+                                                                                             $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                             $item['converted_start_time'] = $converted_start_time;
+                                                                                             $item['converted_end_time'] = $converted_end_time;
+                                                                                             return $item ;
+                                                                                       }
+
+                                                                                    })->filter()->first();
+
+                                    return $item;
+                        });
+                     @endphp 
+
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', [ 'data' => $AdminEPGChannel , 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
             @empty
