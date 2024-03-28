@@ -5197,16 +5197,9 @@ public function uploadExcel(Request $request)
 
                                                 ->orderBy('start_time')->get()->map(function ($item) {
 
-                                                    $TimeZone = TimeZone::where('id',$item->time_zone)->first();
-
-                                                    $initial_start_time   = \Carbon\Carbon::createFromFormat('H:i:s', $item->start_time , $TimeZone->time_zone);
-                                                    $converted_start_time = $initial_start_time->setTimezone( current_timezone() )->format('h:i A');
-
-                                                    $initial_end_time   = \Carbon\Carbon::createFromFormat('H:i:s', $item->end_time , $TimeZone->time_zone);
-                                                    $converted_end_time = $initial_end_time->setTimezone( current_timezone() )->format('h:i A');
-
-                                                    $item['converted_start_time'] = $converted_start_time ;
-                                                    $item['converted_end_time'] = $converted_end_time ;
+                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
+                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
+                                                    $item['TimeZone']           = TimeZone::where('id',$item->time_zone)->first();
 
                                                     $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                     return $item;
