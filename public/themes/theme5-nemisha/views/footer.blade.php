@@ -64,7 +64,7 @@
             <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
             <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-                <h5 class="font-weight-bold mb-0  ">Download App</h5>
+                <p class="font-weight-bold mb-0  ">Download App</p>
             <?php } ?>
             <div class=" small m-0 text-white ">
               <div class="store-logos"> 
@@ -205,6 +205,8 @@ entertainment.</p>
 
       <script defer type="text/javascript" src="<?php echo URL::to('public/themes/theme5-nemisha/assets/js/custom.js'); ?>"></script>
       
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
       <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();
       if(count($footer_script) > 0){
@@ -318,10 +320,12 @@ try {
 
 ?>
 
-  <script type="text/javascript">
-	$("img").lazyload({
-	    effect : "fadeIn"
-	});
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("img").lazyload({
+            effect: "fadeIn"
+        });
+    });
 </script>
 
 <script>
