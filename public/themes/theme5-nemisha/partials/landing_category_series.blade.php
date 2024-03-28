@@ -28,25 +28,11 @@
                             </video></div>
                         </a>
                     </div>
-
                 @else
-                    <a href="{{ URL::to('play_series/'.  $Series_Category->slug )}}">
-                        <img class="lazyload" data-src="{{ URL::to('/public/uploads/images/' . $Series_Category->image )}}" width="340" height="180">
+                    <a href="{{ URL::to('play_series/'.  $Series_Category->slug )}}" aria-label="{{ $Series_Category->title }}">
+                        <img class="lazyload" data-src="{{ URL::to('/public/uploads/images/' . $Series_Category->image )}}" width="340" height="180" alt="series">
                     </a>
                 @endif
-
-                <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                    {{ sprintf('%dh %dm', $Series_Category->duration / 3600, floor($Series_Category->duration / 60) % 60) }}
-                </p>
-            </div>
-
-            <div class="card-body">
-                <p class="card-text">{{ strip_tags($Series_Category->description) }}</p>
-                <div class=" small-t ">
-                    <a herf="" class="btn btn-success suce mr-3"><i class="fa fa-thumbs-up mr-2"
-                            aria-hidden="true"></i> {{ $Series_Category->views }} </a>
-                    <p><i class="fa fa-eye" aria-hidden="true"></i> {{ $Series_Category->views }} </p>
-                </div>
             </div>
         </div>
     </div>
