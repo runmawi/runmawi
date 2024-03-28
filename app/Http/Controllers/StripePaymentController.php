@@ -222,7 +222,7 @@ class StripePaymentController extends Controller
                     \Mail::send('emails.subscriptionmail', array(
 
                         'name'          => ucwords($user->username),
-                        'paymentMethod' => $paymentMethod,
+                        'paymentMethod' => ucwords('recurring'),
                         'plan'          => ucfirst($plandetail->plans_name),
                         'price'         => $subscription->plan['amount_decimal'] / 100 ,
                         'plan_id'       => $subscription['plan']['id'] ,
