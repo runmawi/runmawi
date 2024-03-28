@@ -1,18 +1,21 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">
+                        <h4 class="main-title mar-left">
                             <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ optional($order_settings_list[4])->header_name }}</a>
+                        </h4>                   
+                        <h4 class="main-title">
+                            <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'View all' }}</a>
                         </h4>                   
                      </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 mb-0 row align-items-center mar-left">
                             @foreach ($data as $latest_series)
                                 <li>
                                     <a href="javascript:void(0);">
