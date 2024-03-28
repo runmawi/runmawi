@@ -72,7 +72,9 @@ class AdminChannelVideoController extends Controller
         try {
            
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
-            $TimeZone = TimeZone::get();
+
+            $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+
             $default_time_zone = Setting::pluck('default_time_zone')->first();
             $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Video';
@@ -124,7 +126,9 @@ class AdminChannelVideoController extends Controller
         try {
           
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
-            $TimeZone = TimeZone::get();
+
+            $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+
             $default_time_zone = Setting::pluck('default_time_zone')->first();
             if($request->filter == "Video"){
                 $data = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
