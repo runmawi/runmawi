@@ -134,7 +134,9 @@
    <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
    
    
-   
+   <!-- Slick JS -->
+   <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
+
    <!-- owl carousel Js -->
    <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
    
@@ -147,6 +149,7 @@
    <!-- Slick Animation-->
     <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
    
+
     <!-- Custom JS-->
     <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
