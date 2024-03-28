@@ -12,7 +12,7 @@
          @if(isset($latestvideo['latest_videos']) && count($latestvideo['latest_videos']) > 0 )
 
             <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title">{{ __('Latest Videos') }}</h3>
+               <h4 class="vid-title">{{ __('Latest Videos') }}</h4>
             </div>
             
             <div class="favorites-contens">
