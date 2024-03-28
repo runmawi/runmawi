@@ -200,8 +200,9 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-     
-    
+      <!-- Slick JS -->
+      <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>" async></script>
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
