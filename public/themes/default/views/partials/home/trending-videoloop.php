@@ -87,8 +87,11 @@
 
                                         <div class="block-description">
                                         <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
-                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                        <?php if(!empty($watchlater_video->player_image)) { ?>
+                                          <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" class="img-fluid loading w-100" alt="playerimage">
+                                        <?php } else { ?>
+                                          <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid loading w-100" alt="l-img">
+                                        <?php } ?>
                         
                                 
                                        
