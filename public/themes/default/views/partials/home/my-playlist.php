@@ -32,14 +32,14 @@
              <div class="border-bg">
                 <div class="img-box">
                     <a class="playTrailer" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
-                    <img class="img-fluid w-100" loading="lazy" src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
+                    <img class="img-fluid w-100" loading="lazy" src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="play">
                     </a>
               </div>
               </div>
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
-                    <img src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
+                    <img class="img-fluid w-100" loading="lazy" src="<?php echo @$My_Playlist->player_image;  ?>"  alt="playlist">
                     </a>
                     <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?> ">

@@ -41,7 +41,7 @@
 
                                 <div class="block-description">
                                      <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->player_image;  ?>" class="img-fluid loading w-100" alt="m-img"> 
+                                       <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->player_image;  ?>" alt="m-img"> 
                                       
                                   
 

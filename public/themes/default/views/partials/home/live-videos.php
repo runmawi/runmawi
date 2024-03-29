@@ -109,7 +109,7 @@
 
                     <div class="block-description" >
                         <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img class="img-fluid w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>"  alt="live" />
+                            <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>"  alt="live" />
                         
 
                       <!-- PPV price -->
