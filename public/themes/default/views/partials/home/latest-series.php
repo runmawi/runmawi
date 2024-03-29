@@ -35,7 +35,7 @@
             <div class="border-bg">
               <div class="img-box">
               <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>"  alt="series">
               </a>
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

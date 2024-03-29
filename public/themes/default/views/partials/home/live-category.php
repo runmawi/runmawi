@@ -90,7 +90,7 @@
                             <div class="border-bg">
                                     <div class="img-box">
                                     <a class="playTrailer" href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">   
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="live-c">
+                                        <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>"  alt="live-c">
                                     </a>
 
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  

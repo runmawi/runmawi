@@ -16,7 +16,7 @@
             <div class="border-bg">
                <div class="img-box">
                   <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
-                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="img">
+                     <img class="img-fluid lazyload w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" alt="contimg">
                   </a>
                   <!-- PPV price -->
                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
@@ -37,9 +37,9 @@
             <div class="block-description">
                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
                   <?php if(!empty($cont_video->player_image)) { ?>
-                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $cont_video->player_image; ?>" class="img-fluid loading w-100" alt="playerimage">
+                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $cont_video->player_image; ?>" class="lazy img-fluid loading w-100" alt="playerimage">
                   <?php } else { ?>
-                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid loading w-100" alt="l-img">
+                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="lazy img-fluid loading w-100" alt="l-img">
                   <?php } ?>
                   <!-- PPV price -->
                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  

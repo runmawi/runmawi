@@ -100,7 +100,7 @@
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" alt="cate">
                                 </a>
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
