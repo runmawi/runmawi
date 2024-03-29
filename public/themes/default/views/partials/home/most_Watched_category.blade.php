@@ -58,7 +58,7 @@
                     <div class="border-bg">
                         <div class="img-box">
                     <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading w-100" alt="m-img" />
+                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  alt="m-img" />
                       
                     </a>
 
@@ -82,7 +82,7 @@
              
                 <div class="block-description">
                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" class="img-fluid loading w-100" alt="m-img" />
+                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" alt="m-img" />
                       
                    
 

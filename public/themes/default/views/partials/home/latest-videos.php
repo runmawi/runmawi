@@ -67,9 +67,10 @@ if(count($latest_video) > 0) : ?>
                              <!-- block-images -->
                              <div class="border-bg">
                                 <div class="img-box">
-                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="l-img">
-                                   </a>
+                                  <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                      <?php $imageUrl = $watchlater_video->image ? URL::to('/').'/public/uploads/images/'.$watchlater_video->image : $settings->default_video_image; ?>
+                                      <img class="img-fluid w-100" loading="lazy" data-src="<?php echo $imageUrl; ?>" class="img-fluid w-100" alt="l-img">
+                                  </a>
                                 <!-- PPV price --> 
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -94,7 +95,13 @@ if(count($latest_video) > 0) : ?>
                                 </div>
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                                  <?php if(!empty($watchlater_video->player_image)) { ?>
+                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" alt="playerimage">
+                                  <?php } else { ?>
+                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" alt="l-img">
+                                  <?php } ?>
+
+
                                    
                                 <!-- PPV price --> 
                                     

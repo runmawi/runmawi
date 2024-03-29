@@ -23,7 +23,7 @@ if(count($latest_video) > 0) : ?>
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                                   <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->image;  ?>"  alt="l-img">
                                     </a>  
                                 </div>
                                 </div>
