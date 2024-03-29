@@ -833,7 +833,7 @@ class AdminSeriesController extends Controller
 
                     $vseason_trailer = pathinfo($season->trailer)['filename'];
 
-                    $directory = base_path('public/uploads/season_trailer/');
+                    $directory = base_path('storage/app/season_trailer/');
                             
                     $pattern =  $vseason_trailer.'*';
 
@@ -1044,7 +1044,7 @@ class AdminSeriesController extends Controller
 
                     }
                     if($value == "1080p"){
-                        $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                        $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                         array_push($convertresolution,$r_1080p);
                     }
             }
@@ -1059,14 +1059,14 @@ class AdminSeriesController extends Controller
                     $settings = Setting::first();
 
                         $trailer = $data['trailer'];
-                        $trailer_path  = URL::to('public/uploads/season_trailer/');
+                        $trailer_path  = URL::to('storage/app/season_trailer/');
                         // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                         $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                         $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                        $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                        $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                         $trailer_video_name = strtok($trailer_Video, '.');
                         $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                        $storepath  = URL::to('public/uploads/season_trailer/');
+                        $storepath  = URL::to('storage/app/season_trailer/');
                         $data['trailer'] = $M3u8_save_path;
                         $data['trailer_type']  = 'm3u8_url';
                         $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
@@ -1149,14 +1149,14 @@ class AdminSeriesController extends Controller
             if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
 
                 $trailer = $data['trailer'];
-                $trailer_path  = URL::to('public/uploads/season_trailer/');
+                $trailer_path  = URL::to('storage/app/season_trailer/');
                 // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                 $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                 $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                 $trailer_video_name = strtok($trailer_Video, '.');
                 $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                $storepath  = URL::to('public/uploads/season_trailer/');
+                $storepath  = URL::to('storage/app/season_trailer/');
                 // $ffmpeg = \Streaming\FFMpeg::create();
                 // $videos = $ffmpeg->open('public/uploads/season_trailer'.'/'.$trailer_Video);
                 
@@ -1346,7 +1346,7 @@ class AdminSeriesController extends Controller
 
                         }
                         if($value == "1080p"){
-                            $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                            $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                             array_push($convertresolution,$r_1080p);
                         }
                 }
@@ -1358,14 +1358,14 @@ class AdminSeriesController extends Controller
                 if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
 
                     $trailer = $data['trailer'];
-                    $trailer_path  = URL::to('public/uploads/season_trailer/');
+                    $trailer_path  = URL::to('storage/app/season_trailer/');
                     // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                     $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                     $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                    $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                    $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                     $trailer_video_name = strtok($trailer_Video, '.');
                     $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                    $storepath  = URL::to('public/uploads/season_trailer/');
+                    $storepath  = URL::to('storage/app/season_trailer/');
 
                     $data['trailer'] = $M3u8_save_path;
                     $data['trailer_type']  = 'm3u8_url';
@@ -1391,7 +1391,7 @@ class AdminSeriesController extends Controller
 
                 } else {
                     $data['trailer'] = $series_season->trailer;
-                    $data['trailer_type']  = 'mp4_url';
+                    $data['trailer_type']  = $series_season->trailer_type;
                     $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
@@ -1438,7 +1438,7 @@ class AdminSeriesController extends Controller
 
             } else {
                 $data['trailer'] = $series_season->trailer;
-                $data['trailer_type']  = 'mp4_url';
+                $data['trailer_type']  = $series_season->trailer_type;
                 $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
@@ -1450,16 +1450,16 @@ class AdminSeriesController extends Controller
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
 
             $trailer = $data['trailer'];
-            $trailer_path  = URL::to('public/uploads/season_trailer/');
+            $trailer_path  = URL::to('storage/app/season_trailer/');
             // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
             $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
             $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-            $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+            $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
             $trailer_video_name = strtok($trailer_Video, '.');
             $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
             $landing_mp4_url_path = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
-            $storepath  = URL::to('public/uploads/season_trailer/');
+            $storepath  = URL::to('storage/app/season_trailer/');
 
             $data['trailer'] = $M3u8_save_path;
             $data['trailer_type']  = 'm3u8_url';
@@ -1485,7 +1485,7 @@ class AdminSeriesController extends Controller
 
             } else {
                 $data['trailer'] = $series_season->trailer;
-                $data['trailer_type']  = 'mp4_url';
+                $data['trailer_type']  = $series_season->trailer_type;
                 $data['landing_mp4_url'] = $series_season->landing_mp4_url;
             }
         }
@@ -1622,7 +1622,7 @@ class AdminSeriesController extends Controller
 
             $vseason_trailer = pathinfo($season->trailer)['filename'];
 
-            $directory = base_path('public/uploads/season_trailer/');
+            $directory = base_path('storage/app/season_trailer/');
                     
             $pattern =  $vseason_trailer.'*';
 
