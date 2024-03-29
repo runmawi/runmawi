@@ -270,7 +270,7 @@
    <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
    <?php 
       if(count($Script) > 0){
       foreach($Script as $Scriptheader){   ?>

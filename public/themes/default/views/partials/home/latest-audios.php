@@ -18,7 +18,7 @@
                              <div class="border-bg">
                              <div class="img-box">
                                    <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid w-100" alt="audio">
+                                       <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>"  alt="audio">
                                     </a>  
                               </div>
                               </div>

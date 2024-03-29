@@ -73,8 +73,8 @@ $currency = App\CurrencySetting::first();
                         <div class="border-bg">
                            <div class="img-box">
                            <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100" alt="live-c">
+                                    <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                         alt="live-c">
                         </a>     
 
                             <!-- PPV price -->

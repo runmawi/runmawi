@@ -32,8 +32,8 @@
             <div class="border-bg">
               <div class="img-box">
                 <a class="playTrailer" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
-              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
-                  </a>
+                    <img class="img-fluid w-100" loading="lazy" src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>"  alt="">
+                </a>
               </div>
               </div>
 

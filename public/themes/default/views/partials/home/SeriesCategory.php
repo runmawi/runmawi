@@ -61,8 +61,8 @@ ol.breadcrumb {
                             <div class="border-bg">
                                 <div class="img-box">
                                         <a class="playTrailer" href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>"
-                                            class="img-fluid w-100" alt="">
+                                        <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>"
+                                             alt="genre">
                                         </a>
                                     </div>
                                     </div>

@@ -52,8 +52,7 @@ if (Auth::guest() != true) {
                         <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?= URL::to('/episode' . '/' . $latest_view_episode->series_slug . '/' . $latest_view_episode->episode_slug); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>" class="img-fluid loading w-100"
-                                        alt="l-img">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>"  alt="l-img">
                                 </a>
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

@@ -108,8 +108,7 @@
                         <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?= URL::to('live/'. $latest_view_livestreams->slug ); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_livestreams->image; ?>" class="img-fluid loading w-100"
-                                        alt="l-img">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_livestreams->image; ?>" alt="l-img">
                                 </a>
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
