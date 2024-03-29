@@ -72,8 +72,7 @@
                             
                             <div class="block-description">
                             <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" class="img-fluid loading w-100"
-                                        alt="l-img">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" alt="l-img">
                                 
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>

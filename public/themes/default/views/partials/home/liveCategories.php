@@ -27,7 +27,7 @@ if(count($latest_video) > 0) : ?>
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('LiveCategory/').'/'.$Categories->slug ?>">
-                                  <img class="img-fluid w-100"  data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->player_image;  ?>" alt="l-img">
+                                  <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->player_image;  ?>" alt="l-img">
                                 </a>
 
                             <div class="hover-buttons text-white">

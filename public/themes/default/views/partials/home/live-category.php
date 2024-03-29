@@ -118,7 +118,7 @@
 
                                     <div class="block-description">
                                       <a class="playTrailer" href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">   
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->player_image;  ?>" class="img-fluid w-100" alt="live-c">
+                                        <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->player_image;  ?>" alt="live-c">
                                     
 
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  

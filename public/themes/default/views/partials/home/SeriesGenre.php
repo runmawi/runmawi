@@ -29,7 +29,7 @@
               
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>" class="img-fluid lazyload w-100" alt="">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>"  alt="categ">
                </a>
 
                <div class="hover-buttons text-white">

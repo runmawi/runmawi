@@ -25,7 +25,7 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo $Schedule->player_image;  ?>" class="img-fluid loading w-100" alt=""></a>  
+                                   <img class="img-fluid w-100" loading="lazy" data-src="<?php echo $Schedule->player_image;  ?>" alt="schplayer"></a>  
                                  </a>
 
                                  <div class="hover-buttons text-white">   
