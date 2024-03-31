@@ -38,7 +38,7 @@
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img data-src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
+                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
