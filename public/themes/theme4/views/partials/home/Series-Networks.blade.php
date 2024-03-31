@@ -38,7 +38,7 @@
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_networks->image_url }}" class="img-fluid" >
+                                            <img data-src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
@@ -265,4 +265,8 @@
     .series-networks-slider-nav a.slick-slide.slick-current.slick-active{
         display:none;
     }
+    a[aria-controls="1"] {
+        display:none;
+    }
+
 </style>
