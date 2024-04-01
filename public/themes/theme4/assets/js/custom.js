@@ -161,7 +161,7 @@ Index Of Script
 			// appendArrows: $('#sm-slick-arrow'),
 
 			
-			nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
+			nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>',
 			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
 
 			responsive: [

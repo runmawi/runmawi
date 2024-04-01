@@ -132,7 +132,7 @@
 
         $('.country-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.country-videos-slider',
             dots: false,
             arrows: true,

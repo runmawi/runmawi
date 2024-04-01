@@ -172,7 +172,7 @@
 
         $('.Going_to_expiry_videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.Going_to_expiry_videos-slider',
             dots: false,
             arrows: true,
