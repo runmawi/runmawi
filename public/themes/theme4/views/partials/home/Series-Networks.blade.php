@@ -167,13 +167,11 @@
 
 
 <script>
-    
-    $( window ).on("load", function() {
+    $(window).on("load", function() {
         $('.series-networks-slider').hide();
     });
 
     $(document).ready(function() {
-
         $('.series-networks-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -184,7 +182,7 @@
         });
 
         $('.series-networks-slider-nav').slick({
-            slidesToShow: 6,
+            slidesToShow: 4,
             slidesToScroll: 4,
             asNavFor: '.series-networks-slider',
             dots: false,
@@ -219,15 +217,22 @@
         });
 
         $('.series-networks-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
             $('.series-networks-slider').show();
         });
 
+        // Hide series-networks-slider when clicking outside the slider
         $('body').on('click', '.drp-close', function() {
             $('.series-networks-slider').hide();
         });
+
+        // Prevent default click behavior of next and previous arrows
+        $('.slick-next, .slick-prev').on('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
     });
 </script>
+
 
 
 <style>
