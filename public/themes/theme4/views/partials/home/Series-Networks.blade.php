@@ -182,7 +182,7 @@
         });
 
         $('.series-networks-slider-nav').slick({
-            slidesToShow: 4,
+            slidesToShow: 6,
             slidesToScroll: 4,
             asNavFor: '.series-networks-slider',
             dots: false,
