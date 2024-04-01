@@ -595,15 +595,16 @@
 
                                         @if ( !is_null($user->subscription_start) && !is_null($user->subscription_ends_at))
                                             <?php 
-                                                $startCarbon = Carbon\Carbon::parse($user->subscription_start);
                                                 $endCarbon = Carbon\Carbon::parse($user->subscription_ends_at);
 
-                                                $remainingDays = $endCarbon->diffInDays($startCarbon);
+                                                $remainingDays = Carbon\Carbon::now()->diffInDays($endCarbon);
+
+                                                $remainingTime = $remainingDays == 0 ? Carbon\Carbon::now()->diff($endCarbon)->format('%h h %i m %s s') : $remainingDays . ' Days';
                                             ?>
 
                                             <div class="d-flex justify-content-between mt-2">
-                                                <span class="text-light font-size-13">{{ (__(ucwords('subscription remaining Days'))) }}</span>
-                                                <p class="mb-0">{{ $remainingDays ?? '-' }}</p>
+                                                <span class="text-light font-size-13">{{ (__(ucwords('subscription remaining Period'))) }}</span>
+                                                <p class="mb-0">{{ $remainingTime ?? '-' }}</p>
                                             </div>
 
                                         @endif
