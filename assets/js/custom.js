@@ -176,8 +176,8 @@ Index Of Script
 		focusOnSelect: false,	
 			// appendArrows: $('#sm-slick-arrow'),
 			
-			nextArrow: '<a class="slick-arrow slick-next" aria-label="next"><i class="ri-arrow-right-s-line"></i></a>',
-			prevArrow: '<a class="slick-arrow slick-prev" aria-label="prev"><i class="ri-arrow-left-s-line"></i></a>',
+			nextArrow: '<a href="#"  class="slick-arrow slick-next" aria-label="Next"><i class="ri-arrow-right-s-line"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="ri-arrow-left-s-line"></i></a>',
 			responsive: [
 			{
 				breakpoint: 1200,

@@ -1128,7 +1128,7 @@
 
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
-                              <a href="#" class="search-toggle active" data-toggle="search-toggle">
+                              <a href="#"  class="search-toggle active" aria-label="Toggle Search" data-toggle="search-toggle">
                                  <?php if(@$translate_checkout == 1){ ?>
                                     <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
                                        <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
