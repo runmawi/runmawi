@@ -132,7 +132,7 @@
 
         $('.Free-Content-Episode-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.Free-Content-Episode-slider',
             dots: false,
             arrows: true,

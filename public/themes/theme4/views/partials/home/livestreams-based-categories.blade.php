@@ -193,7 +193,7 @@ $data->each(function ($category) {
 
         $('.category-live-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.category-live-slider',
             dots: false,
             arrows: true,

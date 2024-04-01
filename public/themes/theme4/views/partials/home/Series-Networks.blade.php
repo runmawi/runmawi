@@ -165,10 +165,11 @@
     </section>
 @endif
 
+
 <script>
     
     $( window ).on("load", function() {
-        $('.series-networks-slider').fadeOut();
+        $('.series-networks-slider').hide();
     });
 
     $(document).ready(function() {
@@ -176,7 +177,7 @@
         $('.series-networks-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: true,
             fade: true,
             draggable: false,
             asNavFor: '.series-networks-slider-nav',
@@ -184,42 +185,8 @@
 
         $('.series-networks-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.series-networks-slider',
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.networks-depends-series').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
@@ -253,7 +220,7 @@
 
         $('.series-networks-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.series-networks-slider').fadeIn();
+            $('.series-networks-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
@@ -261,6 +228,8 @@
         });
     });
 </script>
+
+
 <style>
     .series-networks-slider-nav a.slick-slide.slick-current.slick-active{
         display:none;
