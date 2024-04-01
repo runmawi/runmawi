@@ -1196,14 +1196,14 @@ body.dark .form-control option {
     background: #121111!important;
     color: #ffffff!important;
 }
-section#iq-trending .img-fluid{
+/* section#iq-trending .img-fluid{
     height: 120px;
     width:100%;
 }
 section#iq-favorites .img-fluid{
     height: 120px;
     width:100%;
-}
+} */
 ul#trending-slider-nav {
     flex-flow: nowrap;
 }
