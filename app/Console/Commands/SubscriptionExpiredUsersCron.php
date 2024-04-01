@@ -42,20 +42,21 @@ class SubscriptionExpiredUsersCron extends Command
     {
         $current_date_time = Carbon::now();
 
-        $subscription_expired_users = User::whereDay('subscription_ends_at', '=', $current_date_time->format('d'))
-          ->whereMonth('subscription_ends_at', '=', $current_date_time->format('m'))
-          ->whereYear('subscription_ends_at', '=', $current_date_time->format('Y'))
-          ->whereBetween('subscription_ends_at',  [now()->startOfMinute(), now()->endOfMinute() ])
-          ->get();
+        $subscription_expired_users = App\User::whereDate('subscription_ends_at', '>' ,now())
+                                      ->whereTime('subscription_ends_at', '<=', now()->startOfMinute())
+                                      ->get();
 
         if(count($subscription_expired_users) > 0){
 
               foreach($subscription_expired_users as $subscription_expired_user ){
 
                 User::where('id',$subscription_expired_user->id)->update([
-                    'subscription_ends_at' => null ,
-                    'role'                => 'registered',
-                    'payment_status'      => 'Expiry'
+                    'role'                  => 'registered',
+                    'payment_status'        => 'Expiry',
+                    'stripe_id'             =>  null,
+                    'subscription_start'    =>  null,
+                    'subscription_ends_at'  =>  null,
+                    'payment_gateway'       =>  null,
                 ]);
 
               }
