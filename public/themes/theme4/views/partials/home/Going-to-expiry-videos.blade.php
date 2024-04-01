@@ -50,7 +50,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="Going_to_expiry_videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $Going_to_expiry_videos)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
@@ -63,7 +63,7 @@
 
                         <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider">
                             @foreach ($data as $key => $Going_to_expiry_videos )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
