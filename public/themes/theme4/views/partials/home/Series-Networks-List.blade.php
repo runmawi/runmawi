@@ -15,7 +15,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($series_data as $series_network_list)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $series_network_list->image_url }}" class="img-fluid" >
@@ -27,7 +27,7 @@
 
                         <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider">
                             @foreach ($series_data as $key => $series_network_list )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
