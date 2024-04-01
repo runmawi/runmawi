@@ -92,7 +92,7 @@
 
         $('.my-playlist-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.my-playlist',
             dots: false,
             arrows: true,

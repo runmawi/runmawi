@@ -142,7 +142,7 @@
 
         $('.Latest-Episode-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.Latest-Episode-slider',
             dots: false,
             arrows: true,

@@ -202,7 +202,7 @@
 
         $('.category-videos-slider').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             arrows: true,
             fade: true,
             draggable: false,

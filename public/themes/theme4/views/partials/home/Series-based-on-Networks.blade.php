@@ -206,7 +206,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
 
         $('.series-networks-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,

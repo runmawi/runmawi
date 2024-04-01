@@ -127,7 +127,7 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $('.trending-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.trending',
             dots: false,
             arrows: true,

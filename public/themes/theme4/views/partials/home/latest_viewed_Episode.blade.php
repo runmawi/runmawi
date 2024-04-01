@@ -157,7 +157,7 @@ if (Auth::guest() != true) {
 
         $('.latest-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,
