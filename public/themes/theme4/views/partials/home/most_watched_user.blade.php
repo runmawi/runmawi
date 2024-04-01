@@ -13,7 +13,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="user-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $video)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -25,7 +25,7 @@
 
                         <ul id="trending-slider user-videos-slider" class="list-inline p-0 m-0 align-items-center user-videos-slider">
                             @foreach ($data as $key => $video )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="  drp-close">×</button>
 

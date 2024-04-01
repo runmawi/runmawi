@@ -287,7 +287,7 @@
 
                             <ul id="trending-slider-nav" class="series-category-slider-nav list-inline mar-left m-0 row align-items-center">
                                 @foreach ($series_data->Series_depends_Networks as $Series_Genre)
-                                    <li>
+                                    <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" >
@@ -299,7 +299,7 @@
 
                             <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
                                 @foreach ($series_data->Series_depends_Networks as $Series_Genre)
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image">
                                             <button class="drp-close">×</button>
 
