@@ -170,7 +170,7 @@ Index Of Script
     arrows: true,
 		infinite: false,
 		slidesToScroll: 5,
-		slidesToShow: 4,
+		slidesToShow: 7,
 		accessibility: true,
 		variableWidth: false,
 		focusOnSelect: false,	
