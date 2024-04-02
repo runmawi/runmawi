@@ -549,6 +549,7 @@
     }
     .card{
         border-top:5px solid transparent;
+        height:100%;
     }
     .tab-pane.fade.active.show .card.monthly{
         border-top: 5px solid var(--iq-primary);
@@ -566,6 +567,37 @@
         width: 80%;
         color: var(--iq-primary);
         opacity:0.5;
+    }
+    .card ul li{
+        list-style:none;
+        margin-bottom: 1rem;
+        font-size: 14px;
+    }
+    .card ul li:before{
+        content: "\f00c";
+        font-family: 'FontAwesome';
+        background-color: green;
+        border-radius: 50px;
+        padding: 2px;
+        margin-right: 10px;
+        font-size:10px;
+    }
+    .card ul{
+        padding: 10px;
+    }
+    .card p{
+        display:none;
+    }
+    p.text-center {
+        display: block;
+    }
+    h4.text-center.rate.mb-0 {
+        font-size: 2rem;
+    }
+    .period{
+        position: absolute;
+        bottom: 0;
+        right: 11%;
     }
 </style>
 
@@ -623,11 +655,18 @@
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
-                            <ul>
-                                <li>first</li>
-                                <li>first</li>
-                                <li>first</li>
-                            </ul>
+                            <p>{!! html_entity_decode($plan->plan_content) !!}</p>
+                            <span class="d-flex justify-content-center position-relative">
+                                <span>{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
+                                <h4 class="text-center rate mb-0"> {{ $plan->price }}</h4>
+                                <span class="period">/{{ floor($plan->days / 30) == 1 ? 'month' : floor($plan->days / 30) . ' months' }}</span>
+                            </span>
+
+                            <span class="d-flex justify-content-center mt-4 mb-4 stripe_payment">
+                                <button type="submit" class="btn btn-primary w-50">Get premium</button>
+                            </span>
+                            
+
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
@@ -637,11 +676,7 @@
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
-                            <ul>
-                                <li>first</li>
-                                <li>first</li>
-                                <li>first</li>
-                            </ul>
+                            <p>{!! html_entity_decode($plan->plan_content) !!}</p>
                         </div>
                     </div>
                 </div>
@@ -655,11 +690,14 @@
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
-                            <ul>
-                                <li>first</li>
-                                <li>first</li>
-                                <li>first</li>
-                            </ul>
+                            <p>{!! html_entity_decode($plan->plan_content) !!}</p>
+                            <div class="card-footer-sec">
+                                <label class="rate mt-3">
+                                    <span class="month">{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
+                                    <p>{{ $plan->price }}</p>
+                                    <span class="month mthamt">/month</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
@@ -778,7 +816,8 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 blk">
+                                                    <div class="col-md-12 blk d-flex">
+
                                                         <p > {!! html_entity_decode($plan->plan_content) !!} </p>
                                                     </div>
                                                 </div>
