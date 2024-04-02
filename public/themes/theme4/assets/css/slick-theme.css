@@ -47,7 +47,7 @@
 .slick-prev.slick-disabled:before,
 .slick-next.slick-disabled:before
 {
-    opacity: .25;
+    opacity: 1;
 }
 
 .slick-prev:before,
@@ -73,14 +73,15 @@
     right: -25px;
     left: auto;
 }
-.slick-prev:before
-{
-    content: '←';
+.slick-prev:before {
+    content: "\f053"; /* Unicode for the left arrow icon from FontAwesome */
+    font-family: FontAwesome; /* Specify FontAwesome font family */
 }
 [dir='rtl'] .slick-prev:before
 {
     content: '→';
 }
+
 
 .slick-next
 {
@@ -91,10 +92,12 @@
     right: auto;
     left: -25px;
 }
-.slick-next:before
-{
-    content: '→';
+
+.slick-next:before {
+    content: "\f054"; /* Unicode for the right arrow icon from FontAwesome */
+    font-family: FontAwesome; /* Specify FontAwesome font family */
 }
+
 [dir='rtl'] .slick-next:before
 {
     content: '←';

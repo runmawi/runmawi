@@ -60,7 +60,7 @@
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>"  alt="cate">
                                 </a>
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -87,7 +87,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->player_image; ?>" alt="cate">
                                 
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>

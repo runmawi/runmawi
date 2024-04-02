@@ -39,7 +39,7 @@
 
               <div class="block-description">
               <a class="playTrailer" target="_blank" href="<?php echo URL::to('public/uploads/Document/'.$Document->document) ?>">
-                <img src="<?php echo URL::to('/').'/public/uploads/Document/'.@$Document->image;  ?>" class="img-fluid w-100" alt="">
+                <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/Document/'.@$Document->image;  ?>" alt="doc">
           </a>
 
           <div class="hover-buttons text-white">

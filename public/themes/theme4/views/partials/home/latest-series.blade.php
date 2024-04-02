@@ -29,7 +29,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-4 row align-items-center"  >
                             @foreach ($data as $series_key => $latest_series)
-                                <li data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
+                                <li class="slick-slide" data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" >
@@ -41,7 +41,7 @@
 
                         <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
                             @foreach ($data as $key => $latest_series )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
 
@@ -135,7 +135,7 @@
 
         $('.series-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.series-slider',
             dots: false,
             arrows: true,

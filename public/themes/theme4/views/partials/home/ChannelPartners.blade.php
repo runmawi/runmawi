@@ -17,7 +17,7 @@
                     <div class="tvthrillers-contens">
                             <ul id="trending-slider-nav" class="content-portal-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $channel)
-                                    <li>
+                                    <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" >
@@ -29,7 +29,7 @@
 
                             <ul id="trending-slider content-portal" class="list-inline p-0 m-0 align-items-center content-portal">
                                 @foreach ($data as $channel)
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
 

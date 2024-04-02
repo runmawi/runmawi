@@ -14,7 +14,7 @@
                             <div class="border-bg">
                                 <div class="img-box">
                                     <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
+                                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>"  alt="p-img"> 
                                         
                                     </a>
 
@@ -41,7 +41,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->player_image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
+                                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->player_image;  ?>"  alt="p-img"> 
                                         
                                     
 
@@ -167,7 +167,7 @@
                                     
                                    
                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                         <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                 </div>
                             </div>

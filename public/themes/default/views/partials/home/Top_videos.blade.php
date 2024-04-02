@@ -15,7 +15,7 @@
                     <div class="img-box">
                 
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                     <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid loading w-100" alt=""> 
+                                     <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  alt="Top-img"> 
                                   
                                 </a>
 
@@ -40,7 +40,7 @@
 
                             <div class="block-description">
                             <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                     <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>" class="img-fluid loading w-100" alt=""> 
+                                     <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>" alt="Top-img" > 
                                   
                                 
 
@@ -160,7 +160,7 @@
                                 </a>
 
                                 <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                    <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                    <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                 </a>
                             </div>
                         </div>

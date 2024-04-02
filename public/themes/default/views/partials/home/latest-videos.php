@@ -69,7 +69,7 @@ if(count($latest_video) > 0) : ?>
                                 <div class="img-box">
                                   <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                       <?php $imageUrl = $watchlater_video->image ? URL::to('/').'/public/uploads/images/'.$watchlater_video->image : $settings->default_video_image; ?>
-                                      <img loading="lazy" data-src="<?php echo $imageUrl; ?>" class="img-fluid loading w-100" alt="l-img">
+                                      <img class="img-fluid w-100" loading="lazy" data-src="<?php echo $imageUrl; ?>" class="img-fluid w-100" alt="l-img">
                                   </a>
                                 <!-- PPV price --> 
                                     
@@ -96,9 +96,9 @@ if(count($latest_video) > 0) : ?>
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                   <?php if(!empty($watchlater_video->player_image)) { ?>
-                                      <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" class="img-fluid loading w-100" alt="playerimage">
+                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" alt="playerimage">
                                   <?php } else { ?>
-                                      <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid loading w-100" alt="l-img">
+                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" alt="l-img">
                                   <?php } ?>
 
 

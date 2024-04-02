@@ -13,7 +13,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="live-category-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $livecategories)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -25,7 +25,7 @@
 
                         <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider">
                             @foreach ($data as $key => $livecategories )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
@@ -137,7 +137,7 @@
 
         $('.live-category-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.live-category-slider',
             dots: false,
             arrows: true,

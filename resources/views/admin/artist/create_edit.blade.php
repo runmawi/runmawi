@@ -105,6 +105,8 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="Actor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Actor'){{ 'selected' }} @endif > {{ 'Actor' }} </option>
                                 <option value="Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director'){{ 'selected' }} @endif > {{ 'Director' }} </option>
                                 <option value="Producer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Producer'){{ 'selected' }} @endif > {{ 'Producer' }} </option>
+                                <option value="HOST" @if (!empty($artist->artist_type) && $artist->artist_type == 'HOST'){{ 'selected' }} @endif > {{ 'HOST' }} </option>
+                                <option value="PRESIDENT" @if (!empty($artist->artist_type) && $artist->artist_type == 'PRESIDENT'){{ 'selected' }} @endif > {{ 'PRESIDENT' }} </option>
                                 <option value="Music_Composer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Music_Composer '){{ 'selected' }} @endif > {{ 'Music Composer' }} </option>
                                 <option value="Singer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Singer'){{ 'selected' }} @endif > {{ 'Singer' }} </option>
                                 <option value="Lyricist" @if (!empty($artist->artist_type) && $artist->artist_type == 'Lyricist'){{ 'selected' }} @endif > {{ 'Lyricist' }} </option>

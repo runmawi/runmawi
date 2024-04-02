@@ -170,14 +170,14 @@ Index Of Script
     arrows: true,
 		infinite: false,
 		slidesToScroll: 5,
-		slidesToShow: 7,
+		slidesToShow: 4,
 		accessibility: true,
 		variableWidth: false,
 		focusOnSelect: false,	
 			// appendArrows: $('#sm-slick-arrow'),
 			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class="ri-arrow-right-s-line"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class="ri-arrow-left-s-line"></i></a>',
+			nextArrow: '<a href="#"  class="slick-arrow slick-next" aria-label="Next"><i class="ri-arrow-right-s-line"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="ri-arrow-left-s-line"></i></a>',
 			responsive: [
 			{
 				breakpoint: 1200,
