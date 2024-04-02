@@ -529,6 +529,46 @@
     </style>
 
 
+<!-- plan tab css -->
+<style>
+    #plan-tab ul#pills-tab{
+        background-color: #2C2C2C;
+        border-radius:35px;
+    }
+    #plan-tab ul#pills-tab h4{
+        font-size:17px;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+        background-color:var(--iq-primary)
+    }
+    a.nav-link{
+        padding:15px 50px;
+    }
+    .col-md-3.col-12 .card{
+        background-color: #2C2C2C;
+    }
+    .card{
+        border-top:5px solid transparent;
+    }
+    .tab-pane.fade.active.show .card.monthly{
+        border-top: 5px solid var(--iq-primary);
+    }
+    .tab-pane.fade .card.monthly{
+        border-top: 5px solid transparent;
+    }
+    .tab-pane.fade.active.show .card.yearly{
+        border-top: 5px solid transparent;
+    }
+    .tab-pane.fade .card.yearly{
+        border-top: 5px solid var(--iq-primary);
+    }
+    hr.brkline.mt-4 {
+        width: 80%;
+        color: var(--iq-primary);
+        opacity:0.5;
+    }
+</style>
+
     @php
         $SubscriptionPlan = App\SubscriptionPlan::first();
 
@@ -553,6 +593,99 @@
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
     @endphp
 
+
+ 
+
+<section class="container">
+    <div class="planheader d-flex justify-content-center mb-5" id="plan-tab">
+        <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                <h4>Monthly Plan</h4>
+                </a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+                <h4>Annual Plan</h4>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content" id="pills-tabContent">
+        @foreach ($plans_data_signup_checkout as $key => $plan)
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="row justify-content-center"> 
+                    <div class="col-md-3 col-12">
+                        <div class="card monthly">
+                            <div class="plan-header">
+                                <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
+                                <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
+                                <hr class="brkline mt-4">
+                            </div>
+                            <ul>
+                                <li>first</li>
+                                <li>first</li>
+                                <li>first</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card yearly">
+                            <div class="plan-header">
+                                <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
+                                <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
+                                <hr class="brkline mt-4">
+                            </div>
+                            <ul>
+                                <li>first</li>
+                                <li>first</li>
+                                <li>first</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="d-flex justify-content-center"> 
+                    <div class="col-md-3 col-12">
+                        <div class="card monthly">
+                            <div class="plan-header">
+                                <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
+                                <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
+                                <hr class="brkline mt-4">
+                            </div>
+                            <ul>
+                                <li>first</li>
+                                <li>first</li>
+                                <li>first</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card yearly">
+                            <div class="plan-header">
+                                <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
+                                <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
+                                <hr class="brkline mt-4">
+                            </div>
+                            <ul>
+                                <li>first</li>
+                                <li>first</li>
+                                <li>first</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+</section>
+
+
+
+
     <section class="flick p-4">
         <div class="container">
             <div align="center"></div>
@@ -560,8 +693,6 @@
                 <div class="col-lg-8 col-md-6 p-0">
                     <div class="flick1">
                         
-                        <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
-
                         <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
                         <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
