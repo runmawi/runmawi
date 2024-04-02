@@ -2427,6 +2427,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
 
+
     // Learn Page
 
     Route::get('/learn', 'AllVideosListController@learn')->name('learn');
