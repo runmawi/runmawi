@@ -90,7 +90,7 @@
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
 
-<input type="checkbox" id="toggle">
+<!-- <input type="checkbox" id="toggle"> -->
 
 <script>
     const toggle = document.getElementById('toggle');
