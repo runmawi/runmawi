@@ -36,8 +36,8 @@ border-radius: 0px 4px 4px 0px;
 <div id="content-page" class="content-page">
     <div class="d-flex">
 
-        <a class="black" href="{{ URL::to('admin/artists') }}"> All Artists </a>
-        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
+        <a class="black" href="{{ URL::to('admin/Writer') }}"> All Writer </a>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Writer/create') }}">Add New Writer</a></div>
                 
         <div class="iq-card">
 
@@ -98,26 +98,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Artist type') }}</label>
                         <div class="panel-body">
-
-                            <select class="form-control" name="artist_type" id="artist_type" >
-                                <option value="">  {{ 'Select the Artist Type' }} </option>
-
-                                <option value="Actor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Actor'){{ 'selected' }} @endif > {{ 'Actor' }} </option>
-                                <option value="Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director'){{ 'selected' }} @endif > {{ 'Director' }} </option>
-                                <option value="Producer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Producer'){{ 'selected' }} @endif > {{ 'Producer' }} </option>
-                                <option value="HOST" @if (!empty($artist->artist_type) && $artist->artist_type == 'HOST'){{ 'selected' }} @endif > {{ 'HOST' }} </option>
-                                <option value="PRESIDENT" @if (!empty($artist->artist_type) && $artist->artist_type == 'PRESIDENT'){{ 'selected' }} @endif > {{ 'PRESIDENT' }} </option>
-                                <option value="Music_Composer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Music_Composer '){{ 'selected' }} @endif > {{ 'Music Composer' }} </option>
-                                <option value="Singer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Singer'){{ 'selected' }} @endif > {{ 'Singer' }} </option>
-                                <option value="Lyricist" @if (!empty($artist->artist_type) && $artist->artist_type == 'Lyricist'){{ 'selected' }} @endif > {{ 'Lyricist' }} </option>
-                                <option value="Art_Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Art_Director'){{ 'selected' }} @endif > {{ 'Art Director' }} </option>
-                                <option value="Director_of_Photography" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director_of_Photography'){{ 'selected' }} @endif > {{ 'Director of Photography' }} </option>
-                                <option value="Costume_Designer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Costume_Designer'){{ 'selected' }} @endif > {{ 'Costume Designer' }} </option>
-                                <option value="Production_Sound_Mixer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Production_Sound_Mixer'){{ 'selected' }} @endif> {{ 'Production Sound Mixer' }} </option>
-                                <option value="Stunt_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Stunt_Coordinator'){{ 'selected' }} @endif > {{ 'Stunt Coordinator' }} </option>
-                                <option value="VFX_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'VFX_Coordinator'){{ 'selected' }} @endif > {{ 'VFX Coordinator' }} </option>
-                                <option value="Writer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Writer'){{ 'selected' }} @endif > {{ 'Writer' }} </option>
-                            </select>
+                            <input class="form-control" type="text" name="artist_type" id="artist_type" value="Writer" readonly>
 
                         </div>
                     </div>
