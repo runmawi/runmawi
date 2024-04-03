@@ -1410,16 +1410,20 @@ class AdminVideosController extends Controller
             }
 
                     //  Delete Existing Trailer Video - M3u8 Format
-            $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            $directory = base_path('public/uploads/trailer/');
-                    
-            $pattern =  $video_trailer_m3u8.'*';
+            if (!is_null($videos->trailer)) {
 
-            $files = glob($directory . $pattern);
+                $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            foreach ($files as $file) {
-                File::delete($file);
+                $directory = base_path('public/uploads/trailer/');
+                        
+                $pattern =  $video_trailer_m3u8.'*';
+
+                $files = glob($directory . $pattern);
+
+                foreach ($files as $file) {
+                    File::delete($file);
+                }
             }
 
                      //  Delete Existing Trailer Video - MP4 Format
