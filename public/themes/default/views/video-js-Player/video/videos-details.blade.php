@@ -1,5 +1,36 @@
 @php  include public_path('themes/default/views/header.php'); @endphp
 
+<style>
+    body.light-theme h4, body.light-theme p {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .vpageBanner .content .right .utilities {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name.titleoverflow {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .genre {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .vpageBanner .opacity-layer {
+        background:none;
+    }
+</style>
+
+
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
 
@@ -63,9 +94,9 @@
                 </div>
 
                 <div class="right">
-                    <div class="title">    {{--  Title & Year--}}
+                    <h4 class="title">    {{--  Title & Year--}}
                         {{ optional($videodetail)->title }} 
-                    </div>
+                    </h4>
 
                     <div class="utilities d-flex align-items-center">  
                         {{ optional($videodetail)->year }} 
