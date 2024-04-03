@@ -25,6 +25,15 @@
     body.light-theme .genre {
         color: <?php echo GetLightText(); ?> !important;
     }
+    body.light-theme .heading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .infoItem {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .info {
+        color: <?php echo GetLightText(); ?> !important;
+    }
     body.light-theme .vpageBanner .opacity-layer {
         background:none;
     }
@@ -304,7 +313,7 @@
                     @endif
 
                     <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
+                        <div class="infoItem">
                             <span classname="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
