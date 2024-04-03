@@ -6,7 +6,7 @@ use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
 // @$translate_language = App\Setting::pluck('translate_language')->first();
-// \App::setLocale(@$translate_language);
+// \App::setLocale(@$translate_language); translate_language
 
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
@@ -648,6 +648,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
 
+
+    // Music Genre Routes
+    Route::get('/Music/Genre', 'AdminMusicGenreController@index');
+    Route::Post('/Music_genre_store', 'AdminMusicGenreController@Music_Genre_Store');
+    Route::get('/Music_genre/edit/{id}', 'AdminMusicGenreController@Music_Genre_Edit');
+    Route::post('/Music_genre/update', 'AdminMusicGenreController@Music_Genre_Update');
+    Route::get('/Music_genre/delete/{id}', 'AdminMusicGenreController@Music_Genre_Delete');
+    Route::Post('/Music_genre_order', 'AdminMusicGenreController@Music_Genre_Order');
+    Route::post('/Music_genre_active', 'AdminMusicGenreController@Music_Genre_Active');
+
     // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
     Route::get('/ppv/edit/{id}', 'AdminPpvController@edit');
@@ -976,6 +986,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/artists/delete/{id}', 'AdminArtistsController@destroy');
     Route::get('/artist_slug_validation', 'AdminArtistsController@artist_slug_validation');
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'AdminAudioController@audioupdate']);
+
+    //Writer Routes
+        Route::get('Writer', 'AdminWriterController@index');
+        Route::get('Writer/create', 'AdminWriterController@create');
+        Route::post('Writer/store', 'AdminWriterController@store');
+        Route::get('Writer/edit/{id}', 'AdminWriterController@edit');
+        Route::post('Writer/update', 'AdminWriterController@update');
+        Route::get('Writer/delete/{id}', 'AdminWriterController@destroy');
 
     //Admin Audio Albums
     Route::get('/audios/albums', 'AdminAudioCategoriesController@albumIndex');
@@ -2426,6 +2444,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
 
     Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
+
 
     // Learn Page
 

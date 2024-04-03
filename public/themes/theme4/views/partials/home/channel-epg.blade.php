@@ -94,6 +94,52 @@
     }
 </style>
    
+@php    
+    $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+                
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                
+                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                
+                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+
+                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->get()->map(function ($item) {
+
+                                                        $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
+
+                                                        $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
+                                                        $item['converted_end_time']   = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
+                                                        $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                        $item['video_image_url']    = URL::to('public/uploads/images/'.$item->image ) ;
+                                                        $item['TimeZone']           = App\TimeZone::where('id',$item->time_zone)->first();
+                                                        return $item;
+                                                    });
+
+                                                    
+                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                                                                $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                return $item;
+                                                            });
+                                                    
+                $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::today()->format('n-j-Y') )
+                                                                            ->get()->map(function ($item) {
+
+                                                                                $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
+                                                                                    
+                                                                                if(( $item->start_time >= $Carbon_current_time ) && ( $Carbon_current_time <=  $item->end_time ) ){
+                                                                                    $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
+                                                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
+                                                                                    $item['TimeZone']           = App\TimeZone::where('id',$item->time_zone)->first();
+                                                                                    return $item ;
+                                                                                }
+
+                                                                            })->filter()->first();
+
+                return $item;
+    });
+
+@endphp 
         
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
@@ -110,7 +156,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $epg_channel_data)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" >
@@ -122,7 +168,7 @@
 
                         <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider">
                             @foreach ($data as $key => $epg_channel_data )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
@@ -145,7 +191,7 @@
                                                                 
                                                                 <ul>
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
-                                                                    <p> {{ current_timezone() ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
+                                                                    <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->TimeZone->time_zone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
                                                                     <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="70px" style="position: static !important ; margin:0% !important"></p>
                                                                 </ul>
 
