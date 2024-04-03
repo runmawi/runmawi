@@ -246,6 +246,7 @@
 
         .container {
             margin-top: 70px;
+            margin-bottom:70px;
         }
 
         .panel-heading {
@@ -551,7 +552,7 @@
         border-top:5px solid transparent;
         height:100%;
     }
-    .tab-pane.fade.active.show .card.monthly{
+    /* .tab-pane.fade.active.show .card.monthly{
         border-top: 5px solid var(--iq-primary);
     }
     .tab-pane.fade .card.monthly{
@@ -562,7 +563,7 @@
     }
     .tab-pane.fade .card.yearly{
         border-top: 5px solid var(--iq-primary);
-    }
+    } */
     hr.brkline.mt-4 {
         width: 80%;
         color: var(--iq-primary);
@@ -598,6 +599,10 @@
         position: absolute;
         bottom: 0;
         right: 11%;
+    }
+
+    section.flick.p-4 {
+        display: none;
     }
 </style>
 
@@ -649,7 +654,7 @@
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div class="row justify-content-center"> 
                     <div class="col-md-3 col-12">
-                        <div class="card monthly">
+                        <div class="card monthly" style="border-top: 5px solid var(--iq-primary);">
                             <div class="plan-header">
                                 <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
@@ -663,20 +668,27 @@
                             </span>
 
                             <span class="d-flex justify-content-center mt-4 mb-4 stripe_payment">
-                                <button type="submit" class="btn btn-primary w-50">Get premium</button>
+                                <button type="submit" class="btn btn-primary w-50 stripe_button processing_alert">Get premium</button>
                             </span>
-                            
-
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
                         <div class="card yearly">
-                            <div class="plan-header">
+                            <div class="plan-header" style="border-top: 5px solid transparent;">
                                 <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
                             <p>{!! html_entity_decode($plan->plan_content) !!}</p>
+                            <span class="d-flex justify-content-center position-relative">
+                                <span>{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
+                                <h4 class="text-center rate mb-0"> {{ $plan->price }}</h4>
+                                <span class="period">/{{ floor($plan->days / 30) == 1 ? 'month' : floor($plan->days / 30) . ' months' }}</span>
+                            </span>
+
+                            <span class="d-flex justify-content-center mt-4 mb-4 stripe_payment">
+                                <button type="submit" class="btn btn-primary w-50 stripe_button processing_alert" style="background-color:transparent !important; border:1px solid white !important;">Get premium</button>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -684,34 +696,41 @@
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <div class="d-flex justify-content-center"> 
                     <div class="col-md-3 col-12">
-                        <div class="card monthly">
+                        <div class="card monthly" style="border-top: 5px solid transparent;">
                             <div class="plan-header">
                                 <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
                             <p>{!! html_entity_decode($plan->plan_content) !!}</p>
-                            <div class="card-footer-sec">
-                                <label class="rate mt-3">
-                                    <span class="month">{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
-                                    <p>{{ $plan->price }}</p>
-                                    <span class="month mthamt">/month</span>
-                                </label>
-                            </div>
+                            <span class="d-flex justify-content-center position-relative">
+                                <span>{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
+                                <h4 class="text-center rate mb-0"> {{ $plan->price }}</h4>
+                                <span class="period">/{{ floor($plan->days / 30) == 1 ? 'month' : floor($plan->days / 30) . ' months' }}</span>
+                            </span>
+
+                            <span class="d-flex justify-content-center mt-4 mb-4 stripe_payment">
+                                <button type="submit" class="btn btn-primary w-50 stripe_button processing_alert" style="background-color:transparent !important; border:1px solid white !important;">Get premium</button>
+                            </span>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card yearly">
+                        <div class="card yearly" style="border-top: 5px solid var(--iq-primary);">
                             <div class="plan-header">
                                 <h5 class="text-center m-3">{{ $plan_name = $plan->plans_name }}</h5>
                                 <p class="text-center">{{ "Unlock everything Watchnexs has to offer" }}</p>
                                 <hr class="brkline mt-4">
                             </div>
-                            <ul>
-                                <li>first</li>
-                                <li>first</li>
-                                <li>first</li>
-                            </ul>
+                            <p>{!! html_entity_decode($plan->plan_content) !!}</p>
+                            <span class="d-flex justify-content-center position-relative">
+                                <span>{{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol() }}</span>
+                                <h4 class="text-center rate mb-0"> {{ $plan->price }}</h4>
+                                <span class="period">/{{ floor($plan->days / 30) == 1 ? 'month' : floor($plan->days / 30) . ' months' }}</span>
+                            </span>
+
+                            <span class="d-flex justify-content-center mt-4 mb-4 stripe_payment">
+                                <button type="submit" class="btn btn-primary w-50 stripe_button processing_alert">Get premium</button>
+                            </span>
                         </div>
                     </div>
                 </div>
