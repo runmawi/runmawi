@@ -135,7 +135,7 @@
                     </div>
                     <div class="left mb-4">
                         <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:70%;">
+                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:150px;">
                         </span>
                     </div>
                     <div class="d-flex" style="gap:20px;">
