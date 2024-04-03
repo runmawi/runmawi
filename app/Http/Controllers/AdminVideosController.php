@@ -94,6 +94,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
 use App\AdminVideoAds;
+use App\MusicGenre;
 
 class AdminVideosController extends Controller
 {
@@ -1008,6 +1009,10 @@ class AdminVideosController extends Controller
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => $theme_settings ,
                 'advertisements_category' => Adscategory::get(),
+                'video_music_genre'  => [],
+                'video_Writers' => [],
+                'MusicGenres' => MusicGenre::get(),
+                'Writers' => Artist::where('artist_type','Writer')->get(),
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -1563,6 +1568,10 @@ class AdminVideosController extends Controller
 
             $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
 
+            $video_music_genre = Video::where('id', $id)->pluck('music_genre')->first();
+
+            $video_Writers = Video::where('id', $id)->pluck('writers')->first();
+
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
                 "page"     => "Edit",
@@ -1612,6 +1621,10 @@ class AdminVideosController extends Controller
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 'admin_videos_ads'        => $admin_videos_ads ,
                 'advertisements_category' => Adscategory::get(),
+                'video_music_genre'  => ($video_music_genre != null) ?  MusicGenre::whereIn('id', json_decode($video_music_genre))->pluck('id')->toArray() : [],
+                'video_Writers' => ($video_Writers != null) ?  Artist::whereIn('id', json_decode($video_Writers))->pluck('id')->toArray() : [],
+                'MusicGenres' => MusicGenre::get(),
+                'Writers' => Artist::where('artist_type','Writer')->get(),
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -2547,6 +2560,9 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $tiny_video_image;
         $video->tiny_player_image = $tiny_player_image;
         $video->tiny_video_title_image = $tiny_video_title_image;
+        $video->music_genre =  (!empty($data['music_genre']) ) ?json_encode($data['music_genre']) : null;
+        $video->writers =  (!empty($data['writers']) ) ? json_encode($data['writers']) : null;
+        $video->country_by_origin = $request->country_by_origin;
         $video->save();
 
         if (
@@ -3694,7 +3710,9 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $data["tiny_video_image"] ;
         $video->tiny_player_image = $data["tiny_player_image"] ;
         $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
-
+        $video->music_genre =  (!empty($data['music_genre']) ) ?json_encode($data['music_genre']) : null;
+        $video->writers =  (!empty($data['writers']) ) ? json_encode($data['writers']) : null;
+        $video->country_by_origin = $request->country_by_origin;
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
             $video->ads_tag_url_id = null;
