@@ -51,7 +51,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" >
+                                                <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network">
                                             </div>
                                         </a>
                                     </li>
@@ -84,9 +84,9 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                             </div>
 
                                                             <div class="trending-contens sub_dropdown_image mt-3">
-                                                                <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider-'.$key }}" >
+                                                                <ul id="{{ 'trending-slider-nav' }}" class= "{{ 'pl-4 m-0  series-depends-episode-slider-'.$key }}" >
                                                                     @foreach ($series->Series_depends_episodes as  $episode_key  => $episode )
-                                                                        <li>
+                                                                        <li  class="slick-slide">
                                                                             <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
