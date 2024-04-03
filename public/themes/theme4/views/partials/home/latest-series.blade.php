@@ -39,7 +39,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
+                        <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider" style="display:none;">
                             @foreach ($data as $key => $latest_series )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image">
@@ -74,10 +74,10 @@
                                                         <div class="trending-contens sub_dropdown_image mt-3">
                                                             <ul id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'latest-series-depends-episode-slider-'.$key .' pl-4 m-0'}}">
                                                                 @foreach ($latest_series->Series_depends_episodes as $episode )
-                                                                    <li>
+                                                                    <li class="slick-slide">
                                                                         <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="series">
                                                                                 <div class="controls">
                                                                                     <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
