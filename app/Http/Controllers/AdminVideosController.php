@@ -1432,14 +1432,20 @@ class AdminVideosController extends Controller
                     //  Delete Existing  Video
             $directory = storage_path('app/public');
                     
-            $info = pathinfo($videos->path);
+            if (!is_null($videos->path)) {
 
-            $pattern =  $info['filename'] . '*';
+                $info = pathinfo($videos->path);
 
-            $files = glob($directory . '/' . $pattern);
-
-            foreach ($files as $file) {
-                unlink($file);
+                $pattern =  $videos->path ? $info['filename'] . '*' : " ";
+    
+                $files = glob($directory . '/' . $pattern);
+    
+                foreach ($files as $file) {
+    
+                    if(file_exists( $file )){
+                        unlink($file);
+                    }
+                }   
             }
 
                     // Video uploaded by CPP user while deleting Mail
