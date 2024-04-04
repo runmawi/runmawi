@@ -52,15 +52,15 @@
                             <h1 class="slider-text big-title title text-uppercase">{{ \Illuminate\Support\Str::limit($item->title,17) }} </h1>
                             
                                             {{-- Description --}}
-                            <div class="descp">
+                            <div class="descp" style="overflow-y: scroll;max-height: 250px;scrollbar-width: none;">
 
                                 @if (optional($item)->description)
 
-                                    @if (strlen($item->description) < 115 )
+                                    @if (strlen($item->description) < 354 )
                                         <p>{!! html_entity_decode($item->description) !!}</p>
                                     @else
-                                        <p> {!!  substr(html_entity_decode($item->description), 0, 116 ) !!} </p>
-                                        <p class="{{ 'videos-read-more-content-'.$key }}" style="display: none;">{!! strip_tags(substr($item->description, 116)) !!}</p>
+                                        <p> {!!  substr(html_entity_decode($item->description), 0, 354 ) !!} </p>
+                                        <p class="{{ 'm-0 videos-read-more-content-'.$key }}" style="display: none;">{!!  substr(html_entity_decode($item->description), 355, 2000 ) !!} </p>
                                         <a href="#" data-read-more-id= "{{ 'videos-read-more-content-'.$key }}" onclick="read_more_details(this)">Read more</a>
                                     @endif
                                 @endif

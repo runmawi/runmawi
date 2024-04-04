@@ -112,12 +112,12 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider p {
     margin: 20px 0 5px 0;
     width: 75%;
-    max-height: 70px;
+    /* max-height: 70px; */
     overflow: hidden;
     font-family:"Sen", sans-serif !important;
 }
 /* #home-slider p { margin: 20px 0 5px 0; width: 75%; } */
-#home-slider .slick-bg { /*padding: 50px 0 50px; */ width:100%; background-size: contain !important; background-position: right center !important; background-repeat: no-repeat !important;/* height: 90vh;*/ position: relative; z-index: 1;}
+#home-slider .slick-bg { /*padding: 50px 0 50px; */ width:100%; background-size: contain !important; background-position: right center !important; background-repeat: no-repeat !important; height: calc(100vh - 164px); position: relative; z-index: 1;}
 .trailor-video { position: absolute; bottom: 50%; right: 5%; z-index: 999; }
 .channel-name { color: var(--iq-primary); font-size: 20px; margin-left: 10px; letter-spacing: 2.5px; font-weight: 500; }
 .c-logo { width: 130px; }
