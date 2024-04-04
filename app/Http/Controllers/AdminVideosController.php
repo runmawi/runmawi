@@ -1415,16 +1415,20 @@ class AdminVideosController extends Controller
             }
 
                     //  Delete Existing Trailer Video - M3u8 Format
-            $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            $directory = base_path('public/uploads/trailer/');
-                    
-            $pattern =  $video_trailer_m3u8.'*';
+            if (!is_null($videos->trailer)) {
 
-            $files = glob($directory . $pattern);
+                $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            foreach ($files as $file) {
-                File::delete($file);
+                $directory = base_path('public/uploads/trailer/');
+                        
+                $pattern =  $video_trailer_m3u8.'*';
+
+                $files = glob($directory . $pattern);
+
+                foreach ($files as $file) {
+                    File::delete($file);
+                }
             }
 
                      //  Delete Existing Trailer Video - MP4 Format
@@ -1437,14 +1441,20 @@ class AdminVideosController extends Controller
                     //  Delete Existing  Video
             $directory = storage_path('app/public');
                     
-            $info = pathinfo($videos->path);
+            if (!is_null($videos->path)) {
 
-            $pattern =  $info['filename'] . '*';
+                $info = pathinfo($videos->path);
 
-            $files = glob($directory . '/' . $pattern);
-
-            foreach ($files as $file) {
-                unlink($file);
+                $pattern =  $videos->path ? $info['filename'] . '*' : " ";
+    
+                $files = glob($directory . '/' . $pattern);
+    
+                foreach ($files as $file) {
+    
+                    if(file_exists( $file )){
+                        unlink($file);
+                    }
+                }   
             }
 
                     // Video uploaded by CPP user while deleting Mail
