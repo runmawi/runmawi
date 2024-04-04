@@ -434,7 +434,7 @@
    }
    body.light-theme header#main-header{
    background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
+   color: <?php echo GetLightText(); ?> !important;
    box-shadow: 0 0 50px #ccc;
    }
    body.light-theme footer{
