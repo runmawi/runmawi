@@ -26,9 +26,9 @@
         border-bottom: 0px !important;
         border-top: 0px !important;
     }
-    body.light-theme li{
+    /* body.light-theme li{
         color: <?php echo GetAdminDarkText(); ?> !important;
-    } 
+    }  */
 </style>
 <div class="container-fluid overflow-hidden">
     <div class="row">
