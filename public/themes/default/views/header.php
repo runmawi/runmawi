@@ -481,9 +481,6 @@
    body.light-theme li.breadcrumb-item{
    color: <?php echo GetLightText(); ?>;
    }
-   body.light-theme li {
-    color: #000 !important;
-}
    body.light-theme .p-tag1{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
