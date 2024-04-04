@@ -230,6 +230,23 @@
          <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
       </div>
 
+   <script>
+
+      function read_more_details(ele){
+
+         let read_more_content = '.' + $(ele).attr('data-read-more-id');
+
+         $(read_more_content).slideToggle();
+
+         // if ( read_more_content == "Read More") {
+         //       $(read_more_content).text("Read Less");
+         // } else {
+         //       $(read_more_content).text("Read More");
+         // }
+      }
+    
+   </script>
+
 <?php
    include(public_path('themes/theme3/views/partials/home/home_pop_up.php'));
    include(public_path('themes/theme3/views/footer.blade.php')) ;
