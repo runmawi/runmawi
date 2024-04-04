@@ -34,6 +34,9 @@
         .desc {
             font-size: 16px;
             line-height: 30px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            max-height: 230px;
         }
         a.btn.play-btn {
             border-radius: 35px !important;
@@ -121,21 +124,24 @@
                         <?php
                             $description = $videodetail->description;
 
-                            if (strlen($description) > 300) {
-                                $shortDescription = htmlspecialchars(substr($description, 0, 200), ENT_QUOTES, 'UTF-8');
-                                $fullDescription = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
+                            if (strlen($description) > 220) {
+                                $shortDescriptionfirst = htmlspecialchars_decode(substr($description, 0, 220), ENT_QUOTES );
+                                $shortDescription = htmlspecialchars(strip_tags($shortDescriptionfirst), ENT_QUOTES, 'UTF-8');
+                                $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
 
-                                echo "<p id='artistDescription'  style='color:#fff !important;'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
+                                echo "<p id='artistDescription' style='color:#fff !important;'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
                                 echo "<div id='fullDescription' style='display:none;'>$fullDescription <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></div>";
                             } else {
                                 echo "<p id='artistDescription'>$description</p>";
                             }
-                        ?>
+                            ?>
+
+
                         </div>
                     </div>
                     <div class="left mb-4">
-                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:150px;">
+                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block; width: 100px; height: 100%;">
+                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:100%;">
                         </span>
                     </div>
                     <div class="d-flex" style="gap:20px;">
@@ -211,6 +217,22 @@
        
     </div>
 </section>
+
+
+<script>
+   function read_more_details(ele) {
+      let read_more_content = '.' + $(ele).attr('data-read-more-id');
+
+      $(read_more_content).slideToggle();
+
+      if ($(ele).text() === "Read more") {
+         $(ele).text("Read less");
+      } else {
+         $(ele).text("Read more");
+      }
+   }
+</script>
+
 
 
 <script>

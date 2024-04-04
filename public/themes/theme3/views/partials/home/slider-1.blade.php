@@ -43,15 +43,27 @@
 
         {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
-    @foreach ($video_banners as $item)
+    @foreach ($video_banners as $key => $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
             <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
-                            <div class="descp">
-                                <p> {!! html_entity_decode( optional($item)->description) !!}</p>
+                            <h1 class="slider-text big-title title text-uppercase">{{ \Illuminate\Support\Str::limit($item->title,17) }} </h1>
+                            
+                                            {{-- Description --}}
+                            <div class="descp" style="overflow-y: scroll;max-height: 250px;scrollbar-width: none;">
+
+                                @if (optional($item)->description)
+
+                                    @if (strlen($item->description) < 354 )
+                                        <p>{!! html_entity_decode($item->description) !!}</p>
+                                    @else
+                                        <p> {!!  substr(html_entity_decode($item->description), 0, 354 ) !!} </p>
+                                        <p class="{{ 'm-0 videos-read-more-content-'.$key }}" style="display: none;">{!!  substr(html_entity_decode($item->description), 355, 2000 ) !!} </p>
+                                        <a href="#" data-read-more-id= "{{ 'videos-read-more-content-'.$key }}" onclick="read_more_details(this)">Read more</a>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>
