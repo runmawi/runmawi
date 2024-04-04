@@ -232,19 +232,17 @@
 
    <script>
 
-      function read_more_details(ele){
-
+      function read_more_details(ele) {
          let read_more_content = '.' + $(ele).attr('data-read-more-id');
-
+         
          $(read_more_content).slideToggle();
 
-         // if ( read_more_content == "Read More") {
-         //       $(read_more_content).text("Read Less");
-         // } else {
-         //       $(read_more_content).text("Read More");
-         // }
+         if ($(ele).text() === "Read more") {
+            $(ele).text("Read less");
+         } else {
+            $(ele).text("Read more");
+         }
       }
-    
    </script>
 
 <?php

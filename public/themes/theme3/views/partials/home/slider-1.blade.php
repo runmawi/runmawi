@@ -59,8 +59,8 @@
                                     @if (strlen($item->description) < 115 )
                                         <p>{!! html_entity_decode($item->description) !!}</p>
                                     @else
-                                        <p> {!!  substr(strip_tags($item->description), 0, 116 ) !!} </p>
-                                        <p class="{{'videos-read-more-content-'.$key }}" style="display: none;" >{!! (strip_tags($item->description ) ) !!}</p>
+                                        <p> {!!  substr(html_entity_decode($item->description), 0, 116 ) !!} </p>
+                                        <p class="{{ 'videos-read-more-content-'.$key }}" style="display: none;">{!! strip_tags(substr($item->description, 116)) !!}</p>
                                         <a href="#" data-read-more-id= "{{ 'videos-read-more-content-'.$key }}" onclick="read_more_details(this)">Read more</a>
                                     @endif
                                 @endif
