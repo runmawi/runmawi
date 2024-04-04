@@ -982,6 +982,15 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             </ul>
           </li>
           <li>
+
+            <div style=""> 
+                 <p class="lnk" >Export Import Management</p>
+               </div>
+              <li><a href="{{ URL::to('admin/bulk-access') }}"><img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/import.png')?>"><span class="">Bulk Export Import</span></a></li>
+              <li><a href="{{ URL::to('admin/bulk_import_image') }}"><img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/zip.png')?>"><span class="">Bulk Import Image</span></a></li>
+              </li>
+              <li>
+
           <div class="men" style=""> 
                  <p class="lnk" >{{ (__('Live Stream')) }}</p>
                  </div>

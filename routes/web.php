@@ -647,8 +647,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo');
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
-    Route::post('/video_bluk_export', 'AdminVideosController@VideoBlukExport');
 
+    // Bulk Import Export
+
+    Route::get('/bulk-access', 'AdminBulkImportExportController@index');
+    Route::post('/video_bulk_export', 'AdminBulkImportExportController@VideoBulkExport');
+    Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
+    // Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
+
+
+    Route::get('/bulk_import_image', 'AdminBulkImportExportController@ImageBulkImport');
+    Route::post('/zip_bulk_import', 'AdminBulkImportExportController@ImageZipImport');
 
     // Music Genre Routes
     Route::get('/Music/Genre', 'AdminMusicGenreController@index');

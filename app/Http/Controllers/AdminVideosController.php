@@ -2615,7 +2615,7 @@ class AdminVideosController extends Controller
             $artistsdata = $data["artists"];
             unset($data["artists"]);
             if (!empty($artistsdata)) {
-                Videoartist::where("video_id", $video->id)->delete();
+                Videoartist::where("video_id", $video->id)->delete();   
 
                 foreach ($artistsdata as $key => $value) {
                     $artist = new Videoartist();
@@ -10797,67 +10797,5 @@ class AdminVideosController extends Controller
         }
     }
     
-    public function VideoBlukExport(Request $request){
-        try {
-           $video_start_id = $request->video_start_id;
-           $video_end_id = $request->video_end_id;
-
-
-            $videos = Video::whereBetween('id', [$video_start_id, $video_end_id])->get()->map(function ($item){
-                    $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
-                        ->where('languagevideos.video_id',$item->id)->pluck('language_id')->toArray();
-                        $item['languages'] = implode(',', $languages);
-                    $CategoryVideo = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                        ->where('video_id',$item->id)->pluck('category_id')->toArray();
-                        $item['CategoryVideo'] = implode(',', $CategoryVideo);
-
-                    $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-                        ->where("video_artists.video_id", "=", $item->id)
-                        ->pluck('artist_id')->toArray();
-                        $item['video_cast_crew'] = implode(',', $video_cast);
-
-                    return $item;
-                });
-
-            $filePath = 'videos.csv';
-            
-            if (!Storage::exists($filePath)) {
-                Storage::put($filePath, '');
-            }
-
-            $fileStream = fopen(storage_path('app/' . $filePath), 'w');
-
-            $firstVideo = $videos->first();
-            $titles = array_keys($firstVideo->getAttributes());
-            fputcsv($fileStream, $titles);
-
-            foreach ($videos as $video) {
-                $attributes = $video->getAttributes();
-
-                $rowData = [];
-                foreach ($titles as $title) {
-                    if (property_exists($video, $title)) {
-                        $rowData[] = $title === 'languages' ? $video->{$title} : $video->{$title};
-                        $rowData[] = $title === 'CategoryVideo' ? $video->{$title} : $video->{$title};
-                        $rowData[] = $title === 'video_cast_crew' ? $video->{$title} : $video->{$title};
-                    }else if (array_key_exists($title, $attributes)) {
-                        $rowData[] = $attributes[$title];
-                    } else {
-                        $rowData[] = '';
-                    }
-                }
-
-                fputcsv($fileStream, $rowData);
-            }
-
-            fclose($fileStream);
-
-            return 1;
-
-           
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
 }
     
