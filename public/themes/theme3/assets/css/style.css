@@ -776,8 +776,12 @@ div#sidebar-scrollbar {
     top: 170%;
 }
 
-
-
+body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+    color:var(--iq-primary) !important;
+}
+label#search-error {
+    display: none !important;
+}
 
 
 

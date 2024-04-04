@@ -809,9 +809,7 @@
 
    body.dark-theme .search-toggle:hover,
    header .navbar ul li.menu-item a:hover {
-      color:
-         <?php echo GetDarkText(); ?>
-         !important;
+      color:<?php echo GetDarkText(); ?>!important;
    }
 
    body.light-theme #translator-table_filter input[type="search"] {
@@ -1037,11 +1035,11 @@
          !important;
    }
 
-   .light-theme .iq-search-bar .search-input {
+   /* .light-theme .iq-search-bar .search-input {
       color:
          <?php echo GetLightText(); ?>
          !important;
-   }
+   } */
 
    .dark-theme ul.list-group.home-search {
       background:
@@ -1634,9 +1632,12 @@
 
                               <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                  style="font-size:11px;" data-toggle="search-toggle">
-                                 <img
-                                    src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/' . Auth::user()->avatar) : URL::to('/public/themes/theme3/assets/images/user/user.jpg') ?>"
-                                    class="img-fluid avatar-40 rounded-circle mr-2" alt="user">
+                                    <?php if(Auth::user() && Auth::user()->avatar != null): ?>
+                                          <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
+                                    <?php else: ?>
+                                          <img src="<?php echo URL::to('/assets/img/uss.png'); ?>" class="img-fluid avatar-40 rounded-circle" alt="Placeholder Image">
+                                    <?php endif; ?>
+                                 <!-- <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/' . Auth::user()->avatar) : URL::to('/public/themes/theme3/assets/images/user/user.jpg') ?>"87+4 class="img-fluid avatar-40 rounded-circle mr-2" alt="user"> -->
                                  <span class="my-account">
                                     <?= "My Account" ?>
                                  </span>
