@@ -895,7 +895,7 @@
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                 <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                                 <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                                <button type="submit" class="btn btn-primary" >Visit CPP Portal</button>
                                              </form>
                                           </div>
                                     <?php }
@@ -906,7 +906,7 @@
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                 <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                                 <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                <button type="submit" class="btn btn-primary" >Visit Channel Portal</button>
                                              </form>
                                           </div>
                                     <?php }
@@ -928,7 +928,7 @@
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                        <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                        <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                                       <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                       <button type="submit" class="btn btn-primary" >Visit CPP Portal</button>
                                     </form>
                                  </div>
                            <?php }
@@ -939,7 +939,7 @@
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                        <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                        <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                       <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                       <button type="submit" class="btn btn-primary" >Visit Channel Portal</button>
                                     </form>
                                  </div>
                            <?php }
