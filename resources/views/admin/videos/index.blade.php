@@ -52,9 +52,13 @@ border-radius: 0px 4px 4px 0px;
                             <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                         </div>
 
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalImport">
                            Import Video
-                           </button>
+                        </button>
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                           Export Video
+                        </button> -->
                            <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
 
                      {{-- Bulk video delete --}}
@@ -223,15 +227,37 @@ border-radius: 0px 4px 4px 0px;
                   </div>
                   <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" id = "Export" class="btn btn-primary">Import</button>
+                  <button type="button" id = "Export" class="btn btn-primary">Export</button>
                   </div>
                </div>
             </div>
             </div>
 
-            <div id="loader" style="display: none;">
-               Loading...
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalImport" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Import Videos</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                       <div class="col-md-12">
+                              <label class="m-0">Enter Video Start ID</label>
+                              <input type="file" name="csv_file" accept=".csv">
+                              <span id="video_start_id_error" style="color:red;">* Choose Video Csv File</span>
+                       </div>           
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id = "Import" class="btn btn-primary">Import</button>
+                  </div>
+               </div>
             </div>
+            </div>
+
           <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 
