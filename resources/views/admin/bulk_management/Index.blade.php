@@ -50,7 +50,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="iq-card-header-toolbar d-flex justify-content-between d-flex align-items-baseline">
                         <div class="form-group mr-2">                  
-                           <select id="Buk_Management" name="Buk_Management"  class="form-control" >
+                           <select id="Bulk_Management" name="Bulk_Management"  class="form-control" >
                               <option value="select">Select Management</option>
                                  <option value="Videos">Videos</option>
                                  <option value="Series">Series</option>
@@ -75,7 +75,9 @@ border-radius: 0px 4px 4px 0px;
                     <div class="Video_Management" id="Video_Management">
                             @include('admin.bulk_management.Videos')
                     </div>
-                    <div class="Series_Management" id="Series_Management"></div>
+                    <div class="Series_Management" id="Series_Management">
+                           @include('admin.bulk_management.Series')
+                    </div>
                     <div class="Episode_Management" id="Episode_Management"></div>
                     </div>
                     </div>
@@ -121,7 +123,7 @@ border-radius: 0px 4px 4px 0px;
                      <span aria-hidden="true">&times;</span>
                   </button>
                   </div>
-                  <form action="{{ URL::to('admin/video_bulk_import') }}" method="post" enctype="multipart/form-data">
+                  <form action="{{ URL::to('admin/bulk_import') }}" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="col-md-12">
                             <label for="">Upload Csv</label>
@@ -130,6 +132,7 @@ border-radius: 0px 4px 4px 0px;
                             <br>
                             <span id="csv_file_error" style="color:red;">* Choose Video Csv File</span>
                             <br>
+                            <input type="hidden" name="Bulk_Management" id="CSV_Bulk_Management">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         </div>           
                     </div>
@@ -154,6 +157,7 @@ border-radius: 0px 4px 4px 0px;
 		})
     $(document).ready(function() {
         $('.movie_table').DataTable();
+        $('.series_table').DataTable();
     });
 
    $('#video_start_id_error').hide();
@@ -166,20 +170,20 @@ border-radius: 0px 4px 4px 0px;
         $('#Series_Management').hide();
         $('#Episode_Management').hide();
 
-        $('#Buk_Management').change(function(){
-            var Buk_Management = $('#Buk_Management').val();
-            if(Buk_Management == 'Videos'){
+        $('#Bulk_Management').change(function(){
+            var Bulk_Management = $('#Bulk_Management').val();
+            $('#CSV_Bulk_Management').val(Bulk_Management);
+            if(Bulk_Management == 'Videos'){
                 $('#Video_Management').show();
                 $('#Series_Management').hide();
                 $('#Episode_Management').hide();
 
-            }else if(Buk_Management == 'Series'){
-                alert()
+            }else if(Bulk_Management == 'Series'){
                 $('#Series_Management').show();
                 $('#Episode_Management').hide();
                 $('#Video_Management').hide();
 
-            }else if(Buk_Management == 'Episode'){
+            }else if(Bulk_Management == 'Episode'){
                 $('#Episode_Management').show();
                 $('#Video_Management').hide();
                 $('#Series_Management').hide();
@@ -209,6 +213,22 @@ border-radius: 0px 4px 4px 0px;
 
             if( $('#video_start_id').val() != '' &&  $('#video_end_id').val() != ''){
 
+               var Bulk_Management = $('#Bulk_Management').val();
+
+               if(Bulk_Management == 'Videos'){
+                  var url = "{{ url('admin/video_bulk_export') }}";
+                  var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
+               }else if(Bulk_Management == 'Series'){
+                  var url = "{{ url('admin/series_bulk_export') }}";
+                  var Excel_url =  "{{ URL::to('storage/app/series.csv')  }}";
+               }else if(Bulk_Management == 'Episode'){
+                  var url = "{{ url('admin/episode_bulk_export') }}";
+                  var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
+               }else{
+                  var url = "{{ url('admin/video_bulk_export') }}";
+                  var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
+               }
+
 
                $(document).ajaxStart(function() {
                      $('#loader').show();
@@ -222,7 +242,7 @@ border-radius: 0px 4px 4px 0px;
                $.ajax({
                   type: "POST", 
                   dataType: "json", 
-                  url: "{{ url('admin/video_bulk_export') }}",
+                  url: url,
                         data: {
                            _token  : "{{csrf_token()}}" ,
                            video_start_id: $('#video_start_id').val(),
@@ -230,7 +250,6 @@ border-radius: 0px 4px 4px 0px;
                   },
                   success: function(data) {
                         if(data == 1){
-                           var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
                            location.href = Excel_url;
                         }
                        

@@ -651,8 +651,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // Bulk Import Export
 
     Route::get('/bulk-access', 'AdminBulkImportExportController@index');
+
+    Route::post('/bulk_import', 'AdminBulkImportExportController@BulkImport');
+
     Route::post('/video_bulk_export', 'AdminBulkImportExportController@VideoBulkExport');
     Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
+
+    Route::post('/series_bulk_export', 'AdminBulkImportExportController@SeriesBulkExport');
+    Route::post('/series_bulk_import', 'AdminBulkImportExportController@SeriesBulkImport');
+
     // Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
 
 

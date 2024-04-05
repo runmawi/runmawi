@@ -97,7 +97,13 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
 use App\AdminVideoAds;
 use App\MusicGenre;
-
+use App\SeriesCategory as SeriesCategory;
+use App\SeriesLanguage as SeriesLanguage;
+use App\SeriesGenre;
+use App\SeriesSubtitle as SeriesSubtitle;
+use App\SeriesNetwork;
+use App\Series;
+use App\Seriesartist;
 
 class AdminBulkImportExportController extends Controller
 {
@@ -107,6 +113,7 @@ class AdminBulkImportExportController extends Controller
     {
         $data = [
             "videos" => Video::with("category.categoryname")->orderBy("created_at", "DESC")->paginate(9),
+            "series" => Series::latest()->get(),
         ];
         
         return View("admin.bulk_management.index", $data);
@@ -114,6 +121,21 @@ class AdminBulkImportExportController extends Controller
     }
 
     
+    public function BulkImport(Request $request)
+    {
+        $data = $request->all();
+        $Bulk_Management = $request->Bulk_Management ;
+        if($Bulk_Management == 'Videos'){
+            return $this->VideoBulkImport($data);
+        }elseif($Bulk_Management == 'Series'){
+            return $this->SeriesBulkImport($data);
+        }elseif($Bulk_Management == 'Episode'){
+            return $this->EpisodeBulkImport($data);
+        }else{
+            return $this->VideoBulkImport($data);
+        }
+    }
+
     public function VideoBulkExport(Request $request){
 
         try {
@@ -178,13 +200,13 @@ class AdminBulkImportExportController extends Controller
         }
     }
 
-    public function VideoBulkImport(Request $request){
+    public function VideoBulkImport($data){
         
         try {
 
-            if ($request->hasFile('csv_file')) {
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
                 // Get the uploaded CSV file
-                $csvFile = $request->file('csv_file');
+                $csvFile = $data['csv_file'];
     
                 $file = fopen($csvFile->getPathname(), 'r');
     
@@ -406,4 +428,173 @@ class AdminBulkImportExportController extends Controller
     
     }
 
+
+    
+    public function SeriesBulkExport(Request $request){
+
+        try {
+           $start_id = $request->video_start_id;
+           $end_id = $request->video_end_id;
+
+
+            $series = Series::whereBetween('id', [$start_id, $end_id])->get()->map(function ($item){
+                    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+                        ->where('series_languages.series_id',$item->id)->pluck('language_id')->toArray();
+                        $item['languages'] = implode(',', $languages);
+                    $SeriesCategory = SeriesCategory::Join('series_genre','series_genre.id','=','series_categories.category_id')
+                        ->where('series_id',$item->id)->pluck('category_id')->toArray();
+                        $item['SeriesCategory'] = implode(',', $SeriesCategory);
+
+                    $Seriesartist = Seriesartist::join("artists","series_artists.artist_id", "=", "artists.id")
+                        ->where("series_artists.series_id", "=", $item->id)
+                        ->pluck('artist_id')->toArray();
+                        $item['Seriesartist_crew'] = implode(',', $Seriesartist);
+
+                    return $item;
+                });
+            $filePath = 'series.csv';
+            
+            if (!Storage::exists($filePath)) {
+                Storage::put($filePath, '');
+            }
+
+            $fileStream = fopen(storage_path('app/' . $filePath), 'w');
+
+            $firstSerie = $series->first();
+            $titles = array_keys($firstSerie->getAttributes());
+            fputcsv($fileStream, $titles);
+
+            foreach ($series as $serie) {
+                $attributes = $serie->getAttributes();
+
+                $rowData = [];
+                foreach ($titles as $title) {
+                    if (property_exists($serie, $title)) {
+                        $rowData[] = $title === 'languages' ? $serie->{$title} : $serie->{$title};
+                        $rowData[] = $title === 'SeriesCategory' ? $serie->{$title} : $serie->{$title};
+                        $rowData[] = $title === 'Seriesartist_crew' ? $serie->{$title} : $serie->{$title};
+                    }else if (array_key_exists($title, $attributes)) {
+                        $rowData[] = $attributes[$title];
+                    } else {
+                        $rowData[] = '';
+                    }
+                }
+
+                fputcsv($fileStream, $rowData);
+            }
+
+            fclose($fileStream);
+
+            return 1;
+           
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    public function SeriesBulkImport($data){
+        
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+    
+                $file = fopen($csvFile->getPathname(), 'r');
+    
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+                    $Series = Series::find($data['id']);
+                    if ($Series) {
+                        $Series->update([
+                            'user_id' => $data['user_id'],
+                            'genre_id' => $data['genre_id'],
+                            'network_id' => $data['network_id'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'type' => $data['type'],
+                            'access' => $data['access'],
+                            'details' => $data['details'],
+                            'description' => $data['description'],
+                            'active' => $data['active'],
+                            'ppv_status' => $data['ppv_status'],
+                            'featured' => $data['featured'],
+                            'duration' => $data['duration'],
+                            'views' => $data['views'],
+                            'rating' => $data['rating'],
+                            'image' => $data['image'],
+                            'embed_code' => $data['embed_code'],
+                            'mp4_url' => $data['mp4_url'],
+                            'webm_url' => $data['webm_url'],
+                            'ogg_url' => $data['ogg_url'],
+                            'language' => $data['language'],
+                            'year' => $data['title'],
+                            'trailer' => $data['trailer'],
+                            'url' => $data['url'],
+                            'player_image' => $data['player_image'],
+                            'tv_image' => $data['tv_image'],
+                            'banner' => $data['banner'],
+                            'search_tag' => $data['search_tag'],
+                            'series_trailer' => $data['series_trailer'],
+                            'season_trailer' => $data['season_trailer'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'created_at' => $data['created_at'],
+                        ]);
+                    }
+                    
+                    if (!empty($data["languages"])) {
+                        $languageIds = explode(',', $data["languages"]);
+                        SeriesLanguage::where('series_id', $Series->id)->delete();
+                        foreach ($languageIds as $languageId) {
+                            $SeriesLanguage = new SeriesLanguage();
+                            $SeriesLanguage->series_id = $Series->id;
+                            $SeriesLanguage->language_id = $languageId;
+                            $SeriesLanguage->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["SeriesCategory"])) {
+                        $CategoryIds = explode(',', $data["SeriesCategory"]);
+                        SeriesCategory::where('series_id', $Series->id)->delete();
+                        foreach ($CategoryIds as $CategoryId) {
+                            $SeriesCategory = new SeriesCategory();
+                            $SeriesCategory->series_id = $Series->id;
+                            $SeriesCategory->category_id = $CategoryId;
+                            $SeriesCategory->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["Seriesartist_crew"])) {
+                        $SeriesartistIds = explode(',', $data["Seriesartist_crew"]);
+                        Seriesartist::where('series_id', $Series->id)->delete();
+                        foreach ($SeriesartistIds as $SeriesartistId) {
+                            $Seriesartist = new Seriesartist();
+                            $Seriesartist->series_id = $Series->id;
+                            $Seriesartist->artist_id = $SeriesartistId;
+                            $Seriesartist->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    $rowNumber++;
+                }
+    
+                fclose($file);
+    
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
