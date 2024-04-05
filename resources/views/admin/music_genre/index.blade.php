@@ -216,11 +216,12 @@ border-radius: 0px 4px 4px 0px;
 						}
 					},
 				});
-		}else if(check == false){
-		$(status).prop('checked', true);
+			}else if(check == false){
+				$(status).prop('checked', true);
+				$('#category_'+category_id).prop("checked", false); 
 
-		}
-		}
+			}
+	}
 	</script>
 
 
