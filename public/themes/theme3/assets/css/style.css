@@ -136,7 +136,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-prev, #home-slider .slick-next {
     animation: none !important;
 }
-
+#home-slider p{color:#fff !important;}
 
 /*---------------------------------------------------------------------
                       Pages Content
