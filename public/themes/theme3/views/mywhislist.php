@@ -48,11 +48,12 @@
                         <div class="col-md-12 text-center mt-4">
                             <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>">
                         </div>
+                </ul>
 
                     <?php }?>
 
                     <!-- Episode -->
-
+                <ul class="favorites-slider list-inline  row p-0 mb-0">
                     <?php  if(isset($episode_videos)) :
                         foreach($episode_videos as $episode_videos):  ?>
                         <li class="slide-item">
@@ -85,7 +86,7 @@
                             </a>
                         </li>
                     <?php endforeach; endif; ?>
-            </ul>
+                </ul>
         </div>
 
     </div>
