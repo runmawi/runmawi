@@ -88,6 +88,8 @@
 
 {{-- Section content --}}
 
+ {{-- Message Note --}}
+ <div id="message-note" ></div>
 <section>
     <div class="vpageSection">
         <div class="backdrop-img" style="background-image: linear-gradient(90deg, rgba(20, 20, 20, 1) 0%, rgba(36, 36, 36, 1) 35%, rgba(83, 100, 141, 0) 100%),
@@ -257,6 +259,7 @@ function toggleDescription() {
     
 
 @php 
-    include public_path('themes/theme3/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');
     include public_path('themes/theme3/views/footer.blade.php'); 
 @endphp
