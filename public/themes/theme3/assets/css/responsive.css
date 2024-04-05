@@ -129,7 +129,7 @@
 }
 @media (min-width:576px) {
   .iq-search-bar a.search-toggle { display: none; }
-  .container-fluid.position-relative.h-100{padding:0 15px !important}
+  .container-fluid.position-relative.h-100{padding:0 15px}
   p.slider-text.big-title.title.text-uppercase {font-size: 33px;}
   .descp p{font-size:15px;}
 }

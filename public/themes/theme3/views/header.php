@@ -1171,6 +1171,9 @@
    div#search_list ul.list-group {
       height: calc(100vh - 120px);
    }
+   a.profile-icons.iq-user-dropdown.search-toggle.p-0.d-flex.align-items-center:hover{
+      color: #fff !important;
+   }
 </style>
 
 <style type="text/css">
@@ -1339,6 +1342,10 @@
          position: relative;
          top: -50px;
       }
+      header .navbar ul.navbar-nav{
+         display: flex !important;
+         flex-direction: column !important;
+      }
 
       @media only screen and (max-width: 768px) {
          .logo-text {
@@ -1378,9 +1385,7 @@
          }
       }
 
-      header .navbar ul.navbar-nav {
-         display: block !important;
-      }
+     
 
       .navbar>.container,
       .navbar>.container-fluid {
@@ -1403,6 +1408,12 @@
 
    }
 
+   @media (min-width:850px) {
+      header .navbar ul.navbar-nav {
+         display: flex !important;
+      }
+
+   }
    @media (min-width:851px) {
       button.navbar-toggler.d-block.border-0.p-0.mr-3.onclickbutton_menu {
          display: none !important;
@@ -1410,6 +1421,12 @@
 
    }
 
+   @media (max-width:600px) {
+
+      li.nav-item.nav-icon.profile-icons.ml-2.signup-mob-res{
+         display: none;
+      }
+   }
    @media (max-width:500px) {
 
       .my-account,
@@ -1464,6 +1481,7 @@
       text-align: left;
       flex-direction: row;
       justify-content: space-around;
+      align-items: start;
    }
 
    .top-colps ul.navbar-nav {
@@ -1627,11 +1645,11 @@
                <div class="col-lg-3 col-md-3 col-sm-3 col-3 d-flex align-items-center justify-content-end">
                   <div class="navbar-right menu-right">
                      <ul class="d-flex align-items-center list-inline m-0">
-                        <li class="nav-item nav-icon profile-icons">
+                        <li class="nav-item nav-icon ">
                            <?php if (!Auth::guest()): ?>
 
-                              <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
-                                 style="font-size:11px;" data-toggle="search-toggle">
+                              <a href="#" class="profile-icons iq-user-dropdown search-toggle p-0 d-flex align-items-center"
+                                 style="font-size:11px; padding:0 16px !important;" data-toggle="search-toggle">
                                     <?php if(Auth::user() && Auth::user()->avatar != null): ?>
                                           <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
                                     <?php else: ?>
@@ -1652,7 +1670,7 @@
 
                                     <div class="iq-card-body p-0 pl-3 pr-3">
 
-                           <li class="nav-item nav-icon">
+                           <li class="nav-item nav-icon profile-icons">
                               <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                  <div class="media align-items-center">
                                     <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
@@ -1663,7 +1681,7 @@
                               </a>
                            </li>
 
-                           <li class="nav-item nav-icon">
+                           <li class="nav-item nav-icon profile-icons ml-2 signup-mob-res">
                               <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                  <div class="media align-items-center">
                                     <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>

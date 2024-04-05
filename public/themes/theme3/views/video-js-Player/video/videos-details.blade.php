@@ -219,20 +219,6 @@
 </section>
 
 
-<script>
-   function read_more_details(ele) {
-      let read_more_content = '.' + $(ele).attr('data-read-more-id');
-
-      $(read_more_content).slideToggle();
-
-      if ($(ele).text() === "Read more") {
-         $(ele).text("Read less");
-      } else {
-         $(ele).text("Read more");
-      }
-   }
-</script>
-
 
 
 <script>
