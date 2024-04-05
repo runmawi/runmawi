@@ -24,7 +24,7 @@
                                             
 
                                             <div class="hover-buttons">
-                                                <a class="" href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
+                                                <a class="" href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
                                                     <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                                         <span class="text pr-2"> Play </span>
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">

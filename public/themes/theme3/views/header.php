@@ -1650,10 +1650,10 @@
 
                               <a href="#" class="profile-icons iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                  style="font-size:11px; padding:0 16px !important;" data-toggle="search-toggle">
-                                    <?php if(Auth::user() && Auth::user()->avatar != null): ?>
-                                          <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
-                                    <?php else: ?>
+                                    <?php if(Auth::user() && Auth::user()->avatar === null): ?>
                                           <img src="<?php echo URL::to('/assets/img/uss.png'); ?>" class="img-fluid avatar-40 rounded-circle" alt="Placeholder Image">
+                                    <?php else: ?>
+                                       <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
                                     <?php endif; ?>
                                  <!-- <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/' . Auth::user()->avatar) : URL::to('/public/themes/theme3/assets/images/user/user.jpg') ?>"87+4 class="img-fluid avatar-40 rounded-circle mr-2" alt="user"> -->
                                  <span class="my-account">
