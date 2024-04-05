@@ -104,6 +104,7 @@ use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
 use App\Series;
 use App\Seriesartist;
+use App\Episode;
 
 class AdminBulkImportExportController extends Controller
 {
@@ -114,8 +115,8 @@ class AdminBulkImportExportController extends Controller
         $data = [
             "videos" => Video::with("category.categoryname")->orderBy("created_at", "DESC")->paginate(9),
             "series" => Series::latest()->get(),
+            "Episodes" => Episode::latest()->get(),
         ];
-        
         return View("admin.bulk_management.index", $data);
 
     }
@@ -531,7 +532,7 @@ class AdminBulkImportExportController extends Controller
                             'webm_url' => $data['webm_url'],
                             'ogg_url' => $data['ogg_url'],
                             'language' => $data['language'],
-                            'year' => $data['title'],
+                            'year' => $data['year'],
                             'trailer' => $data['trailer'],
                             'url' => $data['url'],
                             'player_image' => $data['player_image'],
@@ -588,6 +589,135 @@ class AdminBulkImportExportController extends Controller
     
                 fclose($file);
     
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function EpisodeBulkExport(Request $request){
+
+        try {
+           $video_start_id = $request->video_start_id;
+           $video_end_id = $request->video_end_id;
+
+
+            $Episodes = Episode::whereBetween('id', [$video_start_id, $video_end_id])->get();
+
+            $filePath = 'episodes.csv';
+            
+            if (!Storage::exists($filePath)) {
+                Storage::put($filePath, '');
+            }
+
+            $fileStream = fopen(storage_path('app/' . $filePath), 'w');
+
+            $firstVideo = $Episodes->first();
+            $titles = array_keys($firstVideo->getAttributes());
+            fputcsv($fileStream, $titles);
+
+            foreach ($Episodes as $Episode) {
+                $attributes = $Episode->getAttributes();
+
+                $rowData = [];
+                foreach ($titles as $title) {
+                     if (array_key_exists($title, $attributes)) {
+                        $rowData[] = $attributes[$title];
+                    } else {
+                        $rowData[] = '';
+                    }
+                }
+
+                fputcsv($fileStream, $rowData);
+            }
+
+            fclose($fileStream);
+
+            return 1;
+
+           
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    
+    public function EpisodeBulkImport($data){
+            
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+
+                $file = fopen($csvFile->getPathname(), 'r');
+
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+                    $Episode = Episode::find($data['id']);
+                    if ($Episode) {
+                        $Episode->update([
+                            'series_id' => $data['series_id'],
+                            'season_id' => $data['season_id'],
+                            'type' => $data['type'],
+                            'access' => $data['access'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'ppv_status' => $data['ppv_status'],
+                            'ppv_price' => $data['ppv_price'],
+                            'active' => $data['active'],
+                            'skip_recap' => $data['skip_recap'],
+                            'skip_intro' => $data['skip_intro'],
+                            'recap_start_time' => $data['recap_start_time'],
+                            'recap_end_time' => $data['recap_end_time'],
+                            'intro_start_time' => $data['intro_start_time'],
+                            'intro_end_time' => $data['intro_end_time'],
+                            'featured' => $data['featured'],
+                            'banner' => $data['banner'],
+                            'footer' => $data['footer'],
+                            'duration' => $data['duration'],
+                            'episode_description' => $data['episode_description'],
+                            'age_restrict' => $data['age_restrict'],
+                            'views' => $data['views'],
+                            'rating' => $data['rating'],
+                            'image' => $data['image'],
+                            'mp4_url' => $data['mp4_url'],
+                            'url' => $data['url'],
+                            'status' => $data['status'],
+                            'free_content_duration' => $data['free_content_duration'],
+                            'path' => $data['path'],
+                            'player_image' => $data['player_image'],
+                            'tv_image' => $data['tv_image'],
+                            'search_tags' => $data['search_tags'],
+                            'video_js_mid_advertisement_sequence_time' => $data['video_js_mid_advertisement_sequence_time'],
+                            'pre_post_ads' => $data['pre_post_ads'],
+                            'pre_ads' => $data['pre_ads'],
+                            'mid_ads' => $data['mid_ads'],
+                            'post_ads' => $data['post_ads'],
+                            'disk' => $data['disk'],
+                            'stream_path' => $data['stream_path'],
+                            'processed_low' => $data['processed_low'],
+                            'converted_for_streaming_at' => $data['converted_for_streaming_at'],
+                            'episode_order' => $data['episode_order'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'user_id' => $data['user_id'],
+                            'ads_position' => $data['ads_position'],
+                            'episode_ads' => $data['episode_ads'],
+                            'created_at' => $data['created_at'],
+                        ]);
+                    }
+                    
+                    $rowNumber++;
+                }
+
+                fclose($file);
+
                 return Redirect::back()->with('message', 'CSV File updated successfully');
 
             } else {

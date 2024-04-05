@@ -660,7 +660,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/series_bulk_export', 'AdminBulkImportExportController@SeriesBulkExport');
     Route::post('/series_bulk_import', 'AdminBulkImportExportController@SeriesBulkImport');
 
-    // Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
+    Route::post('/episode_bulk_export', 'AdminBulkImportExportController@EpisodeBulkExport');
+    Route::post('/episode_bulk_import', 'AdminBulkImportExportController@EpisodeBulkImport');
 
 
     Route::get('/bulk_import_image', 'AdminBulkImportExportController@ImageBulkImport');

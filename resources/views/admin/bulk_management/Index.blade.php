@@ -78,7 +78,9 @@ border-radius: 0px 4px 4px 0px;
                     <div class="Series_Management" id="Series_Management">
                            @include('admin.bulk_management.Series')
                     </div>
-                    <div class="Episode_Management" id="Episode_Management"></div>
+                    <div class="Episode_Management" id="Episode_Management">
+                           @include('admin.bulk_management.Episode')
+                    </div>
                     </div>
                     </div>
   
@@ -223,7 +225,7 @@ border-radius: 0px 4px 4px 0px;
                   var Excel_url =  "{{ URL::to('storage/app/series.csv')  }}";
                }else if(Bulk_Management == 'Episode'){
                   var url = "{{ url('admin/episode_bulk_export') }}";
-                  var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
+                  var Excel_url =  "{{ URL::to('storage/app/episodes.csv')  }}";
                }else{
                   var url = "{{ url('admin/video_bulk_export') }}";
                   var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
