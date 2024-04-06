@@ -117,7 +117,7 @@ class AdminBulkImportExportController extends Controller
             "series" => Series::latest()->get(),
             "Episodes" => Episode::latest()->get(),
         ];
-        return View("admin.bulk_management.index", $data);
+        return View("admin.bulk_management.Index", $data);
 
     }
 
