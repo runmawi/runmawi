@@ -213,6 +213,12 @@
    .vjs-skin-hotdog-stand .vjs-play-progress {
       background: #FF0000;
    }
+   div#video\ sda{position:relative;}
+    .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; }
+    .vjs-icon-hd:before{
+        display:none;
+    }
+    
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">

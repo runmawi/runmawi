@@ -1,7 +1,7 @@
 @php
 
 include public_path('themes/theme7/views/header.php');
-include public_path('themes/theme4/views/episode_ads.blade.php');
+include public_path('themes/theme7/views/episode_ads.blade.php');
 
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
