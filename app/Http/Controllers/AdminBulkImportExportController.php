@@ -105,6 +105,12 @@ use App\SeriesNetwork;
 use App\Series;
 use App\Seriesartist;
 use App\Episode;
+use App\Audio as Audio;
+use App\AudioCategory as AudioCategory;
+use App\Audioartist;
+use App\AudioAlbums;
+use App\AudioLanguage;
+use App\CategoryAudio;
 
 class AdminBulkImportExportController extends Controller
 {
@@ -116,6 +122,7 @@ class AdminBulkImportExportController extends Controller
             "videos" => Video::with("category.categoryname")->orderBy("created_at", "DESC")->paginate(9),
             "series" => Series::latest()->get(),
             "Episodes" => Episode::latest()->get(),
+            "audios" => Audio::orderBy('created_at', 'DESC')->get(),
         ];
         return View("admin.bulk_management.Index", $data);
 
@@ -132,6 +139,8 @@ class AdminBulkImportExportController extends Controller
             return $this->SeriesBulkImport($data);
         }elseif($Bulk_Management == 'Episode'){
             return $this->EpisodeBulkImport($data);
+        }elseif($Bulk_Management == 'Audios'){
+            return $this->AudioBulkImport($data);
         }else{
             return $this->VideoBulkImport($data);
         }
@@ -727,4 +736,187 @@ class AdminBulkImportExportController extends Controller
             throw $th;
         }
     }
+
+
+    
+    public function AudioBulkExport(Request $request){
+
+        try {
+
+           $start_id = $request->video_start_id;
+           $end_id = $request->video_end_id;
+
+
+            $audios = Audio::whereBetween('id', [$start_id, $end_id])->get()->map(function ($item){
+                    $languages = AudioLanguage::Join('languages','languages.id','=','audio_languages.language_id')
+                        ->where('audio_languages.audio_id',$item->id)->pluck('language_id')->toArray();
+                        $item['languages'] = implode(',', $languages);
+                    $CategoryAudio = CategoryAudio::Join('audio_categories','audio_categories.id','=','category_audios.category_id')
+                        ->where('audio_id',$item->id)->pluck('category_id')->toArray();
+                        $item['CategoryAudio'] = implode(',', $CategoryAudio);
+
+                    $Audioartist = Audioartist::join("artists","audio_artists.artist_id", "=", "artists.id")
+                        ->where("audio_artists.audio_id", "=", $item->id)
+                        ->pluck('artist_id')->toArray();
+                        $item['Audioartist'] = implode(',', $Audioartist);
+
+                    return $item;
+                });
+
+            $filePath = 'audios.csv';
+            
+            if (!Storage::exists($filePath)) {
+                Storage::put($filePath, '');
+            }
+
+            $fileStream = fopen(storage_path('app/' . $filePath), 'w');
+
+            $firstVideo = $audios->first();
+            $titles = array_keys($firstVideo->getAttributes());
+            fputcsv($fileStream, $titles);
+
+            foreach ($audios as $audio) {
+                $attributes = $audio->getAttributes();
+
+                $rowData = [];
+                foreach ($titles as $title) {
+                    if (property_exists($audio, $title)) {
+                        $rowData[] = $title === 'languages' ? $audio->{$title} : $audio->{$title};
+                        $rowData[] = $title === 'CategoryAudio' ? $audio->{$title} : $audio->{$title};
+                        $rowData[] = $title === 'Audioartist' ? $audio->{$title} : $video->{$title};
+                    }else if (array_key_exists($title, $attributes)) {
+                        $rowData[] = $attributes[$title];
+                    } else {
+                        $rowData[] = '';
+                    }
+                }
+
+                fputcsv($fileStream, $rowData);
+            }
+
+            fclose($fileStream);
+
+            return 1;
+
+           
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function AudioBulkImport($data){
+        
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+    
+                $file = fopen($csvFile->getPathname(), 'r');
+    
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+                    $Audio = Audio::find($data['id']);
+                    if ($Audio) {
+                        $updateData = [
+                            'user_id' => $data['user_id'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'audio_category_id' => $data['audio_category_id'],
+                            'ppv_status' => $data['ppv_status'],
+                            'ppv_price' => $data['ppv_price'],
+                            'type' => $data['type'],
+                            'status' => $data['status'],
+                            'artists' => $data['artists'],
+                            'rating' => $data['rating'],
+                            'access' => $data['access'],
+                            'details' => $data['details'],
+                            'description' => $data['description'],
+                            'active' => $data['active'],
+                            'featured' => $data['featured'],
+                            'duration' => $data['duration'],
+                            'views' => $data['views'],
+                            'banner' => $data['banner'],
+                            'year' => $data['year'],
+                            'language' => $data['language'],
+                            'image' => $data['image'],
+                            'draft' => $data['draft'],
+                            'mp3_url' => $data['mp3_url'],
+                            'player_image' => $data['player_image'],
+                            'search_tags' => $data['search_tags'],
+                            'ios_ppv_price' => $data['ios_ppv_price'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'lyrics' => $data['lyrics'],
+                            'lyrics_json' => $data['lyrics_json'],
+                            'start' => $data['start'],
+                            'end' => $data['end'],
+                            'created_at' => $data['created_at'],
+                        ];
+                        
+                        if (!empty($data["album_id"])) {
+                            $updateData['album_id'] = $data['album_id'];
+                        } else {
+                            return Redirect::back()->with('error_message', 'Album Id field is required in row'. $rowNumber);
+                        }
+                
+                        $Audio->update($updateData);
+                    }
+                    
+                    if (!empty($data["languages"])) {
+                        $languageIds = explode(',', $data["languages"]);
+                        AudioLanguage::where('audio_id', $Audio->id)->delete();
+                        foreach ($languageIds as $languageId) {
+                            $AudioLanguage = new AudioLanguage();
+                            $AudioLanguage->audio_id = $Audio->id;
+                            $AudioLanguage->language_id = $languageId;
+                            $AudioLanguage->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Language Audio field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["CategoryAudio"])) {
+                        $CategoryIds = explode(',', $data["CategoryAudio"]);
+                        CategoryAudio::where('audio_id', $audio->id)->delete();
+                        foreach ($CategoryIds as $CategoryId) {
+                            $CategoryAudio = new CategoryAudio();
+                            $CategoryAudio->audio_id = $Audio->id;
+                            $CategoryAudio->category_id = $CategoryId;
+                            $CategoryAudio->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Category Audio field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["Audioartist"])) {
+                        $AudioartistIds = explode(',', $data["Audioartist"]);
+                        Audioartist::where('audio_id', $id)->delete();
+                        foreach ($AudioartistIds as $AudioartistId) {
+                            $Audioartist = new Audioartist();
+                            $Audioartist->audio_id = $video->id;
+                            $Audioartist->artist_id = $AudioartistId;
+                            $Audioartist->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    $rowNumber++;
+                }
+    
+                fclose($file);
+    
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+
 }

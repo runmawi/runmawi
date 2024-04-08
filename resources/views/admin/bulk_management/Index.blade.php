@@ -55,6 +55,7 @@ border-radius: 0px 4px 4px 0px;
                                  <option value="Videos">Videos</option>
                                  <option value="Series">Series</option>
                                  <option value="Episode">Episode</option>
+                                 <option value="Audios">Audios</option>
                               </select>
                         </div>
 
@@ -80,6 +81,9 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                     <div class="Episode_Management" id="Episode_Management">
                            @include('admin.bulk_management.Episode')
+                    </div>
+                    <div class="Audios_Management" id="Audios_Management">
+                           @include('admin.bulk_management.Audios')
                     </div>
                     </div>
                     </div>
@@ -171,6 +175,7 @@ border-radius: 0px 4px 4px 0px;
 
         $('#Series_Management').hide();
         $('#Episode_Management').hide();
+        $('#Audios_Management').hide();
 
         $('#Bulk_Management').change(function(){
             var Bulk_Management = $('#Bulk_Management').val();
@@ -179,22 +184,31 @@ border-radius: 0px 4px 4px 0px;
                 $('#Video_Management').show();
                 $('#Series_Management').hide();
                 $('#Episode_Management').hide();
+                $('#Audios_Management').hide();
 
             }else if(Bulk_Management == 'Series'){
                 $('#Series_Management').show();
                 $('#Episode_Management').hide();
                 $('#Video_Management').hide();
+                $('#Audios_Management').hide();
 
             }else if(Bulk_Management == 'Episode'){
                 $('#Episode_Management').show();
                 $('#Video_Management').hide();
                 $('#Series_Management').hide();
+                $('#Audios_Management').hide();
+
+            }else if(Bulk_Management == 'Audios'){
+                $('#Video_Management').hide();
+                $('#Series_Management').hide();
+                $('#Episode_Management').hide();
+                $('#Audios_Management').show();
 
             }else{
                 $('#Video_Management').show();
                 $('#Series_Management').hide();
                 $('#Episode_Management').hide();
-
+                $('#Audios_Management').hide();
             }
 
         });
@@ -226,6 +240,9 @@ border-radius: 0px 4px 4px 0px;
                }else if(Bulk_Management == 'Episode'){
                   var url = "{{ url('admin/episode_bulk_export') }}";
                   var Excel_url =  "{{ URL::to('storage/app/episodes.csv')  }}";
+               }else if(Bulk_Management == 'Audios'){
+                  var url = "{{ url('admin/audios_bulk_export') }}";
+                  var Excel_url =  "{{ URL::to('storage/app/audios.csv')  }}";
                }else{
                   var url = "{{ url('admin/video_bulk_export') }}";
                   var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
