@@ -1935,19 +1935,28 @@
                 });
             });
             
+            const dropdownIcon = document.querySelector('.dropdown-icon');
+            const dropdownContent = document.querySelector('.dropdown-content');
+
             document.addEventListener("click", function (event) {
-                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-                    dropdownContent.style.display = "none";
-                }
+               if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                  dropdownContent.style.display = "none";
+               }
             });
 
+            // document.addEventListener("click", function (event) {
+            //     if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            //         dropdownContent.style.display = "none";
+            //     }
+            // });
 
-      // Close the dropdown if the user clicks outside of it
-      document.addEventListener("click", function (event) {
-      if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-      dropdownContent.style.display = "none";
-      }
-      });
+
+            // Close the dropdown if the user clicks outside of it
+            // document.addEventListener("click", function (event) {
+            // if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            // dropdownContent.style.display = "none";
+            // }
+            // });
 
 
 
