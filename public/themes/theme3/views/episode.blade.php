@@ -1,13 +1,15 @@
-<?php
-include 'header.php';
-include 'episode_ads.blade.php';
+@php
+include public_path('themes/theme3/views/header.php');
+include public_path('themes/theme3/views/episode_ads.blade.php');
 
-$autoplay = $episode_ads == null ? 'autoplay' : '';
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
-?>
+$Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+$Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+$CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+@endphp
 
 <style>
     
@@ -1309,6 +1311,6 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     }
                 </script>
 
-    <?php
-    include 'footer.blade.php';
-    ?>
+@php
+    include public_path('themes/theme3/views/footer.blade.php');
+@endphp
