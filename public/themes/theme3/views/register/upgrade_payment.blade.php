@@ -849,7 +849,7 @@
 
                         <div class="plan-card">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-lg-6 col-12">
                                     @foreach ($plans_data_signup_checkout as $key => $plan)
                                         <div class="card" >
                                             <div class="card-body">
@@ -865,6 +865,11 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
 
 
 
@@ -924,9 +929,9 @@
                                 </div>
                                 
                                 
-                <div class="col-md-12 mt-5" id="payment_card_scroll">
+                <div class="col-md-12" id="payment_card_scroll">
                     <div class="cont stripe_payment" >
-                        <div class="d-flex justify-content-between align-items-center">
+                        <!-- <div class="d-flex justify-content-between align-items-center">
                              <div>
                                  <h3>{{ __('Payment') }}</h3>
                              </div>
@@ -940,12 +945,12 @@
                                      <i class="fa fa-cc-discover" style="color: orange;"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="mt-3"></div>
 
                         <!-- <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label> -->
-                        <div class="d-flex col-12 p-0">
+                        <!-- <div class="d-flex col-12 p-0">
                             <div class="col-6 p-0">
                                 <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
                             </div>
@@ -954,13 +959,12 @@
                             </div>
                            
                             
-                        </div>
+                        </div> -->
                         <!-- Stripe Elements Placeholder -->
                         <!-- <label for="ccnum"> {{ __('Card Number') }}</label> -->
                         <!-- <div id="card-element" style=""></div> -->
 
-                        @if( get_coupon_code() == 1)
-                                        <!-- Add Promotion Code -->
+                        <!-- @if( get_coupon_code() == 1)
                             <div class="mt-3">
                                 <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> {{ __('Add Promotion Code') }} </label>
                                <div class="collapse show" id="collapseExample">
@@ -972,7 +976,6 @@
                                         <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round btn-lg">{{ __('Apply') }}</a></div>
                                         <span id="coupon_message"></span>
 
-                                                    {{-- Coupon Code from backend(admin) --}}
                                         @if( NewSubscriptionCouponCode() != '0' )
                                             <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
                                         @endif
@@ -980,7 +983,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif -->
 
                     </div>
 
@@ -1054,35 +1057,35 @@
                            
 
                             {{-- Razorpay --}}
-                            <div class="col-md-12 Razorpay_payment">
+                            <!-- <div class="col-md-12 Razorpay_payment">
                                 <button type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
                                     Pay Now
                                 </button>
-                            </div>
+                            </div> -->
 
                             {{-- Paystack --}}
-                            <div class="col-md-12 paystack_payment">
+                            <!-- <div class="col-md-12 paystack_payment">
                                 <button type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
                                     Pay Now
                                 </button>
-                            </div>
+                            </div> -->
 
                             {{-- CinetPay --}}
-                            <div class="col-md-12 cinetpay_payment">
+                            <!-- <div class="col-md-12 cinetpay_payment">
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
                                     Pay Now
                                 </button>
-                            </div>
+                            </div> -->
 
                             {{-- Paydunya --}}
-                            <div class="col-md-12 Paydunya_payment">
+                            <!-- <div class="col-md-12 Paydunya_payment">
                                 <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
                                     {{ __('Pay Now') }}
                                 </button>
-                            </div>
+                            </div> -->
 
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                             <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">

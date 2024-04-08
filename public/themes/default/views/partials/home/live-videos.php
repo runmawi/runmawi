@@ -83,7 +83,7 @@
                 <div class="border-bg">
                     <div class="img-box">
                         <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="live" />
+                            <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>"  alt="live" />
                         </a>
 
                       <!-- PPV price -->
@@ -109,7 +109,7 @@
 
                     <div class="block-description" >
                         <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid w-100" alt="live" />
+                            <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>"  alt="live" />
                         
 
                       <!-- PPV price -->
@@ -220,7 +220,7 @@
 
                                 
                                     <a class="epi-name mt-3 mb-0 btn" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                        <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
+                                        <img class="d-inline-block ply" alt="ply"src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
                                         Live Now
                                     </a>
                                 </div>

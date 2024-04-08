@@ -64,7 +64,7 @@ class ConvertVideoTrailer implements ShouldQueue
 
         $ffmpeg = \Streaming\FFMpeg::create();
 
-        $video = $ffmpeg->open('public/uploads/trailer'.'/'.$trailer_Video);
+        $video = $ffmpeg->open('storage/app/trailer'.'/'.$trailer_Video);
 
             $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
             $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
@@ -76,7 +76,7 @@ class ConvertVideoTrailer implements ShouldQueue
         $video->hls()
                 ->x264()
                 ->addRepresentations($convertresolution)
-                ->save('public/uploads/trailer'.'/'.$trailer_video_name.'.m3u8');
+                ->save('storage/app/trailer'.'/'.$trailer_video_name.'.m3u8');
 
                 $this->video->update([
                     // 'path' =>  $vid_name,

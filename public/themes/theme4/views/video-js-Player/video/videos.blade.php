@@ -1,4 +1,4 @@
-@php include public_path('themes/theme4/views/header.php');  @endphp
+@php include public_path('themes/default/views/header.php');  @endphp
 
 {{-- video-js Style --}}
 
@@ -23,7 +23,7 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ asset('public/themes/theme4/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
-    
+
     <div class="container-fluid p-0">
 
         @if ( $videodetail->type == "embed" )
@@ -32,19 +32,19 @@
                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
             </iframe>
-            
         @else
-        <button class="staticback-btn" onclick="history.back()" title="Back Button">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </button>
 
-            <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
+            <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+
+            <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls 
+                    preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
+                    muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif
-        
     </div>
-
 @php 
 
     include public_path('themes/theme4/views/video-js-Player/video/videos_script_file.blade.php');

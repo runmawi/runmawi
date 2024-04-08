@@ -35,7 +35,7 @@
             <div class="border-bg">
               <div class="img-box">
               <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>"  alt="series">
               </a>
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -57,7 +57,7 @@
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" class="img-fluid lazyload w-100" alt="series">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" alt="series">
               
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -94,15 +94,15 @@
                   <?php echo __($latest_serie->title); ?></p>
                
                 <div class="movie-time d-flex align-items-center my-2">
-                  <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
-                  <div class="badge badge-secondary p-1 mr-2"><?php 
+                  <p class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></p>
+                  <p class="badge badge-secondary p-1 mr-2"><?php 
                   $SeriesSeason = App\SeriesSeason::where('series_id',$latest_serie->id)->count(); 
                   echo $SeriesSeason.' '.'Season'
-                  ?></div>
-                  <div class="badge badge-secondary p-1 mr-2"><?php 
+                  ?></p>
+                  <p class="badge badge-secondary p-1 mr-2"><?php 
                   $Episode = App\Episode::where('series_id',$latest_serie->id)->count(); 
                   echo $Episode.' '.'Episodes'
-                  ?></div>
+                  ?></p>
 
                   <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>-->
                 </div>
@@ -122,3 +122,7 @@
   </ul>
 </div>
 <?php endif; ?>
+
+<style>
+
+</style>

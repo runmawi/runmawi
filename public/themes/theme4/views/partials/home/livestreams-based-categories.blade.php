@@ -56,7 +56,7 @@ $data->each(function ($category) {
                             <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
-                                    <li>
+                                    <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -74,7 +74,7 @@ $data->each(function ($category) {
 
                             <ul id="trending-slider" class= "{{ 'category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" >
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative home-page-bg-img" >
                                             <button class="drp-close">×</button>
 
@@ -193,7 +193,7 @@ $data->each(function ($category) {
 
         $('.category-live-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.category-live-slider',
             dots: false,
             arrows: true,

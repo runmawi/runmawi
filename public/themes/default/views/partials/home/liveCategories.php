@@ -20,17 +20,15 @@ if(count($latest_video) > 0) : ?>
                            <div class="border-bg">
                              <div class="img-box">
                                    <a class="playTrailer" href="<?php echo URL::to('LiveCategory/').'/'.$Categories->slug ?>">
-                              
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                                   <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>"  alt="l-img">
                                  </a>
                                 </div>
                                 </div>
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('LiveCategory/').'/'.$Categories->slug ?>">
-                              
-                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->player_image;  ?>" class="img-fluid loading w-100" alt="l-img">
-                            </a>
+                                  <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->player_image;  ?>" alt="l-img">
+                                </a>
 
                             <div class="hover-buttons text-white">
                                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/LiveCategory/').'/'.$Categories->slug ?>" >

@@ -20,22 +20,22 @@ if(count($latest_video) > 0) : ?>
                       <li class="slide-item">
                          <div class="block-images position-relative">
                             <!-- block-images -->
-                            <div class="border-bg">
-                            <div class="img-box">
-                                <a class="playTrailer" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                              <div class="border-bg">
+                                 <div class="img-box">
+                                    <a class="playTrailer" aria-label="<?php echo $Categories->name ?>" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
+                                       <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->image;  ?>"  alt="l-img">
                                     </a>  
-                                </div>
-                                </div>
+                                 </div>
+                              </div>
 
 
                                 <div class="block-description">
-                                <a class="playTrailer" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
+                                <a class="playTrailer" aria-label="<?php echo $Categories->name ?>" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
                                    <!-- <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->player_image;  ?>" class="img-fluid loading w-100" alt="l-img"> -->
                                     </a>
 
                                     <div class="hover-buttons text-white">
-                                     <a  href="<?php URL::to('/category/').'/'.$Categories->slug ?>">
+                                     <a aria-label="<?php echo $Categories->name ?>" href="<?php URL::to('/category/').'/'.$Categories->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>  
                                            <!-- Title -->
                                            <p class="epi-name text-left m-0">
@@ -46,7 +46,7 @@ if(count($latest_video) > 0) : ?>
 
                                     
                                   
-                                       <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>" >
+                                       <a class="epi-name mt-5 mb-0 btn" aria-label="<?php echo $Categories->name ?>" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>" >
                                          <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                        </a>
 

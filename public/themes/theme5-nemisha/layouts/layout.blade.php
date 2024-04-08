@@ -90,13 +90,13 @@
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
 
-<script>
+<!-- <input type="checkbox" id="toggle"> -->
 
+<script>
     const toggle = document.getElementById('toggle');
     const body = document.body;
 
     toggle.addEventListener('input', (e) => {
-
         const isChecked = e.target.checked;
 
         if (isChecked) {

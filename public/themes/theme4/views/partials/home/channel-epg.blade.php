@@ -156,7 +156,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $epg_channel_data)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" >
@@ -168,7 +168,7 @@
 
                         <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider">
                             @foreach ($data as $key => $epg_channel_data )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 

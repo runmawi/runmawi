@@ -1,7 +1,55 @@
-@php  include public_path('themes/theme6/views/header.php'); @endphp
+@php  include public_path('themes/theme7/views/header.php'); @endphp
+
+
+<style>
+    body.light-theme h4, body.light-theme p {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .vpageBanner .content .right .utilities {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme ul.breadcrumb.breadcrumb-csp li, body.light-theme ul.breadcrumb.breadcrumb-csp li a{
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name.titleoverflow {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .genre {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .heading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .infoItem {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .info {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .vpageBanner .opacity-layer {
+        background:none;
+    }
+    .share-box{
+        top: 42px;
+        width: 117px;
+    }
+</style>
+
 
 {{-- Style Link--}}
-    <link rel="stylesheet" href="{{ asset('public/themes/theme6/assets/css/video-js/video-details.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/theme7/assets/css/video-js/video-details.css') }}">
 
 {{-- video-js Style --}}
 
@@ -10,14 +58,14 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/theme6/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ asset('public/themes/theme7/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
 {{-- video-js Script --}}
 
-    <script src="{{ asset('public/themes/theme6/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme7/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
 {{-- Section content --}}
@@ -63,9 +111,9 @@
                 </div>
 
                 <div class="right">
-                    <div class="title">    {{--  Title & Year--}}
+                    <h4 class="title">    {{--  Title & Year--}}
                         {{ optional($videodetail)->title }} 
-                    </div>
+                    </h4>
 
                     <div class="utilities d-flex align-items-center">  
                         {{ optional($videodetail)->year }} 
@@ -75,13 +123,8 @@
                         <i class="fas fa-circle"></i> 
 
                         {{ optional($videodetail)->age_restrict }}
-                        <i class="fas fa-circle"></i> 
                         
-                        @if(isset($view_increment) && $view_increment == true )
-                            {{ ( $movie->views + 1) . " views" }}
-                        @else
-                            {{ $videodetail->views . " views" }} 
-                        @endif
+                    
                     </div>
                    
                     @if ( $setting->show_Links_and_details == 1 &&  optional($videodetail)->details )  {{-- Details --}}
@@ -108,9 +151,9 @@
                                     <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
                                         <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                                     </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                    <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px; z-index:9;">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Watchlist</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px;">Add To Watchlist</span>
                                         </div>
                                     </div>
                                 </li>
@@ -120,9 +163,9 @@
                                     <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
                                         <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
                                     </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                    <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px; z-index:9;">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Wishlist</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px;">Add To Wishlist</span>
                                         </div>
                                     </div>
                                 </li>
@@ -144,8 +187,8 @@
                         </div>
                     </div>
 
-                    <div class="row">  
-                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                    <div class="row m-0">  
+                        <a class="btn btn-primary" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
                             <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                     <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
@@ -155,7 +198,7 @@
                             </div>
                         </a>
 
-                        @php include public_path('themes/theme6/views/partials/social-share.php'); @endphp  
+                        @php include public_path('themes/theme7/views/partials/social-share.php'); @endphp  
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
@@ -174,7 +217,7 @@
                                 </li>
                             </ul>
 
-                            @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                            @php include public_path('themes/theme7/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
 
                         @endif
                         
@@ -278,7 +321,7 @@
                                             <img src="{{ optional($videodetail)->image_url }}">
                                         </span>
 
-                                        @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                                        @php include public_path('themes/theme7/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
 
                                     </div>
                                     
@@ -289,7 +332,7 @@
 
                         @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
                                                                 
-                            @php  include public_path('themes/theme6/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                            @php  include public_path('themes/theme7/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
                         
                         @endif
 
@@ -314,7 +357,7 @@
                 <div class="sectionArtists">   
                     <div class="artistHeading"> Comments </div>
                         <div class="overflow-hidden">
-                            @php include public_path('themes/theme6/views/comments/index.blade.php') @endphp
+                            @php include public_path('themes/theme7/views/comments/index.blade.php') @endphp
                         </div>
                 </div>
             @endif
@@ -325,13 +368,13 @@
 
                 <div class=" container-fluid video-list  overflow-hidden p-0">
 
-                    <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
+                    <h4 class="iq-main-header d-flex align-items-center justify-content-between" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
 
                     <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 
                         <div class="favorites-contens">
 
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <ul class="favorites-slider list-inline p-0 mb-0">
 
                                 @foreach ( $videodetail->recommended_videos as $recommended_video)
                                 
@@ -341,139 +384,8 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                        <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
+                                                        <img loading="lazy" class="img-fluid" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
                                                     </a>
-                                                                    
-                                                             <!-- PPV price -->
-                                                     @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                         @if ($recommended_video->access == 'subscriber')
-                                                             <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                         @elseif($recommended_video->access == 'registered')
-                                                             <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                         @elseif(!empty($recommended_video->ppv_price))
-                                                             <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                        @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                            <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                        @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                            <p class="p-tag">{{ 'Free' }} </p>
-                                                        @endif
-                                                     @endif
-        
-                                                     @if ($ThumbnailSetting->published_on == 1)
-                                                       <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                                    
-                                            <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                    <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->player_image) }}">
-                                                                  
-                                                                <!-- PPV price -->
-                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                            @if ($recommended_video->access == 'subscriber')
-                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                            @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                            @elseif(!empty($recommended_video->ppv_price))
-                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
-                                                            @endif
-                                                        @endif
-        
-                                                        @if ($ThumbnailSetting->published_on == 1)
-                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
-                                                </a>
-                                                           <!-- PPV price -->
-                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                            @if ($recommended_video->access == 'subscriber')
-                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                            @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                            @elseif(!empty($recommended_video->ppv_price))
-                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
-                                                            @endif
-                                                        @endif
-        
-                                                        @if ($ThumbnailSetting->published_on == 1)
-                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
-                                                <div class="hover-buttons text-white">
-                                                    <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-
-                                                        @if ($ThumbnailSetting->title == 1)         <!-- Title -->
-                                                            <p class="epi-name text-left m-0"> {{ strlen($recommended_video->title) > 20 ? substr($recommended_video->title, 0, 21) . '...' : $recommended_video->title }} </p>
-                                                        @endif
-        
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if ($ThumbnailSetting->rating == 1)         <!--Rating  -->
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white"> <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                        {{ $recommended_video->rating }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            <!-- Category Thumbnail  setting -->
-                                                            <?php
-                                                                $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id', $recommended_video->id)
-                                                                    ->pluck('video_categories.name');
-                                                                ?>
-                                                                <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                                <span class="text-white">
-                                                                    <?php
-                                                                    $Category_Thumbnail = [];
-                                                                    foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                        $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                    }
-                                                                    echo implode(',' . ' ', $Category_Thumbnail);
-                                                                    ?>
-                                                                </span>
-                                                                <?php } ?>
-                                                            </div>
-        
-                                                        @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->duration == 1)
-                                                            <div class="movie-time d-flex align-items-center pt-1 mb-3">
-
-                                                                @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
-                                                                    <span class="text-white">
-                                                                        {{ gmdate('H:i:s', $recommended_video->duration) }}
-                                                                    </span>
-                                                                @endif 
-
-                                                                @if ($ThumbnailSetting->age == 1)     <!-- Age -->
-                                                                    <div class="badge badge-secondary p-1 mr-2"> {{ optional($recommended_video)->age_restrict . ' ' . '+' }}</div>
-                                                                @endif
-
-                                                                @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                            {{ $recommended_video->year }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
-                                                    </a>
-
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -499,6 +411,6 @@
     </div>
 
 @php 
-    include public_path('themes/theme6/views/video-js-Player/video/videos-details-script-file.blade.php');
-    include public_path('themes/theme6/views/footer.blade.php'); 
+    include public_path('themes/theme7/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme7/views/footer.blade.php'); 
 @endphp

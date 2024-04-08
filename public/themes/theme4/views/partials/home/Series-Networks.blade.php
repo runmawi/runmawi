@@ -35,19 +35,19 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $series_networks)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_networks->image_url }}" class="img-fluid" >
+                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider">
+                        <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider" style="display:none;">
                             @foreach ($data as $key => $series_networks )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
@@ -68,10 +68,10 @@
                                                         </div>
 
                                                         <div class="trending-contens sub_dropdown_image mt-3">
-                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "networks-depends-series pl-4 m-0">
+                                                            <ul  id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'networks-depends-series-slider-'.$key .' pl-4 m-0'}}" >
 
                                                                 @foreach ($series_networks->series as $series_key  => $series_details )
-                                                                    <li>
+                                                                    <li class="slick-slide">
                                                                         <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                             <div class=" position-relative">
                                                                                 <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : default_vertical_image_url() }}" class="img-fluid" >                                                                                <div class="controls">
@@ -126,7 +126,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                                <img class="lazy" src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="player-img" width="100%">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -165,18 +165,18 @@
     </section>
 @endif
 
+
+
 <script>
-    
-    $( window ).on("load", function() {
-        $('.series-networks-slider').fadeOut();
+    $(window).on("load", function() {
+        $('.series-networks-slider').hide();
     });
 
     $(document).ready(function() {
-
         $('.series-networks-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: true,
             fade: true,
             draggable: false,
             asNavFor: '.series-networks-slider-nav',
@@ -184,7 +184,7 @@
 
         $('.series-networks-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
@@ -217,47 +217,36 @@
             ],
         });
 
-        $('.networks-depends-series').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
         $('.series-networks-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.series-networks-slider').fadeIn();
+            $('.series-networks-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
             $('.series-networks-slider').hide();
         });
+
+        $('.slick-next, .slick-prev').on('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        $('.networks-depends-series-slider-' + category_key_id).slick({
+            dots: false,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 6,
+            slidesToScroll: 4,
+        });
     });
 </script>
+
+
+
+<style>
+    .series-networks-slider-nav a.slick-slide.slick-current.slick-active{
+        display:none;
+    }
+    a[aria-controls="1"] {
+        display:none;
+    }
+
+</style>

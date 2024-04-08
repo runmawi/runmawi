@@ -34,6 +34,9 @@
         .desc {
             font-size: 16px;
             line-height: 30px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            max-height: 230px;
         }
         a.btn.play-btn {
             border-radius: 35px !important;
@@ -85,6 +88,8 @@
 
 {{-- Section content --}}
 
+ {{-- Message Note --}}
+ <div id="message-note" ></div>
 <section>
     <div class="vpageSection">
         <div class="backdrop-img" style="background-image: linear-gradient(90deg, rgba(20, 20, 20, 1) 0%, rgba(36, 36, 36, 1) 35%, rgba(83, 100, 141, 0) 100%),
@@ -121,21 +126,24 @@
                         <?php
                             $description = $videodetail->description;
 
-                            if (strlen($description) > 300) {
-                                $shortDescription = htmlspecialchars(substr($description, 0, 200), ENT_QUOTES, 'UTF-8');
-                                $fullDescription = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
+                            if (strlen($description) > 220) {
+                                $shortDescriptionfirst = htmlspecialchars_decode(substr($description, 0, 220), ENT_QUOTES );
+                                $shortDescription = htmlspecialchars(strip_tags($shortDescriptionfirst), ENT_QUOTES, 'UTF-8');
+                                $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
 
-                                echo "<p id='artistDescription'  style='color:#fff !important;'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
+                                echo "<p id='artistDescription' style='color:#fff !important;'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
                                 echo "<div id='fullDescription' style='display:none;'>$fullDescription <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></div>";
                             } else {
                                 echo "<p id='artistDescription'>$description</p>";
                             }
-                        ?>
+                            ?>
+
+
                         </div>
                     </div>
                     <div class="left mb-4">
-                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:70%;">
+                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block; width: 100px; height: 100%;">
+                            <img class="posterImg" src="{{ $videodetail->image_url }}" style="width:100%;">
                         </span>
                     </div>
                     <div class="d-flex" style="gap:20px;">
@@ -155,6 +163,88 @@
                 </div>
             </div>
         </div>
+
+        @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
+                <div class="sectionArtists">   
+                    <div class="artistHeading">Top Cast</div>
+                    <div class="listItems">
+                        @foreach ( $videodetail->artists as $item )
+                            <a href="{{ route('artist',[ $item->artist_slug ])}}">
+                                <div class="listItem">
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img  src="{{ URL::to('public/uploads/artists/'. $item->image ) }}" />
+                                        </span>
+                                    </div>
+                                    <div class="name">{{ $item->artist_name }}</div>
+                                    <div class="character">{{ str_replace('_', ' ', $item->artist_type) }}</div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Broadcast  -->
+
+            <div class="container-fluid sectionArtists broadcast">   
+                @if( optional($videodetail)->trailer_videos_url )
+                    <div class="artistHeading">
+                        {{ ucwords('Promos & Resources ') }}
+                    </div>
+                @endif
+                        
+
+                    <div class="listItems">
+
+                        @if( optional($videodetail)->trailer_videos_url )
+                            <a>
+                                <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img src="{{ optional($videodetail)->image_url }}">
+                                        </span>
+
+                                        @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+
+                                    </div>
+                                    
+                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
+                                </div>
+                            </a>
+                        @endif
+
+                        @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
+                                                                
+                            @php  include public_path('themes/theme6/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                        
+                        @endif
+
+                        @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                            <div class="listItem">
+                                <div class="profileImg">
+                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
+                                    </span>
+                                </div>
+                                <div class="name">Document</div>
+                            </div>
+                        @endif
+                            
+                    </div>
+                    
+            </div>
+
+            {{-- comment Section --}}
+
+            @if( $CommentSection != null && $CommentSection->videos == 1 )
+                <div class="sectionArtists container-fluid">   
+                    <div class="artistHeading"> Comments </div>
+                        <div class="overflow-hidden">
+                            @php include public_path('themes/theme3/views/comments/index.blade.php') @endphp
+                        </div>
+                </div>
+            @endif
 
         <div class="rec-video col mt-5 p-0">
         {{-- Recommended videos Section --}}
@@ -213,6 +303,8 @@
 </section>
 
 
+
+
 <script>
 function toggleDescription() {
     var shortDesc = document.getElementById('artistDescription');
@@ -249,6 +341,7 @@ function toggleDescription() {
     
 
 @php 
-    include public_path('themes/theme3/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');
     include public_path('themes/theme3/views/footer.blade.php'); 
 @endphp

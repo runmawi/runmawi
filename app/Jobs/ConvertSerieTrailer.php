@@ -63,7 +63,7 @@ class ConvertSerieTrailer implements ShouldQueue
 
         $ffmpeg = \Streaming\FFMpeg::create();
 
-        $video = $ffmpeg->open('public/uploads/season_trailer'.'/'.$trailer_Video);
+        $video = $ffmpeg->open('storage/app/season_trailer'.'/'.$trailer_Video);
 
             $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
             $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
@@ -75,7 +75,7 @@ class ConvertSerieTrailer implements ShouldQueue
         $video->hls()
                 ->x264()
                 ->addRepresentations($convertresolution)
-                ->save('public/uploads/season_trailer'.'/'.$trailer_video_name.'.m3u8');
+                ->save('storage/app/season_trailer'.'/'.$trailer_video_name.'.m3u8');
 
     }
 
