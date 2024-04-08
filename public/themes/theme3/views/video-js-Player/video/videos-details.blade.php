@@ -164,6 +164,88 @@
             </div>
         </div>
 
+        @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
+                <div class="sectionArtists">   
+                    <div class="artistHeading">Top Cast</div>
+                    <div class="listItems">
+                        @foreach ( $videodetail->artists as $item )
+                            <a href="{{ route('artist',[ $item->artist_slug ])}}">
+                                <div class="listItem">
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img  src="{{ URL::to('public/uploads/artists/'. $item->image ) }}" />
+                                        </span>
+                                    </div>
+                                    <div class="name">{{ $item->artist_name }}</div>
+                                    <div class="character">{{ str_replace('_', ' ', $item->artist_type) }}</div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Broadcast  -->
+
+            <div class="container-fluid sectionArtists broadcast">   
+                @if( optional($videodetail)->trailer_videos_url )
+                    <div class="artistHeading">
+                        {{ ucwords('Promos & Resources ') }}
+                    </div>
+                @endif
+                        
+
+                    <div class="listItems">
+
+                        @if( optional($videodetail)->trailer_videos_url )
+                            <a>
+                                <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img src="{{ optional($videodetail)->image_url }}">
+                                        </span>
+
+                                        @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+
+                                    </div>
+                                    
+                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
+                                </div>
+                            </a>
+                        @endif
+
+                        @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
+                                                                
+                            @php  include public_path('themes/theme6/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                        
+                        @endif
+
+                        @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                            <div class="listItem">
+                                <div class="profileImg">
+                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
+                                    </span>
+                                </div>
+                                <div class="name">Document</div>
+                            </div>
+                        @endif
+                            
+                    </div>
+                    
+            </div>
+
+            {{-- comment Section --}}
+
+            @if( $CommentSection != null && $CommentSection->videos == 1 )
+                <div class="sectionArtists container-fluid">   
+                    <div class="artistHeading"> Comments </div>
+                        <div class="overflow-hidden">
+                            @php include public_path('themes/theme3/views/comments/index.blade.php') @endphp
+                        </div>
+                </div>
+            @endif
+
         <div class="rec-video col mt-5 p-0">
         {{-- Recommended videos Section --}}
 
