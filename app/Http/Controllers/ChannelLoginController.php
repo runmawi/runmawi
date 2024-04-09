@@ -201,7 +201,7 @@ class ChannelLoginController extends Controller
             $channel->channel_image = $image;
             $channel->status = 0;
             $channel->save();
-
+            
             $user_data = User::where('email', $request->email_id)->first();
 
             if(empty($user_data)){
@@ -247,7 +247,7 @@ class ChannelLoginController extends Controller
 
                 $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
                 $email_template = "43";
-                $user_id = $user->id;
+                $user_id = $channel->id;
 
                 Email_sent_log($user_id, $email_log, $email_template);
             }
@@ -284,7 +284,7 @@ class ChannelLoginController extends Controller
             {
                 $email_log = $e->getMessage();
                 $email_template = "43";
-                $user_id = $user->id;
+                $user_id = $channel->id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
             }
