@@ -46,7 +46,6 @@ class SubscriptionRenewal extends Command
      */
     public function handle()
     {
-        // return 0;
         $users = User::select('subscriptions.ends_at as end_date','users.*','subscription_plans.plans_name as plans_name','subscription_plans.price as price')
         ->join('subscriptions', 'users.id', '=', 'subscriptions.user_id')
         ->join('subscription_plans', 'subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
