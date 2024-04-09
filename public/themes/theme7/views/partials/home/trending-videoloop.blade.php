@@ -41,3 +41,11 @@
     </section>
 @endif
 <br>
+
+<style>
+    li.slick-slide.slick-current.slick-center .block-images::before{
+        opacity: 1 !important;
+        -webkit-transition: all 0.45s ease 0s;
+    }
+
+</style>
