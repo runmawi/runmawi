@@ -1967,14 +1967,14 @@ $artists = [];
                                                                     echo $video->year;
                                                                 } ?></span>
                                                         </h4>
-                                                        <span
+                                                        <!-- <span
                                                             class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict) . ' ' . '+'; ?></span>
                                                         <span
-                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->categories->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->languages->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration); ?></span><br>
+                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->categories->name)); ?></span> -->
+                                                        <!-- <span
+                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->languages->name)); ?></span> -->
+                                                        <!-- <span
+                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration); ?></span><br> -->
 
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
                                                             style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
