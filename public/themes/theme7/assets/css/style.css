@@ -193,7 +193,29 @@ li.slide-item .block-description .badge { background-color: rgb(72, 72, 72, 0.61
 li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 .slick-vertical .slick-slide.slick-current.slick-active .block-description { left: 25px; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; opacity: 1; }
 .slick-vertical .slick-slide .block-images { overflow: visible; }
-.slick-vertical .slick-slide .block-images::before { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); opacity: 0; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; border-left: 6px solid var(--iq-primary); }
+/* .slick-vertical .slick-slide .block-images::before { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); opacity: 0; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; border-left: 6px solid var(--iq-primary); } */
+.slick-vertical .slick-slide .block-images::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: all 0.45s ease 0s;
+    -webkit-transition: all 0.45s ease 0s;
+    -moz-transition: all 0.45s ease 0s;
+    -o-transition: all 0.45s ease 0s;
+    border-left: 6px solid var(--iq-primary);
+}
+.slick-vertical .slick-slide.slick-current.slick-active .block-images::before {
+    opacity: 1;
+    transition: all 0.45s ease 0s;
+    -webkit-transition: all 0.45s ease 0s;
+    -moz-transition: all 0.45s ease 0s;
+    -o-transition: all 0.45s ease 0s;
+}
 .slick-vertical .slick-slide.slick-current.slick-active .block-images::before { opacity: 1; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .slick-vertical .slick-slide.slick-current.slick-active .block-images { width: 100%; overflow: visible; transform-origin: 100% 100%; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; z-index: 9; }
 .slick-vertical li.slick-slide.slick-current.slick-active { transition: all 0.45s ease 0s; }
