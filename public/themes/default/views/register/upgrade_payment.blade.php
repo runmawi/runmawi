@@ -535,7 +535,7 @@
         body.light-theme .text-white{
             color: <?php echo GetLightText(); ?> !important;
         }
-        p{color: #fff !important;} 
+        /* p{color: #fff !important;}  */
 
     </style>
 
