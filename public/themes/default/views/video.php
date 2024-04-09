@@ -2113,10 +2113,11 @@ $artists = [];
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
-                                                    <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)">
-                                                        <button type="button"
-                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
-                                                    </a>
+                                                    <!-- <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)"> -->
+                                                        <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_video_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                                                        <!-- <button type="button"
+                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button> -->
+                                                    <!-- </a> -->
                                                 </div>
                                                     <!-- PayPal Button -->
 
