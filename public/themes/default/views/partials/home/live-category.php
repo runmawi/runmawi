@@ -90,7 +90,7 @@
                             <div class="border-bg">
                                     <div class="img-box">
                                     <a class="playTrailer" href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">   
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="live-c">
+                                        <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>"  alt="live-c">
                                     </a>
 
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
@@ -118,7 +118,7 @@
 
                                     <div class="block-description">
                                       <a class="playTrailer" href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">   
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->player_image;  ?>" class="img-fluid w-100" alt="live-c">
+                                        <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->player_image;  ?>" alt="live-c">
                                     
 
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
@@ -232,7 +232,7 @@
                                         
                                             <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
-                                                <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply" /> Watch Now
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply" /> Watch Now
                                             </a>
                                         </div>
                                     </div>

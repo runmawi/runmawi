@@ -98,7 +98,7 @@ body {font-family: Arial;}
                                             <th>Transaction.no</th>
                                             <th>Type</th>
                                             <th>Plan</th>
-                                            <th>Content</th>
+                                            <!-- <th>Content</th> -->
                                             <th>Price</th>
                                             <th>Country</th>
                                             <th>TimeStamp</th>
@@ -107,13 +107,17 @@ body {font-family: Arial;}
                                     </thead>
                                 <tbody>
                                     @foreach($subscriber_Revenue as $key => $user)
+
+                                        @if(!empty($user->stripe_id))
+                                            <?php $plans_name = App\SubscriptionPlan::where('plan_id', $user->stripe_plan)->pluck('plans_name')->first(); ?>
+                                        @endif
                                         <tr>
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $user->username  }}</td>   
                                         <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
                                         <td>{{ $user->role  }}</td>                                      
-                                        <td>@if(!empty($user->plans_name))  {{ @$user->plans_name }} @else Registered @endif</td>
-                                        <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif
+                                        <td>@if(!empty($plans_name))  {{ $plans_name }} @else Subscriber @endif</td>
+                                        <!-- <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif -->
                                         <td>{{ $user->total_amount  }}</td>   
                                         <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
                                         <td>{{ $user->created_at  }}</td> 

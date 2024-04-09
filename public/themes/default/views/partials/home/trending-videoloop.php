@@ -59,8 +59,8 @@
                              <div class="border-bg">
                                 <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
-                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                <img class="img-fluid w-100"  loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
+                                alt="f-img"> 
                         </a>
                                 
                                        
@@ -87,8 +87,8 @@
 
                                         <div class="block-description">
                                         <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
-                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                          <img class="img-fluid w-100"  loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
+                                  alt="f-img"> 
                         
                                 
                                        
@@ -204,7 +204,7 @@
 
                                             
                                             <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                                <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                             </a>
                                             </div>
                                             </div>

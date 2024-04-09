@@ -14,7 +14,7 @@
                     <div class="favorites-contens">
                             <ul id="trending-slider-nav" class="schedule-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $key => $video_details)
-                                    <li>
+                                    <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $video_details->image ?  $video_details->image : default_vertical_image_url() }}" class="img-fluid" >
@@ -26,7 +26,7 @@
 
                             <ul id="trending-slider schedule" class="list-inline p-0 m-0 align-items-center schedule">
                                 @foreach ($data as $key => $video_details)
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
 

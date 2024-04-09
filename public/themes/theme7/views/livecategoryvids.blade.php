@@ -25,106 +25,11 @@ $currency = App\CurrencySetting::first();
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
-                                                
-                                          <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" ><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
-                                                    <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                                    <p class="p-tag"><?php echo "Free"; ?></p>
-                                                    <?php } ?>
-                                               
-                                                </div>
-                                             
-
-                                            <div class="block-description">
-                                                    
-                                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                                    <a  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                                             <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
-                                                    </a>
-                                                <?php } ?>  
-                                                    
-                                                <div class="movie-time d-flex align-items-center pt-1">
-                                                        <?php if($ThumbnailSetting->age == 1) { ?>
-                                                        <!-- Age -->
-                                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
-                                                        <?php } ?>
-                
-                                                        <?php if($ThumbnailSetting->duration == 1) { ?>
-                                                        <!-- Duration -->
-                                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $category_video->duration); ?></span>
-                                                        <?php } ?>
-                                                </div>
-
-
-                                                <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                                    <div class="movie-time d-flex align-items-center pt-1">
-                                                        <?php if($ThumbnailSetting->rating == 1) { ?>
-                                                            <!--Rating  -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                    <?php echo __($category_video->rating); ?>
-                                                                </span>
-                                                            </div>
-                                                        <?php } ?>
-                    
-                                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
-                                                            <!-- published_year -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                              <span class="text-white">
-                                                                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                  <?php echo __($category_video->year); ?>
-                                                              </span>
-                                                            </div>
-                                                        <?php } ?>
-                    
-                                                        <?php if($ThumbnailSetting->featured == 1 &&  $category_video->featured == 1) { ?>
-                                                            <!-- Featured -->
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                              <span class="text-white">
-                                                                <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                              </span>
-                                                            </div>
-                                                            <?php } ?>
-                                                        </div>
-                                                    <?php } ?>
-
-                                                    <div class="movie-time my-2">
-                                                        <!-- Category Thumbnail  setting -->
-                                                        <?php
-                                                         $CategoryThumbnail_setting =  App\CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
-                                                         ->where('livecategories.live_id',$category_video->id)
-                                                         ->pluck('live_categories.name');           
-                                                        ?>
-                                                        <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                        <span class="text-white">
-                                                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                            <?php
-                                                                $Category_Thumbnail = array();
-                                                                    foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                                    }
-                                                                echo implode(','.' ', $Category_Thumbnail);
-                                                            ?>
-                                                        </span>
-                                                        <?php } ?>
+                                                <div class="border-bg">
+                                                    <div class="img-box">
+                                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                     </div>
-                                                    
-
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white"  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
-                                                        </a>
-                   
-    
-                                        </div>
-
                                                 </div>
-
                                             </div>
                                         </a>
                                     </li>

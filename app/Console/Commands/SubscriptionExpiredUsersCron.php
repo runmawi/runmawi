@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\EmailTemplate;
 use App\Subscription;
 use App\User;
 use Carbon\Carbon;
@@ -40,25 +41,47 @@ class SubscriptionExpiredUsersCron extends Command
      */
     public function handle()
     {
-        $current_date_time = Carbon::now();
+        $users_subscription = User::query()->where('role','subscriber')->whereDate('subscription_ends_at', '>=', Carbon::now()->subDays(3))
+                                                ->whereDate('subscription_ends_at', '<=', Carbon::now())->get();
 
-        $subscription_expired_users = User::whereDay('subscription_ends_at', '=', $current_date_time->format('d'))
-          ->whereMonth('subscription_ends_at', '=', $current_date_time->format('m'))
-          ->whereYear('subscription_ends_at', '=', $current_date_time->format('Y'))
-          ->whereBetween('subscription_ends_at',  [now()->startOfMinute(), now()->endOfMinute() ])
-          ->get();
+        foreach($users_subscription as $key => $user_subscription){
 
-        if(count($subscription_expired_users) > 0){
+            try {
 
-              foreach($subscription_expired_users as $subscription_expired_user ){
+                $email_subject =  EmailTemplate::where('id',28)->pluck('heading')->first() ;
 
-                User::where('id',$subscription_expired_user->id)->update([
-                    'subscription_ends_at' => null ,
-                    'role'                => 'registered',
-                    'payment_status'      => 'Expiry'
-                ]);
+                $data = array( 'email_subject' => $email_subject );
 
-              }
+                \Mail::send('emails.Subscription_Expiry', array(
+
+                    'PlanName'     => Subscription::join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                                                ->where('subscriptions.user_id',$user_subscription->id)->where('subscriptions.stripe_id',$user_subscription->stripe_id)
+                                                ->groupBy('subscriptions.stripe_plan')->pluck('subscription_plans.plans_name')->first() ?? 'Plan Name' ,
+
+                    'Name'         => $user_subscription->username,
+                    'EndSubscriptionDate'  =>  $user_subscription->subscription_ends_at,
+                    'website_name' => GetWebsiteName(),
+                ), 
+
+                function($message) use ($data,$user_subscription) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($user_subscription->email, $user_subscription->username)->subject($data['email_subject']);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Partner Subscription Expiry Notification !';
+                $email_template = "28";
+                $user_id = $user_subscription->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            } catch (\Throwable $th) {
+
+                $email_log = $th->getMessage();
+                $email_template = "28";
+                $user_id = $user_subscription->id;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }            
         }
     }
 }

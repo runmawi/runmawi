@@ -112,7 +112,7 @@ class AdminFFplayoutController extends Controller
             // $CurrentDate = $current_date->format('Y-m-d');
 
             $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id', 1)
-                ->where('choosed_date', "3-19-2024")
+                ->where('choosed_date', "4-1-2024")
                 ->orderBy('socure_order', 'ASC')
                 ->join('admin_epg_channels', 'admin_epg_channels.id', '=', 'channel_videos_scheduler.channe_id')
                 ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
@@ -132,7 +132,54 @@ class AdminFFplayoutController extends Controller
                 'date' => $formattedDate,
                 'playlist_items' => $playlistItems,
             ];
+
+
+            // Reformatting the data into the desired structure
+            $data = [
+                'template' => [
+                    'sources' => $playlistItems,
+                ],
+            ];
+
+            // If you need to add additional keys like 'channel' and 'date' to the $data array, you can do it like this:
+            $data['channel'] = $channelname;
+            $data['date'] = $formattedDate;
+
             
+                     
+                $response = $client->delete($this->baseUrl.'/api/playlist/1/2024-04-01', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $this->token,
+                    ],
+                ]);
+
+                // Handle response
+                $body = $response->getBody()->getContents();
+
+                // dd($body);
+
+            $client = new Client([
+                'base_uri' => $this->baseUrl .'/api/',
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->token,
+                ],
+            ]);
+        
+        $playlistId = 1;
+        $response = $client->request('POST', "playlist/{$playlistId}/generate/2024-04-01", [
+                'json' => $data,
+            ]);
+        
+            // return $response->getBody()->getContents();
+        
+  
+        
+        // $response = generatePlaylist($playlistId, $date, $token);
+        dd($response->getBody()->getContents());
+        echo"<pre>"; echo $response;
+                exit;
                      // Delete Playlist 
                      
                      
