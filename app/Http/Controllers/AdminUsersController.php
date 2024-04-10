@@ -1337,8 +1337,10 @@ class AdminUsersController extends Controller
     public function RejectDevice($userIp, $device_name)
     {
         $maildevice = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
-        $maildevice->status = 2;
-        $maildevice->save();
+        if(!empty($maildevice)){
+            $maildevice->status = 2;
+            $maildevice->save();
+        }
         $system_settings = SystemSetting::first();
         $user = User::where('id', '=', 1)->first();
         $message = 'Approved User For Login';
