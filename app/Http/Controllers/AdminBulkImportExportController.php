@@ -899,7 +899,7 @@ class AdminBulkImportExportController extends Controller
 
                     if (!empty($data["CategoryAudio"])) {
                         $CategoryIds = explode(',', $data["CategoryAudio"]);
-                        CategoryAudio::where('audio_id', $audio->id)->delete();
+                        CategoryAudio::where('audio_id', $Audio->id)->delete();
                         foreach ($CategoryIds as $CategoryId) {
                             $CategoryAudio = new CategoryAudio();
                             $CategoryAudio->audio_id = $Audio->id;
@@ -912,10 +912,10 @@ class AdminBulkImportExportController extends Controller
 
                     if (!empty($data["Audioartist"])) {
                         $AudioartistIds = explode(',', $data["Audioartist"]);
-                        Audioartist::where('audio_id', $id)->delete();
+                        Audioartist::where('audio_id', $Audio->id)->delete();
                         foreach ($AudioartistIds as $AudioartistId) {
                             $Audioartist = new Audioartist();
-                            $Audioartist->audio_id = $video->id;
+                            $Audioartist->audio_id = $Audio->id;
                             $Audioartist->artist_id = $AudioartistId;
                             $Audioartist->save();
                         }
@@ -1353,7 +1353,7 @@ class AdminBulkImportExportController extends Controller
                     if ($data['album_id'] == "") {
                         return Redirect::back()->with('error_message', 'Album Id field is required in row'. $rowNumber);
                     }
-                    
+
                     $Audio = Audio::create([
                             'user_id' => $data['user_id'],
                             'title' => $data['title'],
@@ -1412,7 +1412,7 @@ class AdminBulkImportExportController extends Controller
 
                     if (!empty($data["CategoryAudio"])) {
                         $CategoryIds = explode(',', $data["CategoryAudio"]);
-                        CategoryAudio::where('audio_id', $audio->id)->delete();
+                        CategoryAudio::where('audio_id', $Audio->id)->delete();
                         foreach ($CategoryIds as $CategoryId) {
                             $CategoryAudio = new CategoryAudio();
                             $CategoryAudio->audio_id = $Audio->id;
@@ -1425,10 +1425,10 @@ class AdminBulkImportExportController extends Controller
 
                     if (!empty($data["Audioartist"])) {
                         $AudioartistIds = explode(',', $data["Audioartist"]);
-                        Audioartist::where('audio_id', $id)->delete();
+                        Audioartist::where('audio_id', $Audio->id)->delete();
                         foreach ($AudioartistIds as $AudioartistId) {
                             $Audioartist = new Audioartist();
-                            $Audioartist->audio_id = $video->id;
+                            $Audioartist->audio_id = $Audio->id;
                             $Audioartist->artist_id = $AudioartistId;
                             $Audioartist->save();
                         }
