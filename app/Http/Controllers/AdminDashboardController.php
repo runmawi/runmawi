@@ -164,6 +164,10 @@ class AdminDashboardController extends Controller
                                     $space_str = '0';
                                 }
                                 $space_usage = $spaceusage_array[0].'.'.substr($space_str, 0, 3).' '.'GB';
+                                        // If space usage exceeds 1 TB, round it to the nearest TB
+                                    if (intval($spaceusage) >= 1024) {
+                                        $space_usage = substr(round(intval($spaceusage) / 1024), 0, 3) . ' ' . 'GB';
+                                    }
                             }
                             
                         }else{
