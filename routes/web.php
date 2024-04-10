@@ -669,6 +669,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/bulk_import_image', 'AdminBulkImportExportController@ImageBulkImport');
     Route::post('/zip_bulk_import', 'AdminBulkImportExportController@ImageZipImport');
 
+    Route::get('/video_bulk_create_import', 'AdminBulkImportExportController@CreateVideoBulkImport');
+    Route::get('/series_bulk_create_import', 'AdminBulkImportExportController@CreateSeriesBulkImport');
+    Route::get('/episode_bulk_create_import', 'AdminBulkImportExportController@CreateEpisodeBulkImport');
+    Route::get('/audios_bulk_create_import', 'AdminBulkImportExportController@CreateAudioBulkImport');
+
     // Music Genre Routes
     Route::get('/Music/Genre', 'AdminMusicGenreController@index');
     Route::Post('/Music_genre_store', 'AdminMusicGenreController@Music_Genre_Store');

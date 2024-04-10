@@ -133,16 +133,36 @@ class AdminBulkImportExportController extends Controller
     {
         $data = $request->all();
         $Bulk_Management = $request->Bulk_Management ;
-        if($Bulk_Management == 'Videos'){
-            return $this->VideoBulkImport($data);
-        }elseif($Bulk_Management == 'Series'){
-            return $this->SeriesBulkImport($data);
-        }elseif($Bulk_Management == 'Episode'){
-            return $this->EpisodeBulkImport($data);
-        }elseif($Bulk_Management == 'Audios'){
-            return $this->AudioBulkImport($data);
+        $Bulk_Import_Type = $request->Bulk_Import_Type ;
+        if($Bulk_Import_Type == 'updatedata'){
+
+            if($Bulk_Management == 'Videos'){
+                return $this->VideoBulkImport($data);
+            }elseif($Bulk_Management == 'Series'){
+                return $this->SeriesBulkImport($data);
+            }elseif($Bulk_Management == 'Episode'){
+                return $this->EpisodeBulkImport($data);
+            }elseif($Bulk_Management == 'Audios'){
+                return $this->AudioBulkImport($data);
+            }else{
+                return $this->VideoBulkImport($data);
+            }
+
+        }else if($Bulk_Import_Type == 'createdata'){
+
+            if($Bulk_Management == 'Videos'){
+                return $this->CreateVideoBulkImport($data);
+            }elseif($Bulk_Management == 'Series'){
+                return $this->CreateSeriesBulkImport($data);
+            }elseif($Bulk_Management == 'Episode'){
+                return $this->CreateEpisodeBulkImport($data);
+            }elseif($Bulk_Management == 'Audios'){
+                return $this->CreateAudioBulkImport($data);
+            }else{
+                return $this->CreateVideoBulkImport($data);
+            }
         }else{
-            return $this->VideoBulkImport($data);
+            return Redirect::back()->with('error_message', 'Choose Bulk Import Type');
         }
     }
 
@@ -910,6 +930,177 @@ class AdminBulkImportExportController extends Controller
                 return Redirect::back()->with('message', 'CSV File updated successfully');
 
             } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    
+    public function CreateVideoBulkImport($data){
+        
+        try {
+            // dd($data['csv_file']);
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+            $csvFile = $data['csv_file'];
+    
+                $file = fopen($csvFile->getPathname(), 'r');
+    
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+                    dd($data);
+                    $video = new Video();
+                    $video->title = $data['title'];
+                    $video->slug = empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'];
+                    $video->video_category_id = $data['video_category_id'];
+                    $video->type = $data['type'];
+                    $video->access = $data['access'];
+                    $video->ppv_price = $data['ppv_price'];
+                    $video->global_ppv = $data['global_ppv'];
+                    $video->details = $data['details'];
+                    $video->description = $data['description'];
+                    $video->active = $data['active'];
+                    $video->featured = $data['featured'];
+                    $video->banner = $data['banner'];
+                    $video->today_top_video = $data['today_top_video'];
+                    $video->enable = $data['enable'];
+                    $video->user_id = $data['user_id'];
+                    $video->footer = $data['footer'];
+                    $video->original_name = $data['original_name'];
+                    $video->disk = $data['disk'];
+                    $video->stream_path = $data['stream_path'];
+                    $video->processed_low = $data['processed_low'];
+                    $video->converted_for_streaming_at = $data['converted_for_streaming_at'];
+                    $video->path = $data['path'];
+                    $video->old_path_mp4 = $data['old_path_mp4'];
+                    $video->duration = $data['duration'];
+                    $video->slug = $data['slug'];
+                    $video->rating = $data['rating'];
+                    $video->status = $data['status'];
+                    $video->publish_type = $data['publish_type'];
+                    $video->publish_status = $data['publish_status'];
+                    $video->publish_time = $data['publish_time'];
+                    $video->skip_recap = $data['skip_recap'];
+                    $video->skip_intro = $data['skip_intro'];
+                    $video->recap_start_time = $data['recap_start_time'];
+                    $video->recap_end_time = $data['recap_end_time'];
+                    $video->intro_start_time = $data['intro_start_time'];
+                    $video->intro_end_time = $data['intro_end_time'];
+                    $video->image = $data['image'];
+                    $video->embed_code = $data['embed_code'];
+                    $video->mp4_url = $data['mp4_url'];
+                    $video->m3u8_url = $data['m3u8_url'];
+                    $video->webm_url = $data['webm_url'];
+                    $video->ogg_url = $data['ogg_url'];
+                    $video->views = $data['views'];
+                    $video->language = $data['language'];
+                    $video->year = $data['year'];
+                    $video->trailer = $data['trailer'];
+                    $video->url = $data['url'];
+                    $video->draft = $data['draft'];
+                    $video->age_restrict = $data['age_restrict'];
+                    $video->video_gif = $data['video_gif'];
+                    $video->Recommendation = $data['Recommendation'];
+                    $video->country = $data['country'];
+                    $video->pdf_files = $data['pdf_files'];
+                    $video->reelvideo = $data['reelvideo'];
+                    $video->url_link = $data['url_link'];
+                    $video->url_linktym = $data['url_linktym'];
+                    $video->url_linksec = $data['url_linksec'];
+                    $video->urlEnd_linksec = $data['urlEnd_linksec'];
+                    $video->mobile_image = $data['mobile_image'];
+                    $video->tablet_image = $data['tablet_image'];
+                    $video->default_ads = $data['default_ads'];
+                    $video->player_image = $data['player_image'];
+                    $video->video_tv_image = $data['video_tv_image'];
+                    $video->ads_status = $data['ads_status'];
+                    $video->ads_category = $data['ads_category'];
+                    $video->pre_ads_category = $data['pre_ads_category'];
+                    $video->mid_ads_category = $data['mid_ads_category'];
+                    $video->post_ads_category = $data['post_ads_category'];
+                    $video->pre_ads = $data['pre_ads'];
+                    $video->mid_ads = $data['mid_ads'];
+                    $video->ads_tag_url_id = $data['ads_tag_url_id'];
+                    $video->tag_url_ads_position = $data['tag_url_ads_position'];
+                    $video->video_js_pre_position_ads = $data['video_js_pre_position_ads'];
+                    $video->video_js_post_position_ads = $data['video_js_post_position_ads'];
+                    $video->video_js_mid_position_ads_category = $data['video_js_mid_position_ads_category'];
+                    $video->video_js_mid_advertisement_sequence_time = $data['video_js_mid_advertisement_sequence_time'];
+                    $video->trailer_type = $data['trailer_type'];
+                    $video->reels_thumbnail = $data['reels_thumbnail'];
+                    $video->trailer_description = $data['trailer_description'];
+                    $video->search_tags = $data['search_tags'];
+                    $video->ios_ppv_price = $data['ios_ppv_price'];
+                    $video->uploaded_by = $data['uploaded_by'];
+                    $video->video_title_image = $data['video_title_image'];
+                    $video->enable_video_title_image = $data['enable_video_title_image'];
+                    $video->free_duration_status = $data['free_duration_status'];
+                    $video->free_duration = $data['free_duration'];
+                    $video->expiry_date = $data['expiry_date'];
+                    $video->tiny_video_image = $data['tiny_video_image'];
+                    $video->tiny_player_image = $data['tiny_player_image'];
+                    $video->tiny_video_title_image = $data['tiny_video_title_image'];
+                    $video->music_genre = $data['music_genre'];
+                    $video->country_by_origin = $data['country_by_origin'];
+                    $video->writers = $data['writers'];
+                    $video->created_at = $data['created_at'];
+                    $video->save();
+
+                    
+                    if (!empty($data["languages"])) {
+                        $languageIds = explode(',', $data["languages"]);
+                        LanguageVideo::where("video_id", $video->id)->delete();
+                        foreach ($languageIds as $languageId) {
+                            $languageVideo = new LanguageVideo();
+                            $languageVideo->video_id = $video->id;
+                            $languageVideo->language_id = $languageId;
+                            $languageVideo->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
+                    }
+                    if (!empty($data["CategoryVideo"])) {
+                        $CategoryIds = explode(',', $data["CategoryVideo"]);
+                        CategoryVideo::where("video_id", $video->id)->delete();
+                        foreach ($CategoryIds as $CategoryId) {
+                            $CategoryVideo = new CategoryVideo();
+                            $CategoryVideo->video_id = $video->id;
+                            $CategoryVideo->category_id = $CategoryId;
+                            $CategoryVideo->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["video_cast_crew"])) {
+                        $VideoartistIds = explode(',', $data["video_cast_crew"]);
+                        Videoartist::where("video_id", $video->id)->delete();
+                        foreach ($VideoartistIds as $VideoartistId) {
+                            $Videoartist = new Videoartist();
+                            $Videoartist->video_id = $video->id;
+                            $Videoartist->artist_id = $VideoartistId;
+                            $Videoartist->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    $rowNumber++;
+                }
+    
+                fclose($file);
+    
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+
+            dd('$data');
+
                 return Redirect::back()->with('error_message', 'No CSV file uploaded.');
             }
         } catch (\Throwable $th) {

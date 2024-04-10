@@ -67,8 +67,12 @@ border-radius: 0px 4px 4px 0px;
                            Import CSV
                         </button>
 
+                        <button class="btn btn-primary newCSV"  id="newCSV">
+                           Export CSV To Create
+                        </button>
+
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                           Export CSV
+                           Export CSV To Update
                         </button>
 
                         </div>
@@ -132,6 +136,17 @@ border-radius: 0px 4px 4px 0px;
                   <form action="{{ URL::to('admin/bulk_import') }}" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="col-md-12">
+
+                        <label for="create_data">
+                              <input type="radio" id="create_data" name="Bulk_Import_Type" value="createdata">
+                              Create CSV Data
+                           </label>
+                           <br>
+                           <label for="update_data">
+                              <input type="radio" id="update_data" name="Bulk_Import_Type" value="updatedata">
+                              Update CSV Data
+                           </label>
+                            <br>
                             <label for="">Upload Csv</label>
                             <br>
                             <input type="file" name="csv_file" accept=".csv">
@@ -172,7 +187,7 @@ border-radius: 0px 4px 4px 0px;
 
     $(document).ready(function() {
 
-
+    
         $('#Series_Management').hide();
         $('#Episode_Management').hide();
         $('#Audios_Management').hide();
@@ -212,6 +227,25 @@ border-radius: 0px 4px 4px 0px;
             }
 
         });
+
+
+         $('#newCSV').click(function(){
+
+            var Bulk_Management = $('#Bulk_Management').val();
+
+               if(Bulk_Management == 'Videos'){
+                  var Excel_url =  "{{ URL::to('storage/app/Createvideos.csv')  }}";
+               }else if(Bulk_Management == 'Series'){
+                  var Excel_url =  "{{ URL::to('storage/app/Createseries.csv')  }}";
+               }else if(Bulk_Management == 'Episode'){
+                  var Excel_url =  "{{ URL::to('storage/app/Createepisodes.csv')  }}";
+               }else if(Bulk_Management == 'Audios'){
+                  var Excel_url =  "{{ URL::to('storage/app/Createaudios.csv')  }}";
+               }else{
+                  var Excel_url =  "{{ URL::to('storage/app/Createvideos.csv')  }}";
+               }
+                           location.href = Excel_url;
+         });
 
 
 
