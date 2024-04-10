@@ -547,7 +547,8 @@ class StripePaymentController extends Controller
                                                             ->pluck('code')->first();
             }
 
-            // Stripe Checkout
+            // Stripe Checkout 
+            // 'unit_amount' => (integer) $payment_amount * 100, 
 
             $Checkout_details = array(
                 'success_url' => $success_url,
@@ -559,7 +560,7 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' =>  $payment_amount * 100, 
                         ],
                         'quantity' => 1,
                     ],

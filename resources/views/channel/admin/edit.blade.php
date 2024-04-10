@@ -82,6 +82,23 @@
                             <input id="channel_about" type="textarea" class="form-control" name="channel_about" value ="{{ $Channel->channel_about }}" autocomplete="channel_about">
                             </div>
                         </div>
+
+                        <div class="col-md-6" style="width: 50%; float: left;">
+                            <div class="form-group row">
+                            <label for="channel_roles" class=" col-form-label text-md-right">{{ __('Channel Roles') }}</label>
+                               <select class="form-control" name="channel_roles" id="channel_roles">
+                                    <option value="">Select Roles</option>
+                                    @if($ChannelRoles->count() > 0)
+                                        @foreach($ChannelRoles as $value)
+                                        <option value="{{ $value->id }}" @if(!empty($Channel->role_id) && $Channel->role_id == $value->id){{ 'selected' }}@endif>{{ $value->role_name }}</option>
+                                        @endForeach
+                                    @else
+                                        No Record Found
+                                    @endif  
+                               </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-6" style="width: 50%; float: left;">
 
                         <div class="form-group row">

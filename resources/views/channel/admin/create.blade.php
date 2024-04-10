@@ -74,7 +74,21 @@
                             <input id="channel_about" type="textarea" class="form-control" name="channel_about" value ="" autocomplete="channel_about">
                             </div>
                         </div>
-
+                        <div class="col-md-6" style="width: 50%; float: left;">
+                            <div class="form-group row">
+                            <label for="channel_roles" class=" col-form-label text-md-right">{{ __('Channel Roles') }}</label>
+                               <select class="form-control" name="channel_roles" id="channel_roles">
+                                    <option value="">Select Roles</option>
+                                    @if($ChannelRoles->count() > 0)
+                                        @foreach($ChannelRoles as $value)
+                                        <option value="{{ $value->id }}" >{{ $value->role_name }}</option>
+                                        @endForeach
+                                    @else
+                                        No Record Found
+                                    @endif  
+                               </select>
+                            </div>
+                        </div>
 
                         <div class="col-md-6" style="width: 50%; float: left;">
 
@@ -89,7 +103,7 @@
                         <div class="col-md-6" style="width: 50%; float: left;">
 
                         <div class="form-group row">
-                                <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
+                                <label for="" style="">Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
                        
                             </div>

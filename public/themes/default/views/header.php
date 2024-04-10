@@ -1935,19 +1935,37 @@
                 });
             });
             
-            document.addEventListener("click", function (event) {
-                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-                    dropdownContent.style.display = "none";
-                }
+            document.addEventListener("DOMContentLoaded", function() {
+               const dropdownIcon = document.querySelector('.dropdown-icon');
+               const dropdownContent = document.querySelector('.dropdown-content');
+
+               // Check if both dropdownIcon and dropdownContent are not null
+               if (dropdownIcon && dropdownContent) {
+                  document.addEventListener("click", function (event) {
+                        // Check if the clicked target is neither dropdownIcon nor within dropdownContent
+                        if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                           dropdownContent.style.display = "none";
+                        }
+                  });
+               } else {
+                  console.error("Error: Dropdown elements not found in the document.");
+               }
             });
 
 
-      // Close the dropdown if the user clicks outside of it
-      document.addEventListener("click", function (event) {
-      if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-      dropdownContent.style.display = "none";
-      }
-      });
+            // document.addEventListener("click", function (event) {
+            //     if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            //         dropdownContent.style.display = "none";
+            //     }
+            // });
+
+
+            // Close the dropdown if the user clicks outside of it
+            // document.addEventListener("click", function (event) {
+            // if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            // dropdownContent.style.display = "none";
+            // }
+            // });
 
 
 

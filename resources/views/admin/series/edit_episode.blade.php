@@ -64,7 +64,6 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                 </div>
                 @endif
-            </div>
             <?php 
                 $filename = $episodes->path.'.mp4';
                 $path = storage_path('app/public/'.$filename);
@@ -74,6 +73,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
                 @endif
             @endif           
+            </div>
             <hr />
             <div class="clear"></div>
 
