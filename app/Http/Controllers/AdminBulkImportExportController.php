@@ -954,7 +954,19 @@ class AdminBulkImportExportController extends Controller
                 $rowNumber = 1; 
                 while (($row = fgetcsv($file)) !== false) {
                     $data = array_combine($headers, $row);
-                    dd($data);
+
+                    if ($data['languages'] == "") {
+                        return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
+                    }
+
+                    if ($data['CategoryVideo'] == "") {
+                        return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
+                    }
+
+                    if ($data['video_cast_crew'] == "") {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+
                     $video = new Video();
                     $video->title = $data['title'];
                     $video->slug = empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'];
@@ -1053,7 +1065,7 @@ class AdminBulkImportExportController extends Controller
                     $video->save();
 
                     
-                    if (!empty($data["languages"])) {
+                    if (!empty($data["languages"]) || $data['languages'] != "") {
                         $languageIds = explode(',', $data["languages"]);
                         LanguageVideo::where("video_id", $video->id)->delete();
                         foreach ($languageIds as $languageId) {
@@ -1065,7 +1077,7 @@ class AdminBulkImportExportController extends Controller
                     }else {
                         return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
                     }
-                    if (!empty($data["CategoryVideo"])) {
+                    if (!empty($data["CategoryVideo"]) || $data['CategoryVideo'] != "") {
                         $CategoryIds = explode(',', $data["CategoryVideo"]);
                         CategoryVideo::where("video_id", $video->id)->delete();
                         foreach ($CategoryIds as $CategoryId) {
@@ -1078,7 +1090,7 @@ class AdminBulkImportExportController extends Controller
                         return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
                     }
 
-                    if (!empty($data["video_cast_crew"])) {
+                    if (!empty($data["video_cast_crew"]) || $data['video_cast_crew'] != "") {
                         $VideoartistIds = explode(',', $data["video_cast_crew"]);
                         Videoartist::where("video_id", $video->id)->delete();
                         foreach ($VideoartistIds as $VideoartistId) {
@@ -1099,7 +1111,6 @@ class AdminBulkImportExportController extends Controller
 
             } else {
 
-            dd('$data');
 
                 return Redirect::back()->with('error_message', 'No CSV file uploaded.');
             }
@@ -1108,6 +1119,336 @@ class AdminBulkImportExportController extends Controller
         }
     }
 
+
+    public function CreateSeriesBulkImport($data){
+        
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+    
+                $file = fopen($csvFile->getPathname(), 'r');
+    
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+
+
+                    if ($data['languages'] == "") {
+                        return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
+                    }
+
+                    if ($data['SeriesCategory'] == "") {
+                        return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
+                    }
+
+                    if ($data['Seriesartist_crew'] == "") {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+
+                        $Series = Series::create([
+                            'user_id' => $data['user_id'],
+                            'genre_id' => $data['genre_id'],
+                            'network_id' => $data['network_id'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'type' => $data['type'],
+                            'access' => $data['access'],
+                            'details' => $data['details'],
+                            'description' => $data['description'],
+                            'active' => $data['active'],
+                            'ppv_status' => $data['ppv_status'],
+                            'featured' => $data['featured'],
+                            'duration' => $data['duration'],
+                            'views' => $data['views'],
+                            'rating' => $data['rating'],
+                            'image' => $data['image'],
+                            'embed_code' => $data['embed_code'],
+                            'mp4_url' => $data['mp4_url'],
+                            'webm_url' => $data['webm_url'],
+                            'ogg_url' => $data['ogg_url'],
+                            'language' => $data['language'],
+                            'year' => $data['year'],
+                            'trailer' => $data['trailer'],
+                            'url' => $data['url'],
+                            'player_image' => $data['player_image'],
+                            'tv_image' => $data['tv_image'],
+                            'banner' => $data['banner'],
+                            'search_tag' => $data['search_tag'],
+                            'series_trailer' => $data['series_trailer'],
+                            'season_trailer' => $data['season_trailer'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'created_at' => $data['created_at'],
+                        ]);
+                    
+                    if (!empty($data["languages"])) {
+                        $languageIds = explode(',', $data["languages"]);
+                        SeriesLanguage::where('series_id', $Series->id)->delete();
+                        foreach ($languageIds as $languageId) {
+                            $SeriesLanguage = new SeriesLanguage();
+                            $SeriesLanguage->series_id = $Series->id;
+                            $SeriesLanguage->language_id = $languageId;
+                            $SeriesLanguage->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Language Video field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["SeriesCategory"])) {
+                        $CategoryIds = explode(',', $data["SeriesCategory"]);
+                        SeriesCategory::where('series_id', $Series->id)->delete();
+                        foreach ($CategoryIds as $CategoryId) {
+                            $SeriesCategory = new SeriesCategory();
+                            $SeriesCategory->series_id = $Series->id;
+                            $SeriesCategory->category_id = $CategoryId;
+                            $SeriesCategory->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Category Video field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["Seriesartist_crew"])) {
+                        $SeriesartistIds = explode(',', $data["Seriesartist_crew"]);
+                        Seriesartist::where('series_id', $Series->id)->delete();
+                        foreach ($SeriesartistIds as $SeriesartistId) {
+                            $Seriesartist = new Seriesartist();
+                            $Seriesartist->series_id = $Series->id;
+                            $Seriesartist->artist_id = $SeriesartistId;
+                            $Seriesartist->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    $rowNumber++;
+                }
+    
+                fclose($file);
+    
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    
+    
+    public function CreateEpisodeBulkImport($data){
+            
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+
+                $file = fopen($csvFile->getPathname(), 'r');
+
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+                  
+                        $Episode = Episode::create([
+                            'series_id' => $data['series_id'],
+                            'season_id' => $data['season_id'],
+                            'type' => $data['type'],
+                            'access' => $data['access'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'ppv_status' => $data['ppv_status'],
+                            'ppv_price' => $data['ppv_price'],
+                            'active' => $data['active'],
+                            'skip_recap' => $data['skip_recap'],
+                            'skip_intro' => $data['skip_intro'],
+                            'recap_start_time' => $data['recap_start_time'],
+                            'recap_end_time' => $data['recap_end_time'],
+                            'intro_start_time' => $data['intro_start_time'],
+                            'intro_end_time' => $data['intro_end_time'],
+                            'featured' => $data['featured'],
+                            'banner' => $data['banner'],
+                            'footer' => $data['footer'],
+                            'duration' => $data['duration'],
+                            'episode_description' => $data['episode_description'],
+                            'age_restrict' => $data['age_restrict'],
+                            'views' => $data['views'],
+                            'rating' => $data['rating'],
+                            'image' => $data['image'],
+                            'mp4_url' => $data['mp4_url'],
+                            'url' => $data['url'],
+                            'status' => $data['status'],
+                            'free_content_duration' => $data['free_content_duration'],
+                            'path' => $data['path'],
+                            'player_image' => $data['player_image'],
+                            'tv_image' => $data['tv_image'],
+                            'search_tags' => $data['search_tags'],
+                            'video_js_mid_advertisement_sequence_time' => $data['video_js_mid_advertisement_sequence_time'],
+                            'pre_post_ads' => $data['pre_post_ads'],
+                            'pre_ads' => $data['pre_ads'],
+                            'mid_ads' => $data['mid_ads'],
+                            'post_ads' => $data['post_ads'],
+                            'disk' => $data['disk'],
+                            'stream_path' => $data['stream_path'],
+                            'processed_low' => $data['processed_low'],
+                            'converted_for_streaming_at' => $data['converted_for_streaming_at'],
+                            'episode_order' => $data['episode_order'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'user_id' => $data['user_id'],
+                            'ads_position' => $data['ads_position'],
+                            'episode_ads' => $data['episode_ads'],
+                            'created_at' => $data['created_at'],
+                        ]);
+                    
+                    $rowNumber++;
+                }
+
+                fclose($file);
+
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    
+    public function CreateAudioBulkImport($data){
+        
+        try {
+
+            if (isset($data['csv_file']) && is_file($data['csv_file'])) {
+                // Get the uploaded CSV file
+                $csvFile = $data['csv_file'];
+    
+                $file = fopen($csvFile->getPathname(), 'r');
+    
+                $headers = fgetcsv($file);
+                $rowNumber = 1; 
+                while (($row = fgetcsv($file)) !== false) {
+                    $data = array_combine($headers, $row);
+
+
+                    if ($data['languages'] == "") {
+                        return Redirect::back()->with('error_message', 'Language Audio field is required in row'. $rowNumber);
+                    }
+                    
+                    if ($data['CategoryAudio'] == "") {
+                        return Redirect::back()->with('error_message', 'Category Audio field is required in row'. $rowNumber);
+                    }
+                    
+                    if ($data['Audioartist'] == "") {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    
+                    
+                    if ($data['album_id'] == "") {
+                        return Redirect::back()->with('error_message', 'Album Id field is required in row'. $rowNumber);
+                    }
+                    
+                    $Audio = Audio::create([
+                            'user_id' => $data['user_id'],
+                            'title' => $data['title'],
+                            'slug' => empty($data["slug"]) ? str_replace(" ", "-", $data["title"]) : $data['slug'],
+                            'audio_category_id' => $data['audio_category_id'],
+                            'ppv_status' => $data['ppv_status'],
+                            'ppv_price' => $data['ppv_price'],
+                            'type' => $data['type'],
+                            'status' => $data['status'],
+                            'artists' => $data['artists'],
+                            'rating' => $data['rating'],
+                            'access' => $data['access'],
+                            'details' => $data['details'],
+                            'description' => $data['description'],
+                            'active' => $data['active'],
+                            'featured' => $data['featured'],
+                            'duration' => $data['duration'],
+                            'views' => $data['views'],
+                            'banner' => $data['banner'],
+                            'year' => $data['year'],
+                            'language' => $data['language'],
+                            'image' => $data['image'],
+                            'draft' => $data['draft'],
+                            'mp3_url' => $data['mp3_url'],
+                            'player_image' => $data['player_image'],
+                            'search_tags' => $data['search_tags'],
+                            'ios_ppv_price' => $data['ios_ppv_price'],
+                            'uploaded_by' => $data['uploaded_by'],
+                            'lyrics' => $data['lyrics'],
+                            'lyrics_json' => $data['lyrics_json'],
+                            'start' => $data['start'],
+                            'album_id' => $data['album_id'],
+                            'end' => $data['end'],
+                            'created_at' => $data['created_at'],
+                        ]);
+                        
+                        if (!empty($data["album_id"])) {
+                            $updateData['album_id'] = $data['album_id'];
+                        } else {
+                            return Redirect::back()->with('error_message', 'Album Id field is required in row'. $rowNumber);
+                        }
+                
+                    
+                    if (!empty($data["languages"])) {
+                        $languageIds = explode(',', $data["languages"]);
+                        AudioLanguage::where('audio_id', $Audio->id)->delete();
+                        foreach ($languageIds as $languageId) {
+                            $AudioLanguage = new AudioLanguage();
+                            $AudioLanguage->audio_id = $Audio->id;
+                            $AudioLanguage->language_id = $languageId;
+                            $AudioLanguage->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Language Audio field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["CategoryAudio"])) {
+                        $CategoryIds = explode(',', $data["CategoryAudio"]);
+                        CategoryAudio::where('audio_id', $audio->id)->delete();
+                        foreach ($CategoryIds as $CategoryId) {
+                            $CategoryAudio = new CategoryAudio();
+                            $CategoryAudio->audio_id = $Audio->id;
+                            $CategoryAudio->category_id = $CategoryId;
+                            $CategoryAudio->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Category Audio field is required in row'. $rowNumber);
+                    }
+
+                    if (!empty($data["Audioartist"])) {
+                        $AudioartistIds = explode(',', $data["Audioartist"]);
+                        Audioartist::where('audio_id', $id)->delete();
+                        foreach ($AudioartistIds as $AudioartistId) {
+                            $Audioartist = new Audioartist();
+                            $Audioartist->audio_id = $video->id;
+                            $Audioartist->artist_id = $AudioartistId;
+                            $Audioartist->save();
+                        }
+                    }else {
+                        return Redirect::back()->with('error_message', 'Cast and Crew field is required in row'. $rowNumber);
+                    }
+                    $rowNumber++;
+                }
+    
+                fclose($file);
+    
+                return Redirect::back()->with('message', 'CSV File updated successfully');
+
+            } else {
+                return Redirect::back()->with('error_message', 'No CSV file uploaded.');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 
 
 }

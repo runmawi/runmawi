@@ -38,7 +38,11 @@ border-radius: 0px 4px 4px 0px;
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
 
-                    @if (count($errors) > 0)
+                     @if (Session::has('error_message'))
+                            <div id="successMessage" class="alert alert-danger ">{{ Session::get('error_message') }}</div>
+                     @endif
+                    
+                        @if (count($errors) > 0)
                         @foreach ($errors->all() as $message)
                             <div class="alert alert-danger display-hide" id="successMessage">
                                 <button id="successMessage" class="close" data-close="alert"></button>
