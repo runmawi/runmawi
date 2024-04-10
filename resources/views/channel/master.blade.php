@@ -17,6 +17,15 @@ $channel = App\Channel::where('id',$channel->id)->first();
 
 $theme_mode = App\SiteTheme::pluck('Channel_theme_mode')->first();
 $theme = App\SiteTheme::first();
+
+  if(count($userPermissions) > 0){
+    for($i=0;$i<(count($userPermissions));$i++){    
+      $role[] = $userPermissions[$i]->name; 
+    }
+  }else{
+    $role = [];
+  }
+// dd($role);
 // echo "<pre>";
 // print_r($channel);
 // exit();
@@ -234,28 +243,37 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                      
-                  <li class="active active-menu"><a href="<?php echo URL::to('/channel/dashboard') ?>" class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+               <?php if( in_array( "Dashboard" ,$role)){ ?><li class="active active-menu"><a href="<?php echo URL::to('/channel/dashboard') ?>" class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li><?php }else{ } ?>
                   <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <?php if( in_array( "Video Management" ,$role)){ ?>
                   <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/channel/videos') }}">All Videos</a></li>
-                        <li><a href="{{ URL::to('/channel/videos/create') }}">Add New Video</a></li>
-                        <li><a href="{{ URL::to('/channel/videos/categories') }}">Manage Video Categories</a></li>
+                  <?php if( in_array( "All Videos" ,$role)){ ?>   <li><a href="{{ URL::to('/channel/videos') }}">All Videos</a></li><?php }else{ } ?>
+                  <?php if( in_array( "Add New Video" ,$role)){ ?>  <li><a href="{{ URL::to('/channel/videos/create') }}">Add New Video</a></li><?php }else{ } ?>
+                  <?php if( in_array( "Manage Video Categories" ,$role)){ ?> <li><a href="{{ URL::to('/channel/videos/categories') }}">Manage Video Categories</a></li><?php }else{ } ?>
                         </ul></li>
-                  <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <?php }else{ } ?>
+
+                        <?php if( in_array( "Series & Episodes" ,$role)){ ?> <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                   <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                  <li><a href="{{ URL::to('/channel/series_list') }}">Series List</a></li>
-                  <li><a href="{{ URL::to('/channel/series_create') }}">Add New Series</a></li>
+                  <?php if( in_array( "Series List" ,$role)){ ?>
+                    <li><a href="{{ URL::to('/channel/series_list') }}">Series List</a></li>
+                    <li><a href="{{ URL::to('/channel/series_create') }}">Add New Series</a></li>
+                  <?php }else{ } ?>
+
                   </ul>
                </li>   
+               <?php }else{ } ?>    
+               <?php if( in_array( "Audio Management" ,$role)){ ?>
            
            <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>" height="40" width="40"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('/channel/audios') }}">Audio List</a></li>
-              <li><a href="{{ URL::to('/channel/audios/create') }}">Add New Audio</a></li>
-              <li><a href="{{ URL::to('/channel/audios/categories') }}">Manage Audio Categories</a></li>
-              <li><a href="{{ URL::to('/channel/audios/albums') }}">Manage Albums</a></li>
+            <?php if( in_array( "Audio List" ,$role)){ ?><li><a href="{{ URL::to('/channel/audios') }}">Audio List</a></li><?php }else{ } ?>
+            <?php if( in_array( "Add New Audio" ,$role)){ ?><li><a href="{{ URL::to('/channel/audios/create') }}">Add New Audio</a></li><?php }else{ } ?>
+            <?php if( in_array( "Manage Audio Categories" ,$role)){ ?><li><a href="{{ URL::to('/channel/audios/categories') }}">Manage Audio Categories</a></li><?php }else{ } ?>
+            <?php if( in_array( "Manage Albums" ,$role)){ ?><li><a href="{{ URL::to('/channel/audios/albums') }}">Manage Albums</a></li><?php }else{ } ?>
             </ul>
           </li>
+          <?php }else{ } ?>    
 
           <!-- <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -266,18 +284,17 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
           </li> -->
 
 
-        
+              <?php if( in_array( "Manage Live Videos" ,$role)){ ?>
                    <li>
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>" height="40" width="40"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('/channel/livestream') }}">All Live Videos</a></li>
-                     <li><a href="{{ URL::to('/channel/livestream/create') }}">Add New Live Video</a></li>
-                     <li><a href="{{ URL::to('/channel/livestream/categories') }}">Manage Live Video Categories</a></li>
+                     <?php if( in_array( "All Live Videos" ,$role)){ ?><li><a href="{{ URL::to('/channel/livestream') }}">All Live Videos</a></li><?php }else{ } ?>
+                     <?php if( in_array( "Add New Live Video" ,$role)){ ?><li><a href="{{ URL::to('/channel/livestream/create') }}">Add New Live Video</a></li><?php }else{ } ?>
+                     <?php if( in_array( "Manage Live Video Categories" ,$role)){ ?><li><a href="{{ URL::to('/channel/livestream/categories') }}">Manage Live Video Categories</a></li><?php }else{ } ?>
                      <li><a href="{{ URL::to('/channel/live-event-artist') }}">Manage Live Event Create</a></li>
                   </ul>
                   </li>
-
-
+              <?php }else{ } ?>             
                           
                   <li>
                      <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/cpl.svg')?>"><span>Manage Channel Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
