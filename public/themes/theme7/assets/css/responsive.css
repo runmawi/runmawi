@@ -124,6 +124,7 @@
   #trending-slider-nav .slick-arrow:hover{background: none;}
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
+  .topten-contens{height: 100%;}
 }
 @media (min-width:576px) {
   .iq-search-bar a.search-toggle { display: none; }

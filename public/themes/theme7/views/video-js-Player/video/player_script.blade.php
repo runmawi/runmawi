@@ -38,18 +38,7 @@
         });
 
 
-                    // Back Button 
-        const Back_button = videojs.dom.createEl('button', {
-            className: '', 
-            innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>', 
-            title: 'Back Button', 
-        });
-      
-        player.controlBar.el().appendChild(Back_button);
-        
-        Back_button.addEventListener('click', function () {
-            history.back();
-        });
+                    
 
     
         player.hlsQualitySelector({                     // Hls Quality Selector - M3U8 
