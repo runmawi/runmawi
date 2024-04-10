@@ -78,6 +78,7 @@ use App\SeriesLanguage;
 use App\SeriesCategory;
 use App\SeriesSeason;
 use App\ChannelRoles;
+use App\ModeratorsPermission;
 
 class ChannelLoginController extends Controller
 {
@@ -353,10 +354,21 @@ class ChannelLoginController extends Controller
 
                 if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
+                    if(!empty($channel->user_permission)){
+
+                        $userPermissions = explode(',', $channel->user_permission);
+
+                        $userPermissions = ModeratorsPermission::whereIn('id', $userPermissions)->get();
+                    }else{
+                        $userPermissions = [];
+                    }
+
+
                     $settings = Setting::first();
                     $data = array(
                         'settings' => $settings,
                         'channel' => $channel,
+                        'userPermissions' => $userPermissions,
                     );
                     Session::put('channel', $channel);
                     return \View::make('channel.dashboard', $data);
