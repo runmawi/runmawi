@@ -788,6 +788,9 @@
     .iq-show .search-box {
         display: block !important;
     }
+    div#search_list ul.list-group{
+        background-color:#000;
+    }
 </style>
 
 <body>

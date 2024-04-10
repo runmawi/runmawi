@@ -1168,14 +1168,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
         Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
     
         
-        // Admin Series Genre
-            Route::get('/document/list', 'AdminDocumentController@List');
-            Route::get('/document/upload', 'AdminDocumentController@index');
-            Route::Post('/document/store', 'AdminDocumentController@store');
-            Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
-            Route::post('/document/update', 'AdminDocumentController@Update');
-            Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
+    // Admin Series Genre
+        Route::get('/document/list', 'AdminDocumentController@List');
+        Route::get('/document/upload', 'AdminDocumentController@index');
+        Route::Post('/document/store', 'AdminDocumentController@store');
+        Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
+        Route::post('/document/update', 'AdminDocumentController@Update');
+        Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
             
+
+    // Admin Series Genre
+
+        Route::get('/channel/role', 'AdminChannelRolesController@ChannelRoles');
+        Route::post('/channel/role/store', 'AdminChannelRolesController@RolesPermissionStore');
+        Route::get('/channel/role/view', 'AdminChannelRolesController@AllChannelRoles');
+        Route::get('/channel/role/edit/{id}', 'AdminChannelRolesController@RoleEdit');
+        Route::get('/channel/role/delete/{id}', 'AdminChannelRolesController@RoleDelete');
+        Route::post('/channel/role/update', 'AdminChannelRolesController@RoleUpdate');
 
     /*Ads Management ends*/
 
