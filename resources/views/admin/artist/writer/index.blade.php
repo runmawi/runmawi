@@ -43,7 +43,7 @@ border-radius: 0px 4px 4px 0px;
 	<div class="row mt-3">
 
 		<div class="col-md-6">
-			<h4><i class="entypo-newspaper"></i> Manage Artist</h4>
+			<h4><i class="entypo-newspaper"></i> Manage Writer</h4>
 		</div>
 		
 		@if (Session::has('message'))
@@ -80,9 +80,10 @@ border-radius: 0px 4px 4px 0px;
 				<th><label> Action </label></th>
 				
 				@foreach($artists as $key=>$artist)
+				<?php if($artist->image == 'default.jpg'){ $artistimage = default_vertical_image_url(); }else{ $artistimage = URL::to('/public/uploads/artists/') . '/'.$artist->image;} ?>
 				<tr>
 					<td>{{ $key+1 }}</td>
-					<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
+					<td><img src="{{ $artistimage }}" width="100"></td>
 					<td valign="bottom"><p> {{ $artist->artist_name ?  $artist->artist_name : "No  Arist Name Found"  }} </p></td>
 					<td valign="bottom"><p> {{ $artist->artist_type ?  str_replace('_', ' ', $artist->artist_type) : "No  Arist Type Found"  }} </p></td>
 					<td>
@@ -109,7 +110,7 @@ border-radius: 0px 4px 4px 0px;
 			$('.delete').click(function(e){
 				e.preventDefault();
 				delete_link = $(this).attr('href');
-				swal({   title: "Are you sure?",   text: "Do you want to permanantly delete this artist?",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){    window.location = delete_link });
+				swal({   title: "Are you sure?",   text: "Do you want to permanantly delete this writer?",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){    window.location = delete_link });
 				return false;
 			});
 		});

@@ -6,7 +6,7 @@
     .blink_me { animation: blinker 2s linear infinite; } @keyframes blinker { 50% { opacity: 0;}}
     .page-height{ margin-top: 100px; min-height: 540px; }
     .page-wrapper{
-        background: #212121;
+        /* background: #212121; */
         padding: 25px 0px;
         border-radius: 0;
         box-shadow: 0px 0px 10px #141414;

@@ -559,7 +559,7 @@
    .light-theme li.list-group-item a {background:<?php echo GetLightBg(); ?>; color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
    .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
+   .dark-theme .iq-search-bar .search-input {background: var(--iq-bg1)!important !important;}
    .light-theme .iq-search-bar .search-input {background:<?php echo GetLightBg(); ?> !important;}
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
@@ -651,6 +651,22 @@
    input:checked + .sliderk {
       background-color: #2196F3;
    }
+   .iq-search-bar .search-input {
+    width: 100%;
+    height: 40px;
+    padding: 5px 15px 5px 40px;
+    border: none;
+    border-radius: 0;
+    color: var(--iq-white);
+    background: var(--iq-bg1);
+}
+i.search-link.ri-search-line {
+    position: absolute;
+    left: 15px;
+    top: 6px;
+    font-size: 16px;
+}
+
    @media (max-width:1100px){
       img.img-fluid.logo{
          width:56%;
@@ -957,7 +973,7 @@
                                  <div class="search-box iq-search-bar d-search">
                                     <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="get">
                                        <div class="form-group position-relative">
-                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                          <input type="text" name="search" class="text search-input font-size-12 searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                           <i class="search-link ri-search-line"></i>
                                           <?php  include 'public/themes/theme7/partials/Search_content.php'; ?>
                                        </div>

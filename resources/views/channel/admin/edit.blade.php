@@ -98,7 +98,21 @@
                                </select>
                             </div>
                         </div>
-
+                        <div class="col-md-6" style="width: 50%; float: left;">
+                            <div class="form-group row">
+                            <label for="parent_channel_id" class=" col-form-label text-md-right">{{ __('Assign to Channel Partner') }}</label>
+                               <select class="form-control" name="parent_channel_id" id="parent_channel_id">
+                                    <option value="">Select Channel Partner</option>
+                                    @if($Channels->count() > 0)
+                                        @foreach($Channels as $value)
+                                        <option value="{{ $value->id }}" @if(!empty($Channel->parent_channel_id) && $Channel->parent_channel_id == $value->id){{ 'selected' }}@endif>{{ $value->channel_name }}</option>
+                                        @endForeach
+                                    @else
+                                        No Record Found
+                                    @endif  
+                               </select>
+                            </div>
+                        </div>
                         <div class="col-md-6" style="width: 50%; float: left;">
 
                         <div class="form-group row">
@@ -116,7 +130,7 @@
                         <div class="col-md-6" >
 
                         <div class="form-group row">
-                        <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
+                        <label for="" >Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
                        
                             </div>
