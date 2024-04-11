@@ -229,9 +229,9 @@ border-radius: 0px 4px 4px 0px;
 		jQuery(document).ready(function($){
 
 			// Add New Category
-			$('#submit-new-cat').click(function(){
-				$('#new-cat-form').submit();
-			});
+			// $('#submit-new-cat').click(function(){
+			// 	$('#new-cat-form').submit();
+			// });
 
 			$('.actions .edit').click(function(e){
 				$('#update-category').modal('show', {backdrop: 'static'});
@@ -313,25 +313,25 @@ border-radius: 0px 4px 4px 0px;
 
 <script>
 $('form[id="new-cat-form"]').validate({
-	rules: {
-	  name : 'required',
-	//   image : 'required',
-      parent_id: {
-                required: true
-            }
-	},
-	messages: {
-	  title: 'This field is required',
-	//   image: 'This field is required',
-      parent_id: {
-                required: 'This field is required',
-            }
-	},
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
-
+    rules: {
+        name: 'required',
+        //   image : 'required',
+        parent_id: {
+            required: true
+        }
+    },
+    messages: {
+        title: 'This field is required',
+        //   image: 'This field is required',
+        parent_id: {
+            required: 'This field is required',
+        }
+    },
+    submitHandler: function(form, event) {
+        event.preventDefault(); // Prevent the default form submission
+        form.submit(); // Manually submit the form after validation
+    }
+});
 </script>
 
 @stop
