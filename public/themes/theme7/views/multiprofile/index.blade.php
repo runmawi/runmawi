@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme6/views/header.php')); ?>
+<?php include(public_path('themes/theme7/views/header.php')); ?>
 
 <head>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<?php include(public_path('themes/theme6/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
 
  @endsection
 

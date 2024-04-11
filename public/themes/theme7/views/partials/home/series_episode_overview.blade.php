@@ -147,7 +147,7 @@ $data = App\Series::where('active', '=', '1')
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
+                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-primary mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                                                 {{-- <a href="#" class="btn btn-hover" tabindex="0"><i class="ri-add-line"></i>My List</a> --}}
                                                             </div>
                                                         </div>
@@ -460,5 +460,8 @@ $data = App\Series::where('active', '=', '1')
     }
     #trending-slider-nav .slick-current.slick-active .movie-slick{
         border-color:transparent !important;
+    }
+    .overview-tab:before{
+        background:linear-gradient(90deg, rgba(20, 20, 20, 1) 0%, rgba(36, 36, 36, 1) 35%, rgba(83, 100, 141, 0) 100%) !important;
     }
 </style>
