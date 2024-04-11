@@ -57,9 +57,9 @@ border-radius: 0px 4px 4px 0px;
 
         <div class="admin-section-title">
             @if(!empty($artist->id))
-                <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
+                <h3 class="fs-title">Editing Writer - {{ $artist->artist_name }}</h3>
             @else
-                <h4 class="fs-title">Create Artist</h4>
+                <h4 class="fs-title">Create Writer</h4>
             @endif
         </div>
 
@@ -72,14 +72,14 @@ border-radius: 0px 4px 4px 0px;
             <div class="@if(!empty($artist->created_at)) col-sm-12 @else col-sm-12 @endif">
                 <div class="row mt-3 p-0">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> Artist </label>
+                        <label class="m-0"> Writer </label>
                         <div class="panel-body">
                             <input type="text" placeholder="Artist Name" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
                         </div>
                     </div>
                     
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> Artist Slug </label>
+                        <label class="m-0"> Writer Slug </label>
                         <div class="panel-body">
                             <input type="text"  placeholder="Artist Slug" class="form-control" name="artist_slug" id="artist_slug" value="@if(!empty($artist->artist_slug)){{ $artist->artist_slug }}@endif" />                        </div>
                         </div>
@@ -96,7 +96,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('Artist type') }}</label>
+                        <label class="m-0"> {{ ucwords('Writer type') }}</label>
                         <div class="panel-body">
                             <input class="form-control" type="text" name="artist_type" id="artist_type" value="Writer" readonly>
 
@@ -105,7 +105,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Picture</label>
-                        <p class="p1">Select the artist image (300x300 px or 2:2 ratio):</p>
+                        <p class="p1">Select the Writer image (300x300 px or 2:2 ratio):</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-control" name="image" id="image" />
                         </div>
@@ -114,7 +114,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <div class="panel-body">
                             @if(!empty($artist->image) &&  $artist->image != null )
-                            <img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" class="movie-img" width="200" />
+                            <img src="{{ $artist->image }}" class="movie-img" width="200" />
                             @endif
                         </div>
                     </div>
@@ -177,9 +177,9 @@ border-radius: 0px 4px 4px 0px;
             artist_name: "required",
             description: "required",
             artist_type: "required",
-            parent_id: {
-                required: true,
-            },
+            // parent_id: {
+            //     required: true,
+            // },
             artist_slug: {
                     remote: {
                         url:"{{ URL::to('admin/artist_slug_validation') }}",
@@ -197,13 +197,13 @@ border-radius: 0px 4px 4px 0px;
             title: "This field is required",
             description: "This field is required",
             artist_type: "This field is required",
-            parent_id: {
-                required: "This field is required",
-            },
-            artist_slug: {
-                     required: "Please Enter the Artist Slug",
-                     remote: "Name already in taken ! Please try another Artist Slug"
-                },
+            // parent_id: {
+            //     required: "This field is required",
+            // },
+            // artist_slug: {
+            //          required: "Please Enter the Artist Slug",
+            //          remote: "Name already in taken ! Please try another Artist Slug"
+            //     },
         },
         submitHandler: function (form) {
             form.submit();
