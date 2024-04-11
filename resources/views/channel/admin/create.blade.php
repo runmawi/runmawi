@@ -89,7 +89,21 @@
                                </select>
                             </div>
                         </div>
-
+                        <div class="col-md-6" style="width: 50%; float: left;">
+                            <div class="form-group row">
+                            <label for="parent_channel_id" class=" col-form-label text-md-right">{{ __('Assign to Channel Partner') }}</label>
+                               <select class="form-control" name="parent_channel_id" id="parent_channel_id">
+                                    <option value="">Select Channel Partner</option>
+                                    @if($Channels->count() > 0)
+                                        @foreach($Channels as $value)
+                                        <option value="{{ $value->id }}">{{ $value->channel_name }}</option>
+                                        @endForeach
+                                    @else
+                                        No Record Found
+                                    @endif  
+                               </select>
+                            </div>
+                        </div>
                         <div class="col-md-6" style="width: 50%; float: left;">
 
                         <div class="form-group row">
