@@ -325,14 +325,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
-          <ul class="favorites-slider list-inline row p-3 mb-0">
+          <ul class="favorites-slider list-inline row p-0 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):
                         if($seasons->ppv_interval > $key):
 							 ?>
                            
-                  <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
+                  <li class="slide-item episodes_div season_<?= $seasons->id;?>">
                       <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                               <div class="img-box">
@@ -390,7 +390,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   
                                         <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
+                                          Watch 1Now
                                           </a>
                                     </div>
                             
@@ -399,7 +399,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                         </li>
                            
                            	<?php else : ?>
-                             <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
+                             <li class="slide-item episodes_div season_<?= $seasons->id;?>">
                               <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative" >
                                     <div class="img-box">
@@ -457,7 +457,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                         
                                               <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Watch Now
+                                                Watch 2Now
                                                 </a>
                                           </div>
                                   
