@@ -18,6 +18,9 @@ $channel = App\Channel::where('id',$channel->id)->first();
 $theme_mode = App\SiteTheme::pluck('Channel_theme_mode')->first();
 $theme = App\SiteTheme::first();
 
+$userPermissions = Session::get('userPermissions'); 
+
+
   if(count($userPermissions) > 0){
     for($i=0;$i<(count($userPermissions));$i++){    
       $role[] = $userPermissions[$i]->name; 
@@ -25,7 +28,6 @@ $theme = App\SiteTheme::first();
   }else{
     $role = [];
   }
-// dd($role);
 // echo "<pre>";
 // print_r($channel);
 // exit();
