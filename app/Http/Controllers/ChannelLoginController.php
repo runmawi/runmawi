@@ -80,6 +80,7 @@ use App\SeriesSeason;
 use App\ChannelRoles;
 use App\ModeratorsPermission;
 use App\ChannelSignupMenu;
+use App\Episode;
 
 class ChannelLoginController extends Controller
 {
