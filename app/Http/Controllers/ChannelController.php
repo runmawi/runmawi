@@ -4346,8 +4346,6 @@ class ChannelController extends Controller
             );
 
 
-            // dd($videodetail);
-
             return Theme::view('video-js-Player.video.videos', $data);
 
         } catch (\Throwable $th) {
