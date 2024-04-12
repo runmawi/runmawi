@@ -79,7 +79,7 @@
 
 <body>
 
-    <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
+    <section class="sign-in-page" style="background:#000;">
         <div class="container  page-height">
             <div class="row justify-content-around">
                 <div class="col-lg-7 col-12 align-self-center">
