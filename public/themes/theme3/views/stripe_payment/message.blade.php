@@ -1,5 +1,5 @@
 @php  
-    include(public_path('themes/theme7/views/header.php')); 
+    include(public_path('themes/theme3/views/header.php')); 
 @endphp
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -64,5 +64,5 @@
 </script>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp

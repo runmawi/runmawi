@@ -80,6 +80,7 @@ use App\SeriesSeason;
 use App\ChannelRoles;
 use App\ModeratorsPermission;
 use App\ChannelSignupMenu;
+use App\Episode;
 
 class ChannelLoginController extends Controller
 {
@@ -1272,7 +1273,7 @@ public function ChannelEdit( $id)
     $Channel = Channel::where('id',$id)->first();
     $data = array(
         'Channel' => $Channel,
-        'Channels' => Channel::select('id','channel_name')->get(),
+        'Channels' => Channel::select('id','channel_name')->where('id','!=',$id)->get(),
         'ChannelRoles' => ChannelRoles::get(),
     );
 
