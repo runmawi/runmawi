@@ -110,11 +110,11 @@
                                     elseif($category_video->access == 'registered'){?>
                                             <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } 
+                                       elseif(!empty($category_video->ppv_price)) { ?>
+                                          <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p> 
+                                         <?php } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) { ?>
+                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                         <?php } 
                                        ?>
                                     <?php } ?>
                                     <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
@@ -135,11 +135,11 @@
                                     <?php }elseif($category_video->access == 'registered'){?>
                                             <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } 
+                                       elseif(!empty($category_video->ppv_price)) { ?>
+                                          <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                         <?php } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) { ?>
+                                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                          <?php } 
                                        ?>
                                     <?php } ?>
                                     <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
