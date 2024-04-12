@@ -417,15 +417,21 @@
     .dropdown-toggle::after {
         display: none !important;
     }
-
+    .navbar-light .navbar-toggler{
+        border-color:transparent;
+    }
     /* Dark mode and light Mode */
     body.light-theme {
         background-color: <?php echo GetLightBg(); ?>;
     }
-    body.light-theme .navbar-light .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
+    body.light-theme .navbar-light .navbar-toggler-icon{background: none !important; }
+    body.light-theme i.ri-more-line{
+        color: <?php echo GetLightText(); ?>!important;
     }
     body.light-theme #top-menu a{
+        color: #fff !important;
+    }
+    body.light-theme #top-menu h6{
         color: #fff !important;
     }
 
@@ -1094,9 +1100,7 @@
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
                                     <div class="navbar-toggler-icon" data-toggle="collapse">
-                                        <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                                        <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                                        <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
                                     </div>
                                 </a>
                                 <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>

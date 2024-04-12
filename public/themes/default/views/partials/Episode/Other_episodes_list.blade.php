@@ -10,40 +10,100 @@
       foreach($season as $key => $seasons):
          foreach($seasons->episodes as $key => $episodes):
              if($episodes->id != $episode->id): ?>
-            <li class="slide-item">
-                
-                <a
-                    href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
-                    <div class="block-images position-relative">
-                        <div class="img-box">
-                            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="w-100">
-                        </div>
-                        <div class="block-description">
-                            <h6><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?></h6>
-                            <?php if($ThumbnailSetting->free_or_cost_label == 1): ?> 
-                                <p class="date" style="color:#fff;font-size:14px;">
-                                    <?= date('F jS, Y', strtotime($episodes->created_at)) ?>
-                                    <?php if($episodes->access == 'guest'): ?>
-                                    <span class="label label-info"><?= __('Free') ?></span>
-                                    <?php elseif($episodes->access == 'subscriber'): ?>
-                                    <span class="label label-success"><?= __('Subscribers Only') ?></span>
-                                    <?php elseif($episodes->access == 'registered'): ?>
-                                    <span class="label label-warning"><?= __('Registered Users') ?></span>
-                                    <?php endif; ?>
-                                </p>
-                            <?php endif; ?>
 
-                            <div class="hover-buttons">
-                                <a
-                                    href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
-                                    <span class="text-white"> <i class="fa fa-play mr-1"
-                                            aria-hidden="true"></i> <?= __('Play Now') ?> </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <li class="slide-item">
+          <div class="block-images position-relative">
+
+            <!-- block-images -->
+            <div class="border-bg">
+              <div class="img-box">
+                <a class="playTrailer" href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
+                  <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" alt="episode">
                 </a>
-            </li>
+
+
+                <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                  <?php if (!empty($episodes->ppv_price == 1)) { ?>
+                    <p class="p-tag1">
+                      <?php echo $currency->symbol . ' ' . $episodes->ppv_price; ?>
+                    </p>
+                  <?php } elseif (!empty($episodes->ppv_status || !empty($episodes->ppv_status) && $episodes->ppv_price == 1)) { ?>
+                    <p class="p-tag1">
+                      <?php echo $episodes->ppv_status . ' ' . $currency->symbol; ?>
+                    </p>
+                  <?php } elseif ($episodes->ppv_status == null && $episodes->ppv_price == null) { ?>
+                    <p class="p-tag">
+                      <?php echo (__('Free')); ?>
+                    </p>
+                  <?php } ?>
+                <?php } ?>
+              </div>
+            </div>
+
+            <div class="block-description">
+              <a class="playTrailer" href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
+                <img class="img-fluid w-100" loading="lazy"  data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->player_image; ?>" alt="episode">
+
+
+
+                <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                  <?php if (!empty($episodes->ppv_price == 1)) { ?>
+                    <p class="p-tag1">
+                      <?php echo $currency->symbol . ' ' . $episodes->ppv_price; ?>
+                    </p>
+                  <?php } elseif (!empty($episodes->ppv_status || !empty($episodes->ppv_status) && $episodes->ppv_price == 1)) { ?>
+                    <p class="p-tag1">
+                      <?php echo $episodes->ppv_status . ' ' . $currency->symbol; ?>
+                    </p>
+                  <?php } elseif ($episodes->ppv_status == null && $episodes->ppv_price == null) { ?>
+                    <p class="p-tag">
+                      <?php echo (__('Free')); ?>
+                    </p>
+                  <?php } ?>
+                <?php } ?>
+              </a>
+              <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                <?php if (!empty($episodes->ppv_price == 1)) { ?>
+                  <p class="p-tag1">
+                    <?php echo $currency->symbol . ' ' . $episodes->ppv_price; ?>
+                  </p>
+                <?php } elseif (!empty($episodes->ppv_status || !empty($episodes->ppv_status) && $episodes->ppv_price == 1)) { ?>
+                  <p class="p-tag1">
+                    <?php echo $episodes->ppv_status . ' ' . $currency->symbol; ?>
+                  </p>
+                <?php } elseif ($episodes->ppv_status == null && $episodes->ppv_price == null) { ?>
+                  <p class="p-tag">
+                    <?php echo (__('Free')); ?>
+                  </p>
+                <?php } ?>
+              <?php } ?>
+
+              <div class="hover-buttons text-white">
+                <a  href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?> ">
+
+                  <p class="epi-name text-left m-0">
+                    <?php echo __($episodes->title); ?>
+                  </p>
+
+                  <div class="movie-time d-flex align-items-center my-2">
+                    <div class="badge badge-secondary p-1 mr-2">
+                      <?php echo $episodes->age_restrict . ' ' . '+' ?>
+                    </div>
+                    <!-- <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $episodes->duration); ?></span>-->
+                  </div>
+                </a>
+
+
+                <a class="epi-name mt-3 mb-0 btn"
+                  href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?> ">
+                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                  Play Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
             <?php endif; ?>
             <?php endforeach; ?>
             <?php endforeach; ?>

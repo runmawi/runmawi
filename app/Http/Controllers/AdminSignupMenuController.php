@@ -22,6 +22,8 @@ use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\SignupMenu as SignupMenu;
+use App\CPPSignupMenu;
+use App\ChannelSignupMenu;
 
 class AdminSignupMenuController extends Controller
 {
@@ -114,5 +116,162 @@ class AdminSignupMenuController extends Controller
         }
           
     
+        public function cppindex()
+        {
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+               $settings = Setting::first();
+               $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
+                return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+    
+                $data = array(
+                    'settings' => $settings,
+                );
+    
+                return View::make('admin.expired_storage', $data);
+            }else{
+    
+                $CPPSignupMenu = CPPSignupMenu::first();
+                $user = Auth::user();
+    
+                $data = array(
+                    'CPPSignupMenu' => $CPPSignupMenu,
+                    'user' => $user,
+                    'admin_user' => Auth::user()
+                );
+    
+            return View::make('admin.signup_menu.CPP_Index', $data);
+            }
+        }
+    
+        public function CPP_Signupmenu_Store(Request $request){
+            
+            $input = $request->all();
+            
+            
+            $CPPSignupMenu = CPPSignupMenu::first();
+            if(!empty($CPPSignupMenu)){
+                $CPPSignupMenu = CPPSignupMenu::first();
+            }else{
+                $CPPSignupMenu = new CPPSignupMenu;
+            }
+            $CPPSignupMenu->username               =  $request->has('username') ? 1 : 0 ?? 0; 
+            $CPPSignupMenu->email                  =  $request->has('email') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->mobile                 =  $request->has('mobile') ? 1 : 0 ?? 0;  
+            $CPPSignupMenu->image                  =  $request->has('image') ? 1 : 0 ?? 0;  
+            $CPPSignupMenu->upload_video           =  $request->has('upload_video') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->password               =  $request->has('password') ? 1 : 0 ?? 0;  
+            $CPPSignupMenu->password_confirm       =  $request->has('password_confirm') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->save();  
+        
+        return redirect()->route('cppsignupindex');
+        
+    }
 
+
+    public function channelindex()
+    {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }else{
+
+            $ChannelSignupMenu = ChannelSignupMenu::first();
+            $user = Auth::user();
+
+            $data = array(
+                'ChannelSignupMenu' => $ChannelSignupMenu,
+                'user' => $user,
+                'admin_user' => Auth::user()
+            );
+
+        return View::make('admin.signup_menu.Channel_Index', $data);
+        }
+    }
+
+    public function Channel_Signupmenu_Store(Request $request){
+        
+        $input = $request->all();
+        
+        
+        $ChannelSignupMenu = ChannelSignupMenu::first();
+        if(!empty($ChannelSignupMenu)){
+            $ChannelSignupMenu = ChannelSignupMenu::first();
+        }else{
+            $ChannelSignupMenu = new ChannelSignupMenu;
+        }
+        $ChannelSignupMenu->username               =  $request->has('username') ? 1 : 0 ?? 0; 
+        $ChannelSignupMenu->email                  =  $request->has('email') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->mobile                 =  $request->has('mobile') ? 1 : 0 ?? 0;  
+        $ChannelSignupMenu->image                  =  $request->has('image') ? 1 : 0 ?? 0;  
+        $ChannelSignupMenu->upload_video           =  $request->has('upload_video') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->password               =  $request->has('password') ? 1 : 0 ?? 0;  
+        $ChannelSignupMenu->password_confirm       =  $request->has('password_confirm') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->save();  
+    
+        return redirect()->route('channelsignupindex');
+
+    }
 }

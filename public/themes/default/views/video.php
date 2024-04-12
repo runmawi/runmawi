@@ -792,31 +792,23 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                          
 
                                 <?php $videodetails = App\Video::where('id',$video->id)->first();  
-                                    if(!Auth::guest() && $videodetails->access == 'subscriber'  && $videodetails->access != 'ppv'  ){ //|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ?> 
-                                    <h4 class="text-white">
-                                        <?php echo __('Sorry, this video is only available to Subscribers '); ?>
-                                    </h4>
+                                
+                                if(!Auth::guest() && Auth::user()->role == "registered"  ){ //|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ?> 
 
                                     <div class="d-flex align-items-baseline">
                                         <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                            <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?php echo __('subscribe to watch this video'); ?></button>
+                                            <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?php echo __('Become a Subscriber to view this Video!'); ?></button>
                                         </form>
 
-                                <?php }elseif(Auth::guest()){ ?>
+                                <?php }
 
-                                    <form method="get" action="<?= URL::to('signup') ?>">
-                                        <button id="button" style="margin-top: 0%;"><?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('to Purchase this video'); ?>
-                                            <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
-                                    </form>
-
-                                <?php } elseif(!Auth::guest() && $videodetails->ppv_price != '' && $videodetails->ppv_price != null || $videodetails->global_ppv == 1 ){ ?>
-                                    <h4 class="text-white">
-                                        <?php echo __('Sorry, this video is only available to PPV users'); ?>
-                                    </h4>
+                                if(!Auth::guest() && $videodetails->ppv_price != '' && $videodetails->ppv_price != null ){ ?>
+                                    
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Rent Now'); ?> 
+                                        <?php echo __('Rent Now to view this Video!'); ?> 
                                     </button>
                                 <?php } ?>
+
                             </div>
                         </div>
                     </div>
@@ -1008,8 +1000,12 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
 
                                     <h4>
-                                        <p><?php echo __('Sorry, this video is only available to'); ?></p>
-                                        <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?>
+                                        <?php if($video->access == 'subscriber'): ?>
+                                            <p><?=  __('Sorry, this video is only available to Subscribers Users '); ?> </p>
+                                        <?php elseif($video->access == 'registered'): ?>
+                                            <?= __('Sorry, this video is only available to Registered Users'); ?>
+                                        <?php elseif($video->access == 'ppv'): ?>
+                                            <p> <?= __('Sorry, this video is only available to PPV Users'); ?> </p>
                                         <?php endif; ?>
                                     </h4>
 
@@ -1028,9 +1024,9 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         </form>
                                     <?php }
 
-                                    if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                    if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null ){ ?>
                                         <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                            <?php echo __('Purchase Now'); ?> 
+                                            <?php echo __('Rent Now to view this Video!'); ?> 
                                         </button>
                                     <?php } 
                 } ?>
@@ -1971,14 +1967,14 @@ $artists = [];
                                                                     echo $video->year;
                                                                 } ?></span>
                                                         </h4>
-                                                        <span
+                                                        <!-- <span
                                                             class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict) . ' ' . '+'; ?></span>
                                                         <span
-                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->categories->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->languages->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration); ?></span><br>
+                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->categories->name)); ?></span> -->
+                                                        <!-- <span
+                                                            class="badge badge-secondary  mb-2"><?php echo __(isset($video->languages->name)); ?></span> -->
+                                                        <!-- <span
+                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration); ?></span><br> -->
 
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
                                                             style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
@@ -2117,10 +2113,11 @@ $artists = [];
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
-                                                    <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)">
-                                                        <button type="button"
-                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
-                                                    </a>
+                                                    <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_video_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                                                    <!-- <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)"> -->
+                                                        <!-- <button type="button"
+                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button> -->
+                                                    <!-- </a> -->
                                                 </div>
                                                     <!-- PayPal Button -->
 

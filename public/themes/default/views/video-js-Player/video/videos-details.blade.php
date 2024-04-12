@@ -1,5 +1,45 @@
 @php  include public_path('themes/default/views/header.php'); @endphp
 
+<style>
+    body.light-theme h4, body.light-theme p {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .vpageBanner .content .right .utilities {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name.titleoverflow {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .genre {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .heading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .infoItem {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .info {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .vpageBanner .opacity-layer {
+        background:none;
+    }
+</style>
+
+
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
 
@@ -276,7 +316,7 @@
                     @endif
 
                     <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
+                        <div class="infoItem">
                             <span classname="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
@@ -417,9 +457,9 @@
                                                         @endif
                                                      @endif
         
-                                                     @if ($ThumbnailSetting->published_on == 1)
+                                                     <!-- @if ($ThumbnailSetting->published_on == 1)
                                                        <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
+                                                    @endif -->
                                                 </div>
                                             </div>
                                                     
@@ -442,9 +482,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 </a>
                                                            <!-- PPV price -->
                                                         @if ($ThumbnailSetting->free_or_cost_label == 1)
@@ -461,9 +501,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
 
@@ -530,7 +570,7 @@
                                                         @endif
                                                     </a>
 
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">{{ __('Watch Now') }}</a>
+                                                    <a class="epi-name text-white mb-0 btn btn-primary" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">{{ __('Watch Now') }}</a>
 
                                                 </div>
                                             </div>

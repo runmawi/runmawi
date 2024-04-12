@@ -1,6 +1,6 @@
-<!-- Header Start -->
+<!-- Header Start Test MEssage -->
 <?php include('header.php'); 
-   $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+   $order_settings = App\OrderHomeSetting::select('id','order_id','url','video_name','header_name')->orderBy('order_id', 'asc')->get();  
    $order_settings_list = App\OrderHomeSetting::get();  
    $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
    $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
@@ -184,9 +184,9 @@
             <div class="container-fluid overflow-hidden">
 
                   <?php
-                     $parentCategories = App\DocumentGenre::all();
+                     $parentCategories = App\DocumentGenre::get();
                      foreach($parentCategories as $category) {
-                        $Documents =  App\Document::where('category','!=',null)->WhereJsonContains('category',(string) $category->id)->limit(30)->get();
+                        $Documents =  App\Document::where('category','!=',null)->WhereJsonContains('category',(string) $category->id)->limit(20)->get();
                   ?>
 
                   <?php 

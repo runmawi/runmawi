@@ -42,8 +42,15 @@
     background-position: -200px 0; /* Position of Android TV logo in sprite */
 }
 @media(max-width:425px){
-  .col-lg-6.d-flex.align-items-center.justify-content-center{
-    display:block !important;
+  
+  .container-fluid.px-5.mt-5{
+    padding:0 !important;
+  }
+  h5.font-weight-bold.mb-0 {
+      font-size: 12px;
+  }
+  footer p {
+      font-size: 15px;
   }
 }
 
@@ -57,17 +64,17 @@
             <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
             <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-                <h5 class="font-weight-bold mb-0  ">Download App</h5>
+                <p class="font-weight-bold mb-0  ">Download App</p>
             <?php } ?>
             <div class=" small m-0 text-white ">
               <div class="store-logos"> 
                 <?php if(!empty($app_settings->android_url)){ ?>
-                    <a href="<?= $app_settings->android_url ?>">
+                    <a href="<?= $app_settings->android_url ?>" aria-label="android">
                         <div class="android-logo"></div>
                     </a>
                 <?php } ?>
                 <?php if(!empty($app_settings->ios_url)){ ?>
-                    <a href="<?= $app_settings->ios_url ?>">
+                    <a href="<?= $app_settings->ios_url ?>" aria-label="ios">
                         <div class="ios-logo"></div>
                     </a>
                 <?php } ?>
@@ -107,31 +114,31 @@ entertainment.</p>
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
-                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.webp')?>" style="" />
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1" aria-label="insta">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.webp')?>" alt="i" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" style="" />
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1" aria-label="twitter">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
-                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1" aria-label="face">
                           <img class="" width="40" height="40"
-                               src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" style="" />
+                               src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="f" />
                       </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->skype_page_id)){?>
-                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank" class="ml-1">
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank" class="ml-1" aria-label="skype">
                           <i class="fa fa-skype"></i>
                       </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
-                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" style="" />
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1" aria-label="link">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" alt="line" />
                       </a>
                       <?php } ?>
 
@@ -142,8 +149,8 @@ entertainment.</p>
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
-                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" style="" />
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1" aria-label="tube">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" alt="y" />
                       </a>
                       <?php } ?>
 
@@ -198,6 +205,8 @@ entertainment.</p>
 
       <script defer type="text/javascript" src="<?php echo URL::to('public/themes/theme5-nemisha/assets/js/custom.js'); ?>"></script>
       
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
       <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();
       if(count($footer_script) > 0){
@@ -311,10 +320,12 @@ try {
 
 ?>
 
-  <script type="text/javascript">
-	$("img").lazyload({
-	    effect : "fadeIn"
-	});
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("img").lazyload({
+            effect: "fadeIn"
+        });
+    });
 </script>
 
 <script>

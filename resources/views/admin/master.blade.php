@@ -948,6 +948,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Video_Manage_Video_Playlist_checkout == 1)
                            <li><a href="{{ URL::to('admin/videos/playlist') }}" class="iq-waves-effect">{{ (__('Manage Video Playlist')) }}</a></li>
                         @endif 
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->music_genre_checkout == 1)
+                           <li><a href="{{ URL::to('admin/Music/Genre') }}" class="iq-waves-effect">{{ (__('Manage Music Genre')) }}</a></li>
+                        @endif 
 
                     
           </ul></li>
@@ -1009,6 +1012,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/artists') }}">{{ (__('All Artists')) }}</a></li>
               <li><a href="{{ URL::to('admin/artists/create') }}">{{ (__('Add New Artist')) }} </a></li>
+              @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->writer_checkout == 1)
+                  <li><a href="{{ URL::to('admin/Writer') }}">{{ (__('All Writer')) }}</a></li>
+                  <li><a href="{{ URL::to('admin/Writer/create') }}">{{ (__('Add New Writer')) }} </a></li>
+              @endif    
 
             </ul>
           </li>
@@ -1044,6 +1051,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Menu.svg')?>"heigth="40" width="40"><span>{{ (__('Menu')) }}</span></a></li>
                    <li><a href="{{ URL::to('admin/signup') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Signup Menu')) }}</span></a></li>
+                   <li><a href="{{ route('cppsignupindex') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('CPP Signup Menu')) }}</span></a></li>
+                   <li><a href="{{ route('channelsignupindex') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Channel Signup Menu')) }}</span></a></li>
                    <!--<li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>-->
 
                     <div >
@@ -1099,6 +1108,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/commission') }}">{{ (__('Commission')) }} </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">{{ (__('Channel Partners Payout')) }}</a></li>
                         <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li>
+                        <li><a href="{{ URL::to('admin/channel/role') }}">{{ (__('Channel Partners Add Roles')) }}</a></li>
+                        <li><a href="{{ URL::to('admin/channel/role/view') }}">{{ (__('Channel Partners Roles')) }}</a></li>
                      </ul>
                   </li>
                   <li>

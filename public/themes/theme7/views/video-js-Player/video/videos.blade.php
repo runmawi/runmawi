@@ -1,4 +1,4 @@
-@php include public_path('themes/theme6/views/header.php');  @endphp
+@php include public_path('themes/default/views/header.php');  @endphp
 
 {{-- video-js Style --}}
 
@@ -30,10 +30,15 @@
                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
             </iframe>
-            
         @else
-        
-            <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
+
+                <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </button>
+
+            <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls 
+                    preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
+                    muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif
@@ -42,9 +47,16 @@
 
 @php 
 
-    include public_path('themes/theme6/views/video-js-Player/video/videos_script_file.blade.php');
-    include public_path('themes/theme6/views/video-js-Player/video/videos_ads.blade.php');
-    include public_path('themes/theme6/views/video-js-Player/video/player_script.blade.php');
-    include public_path('themes/theme6/views/footer.blade.php'); 
+    include public_path('themes/theme7/views/video-js-Player/video/videos_script_file.blade.php');
+    include public_path('themes/theme7/views/video-js-Player/video/videos_ads.blade.php');
+    include public_path('themes/theme7/views/video-js-Player/video/player_script.blade.php');
+    include public_path('themes/theme7/views/footer.blade.php'); 
 
 @endphp
+
+<style>
+    #my-video_ima-ad-container div{ overflow:hidden;}
+    #my-video{ position:relative; }
+    .staticback-btn{display:none;}
+    .container-fluid:hover .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; }
+</style>

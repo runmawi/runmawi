@@ -187,49 +187,6 @@
 
          <div class="main-content">
             
-            <!-- {{-- Left Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
-
-               @if (optional($admin_advertistment_banners)->left_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->left_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->left_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
-               @endif
-            @endif
-
-            {{-- Right Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->right_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->right_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
-               @endif
-            @endif
-            
-            {{-- Top Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->top_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->top_script_url )
-                     <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
-               @endif
-            @endif -->
-
                                           {{-- continue watching videos --}}
             @if( !Auth::guest() && !is_null($continue_watching_setting) &&  $continue_watching_setting == 1 )
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list ])->content() !!}
@@ -393,7 +350,7 @@
                @endif
 
                @if(  $item == 'EPG' && $home_settings->epg == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', ['order_settings_list' => $order_settings_list ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', [  'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
             @empty

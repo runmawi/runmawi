@@ -6,7 +6,7 @@ use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
 // @$translate_language = App\Setting::pluck('translate_language')->first();
-// \App::setLocale(@$translate_language);
+// \App::setLocale(@$translate_language); translate_language
 
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
@@ -578,6 +578,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/signup', 'AdminSignupMenuController@index')->name('signupindex');
     Route::post('/Signupmenu_Store', 'AdminSignupMenuController@store')->name('store');
 
+    Route::get('/cpp-signup', 'AdminSignupMenuController@cppindex')->name('cppsignupindex');
+    Route::post('/CPP_Signupmenu_Store', 'AdminSignupMenuController@CPP_Signupmenu_Store')->name('store');
+
+    Route::get('/channel-signup', 'AdminSignupMenuController@channelindex')->name('channelsignupindex');
+    Route::post('/Channel_Signupmenu_Store', 'AdminSignupMenuController@Channel_Signupmenu_Store')->name('Channel_Signupmenu_Store');
+
     Route::get('/sliders', 'AdminThemeSettingsController@SliderIndex');
     Route::post('/sliders/store', 'AdminThemeSettingsController@SliderStore');
     Route::get('/sliders/edit/{id}', 'AdminThemeSettingsController@SliderEdit');
@@ -647,6 +653,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo');
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
+
+
+    // Music Genre Routes
+    Route::get('/Music/Genre', 'AdminMusicGenreController@index');
+    Route::Post('/Music_genre_store', 'AdminMusicGenreController@Music_Genre_Store');
+    Route::get('/Music_genre/edit/{id}', 'AdminMusicGenreController@Music_Genre_Edit');
+    Route::post('/Music_genre/update', 'AdminMusicGenreController@Music_Genre_Update');
+    Route::get('/Music_genre/delete/{id}', 'AdminMusicGenreController@Music_Genre_Delete');
+    Route::Post('/Music_genre_order', 'AdminMusicGenreController@Music_Genre_Order');
+    Route::post('/Music_genre_active', 'AdminMusicGenreController@Music_Genre_Active');
 
     // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
@@ -977,6 +993,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/artist_slug_validation', 'AdminArtistsController@artist_slug_validation');
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'AdminAudioController@audioupdate']);
 
+    //Writer Routes
+        Route::get('Writer', 'AdminWriterController@index');
+        Route::get('Writer/create', 'AdminWriterController@create');
+        Route::post('Writer/store', 'AdminWriterController@store');
+        Route::get('Writer/edit/{id}', 'AdminWriterController@edit');
+        Route::post('Writer/update', 'AdminWriterController@update');
+        Route::get('Writer/delete/{id}', 'AdminWriterController@destroy');
+
     //Admin Audio Albums
     Route::get('/audios/albums', 'AdminAudioCategoriesController@albumIndex');
     Route::post('/audios/albums/store', ['before' => 'demo', 'uses' => 'AdminAudioCategoriesController@storeAlbum']);
@@ -1151,14 +1175,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
         Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
     
         
-        // Admin Series Genre
-            Route::get('/document/list', 'AdminDocumentController@List');
-            Route::get('/document/upload', 'AdminDocumentController@index');
-            Route::Post('/document/store', 'AdminDocumentController@store');
-            Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
-            Route::post('/document/update', 'AdminDocumentController@Update');
-            Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
+    // Admin Series Genre
+        Route::get('/document/list', 'AdminDocumentController@List');
+        Route::get('/document/upload', 'AdminDocumentController@index');
+        Route::Post('/document/store', 'AdminDocumentController@store');
+        Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
+        Route::post('/document/update', 'AdminDocumentController@Update');
+        Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
             
+
+    // Admin Series Genre
+
+        Route::get('/channel/role', 'AdminChannelRolesController@ChannelRoles');
+        Route::post('/channel/role/store', 'AdminChannelRolesController@RolesPermissionStore');
+        Route::get('/channel/role/view', 'AdminChannelRolesController@AllChannelRoles');
+        Route::get('/channel/role/edit/{id}', 'AdminChannelRolesController@RoleEdit');
+        Route::get('/channel/role/delete/{id}', 'AdminChannelRolesController@RoleDelete');
+        Route::post('/channel/role/update', 'AdminChannelRolesController@RoleUpdate');
 
     /*Ads Management ends*/
 
@@ -2426,6 +2459,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
 
     Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
+
 
     // Learn Page
 

@@ -16,7 +16,7 @@
          <div class="border-bg">
          <div class="img-box">
                <a class="playTrailer" href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
-                  <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="album">
+                  <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="album">
                </a>   
          </div>
             </div>

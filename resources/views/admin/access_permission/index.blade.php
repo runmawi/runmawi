@@ -282,7 +282,35 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">Music Genre Checkout </label></div>
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                            <label class="switch mt-2">
+                                                <input name="music_genre_checkout" type="checkbox"
+                                                @if( !empty($AdminAccessPermission) && $AdminAccessPermission->music_genre_checkout == 1) checked  @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">Writer Checkout </label></div>
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                            <label class="switch mt-2">
+                                                <input name="writer_checkout" type="checkbox"
+                                                @if( !empty($AdminAccessPermission) && $AdminAccessPermission->writer_checkout == 1) checked  @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
                         </div>
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <div class="panel-body mt-3" >

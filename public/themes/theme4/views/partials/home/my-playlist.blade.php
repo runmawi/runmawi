@@ -17,7 +17,7 @@
                     <div class="tvthrillers-contens">
                             <ul id="trending-slider-nav" class="my-playlist-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $My_Playlist)
-                                    <li>
+                                    <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" >
@@ -29,7 +29,7 @@
 
                             <ul id="trending-slider my-playlist" class="list-inline p-0 m-0 align-items-center my-playlist">
                                 @foreach ($data as $My_Playlist)
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
 
@@ -92,7 +92,7 @@
 
         $('.my-playlist-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.my-playlist',
             dots: false,
             arrows: true,

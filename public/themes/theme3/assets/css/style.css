@@ -36,7 +36,7 @@ header .navbar-light .navbar-brand img.logo { height: 90px; }
 .notify-bg:after { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.2); width: 30px; height: 100%; left: 30px; top: 0; opacity: 0; filter: blur(5px); transform: translateX(-100px) skewX(-30deg); animation: noti-after-animation 2s infinite 2s; }
 .navbar-right .iq-sub-dropdown .iq-card-body div { border-radius: 0; }
 .navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { opacity: 1; visibility: visible; transform: translate(0, 0); }
-.navbar-right .iq-sub-dropdown { width: 300px; opacity: 0; visibility: hidden; position: absolute; top: 100%; right: 15px; background: var(--iq-bg1); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.3s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 99; }
+.navbar-right .iq-sub-dropdown { width: 300px !important; opacity: 0; visibility: hidden; position: absolute; top: 100%; right: 0; background: var(--iq-bg1); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.3s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 99; }
 .search-toggle:hover, header .navbar ul li.menu-item a:hover { color: var(--iq-primary) !important; }
 .search-wrapper { position: relative; display: inline-block; height: 36px; vertical-align: bottom; }
 .searchbutton { position: absolute; font-size: 22px; width: 100%; margin: 0; padding: 0; right: 16px; color: var(--iq-body-text); }
@@ -112,12 +112,12 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider p {
     margin: 20px 0 5px 0;
     width: 75%;
-    max-height: 70px;
+    /* max-height: 70px; */
     overflow: hidden;
     font-family:"Sen", sans-serif !important;
 }
 /* #home-slider p { margin: 20px 0 5px 0; width: 75%; } */
-#home-slider .slick-bg { /*padding: 50px 0 50px; */ width:100%; background-size: contain !important; background-position: right center !important; background-repeat: no-repeat !important;/* height: 90vh;*/ position: relative; z-index: 1;}
+#home-slider .slick-bg { /*padding: 50px 0 50px; */ width:100%; background-size: contain !important; background-position: right center !important; background-repeat: no-repeat !important; height: calc(100vh - 164px); position: relative; z-index: 1;}
 .trailor-video { position: absolute; bottom: 50%; right: 5%; z-index: 999; }
 .channel-name { color: var(--iq-primary); font-size: 20px; margin-left: 10px; letter-spacing: 2.5px; font-weight: 500; }
 .c-logo { width: 130px; }
@@ -136,7 +136,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-prev, #home-slider .slick-next {
     animation: none !important;
 }
-
+#home-slider p{color:#fff !important;}
 
 /*---------------------------------------------------------------------
                       Pages Content
@@ -427,7 +427,9 @@ span.text-white.rel-date {
 .img-zoom:hover {
     transform: scale(1.1); /* You can adjust the scale factor as needed for the desired zoom effect. */
 }
-
+.slick-list.draggable {
+    overflow: hidden;
+}
 
 
 
@@ -581,13 +583,13 @@ video { display: block; width: 100%; height: 100%; }
 
 /*-----------------------*/
 .favorites-slider .slick-arrow,
-#trending-slider-nav .slick-arrow {display: none !important; align-items: center; justify-content: center;width: 30px; height: 30px; text-align: center; opacity: 1; z-index: 9;top:-46px; background: var(--iq-primary) 0% 0% no-repeat padding-box; margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: var(--iq-white); -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
+#trending-slider-nav .slick-arrow { align-items: center; justify-content: center;width: 30px; height: 30px; opacity: 1; z-index: 9;top:-46px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: var(--iq-white); -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-arrow:hover,
-#trending-slider-nav .slick-arrow:hover { background: var(--iq-white); color: var(--iq-primary) !important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
+#trending-slider-nav .slick-arrow:hover { color: var(--iq-primary) !important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-prev,
-#trending-slider-nav .slick-prev { color: var(--iq-white); right: 55px;left: auto; }
+#trending-slider-nav .slick-prev { color: var(--iq-white);left: -3px; top:50%; }
 .favorites-slider  .slick-next,
-#trending-slider-nav .slick-next{ color: var(--iq-white);right: 14px;}
+#trending-slider-nav .slick-next{ color: var(--iq-white);top:50%;}
 .favorites-slider .slick-prev:before,
 .favorites-slider .slick-next:before,
 #trending-slider-nav .slick-prev:before,
@@ -759,13 +761,29 @@ div#fullDescription {
     scrollbar-width: none;
 }
 
+li.list-group-item a {
+    background: transparent !important;
+    font-size: 12px !important;
+    padding-left: 10px !important;
+}
+.search-toggle{
+    border: none;
+}
 
 
+div#sidebar-scrollbar {
+    width: 100%;
+    min-width: 25rem;
+    left: 25px;
+    top: 170%;
+}
 
-
-
-
-
+body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+    color:var(--iq-primary) !important;
+}
+label#search-error {
+    display: none !important;
+}
 
 
 

@@ -129,7 +129,39 @@ $user = App\User::where('id',$id)->first();
 a{
 cursor: pointer;
 }
-
+.col-md-9.col-12.details-box{
+   background-color:#171717;
+   padding: 2em 5em;
+}
+h1, h2, h3, h4, h5, h6, p, button, input {
+    font-family: "Inter", sans-serif !important;
+}
+h3.text-center.title{
+   font-weight:600;
+   color: #C5C5C5 !important;
+}
+.fnt-clr{
+   color: #C5C5C5 !important;
+}
+.intp-clr{
+   color: #696767 !important;
+}
+.font-size-13 {
+    font-size: 13px !important;
+}
+@media (max-width:768px){
+   .text-right {
+      text-align: right !important;
+   }
+}
+@media (max-width:520px){
+   .col-md-9.col-12.details-box{
+      padding: 2em 2em;
+   }
+   a.f-link.text-white.font-size-13.fnt-clr {
+      font-size: 10px !important;
+   }
+}
     </style>
    <body>
       <!-- loader Start -->
@@ -155,7 +187,7 @@ cursor: pointer;
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
           
@@ -655,19 +687,19 @@ cursor: pointer;
                 <div class="row justify-content-center">
                           
 
-                  <div class="col-md-4">
+                  <div class="col-lg-6 col-md-9 col-12 details-box">
                      {{-- message --}}
 
                      @if (Session::has('message'))
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                   @endif
-                        <h2 class="text-center">My Account</h2>
+                        <h3 class="text-center title">My Account</h3>
                        
                          <div class="row mt-5 align-items-center justify-content-between">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Email</span>
+                                 <span class="text-light font-size-13 fnt-clr">Email</span>
                                  <div class="p-0">
-                                    <span class="text-light font-size-13"> {{ $user->email ? $user->email : " "   }}</span></div>
+                                    <span class="text-light font-size-13 intp-clr"> {{ $user->email ? $user->email : " "   }}</span></div>
                               </div>
                               <!-- <div class="col-md-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#update_userEmails">Change</a>
@@ -684,33 +716,33 @@ cursor: pointer;
                                                 <input type="text"  name="user_email" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userEmail">Update</a></div>
+                                             <a type="button" class="btn btn-primary text-white update_userEmail">Update</a></div>
                                        </div>
                               </span>
                            </form>
 
 
-                        <hr style="border:0.5px solid #fff;">
+                        <hr style="border:0.4px solid #434343;">
                         <div class="row align-items-center">
-                            <div class="col-md-5 mt-3">
-                                <span class="text-light font-size-13">Password</span>
+                           <div class="col-md-5 col-5 mt-3">
+                                <span class="text-light font-size-13 fnt-clr">Password</span>
                                 <div class="p-0 mt-2">
-                                       <span class="text-light font-size-13">*********</span>
+                                       <span class="text-light font-size-13 intp-clr">*********</span>
                                 </div>
                            </div>
-                            <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
-                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">Send Reset Password Email</a>
+                            <div class="col-md-7 col-7 mt-2 text-right" style="font-size:14px;">
+                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13 fnt-clr">Send Reset Password Email</a>
                             </div>
                             </div>
-                          <hr style="border:0.5px solid #fff;">
+                          <hr style="border:0.4px solid #434343;">
                            <div class="row align-items-center">
-                              <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Name</span>
+                              <div class="col-md-8 col-8">
+                                 <span class="text-light font-size-13 fnt-clr">Display Name</span>
                                  <div class="p-0">
-                                    <span class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></div>
+                                    <span class="text-light font-size-13 intp-clr"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></div>
                               </div>
-                              <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#demo">Change</a>
+                              <div class="col-md-4 col-4 text-right">
+                                    <a type="button" class="text-white font-size-13 fnt-clr" data-toggle="collapse" data-target="#demo">Change</a>
                                  
                               </div>
                            </div>
@@ -724,27 +756,27 @@ cursor: pointer;
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_username">Update</a></div>
+                                             <a type="button" class="btn btn-primary text-white update_username">Update</a></div>
                                        </div>
                               </span>
                            </form>
 
                            {{-- Display Image --}}
-                           <hr style="border:0.5px solid #fff;">
+                           <hr style="border:0.4px solid #434343;">
 
                            <div class="row align-items-center">
-                              <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Image</span>
+                              <div class="col-md-8 col-8">
+                                 <span class="text-light font-size-13 fnt-clr">Display Picture</span>
                                  <div class="p-0">
-                                    <span class="text-light font-size-13">
+                                    <span class="text-light font-size-13 intp-clr">
                                        @if( $user->avatar != null ) 
                                           <img src="{{ URL::to('public/uploads/avatars/'.$user->avatar)  }}" height="50px" width="50px" />
                                        @endif
                                     </span>
                                  </div>
                               </div>
-                              <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_img">Change</a>
+                              <div class="col-md-4 col-4 text-right">
+                                    <a type="button" class="text-white font-size-13 fnt-clr" data-toggle="collapse" data-target="#user_img">Change</a>
                               </div>
                            </div>
 
@@ -757,19 +789,19 @@ cursor: pointer;
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userimg">Update</a></div>
+                                             <a type="button" class="btn btn-primary text-white update_userimg">Update</a></div>
                                        </div>
                               </span>
                            </form>
 
                            {{-- TV Code --}}
-                           <hr style="border:0.5px solid #fff;">
+                           <hr style="border:0.4px solid #434343;">
 
                            <div class="row align-items-center">
-                              <div class="col-md-8">
-                                 <span class="text-light font-size-13">Tv Activation Code</span>
+                              <div class="col-md-8 col-8">
+                                 <span class="text-light font-size-13 fnt-clr">Tv Activation Code</span>
                               </div>
-                              <div class="col-md-4 text-right">
+                              <div class="col-md-4 col-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
                               </div>
                            </div>
@@ -786,9 +818,9 @@ cursor: pointer;
                                           </div>
                                        <div class="col-md-4">
                                        @if(!empty($UserTVLoginCode->tv_code))
-                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn btn-primary text-white tv-code-remove text-red">Remove</a>
                                        @else
-                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       <a type="button"  class="btn btn-primary text-white tv-code text-white">Add</a>
                                        @endif
                                           </div>
                                        </div>
@@ -796,13 +828,13 @@ cursor: pointer;
                            </form>
 
                            {{-- DOB --}}
-                           <hr style="border:0.5px solid #fff;">
+                           <hr style="border:0.4px solid #434343;">
 
                            <div class="row align-items-center">
-                              <div class="col-md-8">
-                                 <span class="text-light font-size-13">Date of Birth</span>
+                              <div class="col-md-8 col-8">
+                                 <span class="text-light font-size-13 fnt-clr">Date of Birth</span>
                               </div>
-                              <div class="col-md-4 text-right">
+                              <div class="col-md-4 col-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">Add</a>
                               </div>
                            </div>
@@ -820,20 +852,20 @@ cursor: pointer;
                                           </div>
                                        <div class="col-md-4">
                    
-                                       <a type="button"  class="btn round DOB text-white">Add</a>
+                                       <a type="button"  class="btn btn-primary text-white DOB text-white">Add</a>
                                           </div>
                                        </div>
                               </span>
                            </form>
 
 
-                          <hr style="border:0.5px solid #fff;">
+                          <hr style="border:0.4px solid #434343;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <span class="text-light font-size-13">Membership Settings</span>
+                                <span class="text-light font-size-13 fnt-clr">Membership Settings</span>
 
                               <div class="p-0">
-                                 <span class="text-light font-size-13">
+                                 <span class="text-light font-size-13 intp-clr">
                                        {{ ucwords('Current Membership -'.' '.$user->role) }}
                                     </span><br>
 
@@ -859,10 +891,10 @@ cursor: pointer;
                                     @endif
                               </div>
                         </div>
-                         <hr style="border:0.5px solid #fff;">
+                         <hr style="border:0.4px solid #434343;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn btn-primary text-white">Logout</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")

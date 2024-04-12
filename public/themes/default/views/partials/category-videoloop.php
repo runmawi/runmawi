@@ -26,9 +26,9 @@
         border-bottom: 0px !important;
         border-top: 0px !important;
     }
-    body.light-theme li{
+    /* body.light-theme li{
         color: <?php echo GetAdminDarkText(); ?> !important;
-    } 
+    }  */
 </style>
 <div class="container-fluid overflow-hidden">
     <div class="row">
@@ -100,7 +100,7 @@
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" alt="cate">
                                 </a>
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -125,7 +125,8 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
+
                                 
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>

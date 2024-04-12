@@ -350,7 +350,7 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.1, 1.1, 1.1) 
     padding: 10px 10px 10px 10px;
     position: absolute;
     width: 100%;
-    z-index: 999;
+    z-index: 99;
     background-image: linear-gradient(to bottom, rgba(4,8,15,0), rgb(0 0 0 / 25%), rgb(0 0 0 / 50%), rgb(0 0 0 / 75%));
     backdrop-filter: blur(5px);
     transition: opacity .80s ease-in,bottom .60s cubic-bezier(0.33, 0.04, 0.63, 1.93);

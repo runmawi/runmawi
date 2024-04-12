@@ -181,7 +181,7 @@ endif; ?>
                                     </a>
                                                         <!-- Video Title  -->
                             <?php }else{ ?>
-                                    <h1 class="text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
+                                    <h1 class="text-white slider-text title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
                                         <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                     </h1>
                             <?php } ?>
@@ -309,7 +309,7 @@ if(Route::current()->getName() == "home"){
                                 </a>
                                                             <!-- Video Title  -->
                             <?php }else{ ?>
-                                <h1 class=" text-white title text-uppercase mb-3" >
+                                <h1 class="slider-text text-white title text-uppercase mb-3" >
                                      <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                 </h1>
                             <?php } ?>
@@ -526,7 +526,7 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
-                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                        <h1 class="slider-text text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
                                 <?php echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title; ?>
                             </h1>
 

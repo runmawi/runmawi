@@ -38,29 +38,16 @@
 
                      <div class="col-md-12 row">
 
-                        <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                           <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                           <label> {{ ucwords( 'Choose the Pre & post Position Advertisement' ) }}  </label>
                            <select class="form-control" name="video_js_pre_position_ads" >
-            
-                              <option value=" " > Select the Pre-Position Advertisement </option>
-                              <option value="Random"  > Random Ads </option>
-            
-                              @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
-                                 <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
+                              <option value=" " > Select the Pre & Post Position Advertisement </option>
+                              <option value="random_ads"> Random Ads </option>
+
+                              @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                 <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
                               @endforeach
-                           </select>
-                        </div>
-            
-                        <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                           <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                           <select class="form-control" name="video_js_post_position_ads" >
-            
-                              <option value=" " > Select the Post-Position Advertisement </option>
-                              <option value="Random" > Random Ads </option>
-            
-                              @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
-                                 <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
-                              @endforeach
+                           
                            </select>
                         </div>
 

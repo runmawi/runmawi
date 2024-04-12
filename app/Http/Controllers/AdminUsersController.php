@@ -1337,8 +1337,10 @@ class AdminUsersController extends Controller
     public function RejectDevice($userIp, $device_name)
     {
         $maildevice = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
-        $maildevice->status = 2;
-        $maildevice->save();
+        if(!empty($maildevice)){
+            $maildevice->status = 2;
+            $maildevice->save();
+        }
         $system_settings = SystemSetting::first();
         $user = User::where('id', '=', 1)->first();
         $message = 'Approved User For Login';
@@ -3340,7 +3342,32 @@ class AdminUsersController extends Controller
          \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
         \DB::raw('(subscription_plans.price) as count') ,
         ]);
+        $subscriber_Revenue = Subscription::
+            // join('users', 'subscriptions.user_id', '=', 'users.id')
+        join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
 
+        // ->where('subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        // ->where('users.role','subscriber')
+        // ->select(
+        //     // 'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
+        //      'subscription_plans.price as total_amount',
+        // 'subscription_plans.plans_name',  'subscriptions.created_at',
+        // // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
+        // \DB::raw('(subscription_plans.price) as count')
+    // )
+    ->get();
+    $subscriber_Revenue = Subscription::join('users', 'subscriptions.user_id', '=', 'users.id')
+    ->select(
+            'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
+             'subscriptions.price as total_amount',
+             'subscriptions.stripe_plan as stripe_plan',
+        'subscriptions.created_at',
+        // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
+        \DB::raw('(subscriptions.price) as count')
+    )->orderBy('subscriptions.created_at','desc')
+    ->get();
+
+        // dd($subscriber_Revenue);
 
         $data = array(
             'settings' => $settings,

@@ -637,7 +637,7 @@ if (!empty ($request_url)) {
                   <?php if (Auth::guest() || $video->access == 'subscriber'): ?>
                      <form method="get" action="<?= URL::to('signup') ?>">
                         <button
-                           style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;"
+                           style="color: white;padding: 10px;border-radius: 20px !important;"
                            class="view-count rent-video btn btn-primary">
                            <?php echo __('Become a Subscriber to view this Video!'); ?>
                         </button>
@@ -647,7 +647,7 @@ if (!empty ($request_url)) {
                   <?php if (Auth::guest() && $video->access == 'registered'): ?>
                      <form method="get" action="<?= URL::to('signup') ?>">
                         <button
-                           style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"
+                           style="position: absolute;color: white;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"
                            class="view-count rent-video btn btn-primary">
                            <?php echo __('Register Now to view this Video!'); ?>
                         </button>
@@ -657,7 +657,7 @@ if (!empty ($request_url)) {
                   <?php if (Auth::guest() && $video->access == 'ppv'): ?>
                      <form method="get" action="<?= URL::to('signup') ?>">
                         <button
-                           style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"
+                           style="position: absolute;color: white;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"
                            class="view-count rent-video btn btn-primary">
                            <?php echo __('Rent Now to view this Video!'); ?>
                         </button>

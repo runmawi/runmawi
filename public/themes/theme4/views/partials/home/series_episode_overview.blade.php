@@ -52,7 +52,7 @@ $data = App\Series::where('active', '1')->limit(15)
 
                         <ul id="trending-slider-nav" class="trending-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $Episode_details)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $Episode_details->image_url }}" class="img-fluid" >
@@ -65,7 +65,7 @@ $data = App\Series::where('active', '1')->limit(15)
 
                         <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending">
                                 @foreach ($Episode_details->Episode_details as $key => $item)
-                                    <li>
+                                    <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
 
@@ -127,7 +127,7 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $('.trending-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.trending',
             dots: false,
             arrows: true,

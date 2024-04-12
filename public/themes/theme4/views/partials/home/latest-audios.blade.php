@@ -15,7 +15,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="audios-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $audios_details)
-                                <li>
+                                <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" alt="audio-img" class="img-fluid" >
@@ -27,7 +27,7 @@
 
                         <ul id="trending-slider audios-videos-slider" class="list-inline p-0 m-0 align-items-center audios-videos-slider">
                             @foreach ($data as $key => $audios_details )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="  drp-close">×</button>
 
@@ -131,7 +131,7 @@
 
         $('.audios-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             asNavFor: '.audios-videos-slider',
             dots: false,
             arrows: true,
