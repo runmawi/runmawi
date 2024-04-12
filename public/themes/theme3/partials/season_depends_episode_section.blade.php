@@ -22,13 +22,25 @@
                         <div class="row">
                             <div class="col-4">
                                 <a href="{{ route('play_episode',[$series_data->slug,$item->slug]) }}">
-                                    <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="">
+                                    <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->player_image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="">
                                 </a>
                             </div>
                             <div class="col-7">
                                 <a href="{{ route('play_episode',[$series_data->slug,$item->slug]) }}">
                                     <h5 class="epi-name text-white mb-0"> {{ $item->title }}</h5>
-                                    <h6>{{ $item->description }}</h6>
+                                    <span class="d-flex updated_at-durationInMinutes" style='gap:1rem;'>
+                                    <p class="updated_at">{{ \Carbon\Carbon::parse($item->updated_at)->isoFormat('MMMM D, YYYY') }}</p>
+                                    @php
+                                        // Convert duration from seconds to minutes and round to nearest minute
+                                        $durationInMinutes = round($item->duration / 60);
+                                    @endphp
+
+                                    <p class="durationInMinutes">{{ $durationInMinutes }} min</p>
+
+
+                                    <p>{{ $item->age_restrict }}</p>
+                                    </span>
+                                    <h6 class="episode_description">{{ strip_tags($item->episode_description) }}</h6>
                                 </a>
                             </div>
                         </div>
@@ -99,5 +111,8 @@
     }
     .row.episodes.list-inline.p-0.mb-0.iq-rtl-direction img{
         border-radius:20px;
+    }
+    span.d-flex.updated_at-durationInMinutes, h6.episode_description {
+        opacity: 0.5;
     }
 </style>

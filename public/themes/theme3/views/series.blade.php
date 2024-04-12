@@ -165,14 +165,14 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                             <div class="col-xl-6 col-lg-12 col-md-12">
                                 <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }} </h1>
                                 <div class="col-md-3 p-0" style="width:150px;">
-                                    <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;border-radius:9px;">
+                                    <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none; border-radius: 9px;">
                                         @foreach ($season as $key => $seasons)
                                             <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
-                                <div class="text-white" data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($series)->details) !!} </div>
+                                <div class="text-white" > {!! html_entity_decode( optional($series)->details) !!} </div>
                                 <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date" style="color:#7A7A7A !important;list-style:none;">
                                     <span >{{ optional($series)->year }}</span>
                                     <span class="trending-year"> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
@@ -357,7 +357,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                         </select>
                     </div> -->
                 
-                    <div class="data">
+                    <div id="episodeoverviewcont" class="data">
                         @partial('season_depends_episode_section')
                     </div>
                 @endif
@@ -938,6 +938,29 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         }, 3000);
     }
 </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle dropdown selection change
+        $('#season_id').change(function() {
+            var selectedSeasonId = $(this).val();
+            // Scroll to the episodeoverviewcont div
+            $('html, body').animate({
+                scrollTop: $('#episodeoverviewcont').offset().top
+            }, 800); // You can adjust the animation speed (800ms in this case)
+            
+            // Load content based on selected season (if needed)
+            // Example: You can make an AJAX request here to load content dynamically
+            
+            // Prevent default link behavior
+            return false;
+        });
+    });
+</script>
+
+
 
 <script>
     $(".season-depends-episode").change(function() {

@@ -390,7 +390,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   
                                         <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch 1Now
+                                          Watch Now
                                           </a>
                                     </div>
                             
@@ -457,7 +457,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                         
                                               <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Watch 2Now
+                                                Watch Now
                                                 </a>
                                           </div>
                                   
