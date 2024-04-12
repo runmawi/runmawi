@@ -211,6 +211,7 @@
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
     <!-- Style -->
+
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="stylesheet">
@@ -783,7 +784,9 @@
         font-family: 'Titillium Web';
         font-style: normal;
         font-weight: 300;
-        src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+        src: local('Titillium Web Light'), local('TitilliumWeb-Light'),
+         url(https://fonts.gstatic.com/s/titilliumweb/v11/NaPDcZTIAOhVxoMyOr9n_E7ffGjD9g.ttf) format('truetype');
+        /* src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff'); */
     }
 
     .sidebar {
