@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Database\Eloquent\Model;
 use App\Http\Middleware\cpp;
 use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
