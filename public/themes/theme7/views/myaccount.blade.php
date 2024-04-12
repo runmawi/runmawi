@@ -802,7 +802,7 @@ h3.text-center.title{
                                  <span class="text-light font-size-13 fnt-clr">Tv Activation Code</span>
                               </div>
                               <div class="col-md-4 col-4 text-right">
-                                    <a type="button" class="text-white font-size-13 intp-clr" data-toggle="collapse" data-target="#user_tvcode">Add</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
                               </div>
                            </div>
 
@@ -835,7 +835,7 @@ h3.text-center.title{
                                  <span class="text-light font-size-13 fnt-clr">Date of Birth</span>
                               </div>
                               <div class="col-md-4 col-4 text-right">
-                                    <a type="button" class="text-white font-size-13 intp-clr" data-toggle="collapse" data-target="#user_DOB">Add</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">Add</a>
                               </div>
                            </div>
 

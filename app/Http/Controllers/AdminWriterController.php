@@ -292,8 +292,11 @@ class AdminWriterController extends Controller
             return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $artist = Artist::find($id);
+            $artist = Artist::where('id', $id)->first();
 
+            if ($artist) {
+                $artist->image = ($artist->image == 'default.jpg') ? default_vertical_image_url() : URL::to('/public/uploads/artists/') . '/' . $artist->image;
+            }
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Artist',
             'artist' => $artist,

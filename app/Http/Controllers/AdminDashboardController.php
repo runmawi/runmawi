@@ -142,8 +142,39 @@ class AdminDashboardController extends Controller
                             $space_available = intval(round($spaceavailable  / 1024 ,3)).' '.'GB';
                         }
 
-                        $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                        // $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
                         $space_disk = intval(round($spacedisk  / 1024 ,3)).' '.'GB';	
+                        if(!empty($spaceusage)){
+
+                            $spaceusage_array = explode('.', $spaceusage);
+
+                            if(!empty($spaceusage_array[0]) && $spaceusage_array[0] >  0 ){
+                                $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                            }else{
+                                $spaceusage =  $spaceusage_array[1];
+                                $spaceusage = '009765625'; 
+
+                                $space_str = (string) $spaceusage;
+
+                                // Remove leading zeros
+                                $space_str = ltrim($space_str, '0');
+
+                                // If the resulting string is empty, set it to '0'
+                                if ($space_str === '') {
+                                    $space_str = '0';
+                                }
+                                $space_usage = $spaceusage_array[0].'.'.substr($space_str, 0, 3).' '.'TB';
+                                        // If space usage exceeds 1 TB, round it to the nearest TB
+                                    // if (intval($spaceusage) >= 1024) {
+                                    //     $space_usage = substr(round(intval($spaceusage) / 1024), 0, 3) . ' ' . 'GB';
+                                    // }
+                            }
+                            
+                        }else{
+                            $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                        }
+
+                        
 
                         // dd(intval($fileSize));
 
