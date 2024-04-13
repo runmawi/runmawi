@@ -105,6 +105,45 @@
                     </h2>
 
                     <div class="like-dislike">
+
+                    <?php if (!Auth::guest()) { ?>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-6 col-xs-12">
+                                                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                                                    <!-- Watchlater -->
+                                                    <li><span
+                                                            class="watchlater <?php if (isset($watchlatered->id)): ?>active<?php endif; ?>"
+                                                            data-authenticated="<?= !Auth::guest() ?>"
+                                                            data-videoid="<?= $videodetail->id ?>"><i <?php if (isset($watchlatered->id)): ?> class="ri-add-circle-fill"
+                                                                <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+                                                    <!-- Wishlist -->
+                                                    <li><span
+                                                            class="mywishlist <?php if (isset($mywishlisted->id)): ?>active<?php endif; ?>"
+                                                            data-authenticated="<?= !Auth::guest() ?>"
+                                                            data-videoid="<?= $videodetail->id ?>"><i <?php if (isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?>></i></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-sm-6 col-md-6 col-xs-12 p-0">
+                                                <ul class="list-inline p-0 mt-4 rental-lists ">
+                                                    <!-- Subscribe -->
+                                                    <li>
+                                                        <?php
+                                                        $user = Auth::user();
+                                                        if (($user->role != "subscriber" && $videodetail->access != 'guest' && $user->role != "admin")) { ?>
+                                                            <a href="<?php echo URL::to('/becomesubscriber'); ?>"><span
+                                                                    class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe'); ?>
+                                                                </span></a>
+                                                        <?php } ?>
+                                                    </li>
+                                                    <li>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    <?php } ?>
                         <ul class="list-inline p-0 share-icons music-play-lists align-items-center">
                             <li>
                                 <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
