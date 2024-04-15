@@ -9,52 +9,7 @@
                     <ul class="category-page list-inline row p-0 mb-0">
                       <?php if(isset($SeriesCategory)) {
                         foreach($SeriesCategory as $Series_Category){ ?>
-                            <li class="slide-item">
-                                <div class="block-images position-relative">
-                                                    <!-- block-images -->
-                                    <div class="border-bg">
-                                        <div class="img-box">
-                                            <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>"  alt="series">
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="block-description">
-                                        <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
-                                            <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" alt="series">
-                                        </a>
-                                        <div class="hover-buttons text-white"> 
-                                            <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>" >
-                                                <p class="epi-name text-left m-0"><?php echo __($Series_Category->title); ?></p>
-                                            
-                                                <div class="movie-time d-flex align-items-center my-2">
-                                                    <p class="badge badge-secondary p-1 mr-2"><?php echo $Series_Category->age_restrict.' '.'+' ?></p>
-                                                    <p class="badge badge-secondary p-1 mr-2"><?php 
-                                                    $SeriesSeason = App\SeriesSeason::where('series_id',$Series_Category->id)->count(); 
-                                                    echo $SeriesSeason.' '.'Season'
-                                                    ?></p>
-                                                    <p class="badge badge-secondary p-1 mr-2"><?php 
-                                                    $Episode = App\Episode::where('series_id',$Series_Category->id)->count(); 
-                                                    echo $Episode.' '.'Episodes'
-                                                    ?></p>
-                                                </div>
-                                            </a>
-
-                                
-                                            <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>" >
-                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> <?=  ('Watch Series') ?>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-
-
-
-
-                            <!-- <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
@@ -62,21 +17,29 @@
                                         </div>
                             
                                         <div class="block-description" >
+                                            <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Category->player_image;  ?>" alt="series">
+                                            </a>
+                                            <div class="hover-buttons">
                                                 <a href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
-                                                    <h6><?php  echo (strlen(@$Series_Category->title) > 17) ? substr(@$Series_Category->title,0,18).'...' : @$Series_Category->title; ?></h6>
+                                                    <p class="epi-name text-left m-0"><?php  echo (strlen(@$Series_Category->title) > 17) ? substr(@$Series_Category->title,0,18).'...' : @$Series_Category->title; ?></p>
                                                 </a>
-                                            <div class="hover-buttons"><div>
+
+                                                <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>" >
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i> <?=  ('Watch Series') ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= @$Series_Category->id;?>">
+                                                <span class="text-center thumbarrow-sec"></span>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div>
-                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= @$Series_Category->id;?>">
-                                            <span class="text-center thumbarrow-sec"></span>
-                                        </button>
-                                    </div> </div> </div>
                                 </a>
-                            </li> -->
+                            </li>
                             
-                           <?php } } ?>
+                        <?php } } ?>
                     </ul>
                 </div>
             </div>
