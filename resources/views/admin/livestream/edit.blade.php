@@ -727,24 +727,23 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
-
             
             <div class="row mt-3">
+
                 <div class="col-sm-4">
                     <label class="m-0">Publish Type</label>
                     <div class="panel-body" style="color: #000;">
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
 				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}> Publish Later <br>
                         <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
-
                     </div>
                 </div>
 
-                <div class="col-sm-4">
-                    <div id="publishlater">
+                <div class="col-sm-4" >
+                    <div id="publishlater" style="{{ !empty($video->publish_time)  ? '' : 'display: none' }}">
                         <label class="m-0">Publish Time</label>
                         <div class="panel-body">
-                            <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
+                            <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" style="display: block !important"/>
                         </div>
                     </div>
                 </div>
@@ -778,7 +777,7 @@ border-radius: 0px 4px 4px 0px;
             
             <div class="row mt-3">
 
-                <div class="col-sm-6" id="recurring_program" >
+                <div class="col-sm-6" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
                     <label class="m-0">{{ _('Recurring Program')}} </label>
                     <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
                         <option value=" ">Select the Recurring Period </option>
@@ -790,14 +789,14 @@ border-radius: 0px 4px 4px 0px;
                     </select>
                 </div>
 
-                <div class="col-sm-6" id="program_time">
+                <div class="col-sm-6" id="program_time" style="{{ !empty($video->program_time)  ? '' : 'display: none' }}" >
                     <label class="m-0">Program Time   </label>
                     <div class="panel-body">
                         <input type="time" class="form-control" name="program_time" value="{{ !empty($video->program_time) ? $video->program_time : null }}" />
                     </div>
                 </div>
 
-                <div class="col-sm-6" id="custom_program_time">
+                <div class="col-sm-6" id="custom_program_time" style="{{  !empty($video->custom_program_time) ? '' : 'display: none' }}" >
                     <label class="m-0">Custom Program Time </label>
                     <div class="panel-body">
                         <input type="datetime-local" class="form-control" name="custom_program_time" value="{{ !empty($video->custom_program_time) ? $video->custom_program_time : null }}"  />
@@ -1346,8 +1345,6 @@ $(document).ready(function(){
 
     $(document).ready(function () {
         
-        $("#publishlater, #recurring_program , #custom_program_time , #program_time").hide();
-
         $("input[name='publish_type']").change(function () {
             
             $("#publishlater, #recurring_program , #custom_program_time , #program_time").hide();

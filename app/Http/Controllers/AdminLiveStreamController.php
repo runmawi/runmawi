@@ -583,7 +583,7 @@ class AdminLiveStreamController extends Controller
         $movie->access =$data['access'];
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
-        $movie->publish_time =$data['publish_time'];
+        $movie->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
         $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
@@ -594,9 +594,9 @@ class AdminLiveStreamController extends Controller
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
 
-        $movie->recurring_program   = !is_null($request->recurring_program) ? $request->recurring_program : null ;
-        $movie->program_time        = ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
-        $movie->custom_program_time = ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
+        $movie->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $movie->program_time        =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
+        $movie->custom_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
 
         // Ads
 
@@ -1145,16 +1145,16 @@ class AdminLiveStreamController extends Controller
         $video->image = $PC_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
-        $video->publish_time = $request['publish_time'];
+        $video->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
         $video->embed_url =     $embed_url;
         $video->active = $active;
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
         
-        $video->recurring_program   = !is_null($request->recurring_program) ? $request->recurring_program : null ;
-        $video->program_time        = ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
-        $video->custom_program_time = ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
+        $video->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $video->program_time        =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
+        $video->custom_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
 
 
                 // Ads
