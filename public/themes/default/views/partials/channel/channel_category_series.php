@@ -9,8 +9,9 @@
                     <ul class="category-page list-inline row p-0 mb-0">
                       <?php if(isset($SeriesCategory)) {
                         foreach($SeriesCategory as $Series_Category){ ?>
-                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
+                        
+                            <li class="slide-item">
+                                <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Category->image;  ?>" class="img-fluid w-100" alt="">
@@ -20,7 +21,7 @@
                                             <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
                                                 <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Category->player_image;  ?>" alt="series">
                                             </a>
-                                            <div class="hover-buttons">
+                                            <div class="hover-buttons text-white">
                                                 <a href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?>">
                                                     <p class="epi-name text-left m-0"><?php  echo (strlen(@$Series_Category->title) > 17) ? substr(@$Series_Category->title,0,18).'...' : @$Series_Category->title; ?></p>
                                                 </a>

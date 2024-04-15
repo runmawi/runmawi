@@ -109,7 +109,7 @@
                 </a>
 
                
-                  <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                  <a class="epi-name mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i> <?=  ('Watch Series') ?>
                   </a>
                 </div>
