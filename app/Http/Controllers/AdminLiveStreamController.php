@@ -594,6 +594,10 @@ class AdminLiveStreamController extends Controller
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
 
+        $movie->recurring_program   = !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $movie->program_time        = ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
+        $movie->custom_program_time = ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
+
         // Ads
 
         if( choosen_player() == 1  && ads_theme_status() == 1){
@@ -1147,7 +1151,11 @@ class AdminLiveStreamController extends Controller
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
-        $video->m3u_url = $request->m3u_url;
+        
+        $video->recurring_program   = !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $video->program_time        = ( !is_null($request->program_time) && $request->recurring_program != "custom" ) ? $request->program_time : null ;
+        $video->custom_program_time = ( !is_null($request->custom_program_time) && $request->recurring_program == "custom" ) ? $request->custom_program_time : null ;
+
 
                 // Ads
 
