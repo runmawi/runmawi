@@ -6,7 +6,7 @@
                     <h4 class="vid-title"><?php echo __('Series Category'); ?></h4>                     
                 </div>
                 <div class="favorites-contens">
-                    <ul class="favorites-slider category-page list-inline row p-0 mb-0">
+                    <ul class="category-page list-inline row p-0 mb-0">
                       <?php if(isset($SeriesCategory)) {
                         foreach($SeriesCategory as $Series_Category){ ?>
                         

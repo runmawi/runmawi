@@ -6,7 +6,7 @@
                     <h4 class="vid-title"><?php echo __('Live Category Video'); ?></h4>                     
                 </div>
                 <div class="favorites-contens">
-                    <ul class="favorites-slider category-page list-inline row p-0 mb-0">
+                    <ul class="category-page list-inline row p-0 mb-0">
                       <?php if(isset($LiveCategory)) {
                         foreach($LiveCategory as $Live_Category){ ?>
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
