@@ -10,7 +10,7 @@
                       <?php if(isset($AudioCategory)) {
                         foreach($AudioCategory as $Audio_Category){ ?>
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a class="playTrailer" href="<?php echo URL::to('audio/'.$Audio_Category->slug ) ?>">
+                                <a href="<?php echo URL::to('audio/'.$Audio_Category->slug ) ?>">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="audio">
