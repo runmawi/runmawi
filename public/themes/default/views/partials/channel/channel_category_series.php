@@ -11,7 +11,7 @@
                         foreach($SeriesCategory as $Series_Category){ ?>
                         
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
+                                <a href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Category->image;  ?>" class="img-fluid w-100" alt="">
