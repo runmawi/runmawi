@@ -10,7 +10,7 @@
                       <?php if(isset($SeriesCategory)) {
                         foreach($SeriesCategory as $Series_Category){ ?>
                         
-                            <li class="slide-item">
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$Series_Category->slug ) ?> ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
