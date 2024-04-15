@@ -9,7 +9,7 @@
                     <ul class="favorites-slider category-page list-inline row p-0 mb-0">
                       <?php if(isset($LiveCategory)) {
                         foreach($LiveCategory as $Live_Category){ ?>
-                            <li class="slide-item">
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a class="playTrailer" href="<?php echo URL::to('live/'.$Live_Category->slug ) ?>">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
