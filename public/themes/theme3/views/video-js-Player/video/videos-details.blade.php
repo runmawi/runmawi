@@ -371,7 +371,7 @@
                 <?php if ($settings->show_genre == 1): ?>
                     <p class="trending-dec w-100 mb-0 text-white mt-2">Genres :
                         <?php
-                        $numItems = count($category_name);
+                        $numItems = count(@$category_name);
                         $i = 0;
 
                         foreach (@$category_name as $key => $cat_name) { ?>
