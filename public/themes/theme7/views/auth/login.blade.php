@@ -409,7 +409,7 @@ h1, h2, h3, h4, h5, h6, p, button, input{
 </body>
 
 @php
-    include(public_path('themes/theme3/views/footer.blade.php'));
+    include(public_path('themes/theme7/views/footer.blade.php'));
 @endphp
 
 

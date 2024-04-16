@@ -79,6 +79,8 @@ use App\SeriesCategory;
 use App\SeriesSeason;
 use App\ChannelRoles;
 use App\ModeratorsPermission;
+use App\ChannelSignupMenu;
+use App\Episode;
 
 class ChannelLoginController extends Controller
 {
@@ -111,6 +113,7 @@ class ChannelLoginController extends Controller
         $settings = Setting::first();
         $data = array(
             'settings' => $settings,
+            'ChannelSignupMenu' => ChannelSignupMenu::first(),
         );
         return Theme::view('Channel.register', $data);
 
@@ -354,6 +357,11 @@ class ChannelLoginController extends Controller
 
                 if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
+                    if(!empty($channel->parent_channel_id) || $channel->parent_channel_id != null){
+                        $channel->id = $channel->parent_channel_id;
+                    }
+                        // dd($channel);
+
                     if(!empty($channel->user_permission)){
 
                         $userPermissions = explode(',', $channel->user_permission);
@@ -371,6 +379,7 @@ class ChannelLoginController extends Controller
                         'userPermissions' => $userPermissions,
                     );
                     Session::put('channel', $channel);
+                    Session::put('userPermissions', $userPermissions);
                     return \View::make('channel.dashboard', $data);
                 }
                 elseif (!empty($channel) && $channel->status == 0)
@@ -1145,6 +1154,7 @@ public function ChannelCreate(Request $request)
     $settings = Setting::first();
     $data = array(
         'settings' => $settings,
+        'Channels' => Channel::select('id','channel_name')->get(),
         'ChannelRoles' => ChannelRoles::get(),
     );
 
@@ -1232,6 +1242,9 @@ public function ChannelStore(Request $request)
             $channel->intro_video = $intro_video;
             $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
             $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
+            $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
+            $channel->password = Hash::make($request->password);
+            $channel->unhased_password = $request->password;
             $channel->status = 1;
             $channel->save();
 
@@ -1262,6 +1275,7 @@ public function ChannelEdit( $id)
     $Channel = Channel::where('id',$id)->first();
     $data = array(
         'Channel' => $Channel,
+        'Channels' => Channel::select('id','channel_name')->where('id','!=',$id)->get(),
         'ChannelRoles' => ChannelRoles::get(),
     );
 
@@ -1384,6 +1398,9 @@ public function ChannelUpdate(Request $request)
     $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
     $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
     $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
+    $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
+    $channel->password = Hash::make($request->password);
+    $channel->unhased_password = $request->password;
     $channel->save();
 
     return \Redirect::back()->with('message','Update User Profile');

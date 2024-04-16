@@ -18,7 +18,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_network_list->image_url }}" class="img-fluid" >
+                                            <img src="{{ $series_network_list->image_url }}" class="img-fluid" alt="Videos">
                                         </div>
                                     </a>
                                 </li>
@@ -48,7 +48,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $series_network_list->banner_image_url  }}" alt="">
+                                                            <img  src="{{ $series_network_list->banner_image_url  }}" alt="Videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,8 +88,8 @@
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

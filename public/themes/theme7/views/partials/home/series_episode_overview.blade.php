@@ -121,14 +121,14 @@ $data = App\Series::where('active', '=', '1')
                                                                 {{-- overview --}}
                                                 <div id="{{'trending-data-overview-'.$key }}" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="javascript:void(0);" tabindex="0">
+                                                        <!-- <a href="javascript:void(0);" tabindex="0">
                                                             <div class="res-logo">
                                                                 <div class="channel-logo">
                                                                     <img src="{{ front_end_logo() }}"
                                                                         class="c-logo" alt="streamit">
                                                                 </div>
                                                             </div>
-                                                        </a>
+                                                        </a> -->
 
                                                         <h1 class="trending-text text-uppercase">{{ optional($series_details)->title }}</h1>
 
@@ -138,7 +138,7 @@ $data = App\Series::where('active', '=', '1')
                                                         </div>
 
                                                         <div class="d-flex align-items-center series mb-4">
-                                                            <img src="{{ front_end_logo() }}" class="img-fluid" alt="">
+                                                            <!-- <img src="{{ front_end_logo() }}" class="img-fluid" alt=""> -->
                                                             <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
                                                         </div>
                                                         <div class="col-md-6 pl-0">
@@ -147,7 +147,7 @@ $data = App\Series::where('active', '=', '1')
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
+                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-primary mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                                                 {{-- <a href="#" class="btn btn-hover" tabindex="0"><i class="ri-add-line"></i>My List</a> --}}
                                                             </div>
                                                         </div>
@@ -457,5 +457,11 @@ $data = App\Series::where('active', '=', '1')
         font-weight: normal;
         color: #fff;
         opacity: 1;
+    }
+    #trending-slider-nav .slick-current.slick-active .movie-slick{
+        border-color:transparent !important;
+    }
+    .overview-tab:before{
+        background:linear-gradient(90deg, rgba(20, 20, 20, 1) 0%, rgba(36, 36, 36, 1) 35%, rgba(83, 100, 141, 0) 100%) !important;
     }
 </style>

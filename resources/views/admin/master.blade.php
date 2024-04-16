@@ -1060,6 +1060,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Menu.svg')?>"heigth="40" width="40"><span>{{ (__('Menu')) }}</span></a></li>
                    <li><a href="{{ URL::to('admin/signup') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Signup Menu')) }}</span></a></li>
+                   <li><a href="{{ route('cppsignupindex') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('CPP Signup Menu')) }}</span></a></li>
+                   <li><a href="{{ route('channelsignupindex') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Channel Signup Menu')) }}</span></a></li>
                    <!--<li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>-->
 
                     <div >

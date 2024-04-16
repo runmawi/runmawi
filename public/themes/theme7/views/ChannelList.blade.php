@@ -4,11 +4,11 @@
 @endphp
      
 <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="main-title">{{ "All Channels" }}</h4>                     
+                    <h4 class="main-title">{{ "Our Channal partners" }}</h4>                     
                 </div>
 
                 <div class="favorites-contens">
@@ -24,35 +24,6 @@
                                                 @else
                                                 <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid w-100" alt="">
                                                 @endif
-
-                                            </div>
-                                            <div class="block-description">
-                                                <p> <?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?>
-                                                </p>
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($channel)->age_restrict.'+' }}
-                                                        </div>
-
-                                                        <span class="text-white">
-                                                        {{ $channel->duration != null ? gmdate('H:i:s', $channel->duration) : null }}
-                                                        </span>
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                        </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </a>

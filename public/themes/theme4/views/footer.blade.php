@@ -21,57 +21,57 @@
                     <div class="d-flex footer-title">
 
                         <?php if (!empty($settings->instagram_page_id)) { ?>
-                            <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
+                            <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon" aria-label="insta">
                                 <i class="ri-instagram-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->twitter_page_id)) { ?>
-                            <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
+                            <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon" aria-label="twitter">
                                 <i class="ri-twitter-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->facebook_page_id)) { ?>
-                            <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon">
+                            <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon" aria-label="fb">
                                 <i class="ri-facebook-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->skype_page_id)) { ?>
-                            <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon">
+                            <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon" aria-label="skype">
                                 <i class="ri-skype-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->linkedin_page_id)) { ?>
 
-                            <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon">
+                            <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon" aria-label="linkedin">
                                 <i class="ri-linkedin-fill"></i>
                             </a>
 
                         <?php } ?>
 
                         <?php if (!empty($settings->whatsapp_page_id)) { ?>
-                            <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon">
+                            <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon" aria-label="whatsapp">
                                 <i class="ri-whatsapp-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->youtube_page_id)) { ?>
-                            <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon">
+                            <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon" aria-label="youtube">
                                 <i class="ri-youtube-fill"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->google_page_id)) { ?>
-                            <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon">
+                            <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon" aria-label="google">
                                 <i class="fa fa-google-plus"></i>
                             </a>
                         <?php } ?>
 
                         <?php if (!empty($settings->tiktok_page_id)) { ?>
-                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
+                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon" aria-label="tiktok">
                                 <i class="ri-tiktok-fill"></i>
                             </a>
                         <?php } ?>
@@ -79,13 +79,13 @@
                     
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -243,7 +243,9 @@
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
 <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script>
 
 <script>

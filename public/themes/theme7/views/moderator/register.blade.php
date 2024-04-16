@@ -168,7 +168,7 @@ $system_settings = App\SystemSetting::find(1);
     
                        {{-- Footer --}}
     @php
-        include(public_path('themes/theme6/views/footer.blade.php'));
+        include(public_path('themes/theme7/views/footer.blade.php'));
     @endphp
    
 @endsection
