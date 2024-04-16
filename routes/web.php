@@ -1043,7 +1043,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/season/edit/{season_id}', 'AdminSeriesController@Edit_season');
     Route::post('/season/update', 'AdminSeriesController@Update_season');
     Route::get('/season/delete/{id}', 'AdminSeriesController@destroy_season');
-
+    Route::post('/bunnycdn_episodelibrary', 'AdminSeriesController@BunnycdnEpisodelibrary');
+    Route::post('/stream_bunny_cdn_episode', 'AdminSeriesController@StreamBunnyCdnEpisode');
+    
     Route::post('/episode/create', 'AdminSeriesController@create_episode');
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
