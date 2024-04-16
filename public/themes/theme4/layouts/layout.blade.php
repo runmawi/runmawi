@@ -141,7 +141,7 @@
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
 
-<script>
+<!-- <script>
     const toggle = document.getElementById('toggle');
     const body = document.body;
 
@@ -157,6 +157,29 @@
             location.reload(true);
         }
     });
+</script> -->
+
+<input type="checkbox" id="toggle">
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.getElementById('toggle');
+        const body = document.body;
+
+        toggle.addEventListener('input', (e) => {
+            const isChecked = e.target.checked;
+
+            if (isChecked) {
+                body.classList.add('light-theme');
+                location.reload(true);
+            } else {
+                body.classList.remove('light-theme');
+                location.reload(true);
+            }
+        });
+    });
+
 </script>
 
 </html>
