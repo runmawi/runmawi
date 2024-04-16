@@ -65,6 +65,8 @@
       ?>
     </title>
 
+    <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
+
     <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
