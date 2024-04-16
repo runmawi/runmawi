@@ -2364,4 +2364,21 @@ window.onload = function () {
    };
 
 </script>
-    
+
+<script>
+    const toggle = document.getElementById('toggle');
+    const body = document.body;
+
+    toggle.addEventListener('input', (e) => {
+
+        const isChecked = e.target.checked;
+
+        if (isChecked) {
+            body.classList.add('light-theme');
+            location.reload(true);
+        } else {
+            body.classList.remove('light-theme');
+            location.reload(true);
+        }
+    });
+</script>
