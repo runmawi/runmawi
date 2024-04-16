@@ -183,7 +183,7 @@
                             <!-- Social Share, Like Dislike -->
                           
                             @php
-                                include public_path('themes\theme3\views\partials/social-share.php'); 
+                                //include public_path('themes\theme3\views\partials/social-share.php'); 
                             @endphp
                         </ul>
                     </div>
