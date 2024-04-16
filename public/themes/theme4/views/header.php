@@ -991,7 +991,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
+                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
                      </div>
                   <?php endif ;?>
 
@@ -1005,10 +1005,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Header Side Position  -->
                               <?php if($theme->header_side_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -1810,7 +1810,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                     <ul class="d-flex align-items-center list-inline m-0">
 
                                        <li class="nav-item nav-icon">
-                                             <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
+                                             <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" aria-label="searchResult">
                                                 <i class="ri-search-line"></i>
                                              </a>
 

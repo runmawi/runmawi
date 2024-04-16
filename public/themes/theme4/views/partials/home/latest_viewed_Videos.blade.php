@@ -51,7 +51,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
                                         
                                             @if (videos_expiry_date_status() == 1 && optional($latest_view_video)->expiry_date)
                                                 <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
@@ -98,7 +98,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -225,8 +225,8 @@
             asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

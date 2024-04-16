@@ -55,7 +55,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" >
+                                                <img src="{{ $series->image_url }}" class="img-fluid" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
@@ -93,7 +93,7 @@
                                                                         <li>
                                                                             <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                                 <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
                                                                                     <div class="controls">
                                                                                         
                                                                                         <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
@@ -125,7 +125,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $series->Player_image_url }}" alt="">
+                                                                <img  src="{{ $series->Player_image_url }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -212,8 +212,8 @@
             asNavFor: '.series-genre-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

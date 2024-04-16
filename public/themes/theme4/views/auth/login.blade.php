@@ -160,10 +160,10 @@ text-align: left;
                         </div>
 <div class="position-relative">
                                  <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-theme4 reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-theme4 reveal" aria-label="Toggle visibility" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-theme4 reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-theme4 reveal" aria-label="Toggle visibility" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                             </div>
                         

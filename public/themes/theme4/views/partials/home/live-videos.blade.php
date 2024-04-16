@@ -22,11 +22,11 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
+                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="livestream_videos" width="100%"></div>
                                     @endif
                                 </li>
                             @endforeach
@@ -65,7 +65,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="livestream_videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -149,8 +149,8 @@
             asNavFor: '.livestream-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
