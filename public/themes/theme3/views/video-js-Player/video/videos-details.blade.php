@@ -223,7 +223,7 @@
 
             <!-- Trailer  -->
 
-            <div class="col-sm-4 col-12 p-0 mt-5">
+            <div class="col-sm-9 col-12 p-0 mt-5">
                 <div>
                     <?php if ($video->trailer != '' && $ThumbnailSetting->trailer == 1) { ?>
 
