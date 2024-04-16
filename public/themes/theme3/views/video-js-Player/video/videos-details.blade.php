@@ -137,7 +137,7 @@
 <div class="container-fluid g-border">
     <div class="row align-items-center">
         <div class="col-sm-8 col-md-8 col-xs-12">
-            <h1 class="text-white mb-3">{{ \Illuminate\Support\Str::limit($videodetail->title,45) }}</h1>
+            <h1 class="text-white mb-3">{{ \Illuminate\Support\Str::limit($videodetail->title,40) }}</h1>
 
             <!-- Year, Running time, Age -->
             <?php
@@ -237,7 +237,8 @@
                                     data-keyboard="false">
                                     <p class="img__description">
                                         <h6 class="text-center">
-                                            <?php echo strlen($video->title) > 50 ? substr($video->title, 0, 51) . '...' : $video->title; ?>
+                                            {{ \Illuminate\Support\Str::limit($video->title,25) }}
+                                            <?php //echo strlen($video->title) > 50 ? substr($video->title, 0, 51) . '...' : $video->title; ?>
                                         </h6>
 
                                         <div class="movie-time  align-items-center my-2">
@@ -260,10 +261,8 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    <?php ?>
                 </div>
-                <?php //dd($video->trailer_type);
-                    ?>
                 <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -316,7 +315,8 @@
                     </div>
                 </div>
 
-            <?php } ?>
+                <?php } ?>
+            </div>
 
             <!-- Trailer End  -->
 
