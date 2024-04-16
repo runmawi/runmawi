@@ -273,7 +273,7 @@
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
+                        <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -290,7 +290,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" >
+                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
                                             </div>
                                         </a>
                                     </li>
@@ -327,7 +327,7 @@
                                                                         <li>
                                                                             <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
                                                                                 <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
                                                                                     <div class="controls">
                                                                                         <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
                                                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -361,7 +361,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="">
+                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -402,8 +402,8 @@
             asNavFor: '.series-category-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
