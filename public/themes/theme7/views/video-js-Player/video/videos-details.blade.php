@@ -429,17 +429,17 @@
     <script>
         function toggleDescription() {
 
-var shortDesc = document.getElementById('artistDescription');
-var fullDesc = document.getElementById('fullDescription');
+            var shortDesc = document.getElementById('artistDescription');
+            var fullDesc = document.getElementById('fullDescription');
 
-if (shortDesc.style.display === 'none') {
-    shortDesc.style.display = 'block';
-    fullDesc.style.display = 'none';
-} else {
-    shortDesc.style.display = 'none';
-    fullDesc.style.display = 'block';
-}
-}
+            if (shortDesc.style.display === 'none') {
+                shortDesc.style.display = 'block';
+                fullDesc.style.display = 'none';
+            } else {
+                shortDesc.style.display = 'none';
+                fullDesc.style.display = 'block';
+            }
+        }
     </script>
 
 @php 
