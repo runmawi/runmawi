@@ -114,7 +114,22 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                 <?php } } } ?>
             </video>
         </div>
+        <?php  elseif( $episode->type == 'bunny_cdn' ): ?>
+        <div id="series_container">
+            <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline
+                poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
+                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
 
+                <source type="application/x-mpegURL" src="<?php echo  $episode->url ; ?>">
+
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                    srclang="<?= $episodesubtitles_file->sub_language ?>"
+                    label="<?= $episodesubtitles_file->shortcode ?>" default>
+                <?php } } } ?>
+            </video>
+        </div>
         <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
         <div id="series_container">
             <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline
