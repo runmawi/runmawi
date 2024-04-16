@@ -65,6 +65,8 @@
       ?>
     </title>
 
+    <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
+
     <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
@@ -2364,4 +2366,21 @@ window.onload = function () {
    };
 
 </script>
-    
+
+<script>
+    const toggle = document.getElementById('toggle');
+    const body = document.body;
+
+    toggle.addEventListener('input', (e) => {
+
+        const isChecked = e.target.checked;
+
+        if (isChecked) {
+            body.classList.add('light-theme');
+            location.reload(true);
+        } else {
+            body.classList.remove('light-theme');
+            location.reload(true);
+        }
+    });
+</script>
