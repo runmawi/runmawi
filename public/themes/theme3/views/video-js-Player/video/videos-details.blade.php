@@ -374,7 +374,7 @@
                         $numItems = count($category_name);
                         $i = 0;
 
-                        foreach ($category_name as $key => $cat_name) { ?>
+                        foreach (@$category_name as $key => $cat_name) { ?>
                             <a
                                 href="<?php echo URL::to('/category' . '/' . $cat_name->categories_slug); ?>">
                                 <span class="sta">
