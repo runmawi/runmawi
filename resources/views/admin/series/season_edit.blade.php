@@ -109,8 +109,45 @@
                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>
+
+            
+                <!-- BunnyCDN Video -->        
+                <div id="bunnycdnvideo" style="">
+                <div class="new-audio-file mt-3">
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                <!-- videolibrary -->
+                <select class="phselect form-control" name="episodelibrary" id="episodelibrary" >
+                            <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select>  
+                </div>
+                    
+                <div class="new-audio-file mt-3">
+                <select class="form-control" id="stream_bunny_cdn_episode" name="stream_bunny_cdn_episode">
+                    <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                </select>
+                </div>
+                <div class="new-audio-file mt-3">
+                <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
+                </div>
+            </div>
+            
+
+
             <div class="text-center" id="buttonNext" style="margin-top: 30px;">
                 <input type="button" id="Next" value="Proceed to Next Step" class="btn btn-primary" />
+            </div>
+            <br>
+
+            <div class="col-md-12 text-center">
+                <div id="optionradio"  >
+                    <input type="radio" class="text-black" value="episodeupload" id="episodeupload" name="episodefile" checked="checked"> Episode Upload &nbsp;&nbsp;&nbsp;
+                    @if(@$theme_settings->enable_bunny_cdn == 1)
+                        <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="episodefile"> Bunny CDN Episodes              
+                    @endif
+                </div>
             </div>
 
             <?php //dd($season_id); ?>
@@ -697,7 +734,90 @@
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
     <script>
+         	$('#bunnycdnvideo').hide();
+             $('#episodeupload').click(function(){
+                $('#episode_uploads').show();
+                $('#bunnycdnvideo').hide();
+                // $("#episode_uploads").addClass('collapse');
+                // $("#bunny_cdn_video").removeClass('collapse');         
+            })
+            
+            $('#bunny_cdn_video').click(function(){
 
+                $('#episode_uploads').hide();
+                $('#bunnycdnvideo').show();
+                $("#episode_uploads").removeClass('collapse');
+                // $("#bunny_cdn_video").removeClass('collapse');
+
+            })
+
+
+
+   $(document).ready(function(){
+            
+         $(document).ready(function() {
+            $('#stream_bunny_cdn_episode').select2();
+         });
+
+    
+            $('#episodelibrary').on('change', function() {
+                  
+                  var episodelibrary_id = this.value;
+                  $("#stream_bunny_cdn_episode").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/bunnycdn_episodelibrary')}}",
+                     type: "POST",
+                     data: {
+                     episodelibrary_id: episodelibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
+
+                  // console.log(decodedStreamVideos);
+
+
+                  $('#stream_bunny_cdn_episode').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
+                        console.log(value.title);
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#stream_bunny_cdn_episode").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                        // $("#stream_bunny_cdn_episode").append('<option value="'+videoUrl+'">'+value.title+'</option>');
+                     });
+
+                     }
+                });
+
+            }); 
+
+
+
+      $('#submit_bunny_cdn').click(function(){
+            $.ajax({
+                url: '{{ URL::to('/admin/stream_bunny_cdn_episode') }}',
+                type: "post",
+                 data: {
+                        _token: '{{ csrf_token() }}',
+                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val()
+        
+                    },        success: function(value){
+                        console.log(value);
+                                       // console.log(value);
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.Episode_id);
+            
+                    }
+                });
+            })
+
+        });
+        
         CKEDITOR.replaceAll( 'description_editor', {
             toolbar : 'simple'
         });
@@ -973,7 +1093,9 @@
             });
         });
         $("#buttonNext").click(function () {
+         	$('#bunnycdnvideo').hide();
             $("#episode_uploads").hide();
+            $('#optionradio').hide();
             $("#Next").hide();
             $("#episode_video_data").show();
             $("#submit").show();
