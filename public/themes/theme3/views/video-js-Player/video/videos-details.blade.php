@@ -387,9 +387,9 @@
                         @php
                             $description = $videodetail->description;
 
-                            if (strlen($description) > 900) {
+                            if (strlen($description) > 950) {
                                 $decodedDescription = htmlspecialchars_decode($description, ENT_QUOTES);
-                                $shortDescription = strip_tags(substr($decodedDescription, 0, 900));
+                                $shortDescription = strip_tags(substr($decodedDescription, 0, 950));
                                 $shortDescrp=str_replace('&nbsp;', ' ', $shortDescription);
 
                                 //$shortDescriptionFirst = htmlspecialchars_decode(substr($description, 0, 990), ENT_QUOTES);
@@ -552,7 +552,7 @@
 
                     @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
-                        <div class="container-fluid video-list overflow-hidden">
+                        <div class="video-list overflow-hidden">
 
                             <h4 class="iq-main-header d-flex align-items-center justify-content-between" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
 
