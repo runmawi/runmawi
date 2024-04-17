@@ -380,32 +380,78 @@
 
                 <!-- Description -->
 
-                @if (!empty($videodetail->description))
-                    <h4 class="mt-3">Description</h4>
-                    <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify">
-                    @php
-                        $description = $videodetail->description;
+                <div class="descrption-video-details">
+                    @if (!empty($videodetail->description))
+                        <h4 class="mt-3">Description</h4>
+                        <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify">
+                        @php
+                            $description = $videodetail->description;
 
-                        if (strlen($description) > 900) {
-                            $decodedDescription = htmlspecialchars_decode($description, ENT_QUOTES);
-                            $shortDescription = strip_tags(substr($decodedDescription, 0, 900));
-                            $shortDescrp=str_replace('&nbsp;', ' ', $shortDescription);
+                            if (strlen($description) > 900) {
+                                $decodedDescription = htmlspecialchars_decode($description, ENT_QUOTES);
+                                $shortDescription = strip_tags(substr($decodedDescription, 0, 900));
+                                $shortDescrp=str_replace('&nbsp;', ' ', $shortDescription);
 
-                            //$shortDescriptionFirst = htmlspecialchars_decode(substr($description, 0, 990), ENT_QUOTES);
-                            //$shortDescription = htmlspecialchars(strip_tags($shortDescriptionFirst), ENT_QUOTES, 'UTF-8');
-                            $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
-                        }
-                    @endphp
+                                //$shortDescriptionFirst = htmlspecialchars_decode(substr($description, 0, 990), ENT_QUOTES);
+                                //$shortDescription = htmlspecialchars(strip_tags($shortDescriptionFirst), ENT_QUOTES, 'UTF-8');
+                                $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
+                            }
+                        @endphp
 
-                    @if (strlen($description) > 990)
-                        <p id="artistDescription" style="color:#fff !important;">{{ strip_tags(htmlspecialchars_decode($shortDescrp)) }}... <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See More</a></p>
-                        <div id="fullDescription" style="display:none;">{!! $fullDescription !!} <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See Less</a></div>
-                    @else
-                        <p id="artistDescription">{{ strip_tags($description) }}</p>
+                        @if (strlen($description) > 990)
+                            <p id="artistDescription" style="color:#fff;">{{ strip_tags(htmlspecialchars_decode($shortDescrp)) }}... <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See More</a></p>
+                            <div id="fullDescription" style="display:none;">{!! $fullDescription !!} <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See Less</a></div>
+                        @else
+                            <p id="artistDescription">{{ strip_tags($description) }}</p>
+                        @endif
+
+                        </p>
+                    @endif
+                </div>
+
+
+
+                <div class="cate-lang-status-details">
+                    <div class="info">       {{-- publish_status --}}
+                        <div classname="infoItem">
+                            <span classname="text bold">Status: </span>
+                            <span class="text" style="color:var(--iq-primary) !important;font-weight:600;">{{ $videodetail->video_publish_status }}</span>
+                        </div>
+                    </div>
+
+
+                    @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
+                        <div class="info">      
+                            <span classname="text bold"> Languages:&nbsp;</span> 
+                            @if ($videodetail->Language->isNotEmpty())
+                                @php
+                                    $languageNames = $videodetail->Language->pluck('name')->implode(', ');
+                                @endphp
+
+                                <span class="text">
+                                    <span style="color:var(--iq-primary) !important;font-weight:600;">{{ $languageNames }}</span>
+                                </span>
+                            @endif
+
+                        </div>
                     @endif
 
-                    </p>
-                @endif
+                
+
+                    @if ($videodetail->categories->isNotEmpty())
+                        <div class="info">
+                            <span classname="text bold"> Categories:&nbsp;</span> 
+                            @php
+                                $categoryNames = $videodetail->categories->pluck('name')->implode(', ');
+                            @endphp
+
+                                    <span class="text">
+                                        <span style="color:var(--iq-primary) !important;font-weight:600;">{!! $categoryNames !!}</span>
+                                    </span>
+                        </div>
+                    @endif
+                </div>
+
 
                 
             </div>
@@ -588,6 +634,16 @@
         });
     });
 </script>
+
+
+
+<style>
+      body.light-theme .descrption-video-details p {color: <?php echo GetLightText(); ?>!important;}
+      body.light-theme .cate-lang-status-details {color: <?php echo GetLightText(); ?>!important;}
+      body.light-theme ul.breadcrumb.breadcrumb-csp.p-0 a {color: <?php echo GetLightText(); ?>!important;}
+      body.dark-theme .cate-lang-status-details {color: <?php echo GetDarkText(); ?>!important;}
+      body.dark-theme ul.breadcrumb.breadcrumb-csp.p-0 a {color: <?php echo GetDarkText(); ?>!important;}
+</style>
 
 @php 
     //include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
