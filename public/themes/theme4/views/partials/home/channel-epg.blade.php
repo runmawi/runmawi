@@ -159,7 +159,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" >
+                                            <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" alt="epg_channel_data">
                                         </div>
                                     </a>
                                 </li>
@@ -187,12 +187,12 @@
 
                                                         @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
                                                             <div class="d-flex align-items-center p-0">
-                                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="" style="height: 30%; width:30%"><br>
+                                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="epg_channel_data" style="height: 30%; width:30%"><br>
                                                                 
                                                                 <ul>
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->TimeZone->time_zone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
-                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="70px" style="position: static !important ; margin:0% !important"></p>
+                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
                                                                 </ul>
 
                                                             </div>
@@ -218,7 +218,7 @@
 
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $epg_channel_data->Player_image_url }}" alt="">
+                                                            <img  src="{{ $epg_channel_data->Player_image_url }}" alt="epg_channel_data">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -353,8 +353,8 @@
             asNavFor: '.epg-channel-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
