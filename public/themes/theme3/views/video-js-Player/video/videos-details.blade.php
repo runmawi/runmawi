@@ -375,7 +375,7 @@
         </div>
 
 
-        <div class="container-fluid">
+        <div class="">
             <div class="col-md-7 col-sm-7 col-12 p-0">
 
                 <!-- Description -->
@@ -386,18 +386,22 @@
                     @php
                         $description = $videodetail->description;
 
-                        if (strlen($description) > 990) {
-                            $shortDescriptionFirst = htmlspecialchars_decode(substr($description, 0, 990), ENT_QUOTES);
-                            $shortDescription = htmlspecialchars(strip_tags($shortDescriptionFirst), ENT_QUOTES, 'UTF-8');
+                        if (strlen($description) > 900) {
+                            $decodedDescription = htmlspecialchars_decode($description, ENT_QUOTES);
+                            $shortDescription = strip_tags(substr($decodedDescription, 0, 900));
+                            $shortDescrp=str_replace('&nbsp;', ' ', $shortDescription);
+
+                            //$shortDescriptionFirst = htmlspecialchars_decode(substr($description, 0, 990), ENT_QUOTES);
+                            //$shortDescription = htmlspecialchars(strip_tags($shortDescriptionFirst), ENT_QUOTES, 'UTF-8');
                             $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
                         }
                     @endphp
 
                     @if (strlen($description) > 990)
-                        <p id="artistDescription" style="color:#fff !important;">{{ $shortDescription }}... <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See More</a></p>
+                        <p id="artistDescription" style="color:#fff !important;">{{ strip_tags(htmlspecialchars_decode($shortDescrp)) }}... <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See More</a></p>
                         <div id="fullDescription" style="display:none;">{!! $fullDescription !!} <a href="javascript:void(0);" class="text-primary" onclick="toggleDescription()">See Less</a></div>
                     @else
-                        <p id="artistDescription">{{ $description }}</p>
+                        <p id="artistDescription">{{ strip_tags($description) }}</p>
                     @endif
 
                     </p>
