@@ -1151,33 +1151,34 @@ if (!empty ($request_url)) {
       <h4>
          <?php echo __('Cast & Crew'); ?>
       </h4>
-      <div class="row">
-         <div class="favorites-contens">
-            <ul class="category-page list-inline row p-0 mb-0 m-3">
-               <?php foreach ($artists as $key => $artist) { ?>
-                  <li class="slide-item" style="width:40%;">
-                     <a href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>">
-                        <div class="block-images position-relative">
-                           <!-- block-images -->
-                           <div class="img-box">
-                              <img src="<?= URL::to('/') . '/public/uploads/artists/' . $artist->image ?>" alt="" class="w-100">
-                              <div class="p-tag2">
-                                 <p class="trending-dec w-100 mb-0 text-white mt-2">
-                                    <?php echo $artist->artist_slug; ?>
-                                 </p>
+         <div class="row">
+            <div class="favorites-contens">
+                  <ul class="category-page list-inline row p-0 mb-0 m-3">
+                     <?php foreach($artists as $key => $artist){  ?>
+                     <li class="slide-item ">
+                        <a href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>">
+                              <div class="block-images position-relative">
+                                 <!-- block-images -->
+                                 <div class="img-box">
+                                    <img src="<?= URL::to('/') . '/public/uploads/artists/' . $artist->image ?>"
+                                          alt="" width="100">
+                                    <div class="p-tag2">
+                                          <p class="trending-dec w-100 mb-0 text-white mt-2">
+                                             <?php echo $artist->artist_name; ?> </p>
+                                    </div>
+                                 </div>
+
+                                 <div class="">
+                                    <a href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"></a>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="">
-                              <a href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_name); ?>"> </a>
-                           </div>
-                        </div>
-                     </a>
-                  </li>
-               <?php }
-   } ?>
-         </ul>
-      </div>
-   </div>
+
+                        </a>
+                     </li>
+                     <?php } }  ?>
+                  </ul>
+            </div>
+         </div>
    <!-- logo In player -->
    <div class="logo_player"> </div>
    <!-- <div class="text-white"> -->
