@@ -108,7 +108,7 @@
 
 
 
-    <!-- <div class="container-fluid p-0">
+    <div class="container-fluid p-0">
 
         @if ( $videodetail->type == "embed" )
 
@@ -128,7 +128,7 @@
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif
-    </div> -->
+    </div>
 
 
 
