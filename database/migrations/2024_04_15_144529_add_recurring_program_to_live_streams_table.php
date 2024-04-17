@@ -15,8 +15,10 @@ class AddRecurringProgramToLiveStreamsTable extends Migration
     {
         Schema::table('live_streams', function (Blueprint $table) {
             $table->string('recurring_program')->nullable()->after('publish_time');
-            $table->string('program_time')->nullable()->after('recurring_program');
-            $table->string('custom_program_time')->nullable()->after('program_time');
+            $table->string('program_start_time')->nullable()->after('recurring_program');
+            $table->string('program_end_time')->nullable()->after('program_start_time');
+            $table->string('custom_start_program_time')->nullable()->after('program_end_time');
+            $table->string('custom_end_program_time')->nullable()->after('custom_start_program_time');
         });
     }
 
@@ -29,8 +31,10 @@ class AddRecurringProgramToLiveStreamsTable extends Migration
     {
         Schema::table('live_streams', function (Blueprint $table) {
             Schema::dropIfExists('recurring_program');
-            Schema::dropIfExists('program_time');
-            Schema::dropIfExists('custom_program_time');
+            Schema::dropIfExists('program_tprogram_start_timeime');
+            Schema::dropIfExists('program_end_time');
+            Schema::dropIfExists('custom_start_program_time');
+            Schema::dropIfExists('custom_end_program_time');
         });
     }
 }

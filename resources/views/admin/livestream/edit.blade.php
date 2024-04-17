@@ -789,21 +789,37 @@ border-radius: 0px 4px 4px 0px;
                     </select>
                 </div>
 
-                <div class="col-sm-6" id="program_time" style="{{ !empty($video->program_time)  ? '' : 'display: none' }}" >
-                    <label class="m-0">Program Time   </label>
+                <div class="col-sm-3 program_time"  style="{{ !empty($video->program_start_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program Start Time   </label>
                     <div class="panel-body">
-                        <input type="time" class="form-control" name="program_time" value="{{ !empty($video->program_time) ? $video->program_time : null }}" />
+                        <input type="time" class="form-control" name="program_start_time" value="{{ !empty($video->program_start_time) ? $video->program_start_time : null }}" />
                     </div>
                 </div>
 
-                <div class="col-sm-6" id="custom_program_time" style="{{  !empty($video->custom_program_time) ? '' : 'display: none' }}" >
-                    <label class="m-0">Custom Program Time </label>
+                <div class="col-sm-3 program_time" style="{{ !empty($video->program_end_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program Start Time   </label>
                     <div class="panel-body">
-                        <input type="datetime-local" class="form-control" name="custom_program_time" value="{{ !empty($video->custom_program_time) ? $video->custom_program_time : null }}"  />
+                        <input type="time" class="form-control" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
                     </div>
                 </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_start_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom Start Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_start_program_time" value="{{ !empty($video->custom_start_program_time) ? $video->custom_start_program_time : null }}"  />
+                    </div>
+                </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_end_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom End Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_end_program_time" value="{{ !empty($video->custom_end_program_time) ? $video->custom_end_program_time : null }}"  />
+                    </div>
+                </div>
+
                 <div class="clear"></div>
             </div>
+            <br>
                     
 			<!-- row -->
 
@@ -1347,7 +1363,7 @@ $(document).ready(function(){
         
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , #custom_program_time , #program_time").hide();
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 
@@ -1362,18 +1378,18 @@ $(document).ready(function(){
 
         $("#recurring_program").change(function () {
 
-            $(" #custom_program_time , #program_time").hide();
+            $(" .custom_program_time , .program_time").hide();
 
             let recurring_program_dropdown = $('#recurring_program_dropdown').val();
 
             if( recurring_program_dropdown != " " &&  recurring_program_dropdown == "custom"){
 
-                $('#custom_program_time').show();
+                $('.custom_program_time').show();
 
             }
             else if( recurring_program_dropdown != " " &&  recurring_program_dropdown != "custom" ){
 
-                $('#program_time').show();
+                $('.program_time').show();
             }
         });
     });

@@ -689,21 +689,37 @@
                             </select>
                         </div>
 
-                        <div class="col-sm-6" id="program_time">
-                            <label class="m-0">Program Time   </label>
+                        <div class="col-sm-3 program_time">
+                            <label class="m-0">Program Start Time</label>
                             <div class="panel-body">
-                                <input type="time" class="form-control" name="program_time" />
+                                <input type="time" class="form-control" name="program_start_time" />
                             </div>
                         </div>
 
-                        <div class="col-sm-6" id="custom_program_time">
-                            <label class="m-0">Custom Program Time </label>
+                        <div class="col-sm-3 program_time">
+                            <label class="m-0">Program End Time </label>
                             <div class="panel-body">
-                                <input type="datetime-local" class="form-control" name="custom_program_time"  />
+                                <input type="time" class="form-control" name="program_end_time" />
                             </div>
                         </div>
+
+                        <div class="col-sm-3 custom_program_time" >
+                            <label class="m-0">Custom Start Program Time </label>
+                            <div class="panel-body">
+                                <input type="datetime-local" class="form-control" name="custom_start_program_time"  />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 custom_program_time" >
+                            <label class="m-0">Custom End Program Time </label>
+                            <div class="panel-body">
+                                <input type="datetime-local" class="form-control" name="custom_end_program_time"  />
+                            </div>
+                        </div>
+
                         <div class="clear"></div>
                     </div>
+                    <br>
 
                     <!-- row -->
 
@@ -1280,11 +1296,11 @@
 
     $(document).ready(function () {
         
-        $("#publishlater, #recurring_program , #custom_program_time , #program_time").hide();
+        $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
 
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , #custom_program_time , #program_time").hide();
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 
@@ -1299,18 +1315,18 @@
 
         $("#recurring_program").change(function () {
 
-            $(" #custom_program_time , #program_time").hide();
+            $(" .custom_program_time , .program_time").hide();
 
             let recurring_program_dropdown = $('#recurring_program_dropdown').val();
 
             if( recurring_program_dropdown != " " &&  recurring_program_dropdown == "custom"){
 
-                $('#custom_program_time').show();
+                $('.custom_program_time').show();
 
             }
             else if( recurring_program_dropdown != " " &&  recurring_program_dropdown != "custom" ){
 
-                $('#program_time').show();
+                $('.program_time').show();
             }
         });
     });
