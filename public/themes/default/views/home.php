@@ -125,6 +125,32 @@
    </section>
    <?php } } ?>
 
+   <?php 
+      if($value->video_name == 'watchlater_videos' && $home_settings->watchlater_videos == 1 && !(Auth::guest())){ ?>
+         <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include('partials/home/watchlater_videos.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php }  ?>
+
+   <?php 
+      if($value->video_name == 'wishlist_videos' && $home_settings->wishlist_videos == 1 && !(Auth::guest()) ){ ?>
+         <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include('partials/home/wishlist_videos.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php  } ?>
+
 <!-- Playlist -->
 
    <?php 

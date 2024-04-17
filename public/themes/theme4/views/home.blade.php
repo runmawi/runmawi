@@ -175,8 +175,6 @@
          </div>
 
 
-
-
          <section id="home" class="iq-main-slider p-0">
             <div id="home-slider" class="slider m-0 p-0">
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/slider-1', $Slider_array_data )->content() !!}
