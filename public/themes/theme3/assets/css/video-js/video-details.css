@@ -431,6 +431,7 @@ footer.mb-3{display: block !important;}
     transform: scale(1.0);
     position: relative;
     height: 200px;
+    width:300px;
 }
 .img__description_layer {
     position: absolute;

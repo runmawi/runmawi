@@ -16,7 +16,7 @@
         color: #000;
         background: #f2f5fa;
         padding: 20px 20px;
-border-radius: 0px 4px 4px 0px;
+        border-radius: 0px 4px 4px 0px;
     }
     .black:hover{
         background: #fff;
@@ -575,19 +575,8 @@ border-radius: 0px 4px 4px 0px;
                                 <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
                         </div>
+                        
                         <div class="col-sm-6">
-                            <label class="m-0">User Access</label>
-                            <p class="p1">Who is allowed to view this Live Stream ?</p>
-                            <div class="panel-body">
-                                <select class="form-control" id="access" name="access">
-                                    <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-                                    <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-                                    <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif >PPV Users (Pay per movie)</option>
-                                </select>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                    <div class="col-sm-6">
                             <label class="m-0">Block Country</label>
                             <p class="p1">( Choose the countries for block the Live Stream )</p>
                             <div class="panel-body">
@@ -600,8 +589,22 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-3" id="ppv_price">
+
+                    <div class="row mt-3">
                         <div class="col-sm-6">
+                            <label class="m-0">User Access</label>
+                            <p class="p1">Who is allowed to view this Live Stream ?</p>
+                            <div class="panel-body">
+                                <select class="form-control" id="access" name="access">
+                                    <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
+                                    <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+                                    <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif >PPV Users (Pay per movie)</option>
+                                </select>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                            
+                        <div class="col-sm-3 ppv_price" >
                             <label class="m-0">PPV Price</label>
                             <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
                             <div class="panel-body">
@@ -610,7 +613,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-3 ppv_price">
                             <label class="m-0"> IOS PPV Price</label>
                             <p class="p1">Apply IOS PPV Price from Global Settings?</p>
                             <div class="panel-body">
@@ -622,27 +625,19 @@ border-radius: 0px 4px 4px 0px;
                                 </select>
                             </div>
                         </div>
-                    </div>
+                        </div>
 
                     <div class="row mt-3">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label class="m-0">Publish Type</label>
                             <div class="panel-body p2" style="color: black;">
-                                <input type="radio" id="publish_now" name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later
+                                <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later <br />
+                                <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div id="publishlater">
-                                <label class="m-0">Publish Time</label>
-                                <div class="panel-body">
-                                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4" id="publishlater">
+                        <div class="col-sm-6">
                             <label class="m-0">Status Settings</label>
                             <div class="panel-body">
                                 <div>
@@ -665,8 +660,67 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-4">
+                            <div id="publishlater">
+                                <label class="m-0">Publish Time</label>
+                                <div class="panel-body">
+                                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="clear"></div>
                     </div>
+
+                    {{-- Recurring Program --}}
+                    
+                    <div class="row mt-3">
+
+                        <div class="col-sm-6" id="recurring_program" >
+                            <label class="m-0">{{ _('Recurring Program')}} </label>
+                            <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
+                                <option value=" ">Select the Recurring Period </option>
+                                <option value="daily">  Daily </option>
+                                <option value="weekly">  Weekly </option>
+                                <option value="15_days"> Every 15 days </option>
+                                <option value="monthly"> Monthly </option>
+                                <option value="custom" > Custom Time Period</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3 program_time">
+                            <label class="m-0">Program Start Time</label>
+                            <div class="panel-body">
+                                <input type="time" class="form-control" name="program_start_time" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 program_time">
+                            <label class="m-0">Program End Time </label>
+                            <div class="panel-body">
+                                <input type="time" class="form-control" name="program_end_time" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 custom_program_time" >
+                            <label class="m-0">Custom Start Program Time </label>
+                            <div class="panel-body">
+                                <input type="datetime-local" class="form-control" name="custom_start_program_time"  />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 custom_program_time" >
+                            <label class="m-0">Custom End Program Time </label>
+                            <div class="panel-body">
+                                <input type="datetime-local" class="form-control" name="custom_end_program_time"  />
+                            </div>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                    <br>
+
                     <!-- row -->
 
                     @if(!isset($video->user_id))
@@ -1241,41 +1295,54 @@ border-radius: 0px 4px 4px 0px;
 
 
     $(document).ready(function () {
-        $("#publishlater").hide();
+        
+        $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
 
-        if ($("#publish_now").val() == "publish_now") {
-            $("#publishlater").hide();
-        } else if ($("#publish_later").val() == "publish_later") {
-            $("#publishlater").show();
-        }
+        $("input[name='publish_type']").change(function () {
+            
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
 
-        $("#publish_now").click(function () {
-            $("#publishlater").hide();
+            let publishType = $("input[name='publish_type']:checked").val();
+
+            if ( publishType == "publish_later" ) {
+                $("#publishlater").show();
+            }
+
+            if( publishType == "recurring_program" ){
+                $("#recurring_program").show();
+            }
         });
 
-        $("#publish_later").click(function () {
-            $("#publishlater").show();
-        });
+        $("#recurring_program").change(function () {
 
-        if ($("#publish_now").val() == "publish_now") {
-            $("#publishlater").hide();
-        } else if ($("#publish_later").val() == "publish_later") {
-            $("#publishlater").show();
-        }
+            $(" .custom_program_time , .program_time").hide();
+
+            let recurring_program_dropdown = $('#recurring_program_dropdown').val();
+
+            if( recurring_program_dropdown != " " &&  recurring_program_dropdown == "custom"){
+
+                $('.custom_program_time').show();
+
+            }
+            else if( recurring_program_dropdown != " " &&  recurring_program_dropdown != "custom" ){
+
+                $('.program_time').show();
+            }
+        });
     });
 
     $(document).ready(function () {
         if ($("#access").val() == "ppv") {
-            $("#ppv_price").show();
+            $(".ppv_price").show();
         } else {
-            $("#ppv_price").hide();
+            $(".ppv_price").hide();
         }
 
         $("#access").change(function () {
             if ($(this).val() == "ppv") {
-                $("#ppv_price").show();
+                $(".ppv_price").show();
             } else {
-                $("#ppv_price").hide();
+                $(".ppv_price").hide();
             }
         });
     });
