@@ -141,7 +141,7 @@
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
 
-<script>
+<!-- <script>
     const toggle = document.getElementById('toggle');
     const body = document.body;
 
@@ -157,6 +157,8 @@
             location.reload(true);
         }
     });
-</script>
+</script> -->
+
+
 
 </html>

@@ -103,7 +103,7 @@
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="artist_details">
                                         </div>
                                     </a>
                                 </li>
@@ -144,7 +144,7 @@
                                                                     <li>
                                                                         <a href="{{ URL::to('category/videos/'.$artist_content->slug) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $artist_content->image_url }}" class="img-fluid" >                                                                                <div class="controls">
+                                                                                <img src="{{ $artist_content->image_url }}" class="img-fluid" alt="artist_details">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ URL::to('category/videos/'.$artist_content->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -167,7 +167,7 @@
                                                                     <li>
                                                                         <a href="{{ URL::to('play_series/'.$artist_series_content->slug) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $artist_series_content->image_url }}" class="img-fluid" >  
+                                                                                <img src="{{ $artist_series_content->image_url }}" class="img-fluid" alt="artist_details">  
 
                                                                                 <div class="controls">
                                                                                    
@@ -215,7 +215,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}" alt="artist_details">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -256,8 +256,8 @@
             asNavFor: '.artist-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -284,8 +284,8 @@
             slidesToScroll: 1,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="livecategories">
                                         </div>
                                     </a>
                                 </li>
@@ -63,7 +63,7 @@
                                                                         <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
                                                                             <div class=" position-relative">
 
-                                                                                <img src="{{ $livestream_details->image ?  URL::to('public/uploads/images/'.$livestream_details->image) : default_vertical_image_url() }}" class="img-fluid" >                                                                                <div class="controls">
+                                                                                <img src="{{ $livestream_details->image ?  URL::to('public/uploads/images/'.$livestream_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="livecategories">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -96,7 +96,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="livecategories">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,8 +175,8 @@
             slidesToScroll: 1,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

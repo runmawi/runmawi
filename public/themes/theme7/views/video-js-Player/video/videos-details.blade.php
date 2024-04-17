@@ -251,14 +251,29 @@
                         <?php } ?> --}}
                     </div>
 
-                    @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
+
+                    @if(!empty($videodetail->description )) {{-- Description --}}
                         <div class="overview">
                             <div class="heading">Description</div>
                             <div class="description">
-                                {!!  html_entity_decode( optional($videodetail)->description ) !!}
+                            <?php
+                                $description = $videodetail->description;
+
+                                if (strlen($description) > 290) {
+                                    $shortDescriptionfirst = htmlspecialchars_decode(substr($description, 0, 290), ENT_QUOTES );
+                                    $shortDescription = htmlspecialchars(strip_tags($shortDescriptionfirst), ENT_QUOTES, 'UTF-8');
+                                    $fullDescription = htmlspecialchars_decode($description, ENT_QUOTES);
+
+                                    echo "<p id='artistDescription' style='color:#fff !important;'>$shortDescription... <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See More</a></p>";
+                                    echo "<div id='fullDescription' style='display:none;'>$fullDescription <a href='javascript:void(0);' class='text-primary' onclick='toggleDescription()'>See Less</a></div>";
+                                } else {
+                                    echo "<p id='artistDescription'>$description</p>";
+                                }
+                            ?>
                             </div>
                         </div>
                     @endif
+
 
                     <div class="info">       {{-- publish_status --}}
                         <div classname="infoItem">
@@ -409,6 +424,23 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        function toggleDescription() {
+
+            var shortDesc = document.getElementById('artistDescription');
+            var fullDesc = document.getElementById('fullDescription');
+
+            if (shortDesc.style.display === 'none') {
+                shortDesc.style.display = 'block';
+                fullDesc.style.display = 'none';
+            } else {
+                shortDesc.style.display = 'none';
+                fullDesc.style.display = 'block';
+            }
+        }
+    </script>
 
 @php 
     include public_path('themes/theme7/views/video-js-Player/video/videos-details-script-file.blade.php');

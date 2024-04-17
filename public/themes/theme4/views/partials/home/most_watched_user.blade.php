@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
                                         </div>
                                     </a>
                                 </li>
@@ -50,7 +50,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $video->player_image ?  URL::to('public/uploads/images/'.$video->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $video->player_image ?  URL::to('public/uploads/images/'.$video->player_image) : default_horizontal_image_url() }}" alt="Videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,8 +134,8 @@
             asNavFor: '.user-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

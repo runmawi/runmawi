@@ -89,7 +89,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                         <li  class="slick-slide">
                                                                             <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
                                                                                     <div class="controls">
                                                                                         
                                                                                         <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }} ">
@@ -122,7 +122,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $series->Player_image_url }}" alt="">
+                                                                <img  src="{{ $series->Player_image_url }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -153,7 +153,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -210,8 +210,8 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
