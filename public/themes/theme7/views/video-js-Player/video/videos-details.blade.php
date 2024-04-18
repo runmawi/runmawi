@@ -218,6 +218,64 @@
                                     </a>
                                 </div>
 
+
+
+                                <div class="trailer">
+                                    <!-- Trailer Button -->
+                                    <div class="col-sm-9 col-12">
+                                        <div class="trailer-buttons">
+                                            <?php if (!empty($video->trailer) && $ThumbnailSetting->trailer == 1) { ?>
+                                                <a class="btn btn-primary" data-video="<?php echo $video->trailer; ?>"
+                                                data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false">
+                                                    <span class="text-white">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Watch Trailer
+                                                    </span>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+
+                                    <!-- Video Modal -->
+                                    <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content" style="background-color: transparent; border: none;">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="modal-body">
+                                                    <?php if (!empty($video->trailer_type)) {
+                                                        $playerImageURL = URL::to('/public/uploads/images/' . $video->player_image);
+                                                        switch ($video->trailer_type) {
+                                                            case "video_mp4":
+                                                            case "mp4_url": ?>
+                                                                <video id="videoPlayer" class="video-js vjs-default-skin" poster="<?= $playerImageURL ?>"
+                                                                    controls data-setup='{"fluid": true}'>
+                                                                    <source src="<?= $video->trailer; ?>" type="video/mp4">
+                                                                </video>
+                                                                <?php break;
+                                                            case "m3u8":
+                                                            case "m3u8_url": ?>
+                                                                <video id="videoPlayer" class="video-js vjs-default-skin" poster="<?= $playerImageURL ?>"
+                                                                    controls data-setup='{"fluid": true}'>
+                                                                    <source src="<?= $video->trailer; ?>" type="application/x-mpegURL">
+                                                                </video>
+                                                                <?php break;
+                                                            case "embed_url": ?>
+                                                                <div id="videoPlayer">
+                                                                    <iframe src="<?= $video->trailer; ?>" allowfullscreen allowtransparency allow="<?= $autoplay ?>"></iframe>
+                                                                </div>
+                                                                <?php break;
+                                                        }
+                                                    } ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <div class="tailer">
                                     <!-- Trailer  -->
 
