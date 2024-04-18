@@ -124,7 +124,7 @@
 
             <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls 
                     preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
-                    muted="muted" preload="yes" autoplay="autoplay"  >
+                    preload="yes"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif
