@@ -72,7 +72,7 @@
 {{-- Section content --}}
 
 
-<section>
+<div class="overflow-hidden">
 
     {{-- Message Note --}}
     <div id="message-note" ></div>
@@ -302,7 +302,7 @@
 
     <div class="container-fluid">
         @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
-            <div class="sectionArtists">   
+            <div class="div class="overflow-hidden"Artists">   
                 <div class="artistHeading font-weight-bold">Details</div>
                 <div class="artiest-det">
                     @foreach ($videodetail->artists->groupBy('artist_type') as $artistType => $artists)
@@ -380,7 +380,7 @@
         @endif
 
     </div>
-</section>
+</div>
 
 
 
