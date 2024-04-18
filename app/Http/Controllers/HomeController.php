@@ -215,7 +215,7 @@ class HomeController extends Controller
                     ->limit(15)
                     ->orderBy('created_at', 'DESC')
                     ->get();
-                $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','tv_image','player_image')
                     ->where('active', '=', '1')->where('views', '>', '0')
                     ->orderBy('id', 'DESC')
@@ -230,7 +230,7 @@ class HomeController extends Controller
                 ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
-                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','tv_image','player_image')
                     ->where('active', '=', '1')->where('featured', '=', '1')
                     ->orderBy('id', 'DESC')
@@ -397,7 +397,7 @@ class HomeController extends Controller
                 ->limit(15)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-            $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+            $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','tv_image','player_image')
                 ->where('active', '=', '1')->where('views', '>', '0')
                 ->orderBy('id', 'DESC')
@@ -416,7 +416,7 @@ class HomeController extends Controller
             ->where('draft', '=', '1')
                 ->orderBy('created_at', 'DESC')
                 ->get();
-            $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+            $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','tv_image','player_image')
                 ->where('active', '=', '1')->where('featured', '=', '1')
                 ->orderBy('id', 'DESC')
@@ -1337,7 +1337,7 @@ class HomeController extends Controller
                         ->limit(15)
                         ->orderBy('created_at', 'DESC')
                         ->get();
-                    $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                    $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','tv_image','player_image')
                         ->where('active', '=', '1')->where('views', '>', '0')
                         ->orderBy('created_at', 'DESC')
@@ -1347,7 +1347,7 @@ class HomeController extends Controller
                     $trendings = $trendings->merge($trending_movies);
                     $trendings = $trendings->merge($trending_episodes);
                     //  $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-                    $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                    $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','tv_image','player_image')
                         ->where('active', '=', '1')->where('featured', '=', '1')
                         ->orderBy('views', 'DESC')
@@ -2369,7 +2369,7 @@ class HomeController extends Controller
                     ->limit(15)
                     ->orderBy('created_at', 'DESC')
                     ->get();
-                $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','tv_image','player_image')
                     ->where('active', '=', '1')->where('views', '>', '0')
                     ->orderBy('created_at', 'DESC')
@@ -2383,7 +2383,7 @@ class HomeController extends Controller
                 $trendings = $trendings->merge($trending_movies);
                 $trendings = $trendings->merge($trending_episodes);
                 //  $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->orderBy('created_at', 'DESC')->get();
-                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price',
+                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','tv_image','player_image')
                     ->where('active', '=', '1')->where('featured', '=', '1')
                     ->orderBy('views', 'DESC')
