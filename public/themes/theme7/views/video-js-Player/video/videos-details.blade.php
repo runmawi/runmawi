@@ -83,7 +83,7 @@
                 <div class="row align-items-center  h-100">
                     <div class="col-xl-8 col-lg-8 col-12">
                         <div class="align-items-center r-mb-23" >
-                            <h2 class="title mb-3">{{ optional($videodetail)->title }}</h2>
+                            <h2 class="title mb-3 font-weight-bold" style="color:#fff !important;">{{ optional($videodetail)->title }}</h2>
                             @if ($setting->show_genre == 1 && !$videodetail->categories->isEmpty() )        {{-- categories --}}
                                 <div class="genres mb-3" style="color:#fff !important;font-weight:600;">  
                                     @foreach ( $videodetail->categories as $item )
@@ -145,6 +145,7 @@
  
                                     </span>
                                     <span class="year">
+                                        <span class="dot"></span> 
                                         {{ optional($videodetail)->year !== null ? \Carbon\Carbon::createFromFormat('Y', optional($videodetail)->year)->format('M Y') : 'N/A' }}
                                     </span>
                                 
@@ -220,7 +221,7 @@
                                 <div class="tailer">
                                     <!-- Trailer  -->
 
-                                    <div class="col-sm-9 col-12 ">
+                                    <!-- <div class="col-sm-9 col-12 ">
                                         <div class="trailer-buttons">
                                             <?php if ($video->trailer != '' && $ThumbnailSetting->trailer == 1) { ?>
                                                 <a class="btn btn-primary" data-video="<?php echo $video->trailer; ?>"
@@ -286,7 +287,7 @@
                                         </div>
 
                                         <?php } ?>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Trailer End  -->
                                 </div>
@@ -300,7 +301,7 @@
     </div>
 
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
         @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
             <div class="div class="overflow-hidden"Artists">   
                 <div class="artistHeading font-weight-bold">Details</div>

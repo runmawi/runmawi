@@ -441,3 +441,22 @@ div#fullDescription {
 .artist-type.mt-4 p.mt-2 {
     font-size: 19px;
 }
+.year {
+    display: inline-block; /* Ensures the dot and text are on the same line */
+}
+
+.dot {
+    width: 7px; /* Adjust the width of the dot */
+    height: 7px; /* Adjust the height of the dot */
+    background-color: #fff; /* Color of the dot */
+    border-radius: 50%; /* Makes the dot round */
+    display: inline-block; /* Makes the dot inline */
+    margin-right: 5px; /* Space between the dot and text */
+}
+
+.align-items-center.r-mb-23 span{
+    color:#fff  !important;
+}
+body.light-theme .share-icons.music-play-lists li span i {
+    color: #fff !important;
+}
