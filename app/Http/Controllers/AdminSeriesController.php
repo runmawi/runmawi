@@ -1816,6 +1816,7 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
+        if (compress_responsive_image_enable() == 1) {
 
         if ($request->hasFile('image')) {
 
@@ -1872,6 +1873,13 @@ class AdminSeriesController extends Controller
         }
 
 
+        }else{
+
+            $data["responsive_image"] = null;
+            $data["responsive_player_image"] = null; 
+            $data["responsive_tv_image"] = null; 
+            
+        }
 
             if(!empty($image)){
 
@@ -2349,6 +2357,8 @@ class AdminSeriesController extends Controller
                 $data['image'] = $episode->image ;
             }
 
+            if (compress_responsive_image_enable() == 1) {
+
             if ($request->hasFile('image')) {
 
                 $image = $request->file('image');
@@ -2406,8 +2416,14 @@ class AdminSeriesController extends Controller
                 }else{
                 
                     $responsive_tv_image = $episode->responsive_tv_image; 
-                }       
-                
+                }    
+
+            }else{
+                    $responsive_image = $episode->responsive_image; 
+                    $responsive_player_image = $episode->responsive_player_image; 
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+
+            }
 
             if($request->hasFile('player_image')){
 

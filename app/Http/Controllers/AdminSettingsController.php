@@ -1076,6 +1076,7 @@ class AdminSettingsController extends Controller
                 'compress_resolution_size' => $request->compress_resolution_size,
                 'compress_resolution_format' => $request->compress_resolution_format,
                 'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
+                'enable_multiple_compress_image' => $request->enable_multiple_compress_image == null ? '0' : '1',
                 'videos' => $request->videos == null ? '0' : '1',
                 'live' => $request->live == null ? '0' : '1',
                 'tv_image_live_validation' => $request->tv_image_live_validation == null ? '0' : '1',

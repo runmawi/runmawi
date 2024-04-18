@@ -1775,3 +1775,10 @@ function Block_LiveStreams()
    return $blocked_live_stream;
 
 }
+
+
+function compress_responsive_image_enable()
+{
+    $compress_responsive_image_enable = App\CompressImage::pluck('enable_multiple_compress_image')->first() ? App\CompressImage::pluck('enable_multiple_compress_image')->first() : 0;
+    return $compress_responsive_image_enable ;
+}
