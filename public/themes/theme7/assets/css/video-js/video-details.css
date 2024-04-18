@@ -302,7 +302,7 @@
 .sectionArtists .artistHeading {
     font-size: 24px;
     color: #fff;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     margin-top: 45px;
 }
 
@@ -414,4 +414,49 @@ ul.breadcrumb.breadcrumb-csp{
         font-size: 14px;
         line-height: 24px;
     }
+}
+
+
+/* details */
+
+div#fullDescription {
+    max-height: 250px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.wat-buttons a.btn.btn-primary{
+    padding: 12px 20px;
+}
+.trailer-buttons a.btn.btn-primary {
+    padding: 12px 20px;
+    background-color: transparent !important;
+    border: 1px solid var(--iq-primary) !important;
+}
+.trailer-buttons a.btn.btn-primary:hover {
+    background-color: var(--iq-primary) !important;
+}
+.movie-tv-thumbanil .container-fluid.position-relative.h-100{
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1) 7%, rgba(83, 33, 119, 0) 100%);
+}
+.artist-type.mt-4 p.mt-2 {
+    font-size: 19px;
+}
+.year {
+    display: inline-block; /* Ensures the dot and text are on the same line */
+}
+
+.dot {
+    width: 7px; /* Adjust the width of the dot */
+    height: 7px; /* Adjust the height of the dot */
+    background-color: #fff; /* Color of the dot */
+    border-radius: 50%; /* Makes the dot round */
+    display: inline-block; /* Makes the dot inline */
+    margin-right: 5px; /* Space between the dot and text */
+}
+
+.align-items-center.r-mb-23 span{
+    color:#fff  !important;
+}
+body.light-theme .share-icons.music-play-lists li span i {
+    color: #fff !important;
 }
