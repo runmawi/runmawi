@@ -37,16 +37,27 @@
                                     <option value="jpeg" {{ !empty($Compress_image->compress_resolution_format) && $Compress_image->compress_resolution_format == "jpeg" ? 'selected' :  '' }} > JPEG Format</option>
                                 </select>
                             </div>
-
-                            <div class="col-md-9 row">
-                                <label class="col-md-5" for="">Enable Compress for Images </label>
-                                <div class="mt-1 col-md-4">
-                                    <label class="switch">
-                                        <input name="enable_compress_image" id="enable_compress_image" class="" type="checkbox" {{ !empty($Compress_image->enable_compress_image) == "1" ? 'checked' : ''  }}  >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6 row">
+                                    <label class="col-md-5" for="">Enable Compress for Images </label>
+                                    <div class="mt-1 col-md-4">
+                                        <label class="switch">
+                                            <input name="enable_compress_image" id="enable_compress_image" class="" type="checkbox" {{ !empty($Compress_image->enable_compress_image) == "1" ? 'checked' : ''  }}  >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 row">
+                                    <label class="col-md-5" for="">Enable Responsive  Compress for Images </label>
+                                    <div class="mt-1 col-md-4">
+                                        <label class="switch">
+                                            <input name="enable_multiple_compress_image" id="enable_multiple_compress_image" class="" type="checkbox" {{ !empty($Compress_image->enable_multiple_compress_image) == "1" ? 'checked' : ''  }}  >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
