@@ -302,7 +302,7 @@
 .sectionArtists .artistHeading {
     font-size: 24px;
     color: #fff;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     margin-top: 45px;
 }
 
@@ -414,4 +414,30 @@ ul.breadcrumb.breadcrumb-csp{
         font-size: 14px;
         line-height: 24px;
     }
+}
+
+
+/* details */
+
+div#fullDescription {
+    max-height: 250px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.wat-buttons a.btn.btn-primary{
+    padding: 12px 20px;
+}
+.trailer-buttons a.btn.btn-primary {
+    padding: 12px 20px;
+    background-color: transparent !important;
+    border: 1px solid var(--iq-primary) !important;
+}
+.trailer-buttons a.btn.btn-primary:hover {
+    background-color: var(--iq-primary) !important;
+}
+.movie-tv-thumbanil .container-fluid.position-relative.h-100{
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1) 7%, rgba(83, 33, 119, 0) 100%);
+}
+.artist-type.mt-4 p.mt-2 {
+    font-size: 19px;
 }
