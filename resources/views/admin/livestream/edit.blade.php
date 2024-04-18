@@ -777,7 +777,16 @@ border-radius: 0px 4px 4px 0px;
             
             <div class="row mt-3">
 
-                <div class="col-sm-6" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
+                <div class="col-sm-3 recurring_timezone" style="{{  !empty($video->recurring_timezone)  ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                    <select class="form-control" name="recurring_timezone"  >
+                        @foreach ($Timezone as $item)
+                            <option value={{ $item->id }} {{ $item->id == $video->recurring_timezone ? "selected" : null }}>{{ $item->time_zone  }} </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-sm-3" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
                     <label class="m-0">{{ _('Recurring Program')}} </label>
                     <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
                         <option value=" ">Select the Recurring Period </option>
@@ -1363,7 +1372,7 @@ $(document).ready(function(){
         
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
+            $("#publishlater, #recurring_program , .recurring_timezone ,.custom_program_time , .program_time").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 
@@ -1372,7 +1381,7 @@ $(document).ready(function(){
             }
 
             if( publishType == "recurring_program" ){
-                $("#recurring_program").show();
+                $("#recurring_program, .recurring_timezone").show();
             }
         });
 

@@ -677,7 +677,16 @@
                     
                     <div class="row mt-3">
 
-                        <div class="col-sm-6" id="recurring_program" >
+                        <div class="col-sm-3 recurring_timezone" >
+                            <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                            <select class="form-control" name="recurring_timezone"  >
+                                @foreach ($Timezone as $item)
+                                    <option value={{ $item->id }}>{{ $item->time_zone  }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3" id="recurring_program" >
                             <label class="m-0">{{ _('Recurring Program')}} </label>
                             <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
                                 <option value=" ">Select the Recurring Period </option>
@@ -1296,7 +1305,7 @@
 
     $(document).ready(function () {
         
-        $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
+        $("#publishlater, #recurring_program , .recurring_timezone ,.custom_program_time , .program_time").hide();
 
         $("input[name='publish_type']").change(function () {
             
@@ -1309,7 +1318,7 @@
             }
 
             if( publishType == "recurring_program" ){
-                $("#recurring_program").show();
+                $("#recurring_program , .recurring_timezone").show();
             }
         });
 

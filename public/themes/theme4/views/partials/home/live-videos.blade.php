@@ -1,7 +1,25 @@
 @php
-        
-    $data = App\LiveStream::query()->where('active',1)->where('status', 1)->latest()->limit(15)->get();
-                                                                        
+
+    $recurring_program_not_custom_data = App\LiveStream::query()->where('active',1)->where('status', 1)
+                    ->where('publish_type','recurring_program')->where('recurring_program','!=','custom')
+                    ->where('program_start_time','<=',Carbon\Carbon::now()->format('H:i'))
+                    ->where('program_end_time','>=',Carbon\Carbon::now()->format('H:i'))
+                    ->latest()->limit(15)->get();
+
+                    
+    $recurring_program_custom_data = App\LiveStream::query()->where('active',1)->where('status', 1)
+                    ->where('publish_type','recurring_program')->where('recurring_program','custom')
+                    ->where('custom_start_program_time','<=',Carbon\Carbon::now()->format('Y-m-d\TH:i'))
+                    ->where('custom_end_program_time','>=',Carbon\Carbon::now()->format('Y-m-d\TH:i'))
+                    ->latest()->limit(15)->get();
+
+
+    $livestream_data = App\LiveStream::query()->where('active',1)->where('status', 1)->where('publish_type','!=','recurring_program')
+                                    ->latest()->limit(15)->get();
+
+                                    
+    $data = collect($recurring_program_not_custom_data)->merge($recurring_program_custom_data)->merge($livestream_data)->unique('id')->take(15);
+
 @endphp
 
 @if (!empty($data) && $data->isNotEmpty())
@@ -50,8 +68,18 @@
                                                                 <ul class="vod-info">
                                                                     <li><span></span> LIVE NOW</li>
                                                                 </ul>
+
                                                             @elseif ($livestream_videos->publish_type == "publish_later")
-                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
+                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$livestream_videos->publish_time)->format('j F Y g:ia') }} </span>
+                                                            
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
+                                                                
+                                                                <ul class="vod-info"><li><span></span> LIVE NOW</li></ul>
+                                                                <span class="trending"> {{ 'Live Streaming '. $livestream_videos->recurring_program ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
+                                                                <ul class="vod-info"><li><span></span> LIVE NOW</li></ul>
+                                                                <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
                                                             @endif
 
                                                             <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ?  $livestream_videos->description : " No description Available" !!}</div>
