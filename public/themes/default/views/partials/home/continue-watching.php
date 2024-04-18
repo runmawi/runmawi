@@ -36,7 +36,7 @@
             </div>
             <div class="block-description">
                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
-               <img class="img-fluid lazyload w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->player_image;  ?>" alt="contimg">
+               <img class="img-fluid lazyload w-100" loading="lazyload" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->player_image;  ?>" alt="contimg">
                   
                   <!-- PPV price -->
                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
