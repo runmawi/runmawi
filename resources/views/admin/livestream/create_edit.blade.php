@@ -677,26 +677,56 @@
                     
                     <div class="row mt-3">
 
-                        <div class="col-sm-6" id="recurring_program" >
+                        <div class="col-sm-3 recurring_timezone" >
+                            <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                            <select class="form-control" name="recurring_timezone"  >
+                                @foreach ($Timezone as $item)
+                                    <option value={{ $item->id }}>{{ $item->time_zone  }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3" id="recurring_program" >
                             <label class="m-0">{{ _('Recurring Program')}} </label>
                             <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
                                 <option value=" ">Select the Recurring Period </option>
                                 <option value="daily">  Daily </option>
                                 <option value="weekly">  Weekly </option>
-                                <option value="15_days"> Every 15 days </option>
                                 <option value="monthly"> Monthly </option>
                                 <option value="custom" > Custom Time Period</option>
                             </select>
                         </div>
 
-                        <div class="col-sm-3 program_time">
+                        <div class="col-sm-2 recurring_program_week_day"  >
+                            <label class="m-0">{{ _('Week Days ')}} </label>
+                            <select class="form-control" name="recurring_program_week_day" >
+                                <option value="0" > Sunday </option>
+                                <option value="1">  Monday </option>
+                                <option value="2">  Tuesday </option>
+                                <option value="3"> Wednesday </option>
+                                <option value="4" > Thrusday</option>
+                                <option value="5" > Friday</option>
+                                <option value="6" > Saturday</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-2 recurring_program_month_day"  >
+                            <label class="m-0">{{ _('Month Days ')}} </label>
+                            <select class="form-control" name="recurring_program_month_day" >
+                                @for ($i = 1; $i <= 31 ; $i++)
+                                    <option value="{{ $i }}" > {{ $i }} </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="col-sm-2 program_time">
                             <label class="m-0">Program Start Time</label>
                             <div class="panel-body">
                                 <input type="time" class="form-control" name="program_start_time" />
                             </div>
                         </div>
 
-                        <div class="col-sm-3 program_time">
+                        <div class="col-sm-2 program_time">
                             <label class="m-0">Program End Time </label>
                             <div class="panel-body">
                                 <input type="time" class="form-control" name="program_end_time" />
@@ -1296,11 +1326,11 @@
 
     $(document).ready(function () {
         
-        $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
+        $("#publishlater, #recurring_program , .recurring_timezone ,.custom_program_time , .program_time ,.recurring_program_week_day, .recurring_program_month_day").hide();
 
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , .custom_program_time , .program_time").hide();
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day  ").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 
@@ -1309,13 +1339,13 @@
             }
 
             if( publishType == "recurring_program" ){
-                $("#recurring_program").show();
+                $("#recurring_program , .recurring_timezone").show();
             }
         });
 
         $("#recurring_program").change(function () {
 
-            $(" .custom_program_time , .program_time").hide();
+            $(" .custom_program_time , .program_time, .recurring_program_week_day , .recurring_program_month_day").hide();
 
             let recurring_program_dropdown = $('#recurring_program_dropdown').val();
 
@@ -1325,6 +1355,14 @@
 
             }
             else if( recurring_program_dropdown != " " &&  recurring_program_dropdown != "custom" ){
+                
+                if (recurring_program_dropdown  == "weekly") {
+                    $('.recurring_program_week_day').show();
+                }
+
+                if (recurring_program_dropdown  == "monthly") {
+                    $('.recurring_program_month_day').show();
+                }
 
                 $('.program_time').show();
             }

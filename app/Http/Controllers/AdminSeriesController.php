@@ -1794,12 +1794,92 @@ class AdminSeriesController extends Controller
             $type = 'file';
         }
 
+       $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
+        if (compress_responsive_image_enable() == 1) {
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+                $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                $image_filename = $image_filename;
+
+                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                
+                $data["responsive_image"] = $image_filename;
+
+        }else{
+
+            $data["responsive_image"] = default_vertical_image(); 
+        }
+
+        if ($request->hasFile('player_image')) {
+
+            $player_image = $request->file('player_image');
+
+                $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                
+                $data["responsive_player_image"] = default_horizontal_image();
+
+        }else{
+
+            $data["responsive_player_image"] = $video->responsive_player_image; 
+        }
+
+
+        
+        if ($request->hasFile('tv_image')) {
+
+            $tv_image = $request->file('tv_image');
+
+                $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+
+                Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                
+                $data["responsive_tv_image"] = $tv_image_filename;
+
+        }else{
+
+            $data["responsive_tv_image"] = default_horizontal_image(); 
+        }
+
+
+        }else{
+
+            $data["responsive_image"] = null;
+            $data["responsive_player_image"] = null; 
+            $data["responsive_tv_image"] = null; 
+            
+        }
 
             if(!empty($image)){
 
@@ -2013,6 +2093,9 @@ class AdminSeriesController extends Controller
             $episodes->intro_end_time =  $data['intro_end_time'];
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
+            $episodes->responsive_image =  $data['responsive_image'];
+            $episodes->responsive_player_image =  $data['responsive_player_image'];
+            $episodes->responsive_tv_image =  $data['responsive_tv_image'];
             $episodes->status =  1;
             
             // {{-- Video.Js Player--}}
@@ -2167,6 +2250,22 @@ class AdminSeriesController extends Controller
     public function update_episode(Request $request)
     {
 
+         $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
+
         $input = $request->all();
         $id = $input['id'];
         $episode  = Episode::findOrFail($id);
@@ -2258,6 +2357,73 @@ class AdminSeriesController extends Controller
                 $data['image'] = $episode->image ;
             }
 
+            if (compress_responsive_image_enable() == 1) {
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+                
+                    $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+                
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+                
+                }else if (!empty($request->responsive_image)) {
+                    $responsive_image  = $request->responsive_image;
+                } else{
+                    $responsive_image = $episode->responsive_image; 
+                }
+                
+                if ($request->hasFile('player_image')) {
+                
+                $player_image = $request->file('player_image');
+                
+                    $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+                
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+                
+                }else if (!empty($request->responsive_player_image)) {
+                    $responsive_player_image  = $request->responsive_player_image;
+                }else{
+                
+                    $responsive_player_image = $episode->responsive_player_image; 
+                }
+                
+                
+                
+            if ($request->hasFile('tv_image')) {
+                
+                $tv_image = $request->file('tv_image');
+                
+                    $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+                
+                    Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $tv_image_filename;
+                
+                }else if (!empty($request->responsive_tv_image)) {
+                    $responsive_tv_image  = $request->responsive_tv_image;
+                }else{
+                
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+                }    
+
+            }else{
+                    $responsive_image = $episode->responsive_image; 
+                    $responsive_player_image = $episode->responsive_player_image; 
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+
+            }
 
             if($request->hasFile('player_image')){
 
@@ -2387,6 +2553,9 @@ class AdminSeriesController extends Controller
         $episode->ppv_status =  $data['ppv_status'];
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
+        $episode->responsive_image =  $responsive_image;
+        $episode->responsive_player_image =  $responsive_player_image;
+        $episode->responsive_tv_image =  $responsive_tv_image;
         $episode->status =  1;
 
 

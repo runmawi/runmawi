@@ -109,9 +109,7 @@
 
 
     <div class="container-fluid p-0">
-
         @if ( $videodetail->type == "embed" )
-
             <iframe class="responsive-iframe" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
@@ -123,8 +121,8 @@
             </button>
 
             <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls 
-                    preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
-                    muted="muted" preload="yes" autoplay="autoplay"  >
+                    width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
+                    autoplay>
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif

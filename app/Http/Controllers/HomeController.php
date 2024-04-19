@@ -174,19 +174,19 @@ class HomeController extends Controller
                 $genre = Genre::all();
                 $genre_video_display = VideoCategory::all();
 
-                $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                     ->where('draft', '=', '1')
                     ->where('views', '>', '5')
                     ->orderBy('created_at', 'DESC')
                     ->get();
-                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('status', '=', '1')->take(10)
                 ->where('active', '=', '1')
                 ->where('draft', '=', '1')
                     ->orderBy('created_at', 'DESC')
                     ->get();
-                $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('views', '>', '5')
                 ->where('status', '=', '1')
                 ->where('draft', '=', '1')
@@ -224,7 +224,7 @@ class HomeController extends Controller
                 $trendings = $trendings->merge($trending_videos);
                 $trendings = $trendings->merge($trending_movies);
                 $trendings = $trendings->merge($trending_episodes);
-                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('featured', '=', '1')
                 ->where('status', '=', '1')
                 ->where('draft', '=', '1')
@@ -245,7 +245,7 @@ class HomeController extends Controller
                     $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                         ->pluck('videoid')
                         ->toArray();
-                    $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                                     ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                 }
@@ -257,13 +257,13 @@ class HomeController extends Controller
                 $data = array(
                     'currency' => $currency,
 
-                    'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                                         ->where('draft', '=', '1')
                                         ->orderBy('created_at', 'DESC')
                                         ->simplePaginate($this->videos_per_page) ,
 
-                    'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                                         ->where('draft', '=', '1')
                                         ->where('status', '=', '1')
@@ -356,19 +356,19 @@ class HomeController extends Controller
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();
 
-            $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
             ->where('draft', '=', '1')
                 ->where('views', '>', '5')
                 ->orderBy('created_at', 'DESC')
                 ->get();
-            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('status', '=', '1')->take(10)
             ->where('active', '=', '1')
             ->where('draft', '=', '1')
                 ->orderBy('created_at', 'DESC')
                 ->get();
-            $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('views', '>', '5')
             ->where('status', '=', '1')
             ->where('draft', '=', '1')
@@ -410,7 +410,7 @@ class HomeController extends Controller
             $trendings = $trendings->merge($trending_videos);
             $trendings = $trendings->merge($trending_movies);
             $trendings = $trendings->merge($trending_episodes);
-            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('featured', '=', '1')
             ->where('status', '=', '1')
             ->where('draft', '=', '1')
@@ -428,7 +428,7 @@ class HomeController extends Controller
                 $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->where('type','!=','embed')
                     ->pluck('videoid')
                     ->toArray();
-                $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                 ->where('draft', '=', '1')->whereIn('id', $getcnt_watching)->get();
                 
@@ -477,13 +477,13 @@ class HomeController extends Controller
             $data = array(
                 'currency' => $currency,
 
-                'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                                 ->where('draft', '=', '1')
                                 ->orderBy('created_at', 'DESC')
                                 ->simplePaginate($this->videos_per_page) ,
 
-                'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                                     ->where('draft', '=', '1')
                                     ->where('status', '=', '1')
@@ -884,7 +884,7 @@ class HomeController extends Controller
                         // Latest Videos
                         if ($Multiuser->user_type == 'Normal')
                         {
-                            $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->take(10)
@@ -898,7 +898,7 @@ class HomeController extends Controller
 
                             if ($latest_videos_count > 0)
                             {
-                                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                                 ->where('draft', '=', '1')
                                     ->take(10)
@@ -932,7 +932,7 @@ class HomeController extends Controller
                                 ->where('active', '=', '1')->orderBy('created_at', 'DESC')
                                 ->get();
 
-                            $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->where('age_restrict', '<', 18)
@@ -941,7 +941,7 @@ class HomeController extends Controller
                                 ->count();
                             if ($latest_videos_count > 0)
                             {
-                                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                                $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                                 ->where('draft', '=', '1')
                                     ->take(10)
@@ -968,7 +968,7 @@ class HomeController extends Controller
                     }
                     else
                     {
-                        $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $latest_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                         ->where('draft', '=', '1')
                             ->take(10)
@@ -976,7 +976,7 @@ class HomeController extends Controller
                             ->count();
                         if ($latest_videos_count > 0)
                         {
-                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->take(10)
@@ -1008,7 +1008,7 @@ class HomeController extends Controller
                         if ($Multiuser->user_type == 'Normal')
                         {
 
-                            $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('featured', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
@@ -1016,7 +1016,7 @@ class HomeController extends Controller
                                 ->count();
                             if ($featured_videos_count > 0)
                             {
-                                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->where('draft', '=', '1')
@@ -1043,7 +1043,7 @@ class HomeController extends Controller
                         }
                         else
                         {
-                            $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('featured', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
@@ -1052,7 +1052,7 @@ class HomeController extends Controller
                                 ->count();
                             if ($featured_videos_count > 0)
                             {
-                                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                                $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->where('draft', '=', '1')
@@ -1082,7 +1082,7 @@ class HomeController extends Controller
                     }
                     else
                     {
-                        $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $featured_videos_count = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('featured', '=', '1')
                         ->where('status', '=', '1')
                         ->where('draft', '=', '1')
@@ -1090,7 +1090,7 @@ class HomeController extends Controller
                             ->count();
                         if ($featured_videos_count > 0)
                         {
-                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
@@ -1301,14 +1301,14 @@ class HomeController extends Controller
                             ->first();
                     }
 
-                    $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                     ->where('draft', '=', '1')
                         ->where('views', '>', '5')
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-                    $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('views', '>', '5')
                     ->where('status', '=', '1')
                     ->where('draft', '=', '1')
@@ -1363,7 +1363,7 @@ class HomeController extends Controller
                     {
                         $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                         ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                     }
@@ -1378,7 +1378,7 @@ class HomeController extends Controller
                             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                                 ->pluck('videoid')
                                 ->toArray();
-                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                             if ($getfeching != null && $getfeching->geofencing == 'ON')
@@ -1393,7 +1393,7 @@ class HomeController extends Controller
                                 ->where('multiuser', 'data')
                                 ->pluck('videoid')
                                 ->toArray();
-                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                             if ($getfeching != null && $getfeching->geofencing == 'ON')
@@ -1449,7 +1449,7 @@ class HomeController extends Controller
                     //  dd($latest_series);
                     $data = array(
                         'currency' => $currency,
-                        'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                                             ->where('active', '=', '1')->where('status', '=', '1')
                                             ->where('draft', '=', '1')
@@ -1937,7 +1937,7 @@ class HomeController extends Controller
                             ->count();
                         if ($latest_videos_count > 0)
                         {
-                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->take(10)
@@ -1973,7 +1973,7 @@ class HomeController extends Controller
                             ->count();
                         if ($latest_videos_count > 0)
                         {
-                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->take(10)
@@ -2007,7 +2007,7 @@ class HomeController extends Controller
                         ->count();
                     if ($latest_videos_count > 0)
                     {
-                        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
                         ->where('draft', '=', '1')
                             ->take(10)
@@ -2046,7 +2046,7 @@ class HomeController extends Controller
                             ->count();
                         if ($featured_videos_count > 0)
                         {
-                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
                             ->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                             ->where('status', '=', '1')
@@ -2081,7 +2081,7 @@ class HomeController extends Controller
                             ->count();
                         if ($featured_videos_count > 0)
                         {
-                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                                 ->where('age_restrict', '<', 18)
                                 ->where('status', '=', '1')
@@ -2117,7 +2117,7 @@ class HomeController extends Controller
                         ->count();
                     if ($featured_videos_count > 0)
                     {
-                        $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->whereNotIn('id', $blockvideos)->where('featured', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
@@ -2331,7 +2331,7 @@ class HomeController extends Controller
                         ->first();
                 }
 
-                $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                 ->where('active', '=', '1')->where('status', '=', '1')
                 ->where('draft', '=', '1')
@@ -2339,7 +2339,7 @@ class HomeController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 //  $latest_videos = Video::where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-                $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                $suggested_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                     ->where('active', '=', '1')->where('views', '>', '5')
                     ->where('status', '=', '1')
@@ -2394,7 +2394,7 @@ class HomeController extends Controller
                 {
                     $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')
                         ->toArray();
-                    $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                     ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                 }
@@ -2409,7 +2409,7 @@ class HomeController extends Controller
                         $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                             ->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                         ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                         if ($getfeching != null && $getfeching->geofencing == 'ON')
@@ -2424,7 +2424,7 @@ class HomeController extends Controller
                             ->where('multiuser', 'data')
                             ->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
                         ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                         if ($getfeching != null && $getfeching->geofencing == 'ON')
@@ -2479,14 +2479,14 @@ class HomeController extends Controller
                 $data = array(
                     'currency' => $currency,
 
-                    'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    'videos' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                                     ->where('active', '=', '1')->where('status', '=', '1')
                                     ->where('draft', '=', '1')
                                     ->orderBy('created_at', 'DESC')
                                     ->simplePaginate($this->videos_per_page) ,
 
-                    'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+                    'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                                         ->where('active', '=', '1')
                                         ->where('draft', '=', '1')
@@ -3340,7 +3340,7 @@ class HomeController extends Controller
             }
 
 
-            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                                     ->where('videos.active', '1')->where('videos.status', '1')
                                     ->where('videos.draft', '1')->where('videos.featured','1');
@@ -3406,7 +3406,7 @@ class HomeController extends Controller
 
         if ($latest_videos_count > 0)
         {
-            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
                 ->where('active', '=', '1')->where('status', '=', '1')
                 ->where('draft', '=', '1')->latest();
@@ -3519,7 +3519,7 @@ class HomeController extends Controller
 
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
-            $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
                                         ->where('banner', '1')->latest()
@@ -4241,7 +4241,7 @@ class HomeController extends Controller
         $Recomended = HomeSetting::first();
         $home_settings = HomeSetting::first();
 
-        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('status', '=', '1')->take(10)
         ->where('active', '=', '1')
         ->where('draft', '=', '1')
@@ -4253,7 +4253,7 @@ class HomeController extends Controller
             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                 ->pluck('videoid')
                 ->toArray();
-            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price',
+            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
         }
