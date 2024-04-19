@@ -475,7 +475,7 @@
         @if ($video->publish_type == "recurring_program")
         
             @php
-                $timezone = App\TimeZone::find($video->recurring_timezone)->value('time_zone');
+                $timezone = $video->recurring_timezone;
                 $startTime = Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A');
                 $endTime = Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A');
             @endphp
