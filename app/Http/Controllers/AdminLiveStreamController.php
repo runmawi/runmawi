@@ -601,6 +601,8 @@ class AdminLiveStreamController extends Controller
         $movie->program_end_time          =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_end_time) && $request->recurring_program != "custom" ) ? $request->program_end_time : null ;
         $movie->custom_start_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_start_program_time) && $request->recurring_program == "custom" ) ? $request->custom_start_program_time : null ;
         $movie->custom_end_program_time   =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_end_program_time) && $request->recurring_program == "custom" ) ? $request->custom_end_program_time : null ;
+        $movie->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
+        $movie->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
         
         // Ads
 
@@ -1163,7 +1165,9 @@ class AdminLiveStreamController extends Controller
         $video->program_end_time    =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_end_time) && $request->recurring_program != "custom" ) ? $request->program_end_time : null ;
         $video->custom_start_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_start_program_time) && $request->recurring_program == "custom" ) ? $request->custom_start_program_time : null ;
         $video->custom_end_program_time   =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_end_program_time) && $request->recurring_program == "custom" ) ? $request->custom_end_program_time : null ;
-        
+        $video->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
+        $video->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
+
 
                 // Ads
 
