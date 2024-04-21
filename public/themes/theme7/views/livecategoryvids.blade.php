@@ -4,11 +4,15 @@ $currency = App\CurrencySetting::first();
 // include('header.php'); 
 ?><!-- Header End -->
     @php
-    include(public_path('themes/theme7/views/header.php'));
+include (public_path('themes/theme7/views/header.php'));
 @endphp
 
 <!-- MainContent -->
-<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+<?php if (!empty($data['password_hash'])) {
+    $id = Auth::user()->id;
+} else {
+    $id = 0;
+} ?>
 
       <div class="main-content ">
          <section id="iq-favorites ">
@@ -20,26 +24,27 @@ $currency = App\CurrencySetting::first();
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
-                            <?php if (count($live_videos) > 0) {          
-                                    foreach($live_videos  as $category_video) { ?>
+                            <?php if (count($live_videos) > 0) {
+                                foreach ($live_videos as $category_video) { ?>
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="border-bg">
                                                     <div class="img-box">
-                                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
+                                                        <img src="<?php        echo URL::to('/') . '/public/uploads/images/' . $category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
                                     </li>
-                            
- <?php } } else { ?>
+                                <?php    }
+                            } else { ?>
                                    
-                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
-                            </div>
-      <?php } ?>
+                                   <div class="col-md-12 text-center mt-4">
+                                        <h1 class="text-white text-center med">Coming Soon......</h1>
+                                        <img class="text-center" src="<?php echo URL::to('/assets/img/watch.png'); ?>" style="height:500px;">
+                                    </div>
+                            <?php } ?>
                     
                                                               
                            
@@ -57,7 +62,7 @@ $currency = App\CurrencySetting::first();
     <!-- Modal Starts -->
 <!-- MainContent End-->
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+include (public_path('themes/theme7/views/footer.blade.php'));
 @endphp
 <script>
 $('.mywishlist').click(function(){
