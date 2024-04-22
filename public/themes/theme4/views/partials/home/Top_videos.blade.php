@@ -16,7 +16,14 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
@@ -50,7 +57,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                            @if ( compress_responsive_image_enable() == 1)
+                                                                <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img class="lazy" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -74,7 +88,14 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+                                            @else
+                                                <img class="lazy" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                            @endif
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
