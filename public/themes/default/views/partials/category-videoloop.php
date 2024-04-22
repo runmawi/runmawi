@@ -146,22 +146,6 @@
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?> -->
                                     </a>
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <!-- <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p> -->
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } 
-                                       ?>
-                                    <?php } ?>
-                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?> -->
 
 
                                     <div class="hover-buttons text-white">
