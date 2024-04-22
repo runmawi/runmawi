@@ -62,6 +62,7 @@ use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
 use App\Adscategory;
 use App\VideoExtractedImages;
+use App\SiteTheme;
 
 
 class AdminSeriesController extends Controller
@@ -1663,6 +1664,80 @@ class AdminSeriesController extends Controller
 
         $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
+            // Bunny Cdn get Videos 
+    
+            $storage_settings = StorageSetting::first();
+
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+            && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+            && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+
+                $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                
+                if (!$response) {
+                    die("Error: " . curl_error($ch));
+                } else {
+                    $decodedResponse = json_decode($response, true);
+                
+                    if ($decodedResponse === null) {
+                        die("Error decoding JSON response: " . json_last_error_msg());
+                    }
+            
+                }
+                curl_close($ch);
+                // dd($decodedResponse);
+
+                
+                $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $videolibraryurl,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                $videolibrary = json_decode($response, true);
+                curl_close($ch);
+                // dd($videolibrary); ApiKey
+
+            }else{
+                $decodedResponse = [];
+                $videolibrary = [];
+
+            }
+        
+            // $response->getBody();
+
+            if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
+                $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
+            }else{
+                $streamUrl = '';
+            }
+
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
                 'episodes' => $episodes,
@@ -1678,7 +1753,10 @@ class AdminSeriesController extends Controller
                 "subtitles" => Subtitle::all(),
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 "ads_category" => Adscategory::all(),
-
+                'theme_settings' => SiteTheme::first(),
+                'storage_settings' => $storage_settings ,
+                'videolibrary' => $videolibrary ,
+                'streamUrl' => $streamUrl ,
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -1710,8 +1788,26 @@ class AdminSeriesController extends Controller
         
         elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
-        }else{
+        } elseif($episodes->type == 'bunny_cdn'){
+            $type = 'bunny_cdn';
+        } else{
             $type = 'file';
+        }
+
+       $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
         }
 
         $path = public_path().'/uploads/episodes/';
@@ -1720,6 +1816,70 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
+        if (compress_responsive_image_enable() == 1) {
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+                $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                $image_filename = $image_filename;
+
+                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                
+                $data["responsive_image"] = $image_filename;
+
+        }else{
+
+            $data["responsive_image"] = default_vertical_image(); 
+        }
+
+        if ($request->hasFile('player_image')) {
+
+            $player_image = $request->file('player_image');
+
+                $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                
+                $data["responsive_player_image"] = default_horizontal_image();
+
+        }else{
+
+            $data["responsive_player_image"] = $video->responsive_player_image; 
+        }
+
+
+        
+        if ($request->hasFile('tv_image')) {
+
+            $tv_image = $request->file('tv_image');
+
+                $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+
+                Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                
+                $data["responsive_tv_image"] = $tv_image_filename;
+
+        }else{
+
+            $data["responsive_tv_image"] = default_horizontal_image(); 
+        }
+
+
+        }else{
+
+            $data["responsive_image"] = null;
+            $data["responsive_player_image"] = null; 
+            $data["responsive_tv_image"] = null; 
+            
+        }
 
             if(!empty($image)){
 
@@ -1933,6 +2093,9 @@ class AdminSeriesController extends Controller
             $episodes->intro_end_time =  $data['intro_end_time'];
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
+            $episodes->responsive_image =  $data['responsive_image'];
+            $episodes->responsive_player_image =  $data['responsive_player_image'];
+            $episodes->responsive_tv_image =  $data['responsive_tv_image'];
             $episodes->status =  1;
             
             // {{-- Video.Js Player--}}
@@ -2087,6 +2250,22 @@ class AdminSeriesController extends Controller
     public function update_episode(Request $request)
     {
 
+         $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
+
         $input = $request->all();
         $id = $input['id'];
         $episode  = Episode::findOrFail($id);
@@ -2178,6 +2357,73 @@ class AdminSeriesController extends Controller
                 $data['image'] = $episode->image ;
             }
 
+            if (compress_responsive_image_enable() == 1) {
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+                
+                    $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+                
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+                
+                }else if (!empty($request->responsive_image)) {
+                    $responsive_image  = $request->responsive_image;
+                } else{
+                    $responsive_image = $episode->responsive_image; 
+                }
+                
+                if ($request->hasFile('player_image')) {
+                
+                $player_image = $request->file('player_image');
+                
+                    $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+                
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+                
+                }else if (!empty($request->responsive_player_image)) {
+                    $responsive_player_image  = $request->responsive_player_image;
+                }else{
+                
+                    $responsive_player_image = $episode->responsive_player_image; 
+                }
+                
+                
+                
+            if ($request->hasFile('tv_image')) {
+                
+                $tv_image = $request->file('tv_image');
+                
+                    $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+                
+                    Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $tv_image_filename;
+                
+                }else if (!empty($request->responsive_tv_image)) {
+                    $responsive_tv_image  = $request->responsive_tv_image;
+                }else{
+                
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+                }    
+
+            }else{
+                    $responsive_image = $episode->responsive_image; 
+                    $responsive_player_image = $episode->responsive_player_image; 
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+
+            }
 
             if($request->hasFile('player_image')){
 
@@ -2307,6 +2553,9 @@ class AdminSeriesController extends Controller
         $episode->ppv_status =  $data['ppv_status'];
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
+        $episode->responsive_image =  $responsive_image;
+        $episode->responsive_player_image =  $responsive_player_image;
+        $episode->responsive_tv_image =  $responsive_tv_image;
         $episode->status =  1;
 
 
@@ -3774,4 +4023,155 @@ class AdminSeriesController extends Controller
     
         }
 
+
+        
+        
+    public function BunnycdnEpisodelibrary(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+           // Bunny Cdn get Episodes 
+                
+           $storage_settings = StorageSetting::first();
+
+           if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+           && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+           && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+               
+               $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+               
+               $ch = curl_init();
+               
+               $options = array(
+                   CURLOPT_URL => $videolibraryurl,
+                   CURLOPT_RETURNTRANSFER => true,
+                   CURLOPT_HTTPHEADER => array(
+                       "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                       'Content-Type: application/json',
+                   ),
+               );
+               
+               curl_setopt_array($ch, $options);
+               
+               $response = curl_exec($ch);
+               $videolibrary = json_decode($response, true);
+               curl_close($ch);
+               // dd($videolibrary); ApiKey
+
+           }else{
+               $decodedResponse = [];
+               $videolibrary = [];
+
+           }
+
+           if(count($videolibrary) > 0){
+
+                foreach($videolibrary as $key => $value){
+
+
+
+                    if( $value['Id'] == $request->episodelibrary_id){
+
+
+
+                        $videolibrary_id = $value['Id'];
+                        $videolibrary_ApiKey = $value['ApiKey']; 
+                        $videolibrary_PullZoneId = $value['PullZoneId']; 
+                        break;
+                    }else{
+                        $videolibrary_id = null;
+                        $videolibrary_ApiKey = null; 
+                        $videolibrary_PullZoneId = null; 
+                    }
+                }
+         
+
+           }else{
+                $videolibrary_id = null;
+                $videolibrary_ApiKey = null; 
+                $videolibrary_PullZoneId = null; 
+            }
+
+        
+            if($videolibrary_id != null && $videolibrary_ApiKey != null){
+
+                $client = new \GuzzleHttp\Client();
+                // $videolibrary_PullZoneId
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }
+                    // dd($PullZoneURl);
+
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+                $streamvideos = $response->getBody()->getContents();
+                // echo $response->getBody();
+                // exit;
+           
+            }else{
+                $streamvideos = [];
+            }
+
+        // print_r($response);exit;
+            // return $streamvideos;
+            $responseData = [
+                'streamvideos' => $streamvideos,
+                'PullZoneURl' => $PullZoneURl,
+            ];
+        
+            return $responseData;
+        
+    }
+
+    
+    public function StreamBunnyCdnEpisode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["stream_bunny_cdn_episode"])) {
+
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $data["stream_bunny_cdn_episode"];
+            $Episode->url = $data["stream_bunny_cdn_episode"];
+            $Episode->type = "bunny_cdn";
+            $Episode->active = 1;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = Auth::user()->id;
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+
+            return $value;
+        }
+    }
+
+    
+    
 }

@@ -35,7 +35,7 @@ if (Auth::guest() != true) {
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div  class="movie-slick position-relative">
-                                            <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                            <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
                                          </div>
                                     </a>
                                 </li>
@@ -75,7 +75,7 @@ if (Auth::guest() != true) {
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,7 +101,7 @@ if (Auth::guest() != true) {
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode" width="100%">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -161,8 +161,8 @@ if (Auth::guest() != true) {
             asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

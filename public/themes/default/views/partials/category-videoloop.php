@@ -125,7 +125,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazyload" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
 
                                 
                                     

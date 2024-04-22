@@ -17,7 +17,7 @@
             <div class="modal-content pop_content row">
                 <a href="<?php if($auth_guest_user == true ) { echo URL::to( $guest_user_redirection ) ; } else { echo URL::to( $auth_user_redirection ) ; }  ?>" >
                             <!-- Pop-up Image  -->
-                    <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="w-100"  >
+                    <!-- <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="w-100"  > -->
                             
                             <!-- pop-up content  -->
                     <div>

@@ -96,9 +96,9 @@ if(count($latest_video) > 0) : ?>
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                   <?php if(!empty($watchlater_video->player_image)) { ?>
-                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" alt="playerimage">
+                                      <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" alt="playerimage">
                                   <?php } else { ?>
-                                      <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" alt="l-img">
+                                      <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" alt="l-img">
                                   <?php } ?>
 
 

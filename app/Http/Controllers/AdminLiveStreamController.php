@@ -45,6 +45,7 @@ use App\Channel;
 use App\LivePurchase;
 use App\BlockLiveStream;
 use App\CountryCode;
+use App\TimeZone;
 
 class AdminLiveStreamController extends Controller
 {
@@ -199,7 +200,7 @@ class AdminLiveStreamController extends Controller
                 'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
                 'ads_category' => Adscategory::all(),
                 "countries" => CountryCode::all(),
-
+                "Timezone"  => TimeZone::all(),
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -583,7 +584,7 @@ class AdminLiveStreamController extends Controller
         $movie->access =$data['access'];
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
-        $movie->publish_time =$data['publish_time'];
+        $movie->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
         $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
@@ -594,6 +595,15 @@ class AdminLiveStreamController extends Controller
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
 
+        $movie->recurring_timezone  =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_timezone)  ) ? $request->recurring_timezone : null ;
+        $movie->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $movie->program_start_time        =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_start_time) && $request->recurring_program != "custom" ) ? $request->program_start_time : null ;
+        $movie->program_end_time          =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_end_time) && $request->recurring_program != "custom" ) ? $request->program_end_time : null ;
+        $movie->custom_start_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_start_program_time) && $request->recurring_program == "custom" ) ? $request->custom_start_program_time : null ;
+        $movie->custom_end_program_time   =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_end_program_time) && $request->recurring_program == "custom" ) ? $request->custom_end_program_time : null ;
+        $movie->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
+        $movie->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
+        
         // Ads
 
         if( choosen_player() == 1  && ads_theme_status() == 1){
@@ -748,6 +758,7 @@ class AdminLiveStreamController extends Controller
             'ads_category' => Adscategory::all(),
             "countries" => CountryCode::all(),
             "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
+            "Timezone"  => TimeZone::all(),
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -1141,13 +1152,22 @@ class AdminLiveStreamController extends Controller
         $video->image = $PC_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
-        $video->publish_time = $request['publish_time'];
+        $video->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
         $video->embed_url =     $embed_url;
         $video->active = $active;
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
-        $video->m3u_url = $request->m3u_url;
+        
+        $video->recurring_timezone  =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_timezone)  ) ? $request->recurring_timezone : null ;
+        $video->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;
+        $video->program_start_time  =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_start_time) && $request->recurring_program != "custom" ) ? $request->program_start_time : null ;
+        $video->program_end_time    =  $request->publish_type == "recurring_program"  && ( !is_null($request->program_end_time) && $request->recurring_program != "custom" ) ? $request->program_end_time : null ;
+        $video->custom_start_program_time =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_start_program_time) && $request->recurring_program == "custom" ) ? $request->custom_start_program_time : null ;
+        $video->custom_end_program_time   =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_end_program_time) && $request->recurring_program == "custom" ) ? $request->custom_end_program_time : null ;
+        $video->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
+        $video->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
+
 
                 // Ads
 

@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="livecategories">
                                         </div>
                                     </a>
                                 </li>
@@ -52,8 +52,11 @@
                                                                     
                                                                     $liveCategory = App\CategoryLive::where('category_id',$livecategories->id)->groupBy('live_id')->pluck('live_id'); 
 
-                                                                    $live_stream_videos = App\LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','Tv_live_image','featured','details','description')
-                                                                                            ->limit(30)->where('active',1)->where('status', 1)->whereIn('id',$liveCategory)->latest()->limit(30)
+                                                                    $live_stream_videos = App\LiveStream::select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type', 
+                                                                                                                'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image', 
+                                                                                                                'live_streams.description','live_streams.recurring_program','live_streams.program_start_time','live_streams.program_end_time','live_streams.recurring_timezone',
+                                                                                                                'live_streams.custom_start_program_time','live_streams.recurring_timezone')
+                                                                                            ->limit(15)->where('active',1)->where('status', 1)->whereIn('id',$liveCategory)->latest()->limit(15)
                                                                                             ->get();
                                                                             
                                                                 ?>
@@ -63,7 +66,7 @@
                                                                         <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
                                                                             <div class=" position-relative">
 
-                                                                                <img src="{{ $livestream_details->image ?  URL::to('public/uploads/images/'.$livestream_details->image) : default_vertical_image_url() }}" class="img-fluid" >                                                                                <div class="controls">
+                                                                                <img src="{{ $livestream_details->image ?  URL::to('public/uploads/images/'.$livestream_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="livecategories">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -81,6 +84,15 @@
                                                                                         
                                                                                         @if ($livestream_details->publish_type == "publish_later")
                                                                                             {{ 'Live Start On '. Carbon\Carbon::parse($livestream_details->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }}  <br>   
+
+                                                                                        @elseif ($livestream_details->publish_type == "publish_later")
+                                                                                            <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_details->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
+                                                                                        
+                                                                                        @elseif ( $livestream_details->publish_type == "recurring_program" && $livestream_details->recurring_program != "custom" )
+                                                                                            <span class="trending"> {{ 'Live Streaming '. $livestream_details->recurring_program ." from ". Carbon\Carbon::parse($livestream_details->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_details->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_details->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                            
+                                                                                        @elseif ( $livestream_details->publish_type == "recurring_program" && $livestream_details->recurring_program == "custom" )
+                                                                                            <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_details->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_details->recurring_timezone)->pluck('time_zone')->first() }} </span>
                                                                                         @endif
 
                                                                                         {{ optional($livestream_details)->title   }} 
@@ -96,7 +108,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="livecategories">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,11 +122,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-        
     </section>
 @endif
 
@@ -175,8 +182,8 @@
             slidesToScroll: 1,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

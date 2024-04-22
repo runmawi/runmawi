@@ -253,36 +253,36 @@
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
    
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
-     <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
+     <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" as="style"/>
      <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
    <!-- Typography CSS  -->
-   <link rel="preload" href="<?= typography_link();?>" />
+   <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
    <!-- Style -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
 
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
    <!-- Responsive -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
 
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
    <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
 
-   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
@@ -699,12 +699,11 @@
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
     border-top: none; float:right"> -->
                         <div class="btn-close" data-toggle="collapse">
-                        <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
-    border-top: none; float:right"><i class="fa fa-times" style="
-    font-size: 20px;
-    color: white;"></i></a>
+                        <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                           data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                           aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
+                              <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                        </button>
                         </div>
                      <!-- </a> -->
                               </li>      

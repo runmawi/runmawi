@@ -664,6 +664,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
             
             <div class="row mt-3">
+
                 <div class="col-sm-6">
                     <label class="m-0">Duration</label>
                     <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
@@ -671,20 +672,8 @@ border-radius: 0px 4px 4px 0px;
                         <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
                 </div>
+                
                 <div class="col-sm-6">
-                    <label class="m-0">User Access</label>
-                    <p class="p1">Who is allowed to view this Live Stream?</p>
-                    <div class="panel-body">
-                        <select class="form-control" id="access" name="access">
-                            <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-                            <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif >Subscriber (only paid subscription users)</option>
-                            <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif >PPV Users (Pay per movie)</option>     
-                        </select>
-                        <div class="clear"></div>
-                    </div>
-                </div>
-            <!-- </div> -->
-            <div class="col-sm-6">
                     <label class="m-0">Block Country</label>
                     <p class="p1">( Choose the countries for block the Live Stream )</p>
                     <div class="panel-body">
@@ -701,8 +690,22 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
-            <div class="row" id="ppv_price">
+
+            <div class="row mt-3">
                 <div class="col-sm-6">
+                    <label class="m-0">User Access</label>
+                    <p class="p1">Who is allowed to view this Live Stream?</p>
+                    <div class="panel-body">
+                        <select class="form-control" id="access" name="access">
+                            <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
+                            <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif >Subscriber (only paid subscription users)</option>
+                            <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif >PPV Users (Pay per movie)</option>     
+                        </select>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 ppv_price">
                     <label class="m-0">PPV Price</label>
                     <p class="p1">Apply PPV Price from Global Settings?</p>
                     <div class="panel-body">
@@ -711,7 +714,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-3 ppv_price">
                     <label class="m-0"> IOS PPV Price</label>
                     <p class="p1">Apply IOS PPV Price from Global Settings?</p>
                     <div class="panel-body">
@@ -726,19 +729,21 @@ border-radius: 0px 4px 4px 0px;
             </div>
             
             <div class="row mt-3">
+
                 <div class="col-sm-4">
                     <label class="m-0">Publish Type</label>
                     <div class="panel-body" style="color: #000;">
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
-				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}> Publish Later
+				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}> Publish Later <br>
+                        <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
                     </div>
                 </div>
 
-                <div class="col-sm-4">
-                    <div id="publish_time_div">
+                <div class="col-sm-4" >
+                    <div id="publishlater" style="{{ !empty($video->publish_time)  ? '' : 'display: none' }}">
                         <label class="m-0">Publish Time</label>
                         <div class="panel-body">
-                            <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
+                            <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" style="display: block !important"/>
                         </div>
                     </div>
                 </div>
@@ -767,6 +772,85 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
+
+            {{-- Recurring Program  --}}
+            
+            <div class="row mt-3">
+
+                <div class="col-sm-3 recurring_timezone" style="{{  !empty($video->recurring_timezone)  ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                    <select class="form-control" name="recurring_timezone"  >
+                        @foreach ($Timezone as $item)
+                            <option value={{ $item->id }} {{ $item->id == $video->recurring_timezone ? "selected" : null }}>{{ $item->time_zone  }} </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-sm-3" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Recurring Program')}} </label>
+                    <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
+                        <option value=" ">Select the Recurring Period </option>
+                        <option value="daily" {{ !empty(($video->recurring_program=="daily"))? "selected" : "" }} >  Daily </option>
+                        <option value="weekly" {{ !empty(($video->recurring_program=="weekly"))? "selected" : "" }} >  Weekly </option>
+                        <option value="monthly" {{ !empty(($video->recurring_program=="monthly"))? "selected" : "" }} > Monthly </option>
+                        <option value="custom" {{ !empty(($video->recurring_program=="custom"))? "selected" : "" }} > Custom Time Period</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2 recurring_program_week_day" style="{{ !empty($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
+                    <label class="m-0">{{ _('Week Days ')}} </label>
+                    <select class="form-control" name="recurring_program_week_day" >
+                        <option value="0"  {{ !empty(($video->recurring_program_week_day=="0"))? "selected" : "" }}  > Sunday </option>
+                        <option value="1"  {{ !empty(($video->recurring_program_week_day=="1"))? "selected" : "" }}  >  Monday </option>
+                        <option value="2"  {{ !empty(($video->recurring_program_week_day=="2"))? "selected" : "" }} >  Tuesday </option>
+                        <option value="3"  {{ !empty(($video->recurring_program_week_day=="3"))? "selected" : "" }} > Wednesday </option>
+                        <option value="4"  {{ !empty(($video->recurring_program_week_day=="4"))? "selected" : "" }} > Thrusday</option>
+                        <option value="5"  {{ !empty(($video->recurring_program_week_day=="5"))? "selected" : "" }} > Friday</option>
+                        <option value="6"  {{ !empty(($video->recurring_program_week_day=="6"))? "selected" : "" }} > Saturday</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2 recurring_program_month_day"  style="{{ !empty($video->recurring_program_month_day)  ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Month Days ')}} </label>
+                    <select class="form-control" name="recurring_program_month_day" >
+                        @for ($i = 1; $i <= 31 ; $i++)
+                            <option value="{{ $i }}" {{ !empty(($video->recurring_program_month_day == $i ))? "selected" : "" }} > {{ $i }} </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div class="col-sm-2 program_time"  style="{{ !empty($video->program_start_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program Start Time   </label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="program_start_time" value="{{ !empty($video->program_start_time) ? $video->program_start_time : null }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2 program_time" style="{{ !empty($video->program_end_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program Start Time   </label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_start_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom Start Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_start_program_time" value="{{ !empty($video->custom_start_program_time) ? $video->custom_start_program_time : null }}"  />
+                    </div>
+                </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_end_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom End Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_end_program_time" value="{{ !empty($video->custom_end_program_time) ? $video->custom_end_program_time : null }}"  />
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+            <br>
+                    
 			<!-- row -->
 
 			@if(!isset($video->user_id))
@@ -1301,42 +1385,67 @@ $(document).ready(function(){
 
 	$('.js-example-basic-multiple').select2();
 
-    var publish_time = $('#publish_time').val();
-
-    if( publish_time == "" ){
-        $('#publish_time_div').hide();
-    }
-
-	$('#publish_now').click(function(){
-		$('#publish_time_div').hide();
-	});
-
-	$('#publish_later').click(function(){
-		$('#publish_time_div').show();
-	});
 
 });
 
+    $(document).ready(function () {
+        
+        $("input[name='publish_type']").change(function () {
+            
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day  ").hide();
 
-	$(document).ready(function(){
-		if($("#access").val() == 'ppv'){
-				$('#ppv_price').show();
-			}else{
-				$('#ppv_price').hide();		
+            let publishType = $("input[name='publish_type']:checked").val();
 
-			}
+            if ( publishType == "publish_later" ) {
+                $("#publishlater").show();
+            }
 
-		$("#access").change(function(){
-			if($(this).val() == 'ppv'){
-				$('#ppv_price').show();
-			}else{
-				$('#ppv_price').hide();		
+            if( publishType == "recurring_program" ){
+                $("#recurring_program , .recurring_timezone").show();
+            }
+        });
 
-			}
-		});
-});
+        $("#recurring_program").change(function () {
 
+            $(" .custom_program_time , .program_time, .recurring_program_week_day , .recurring_program_month_day").hide();
 
+            let recurring_program_dropdown = $('#recurring_program_dropdown').val();
+
+            if( recurring_program_dropdown != " " &&  recurring_program_dropdown == "custom"){
+
+                $('.custom_program_time').show();
+
+            }
+            else if( recurring_program_dropdown != " " &&  recurring_program_dropdown != "custom" ){
+                
+                if (recurring_program_dropdown  == "weekly") {
+                    $('.recurring_program_week_day').show();
+                }
+
+                if (recurring_program_dropdown  == "monthly") {
+                    $('.recurring_program_month_day').show();
+                }
+
+                $('.program_time').show();
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        if ($("#access").val() == "ppv") {
+            $(".ppv_price").show();
+        } else {
+            $(".ppv_price").hide();
+        }
+
+        $("#access").change(function () {
+            if ($(this).val() == "ppv") {
+                $(".ppv_price").show();
+            } else {
+                $(".ppv_price").hide();
+            }
+        });
+    });
 
 
 	$ = jQuery;

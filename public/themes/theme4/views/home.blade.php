@@ -175,8 +175,6 @@
          </div>
 
 
-
-
          <section id="home" class="iq-main-slider p-0">
             <div id="home-slider" class="slider m-0 p-0">
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/slider-1', $Slider_array_data )->content() !!}
@@ -451,7 +449,37 @@
       .sidenav {padding-top: 15px;}
    }
 </style>
+
+
 <script>
+   window.onload = function() {
+   const sidenav = document.querySelector('.sidenav');
+   const rightnav = document.querySelector('.rightnav');
+   const headerTopImg = document.querySelector('.header_top_position_img');
+   const bottomNav = document.querySelector('.bottom-nav');
+   const main = document.querySelector('.main');
+
+   // Check if elements exist before modifying styles
+   if (sidenav) {
+      sidenav.style.display = 'block';
+   }
+   if (rightnav) {
+      rightnav.style.display = 'block';
+   }
+   if (headerTopImg) {
+      headerTopImg.style.display = 'none';
+   }
+   if (bottomNav) {
+      bottomNav.style.display = 'none';
+   }
+   if (main) {
+      main.style.marginLeft = '0px';
+      main.style.marginRight = '0px';
+   }
+};
+
+</script>
+<!-- <script>
    window.onload = function() {
       // Show sidenav, rightnav, and main initially
       document.querySelector('.sidenav').style.display = 'block';
@@ -469,6 +497,6 @@
          document.querySelector('.main').style.marginRight = '0px';
       }, 5000);
    };
-</script>
+</script> -->
 
 
