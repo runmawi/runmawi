@@ -2861,6 +2861,8 @@ class AdminVideosController extends Controller
                 if (!empty($files[$key])) {
                     $destinationPath = "public/uploads/subtitles/";
                     $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+                    MoviesSubtitles::where('movie_id',$video->id)->where('shortcode',$shortcodes[$key])->delete();
                     
                     // Move uploaded file to destination path
                     move_uploaded_file($val->getPathname(), $destinationPath . $filename);

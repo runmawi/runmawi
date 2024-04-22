@@ -2660,7 +2660,7 @@ class AdminSeriesController extends Controller
             foreach ($subtitles as $key => $val) {
                 if (!empty($subtitles[$key])) {
 
-                    SeriesSubtitle::where('shortcode',$shortcodes[$key])->delete();
+                    SeriesSubtitle::where('episode_id',$episode->id)->where('shortcode',$shortcodes[$key])->delete();
 
                     $destinationPath = "public/uploads/subtitles/";
                     $filename = $episode->id . "-episode-" . $shortcodes[$key] . ".srt";
