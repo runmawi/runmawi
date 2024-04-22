@@ -18,7 +18,7 @@
     })
 
     ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date')
+        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
             ->where('videos.draft', 1);
@@ -89,14 +89,14 @@
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 @if ( compress_responsive_image_enable() == 1)
-                                                    <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}"
-                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w') }},
-                                                        {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
-                                                        {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
+                                                <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
                                                 @else
                                                     <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
-                                                @endif
-                                                
+                                                @endif  
+
                                                 @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
                                                     <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                                 @endif
@@ -139,14 +139,16 @@
                                                                 </div>
                                                             </div>
                                                             <div class="dropdown_thumbnail">
+                                                                
                                                                 @if ( compress_responsive_image_enable() == 1)
-                                                                    <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="" width="100%" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+
                                                                 @else
                                                                     <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
-                                                                @endif
+                                                                @endif 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -174,13 +176,15 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
+                                                                                                            
                                             @if ( compress_responsive_image_enable() == 1)
-                                                <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
+                                                <img width="100%" alt="" width="100%" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+
                                             @else
-                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
                                             @endif
                                         </div>
                                         <div class="col-lg-6">
