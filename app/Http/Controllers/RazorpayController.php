@@ -307,10 +307,7 @@ class RazorpayController extends Controller
             ]);
 
             User::where('id',Auth::user()->id )->update([
-                'payment_gateway' =>  null ,
-                'role'            => 'registered',
-                'stripe_id'       => null ,  
-                'payment_type'    => null ,
+                'payment_status' =>   'Cancel' ,
             ]);
 
             $Error_msg = "Subscription has been Cancel Successfully";
