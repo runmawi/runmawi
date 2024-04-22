@@ -111,12 +111,12 @@ border-radius: 0px 4px 4px 0px;
                        <div class="col-md-12">
                               <label class="m-0">Enter From ID</label>
                               <input type="text" class="form-control" placeholder="Enter From ID" name="video_start_id" id="video_start_id" value="@if(!empty($video->country_by_origin)){{ $video->country_by_origin }}@endif">
-                              <span id="video_start_id_error" style="color:red;">* Please Enter Video Start ID</span>
+                              <span id="video_start_id_error" style="color:red; display:none;">* Please Enter a valid Video Start ID (only numbers)</span>
                        </div>         
                        <div class="col-md-12">
                               <label class="m-0">Enter To ID</label>
                               <input type="text" class="form-control" placeholder="Enter To ID" name="video_end_id" id="video_end_id" value="@if(!empty($video->country_by_origin)){{ $video->country_by_origin }}@endif">
-                              <span id="video_end_id_error" style="color:red;">* Please Enter Video End ID</span>
+                              <span id="video_end_id_error" style="color:red; display:none;">* Please Enter a valid Video End ID (only numbers)</span>
                        </div>          
                   </div>
                   <div class="modal-footer">
@@ -175,6 +175,35 @@ border-radius: 0px 4px 4px 0px;
           <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("Export").addEventListener("click", function () {
+            var video_start_id = document.getElementById("video_start_id").value.trim();
+            var video_end_id = document.getElementById("video_end_id").value.trim();
+
+            // Regular expression to check if the value contains only numbers
+            var numberRegex = /^[0-9]+$/;
+
+            if (!numberRegex.test(video_start_id)) {
+                document.getElementById("video_start_id_error").style.display = "block";
+                return;
+            } else {
+                document.getElementById("video_start_id_error").style.display = "none";
+            }
+
+            if (!numberRegex.test(video_end_id)) {
+                document.getElementById("video_end_id_error").style.display = "block";
+                return;
+            } else {
+                document.getElementById("video_end_id_error").style.display = "none";
+            }
+
+            // Proceed with your export functionality if validation passes
+            // Add your export code here
+        });
+    });
+
   		$(document).ready(function() {
 			setTimeout(function() {
 				$('#successMessage').fadeOut('fast');
