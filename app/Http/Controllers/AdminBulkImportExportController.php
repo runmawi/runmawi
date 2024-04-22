@@ -118,8 +118,9 @@ class AdminBulkImportExportController extends Controller
 
     public function index(Request $request)
     {
+
         $data = [
-            "videos" => Video::with("category.categoryname")->orderBy("created_at", "DESC")->paginate(9),
+            "videos" => Video::with("category.categoryname")->orderBy("created_at", "DESC")->get(),
             "series" => Series::latest()->get(),
             "Episodes" => Episode::latest()->get(),
             "audios" => Audio::orderBy('created_at', 'DESC')->get(),
@@ -188,6 +189,10 @@ class AdminBulkImportExportController extends Controller
 
                     return $item;
                 });
+
+            if(count($videos) == 0){
+                return 0;
+            }
 
             $filePath = 'videos.csv';
             
@@ -482,6 +487,11 @@ class AdminBulkImportExportController extends Controller
 
                     return $item;
                 });
+
+                if(count($series) == 0){
+                    return 0;
+                }
+
             $filePath = 'series.csv';
             
             if (!Storage::exists($filePath)) {
@@ -637,6 +647,10 @@ class AdminBulkImportExportController extends Controller
 
             $Episodes = Episode::whereBetween('id', [$video_start_id, $video_end_id])->get();
 
+            if(count($Episodes) == 0){
+                return 0;
+            }
+
             $filePath = 'episodes.csv';
             
             if (!Storage::exists($filePath)) {
@@ -783,6 +797,11 @@ class AdminBulkImportExportController extends Controller
                     return $item;
                 });
 
+
+            if(count($audios) == 0){
+                return 0;
+            }
+            
             $filePath = 'audios.csv';
             
             if (!Storage::exists($filePath)) {

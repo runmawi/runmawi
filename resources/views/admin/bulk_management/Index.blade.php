@@ -174,6 +174,7 @@ border-radius: 0px 4px 4px 0px;
 
           <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
 
@@ -199,8 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("video_end_id_error").style.display = "none";
             }
 
-            // Proceed with your export functionality if validation passes
-            // Add your export code here
         });
     });
 
@@ -337,6 +336,10 @@ document.addEventListener("DOMContentLoaded", function () {
                   success: function(data) {
                         if(data == 1){
                            location.href = Excel_url;
+                        }else if(data == 0){
+                           Swal.fire({
+                              title: "No Data Found. Enter Valid ID's",
+                           })
                         }
                        
                      },
