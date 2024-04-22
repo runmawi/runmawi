@@ -38,7 +38,14 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $series_networks->title }}" src="{{ $series_networks->image ?  URL::to('public/uploads/images/'.$series_networks->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$series_networks->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$series_networks->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$series_networks->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
@@ -97,7 +104,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $series_networks->banner_image_url  }}" alt="">
+                                                            @if ( compress_responsive_image_enable() == 1)
+                                                                <img  alt="latest_series" src="{{$series_networks->player_image ?  URL::to('public/uploads/images/'.$series_networks->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$series_networks->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$series_networks->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$series_networks->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img class="lazy" src="{{ $series_networks->banner_image_url  }}" alt="series">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,7 +140,14 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="player-img" width="100%">
+                                                @if ( compress_responsive_image_enable() == 1)
+                                                    <img  alt="latest_series" src="{{$series_networks->player_image ?  URL::to('public/uploads/images/'.$series_networks->player_image) : default_horizontal_image_url() }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series_networks->responsive_player_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$series_networks->responsive_player_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$series_networks->responsive_player_image.' 420w') }}" >
+                                                @else
+                                                    <img class="lazy" src="{{ $series_networks->banner_image_url  }}" alt="series">
+                                                @endif
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">

@@ -49,7 +49,7 @@ $data = $data->latest()->limit(15)->get();
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}" >
                                             @else
                                                 <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series">
-                                            @endif 
+                                            @endif
 
                                             @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
@@ -101,7 +101,7 @@ $data = $data->latest()->limit(15)->get();
                                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" >
                                                             @else
                                                                 <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="latest_series">
-                                                            @endif 
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

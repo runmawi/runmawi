@@ -17,7 +17,18 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="video_details">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $video_details->title }}" src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$video_details->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="video_details">
+                                            @endif 
+
+                                            @if (videos_expiry_date_status() == 1 && optional($video_details)->expiry_date)
+                                                <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
+                                            @endif 
                                         </div>
                                     </a>
                                 </li>
@@ -57,7 +68,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}" alt="video_details">
+                                                            @if ( compress_responsive_image_enable() == 1)
+                                                                <img  alt="latest_series" src="{{$video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$video_details->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}" alt="video_details">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

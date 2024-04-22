@@ -273,7 +273,14 @@
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
+                        @if ( compress_responsive_image_enable() == 1)
+                            <img  alt="latest_series" src="{{$series_data->player_image ?  URL::to('public/uploads/images/'.$series_data->player_image) : default_horizontal_image_url() }}"
+                                srcset="{{ URL::to('public/uploads/PCimages/'.$series_data->responsive_player_image.' 860w') }},
+                                {{ URL::to('public/uploads/Tabletimages/'.$series_data->responsive_player_image.' 640w') }},
+                                {{ URL::to('public/uploads/mobileimages/'.$series_data->responsive_player_image.' 420w') }}" >
+                        @else
+                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
+                        @endif
                     </div>
                 </div> 
             </div>
@@ -290,7 +297,14 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
+                                                @if ( compress_responsive_image_enable() == 1)
+                                                    <img class="img-fluid position-relative" alt="{{ $Series_Genre->title }}" src="{{ $Series_Genre->image ?  URL::to('public/uploads/images/'.$Series_Genre->image) : default_vertical_image_url() }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$Series_Genre->responsive_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$Series_Genre->responsive_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$Series_Genre->responsive_image.' 420w') }}" >
+                                                @else
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
+                                                @endif
                                             </div>
                                         </a>
                                     </li>
@@ -361,7 +375,14 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
+                                                                @if ( compress_responsive_image_enable() == 1)
+                                                                    <img  alt="latest_series" src="{{$Series_Genre->player_image ?  URL::to('public/uploads/images/'.$Series_Genre->player_image) : default_horizontal_image_url() }}"
+                                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$Series_Genre->responsive_player_image.' 860w') }},
+                                                                        {{ URL::to('public/uploads/Tabletimages/'.$Series_Genre->responsive_player_image.' 640w') }},
+                                                                        {{ URL::to('public/uploads/mobileimages/'.$Series_Genre->responsive_player_image.' 420w') }}" >
+                                                                @else
+                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
