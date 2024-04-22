@@ -41,8 +41,8 @@ class SubscriptionExpiredUsersCron extends Command
      */
     public function handle()
     {
-        $users_subscription = User::query()->where('role','subscriber')->whereDate('subscription_ends_at', '>=', Carbon::now()->subDays(3))
-                                                ->whereDate('subscription_ends_at', '<=', Carbon::now())->get();
+        $users_subscription = User::query()->where('role','subscriber')->whereDate('subscription_ends_at', '>=', Carbon::now()->subDays(3)->format('Y-m-d h:i:s'))
+                                                ->whereDate('subscription_ends_at', '<=', Carbon::now()->format('Y-m-d h:i:s') )->get();
 
         foreach($users_subscription as $key => $user_subscription){
 
