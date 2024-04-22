@@ -20,7 +20,14 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                @if ( compress_responsive_image_enable() == 1)
+                                                    <img class="img-fluid position-relative" alt="{{ $My_Playlist->title }}" src="{{ $My_Playlist->image ?  URL::to('public/uploads/images/'.$My_Playlist->image) : default_vertical_image_url() }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$My_Playlist->responsive_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$My_Playlist->responsive_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$My_Playlist->responsive_image.' 420w') }}" >
+                                                @else
+                                                    <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                @endif
                                             </div>
                                         </a>
                                     </li>
@@ -49,7 +56,14 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                @if ( compress_responsive_image_enable() == 1)
+                                                                    <img  alt="latest_series" src="{{$My_Playlist->player_image ?  URL::to('public/uploads/images/'.$My_Playlist->player_image) : default_horizontal_image_url() }}"
+                                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$My_Playlist->responsive_player_image.' 860w') }},
+                                                                        {{ URL::to('public/uploads/Tabletimages/'.$My_Playlist->responsive_player_image.' 640w') }},
+                                                                        {{ URL::to('public/uploads/mobileimages/'.$My_Playlist->responsive_player_image.' 420w') }}" >
+                                                                @else
+                                                                    <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

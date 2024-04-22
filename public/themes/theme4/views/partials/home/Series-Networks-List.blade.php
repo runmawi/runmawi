@@ -18,7 +18,14 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_network_list->image_url }}" class="img-fluid" alt="Videos">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $series_network_list->title }}" src="{{ $series_network_list->image ?  URL::to('public/uploads/images/'.$series_network_list->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$series_network_list->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$series_network_list->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$series_network_list->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $series_network_list->image_url }}" class="img-fluid" alt="Videos">
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
@@ -48,7 +55,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $series_network_list->banner_image_url  }}" alt="Videos">
+                                                            @if ( compress_responsive_image_enable() == 1)
+                                                                <img  alt="latest_series" src="{{$series_network_list->player_image ?  URL::to('public/uploads/images/'.$series_network_list->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$series_network_list->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$series_network_list->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$series_network_list->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $series_network_list->banner_image_url  }}" alt="Videos">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

@@ -32,7 +32,14 @@
                                 <li class="slick-slide" data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="latest_series">
+                                            @if ( compress_responsive_image_enable() == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $latest_series->title }}" src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_series->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_series->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_series->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="latest_series">
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
@@ -98,7 +105,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}" alt="latest_series">
+                                                            @if ( compress_responsive_image_enable() == 1)
+                                                                <img  alt="latest_series" src="{{$latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_series->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_series->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_series->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}" alt="latest_series">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
