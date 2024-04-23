@@ -286,7 +286,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     </div>
                     <div class="col-6"></div>
                     
-                    <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                    <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscriber to Watch This Episode!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                         <?php endif; ?></h4> -->
                     <div class="clear"></div>
                 </div>
@@ -297,13 +297,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
                     </a>
                     <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscriber to Watch This Episode!'); ?></button>
                     </form> -->
                 </div>
                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
                 <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscriber to Watch This Episode!'); ?></button>
                     </form>
                 </div>
                 <?php else: ?>
