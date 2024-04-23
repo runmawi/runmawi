@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
 
         Commands\SubscriptionExpiredUsersCron::class,
         Commands\SubscriptionExpiredRoleChangeCron::class,
+        Commands\SubscriberAutoRenewalCron::class,
 
     ];
 
@@ -27,8 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscriptionexpiredusers:cron')->dailyAt('01:00');
-        $schedule->command('SubscriptionExpiredRoleChange:cron')->daily();
+        $schedule->command('subscriptionexpiredusers:cron')->dailyAt('02:00');
+
+        $schedule->command('SubscriptionExpiredRoleChange:cron')->dailyAt('12:30');
+
+        $schedule->command('SubscriberAutoRenewal:cron')->everyMinute();
     }
 
     /**
