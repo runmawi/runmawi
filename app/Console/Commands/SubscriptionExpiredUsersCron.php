@@ -81,7 +81,9 @@ class SubscriptionExpiredUsersCron extends Command
                 $user_id = $user_subscription->id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
-            }            
+            }   
         }
+
+        \Log::channel('cron')->info("Subscription Expired Reminder before 3 days Cron is working fine!");
     }
 }

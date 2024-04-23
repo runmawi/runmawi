@@ -650,21 +650,25 @@
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
                 <div class="admin-section-title">
-                    <div class="row">
+                    <div class="row"  id="orderepisode">
 
                         <table class="table table-bordered iq-card text-center" id="categorytbl">
                             <tr class="table-header r1">
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
+                                <th><label>Episode Duration</label></th>
                                 <th><label>Slider</label></th>
                                 <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
 
                             @foreach($episodes as $key => $episode)
+                                <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
+                                <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
                                 <tr id="{{ $episode->id }}">
                                     <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
                                     <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                    <td valign="bottom"><p>@if(!empty($episode->duration)){{ gmdate('H:i:s', $episode->duration) }}@endif</p></td>
                                     <td valign="bottom">
                                         <div class="mt-1">
                                             <label class="switch">
@@ -1231,23 +1235,28 @@
                         selectedData.push($(this).attr("id"));
                     }
                 });
-                updateOrder(selectedData)
+                var seriesid  = $('.seriesid').val();
+                var season_id  = $('.season_id').val();
+                updateOrder(selectedData,seriesid,season_id)
             }
         });
     });
 
-    function updateOrder(data) {
-        
+    function updateOrder(data,seriesid,season_id) {
+
         $.ajax({
             url:'{{  URL::to('admin/episode_order') }}',
             type:'post',
             data:{
                     position:data,
+                    seriesid:seriesid,
+                    season_id:season_id,
                      _token :  "{{ csrf_token() }}",
                     },
-            success:function(){
+            success:function(data){
                 // alert('Position changed successfully.');
-                location.reload();
+                // location.reload(); id="orderepisode"
+                $("#orderepisode").html(data);
             }
         })
     }
