@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscriptionexpiredusers:cron')->everyMinute();
-        $schedule->command('SubscriptionExpiredRoleChange:cron')->everyMinute();
+        $schedule->command('subscriptionexpiredusers:cron')->dailyAt('01:00');
+        $schedule->command('SubscriptionExpiredRoleChange:cron')->daily();
     }
 
     /**
