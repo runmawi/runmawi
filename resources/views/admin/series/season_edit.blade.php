@@ -1080,6 +1080,7 @@
         Dropzone.autoDiscover = false;
         var myDropzone = new Dropzone(".dropzone", {
             //   maxFilesize: 900,  // 3 mb
+            parallelUploads: 10,
             maxFilesize: 15000,
             acceptedFiles: "video/mp4,video/x-m4v,video/*",
         });
