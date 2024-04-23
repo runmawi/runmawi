@@ -60,5 +60,8 @@ class SubscriptionExpiredRoleChangeCron extends Command
 
             ]);
         }
+
+        \Log::channel('cron')->info("Subscription Expired Role Change Cron is working fine!");
+
     }
 }
