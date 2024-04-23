@@ -2487,7 +2487,7 @@ class HomeController extends Controller
                                     ->simplePaginate($this->videos_per_page) ,
 
                     'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','Title_Thumbnail')
                                         ->where('active', '=', '1')
                                         ->where('draft', '=', '1')
                                         ->where('status', '=', '1')
