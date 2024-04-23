@@ -13,10 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+
         Commands\SubscriptionExpiredUsersCron::class,
-        Commands\SubscriptionReminder::class,
-        // Commands\SubscriptionRenewal::class,
-        // Commands\GenerateSitemap::class,
+        Commands\SubscriptionExpiredRoleChangeCron::class,
+
     ];
 
     /**
@@ -27,15 +27,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscriptionexpiredusers:cron')->daily();
-
-        $schedule->command('SubscriptionReminder:cron')->dailyAt('08:00');
-
-        // $schedule->command('SubscriptionRenewal:cron')
-        // ->dailyAt('13:00');
-
-        // $schedule->command('sitemap:generate')->everyMinute();
-
+        $schedule->command('subscriptionexpiredusers:cron')->dailyAt('01:00');
+        $schedule->command('SubscriptionExpiredRoleChange:cron')->daily();
     }
 
     /**
