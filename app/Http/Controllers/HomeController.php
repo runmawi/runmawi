@@ -82,6 +82,7 @@ use App\TimeZone;
 use App\Document;
 use App\DocumentGenre;
 use App\BlockLiveStream;
+use App\CompressImage;
 
 class HomeController extends Controller
 {
@@ -545,6 +546,7 @@ class HomeController extends Controller
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'artist' => Artist::all(),
                 'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
             );
             return Theme::view('home', $data);
         }
@@ -1527,6 +1529,7 @@ class HomeController extends Controller
                         'ThumbnailSetting' => $ThumbnailSetting,
                         'artist' => Artist::all(),
                         'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
+                        'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     );
 
                     return Theme::view('home', $data);
@@ -2556,6 +2559,7 @@ class HomeController extends Controller
                     'latest_series' => $latest_series,
                     'artist' => Artist::all(),
                     'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
+                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 );
                
                 return Theme::view('home', $data);
