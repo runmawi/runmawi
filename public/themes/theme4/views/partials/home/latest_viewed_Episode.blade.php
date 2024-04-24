@@ -35,7 +35,7 @@ if (Auth::guest() != true) {
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div  class="movie-slick position-relative">
-                                            @if ( compress_responsive_image_enable() == 1)
+                                            @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $latest_view_episode->title }}" src="{{ $latest_view_episode->image ?  URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_episode->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_image.' 640w') }},
@@ -82,7 +82,7 @@ if (Auth::guest() != true) {
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            @if ( compress_responsive_image_enable() == 1)
+                                                            @if ( $multiple_compress_image == 1)
                                                                 <img  alt="latest_series" src="{{$latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_episode->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_player_image.' 640w') }},
