@@ -88,7 +88,7 @@ $currency = App\CurrencySetting::first();
                                 <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                 <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                 <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <!-- <p class="p-tag"><?php echo (__('Free')); ?></p> -->
                                 <?php } ?>
                                 <?php } ?>
                                     
@@ -110,7 +110,7 @@ $currency = App\CurrencySetting::first();
                                 <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                 <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                 <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <!-- <p class="p-tag"><?php echo (__('Free')); ?></p> -->
                                 <?php } ?>
                                 <?php } ?>
                                         </a>   
@@ -125,7 +125,7 @@ $currency = App\CurrencySetting::first();
                                 <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                 <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                 <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <!-- <p class="p-tag"><?php echo (__('Free')); ?></p> -->
                                 <?php } ?>
                                 <?php } ?>
 
