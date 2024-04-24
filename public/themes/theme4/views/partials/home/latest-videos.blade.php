@@ -25,7 +25,7 @@
                                                 <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series">
                                             @endif
 
-                                            @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                            @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                             @endif 
                                         </div>
@@ -49,7 +49,7 @@
 
                                                         <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
-                                                        @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                                        @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>

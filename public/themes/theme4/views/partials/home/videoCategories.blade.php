@@ -66,7 +66,7 @@
                                                                                                 $videos = $videos->whereNotIn('videos.id',Block_videos());
                                                                                             }
 
-                                                                                            if (videos_expiry_date_status() == 1 ) {
+                                                                                            if ($videos_expiry_date_status == 1 ) {
                                                                                                 $videos = $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                                                                             }
                                                                                             
@@ -97,7 +97,7 @@
 
                                                                                 </div>
 
-                                                                                @if (videos_expiry_date_status() == 1 && optional($video_details)->expiry_date)
+                                                                                @if ($videos_expiry_date_status == 1 && optional($video_details)->expiry_date)
                                                                                     <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
                                                                                 @endif
                                                                                 

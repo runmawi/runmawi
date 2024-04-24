@@ -5,6 +5,7 @@
       $order_settings_list = App\OrderHomeSetting::get();  
       $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(); 
       $admin_advertistment_banners = App\AdminAdvertistmentBanners::first(); 
+      $Series_Networks_Status = Series_Networks_Status();
 ?>
 
 
@@ -181,17 +182,17 @@
             
                                           {{-- continue watching videos --}}
             @if( !Auth::guest() && !is_null($continue_watching_setting) &&  $continue_watching_setting == 1 )
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
             @endif
             
             @forelse ($order_settings as $key => $item) 
             
                @if( $item == 'latest_videos' && $home_settings->latest_videos == 1 )         {{-- latest videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'data' => $latest_videos,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'data' => $latest_videos,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image   ])->content() !!}
                @endif
 
                @if( $item == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', [ 'data' => $featured_videos, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', [ 'data' => $featured_videos, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
                @endif
 
                @if( $item == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
@@ -199,7 +200,7 @@
                @endif
 
                @if( $item == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}}
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', [ 'data' => $video_categories,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', [ 'data' => $video_categories,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
                @endif
 
                @if( $item == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}}
@@ -250,7 +251,7 @@
                @endif
 
                @if( $item == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image   ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status])->content() !!}
                @endif
                
                @if( $item == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
@@ -266,7 +267,7 @@
                @endif
 
                @if( $item == 'latest_viewed_Videos' && $home_settings->latest_viewed_Videos == 1 ) {{-- Latest Viewed Videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Videos', [ 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Videos', [ 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status])->content() !!}
                @endif
                
                @if( $item == 'latest_viewed_Livestream' && $home_settings->latest_viewed_Livestream == 1 ) {{-- Latest Viewed Livestream    --}}
@@ -321,16 +322,16 @@
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
                
-               @if( Series_Networks_Status() == 1 && $item == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
+               @if( $Series_Networks_Status == 1 && $item == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
                
-               @if(  Series_Networks_Status() == 1 &&  $item == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
+               @if(  $Series_Networks_Status == 1 &&  $item == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
                
                @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
                @endif
 
                @if(  $item == 'EPG' && $home_settings->epg == 1 )     

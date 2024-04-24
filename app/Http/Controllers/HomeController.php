@@ -113,6 +113,9 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
         $ThumbnailSetting = ThumbnailSetting::first();
+        $videos_expiry_date_status = videos_expiry_date_status();
+        $default_horizontal_image_url = default_horizontal_image_url();
+        $default_vertical_image = default_vertical_image();
         
         $check_Kidmode = 0;
 
@@ -156,11 +159,11 @@ class HomeController extends Controller
 
                                     ->where('active',1)->where('status', 1)->where('draft',1);
 
-                                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                    if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                         $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
                                     }
 
-                                    if (videos_expiry_date_status() == 1 ) {
+                                    if ($videos_expiry_date_status == 1 ) {
                                         $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                     }
                                     
@@ -187,6 +190,7 @@ class HomeController extends Controller
                 'duration','rating','image','featured','tv_image','player_image')
                 ->where('active', '=', '1')->where('views', '>', '0')
                 ->orderBy('id', 'DESC')
+                ->limit(15)
                 ->get();
 
             $latest_series = Series::select('id','title','slug','year','rating','access',
@@ -199,11 +203,11 @@ class HomeController extends Controller
 
                             ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
 
-                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                            if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                 $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
                             }
 
-                            if (videos_expiry_date_status() == 1 ) {
+                            if ($videos_expiry_date_status == 1 ) {
                                 $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                             }
                             
@@ -248,7 +252,7 @@ class HomeController extends Controller
                                         'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
                                         ->where('active', '=', '1')->latest();
 
-                    if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
 
                         $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
                         
@@ -382,6 +386,9 @@ class HomeController extends Controller
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                 'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                'getfeching'              => $getfeching ,
+                'videos_expiry_date_status' => $videos_expiry_date_status,
+
             );
             return Theme::view('home', $data);
         }
@@ -458,7 +465,7 @@ class HomeController extends Controller
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->where('device_name', '=', $device_name)->first();
 
                 $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-                ->where('active', '1')->orderBy('created_at', 'DESC')
+                ->where('active', '1')->orderBy('created_at', 'DESC')->limit(15)
                 ->get();
 
                 $username = Auth::User()->username;
@@ -466,6 +473,7 @@ class HomeController extends Controller
                 $mail_check = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->count();
                 $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)->count();
+
 
                 if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
@@ -581,7 +589,7 @@ class HomeController extends Controller
                     ->count();
                  
                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-                    $settings = Setting::first();
+                    $settings = $this->settings ;
                     $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
                     
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
@@ -622,11 +630,11 @@ class HomeController extends Controller
 
                                             ->where('active',1)->where('status', 1)->where('draft',1);
 
-                                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                            if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                                 $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
                                             }
 
-                                            if (videos_expiry_date_status() == 1 ) {
+                                            if ($videos_expiry_date_status == 1 ) {
                                                 $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                             }
                                             
@@ -641,11 +649,11 @@ class HomeController extends Controller
 
                                                     ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
 
-                                                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                                    if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                                         $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
                                                     }
 
-                                                    if (videos_expiry_date_status() == 1 ) {
+                                                    if ($videos_expiry_date_status == 1 ) {
                                                         $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                                     }
                                                     
@@ -809,6 +817,8 @@ class HomeController extends Controller
                         $Mode = User::where('id', Auth::user()->id)->first();
                     }
 
+
+
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
                                                     ->where('active', '1')->latest()->limit(15)
                                                     ->get();
@@ -828,15 +838,16 @@ class HomeController extends Controller
                                                     ->latest()->limit(15)->get();
                    
 
-                    $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','duration','rating','image','featured','tv_image','player_image')
+                    $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','duration','rating','image','featured','tv_image','player_image','active')
                                                 ->where('active', '1')->where('views', '>', '0')
                                                 ->latest()->limit(15)->get();
 
                     $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                        'duration','rating','image','featured','tv_image','player_image')
+                                                        'duration','rating','image','featured','tv_image','player_image','active')
                                                     ->where('active', '1')->where('featured', '1')
                                                     ->latest()->limit(15)
                                                     ->get();
+
                     
                         
                     if ($multiuser != null)
@@ -898,7 +909,7 @@ class HomeController extends Controller
                                                         'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
                                             ->where('active', '1')->latest();
     
-                                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
 
                                                     $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
                                                     
@@ -934,7 +945,7 @@ class HomeController extends Controller
                     
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                     
-                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
@@ -967,7 +978,7 @@ class HomeController extends Controller
                 
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                 
-                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                         return $item;
@@ -1020,7 +1031,7 @@ class HomeController extends Controller
                         'ppv_gobal_price'     => $ppv_gobal_price,
                         'suggested_videos'      => $trending_videos,
                         'video_categories'      => $genre_video_display  ,
-                        'home_settings'         => HomeSetting::first() ,
+                        'home_settings'         => $this->HomeSetting ,
                         'livetream'             => $livetreams ,
                         'audios'                => $latest_audios ,
                         'albums'                => AudioAlbums::latest()->limit(15)->get() ,
@@ -1041,6 +1052,8 @@ class HomeController extends Controller
                         'Series_based_on_Networks' => $Series_based_on_Networks ,
                         'Series_based_on_category' => $Series_based_on_category ,
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                        'getfeching'              => $getfeching ,
+                        'videos_expiry_date_status' => $videos_expiry_date_status,
                     );
 
                     return Theme::view('home', $data);
@@ -1064,6 +1077,7 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
+        $videos_expiry_date_status = videos_expiry_date_status();
 
         $check_Kidmode = 0;
 
@@ -1353,11 +1367,11 @@ class HomeController extends Controller
 
                                         ->where('active',1)->where('status', 1)->where('draft',1);
 
-                                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                        if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                             $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
                                         }
 
-                                        if (videos_expiry_date_status() == 1 ) {
+                                        if ($videos_expiry_date_status == 1 ) {
                                             $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                         }
                                         
@@ -1372,11 +1386,11 @@ class HomeController extends Controller
 
                                                 ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
 
-                                                if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                                if( $getfeching !=null && $getfeching->geofencing == 'ON'){
                                                     $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
                                                 }
 
-                                                if (videos_expiry_date_status() == 1 ) {
+                                                if ($videos_expiry_date_status == 1 ) {
                                                     $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                                 }
                                                 
@@ -1636,7 +1650,7 @@ class HomeController extends Controller
                                 'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
                                 ->where('active', '1')->orderBy('created_at', 'DESC');
 
-                        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
 
                             $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
                             
@@ -1783,13 +1797,15 @@ class HomeController extends Controller
                     'Series_based_on_Networks' => $Series_based_on_Networks ,
                     'Series_based_on_category' => $Series_based_on_category ,
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                    'getfeching'              => $getfeching ,
+                    'videos_expiry_date_status' => $videos_expiry_date_status,
                 );
                
                 return Theme::view('home', $data);
             }
         }
     }
-
+    
     public function social()
     {
         return View::make('social');
