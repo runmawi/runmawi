@@ -51,6 +51,14 @@ border-radius: 0px 4px 4px 0px;
                         <div class="form-group mr-2">
                             <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                         </div>
+
+                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalImport">
+                           Import Video
+                        </button>
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                           Export Video
+                        </button> -->
                            <a href="{{ URL::to('admin/videos/create') }}" class="btn btn-primary">Add movie</a>
 
                      {{-- Bulk video delete --}}
@@ -195,7 +203,116 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
-      
+      <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Export Videos</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                       <div class="col-md-12">
+                              <label class="m-0">Enter Video Start ID</label>
+                              <input type="text" class="form-control" placeholder="Enter Video Start ID" name="video_start_id" id="video_start_id" value="@if(!empty($video->country_by_origin)){{ $video->country_by_origin }}@endif">
+                              <span id="video_start_id_error" style="color:red;">* Please Enter Video Start ID</span>
+                       </div>         
+                       <div class="col-md-12">
+                              <label class="m-0">Enter Video End ID</label>
+                              <input type="text" class="form-control" placeholder="Enter Video End ID" name="video_end_id" id="video_end_id" value="@if(!empty($video->country_by_origin)){{ $video->country_by_origin }}@endif">
+                              <span id="video_end_id_error" style="color:red;">* Please Enter Video End ID</span>
+                       </div>          
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id = "Export" class="btn btn-primary">Export</button>
+                  </div>
+               </div>
+            </div>
+            </div>
+
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalImport" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Import Videos</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                       <div class="col-md-12">
+                              <label class="m-0">Enter Video Start ID</label>
+                              <input type="file" name="csv_file" accept=".csv">
+                              <span id="video_start_id_error" style="color:red;">* Choose Video Csv File</span>
+                       </div>           
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id = "Import" class="btn btn-primary">Import</button>
+                  </div>
+               </div>
+            </div>
+            </div>
+
+          <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+
+   $('#video_start_id_error').hide();
+   $('#video_end_id_error').hide();
+
+    $(document).ready(function() {
+         $('#Export').click(function(){
+            if( $('#video_start_id').val() == ''){
+               $('#video_start_id_error').show();
+            }else{
+               $('#video_start_id_error').hide();
+            }
+            if( $('#video_end_id').val() == ''){
+               $('#video_end_id_error').show();
+            }else{
+               $('#video_end_id_error').hide();
+            }
+
+            if( $('#video_start_id').val() != '' &&  $('#video_end_id').val() != ''){
+
+
+               $(document).ajaxStart(function() {
+                     $('#loader').show();
+               });
+
+               // Hide loader when AJAX stops
+               $(document).ajaxStop(function() {
+                     $('#loader').hide();
+               });
+
+               $.ajax({
+                  type: "POST", 
+                  dataType: "json", 
+                  url: "{{ url('admin/video_bluk_export') }}",
+                        data: {
+                           _token  : "{{csrf_token()}}" ,
+                           video_start_id: $('#video_start_id').val(),
+                           video_end_id: $('#video_end_id').val(),
+                  },
+                  success: function(data) {
+                        if(data == 1){
+                           var Excel_url =  "{{ URL::to('storage/app/videos.csv')  }}";
+                           location.href = Excel_url;
+                        }
+                       
+                     },
+               });
+            }
+            
+         });
+         
+    });
+</script>
+
          <script>
 
 $(document).ready(function(){

@@ -9,7 +9,7 @@
 <div class="iq-card">
     <h4><i class="entypo-archive"></i> Add New Music Genre</h4>
 	<div class="modal-body">
-		<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/Series_genre/update') }}" method="post" enctype="multipart/form-data">
+		<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/Music_genre/update') }}" method="post" enctype="multipart/form-data">
          			<div class="form-group">
                         <label class="m-0">Name:</label>
                         <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">

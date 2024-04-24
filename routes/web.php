@@ -655,6 +655,31 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
 
+    // Bulk Import Export
+
+    Route::get('/bulk-access', 'AdminBulkImportExportController@index');
+
+    Route::post('/bulk_import', 'AdminBulkImportExportController@BulkImport');
+
+    Route::post('/video_bulk_export', 'AdminBulkImportExportController@VideoBulkExport');
+    Route::post('/video_bulk_import', 'AdminBulkImportExportController@VideoBulkImport');
+
+    Route::post('/series_bulk_export', 'AdminBulkImportExportController@SeriesBulkExport');
+    Route::post('/series_bulk_import', 'AdminBulkImportExportController@SeriesBulkImport');
+
+    Route::post('/episode_bulk_export', 'AdminBulkImportExportController@EpisodeBulkExport');
+    Route::post('/episode_bulk_import', 'AdminBulkImportExportController@EpisodeBulkImport');
+
+    Route::post('/audios_bulk_export', 'AdminBulkImportExportController@AudioBulkExport');
+    Route::post('/audios_bulk_import', 'AdminBulkImportExportController@AudioBulkImport');
+
+    Route::get('/bulk_import_image', 'AdminBulkImportExportController@ImageBulkImport');
+    Route::post('/zip_bulk_import', 'AdminBulkImportExportController@ImageZipImport');
+
+    Route::get('/video_bulk_create_import', 'AdminBulkImportExportController@CreateVideoBulkImport');
+    Route::get('/series_bulk_create_import', 'AdminBulkImportExportController@CreateSeriesBulkImport');
+    Route::get('/episode_bulk_create_import', 'AdminBulkImportExportController@CreateEpisodeBulkImport');
+    Route::get('/audios_bulk_create_import', 'AdminBulkImportExportController@CreateAudioBulkImport');
 
     // Music Genre Routes
     Route::get('/Music/Genre', 'AdminMusicGenreController@index');

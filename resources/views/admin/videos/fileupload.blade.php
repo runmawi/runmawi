@@ -819,6 +819,50 @@ border-radius: 0px 4px 4px 0px;
                                  </div>
                               </div>
                            </div>
+
+
+                           <div class="row">
+                  <div class="col-sm-6 form-group" >
+                     <label class="m-0">Select Music Genre:</label>
+                        <select class="form-control js-example-basic-multiple"  name="music_genre[]"  id="music_genre" style="width: 100%;" multiple="multiple" >
+                           @foreach($MusicGenres as $genre)
+                           @if(in_array($genre->id, $video_music_genre))
+                           <option value="{{ $genre->id }}" selected="true">{{ $genre->name }}</option>
+                           @else
+                           <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                           @endif      
+                           @endforeach
+                        </select>
+                     <!-- <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span> -->
+                  </div>
+
+               <div class="col-sm-6 form-group" >                               
+               <div class="panel panel-primary" data-collapsed="0"> 
+               <div class="panel-heading"> 
+               <div class="panel-title">
+                   <label class="m-0">Writers :<small>( Add writers for the video below )</small></label> 
+               </div> 
+               <div class="panel-options"> 
+               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+               </div>
+               </div> 
+
+                  <div class="panel-body" style="display: block;"> 
+                     <select name="writers[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                        @foreach($Writers as $artist)
+                           @if(in_array($artist->id, $video_Writers))
+                              <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+                           @else
+                              <option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+                           @endif 
+                        @endforeach
+                     </select>
+                  </div> 
+                  
+               </div>
+               </div>
+               </div>
+
                            <div class="row">
                               <div class="col-sm-6 form-group">
                                  <label class="m-0">Choose Language:</label>
@@ -953,6 +997,10 @@ border-radius: 0px 4px 4px 0px;
                                     <?php } ?>
                                  </select>
                               </div>
+                              <div class="col-sm-6 form-group">
+                                    <label class="m-0">Country of Origin</label>
+                                    <input type="text" class="form-control" placeholder="Country of Origin" name="country_by_origin" id="country_by_origin" value="@if(!empty($video->country_by_origin)){{ $video->country_by_origin }}@endif">
+                                 </div>
                            </div>
                                           {{-- PPV Price --}}
 
