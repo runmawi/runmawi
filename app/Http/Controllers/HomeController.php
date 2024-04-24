@@ -1,38 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use \App\User as User;
-use \Redirect as Redirect;
-//use Request;
-use App\Setting as Setting;
-use App\SystemSetting as SystemSetting;
-use App\Video as Video;
-use App\Slider as Slider;
-use App\PpvVideo as PpvVideo;
-use App\PpvCategory as PpvCategory;
-use App\VerifyNumber as VerifyNumber;
-use App\Subscription as Subscription;
-use App\PaypalPlan as PaypalPlan;   
-use App\ContinueWatching as ContinueWatching;
-use App\Genre;
-use App\Audio;
-use App\Geofencing;
-use App\Page as Page;
-use App\HomeSetting as HomeSetting;
-use App\Movie;
-use App\BlockVideo;
-use App\Episode;
-use App\LikeDislike as Likedislike;
-use App\VideoCategory;
-use App\Multiprofile;
-use URL;
-use Auth;
-use View;
-use Hash;
-use Mail;
-use Nexmo;
-use Crypt;
 use Illuminate\Support\Facades\Cache;
-//use Image;
 use Intervention\Image\ImageManagerStatic as Image;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -41,39 +9,68 @@ use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Stevebauman\Location\Facades\Location;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon;
 use Session;
-use App\LiveStream as LiveStream;
-use App\AudioAlbums as AudioAlbums;
-use App\UserLogs as UserLogs;
-use App\CurrencySetting as CurrencySetting;
-use App\SubscriptionPlan as SubscriptionPlan;
+use URL;
+use Auth;
+use View;
+use Hash;
+use Mail;
+use Nexmo;
+use Crypt;
+use \Redirect  ;
+use App\User  ;
+use App\SystemSetting  ;
+use App\Setting ;
+use App\Video  ;
+use App\Slider  ;
+use App\PpvVideo  ;
+use App\PpvCategory  ;
+use App\VerifyNumber  ;
+use App\Subscription  ;
+use App\PaypalPlan  ;   
+use App\ContinueWatching  ;
+use App\Genre;
+use App\Audio;
+use App\Geofencing;
+use App\Page ;
+use App\HomeSetting ;
+use App\Movie;
+use App\BlockVideo;
+use App\Episode;
+use App\LikeDislike ;
+use App\VideoCategory;
+use App\Multiprofile;
+use App\LiveStream  ;
+use App\AudioAlbums  ;
+use App\UserLogs  ;
+use App\CurrencySetting  ;
+use App\SubscriptionPlan  ;
 use Jenssegers\Agent\Agent;
 use App\LoggedDevice;
 use App\ApprovalMailDevice;
-use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\RecentView;
 use App\ChooseProfileScene;
 use App\ThumbnailSetting;
 use App\SiteTheme;
-use Theme;
 use App\Series;
 use App\Artist;
 use App\Helpers\LogActivity;
 use App\AdminLandingPage;
 use App\EmailTemplate;
-use App\VideoSchedules as VideoSchedules;
-use App\ScheduleVideos as ScheduleVideos;
-use App\Language as Language;
+use App\VideoSchedules ;
+use App\ScheduleVideos ;
+use App\Language ;
 use GuzzleHttp\Client;
-use App\MusicStation as MusicStation;
-use App\GuestLoggedDevice as GuestLoggedDevice;
-use Maatwebsite\Excel\Facades\Excel;
+use App\MusicStation ;
+use App\GuestLoggedDevice ;
 use App\LanguageVideo;
 use App\CategoryVideo;
-use App\AppSetting as AppSetting;
-use App\TVLoginCode as TVLoginCode;
-use App\Watchlater as Watchlater;
+use App\AppSetting  ;
+use App\TVLoginCode;
+use App\Watchlater ;
 use App\OrderHomeSetting;
 use App\ChannelVideoScheduler;
 use App\AdminEPGChannel;
@@ -83,6 +80,7 @@ use App\Document;
 use App\DocumentGenre;
 use App\BlockLiveStream;
 use App\CompressImage;
+use Theme;
 
 class HomeController extends Controller
 {
@@ -95,21 +93,21 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $settings = Setting::first();
-        $this->videos_per_page = $settings->videos_per_page;
+        $this->settings = Setting::first();
+        $this->videos_per_page = $this->settings->videos_per_page;
 
-        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($this->Theme);
+        $this->HomeSetting = HomeSetting::first();
+        Theme::uses($this->HomeSetting->theme_choosen);
+
     }
-
  
     public function FirstLanging()
     {
         $data = Session::all();
-        $settings = Setting::first();
+        $settings = $this->settings ;
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
-        $Recomended = HomeSetting::first();
+        $Recomended = $this->HomeSetting;
         $ThumbnailSetting = ThumbnailSetting::first();
 
         if($settings->enable_landing_page == 1 && Auth::guest()){
@@ -267,13 +265,13 @@ class HomeController extends Controller
                 'featured_videos'   => $featured_videos,
                 'featured_episodes' => $featured_episodes,
                 'genre_video_display' => $genre_video_display,
-                'genres'              => VideoCategory::all() ,
+                'genres'              => $genre_video_display ,
                 'settings'            => $settings,
                 'pages'               => $pages,
                 'trending_videos'     => $trending_videos,
                 'suggested_videos'    => $trending_videos,
-                'video_categories'    => VideoCategory::all() ,
-                'home_settings'       => HomeSetting::first() ,
+                'video_categories'    => $genre_video_display ,
+                'home_settings'       => $this->HomeSetting ,
                 'livetream'           => $livetreams,
                 'audios'              => $latest_audios ,
                 'albums'                => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
@@ -902,10 +900,10 @@ class HomeController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
 
         $agent = new Agent();
-        $settings = Setting::first();
+        $settings = $this->settings;
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
-        $Recomended = HomeSetting::first();
+        $Recomended = $this->HomeSetting;
 
         if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
         
@@ -932,7 +930,6 @@ class HomeController extends Controller
             );
             
         }
-        
 
         if($settings->enable_landing_page == 1 && Auth::guest()){
 
@@ -1149,7 +1146,7 @@ class HomeController extends Controller
 
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-                $settings = Setting::first();
+                $settings = $this->settings;
 
                 $PPV_settings = Setting::where('ppv_status', 1)->first();
 
@@ -1157,7 +1154,7 @@ class HomeController extends Controller
              
                 $genre = Genre::all();
 
-                $genre_video_display = VideoCategory::select('id','name','image','slug','home_genre')->get();
+                $genre_video_display = VideoCategory::get();
 
                 // blocked videos
                 $block_videos = BlockVideo::where('country_id', $countryName)->get();
@@ -1534,14 +1531,14 @@ class HomeController extends Controller
                     'featured_videos'   => $featured_videos,
                     'featured_episodes' => $featured_episodes,
                     'genre_video_display' => $genre_video_display,
-                    'genres'              => VideoCategory::all() ,
+                    'genres'              => $genre_video_display ,
                     'settings'            => $settings,
                     'pages'               => Page::all(),
                     'trending_videos'     => $trending_videos,
                     'ppv_gobal_price'     => $ppv_gobal_price,
                     'suggested_videos'    => $trending_videos,
-                    'video_categories'    => VideoCategory::all() ,
-                    'home_settings'       => HomeSetting::first() ,
+                    'video_categories'    => $genre_video_display ,
+                    'home_settings'       => $this->HomeSetting ,
                     'livetream'           => $livetreams,
                     'audios'              => $latest_audios ,
                     'albums'              => AudioAlbums::latest()->limit(15) ->get() ,
@@ -1565,6 +1562,7 @@ class HomeController extends Controller
             }
         }
     }
+
     public function social()
     {
         return View::make('social');
