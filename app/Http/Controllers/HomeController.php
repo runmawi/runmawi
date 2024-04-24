@@ -82,6 +82,8 @@ use App\BlockLiveStream;
 use App\CompressImage;
 use App\LiveCategory;
 use App\AudioCategory;
+use App\SeriesNetwork;
+use App\SeriesGenre;
 use Theme;
 
 class HomeController extends Controller
@@ -263,6 +265,66 @@ class HomeController extends Controller
                     $livetreams =$livetreams->limit(15)->get();
                 }
 
+            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+                $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                            ->whereJsonContains('network_id', [(string)$item->id])
+            
+                            ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+                    
+                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+            
+                    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+            
+                    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+            
+                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                            ->map(function ($item) {
+                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                            return $item;
+                                                        });
+            
+                    $item['source'] = 'Series';
+                    return $item;
+                                                                        
+                });
+                return $item;
+            });
+
+            $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->get();
+        
+            $Series_based_on_category->each(function ($category) {
+                $category->category_series->transform(function ($item) {
+        
+                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+        
+                    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+        
+                    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+        
+                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                            ->map(function ($item) {
+                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                return $item;
+                                                        });
+        
+                    $item['source'] = 'Series';
+                    return $item;
+                });
+                $category->source = 'Series_Genre';
+                return $category;
+            });
+
             $data = array(
 
                 'currency' => $currency,
@@ -314,6 +376,8 @@ class HomeController extends Controller
                 'Kids_Mode'             => $Kids_Mode = 2,
                 'ThumbnailSetting'      => $ThumbnailSetting,
                 'artist'                => Artist::all(),
+                'Series_based_on_Networks' => $Series_based_on_Networks ,
+                'Series_based_on_category' => $Series_based_on_category ,
                 'VideoSchedules'        => VideoSchedules::where('in_home',1)->get(),
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                 'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
@@ -853,6 +917,68 @@ class HomeController extends Controller
                     
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
                                         ->where('active', '1')->latest()->limit(15)->get();
+
+                        // Series_based_on_Networks
+                                                
+                    $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+                        $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                                    ->whereJsonContains('network_id', [(string)$item->id])
+                    
+                                    ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+                            
+                            $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                    
+                            $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                    
+                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                    
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                    ->map(function ($item) {
+                                                                    $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                    return $item;
+                                                                });
+                    
+                            $item['source'] = 'Series';
+                            return $item;
+                                                                                
+                        });
+                        return $item;
+                    });
+
+                    $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                        ->with([
+                            'category_series' => function ($series) {
+                                $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                            },
+                        ])
+                        ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                        ->orderBy('series_genre.order')
+                        ->get();
+                
+                    $Series_based_on_category->each(function ($category) {
+                        $category->category_series->transform(function ($item) {
+                
+                            $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                
+                            $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                
+                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                    ->map(function ($item) {
+                                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                        return $item;
+                                                                });
+                
+                            $item['source'] = 'Series';
+                            return $item;
+                        });
+                        $category->source = 'Series_Genre';
+                        return $category;
+                    });
                    
                     $data = array(
                         'currency' => $currency,
@@ -912,6 +1038,8 @@ class HomeController extends Controller
                         'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
                         'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                         'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
+                        'Series_based_on_Networks' => $Series_based_on_Networks ,
+                        'Series_based_on_category' => $Series_based_on_category ,
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     );
 
@@ -1275,8 +1403,7 @@ class HomeController extends Controller
                     }
                     else
                     {
-                        $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()
-                            ->id);
+                        $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()->id);
                     }
                     if ($Family_Mode == 1)
                     {
@@ -1524,7 +1651,69 @@ class HomeController extends Controller
                         }
 
                 $livetreams =$livetreams->limit(15)->get();
-             
+
+
+                $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+                    $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                                ->whereJsonContains('network_id', [(string)$item->id])
+                
+                                ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+                        
+                        $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                        $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                
+                        $item['upload_on'] = Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                
+                        $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                
+                        $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                ->map(function ($item) {
+                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                return $item;
+                                                            });
+                
+                        $item['source'] = 'Series';
+                        return $item;
+                                                                            
+                    });
+                    return $item;
+                });
+
+                
+                $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->get();
+            
+                $Series_based_on_category->each(function ($category) {
+                    $category->category_series->transform(function ($item) {
+            
+                        $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                        $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+            
+                        $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+            
+                        $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+            
+                        $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                ->map(function ($item) {
+                                                                    $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                    return $item;
+                                                            });
+            
+                        $item['source'] = 'Series';
+                        return $item;
+                    });
+                    $category->source = 'Series_Genre';
+                    return $category;
+                });
+
                 $data = array(
 
                     'currency' => $currency,
@@ -1591,6 +1780,8 @@ class HomeController extends Controller
                     'VideoSchedules'       => VideoSchedules::where('in_home',1)->get(),
                     'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                     'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
+                    'Series_based_on_Networks' => $Series_based_on_Networks ,
+                    'Series_based_on_category' => $Series_based_on_category ,
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 );
                
