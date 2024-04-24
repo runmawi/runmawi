@@ -55,7 +55,7 @@ $data = App\Series::where('active', '1')->limit(15)
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            @if ( compress_responsive_image_enable() == 1)
+                                            @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$Episode_details->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
@@ -95,7 +95,7 @@ $data = App\Series::where('active', '1')->limit(15)
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                @if ( compress_responsive_image_enable() == 1)
+                                                                @if ( $multiple_compress_image == 1)
                                                                     <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$item->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$item->responsive_player_image.' 640w') }},

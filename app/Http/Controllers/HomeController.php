@@ -82,6 +82,7 @@ use App\TimeZone;
 use App\Document;
 use App\DocumentGenre;
 use App\BlockLiveStream;
+use App\CompressImage;
 
 class HomeController extends Controller
 {
@@ -286,6 +287,7 @@ class HomeController extends Controller
                 'ThumbnailSetting'      => $ThumbnailSetting,
                 'artist'                => Artist::all(),
                 'VideoSchedules'        => VideoSchedules::where('in_home',1)->get(),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
             );
             return Theme::view('home', $data);
         }
@@ -880,6 +882,7 @@ class HomeController extends Controller
                         'ThumbnailSetting'       => $ThumbnailSetting,
                         'artist'                 => Artist::limit(15)->get(),
                         'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
+                        'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     );
 
                     return Theme::view('home', $data);
@@ -1555,6 +1558,7 @@ class HomeController extends Controller
                     'latest_series'        => $latest_series,
                     'artist'               => Artist::limit(15)->get(),
                     'VideoSchedules'       => VideoSchedules::where('in_home',1)->get(),
+                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 );
                
                 return Theme::view('home', $data);
@@ -2519,7 +2523,7 @@ class HomeController extends Controller
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
             $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
                                         ->where('banner', '1')->latest()
                                         ->get() ;

@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            @if ( compress_responsive_image_enable() == 1)
+                                            @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $video->title }}" src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$video->responsive_image.' 640w') }},
@@ -57,7 +57,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            @if ( compress_responsive_image_enable() == 1)
+                                                            @if ( $multiple_compress_image == 1)
                                                                 <img  alt="latest_series" src="{{$video->player_image ?  URL::to('public/uploads/images/'.$video->player_image) : default_horizontal_image_url() }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$video->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$video->responsive_player_image.' 640w') }},

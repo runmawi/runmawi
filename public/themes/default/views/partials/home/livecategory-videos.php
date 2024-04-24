@@ -73,73 +73,61 @@ $currency = App\CurrencySetting::first();
                         <div class="border-bg">
                            <div class="img-box">
                            <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                    <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                          alt="live-c">
                         </a>     
 
-                            <!-- PPV price -->
-                                
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                                        <p class="p-tag1">
-                                            <?php if($category_video->access == 'subscriber' ){ ?>
-                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                            <?php }elseif($category_video->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
-                                                <?php } elseif(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
-                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv .' '.$currency->symbol;
-                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo "Free"; 
-                                                }
-                                            ?>
-                                        </p>
-                                        <?php } ?>
+                                        <!-- PPV price -->
+                                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                <?php if($category_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($category_video->access == 'registered'){?>
+                                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                        <?php }elseif(!empty($category_video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
+                                <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
+                                <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <?php } ?>
+                                <?php } ?>
                                     
                                 </div>
                                 </div>
                           <div class="block-description">
                                 <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                    <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" alt="live-c">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" alt="live-c">
                         
 
-                            <!-- PPV price -->
-                                
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                                        <p class="p-tag1">
-                                            <?php if($category_video->access == 'subscriber' ){ ?>
-                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                            <?php }elseif($category_video->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
-                                                <?php } elseif(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
-                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv .' '.$currency->symbol;
-                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo "Free"; 
-                                                }
-                                            ?>
-                                        </p>
-                                        <?php } ?>
+                             <!-- PPV price -->
+                             <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                <?php if($category_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($category_video->access == 'registered'){?>
+                                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                        <?php }elseif(!empty($category_video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
+                                <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
+                                <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <?php } ?>
+                                <?php } ?>
                                         </a>   
                                          <!-- PPV price -->
-                                
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                                        <p class="p-tag1">
-                                            <?php if($category_video->access == 'subscriber' ){ ?>
-                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                            <?php }elseif($category_video->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
-                                                <?php } elseif(!empty($category_video->ppv_price)) {
-                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
-                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo $category_video->global_ppv .' '.$currency->symbol;
-                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo "Free"; 
-                                                }
-                                            ?>
-                                        </p>
-                                        <?php } ?>
+                                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                <?php if($category_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($category_video->access == 'registered'){?>
+                                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                        <?php }elseif(!empty($category_video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
+                                <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
+                                <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo (__('Free')); ?></p>
+                                <?php } ?>
+                                <?php } ?>
 
                                 
                                 <div class="hover-buttons text-white">
