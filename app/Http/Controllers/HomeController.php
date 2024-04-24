@@ -80,6 +80,8 @@ use App\Document;
 use App\DocumentGenre;
 use App\BlockLiveStream;
 use App\CompressImage;
+use App\LiveCategory;
+use App\AudioCategory;
 use Theme;
 
 class HomeController extends Controller
@@ -109,6 +111,8 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
         $ThumbnailSetting = ThumbnailSetting::first();
+        
+        $check_Kidmode = 0;
 
         if($settings->enable_landing_page == 1 && Auth::guest()){
 
@@ -136,7 +140,7 @@ class HomeController extends Controller
                 }
             
             $genre = Genre::all();
-            $genre_video_display = VideoCategory::all();
+            $genre_video_display = VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get() ;
 
             $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
@@ -144,10 +148,25 @@ class HomeController extends Controller
                                         ->where('views', '>', '5')->latest()
                                         ->limit(15)->get();
 
-            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
-                                        ->where('status', '1')->where('active', '1')->where('draft', '1')
-                                        ->latest()->limit(15)->get();
+                
+            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
+                                            'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+
+                                    ->where('active',1)->where('status', 1)->where('draft',1);
+
+                                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                        $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
+                                    }
+
+                                    if (videos_expiry_date_status() == 1 ) {
+                                        $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                    }
+                                    
+                                    if ($check_Kidmode == 1) {
+                                        $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
+                                    }
+
+            $latest_videos = $latest_videos->latest()->limit(15)->get();
 
             $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price',
                 'duration','rating','image','featured','player_image','details','description')
@@ -173,13 +192,24 @@ class HomeController extends Controller
                 ->where('active', '1')->latest()->limit(15)
                 ->get();    
 
-            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
-                                ->where('active', '=', '1')->where('featured', '=', '1')
-                                ->where('status', '=', '1')
-                                ->where('draft', '=', '1')
-                                ->latest()->limit(15)
-                                ->get();
+            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+
+                            ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
+
+                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
+                            }
+
+                            if (videos_expiry_date_status() == 1 ) {
+                                $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                            }
+                            
+                            if ($check_Kidmode == 1) {
+                                $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+
+            $featured_videos = $featured_videos->latest()->limit(15)->get();
 
             $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','tv_image','player_image')
@@ -274,10 +304,10 @@ class HomeController extends Controller
                 'home_settings'       => $this->HomeSetting ,
                 'livetream'           => $livetreams,
                 'audios'              => $latest_audios ,
-                'albums'                => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
-                'top_most_watched'      => $top_most_watched = [],
-                'most_watch_user'       => $most_watch_user = [],
-                'Most_watched_country'  => $Most_watched_country = [],
+                'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
+                'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
+                'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
+                'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
                 'preference_genres'     => $preference_genres = [],
                 'preference_Language'   => $preference_Language = [],
                 'Family_Mode'           => $Family_Mode = 2,
@@ -285,6 +315,8 @@ class HomeController extends Controller
                 'ThumbnailSetting'      => $ThumbnailSetting,
                 'artist'                => Artist::all(),
                 'VideoSchedules'        => VideoSchedules::where('in_home',1)->get(),
+                'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
+                'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
             );
             return Theme::view('home', $data);
@@ -494,7 +526,8 @@ class HomeController extends Controller
                     $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
 
                     $genre = Genre::all();
-                    $genre_video_display = VideoCategory::all();
+
+                    $genre_video_display = VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get();
 
                     // blocked videos
                     $block_videos = BlockVideo::where('country_id', $countryName)->get();
@@ -611,9 +644,6 @@ class HomeController extends Controller
                     {
                         $blocking_videos = [];
                     }
-
-                    dd('ss');
-
 
                     if ($Recomended->Recommendation == 1)
                     {
@@ -856,14 +886,14 @@ class HomeController extends Controller
                         'featured_videos'   => $featured_videos,
                         'featured_episodes' => $featured_episodes,
                         'genre_video_display' => $genre_video_display,
-                        'genres'              => VideoCategory::all() ,
+                        'genres'              => $genre_video_display  ,
                         'pagination_url'      => '/videos',
                         'settings'            => $settings,
                         'pages'               => Page::all(),
                         'trending_videos'     => $trending_videos,
                         'ppv_gobal_price'     => $ppv_gobal_price,
                         'suggested_videos'      => $trending_videos,
-                        'video_categories'      => VideoCategory::all() ,
+                        'video_categories'      => $genre_video_display  ,
                         'home_settings'         => HomeSetting::first() ,
                         'livetream'             => $livetreams ,
                         'audios'                => $latest_audios ,
@@ -880,6 +910,8 @@ class HomeController extends Controller
                         'ThumbnailSetting'       => $ThumbnailSetting,
                         'artist'                 => Artist::limit(15)->get(),
                         'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
+                        'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
+                        'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     );
 
@@ -904,6 +936,8 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
+
+        $check_Kidmode = 0;
 
         if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
         
@@ -1154,7 +1188,7 @@ class HomeController extends Controller
              
                 $genre = Genre::all();
 
-                $genre_video_display = VideoCategory::get();
+                $genre_video_display = VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get();
 
                 // blocked videos
                 $block_videos = BlockVideo::where('country_id', $countryName)->get();
@@ -1542,9 +1576,9 @@ class HomeController extends Controller
                     'livetream'           => $livetreams,
                     'audios'              => $latest_audios ,
                     'albums'              => AudioAlbums::latest()->limit(15) ->get() ,
-                    'most_watch_user'     => $most_watch_user,
-                    'top_most_watched'    => $top_most_watched,
-                    'Most_watched_country' => $Most_watched_country,
+                    'most_watch_user'        => !empty($most_watch_user) ? $most_watch_user : [],
+                    'top_most_watched'       => !empty($top_most_watched) ? $top_most_watched : [],
+                    'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
                     'countryName'          => $countryName,
                     'preference_genres'    => $preference_gen,
                     'preference_Language'  => $preference_Lan,
@@ -1555,6 +1589,8 @@ class HomeController extends Controller
                     'latest_series'        => $latest_series,
                     'artist'               => Artist::limit(15)->get(),
                     'VideoSchedules'       => VideoSchedules::where('in_home',1)->get(),
+                    'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
+                    'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 );
                
@@ -4573,4 +4609,5 @@ public function uploadExcel(Request $request)
         return Theme::view('DocumentCategoryListPage',['DocumentCategoryListPage'=>$data]);
     }
 
+   
 }

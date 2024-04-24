@@ -7,12 +7,6 @@
       $admin_advertistment_banners = App\AdminAdvertistmentBanners::first(); 
 ?>
 
-   <!-- loader Start -->
-   {{-- <div id="loading">
-      <div id="loading-center">
-      </div>
-   </div> --}}
-
 
                <!-- Slider  -->
       <?php 
@@ -63,9 +57,9 @@
 
          $Slider_array_data = array(
             'sliders'            => $sliders, 
-            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->limit(15)->get() , 
+            'live_banner'        => $live_banner , 
             'video_banners'      => $video_banner ,
-            'series_sliders'     => App\Series::where('active', '1')->where('banner','1')->latest()->limit(15)->get() ,
+            'series_sliders'     => $series_sliders ,
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
             'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
             'VideoCategory_banner' => $VideoCategory_banner ,
@@ -193,25 +187,23 @@
             @forelse ($order_settings as $key => $item) 
             
                @if( $item == 'latest_videos' && $home_settings->latest_videos == 1 )         {{-- latest videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'data' => $latest_videos,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
                @endif
 
                @if( $item == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', [ 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', [ 'data' => $featured_videos, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', [ 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', [  'data' => $livetream, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}}
-                     <?php $parentCategories =   App\VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get(); ?>
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', [ 'data' => $video_categories,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
                @endif
 
                @if( $item == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}}
-                     <?php $parentCategories = App\LiveCategory::orderBy('order','ASC')->limit(15)->get(); ?>
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/liveCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/liveCategories', [ 'data' => $LiveCategory, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
@@ -219,12 +211,7 @@
                @endif
 
                @if( $item == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
-
-                  @php
-                     $latest_albums = App\AudioAlbums::latest()->limit(15)->get() ;
-                  @endphp
-
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-albums', ['data' => $latest_albums, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-albums', [ 'data' => $albums, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
@@ -259,8 +246,7 @@
                @endif
                
                @if( $item == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}}
-                  <?php $parentCategories = App\AudioCategory::orderBy('order','ASC')->limit(15)->get(); ?>
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/AudioGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/AudioGenre', ['data' => $AudioCategory, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}

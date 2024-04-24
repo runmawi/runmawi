@@ -1,30 +1,4 @@
-@php
-
-$check_Kidmode = 0;
-    
-$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
-
-                        ->where('active',1)->where('status', 1)->where('draft',1);
-
-                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                            $data = $data->whereNotIn('videos.id',Block_videos());
-                        }
-
-                        if (videos_expiry_date_status() == 1 ) {
-                            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                        }
-                        
-                        if ($check_Kidmode == 1) {
-                            $data = $data->whereBetween('videos.age_restrict', [0, 12]);
-                        }
-
-$data = $data->latest()->limit(15)->get();
-                                                                    
-@endphp
-                                                                    
-
-@if (!empty($data) && $data->isNotEmpty())
+@if (!empty($latest_videos) && $latest_videos->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
@@ -38,7 +12,7 @@ $data = $data->latest()->limit(15)->get();
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $latest_video)
+                            @foreach ($latest_videos as $latest_video)
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -61,7 +35,7 @@ $data = $data->latest()->limit(15)->get();
                         </ul>
 
                         <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
-                            @foreach ($data as $key => $latest_video )
+                            @foreach ($latest_videos as $key => $latest_video )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
@@ -116,7 +90,7 @@ $data = $data->latest()->limit(15)->get();
             </div>
         </div>
 
-        @foreach ($data as $key => $latest_video )
+        @foreach ($latest_videos as $key => $latest_video )
             <div class="modal fade info_model" id="{{ "Home-latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
