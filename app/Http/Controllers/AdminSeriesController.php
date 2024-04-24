@@ -3251,9 +3251,14 @@ class AdminSeriesController extends Controller
           $videocategory->save();
           $i++;
         }
-        return 1;
 
-    }
+        $series = Series::find($request->seriesid);
+        $episodes = Episode::where('series_id' ,'=', $request->seriesid)
+                    ->where('season_id' ,'=', $request->season_id)->orderBy('episode_order')->get();
+
+        $data = array( 'episodes' => $episodes );
+        return View::make('admin.series.order_episodes', $data);
+     }
 
     public function series_slider_update(Request $request)
     {
