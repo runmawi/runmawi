@@ -393,12 +393,12 @@ class ApiAuthController extends Controller
                 $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
                 $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
                 $plan_id      = $api->plan->fetch($subscription['plan_id']);
+                  
+                $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+                $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
 
-                $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
-                $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
-                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
-
-                    Subscription::create([
+                  Subscription::create([
                     'user_id'        =>  $userid,
                     'name'           =>  $plan_id['item']->name,
                     'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
@@ -412,7 +412,7 @@ class ApiAuthController extends Controller
                     'PaymentGateway' =>  'Razorpay',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
-                ]);
+                  ]);
 
                 User::where('id',$userid)->update([
                     'role'                  =>  'subscriber',
@@ -8593,9 +8593,11 @@ public function LocationCheck(Request $request){
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
             $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
             $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-            $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
-            $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
+              
+            $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+            $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+            $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+    
 
                 Subscription::create([
                 'user_id'        =>  $request->userId,

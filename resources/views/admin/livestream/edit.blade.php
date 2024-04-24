@@ -827,7 +827,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-2 program_time" style="{{ !empty($video->program_end_time)  ? '' : 'display: none' }}" >
-                    <label class="m-0">Program Start Time   </label>
+                    <label class="m-0">Program End Time   </label>
                     <div class="panel-body">
                         <input type="time" class="form-control" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
                     </div>
