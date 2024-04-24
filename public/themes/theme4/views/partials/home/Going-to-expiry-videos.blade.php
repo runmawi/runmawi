@@ -10,7 +10,7 @@
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
-        if( videos_expiry_date_status() == 1 ){
+        if( $videos_expiry_date_status == 1 ){
             $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -76,7 +76,7 @@
 
                                                         <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
                                                         
-                                                        @if ( videos_expiry_date_status() == 1 && optional($Going_to_expiry_videos)->expiry_date)
+                                                        @if ( $videos_expiry_date_status == 1 && optional($Going_to_expiry_videos)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>
