@@ -3,6 +3,7 @@
         border: none!important;
         border-radius: 5px;
         line-height: 25px;
+        color: #fff !important;
     }
    
     .form-control:focus{
