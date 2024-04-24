@@ -478,39 +478,58 @@ class AdminVideosController extends Controller
         $pack = $package->package;
         $mp4_url = $data["file"];
         $settings = Setting::first();
+        $libraryid = 173797;
+        $client = new Client();
 
-        $client = new \GuzzleHttp\Client();
+        $filename = pathinfo($request->file->getClientOriginalName(), PATHINFO_FILENAME);
 
-        $response = $client->request('POST', 'https://video.bunnycdn.com/library/173797/videos', [
-          'body' => '{"title":"Test Video"}',
-          'headers' => [
-            'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
-            'accept' => 'application/json',
-            'content-type' => 'application/json',
-          ],
-        ]);
-        $responseJson = $response->getBody();
-        // Decode the JSON string into a PHP associative array
-        $responseData = json_decode($responseJson, true);
-
-        // Access the 'guid' field from the associative array
-        $guid = $responseData['guid'];
-        // echo $guid;
+        // Step 1: Create the video entry in the library
+        try {
+            $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                'headers' => [
+                    'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
+                    'Accept' => 'application/json',
+                ]
+            ]);
         
-        // exit;
+            $responseData = json_decode($response->getBody(), true);
+            $guid = $responseData['guid'];
+        } catch (RequestException $e) {
+            echo "Error creating video entry: " . $e->getMessage();
+            exit;
+        }
+        
+        // Step 2: Upload the video file
 
-        $client = new \GuzzleHttp\Client();
+        try {
 
-        $response = $client->request('PUT', 'https://video.bunnycdn.com/library/173797/videos'.'/'.$guid, [
-            'body' => $mp4_url,
-            'headers' => [
-            'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
-            'accept' => 'application/json',
-        ],
-        ]);
+            $context = stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]);
+            // Fetch video file content using file_get_contents with SSL context
+            $videoData = file_get_contents($mp4_url, false, $context);
+            
+            // $videoData = fopen($videoPath, 'rb'); // Open file handle
+            $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                'headers' => [
+                    'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
+                    'Content-Type' => 'video/mp4' // assuming MP4, adjust accordingly
+                ],
+                'body' => $videoData // Upload file directly
+            ]);
+        
+            echo "Video uploaded successfully: " . $response->getBody();
+        } catch (RequestException $e) {
+            echo "Error uploading video: " . $e->getMessage();
+            exit;
+        }
 
-        echo $response->getBody();
         exit;
+
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
