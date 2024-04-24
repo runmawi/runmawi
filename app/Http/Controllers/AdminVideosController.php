@@ -2749,31 +2749,74 @@ class AdminVideosController extends Controller
             BlockVideo::where("video_id", $video->id)->delete();
         }
 
+        // if (!empty($files != "" && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = "public/uploads/subtitles/";
+        //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data["sub_language"] =
+        //                 $languages[
+        //                     $key
+        //                 ]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data["shortcode"] = $shortcodes[$key];
+        //             $subtitle_data["movie_id"] = $id;
+        //             $subtitle_data["url"] =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
         if (!empty($files != "" && $files != null)) {
             foreach ($files as $key => $val) {
                 if (!empty($files[$key])) {
                     $destinationPath = "public/uploads/subtitles/";
                     $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data["sub_language"] =
-                        $languages[
-                            $key
-                        ]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data["shortcode"] = $shortcodes[$key];
-                    $subtitle_data["movie_id"] = $id;
-                    $subtitle_data["url"] =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle->save();
+
+                    MoviesSubtitles::where('movie_id',$video->id)->where('shortcode',$shortcodes[$key])->delete();
+                    
+                    // Move uploaded file to destination path
+                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                    // Read contents of the uploaded file
+                    $contents = file_get_contents($destinationPath . $filename);
+                    
+                    // Convert time format and add line numbers
+                    $lineNumber = 0;
+                    $convertedContents = preg_replace_callback(
+                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                        function ($matches) use (&$lineNumber) {
+                            $lineNumber++;
+                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                        },
+                        $contents
+                    );
+                    
+                    // Store converted contents to a new file
+                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+                    if (!file_exists($newDestinationPath)) {
+                        mkdir($newDestinationPath, 0755, true);
+                    }
+                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                    // Save subtitle data to database
+                    $subtitle_data = [
+                        "movie_id" => $video->id,
+                        "shortcode" => $shortcodes[$key],
+                        "sub_language" => $languages[$key],
+                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                    $video_subtitle = MoviesSubtitles::create($subtitle_data);
                 }
             }
         }
-
         // Admin Video Ads inputs
 
         if( !empty($request->ads_devices)){
@@ -3899,25 +3942,71 @@ class AdminVideosController extends Controller
         //         }
         //     }
         // }
-        if (!empty($files != '' && $files != null)) {
+        // if (!empty($files != '' && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = 'public/uploads/subtitles/';
+        //             $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data['shortcode'] = $shortcodes[$key];
+        //             $subtitle_data['movie_id'] = $id;
+        //             $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
+
+
+        if (!empty($files != "" && $files != null)) {
             foreach ($files as $key => $val) {
                 if (!empty($files[$key])) {
-                    $destinationPath = 'public/uploads/subtitles/';
-                    $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data['shortcode'] = $shortcodes[$key];
-                    $subtitle_data['movie_id'] = $id;
-                    $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle->save();
+                    $destinationPath = "public/uploads/subtitles/";
+                    $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+                    
+                    // Move uploaded file to destination path
+                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                    // Read contents of the uploaded file
+                    $contents = file_get_contents($destinationPath . $filename);
+                    
+                    // Convert time format and add line numbers
+                    $lineNumber = 0;
+                    $convertedContents = preg_replace_callback(
+                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                        function ($matches) use (&$lineNumber) {
+                            $lineNumber++;
+                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                        },
+                        $contents
+                    );
+                    
+                    // Store converted contents to a new file
+                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+
+                    if (!file_exists($newDestinationPath)) {
+                        mkdir($newDestinationPath, 0755, true);
+                    }
+                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                    // Save subtitle data to database
+                    $subtitle_data = [
+                        "movie_id" => $video->id,
+                        "shortcode" => $shortcodes[$key],
+                        "sub_language" => $languages[$key],
+                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                    $video_subtitle = MoviesSubtitles::create($subtitle_data);
                 }
             }
         }
+
         /*Advertisement Video update starts*/
         //  if($data['ads_id'] != 0){
 

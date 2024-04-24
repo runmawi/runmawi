@@ -767,6 +767,85 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
+
+            {{-- Recurring Program  --}}
+            
+            <div class="row mt-3">
+
+                <div class="col-sm-3 recurring_timezone" style="{{  !empty($video->recurring_timezone)  ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                    <select class="form-control" name="recurring_timezone"  >
+                        @foreach ($Timezone as $item)
+                            <option value={{ $item->id }} {{ $item->id == $video->recurring_timezone ? "selected" : null }}>{{ $item->time_zone  }} </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-sm-3" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Recurring Program')}} </label>
+                    <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
+                        <option value=" ">Select the Recurring Period </option>
+                        <option value="daily" {{ !empty(($video->recurring_program=="daily"))? "selected" : "" }} >  Daily </option>
+                        <option value="weekly" {{ !empty(($video->recurring_program=="weekly"))? "selected" : "" }} >  Weekly </option>
+                        <option value="monthly" {{ !empty(($video->recurring_program=="monthly"))? "selected" : "" }} > Monthly </option>
+                        <option value="custom" {{ !empty(($video->recurring_program=="custom"))? "selected" : "" }} > Custom Time Period</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2 recurring_program_week_day" style="{{ !empty($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
+                    <label class="m-0">{{ _('Week Days ')}} </label>
+                    <select class="form-control" name="recurring_program_week_day" >
+                        <option value="0"  {{ !empty(($video->recurring_program_week_day=="0"))? "selected" : "" }}  > Sunday </option>
+                        <option value="1"  {{ !empty(($video->recurring_program_week_day=="1"))? "selected" : "" }}  >  Monday </option>
+                        <option value="2"  {{ !empty(($video->recurring_program_week_day=="2"))? "selected" : "" }} >  Tuesday </option>
+                        <option value="3"  {{ !empty(($video->recurring_program_week_day=="3"))? "selected" : "" }} > Wednesday </option>
+                        <option value="4"  {{ !empty(($video->recurring_program_week_day=="4"))? "selected" : "" }} > Thrusday</option>
+                        <option value="5"  {{ !empty(($video->recurring_program_week_day=="5"))? "selected" : "" }} > Friday</option>
+                        <option value="6"  {{ !empty(($video->recurring_program_week_day=="6"))? "selected" : "" }} > Saturday</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2 recurring_program_month_day"  style="{{ !empty($video->recurring_program_month_day)  ? '' : 'display: none' }}">
+                    <label class="m-0">{{ _('Month Days ')}} </label>
+                    <select class="form-control" name="recurring_program_month_day" >
+                        @for ($i = 1; $i <= 31 ; $i++)
+                            <option value="{{ $i }}" {{ !empty(($video->recurring_program_month_day == $i ))? "selected" : "" }} > {{ $i }} </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div class="col-sm-2 program_time"  style="{{ !empty($video->program_start_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program Start Time   </label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="program_start_time" value="{{ !empty($video->program_start_time) ? $video->program_start_time : null }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2 program_time" style="{{ !empty($video->program_end_time)  ? '' : 'display: none' }}" >
+                    <label class="m-0">Program End Time   </label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_start_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom Start Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_start_program_time" value="{{ !empty($video->custom_start_program_time) ? $video->custom_start_program_time : null }}"  />
+                    </div>
+                </div>
+
+                <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_end_program_time) ? '' : 'display: none' }}" >
+                    <label class="m-0">Custom End Program Time </label>
+                    <div class="panel-body">
+                        <input type="datetime-local" class="form-control" name="custom_end_program_time" value="{{ !empty($video->custom_end_program_time) ? $video->custom_end_program_time : null }}"  />
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+            <br>
+                    
 			<!-- row -->
 
 			@if(!isset($video->user_id))

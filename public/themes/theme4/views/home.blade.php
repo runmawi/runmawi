@@ -195,7 +195,7 @@
             @forelse ($order_settings as $key => $item) 
             
                @if( $item == 'latest_videos' && $home_settings->latest_videos == 1 )         {{-- latest videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'order_settings_list' => $order_settings_list ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'order_settings_list' => $order_settings_list ,'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
@@ -208,7 +208,7 @@
 
                @if( $item == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}}
                      <?php $parentCategories =   App\VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get(); ?>
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ,'multiple_compress_image' => $multiple_compress_image ])->content() !!}
                @endif
 
                @if( $item == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}}
@@ -266,7 +266,7 @@
                @endif
 
                @if( $item == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list ,'multiple_compress_image' => $multiple_compress_image  ])->content() !!}
                @endif
                
                @if( $item == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
