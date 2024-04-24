@@ -479,100 +479,38 @@ class AdminVideosController extends Controller
         $mp4_url = $data["file"];
         $settings = Setting::first();
 
+        $client = new \GuzzleHttp\Client();
 
-        // $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://video.bunnycdn.com/library/173797/videos', [
+          'body' => '{"title":"Test Video"}',
+          'headers' => [
+            'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+          ],
+        ]);
+        $responseJson = $response->getBody();
+        // Decode the JSON string into a PHP associative array
+        $responseData = json_decode($responseJson, true);
 
-        // // Assuming the video data is sent in the request body
-        // $videoData = $mp4_url;
-        // $response = $client->request('PUT', 'https://video.bunnycdn.com/library/173797', [
-        // // $response = $client->request('PUT', 'https://video.bunnycdn.com/library/173797/videos/Testdemo', [
-        // 'headers' => [
-        //     'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
-        //     // 'AccessKey' => '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73',
-        //     'accept' => 'application/json',
-        // ],
-        // 'body' => $videoData, // Use the video data directly as the request body
-        // ]);
-
-
-
-        // $client = new \GuzzleHttp\Client();
-
-        // $response = $client->request('POST', 'https://video.bunnycdn.com/library/173797/videos', [
-        // // 'body' => '{"title":"$videoData","thumbnailTime":null,"collectionId":null}',
-        // 'body' => $videoData,
-        // 'headers' => [
-        //     'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
-        //     'accept' => 'application/json',
-        //     // 'content-type' => 'application/json',
-        //     'content-type' => 'video/mp4',
-        // ],
-        // ]);
-
-        // echo $response->getBody();
-
-        // echo"<pre>"; echo $response->getBody();
-        // //  print_r($response); 
-        //  exit;
-
+        // Access the 'guid' field from the associative array
+        $guid = $responseData['guid'];
+        // echo $guid;
         
-            $video_path = 'https://localhost/flicknexs/storage/app/public/nFaysfbW20WNtGUB.mp4';
-            $auth_key = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
-            $library_id = '173797';
-            $video_name = 'Testdemo';
-            $streamlibraryauthkey = 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4';
-            $base_url = "https://video.bunnycdn.com/library/";
+        // exit;
 
-            // Initialize cURL session
-            $ch = curl_init();
+        $client = new \GuzzleHttp\Client();
 
-            // Set cURL options
-            curl_setopt($ch, CURLOPT_URL, $base_url . $library_id );
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array("title" => $video_name)));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "AccessKey: " . $auth_key,
-                "Content-Type: application/json"
-            ));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = $client->request('PUT', 'https://video.bunnycdn.com/library/173797/videos'.'/'.$guid, [
+            'body' => $mp4_url,
+            'headers' => [
+            'AccessKey' => 'cbf347af-a25f-425e-9149cc9c5cc1-276d-4aa4',
+            'accept' => 'application/json',
+        ],
+        ]);
 
-            // Execute cURL request
-            $response = curl_exec($ch);
-
-            // Close cURL session
-            curl_close($ch);
-
-            // Check if video create was successful
-            if ($response !== false) {
-                // Initialize cURL session
-                $ch = curl_init();
-
-                // Set cURL options
-                curl_setopt($ch, CURLOPT_URL, $base_url . $library_id);
-                curl_setopt($ch, CURLOPT_PUT, 1);
-                curl_setopt($ch, CURLOPT_INFILE, fopen($video_path, "rb"));
-                curl_setopt($ch, CURLOPT_INFILESIZE, filesize($video_path));
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "AccessKey: " . $auth_key
-                ));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                // Execute cURL request
-                $response = curl_exec($ch);
-
-                // Close cURL session
-                curl_close($ch);
-                echo"<pre>"; print_r($response); exit;
-
-                // Check if upload was successful
-                if ($response !== false) {
-            echo"<pre>"; print_r($response); exit;
-            return true;
-                }
-            }
-            echo"<pre>"; print_r($response); exit;
-            return false;
-
+        echo $response->getBody();
+        exit;
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
