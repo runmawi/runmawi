@@ -128,7 +128,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img class="img-fluid w-100" loading="lazyload" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
 
                                 
                                     
@@ -153,26 +153,6 @@
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?> -->
                                     </a>
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
-                                          }
-                                       ?>
-                                    </p>
-                                    <?php } ?>
-                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?> -->
 
 
                                     <div class="hover-buttons text-white">

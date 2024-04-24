@@ -43,7 +43,14 @@ $data = $data->latest()->limit(15)->get();
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $featured_videos->title }}" src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
+                                            @endif
                                         
                                             @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
@@ -89,7 +96,14 @@ $data = $data->latest()->limit(15)->get();
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                            @if ( $multiple_compress_image == 1)
+                                                                <img  alt="latest_series" src="{{$featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -113,7 +127,14 @@ $data = $data->latest()->limit(15)->get();
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img  alt="latest_series" src="{{$featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_player_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_player_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_player_image.' 420w') }}" >
+                                            @else
+                                                <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                            @endif
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

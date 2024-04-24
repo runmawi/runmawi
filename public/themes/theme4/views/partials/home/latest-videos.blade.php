@@ -42,14 +42,14 @@ $data = $data->latest()->limit(15)->get();
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            @if ( compress_responsive_image_enable() == 1)
+                                            @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}" >
                                             @else
                                                 <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series">
-                                            @endif 
+                                            @endif
 
                                             @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
@@ -94,14 +94,14 @@ $data = $data->latest()->limit(15)->get();
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            @if ( compress_responsive_image_enable() == 1)
+                                                            @if ( $multiple_compress_image == 1)
                                                                 <img  alt="latest_series" src="{{$latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_player_image.' 640w') }},
                                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" >
                                                             @else
                                                                 <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="latest_series">
-                                                            @endif 
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,7 +125,7 @@ $data = $data->latest()->limit(15)->get();
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            @if ( compress_responsive_image_enable() == 1)
+                                            @if ( $multiple_compress_image == 1)
                                                 <img  alt="" width="100%" src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_player_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_player_image.' 640w') }},

@@ -273,7 +273,7 @@
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
+                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -290,7 +290,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
                                             </div>
                                         </a>
                                     </li>
@@ -361,7 +361,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
+                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>

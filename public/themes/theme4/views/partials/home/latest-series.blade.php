@@ -32,7 +32,7 @@
                                 <li class="slick-slide" data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="latest_series">
+                                                <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="latest_series">
                                         </div>
                                     </a>
                                 </li>
@@ -98,7 +98,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}" alt="latest_series">
+                                                                <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}" alt="latest_series">
                                                         </div>
                                                     </div>
                                                 </div>

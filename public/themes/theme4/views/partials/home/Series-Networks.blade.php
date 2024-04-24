@@ -38,7 +38,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
+                                                <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
@@ -97,7 +97,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $series_networks->banner_image_url  }}" alt="">
+                                                                <img class="lazy" src="{{ $series_networks->banner_image_url  }}" alt="series">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,7 +126,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="player-img" width="100%">
+                                                    <img class="lazy" src="{{ $series_networks->banner_image_url  }}" alt="series">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
