@@ -16,14 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            @if ( compress_responsive_image_enable() == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $seriesGenre->title }}" src="{{ $seriesGenre->image ?  URL::to('public/uploads/images/'.$seriesGenre->image) : default_vertical_image_url() }}"
-                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$seriesGenre->responsive_image.' 860w') }},
-                                                    {{ URL::to('public/uploads/Tabletimages/'.$seriesGenre->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$seriesGenre->responsive_image.' 420w') }}" >
-                                            @else
                                                 <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
-                                            @endif
                                         </div>
                                     </a>
                                 </li>
@@ -102,14 +95,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            @if ( compress_responsive_image_enable() == 1)
-                                                                <img  alt="latest_series" src="{{$seriesGenre->player_image ?  URL::to('public/uploads/images/'.$seriesGenre->player_image) : default_horizontal_image_url() }}"
-                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$seriesGenre->responsive_player_image.' 860w') }},
-                                                                    {{ URL::to('public/uploads/Tabletimages/'.$seriesGenre->responsive_player_image.' 640w') }},
-                                                                    {{ URL::to('public/uploads/mobileimages/'.$seriesGenre->responsive_player_image.' 420w') }}" >
-                                                            @else
                                                                 <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : default_horizontal_image_url() }}" alt="Videos">
-                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -157,7 +143,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                @if ( compress_responsive_image_enable() == 1)
+                                                @if ( $multiple_compress_image == 1)
                                                     <img  alt="latest_series" src="{{$series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series_details->responsive_player_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series_details->responsive_player_image.' 640w') }},
