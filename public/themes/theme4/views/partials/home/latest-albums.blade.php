@@ -1,4 +1,4 @@
-@if (!empty($data) && $data->isNotEmpty())
+@if (!empty($albums) && $albums->isNotEmpty())
 
     <section id="iq-favorites">
         <div class="container-fluid pl-0">
@@ -13,7 +13,7 @@
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="albums-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $key => $albums)
+                            @foreach ($albums as $key => $albums_data )
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -25,7 +25,7 @@
                         </ul>
 
                         <ul id="trending-slider albums-videos-slider" class="list-inline p-0 m-0 align-items-center albums-videos-slider">
-                            @foreach ($data as $key => $albums )
+                            @foreach ($albums as $key => $albums_data )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="  drp-close">×</button>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        @foreach ($data as $key => $albums )
+        @foreach ($albums as $key => $albums_data )
             <div class="modal fade info_model" id="{{ "Home-albums-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
