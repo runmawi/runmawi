@@ -2,7 +2,7 @@
     $data->map(function($item){
         $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
                                                     ->map(function ($item) {
-                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
                                                         return $item;
                                                 });
 
