@@ -139,7 +139,7 @@ h3.text-center.title{
 <div class="main-content">
     
         <!-- MainContent -->
-    <section class="m-profile  setting-wrapper pt-0 p-3">        
+    <section class="m-profile  setting-wrapper pt-0 p-3 mb-5">        
         <div class="container">
          <!--   <div class="sign-user_card">-->
                 <div class="row justify-content-center">
