@@ -255,6 +255,21 @@
                   </div>
                   <!-- Video upload -->   
                   <div id="video_upload" style="">
+                     @if(@$theme_settings->enable_bunny_cdn == 1)
+                        
+                        <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
+                        <!-- UploadlibraryID -->
+                        <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                                 <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                    @foreach($videolibrary as $library)
+                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                    @endforeach
+                           </select>  
+
+                           <br>
+                     @else
+                        <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                     @endif
                      <div class='content file'>
                         <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
                         <!-- Dropzone -->
@@ -1946,6 +1961,7 @@ $(document).ready(function($){
          acceptedFiles: "video/mp4,video/x-m4v,video/*",
      });
      myDropzone.on("sending", function(file, xhr, formData) {
+        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
         formData.append("_token", CSRF_TOKEN);
    //      checkUploadSpeed( 10, function ( speed, average ) {
    //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
@@ -1956,6 +1972,10 @@ $(document).ready(function($){
          console.log(value.video_title);
          if(value.success == 2){
             swal("File not uploaded !");   
+            location.reload();
+         }if(value.error == 3){
+         console.log(value.error);
+            alert("File not uploaded Choose Library!");   
             location.reload();
          }else{
             $('#Next').show();
