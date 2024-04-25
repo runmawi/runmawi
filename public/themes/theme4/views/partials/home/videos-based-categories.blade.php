@@ -1,14 +1,14 @@
 <?php 
     $check_Kidmode = 0 ;
 
-    $data = App\VideoCategory::query()->limit(15)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+    $data = App\VideoCategory::query()->limit(15)->whereHas('category_videos', function ($query) use ($check_Kidmode,$videos_expiry_date_status) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
         
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -17,7 +17,7 @@
         }
     })
 
-    ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+    ->with(['category_videos' => function ($videos) use ($check_Kidmode,$videos_expiry_date_status) {
         $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
@@ -27,7 +27,7 @@
             $videos->whereNotIn('videos.id', Block_videos());
         }
 
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -39,14 +39,14 @@
     }])
     ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
     ->where('video_categories.in_home', 1)
-    ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+    ->whereHas('category_videos', function ($query) use ($check_Kidmode,$videos_expiry_date_status) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
 
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -97,7 +97,7 @@
                                                     <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
                                                 @endif  
 
-                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                @if ($videos_expiry_date_status == 1 && optional($videos)->expiry_date)
                                                     <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                                 @endif
                                             
@@ -121,14 +121,14 @@
                                                             <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                                @if ($videos_expiry_date_status == 1 && optional($videos)->expiry_date)
                                                                     <ul class="vod-info">
                                                                         <li>{{ "Expiry In ". Carbon\Carbon::parse($videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                                     </ul>
                                                                 @endif
 
                                                                 @if ( optional($videos)->description )
-                                                                    <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
+                                                                    <div class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</div>
                                                                 @endif
 
                                                                 <div class="p-btns">

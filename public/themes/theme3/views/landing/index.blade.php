@@ -52,8 +52,11 @@
         <section class="video-sections pb-5">
                 {{-- About section --}}
 
-                <div class="container-fluid mt-4">
-                    <p class="container-fluid text-center mt-5"> {{ 'CADENCE gives you access to one of the largest resources dedicated to music on film; “live” and studio performance, movies, interviews, documentaries, tutors, professional advice and more... Around the world, from Afghanistan to Zimbabwe; with every instrument, from the Accordion to the Zurna. It is a unique streaming service, created and curated by music fans for music fans' }}</p>
+                <div class="container-fluid pt-4">
+                    <p class="container-fluid text-center m-0"> {{ "CADENCE gives you access to one of the largest resources dedicated to music on film; “live” and studio performance, " }}</p>
+                    <p class="container-fluid text-center m-0"> {{ "movies, interviews, documentaries, tutors, professional advice and more... Around the world, from Afghanistan to " }}</p>
+                    <p class="container-fluid text-center m-0"> {{ "Zimbabwe; with every instrument, from the Accordion to the Zurna. It is a unique streaming service, created and curated" }}</p>
+                    <p class="container-fluid text-center m-0"> {{ "by music fans for music fans  " }}</p>
 
                     <div class="mail-address">
                         <h5 class="font-weight-bold text-center text-primary mt-5" style="color: var(--iq-primary) !important;">{{ 'Create or restart your CadEnce membership to unlock a world of music on film' }}</h5>
@@ -142,11 +145,6 @@
                                 <div class="row">
                                     <div class="col-sm-12 overflow-hidden">
 
-                                        {{-- Header --}}
-                                        <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
-                                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
-                                        </div>
 
                                         <div class="favorites-contens">
                                             <ul class="favorites-slider list-inline p-0 mb-0">
@@ -162,7 +160,7 @@
                                                                         
 
                                                                         <div class="hover-buttons">
-                                                                            <a class="" href="{{ $latest_video->image ? URL::to('category/videos/'.$latest_video->slug ) : default_vertical_image_url() }}">
+                                                                            <a>
                                                                                 <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                                                                     <span class="text pr-2"> Play </span>
                                                                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
@@ -184,6 +182,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </section>
                     @endforeach
                 @endif
@@ -200,6 +199,122 @@
                     <h6 class="text-center">{{ "harmony, rhythm, and timbre." }}</h6>
                     <h6 class="text-center">{{ "It is one of the universal cultural aspects of all human societies.”" }}</h6>
                 </div>
+
+                <div class="col-lg-6 col-12 together-img mt-5">
+                    <img src="<?php echo URL::to('/assets/img/togethers.webp'); ?>" width="100%" alt="together">
+                </div>
+            </div>
+
+            <!-- faq -->
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12">
+                    <span>
+                        <h3 class="vid-title mt-4 pb-2">{{ __('Frequently asked questions?') }}</h3>
+                    </span>
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "What is Cadence?" }}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>We think of Raycast as a productivity layer that everybody should use to get work done faster. To make it accessible, we don't charge for the individual plan. The plan covers all built-in extensions, such as Clipboard History, Calendar or Window Management and provides access to all public extensions built by our community.</p>
+                    </details>
+                    
+            
+                    
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "Where can i watch Cadence?" }}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>We don't have an exact date right now, but we will launch Raycast for Teams in 2022. You can sign up to get early access above, and be the first to hear when we're launching it.</p>
+                    </details> 
+                    
+                    
+                    
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "How do i sign up to the Cadence project?" }}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>We don't have an exact date right now, but we will launch Raycast for Teams in 2022. You can sign up to get early access above, and be the first to hear when we're launching it.</p>
+                    </details>
+                    
+                    
+                    
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "What can i expect from cadence?" }}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>Yes, you can create personal Extensions that are personalized to you, and speed up your productivity, and have team Extensions that can be shared around in your organization for everyone to use. Team Extensions will be available in the Store command, behind a filter for your Team. This is where all of your Team Extensions will live, and where you can install them.</p>
+                    </details>
+                    
+                    
+                    
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "Could i license film to the cadence project?"}}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>Team features will cost $10 per user, per month.</p>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "Can I receive news about the latest from Cadence?"}}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>Team features will cost $10 per user, per month.</p>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="d-flex justify-content-between">
+                                <p>{{ "How and when can I cancel my Candence subscription?"}}</p>
+                                <span class="material-symbols-outlined"><i class="fa fa-caret-down" aria-hidden="true"></i></span>  
+                            </span>
+                        </summary>
+                        <p>Team features will cost $10 per user, per month.</p>
+                    </details>
+                    
+                </div>
+            </div>
+
+            <div class="virtually">
+                <h6 class="font-weight-bold text-center">{{ "From the Familiar to the virtually unknown, from the classic to the obscure, you will find it on CADENCE" }}</h6>
+            </div>
+            
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12 together-img mt-5">
+                    <img src="<?php echo URL::to('/assets/img/Characters.webp'); ?>" width="100%" alt="together">
+                </div>
+                <div class="virtually1 mt-3">
+                    <h6 class="font-weight-bold text-center">{{ "Mississippi John Hurt performing at the 1963 Newport Folk Festival (Ann Characters)" }}</h6>
+                </div>
+            </div>
+
+            <div class="flim-wanted">
+                <h5 class="text-center font-weight-bold mb-5">{{ "Films Wanted" }}</h5>
+                <h6 class="text-center font-weight-bold">{{ "Do you own the copyright to music related film?" }}</h6>
+                <h6 class="text-center font-weight-bold">{{ "Would you be interested in licensing them for the CADENCE projects?" }}</h6>
+                <h6 class="text-center font-weight-bold">{{ "If you own music related film, Such as “Live” Performance," }}</h6>
+                <h6 class="text-center font-weight-bold">{{ "Studio Performance, Documentaries, Interviews, Movies, Tutors, Educational..." }}</h6>
+                <h6 class="text-center font-weight-bold">{{ "then we are interested." }}</h6>
+                <h6 class="text-center font-weight-bold">{{ "Whether you have just one video, tens, hundreds or thousands in good quality" }}</h6>
             </div>
         </div>
 

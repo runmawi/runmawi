@@ -46,6 +46,8 @@
         width: 117px;
     }
     .utilities.d-flex.align-items-center{gap:10px;}
+    .vjs-icon-hd:before{display:none;}
+    .vjs-theme-fantasy .vjs-big-play-button{font-size:45px !important;}
 </style>
 
 
@@ -239,7 +241,7 @@
                                     <!-- Video Modal -->
                                     <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                         aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content" style="background-color: transparent; border: none;">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -250,14 +252,14 @@
                                                         switch ($video->trailer_type) {
                                                             case "video_mp4":
                                                             case "mp4_url": ?>
-                                                                <video id="videoPlayer" class="video-js vjs-default-skin" poster="<?= $playerImageURL ?>"
+                                                                <video id="videoPlayer" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" poster="<?= $playerImageURL ?>"
                                                                     controls data-setup='{"fluid": true}'>
                                                                     <source src="<?= $video->trailer; ?>" type="video/mp4">
                                                                 </video>
                                                                 <?php break;
                                                             case "m3u8":
                                                             case "m3u8_url": ?>
-                                                                <video id="videoPlayer" class="video-js vjs-default-skin" poster="<?= $playerImageURL ?>"
+                                                                <video id="videoPlayer" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" poster="<?= $playerImageURL ?>"
                                                                     controls data-setup='{"fluid": true}'>
                                                                     <source src="<?= $video->trailer; ?>" type="application/x-mpegURL">
                                                                 </video>
