@@ -26,6 +26,11 @@
       <link rel="stylesheet" href="<?= style_sheet_link()?>" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
+
+      <!-- Logo preload -->
+    <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>" as="image">
+    <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>" as="image">
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -115,6 +120,7 @@ text-align: left;
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php } ?>
 
+                            
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
