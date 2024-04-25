@@ -25,8 +25,8 @@
       <!-- Style -->
       <link rel="stylesheet" href="<?= style_sheet_link()?>" />
       <!-- Responsive -->
+      <link rel="preload" fetchpriority="high" href="assets/css/responsive.css" as="style"/>
       <link rel="stylesheet" href="assets/css/responsive.css" />
-
       <!-- Logo preload -->
     <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>" as="image">
     <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>" as="image">
