@@ -392,7 +392,7 @@ class HomeController extends Controller
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 'getfeching'              => $getfeching ,
                 'videos_expiry_date_status' => $videos_expiry_date_status,
-
+                'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
             );
             return Theme::view('home', $data);
         }
@@ -1058,6 +1058,7 @@ class HomeController extends Controller
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                         'getfeching'              => $getfeching ,
                         'videos_expiry_date_status' => $videos_expiry_date_status,
+                        'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
                     );
 
                     return Theme::view('home', $data);
@@ -1803,6 +1804,7 @@ class HomeController extends Controller
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     'getfeching'              => $getfeching ,
                     'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
                 );
                
                 return Theme::view('home', $data);

@@ -1,6 +1,6 @@
-@if (!empty($Series_based_on_category) && $Series_based_on_category->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
 
-    @foreach( $Series_based_on_category as $key => $series_genre )
+    @foreach( $data as $key => $series_genre )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
@@ -115,7 +115,7 @@
 
     {{-- Series depends Episode Modal --}}
 
-    @foreach( $Series_based_on_category as $key => $series_genre )
+    @foreach( $data as $key => $series_genre )
         @foreach ($series_genre->category_series as $series_genre_key => $series )
             @foreach ($series->Series_depends_episodes as $episode_key =>  $episode )
                 <div class="modal fade info_model" id="{{ 'Home-series-based-categories-episode-Modal-'.$key.'-'.$series_genre_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
