@@ -485,7 +485,7 @@ class AdminVideosController extends Controller
         $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
         if($enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
-                $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
+                return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
             }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
                 $value["error"] = 3;
                 return $value ;
@@ -11191,7 +11191,7 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $file_name;
 
-            \LogActivity::addVideoLog("Added Bunny CDN VIDEO URl Video.", $video_id);
+            \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
             return $value ;
         }else{
             $value["success"] = 2;

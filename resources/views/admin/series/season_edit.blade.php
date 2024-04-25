@@ -102,6 +102,20 @@
             </div>
             <div class="clear"></div>
             <div id="episode_uploads">
+                @if(@$theme_settings->enable_bunny_cdn == 1)
+
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                    <!-- videolibrary -->
+                    <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                            <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select> 
+                    @else
+                        <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                     @endif 
+                    <br>
                 <div class="content file">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
@@ -808,7 +822,9 @@
                 type: "post",
                  data: {
                         _token: '{{ csrf_token() }}',
-                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val()
+                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
         
                     },        success: function(value){
                         console.log(value);
@@ -1087,9 +1103,15 @@
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append('series_id',series_id);
             formData.append('season_id',season_id);
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
             formData.append("_token", CSRF_TOKEN);
             // console.log(value)
             this.on("success", function (file, value) {
+                if(value.error == 3){
+                    console.log(value.error);
+                    alert("File not uploaded Choose Library!");   
+                    location.reload();
+                }
                 // console.log(value);
                 $("#buttonNext").show();
                 $("#episode_id").val(value.episode_id);
