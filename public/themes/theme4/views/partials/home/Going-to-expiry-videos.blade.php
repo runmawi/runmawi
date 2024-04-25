@@ -14,7 +14,7 @@
             $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
-        if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+        if( $getfeching !=null && $getfeching->geofencing == 'ON')
         {
             $data = $data->whereNotIn('videos.id',Block_videos());
         }

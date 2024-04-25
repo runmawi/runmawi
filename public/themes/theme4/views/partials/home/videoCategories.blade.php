@@ -61,7 +61,7 @@
 
                                                                                             ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$VideoCategory);
 
-                                                                                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                                                                                            if( $getfeching !=null && $getfeching->geofencing == 'ON')
                                                                                             {
                                                                                                 $videos = $videos->whereNotIn('videos.id',Block_videos());
                                                                                             }
