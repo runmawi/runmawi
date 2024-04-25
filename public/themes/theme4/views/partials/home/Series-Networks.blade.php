@@ -71,7 +71,7 @@
                                                             <ul  id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'networks-depends-series-slider-'.$key .' pl-4 m-0'}}" >
 
                                                                 @foreach ($series_networks->series as $series_key  => $series_details )
-                                                                    <li class="slick-slide">
+                                                                    <li class="slick-slide"  style="width:220px;">
                                                                         <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                             <div class=" position-relative">
                                                                                 <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
