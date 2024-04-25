@@ -46,6 +46,8 @@
         width: 117px;
     }
     .utilities.d-flex.align-items-center{gap:10px;}
+    .vjs-icon-hd:before{display:none;}
+    .vjs-theme-fantasy .vjs-big-play-button{font-size:45px !important;}
 </style>
 
 
