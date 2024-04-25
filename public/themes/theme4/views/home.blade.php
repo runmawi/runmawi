@@ -16,7 +16,7 @@
 
          $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
 
-            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+            if ($getfeching != null && $getfeching->geofencing == 'ON') {
                $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
             }
 
@@ -24,7 +24,7 @@
                $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
             }
 
-            if (videos_expiry_date_status() == 1) {
+            if ($videos_expiry_date_status == 1) {
                $video_banner = $video_banner->where(function ($query) {
                   $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
                });
@@ -40,7 +40,7 @@
                                     ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
                                     ->where('videos.draft', 1)->where('videos.banner', 0);   
 
-                                 if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
                                     $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
                                  }
 
@@ -48,7 +48,7 @@
                                     $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
                                  }
 
-                                 if (videos_expiry_date_status() == 1) {
+                                 if ($videos_expiry_date_status == 1) {
                                     $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
                                        $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
                                     });
@@ -200,7 +200,7 @@
                @endif
 
                @if( $item == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}}
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', [ 'data' => $video_categories,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', [ 'data' => $video_categories,  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status , 'getfeching' => $getfeching ])->content() !!}
                @endif
 
                @if( $item == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}}
@@ -208,7 +208,13 @@
                @endif
 
                @if( $item == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos', 
+                        [ 
+                           'order_settings_list' => $order_settings_list ,
+                           'multiple_compress_image' => $multiple_compress_image , 
+                           'videos_expiry_date_status' => $videos_expiry_date_status,
+                           'getfeching' => $getfeching , 
+                         ])->content() !!}
                @endif
 
                @if( $item == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
@@ -251,7 +257,7 @@
                @endif
 
                @if( $item == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status , 'getfeching' => $getfeching  ])->content() !!}
                @endif
                
                @if( $item == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
@@ -331,7 +337,12 @@
                @endif
                
                @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image , 'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos',
+                   [ 'order_settings_list' => $order_settings_list , 
+                     'multiple_compress_image' => $multiple_compress_image ,
+                     'videos_expiry_date_status' => $videos_expiry_date_status,
+                     'getfeching' => $getfeching , 
+                  ])->content() !!}
                @endif
 
                @if(  $item == 'EPG' && $home_settings->epg == 1 )     

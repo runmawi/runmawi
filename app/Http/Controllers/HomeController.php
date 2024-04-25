@@ -116,7 +116,7 @@ class HomeController extends Controller
         $videos_expiry_date_status = videos_expiry_date_status();
         $default_horizontal_image_url = default_horizontal_image_url();
         $default_vertical_image = default_vertical_image();
-        
+
         $check_Kidmode = 0;
 
         if($settings->enable_landing_page == 1 && Auth::guest()){
@@ -263,11 +263,10 @@ class HomeController extends Controller
                         }else{
                             $blockLiveStreams[]='';
                         }
-                        $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
-                        $livetreams =$livetreams->get();
-                } else{
-                    $livetreams =$livetreams->limit(15)->get();
-                }
+                        $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams)->limit(15)->get();
+            } else{
+                $livetreams =$livetreams->limit(15)->get();
+            }
 
             $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
@@ -341,6 +340,11 @@ class HomeController extends Controller
                                     ->orderBy('created_at', 'DESC')
                                     ->limit(15)
                                     ->get() ,
+
+                'live_banner' => LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
+                                            'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
+                                            ->where('banner', '1')
+                                            ->latest()->limit(15)->get() ,
 
                 'sliders' => Slider::where('active',  '1')->orderBy('order_position', 'ASC')->limit(15)->get() ,
 

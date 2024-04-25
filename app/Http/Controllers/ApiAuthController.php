@@ -24211,6 +24211,16 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
+        // Only for Play Store Testing 
+        if( $request->mobile_number == "8520903675"){
+
+          return response()->json( [
+            'status'    => 'true',
+            'message'    => Str::title('Otp verify successfully !!'),
+          ], 200); 
+
+        }
+
         $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
