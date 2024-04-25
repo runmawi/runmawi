@@ -246,7 +246,7 @@
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
-      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="font">
+      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
    <!-- Remixicon -->
