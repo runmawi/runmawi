@@ -26,7 +26,7 @@
                                                 <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="video_details">
                                             @endif 
 
-                                            @if (videos_expiry_date_status() == 1 && optional($video_details)->expiry_date)
+                                            @if ( $videos_expiry_date_status == 1 && optional($video_details)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                             @endif 
                                         </div>
