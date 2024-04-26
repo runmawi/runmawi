@@ -252,10 +252,6 @@
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
-   <!-- Style -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
 
    <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -263,6 +259,7 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
@@ -271,13 +268,13 @@
    <!-- Typography CSS  -->
    <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
-   
+   <!-- Style -->
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
 
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
    <!-- Responsive -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
 
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
@@ -998,10 +995,10 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.webp')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.webp')?>"  /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>">
