@@ -259,6 +259,48 @@ function about(evt , id) {
  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
  <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
+ <script>
+  function loadScriptWithTimeout(url, timeout = 50000) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+
+        const timer = setTimeout(() => {
+            reject(new Error(`Timed out while loading ${url}`));
+            script.remove();
+        }, timeout);
+
+        script.onload = () => {
+            clearTimeout(timer);
+            resolve();
+        };
+
+        script.onerror = () => {
+            clearTimeout(timer);
+            reject(new Error(`Failed to load ${url}`));
+        };
+
+        document.body.appendChild(script);
+    });
+}
+
+// Specify the URL for your hls.min.js file
+const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.min.js';?>";
+const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
+
+// Load HLS.js with a timeout
+loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
+    .then(() => {
+        console.log(`HLS.js loaded successfully.`);
+        // You can now use HLS.js functionalities safely
+    })
+    .catch((error) => {
+        console.error(`Error loading HLS.js:`, error);
+        // Handle the error (e.g., show a message to the user)
+    });
+
+ </script>
+
 <script>
     function loadJS(u) {
         var r = document.getElementsByTagName("script")[0],
