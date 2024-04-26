@@ -249,13 +249,11 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
-   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-   
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    
@@ -1002,7 +1000,7 @@
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.webp')?>" /></a>
               <?php } ?>
               </div>
               
@@ -1185,42 +1183,7 @@
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                            </svg>
-                              <div class="iq-sub-dropdown">
-                                 <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body">
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                <small class="font-size-12"> just now</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                <small class="font-size-12">15 minutes ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                <small class="font-size-12">1 hour ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                    </div>
-                                 </div>
-                              </div>
+                              
                            </li>
                            <?php if(Auth::guest()): ?>
                               <?php if( $signin_header == 1 ): ?>
@@ -1912,7 +1875,7 @@
           });
       </script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
 <script>
                   document.getElementById('languageSearch').addEventListener('click', function(event) {
@@ -1944,9 +1907,7 @@
                            dropdownContent.style.display = "none";
                         }
                   });
-               } else {
-                  console.error("Error: Dropdown elements not found in the document.");
-               }
+               } 
             });
 
 
