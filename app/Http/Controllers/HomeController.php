@@ -73,6 +73,7 @@ use App\TVLoginCode;
 use App\Watchlater ;
 use App\OrderHomeSetting;
 use App\ChannelVideoScheduler;
+use App\AdminAdvertistmentBanners;
 use App\AdminEPGChannel;
 use App\Wishlist;
 use App\TimeZone;
@@ -116,6 +117,14 @@ class HomeController extends Controller
         $videos_expiry_date_status = videos_expiry_date_status();
         $default_horizontal_image_url = default_horizontal_image_url();
         $default_vertical_image = default_vertical_image();
+
+                        // Order Setting 
+        $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
+            return $value === '1';  
+        })->keys()->toArray(); 
+
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
+        
 
         $check_Kidmode = 0;
 
@@ -390,10 +399,24 @@ class HomeController extends Controller
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                 'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                'getfeching'              => $getfeching ,
+                'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                'order_settings_list' => OrderHomeSetting::get(), 
+                'order_settings'  => $order_settings ,
+                'getfeching'      => $getfeching ,
                 'videos_expiry_date_status' => $videos_expiry_date_status,
-
+                'Series_Networks_Status' => Series_Networks_Status(),
             );
+
+            if ( $this->HomeSetting->theme_choosen == "theme4") {
+                if($request->ajax()) {
+                    return $data = [
+                        "view" => Theme::watchPartial('home_sections', $data ),
+                        'url' => $data['order_settings']->nextPageUrl()
+                    ];
+                }
+            }
+
             return Theme::view('home', $data);
         }
         else
@@ -1056,9 +1079,23 @@ class HomeController extends Controller
                         'Series_based_on_Networks' => $Series_based_on_Networks ,
                         'Series_based_on_category' => $Series_based_on_category ,
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                        'getfeching'              => $getfeching ,
+                        'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                        'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                        'order_settings_list' => OrderHomeSetting::get(), 
+                        'order_settings'  => $order_settings ,
+                        'getfeching'      => $getfeching ,
                         'videos_expiry_date_status' => $videos_expiry_date_status,
+                        'Series_Networks_Status' => Series_Networks_Status(),
                     );
+
+                    if ($this->HomeSetting->theme_choosen == "theme4") {
+                        if($request->ajax()) {
+                            return $data = [
+                                "view" => Theme::watchPartial('home_sections', $data ),
+                                'url' => $data['order_settings']->nextPageUrl()
+                            ];
+                        }
+                    }
 
                     return Theme::view('home', $data);
                 }
@@ -1670,7 +1707,6 @@ class HomeController extends Controller
 
                 $livetreams =$livetreams->limit(15)->get();
 
-
                 $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
                     $item['Series_depends_Networks'] = Series::where('series.active', 1)
@@ -1732,6 +1768,14 @@ class HomeController extends Controller
                     return $category;
                 });
 
+                // Order Setting 
+
+                $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
+                    return $value === '1';  
+                })->keys()->toArray(); 
+
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
+
                 $data = array(
 
                     'currency' => $currency,
@@ -1788,7 +1832,7 @@ class HomeController extends Controller
                     'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
                     'countryName'            => $countryName,
                     'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                        'preference_Language'=> !empty($preference_Lan) ? $preference_Lan : [],
+                    'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
                     'Family_Mode'          => $Family_Mode,
                     'Kids_Mode'            => $Kids_Mode,
                     'Mode'                 => $Mode,
@@ -1801,10 +1845,24 @@ class HomeController extends Controller
                     'Series_based_on_Networks' => $Series_based_on_Networks ,
                     'Series_based_on_category' => $Series_based_on_category ,
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                    'getfeching'              => $getfeching ,
+                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                    'order_settings_list' => OrderHomeSetting::get(), 
+                    'order_settings'  => $order_settings ,
+                    'getfeching'      => $getfeching ,
                     'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'Series_Networks_Status' => Series_Networks_Status(),
                 );
-               
+                
+                if ($this->HomeSetting->theme_choosen == "theme4") {
+                    if($request->ajax()) {
+                        return $data = [
+                            "view" => Theme::watchPartial('home_sections', $data ),
+                            'url' => $data['order_settings']->nextPageUrl()
+                        ];
+                    }
+                }
+
                 return Theme::view('home', $data);
             }
         }
