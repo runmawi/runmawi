@@ -22,30 +22,30 @@ $settings = App\Setting::first();
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.png')?>" alt="android" /></a>
+                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.png')?>" alt="ios" /></a>
+                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.webp')?>" alt="ios" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>" aria-label="Download the Androidtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.png')?>" alt="android-tv" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" alt="android-tv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Firetv_url)){ ?>
                   <a href="<?= $app_settings->Firetv_url ?>" aria-label="Download the firetv app">
-                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.png')?>" alt="firetv" /></a>
+                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" alt="firetv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->samsungtv_url)){ ?>
                   <a href="<?= $app_settings->samsungtv_url ?>" aria-label="Download the samsung app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.png')?>" alt="samsng" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.webp')?>" alt="samsng" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Lgtv_url)){ ?>
                   <a href="<?= $app_settings->Lgtv_url ?>" aria-label="Download the lgtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.png')?>" alt="lg" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.webp')?>" alt="lg" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Rokutv_url)){ ?>
                   <a href="<?= $app_settings->Rokutv_url ?>" aria-label="Download the rokutv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.png')?>" alt="roku" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" alt="roku" /></a>
               <?php } ?>
               </div>
               
@@ -62,18 +62,17 @@ $settings = App\Setting::first();
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.png')?>" alt="inst" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t.png')?>" alt="t" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40"
-                               data-src="<?php echo  URL::to('/assets/img/lan/fb.png')?>" alt="fb" />
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" />
                       </a>
                       <?php } ?>
 
@@ -89,7 +88,7 @@ $settings = App\Setting::first();
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.png')?>" alt="link" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" />
                       </a>
                       <?php } ?>
 
@@ -101,7 +100,7 @@ $settings = App\Setting::first();
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.png')?>" alt="youtube" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" />
                       </a>
                       <?php } ?>
 
@@ -113,7 +112,7 @@ $settings = App\Setting::first();
 
                       <?php if(!empty($settings->tiktok_page_id)){?>
                         <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.png')?>" alt="tiktok" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" />
                         </a>
                         <?php } ?>
                         
