@@ -93,7 +93,7 @@
          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
       @endif
       
-      @partial('home_sections');
+      @partial('home_sections')
 
    </div>
 
@@ -245,6 +245,7 @@
                   },
                   complete: function () {
                      $('.auto-load').hide(); 
+                     // $('.theme4-slider').hide();
                   }
                });
          }
