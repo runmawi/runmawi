@@ -239,8 +239,6 @@
     });
 </script>
 
-
-
 <style>
     .series-networks-slider-nav a.slick-slide.slick-current.slick-active{
         display:none;

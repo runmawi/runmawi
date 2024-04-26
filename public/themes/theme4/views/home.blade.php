@@ -1,289 +1,127 @@
-<?php
-      include(public_path('themes/theme4/views/header.php')) ; 
+<?php include(public_path('themes/theme4/views/header.php')) ; ?>
 
-      $home_settings_on_value = collect($home_settings)->filter(function ($value) {
-                           return $value === '1';  
-                  })->keys()->toArray(); 
+         <!-- Slider  -->
+<?php 
 
-      $order_settings = App\OrderHomeSetting::select('video_name')->whereIn( 'video_name', $home_settings_on_value)->orderBy('order_id', 'asc')->get();
+   $check_Kidmode = 0;
 
-      $order_settings_list = App\OrderHomeSetting::get(); 
+   $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
 
-      $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(); 
+      if ($getfeching != null && $getfeching->geofencing == 'ON') {
+         $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
+      }
 
-      $admin_advertistment_banners = App\AdminAdvertistmentBanners::first(); 
+      if ($check_Kidmode == 1) {
+         $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
+      }
 
-      $Series_Networks_Status = Series_Networks_Status();
+      if ($videos_expiry_date_status == 1) {
+         $video_banner = $video_banner->where(function ($query) {
+            $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+         });
+      }
 
-      $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
-                               'multiple_compress_image' => $multiple_compress_image, 
-                               'videos_expiry_date_status' => $videos_expiry_date_status,
-                               'getfeching' => $getfeching
-                              ];
+   $video_banner = $video_banner->latest()->limit(15)->get();
+
+            // Video Category Banner
+
+   $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
+
+   $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                              ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
+                              ->where('videos.draft', 1)->where('videos.banner', 0);   
+
+                           if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                              $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
+                           }
+
+                           if ($check_Kidmode == 1) {
+                              $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
+                           }
+
+                           if ($videos_expiry_date_status == 1) {
+                              $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
+                                 $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+                              });
+                           }
+
+   $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
+
+   $Slider_array_data = array(
+      'sliders'            => $sliders, 
+      'live_banner'        => $live_banner , 
+      'video_banners'      => $video_banner ,
+      'series_sliders'     => $series_sliders ,
+      'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
+      'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
+      'VideoCategory_banner' => $VideoCategory_banner ,
+   );    
+
 ?>
+   
+<div class="main">
 
+   <div class="sidenav">
 
-               <!-- Slider  -->
-      <?php 
-      
-         $check_Kidmode = 0;
+      {{-- Top Ads Banners --}}
 
-         $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
-
-            if ($getfeching != null && $getfeching->geofencing == 'ON') {
-               $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
-            }
-
-            if ($check_Kidmode == 1) {
-               $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
-            }
-
-            if ($videos_expiry_date_status == 1) {
-               $video_banner = $video_banner->where(function ($query) {
-                  $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-               });
-            }
-
-         $video_banner = $video_banner->latest()->limit(15)->get();
-
-                  // Video Category Banner
-
-         $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
-
-         $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                    ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
-                                    ->where('videos.draft', 1)->where('videos.banner', 0);   
-
-                                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
-                                    $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
-                                 }
-
-                                 if ($check_Kidmode == 1) {
-                                    $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
-                                 }
-
-                                 if ($videos_expiry_date_status == 1) {
-                                    $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
-                                       $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-                                    });
-                                 }
-
-         $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
-
-         $Slider_array_data = array(
-            'sliders'            => $sliders, 
-            'live_banner'        => $live_banner , 
-            'video_banners'      => $video_banner ,
-            'series_sliders'     => $series_sliders ,
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
-            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
-            'VideoCategory_banner' => $VideoCategory_banner ,
-         );    
-      
-      ?>
-       
-      <div class="main">
-         <div class="sidenav">
-
-            {{-- Top Ads Banners --}}
-
-            @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->top_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->top_script_url )
-                     <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
-               @endif
-            @endif
-         </div>
-
-
-         <section id="home" class="iq-main-slider p-0">
-            <div id="home-slider" class="slider m-0 p-0">
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/slider-1', $Slider_array_data )->content() !!}
+      @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
+         @if (optional($admin_advertistment_banners)->top_image_url )
+            <div class="col-sm-9 mx-auto ">
+               <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
             </div>
-         </section>
+         @endif
 
-                  <!-- MainContent -->
+         @if (optional($admin_advertistment_banners)->top_script_url )
+               <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
+         @endif
+      @endif
+   </div>
 
-         <div class="main-content">
-            
-                                          {{-- continue watching videos --}}
-            @if( !Auth::guest() && !is_null($continue_watching_setting) &&  $continue_watching_setting == 1 )
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
-            @endif
-            
-            @forelse ($order_settings as $key => $item) 
-            
-               @if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1') {{-- latest videos --}}
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', array_merge($homepage_array_data, ['data' => $featured_videos]) )->content() !!}
-               @endif
+            <!-- Slider -->
+   <section id="home" class="iq-main-slider p-0">
+      <div id="home-slider" class="slider m-0 p-0">
+         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/slider-1', $Slider_array_data )->content() !!}
+      </div>
+   </section>
 
-               @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
-               @endif
+            <!-- MainContent -->
+   <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
+                              
+                           {{-- continue watching videos --}}
+      @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
+         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
+      @endif
+      
+      @partial('home_sections');
 
-               @if(  $item->video_name == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}} 
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories',  array_merge($homepage_array_data, ['data' => $video_categories]) )->content() !!}
-               @endif
+   </div>
 
-               @if(  $item->video_name == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}} 
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/liveCategories', array_merge($homepage_array_data, ['data' => $LiveCategory]) )->content() !!}
-               @endif
+   <div class="auto-load text-center" style="display: none" >
+      <img src="{{ URL::to('public/Thumbnai_images/Loading_1.gif') }}" width="35px" height="35px">
+   </div>
 
-               @if(  $item->video_name == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
-                     {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos',  array_merge($homepage_array_data) )->content() !!}
-                       
-               @endif
+            {{-- End Ads banners --}}
 
-               @if(  $item->video_name == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-albums', array_merge($homepage_array_data, ['data' => $albums]) )->content() !!}
-               @endif
+   @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
 
-               @if(  $item->video_name == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'series' && $home_settings->series == 1 )        {{-- series  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'ContentPartner' && $home_settings->content_partner == 1 )        {{-- content partner  --}}
-                  <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->limit(15)->get(); ?>
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', array_merge($homepage_array_data, ['data' => $ModeratorsUser]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
-                  
-                  <?php $channels = App\Channel::where('status',1)->limit(15)->get(); ?>
-               
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ChannelPartners', array_merge($homepage_array_data, ['data' => $channels]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/series-based-categories', array_merge($homepage_array_data , ['data' => $Series_based_on_category ]) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}} 
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/AudioGenre', array_merge($homepage_array_data, ['data' => $AudioCategory]) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ($homepage_array_data) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/livestreams-based-categories', ($homepage_array_data) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Audios-based-categories',  ($homepage_array_data) )->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'latest_viewed_Videos' && $home_settings->latest_viewed_Videos == 1 ) {{-- Latest Viewed Videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Videos', ($homepage_array_data) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'latest_viewed_Livestream' && $home_settings->latest_viewed_Livestream == 1 ) {{-- Latest Viewed Livestream    --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Livestream', ($homepage_array_data) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'latest_viewed_Audios' && $home_settings->latest_viewed_Audios == 1 ) {{-- Latest Viewed Audios    --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Audios', ($homepage_array_data) )->content() !!}
-               @endif
-               
-               @if(  $item->video_name == 'latest_viewed_Episode' && $home_settings->latest_viewed_Episode == 1 ) {{-- Latest Viewed Episode   --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Episode', ($homepage_array_data) )->content() !!}
-               @endif
-
-               @if( !Auth::guest() &&  $item->video_name == 'my_play_list' && $home_settings->my_playlist == 1 ) {{-- MY PlayList --}}
-
-                  @php
-                     $MyPlaylist = !Auth::guest() ? App\MyPlaylist::where('user_id',Auth::user()->id)->limit(15)->get() : [];
-                  @endphp
-
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/my-playlist', [ 'data' => $MyPlaylist ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'video_play_list' && $home_settings->video_playlist == 1 ) {{-- Video PlayList  --}}
-                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/playlist-videos', [ 'data' => $AdminVideoPlaylist ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-               
-               @if(  $item->video_name == 'video_schedule' && $home_settings->video_schedule == 1 ) {{-- schedule  --}}
-                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/schedule', [ 'data' => $VideoSchedules ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'Recommendation')  {{-- Recommendation --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Top_videos', ['data' => $top_most_watched, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_country', ['data' => $Most_watched_country, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_user', ['data' => $most_watch_user, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'series_episode_overview' && $home_settings->series_episode_overview == 1 )    {{--  series_episode_overview  --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/series_episode_overview', ['data' => $latest_video, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-               @if(  $item->video_name == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
-                  <?php $video_details = App\Video::latest()->first(); ?>
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-               
-               @if( $Series_Networks_Status == 1 &&  $item->video_name == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-               
-               @if(  $Series_Networks_Status == 1 &&   $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-               
-               @if(   $item->video_name == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos',($homepage_array_data) )->content() !!}
-               @endif
-
-               @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )     
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', [  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-               @endif
-
-            @empty
-               
-            @endforelse
-
-                  {{-- End Ads banners --}}
-
-            @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
-
-               @if (optional($admin_advertistment_banners)->bottom_image_url )
-                  <div class="col-sm-9 mx-auto ">
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
-                  </div>
-               @endif
-
-               @if (optional($admin_advertistment_banners)->bottom_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->bottom_script_url }}"></script>
-               @endif
-               
-            @endif
-
+      @if (optional($admin_advertistment_banners)->bottom_image_url )
+         <div class="col-sm-9 mx-auto ">
+            <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
          </div>
-      </div>
-      <!-- back-to-top -->
-      <div id="back-to-top">
-         <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
-      </div>
+      @endif
+
+      @if (optional($admin_advertistment_banners)->bottom_script_url )
+         <script src="{{ optional($admin_advertistment_banners)->bottom_script_url }}"></script>
+      @endif
+         
+   @endif
+</div>
+
+<!-- back-to-top -->
+<div id="back-to-top">
+   <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
+</div>
 
 <?php
    include(public_path('themes/theme4/views/partials/home/home_pop_up.php'));
@@ -357,53 +195,60 @@
    }
 </style>
 
-
 <script>
-   window.onload = function() {
-   const sidenav = document.querySelector('.sidenav');
-   const rightnav = document.querySelector('.rightnav');
-   const headerTopImg = document.querySelector('.header_top_position_img');
-   const bottomNav = document.querySelector('.bottom-nav');
-   const main = document.querySelector('.main');
+      window.onload = function() {
+      const sidenav = document.querySelector('.sidenav');
+      const rightnav = document.querySelector('.rightnav');
+      const headerTopImg = document.querySelector('.header_top_position_img');
+      const bottomNav = document.querySelector('.bottom-nav');
+      const main = document.querySelector('.main');
 
-   // Check if elements exist before modifying styles
-   if (sidenav) {
-      sidenav.style.display = 'block';
-   }
-   if (rightnav) {
-      rightnav.style.display = 'block';
-   }
-   if (headerTopImg) {
-      headerTopImg.style.display = 'none';
-   }
-   if (bottomNav) {
-      bottomNav.style.display = 'none';
-   }
-   if (main) {
-      main.style.marginLeft = '0px';
-      main.style.marginRight = '0px';
-   }
-};
+      // Check if elements exist before modifying styles
+      if (sidenav) {
+         sidenav.style.display = 'block';
+      }
+      if (rightnav) {
+         rightnav.style.display = 'block';
+      }
+      if (headerTopImg) {
+         headerTopImg.style.display = 'none';
+      }
+      if (bottomNav) {
+         bottomNav.style.display = 'none';
+      }
+      if (main) {
+         main.style.marginLeft = '0px';
+         main.style.marginRight = '0px';
+      }
+   };
+      
+   var scrollFetch;
+
+   $(window).scroll(function () {
+      
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         console.log("scrolled");
+
+         if (page_url != null) {
+               $.ajax({
+                  url: page_url,
+                  beforeSend: function () {
+                     $('.auto-load').show(); 
+                  },
+                  success: function (data) {
+                     // console.log(data.view);
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  },
+                  complete: function () {
+                     $('.auto-load').hide(); 
+                  }
+               });
+         }
+      }, 2000);
+   });
 
 </script>
-<!-- <script>
-   window.onload = function() {
-      // Show sidenav, rightnav, and main initially
-      document.querySelector('.sidenav').style.display = 'block';
-      document.querySelector('.rightnav').style.display = 'block';
-      // document.querySelector('.main').style.marginLeft = '37px';
-      // document.querySelector('.main').style.marginRight = '37px';
-
-      // Hide sidenav, rightnav, and main after 5 seconds
-      setTimeout(function() {
-         document.querySelector('.sidenav').style.display = 'none';
-         document.querySelector('.rightnav').style.display = 'none';
-         document.querySelector('.header_top_position_img').style.display = 'none';
-         document.querySelector('.bottom-nav').style.display = 'none';
-         document.querySelector('.main').style.marginLeft = '0px';
-         document.querySelector('.main').style.marginRight = '0px';
-      }, 5000);
-   };
-</script> -->
-
-
