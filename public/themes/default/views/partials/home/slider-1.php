@@ -145,7 +145,7 @@ endif; ?>
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide  slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" style="background-position: right;">
+    <div class="slide  slick-bg s-bg-1" style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
         <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
             <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>     -->

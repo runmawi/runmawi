@@ -739,7 +739,7 @@
                                        </a>
                                  </li> -->
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -756,7 +756,7 @@
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -773,7 +773,7 @@
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -793,7 +793,7 @@
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -993,14 +993,20 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.webp')?>" /></a>
+               <a href="<?= $app_settings->android_url ?>">
+                  <img src="<?php echo URL::to('/assets/img/apps1.webp') ?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
+
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.webp')?>"  /></a>
+               <a href="<?= $app_settings->ios_url ?>">
+                  <img src="<?php echo  URL::to('/assets/img/apps.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-                  <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.webp')?>" /></a>
+               <a href="<?= $app_settings->android_tv ?>">
+                  <img src="<?php echo  URL::to('/assets/img/and.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               </div>
               
@@ -1042,10 +1048,9 @@
                         </div>
                      </div>
                      <div class="mobile-more-menu">
-                        <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                           data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="ri-more-line"></i>
-                        </a>
+                        <button class="more-toggle" id="dropdownMenuButton" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
+                           <i class="ri-more-line"></i>
+                        </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
@@ -1465,7 +1470,7 @@
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 pl-3 pr-3">
-                                       <a class="p-0">
+                                       <a href="#" class="p-0">
                                           <!-- <div class="toggle mt-3 text-right">
                                              <input type="checkbox" id="toggle" />
                                              <label for="toggle"></label>
