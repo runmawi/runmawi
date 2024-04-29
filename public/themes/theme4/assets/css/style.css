@@ -1199,7 +1199,8 @@ body.dark .form-control option {
 .modal-body img{
     width: 100%;
 }
-
+.theme4-slider{display:none;}
+ul#trending-slider{display:none;}
 
 
 

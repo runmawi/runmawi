@@ -102,7 +102,7 @@ text-align: left;
       <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
              
-              <h1 class="km"><?php echo $settings->login_text; ?></h1>
+              <p class="km text-white"><?php echo $settings->login_text; ?></p>
                 
           </div>
          <div class="col-lg-5 col-12 col-md-12 align-self-center">
@@ -231,7 +231,7 @@ text-align: left;
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
                                         </a>
                                     </div>
                                 <?php  } ?>
