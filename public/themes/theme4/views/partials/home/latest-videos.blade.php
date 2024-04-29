@@ -1,4 +1,4 @@
-@if (!empty($latest_videos) && $latest_videos->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
@@ -12,7 +12,7 @@
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($latest_videos as $latest_video)
+                            @foreach ($data as $latest_video)
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -35,7 +35,7 @@
                         </ul>
 
                         <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
-                            @foreach ($latest_videos as $key => $latest_video )
+                            @foreach ($data as $key => $latest_video )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        @foreach ($latest_videos as $key => $latest_video )
+        @foreach ($data as $key => $latest_video )
             <div class="modal fade info_model" id="{{ "Home-latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">

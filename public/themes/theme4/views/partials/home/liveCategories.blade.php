@@ -1,4 +1,4 @@
-@if (!empty($LiveCategory) && $LiveCategory->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
@@ -12,7 +12,7 @@
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="live-category-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($LiveCategory as $livecategories)
+                            @foreach ($data as $livecategories)
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -24,7 +24,7 @@
                         </ul>
 
                         <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider">
-                            @foreach ($LiveCategory as $key => $livecategories )
+                            @foreach ($data as $key => $livecategories )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
