@@ -27,7 +27,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'series-networks-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" style="display:none;">
+                            <ul id="trending-slider" class= "{{ 'theme4-slider series-networks-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" style="display:none;">
                                 @foreach ($series_networks->Series_depends_Networks  as $Series_depends_Networks_key  => $series )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >

@@ -22,7 +22,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider audios-category-slider" class="list-inline p-0 m-0 align-items-center audios-category-slider">
+                        <ul id="trending-slider audios-category-slider" class="list-inline p-0 m-0 align-items-center audios-category-slider theme4-slider">
                             @foreach ($data as $key => $audioscategories )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image">

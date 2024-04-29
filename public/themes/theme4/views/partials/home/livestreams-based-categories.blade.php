@@ -75,7 +75,7 @@ $data->each(function ($category) {
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" >
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative home-page-bg-img" >

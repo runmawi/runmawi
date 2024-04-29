@@ -34,7 +34,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
                             @foreach ($data as $key => $latest_video )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -203,3 +203,7 @@
         });
     });
 </script>
+
+<style>
+    .theme4-slider{display:none;}
+</style>
