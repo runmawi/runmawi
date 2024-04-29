@@ -16,7 +16,7 @@ $settings = App\Setting::first();
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  "><?php echo (__('Download App')); ?></h5>
+              <p class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></p>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
