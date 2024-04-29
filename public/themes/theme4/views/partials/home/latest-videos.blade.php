@@ -203,7 +203,3 @@
         });
     });
 </script>
-
-<style>
-    .theme4-slider{display:none;}
-</style>
