@@ -106,7 +106,7 @@ class HomeController extends Controller
 
     }
  
-    public function FirstLanging()
+    public function FirstLanging( Request $request)
     {
         $data = Session::all();
         $settings = $this->settings ;
