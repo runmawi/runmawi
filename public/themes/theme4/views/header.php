@@ -9,7 +9,8 @@
       $GetLightBg   = GetLightBg();  
       $button_bg_color = button_bg_color();
 
-      $signin_header = App\SiteTheme::pluck('signin_header')->first();
+      $signin_header = $theme->signin_header;
+
 
       if(!empty(Auth::User()->id)){
       
