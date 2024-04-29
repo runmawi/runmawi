@@ -11,6 +11,7 @@
 
       $signin_header = $theme->signin_header;
 
+
       if(!empty(Auth::User()->id)){
       
          $id = Auth::User()->id;
