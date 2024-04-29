@@ -114,7 +114,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider">
+                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider theme4-slider">
                             @foreach ($data as $key => $artist_details )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >

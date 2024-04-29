@@ -70,7 +70,7 @@ $data = App\Series::where('active', '1')->limit(15)
                         </ul>
                         
 
-                        <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending">
+                        <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending theme4-slider">
                                 @foreach ($Episode_details->Episode_details as $key => $item)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >

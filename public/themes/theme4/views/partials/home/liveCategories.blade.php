@@ -23,7 +23,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider">
+                        <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider theme4-slider">
                             @foreach ($data as $key => $livecategories )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
