@@ -60,7 +60,7 @@ $data->each(function ($category) {
 
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                     <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
                                             </div>
@@ -116,7 +116,7 @@ $data->each(function ($category) {
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Livestream-basedcategory-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Livestream-basedcategory-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -147,7 +147,7 @@ $data->each(function ($category) {
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

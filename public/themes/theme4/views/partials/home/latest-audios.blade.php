@@ -16,7 +16,7 @@
                         <ul id="trending-slider-nav" class="audios-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $audios_details)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" alt="audio-img" class="img-fluid" >
                                         </div>
@@ -46,13 +46,13 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('audio/'.$audios_details->slug ) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-audios-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-audios-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="modal">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,7 +77,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
