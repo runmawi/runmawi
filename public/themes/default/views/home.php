@@ -150,6 +150,7 @@
             </div>
          </section>
    <?php  } ?>
+   
 
    <?php 
       if($value->video_name == 'latest_episode_videos' && $home_settings->latest_episode_videos == 1 ){ ?>

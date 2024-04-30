@@ -1,30 +1,37 @@
-<?php  $Wishlist = App\Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+<?php  
+    if (!Auth::guest()) {
 
-    $check_Kidmode = 0 ;
+        $Wishlist = App\Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
 
-    $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-                                    'expiry_date','active','status','draft')
+        $check_Kidmode = 0 ;
 
-    ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist);
+        $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                        'expiry_date','active','status','draft')
 
-    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-    {
-        $data = $data->whereNotIn('videos.id',Block_videos());
+        ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist);
+
+        if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+        {
+            $data = $data->whereNotIn('videos.id',Block_videos());
+        }
+
+        if( !Auth::guest() && $check_Kidmode == 1 )
+        {
+            $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+        }
+
+        $data = $data->latest()->limit(30)->get()->map(function ($item) {
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+            $item['source_type']        = "Videos" ;
+            return $item;
+        });
     }
-
-    if( !Auth::guest() && $check_Kidmode == 1 )
-    {
-        $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+    else{
+        $data = [];
     }
-
-    $data = $data->latest()->limit(30)->get()->map(function ($item) {
-        $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-        $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-        $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
-        $item['source_type']        = "Videos" ;
-        return $item;
-    });
 ?>
 
 <?php  if(count($data) > 0) : ?>

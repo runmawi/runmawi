@@ -1,4 +1,8 @@
-<?php  $Watchlater = App\Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+<?php  
+
+if (!Auth::guest()) {
+   
+    $Watchlater = App\Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
 
     $check_Kidmode = 0 ;
 
@@ -25,6 +29,10 @@
         $item['source_type']        = "Videos" ;
         return $item;
     });
+}else{
+    $data = [];
+}
+
 ?>
 
 <?php  if(count($data) > 0) : ?>
