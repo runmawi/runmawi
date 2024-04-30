@@ -289,7 +289,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" >
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
@@ -297,7 +297,7 @@
                             @endif
                         </ul>
 
-                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
+                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider theme4-slider">
                             @if (isset($SeriesGenre))
                                 @foreach ($SeriesGenre as $Series_Genre)
                                     <li class="slick-slide">
@@ -362,7 +362,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="">
+                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>

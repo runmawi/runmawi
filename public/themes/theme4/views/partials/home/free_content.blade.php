@@ -17,14 +17,21 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="episode_details">
+                                            @endif 
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider Free-Content-Episode-slider" class="list-inline p-0 m-0 align-items-center Free-Content-Episode-slider">
+                        <ul id="trending-slider Free-Content-Episode-slider" class="list-inline p-0 m-0 align-items-center Free-Content-Episode-slider theme4-slider">
                             @foreach ($data as $key => $episode_details )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image">
@@ -52,7 +59,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            @if ( $multiple_compress_image == 1)
+                                                                <img  alt="latest_series" src="{{$episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : default_horizontal_image_url() }}" alt="episode_details">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

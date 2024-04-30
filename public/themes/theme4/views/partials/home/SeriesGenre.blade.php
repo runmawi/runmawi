@@ -16,14 +16,14 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                                <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
+                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider theme4-slider">
                             @foreach ($data as $key => $seriesGenre )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -95,7 +95,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : default_horizontal_image_url() }}" alt="">
+                                                                <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : default_horizontal_image_url() }}" alt="Videos">
                                                         </div>
                                                     </div>
                                                 </div>

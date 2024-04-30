@@ -1,9 +1,11 @@
 <?php
 
+    $Geofencing = App\Geofencing::first();
+
     $latest_videos = App\Video::where('active', '=', '1')->where('status', '=', '1')
             ->where('draft', '=', '5')->orderBy('created_at', 'desc')->take(5);
 
-    if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+    if($Geofencing !=null && $Geofencing->Geofencing == 'ON'){
          $latest_videos = $latest_videos  ->whereNotIn('videos.id',Block_videos());
     }
 
@@ -29,7 +31,7 @@
                 ->groupBy('video_id')
                 ->limit('5')
                 ->latest('videos.created_at');
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                if($Geofencing !=null && $Geofencing->Geofencing == 'ON'){
                     $Most_view_videos = $Most_view_videos ->whereNotIn('videos.id',Block_videos());
                 }
                 $Most_view_videos = $Most_view_videos->get();
@@ -75,7 +77,7 @@
                 ->where('featured', '=', '1')
                 ->orderBy('created_at', 'desc')
                 ->take(5);
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                if($Geofencing !=null && $Geofencing->Geofencing == 'ON'){
                     $videos = $videos ->whereNotIn('videos.id',Block_videos());
                 }
     $videos = $videos->get();

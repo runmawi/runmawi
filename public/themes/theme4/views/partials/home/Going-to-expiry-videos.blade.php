@@ -10,11 +10,11 @@
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
-        if( videos_expiry_date_status() == 1 ){
+        if( $videos_expiry_date_status == 1 ){
             $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
-        if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+        if( $getfeching !=null && $getfeching->geofencing == 'ON')
         {
             $data = $data->whereNotIn('videos.id',Block_videos());
         }
@@ -61,7 +61,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider">
+                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider theme4-slider">
                             @foreach ($data as $key => $Going_to_expiry_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -76,7 +76,7 @@
 
                                                         <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
                                                         
-                                                        @if ( videos_expiry_date_status() == 1 && optional($Going_to_expiry_videos)->expiry_date)
+                                                        @if ( $videos_expiry_date_status == 1 && optional($Going_to_expiry_videos)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>

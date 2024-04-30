@@ -179,6 +179,9 @@ class HomeSettingsController extends Controller
         $settings->Leaving_soon_videos = !empty($request->Leaving_soon_videos) ?  "1" : "0" ;
         $settings->Document = !empty($request->Document) ?  "1" : "0" ;
         $settings->Document_Category = !empty($request->Document_Category) ?  "1" : "0" ;
+        $settings->watchlater_videos = !empty($request->watchlater_videos) ?  "1" : "0" ;
+        $settings->wishlist_videos = !empty($request->wishlist_videos) ?  "1" : "0" ;
+        $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->epg = !empty($request->epg) ?  "1" : "0" ;
         $settings->save();
         
@@ -389,6 +392,9 @@ class HomeSettingsController extends Controller
         $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
         $settings->Document = !empty($request->Document) ?  "1" : "0" ;
         $settings->Document_Category = !empty($request->Document_Category) ?  "1" : "0" ;
+        $settings->watchlater_videos = !empty($request->watchlater_videos) ?  "1" : "0" ;
+        $settings->wishlist_videos = !empty($request->wishlist_videos) ?  "1" : "0" ;
+        $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');

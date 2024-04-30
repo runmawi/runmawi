@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">
+  <h2 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,8 +20,8 @@
         } 
   ?>
   </a>
-  </h4>  
-  <h4 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h4>
+  </h2>  
+  <h2 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h2>
 
 </div>
 <div class="favorites-contens">

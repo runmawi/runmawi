@@ -1,10 +1,16 @@
 <head>
     <?php
       $Script     = App\Script::pluck('header_script')->toArray();
-      $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-      $theme      = App\SiteTheme::first();      
+      $theme      = App\SiteTheme::first();    
+      $theme_mode = $theme->theme_mode;
+      $GetLightText = GetLightText();
+      $GetDarkText  = GetDarkText();
+      $GetDarkBg    = GetDarkBg();
+      $GetLightBg   = GetLightBg();  
+      $button_bg_color = button_bg_color();
 
-      $signin_header = App\SiteTheme::pluck('signin_header')->first();
+      $signin_header = $theme->signin_header;
+
 
       if(!empty(Auth::User()->id)){
       
@@ -239,12 +245,10 @@
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
-      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="font">
+      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-   <!-- Remixicon -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      
+   
    <!-- Ply.io -->
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
@@ -447,42 +451,42 @@
    /* Dark mode and light Mode */
 
    body.light-theme {
-      background: <?php echo GetLightBg(); ?>!important;
+      background: <?php echo $GetLightBg; ?>!important;
    }
 
    body.light-theme h4, body.light-theme p {
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
 
    body.light-theme header#main-header{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme footer{
-      background: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .copyright{
-      background-color: <?php echo GetLightBg(); ?>;
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.light-theme .s-icon{
-      background-color: <?php echo GetLightBg(); ?>; 
+      background-color: <?php echo $GetLightBg; ?>; 
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .search-toggle:hover {
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .dropdown-menu.categ-head{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>!important;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .search-toggle:hover {
@@ -491,41 +495,41 @@
    }
 
    body.light-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo GetLightBg(); ?>;  
+      background-color: <?php echo $GetLightBg; ?>;  
    }
 
    body.light-theme .media-body h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
    }
 
    body.light-theme .block-description h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
    }  
 
    body.light-theme .movie-time i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    }  
 
    body.light-theme .p-tag1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
    
    body.light-theme .p-tag{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
 
    body.light-theme .movie-time span{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    }
 
    body.light-theme .block-description a{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
    
@@ -539,40 +543,40 @@
    }
 
    body.light-theme .slick-nav i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme h2{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .filter-option-inner-inner{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    } 
 
    body.light-theme .vid-title{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .trending-info h1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .text-detail{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
    
    body.light-theme .btn1{
-      border: 1px solid <?php echo GetLightText(); ?>!important;
-      color: <?php echo GetLightText(); ?>!important;
+      border: 1px solid <?php echo $GetLightText; ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
    
    body.light-theme .trending-dec{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme h6.trash{
@@ -582,45 +586,45 @@
    /* Dark Mode */
 
    body.dark-theme {
-      background: <?php echo GetDarkBg(); ?>!important;
+      background: <?php echo $GetDarkBg; ?>!important;
    }
 
    body.dark-theme h4, body.dark-theme p {
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
 
    body.dark-theme header#main-header{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme footer{
-      background: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .copyright{
-      background-color: <?php echo GetDarkBg(); ?>;
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
 
    body.dark-theme .s-icon{
-      background-color: <?php echo GetDarkBg(); ?>; 
+      background-color: <?php echo $GetDarkBg; ?>; 
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    body.light-theme #translator-table_filter input[type="search"]{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.dark-theme .dropdown-menu.categ-head{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>!important;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
@@ -629,41 +633,41 @@
    }
 
    body.dark-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo GetDarkBg(); ?>;  
+      background-color: <?php echo $GetDarkBg; ?>;  
    }
 
    body.dark-theme .media-body h6{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
       font-weight: 400;
    }
 
    body.dark-theme .block-description h6{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
       font-weight: 400;
    }  
 
    body.dark-theme .movie-time i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    }  
 
    body.dark-theme .p-tag1{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
    
    body.dark-theme .p-tag{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
 
    body.dark-theme .movie-time span{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    }
 
    body.dark-theme .block-description a{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
    
@@ -677,40 +681,40 @@
    }
 
    body.dark-theme .slick-nav i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme h2{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .filter-option-inner-inner{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    } 
 
    body.dark-theme .vid-title{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .trending-info h1{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .text-detail{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
    body.dark-theme .btn1{
-      border: 1px solid <?php echo GetDarkText(); ?>!important;
-      color: <?php echo GetDarkText(); ?>!important;
+      border: 1px solid <?php echo $GetDarkText; ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
    body.dark-theme .trending-dec{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme h6.trash{
@@ -721,62 +725,62 @@
       color: red;
    }
    .channel-logo {
-    border-left: 5px solid  <?php echo GetDarkBg(); ?> !important;
-    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo button_bg_color(); ?> 100%);
+    border-left: 5px solid  <?php echo $GetDarkBg; ?> !important;
+    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo $button_bg_color; ?> 100%);
    }
-   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
-   #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>!important;}
-   .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?>;}
-   .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .text-body{color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .text-body{color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .s-icon {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .s-icon{color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .iq-search-bar .search-input {color: <?php echo GetLightText(); ?> !important;}
-   .light-theme li.list-group-item a {background:<?php echo GetLightBg(); ?>; color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
-   .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
-   .light-theme .iq-search-bar .search-input {background:<?php echo GetLightBg(); ?> !important;}
-   .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important; color: <?php echo GetDarkText(); ?>;}
-   body.light-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background-color: <?php echo GetLightBg(); ?>!important; color: <?php echo GetLightText(); ?>;}
+   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo $button_bg_color;?> !important; }
+   #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo $button_bg_color; ?> !important; }
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo $GetDarkText; ?>!important;}
+   .light-theme header .navbar ul li.menu-item a {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme ul.f-link li a {color: <?php echo $GetDarkText; ?>;}
+   .light-theme ul.f-link li a {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .text-body{color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .text-body{color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .s-icon {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .s-icon{color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .iq-search-bar .search-input {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .iq-search-bar .search-input {color: <?php echo $GetLightText; ?> !important;}
+   .light-theme li.list-group-item a {background:<?php echo $GetLightBg; ?>; color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme ul.list-group.home-search {background: <?php echo $GetDarkBg; ?> !important;}
+   .light-theme ul.list-group.home-search {background: <?php echo $GetLightBg; ?> !important;}
+   .dark-theme .iq-search-bar .search-input {background: <?php echo $GetDarkBg; ?> !important;}
+   .light-theme .iq-search-bar .search-input {background:<?php echo $GetLightBg; ?> !important;}
+   .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo $GetDarkBg; ?> !important; color: <?php echo $GetDarkText; ?>;}
+   body.light-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background-color: <?php echo $GetLightBg; ?>!important; color: <?php echo $GetLightText; ?>;}
    body.dark-theme .offcanvas-collapse{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
    }
    body.light-theme .offcanvas-collapse{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    body.dark-theme ul.navbar-nav{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
    }
    body.light-theme ul.navbar-nav{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
    }
    .light-theme.onclickbutton_menu{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
    }
    body.dark-theme .onclickbutton_menu{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
    body.light select:valid {
       background: #fcfcfc!important;
       color: #000000!important;
    }
    body.dark-theme select:valid {
-      background: <?php echo GetDarkBg(); ?>!important;
-      color: <?php echo GetDarkText(); ?>!important;
+      background: <?php echo $GetDarkBg; ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
 .side-colps:not(.show){
@@ -936,8 +940,8 @@ header#main-header.menu-sticky{
 
 /* Sidebar */
 body.dark-theme .offcanvas{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    body.light-theme .offcanvas {

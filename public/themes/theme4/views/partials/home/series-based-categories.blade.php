@@ -1,39 +1,3 @@
-<?php
-
-    $data = App\SeriesGenre::query()->whereHas('category_series', function ($query) {})
-        ->with([
-            'category_series' => function ($series) {
-                $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
-            },
-        ])
-        ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
-        ->orderBy('series_genre.order')
-        ->get();
-
-    $data->each(function ($category) {
-        $category->category_series->transform(function ($item) {
-
-            $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-            $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
-
-            $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
-
-            $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-
-            $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
-                                                    ->map(function ($item) {
-                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                        return $item;
-                                                });
-
-            $item['source'] = 'Series';
-            return $item;
-        });
-        $category->source = 'Series_Genre';
-        return $category;
-    });
-?>
-
 @if (!empty($data) && $data->isNotEmpty())
 
     @foreach( $data as $key => $series_genre )
@@ -55,14 +19,14 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" >
+                                                    <img src="{{ $series->image_url }}" class="img-fluid" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'series-genre-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider series-genre-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" >
                                 @foreach ($series_genre->category_series as $series_genre_key => $series )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -155,7 +119,14 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                                @if ( $multiple_compress_image == 1)
+                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
+                                                @else
+                                                    <img  src="{{ $series->Player_image_url }}" alt="Videos">
+                                                @endif
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">

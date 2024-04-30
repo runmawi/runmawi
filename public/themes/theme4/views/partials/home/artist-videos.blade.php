@@ -1,7 +1,7 @@
 @php
     $check_Kidmode = 0 ;
 
-    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode){
+    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching){
 
         // Videos 
 
@@ -11,13 +11,17 @@
 
                                             ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Videoartist);
 
-                                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                                            if( $getfeching !=null && $getfeching->geofencing == 'ON')
                                             {
                                                 $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNotIn('videos.id',Block_videos());
                                             }
                                             
                                             if ($check_Kidmode == 1) {
                                                 $item['artist_depends_videos']->whereBetween('videos.age_restrict', [0, 12]);
+                                            }
+
+                                            if ($videos_expiry_date_status == 1 ) {
+                                                $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                             }
 
         $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) {
@@ -69,7 +73,7 @@
 
                         ->where('active',1)->where('status', 1)->where('draft',1)->WhereIn('id',$Audioartist);
 
-                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                if( $getfeching !=null && $getfeching->geofencing == 'ON')
                 {
                     $item['artist_depends_audios'] = $item['artist_depends_audios']->whereNotIn('id',Block_audios());
                 }
@@ -110,7 +114,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider">
+                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider theme4-slider">
                             @foreach ($data as $key => $artist_details )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >

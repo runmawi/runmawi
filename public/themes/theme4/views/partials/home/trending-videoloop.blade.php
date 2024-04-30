@@ -1,30 +1,3 @@
-
-@php
-
-$check_Kidmode = 0;
-    
-$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
-                                'player_image','expiry_date')
-
-                        ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
-
-                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                            $data = $data->whereNotIn('videos.id',Block_videos());
-                        }
-
-                        if (videos_expiry_date_status() == 1 ) {
-                            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                        }
-                        
-                        if ($check_Kidmode == 1) {
-                            $data = $data->whereBetween('videos.age_restrict', [0, 12]);
-                        }
-
-$data = $data->latest()->limit(15)->get();
-                                                                    
-@endphp
-
-
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -43,9 +16,16 @@ $data = $data->latest()->limit(15)->get();
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $featured_videos->title }}" src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
+                                            @endif
                                         
-                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                            @if ($videos_expiry_date_status == 1 && optional($featured_videos)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                             @endif
 
@@ -55,7 +35,7 @@ $data = $data->latest()->limit(15)->get();
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider featured-videos-slider" class="list-inline p-0 m-0 align-items-center featured-videos-slider">
+                        <ul id="trending-slider featured-videos-slider" class="list-inline p-0 m-0 align-items-center featured-videos-slider theme4-slider">
                             @foreach ($data as $key => $featured_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -70,7 +50,7 @@ $data = $data->latest()->limit(15)->get();
 
                                                             <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
                                                                 
-                                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                                            @if ($videos_expiry_date_status == 1 && optional($featured_videos)->expiry_date)
                                                                 <ul class="vod-info">
                                                                     <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                                 </ul>
@@ -89,7 +69,14 @@ $data = $data->latest()->limit(15)->get();
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            @if ( $multiple_compress_image == 1)
+                                                                <img  alt="latest_series" src="{{$featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -113,7 +100,14 @@ $data = $data->latest()->limit(15)->get();
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img  alt="latest_series" src="{{$featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_player_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_player_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_player_image.' 420w') }}" >
+                                            @else
+                                                <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                            @endif
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

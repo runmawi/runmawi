@@ -24211,6 +24211,16 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
+        // Only for Play Store Testing 
+        if( $request->mobile_number == "8520903675"){
+
+          return response()->json( [
+            'status'    => 'true',
+            'message'    => Str::title('Otp verify successfully !!'),
+          ], 200); 
+
+        }
+
         $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
@@ -24240,4 +24250,45 @@ public function TV_login(Request $request)
       }
       return response()->json($response, 200);
     }
+
+
+public function SendVideoPushNotification(Request $request)
+  {
+    
+    $user_id = $request->user_id;
+    $userId = $request->user_id;
+
+    $currentDate = Carbon::now();
+    $threeDaysAgo = $currentDate->subDays(5);
+
+    $videos = Video::where('publish_time', '>', $threeDaysAgo)
+    ->get();
+
+    $videos = Video::where('publish_time', '>', $threeDaysAgo)
+    ->whereNotIn('id', function($query) use ($userId) {
+         $query->select('socure_id')
+               ->from('notifications')
+               ->where('user_id', $userId)
+               ->where('socure_type', 'Video');
+     })
+    ->get();
+      if(count($videos) > 0){
+        foreach($videos as $key => $video){
+          send_video_push_notifications('Notification From '. GetWebsiteName(),'Latest Video Available',$video->title,$video->id,$userId,'');
+        }
+        $response = array(
+          'status'=>'true',
+          'message'=>'Notification Latest Video Available.',
+          // 'videos' => $videos
+        );
+
+      }else{
+        $response = array(
+          'status'=>'false',
+          'message'=>'Notification No Latest Video Available.',
+          // 'videos' => $videos
+        );
+      }
+    return response()->json($response, 200);
+  }
 }

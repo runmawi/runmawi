@@ -14,7 +14,7 @@
                 $data = $data  ->whereNotIn('videos.id',Block_videos());
             }
             
-            if( videos_expiry_date_status() == 1 ){
+            if( $videos_expiry_date_status == 1 ){
                 $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
             }
 
@@ -51,9 +51,15 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" >
-                                        
-                                            @if (videos_expiry_date_status() == 1 && optional($latest_view_video)->expiry_date)
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $latest_view_video->title }}" src="{{ $latest_view_video->image ?  URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
+                                            @endif  
+                                            @if ($videos_expiry_date_status == 1 && optional($latest_view_video)->expiry_date)
                                                 <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
                                             @endif
 
@@ -63,7 +69,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
                             @foreach ($data as $key => $latest_view_video)
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -78,7 +84,7 @@
 
                                                         <h2 class="caption-h2"> {{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</h2>
 
-                                                        @if (videos_expiry_date_status() == 1 && optional($latest_view_video)->expiry_date)
+                                                        @if ($videos_expiry_date_status == 1 && optional($latest_view_video)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_view_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>
@@ -98,7 +104,14 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="">
+                                                        @if ( $multiple_compress_image == 1)
+                                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}"
+                                                                srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_player_image.' 860w') }},
+                                                                {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_player_image.' 640w') }},
+                                                                {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_player_image.' 420w') }}" >
+                                                        @else
+                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode">
+                                                        @endif 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -167,6 +180,12 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
+                                        @if ( $multiple_compress_image == 1)
+                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}"
+                                                srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_player_image.' 860w') }},
+                                                {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_player_image.' 640w') }},
+                                                {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_player_image.' 420w') }}" >
+                                        @else
                                             <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
                                         </div>
                                         <div class="col-lg-6">

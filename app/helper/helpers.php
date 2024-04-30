@@ -1775,3 +1775,41 @@ function Block_LiveStreams()
    return $blocked_live_stream;
 
 }
+
+
+function compress_responsive_image_enable()
+{
+    $compress_responsive_image_enable = App\CompressImage::pluck('enable_multiple_compress_image')->first() ? App\CompressImage::pluck('enable_multiple_compress_image')->first() : 0;
+    return $compress_responsive_image_enable ;
+}
+
+
+
+function send_video_push_notifications($title,$message,$video_name,$video_id,$user_id,$video_img=''){
+    $fcm_postt ="https://fcm.googleapis.com/fcm/send";
+    $settings = App\Setting::first();
+    $server_key = $settings->notification_key;
+    $notification_icon = $settings->notification_icon;
+
+    $users = App\User::where('token', '!=', '')->where('id','=',$user_id)->get();
+    $userdata = App\User::where('token', '!=', '')->where('id','=',$user_id)->first();
+
+    if($userdata != null){
+        $user = $userdata->token;
+        $headers = array('Authorization:key='.$server_key,'Content-Type:application/json');
+        $field = array('to'=>$user,'notification'=>array('title'=> $title,'body'=>strip_tags($message),'tag'=> $video_name,'icon'=> $video_img,'link'=> URL::to('/public/uploads/') . '/settings/' . $notification_icon));
+        $payload =json_encode($field);
+        $curl_session = curl_init();
+        curl_setopt($curl_session, CURLOPT_URL, $fcm_postt);
+        curl_setopt($curl_session, CURLOPT_POST, true);
+        curl_setopt($curl_session, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl_session, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($curl_session, CURLOPT_POSTFIELDS, $payload);
+        curl_exec($curl_session);
+        curl_close($curl_session);
+        DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message,'socure_type' => 'Video', 'socure_id' => $video_id ]);
+    }
+    return true;
+}

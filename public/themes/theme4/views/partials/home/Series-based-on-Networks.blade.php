@@ -1,37 +1,6 @@
-<?php
+@if (!empty($Series_based_on_Networks) && $Series_based_on_Networks->isNotEmpty())
 
-$data = App\SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
-
-$item['Series_depends_Networks'] = App\Series::where('series.active', 1)
-            ->whereJsonContains('network_id', [(string)$item->id])
-
-            ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
-    
-    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
-
-    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
-
-    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-
-    $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
-                                            ->map(function ($item) {
-                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                            return $item;
-                                        });
-
-    $item['source'] = 'Series';
-    return $item;
-                                                        
-});
-    return $item;
-});
-
-?>
-
-@if (!empty($data) && $data->isNotEmpty())
-
-    @foreach( $data as $key => $series_networks )
+    @foreach( $Series_based_on_Networks as $key => $series_networks )
         @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid pl-0">
@@ -51,14 +20,14 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network">
+                                                    <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network">
                                             </div>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'series-networks-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" style="display:none;">
+                            <ul id="trending-slider" class= "{{ 'theme4-slider series-networks-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" style="display:none;">
                                 @foreach ($series_networks->Series_depends_Networks  as $Series_depends_Networks_key  => $series )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -142,7 +111,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
 
     {{-- Networks depends Episode Modal --}}
 
-    @foreach( $data as $key => $series_networks )
+    @foreach( $Series_based_on_Networks as $key => $series_networks )
         @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key =>  $series )
             @foreach ($series->Series_depends_episodes as $episode_key =>  $episode )
                 <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
@@ -153,7 +122,14 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                                @if ( $multiple_compress_image == 1)
+                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
+                                                @else
+                                                    <img  src="{{ $series->Player_image_url }}" alt="Videos">
+                                                @endif
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">

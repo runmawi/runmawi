@@ -249,6 +249,7 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -284,7 +285,7 @@
 
    <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" />
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
    <?php 
       if(count($Script) > 0){
@@ -744,7 +745,7 @@
                                        </a>
                                  </li> -->
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -761,7 +762,7 @@
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -778,7 +779,7 @@
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -798,7 +799,7 @@
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -998,14 +999,20 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+               <a href="<?= $app_settings->android_url ?>">
+                  <img src="<?php echo URL::to('/assets/img/apps1.webp') ?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
+
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+               <a href="<?= $app_settings->ios_url ?>">
+                  <img src="<?php echo  URL::to('/assets/img/apps.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-                  <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+               <a href="<?= $app_settings->android_tv ?>">
+                  <img src="<?php echo  URL::to('/assets/img/and.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               </div>
               
@@ -1047,10 +1054,9 @@
                         </div>
                      </div>
                      <div class="mobile-more-menu">
-                        <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                           data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="ri-more-line"></i>
-                        </a>
+                        <button class="more-toggle" id="dropdownMenuButton" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
+                           <i class="ri-more-line"></i>
+                        </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
@@ -1188,42 +1194,7 @@
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                            </svg>
-                              <div class="iq-sub-dropdown">
-                                 <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body">
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                <small class="font-size-12"> just now</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                <small class="font-size-12">15 minutes ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                <small class="font-size-12">1 hour ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                    </div>
-                                 </div>
-                              </div>
+                              
                            </li>
                            <?php if(Auth::guest()): ?>
                               <?php if( $signin_header == 1 ): ?>
@@ -1505,7 +1476,7 @@
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 pl-3 pr-3">
-                                       <a class="p-0">
+                                       <a href="#" class="p-0">
                                           <!-- <div class="toggle mt-3 text-right">
                                              <input type="checkbox" id="toggle" />
                                              <label for="toggle"></label>
@@ -1947,9 +1918,7 @@
                            dropdownContent.style.display = "none";
                         }
                   });
-               } else {
-                  console.error("Error: Dropdown elements not found in the document.");
-               }
+               } 
             });
 
 

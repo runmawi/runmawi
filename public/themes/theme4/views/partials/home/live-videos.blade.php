@@ -1,9 +1,3 @@
-@php
-        
-    $data = App\LiveStream::query()->where('active',1)->where('status', 1)->latest()->limit(15)->get();
-                                                                        
-@endphp
-
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -22,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                                <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
@@ -32,7 +26,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
+                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider">
                             @foreach ($data as $key => $livestream_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image"                                        >
@@ -65,7 +59,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="">
+                                                                <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="livestream_videos">
                                                         </div>
                                                     </div>
                                                 </div>
