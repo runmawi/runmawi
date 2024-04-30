@@ -24277,7 +24277,7 @@ public function SendVideoPushNotification(Request $request)
           send_video_push_notifications('Notification From '. GetWebsiteName(),'Latest Video Available',$video->title,$video->id,$userId,'');
         }
         $response = array(
-          'status'=>'false',
+          'status'=>'true',
           'message'=>'Notification Latest Video Available.',
           // 'videos' => $videos
         );
