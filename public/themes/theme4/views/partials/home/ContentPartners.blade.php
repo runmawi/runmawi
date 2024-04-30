@@ -33,7 +33,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider cpp-portal" class="list-inline p-0 m-0 align-items-center cpp-portal">
+                            <ul id="trending-slider cpp-portal" class="list-inline p-0 m-0 align-items-center cpp-portal theme4-slider">
                                 @foreach ($data as $CPP_details)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >

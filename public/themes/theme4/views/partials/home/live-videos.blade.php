@@ -1,4 +1,4 @@
-@if (!empty($livetreams) && $livetreams->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
@@ -12,7 +12,7 @@
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($livetreams as $livestream_videos)
+                            @foreach ($data as $livestream_videos)
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -26,8 +26,8 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
-                            @foreach ($livetreams as $key => $livestream_videos )
+                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider">
+                            @foreach ($data as $key => $livestream_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image"                                        >
                                         <button class="drp-close">×</button>
@@ -82,7 +82,7 @@
         </div>
 
 
-        @foreach ($livetreams as $key => $livestream_videos )
+        @foreach ($data as $key => $livestream_videos )
             <div class="modal fade info_model" id="{{ "Home-LiveStream-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">

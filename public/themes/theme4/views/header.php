@@ -9,7 +9,8 @@
       $GetLightBg   = GetLightBg();  
       $button_bg_color = button_bg_color();
 
-      $signin_header = App\SiteTheme::pluck('signin_header')->first();
+      $signin_header = $theme->signin_header;
+
 
       if(!empty(Auth::User()->id)){
       
@@ -249,9 +250,7 @@
       <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-   <!-- Remixicon -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      
+   
    <!-- Ply.io -->
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
@@ -998,7 +997,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
+                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> /> 
                      </div>
                   <?php endif ;?>
 

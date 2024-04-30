@@ -35,7 +35,7 @@
         <div class="col-sm-12 ">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title">
+                    <h2 class="main-title">
                         <?php
                         if (!empty($category->home_genre)) {
                             echo __($category->home_genre);
@@ -43,10 +43,10 @@
                             echo __($category->name);
                         }
                         ?>
-                    </h4>
+                    </h2>
                 </a>
                 <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title"><?php echo('View all') ?>  </h4>
+                    <h2 class="main-title"><?php echo('View all') ?>  </h2>
                 </a>
             </div>
             <div class="favorites-contens">

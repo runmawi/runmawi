@@ -30,7 +30,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider user-videos-slider" class="list-inline p-0 m-0 align-items-center user-videos-slider">
+                        <ul id="trending-slider user-videos-slider" class="list-inline p-0 m-0 align-items-center user-videos-slider theme4-slider">
                             @foreach ($data as $key => $video )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >

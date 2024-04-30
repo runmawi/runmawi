@@ -16,7 +16,7 @@ $settings = App\Setting::first();
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  "><?php echo (__('Download App')); ?></h5>
+              <p class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></p>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
@@ -258,6 +258,7 @@ function about(evt , id) {
  <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
  <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
 
  <script>
   function loadScriptWithTimeout(url, timeout = 50000) {
@@ -285,7 +286,7 @@ function about(evt , id) {
 }
 
 // Specify the URL for your hls.min.js file
-const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.min.js';?>";
+const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
 const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
 
 // Load HLS.js with a timeout

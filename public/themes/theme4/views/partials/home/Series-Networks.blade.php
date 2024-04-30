@@ -45,7 +45,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider" style="display:none;">
+                        <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $series_networks )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -53,7 +53,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show" style="height:100%;">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -238,8 +238,6 @@
         });
     });
 </script>
-
-
 
 <style>
     .series-networks-slider-nav a.slick-slide.slick-current.slick-active{

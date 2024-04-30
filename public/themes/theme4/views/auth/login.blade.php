@@ -102,7 +102,7 @@ text-align: left;
       <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
              
-              <h1 class="km"><?php echo $settings->login_text; ?></h1>
+              <p class="km text-white"><?php echo $settings->login_text; ?></p>
                 
           </div>
          <div class="col-lg-5 col-12 col-md-12 align-self-center">
@@ -113,9 +113,9 @@ text-align: left;
                           <div class="col-md-12">
 
                             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>" width="200" height="100" style="margin-bottom:1rem;"></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>" width="200" height="100" style="margin-bottom:1rem;"></div></div>
                             <?php }else { ?> 
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php } ?>
@@ -225,13 +225,13 @@ text-align: left;
                                <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" height="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                <?php } ?>
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" height="30" style="margin-bottom:1rem;">
                                         </a>
                                     </div>
                                 <?php  } ?>
