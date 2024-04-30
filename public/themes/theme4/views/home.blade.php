@@ -222,30 +222,31 @@
       }
    };
       
-   var scrollFetch;
+   var isFetching = false; 
+   var scrollFetch; 
 
    $(window).scroll(function () {
-      
       clearTimeout(scrollFetch);
 
       scrollFetch = setTimeout(function () {
          var page_url = $("#home_sections").attr('next-page-url');
          console.log("scrolled");
 
-         if (page_url != null) {
+         if (page_url != null && !isFetching) {
+               isFetching = true; 
                $.ajax({
                   url: page_url,
                   beforeSend: function () {
-                     $('.auto-load').show(); 
+                     $('.auto-load').show();
                   },
                   success: function (data) {
-                     // console.log(data.view);
                      $("#home_sections").append(data.view);
                      $("#home_sections").attr('next-page-url', data.url);
                   },
                   complete: function () {
-                     $('.auto-load').hide(); 
-                     // $('.theme4-slider').hide();
+                     isFetching = false; 
+                     $('.auto-load').hide();
+                     $('.theme4-slider').hide();
                   }
                });
          }
