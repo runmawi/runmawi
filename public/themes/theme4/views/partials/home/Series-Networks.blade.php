@@ -36,7 +36,7 @@
                         <ul id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $series_networks)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                                 <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>

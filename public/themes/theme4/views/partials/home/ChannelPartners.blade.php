@@ -18,7 +18,7 @@
                             <ul id="trending-slider-nav" class="content-portal-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $channel)
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                 @if ( $multiple_compress_image == 1)
                                                     <img class="img-fluid position-relative" alt="{{ $channel->title }}" src="{{ $channel->image ?  URL::to('public/uploads/images/'.$channel->image) : default_vertical_image_url() }}"
