@@ -79,13 +79,13 @@
                     
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="apps1"  alt="apps1" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="apps1"  alt="apps" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="apps1"  alt="and" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -242,11 +242,11 @@
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
-<script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
-<script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script> -->
 
 <script>
     function loadJS(u) {

@@ -55,7 +55,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
@@ -108,7 +108,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
@@ -161,7 +161,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
@@ -201,7 +201,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
@@ -243,7 +243,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
@@ -284,7 +284,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
                                     <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
