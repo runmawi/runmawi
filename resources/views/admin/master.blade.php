@@ -1093,8 +1093,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}">{{ (__('View Role')) }}</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}">{{ (__('Commission')) }} </a></li>
                         <li><a href="{{ URL::to('admin/moderator/payouts') }}">{{ (__('Content Partners Payout')) }}</a></li>
-
-
+                        <li><a href="{{ URL::to('admin/moderator-subscription-plans') }}">{{ (__('Moderator Subscription Plans')) }}</a></li>
                      </ul>
                   </li>
                   <li>
@@ -1110,6 +1109,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/role') }}">{{ (__('Channel Partners Add Roles')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/role/view') }}">{{ (__('Channel Partners Roles')) }}</a></li>
+                        <!-- <li><a href="{{ URL::to('admin/channel-subscription-plans') }}">{{ (__('Channel Subscription Plans')) }}</a></li> -->
                      </ul>
                   </li>
                   <li>
