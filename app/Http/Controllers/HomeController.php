@@ -106,7 +106,7 @@ class HomeController extends Controller
 
     }
  
-    public function FirstLanging( Request $request)
+    public function FirstLanging(Request $request)
     {
         $data = Session::all();
         $settings = $this->settings ;
@@ -120,11 +120,11 @@ class HomeController extends Controller
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-            return $value === '1';  
+            return $value === '1' || $value === 1;  
         })->keys()->toArray(); 
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
-        
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+
 
         $check_Kidmode = 0;
 
@@ -201,6 +201,14 @@ class HomeController extends Controller
                 ->orderBy('id', 'DESC')
                 ->limit(15)
                 ->get();
+
+            $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+                                        'duration','rating','image','featured','tv_image','player_image')
+                                        ->where('active', '1')->latest()->limit(15)
+                                        ->get()->map(function($item){
+                                            $item['series'] = Series::where('id',$item->series_id)->first();
+                                            return $item ;
+                                        });
 
             $latest_series = Series::select('id','title','slug','year','rating','access',
                 'duration','rating','image','featured','tv_image','player_image','details','description')
@@ -406,6 +414,7 @@ class HomeController extends Controller
                 'getfeching'      => $getfeching ,
                 'videos_expiry_date_status' => $videos_expiry_date_status,
                 'Series_Networks_Status' => Series_Networks_Status(),
+                'latest_episode'  => $latest_episode ,
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -869,6 +878,14 @@ class HomeController extends Controller
                                                 ->where('active', '1')->where('views', '>', '0')
                                                 ->latest()->limit(15)->get();
 
+                    $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+                                                'duration','rating','image','featured','tv_image','player_image')
+                                                ->where('active', '1')->latest()->limit(15)
+                                                ->get()->map(function($item){
+                                                    $item['series'] = Series::where('id',$item->series_id)->first();
+                                                    return $item ;
+                                                });
+
                     $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                                         'duration','rating','image','featured','tv_image','player_image','active')
                                                     ->where('active', '1')->where('featured', '1')
@@ -1086,6 +1103,7 @@ class HomeController extends Controller
                         'getfeching'      => $getfeching ,
                         'videos_expiry_date_status' => $videos_expiry_date_status,
                         'Series_Networks_Status' => Series_Networks_Status(),
+                        'latest_episode'  => $latest_episode ,
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1636,6 +1654,14 @@ class HomeController extends Controller
                                         ->latest()->limit(15)
                                         ->get();
 
+                $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+                                        'duration','rating','image','featured','tv_image','player_image')
+                                        ->where('active', '1')->latest()->limit(15)
+                                        ->get()->map(function($item){
+                                            $item['series'] = Series::where('id',$item->series_id)->first();
+                                            return $item ;
+                                        });
+
                 if ($multiuser != null)
                 {
                     $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
@@ -1771,10 +1797,10 @@ class HomeController extends Controller
                 // Order Setting 
 
                 $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-                    return $value === '1';  
+                    return $value === '1' || $value === 1;  
                 })->keys()->toArray(); 
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
 
                 $data = array(
 
@@ -1852,6 +1878,7 @@ class HomeController extends Controller
                     'getfeching'      => $getfeching ,
                     'videos_expiry_date_status' => $videos_expiry_date_status,
                     'Series_Networks_Status' => Series_Networks_Status(),
+                    'latest_episode'  => $latest_episode ,
                 );
                 
                 if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1867,7 +1894,8 @@ class HomeController extends Controller
             }
         }
     }
-    
+  
+        
     public function social()
     {
         return View::make('social');

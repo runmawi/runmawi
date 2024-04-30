@@ -107,7 +107,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
                                 @foreach ($video_category->category_videos as $key => $videos )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >

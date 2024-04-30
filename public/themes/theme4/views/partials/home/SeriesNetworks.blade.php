@@ -297,7 +297,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
+                            <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider theme4-slider">
                                 @foreach ($series_data->Series_depends_Networks as $Series_Genre)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image">
