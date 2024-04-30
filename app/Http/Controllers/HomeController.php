@@ -120,11 +120,11 @@ class HomeController extends Controller
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-            return $value === '1';  
+            return $value === '1' || $value === 1;  
         })->keys()->toArray(); 
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
-        
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+
 
         $check_Kidmode = 0;
 
@@ -1797,10 +1797,10 @@ class HomeController extends Controller
                 // Order Setting 
 
                 $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-                    return $value === '1';  
+                    return $value === '1' || $value === 1;  
                 })->keys()->toArray(); 
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(1);
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
 
                 $data = array(
 
