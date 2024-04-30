@@ -68,7 +68,7 @@
       @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
          @if (optional($admin_advertistment_banners)->top_image_url )
             <div class="col-sm-9 mx-auto ">
-               <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
+               <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
             </div>
          @endif
 
@@ -107,7 +107,7 @@
 
       @if (optional($admin_advertistment_banners)->bottom_image_url )
          <div class="col-sm-9 mx-auto ">
-            <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
+            <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
          </div>
       @endif
 
@@ -120,7 +120,9 @@
 
 <!-- back-to-top -->
 <div id="back-to-top">
-   <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
+   <a class="top" href="#top" id="top" aria-label="Back to Top">
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+   </a>
 </div>
 
 <?php
