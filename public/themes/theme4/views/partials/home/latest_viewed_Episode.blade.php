@@ -30,7 +30,7 @@ if (Auth::guest() != true) {
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-view-episode-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li class="slick-slide">
                                     <a href="javascript:;">
@@ -50,7 +50,7 @@ if (Auth::guest() != true) {
                         </ul>
 
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
+                        <ul id="trending-slider latest-view-episode-slider" class="list-inline p-0 m-0 align-items-center latest-view-episode-slider theme4-slider">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -154,25 +154,25 @@ if (Auth::guest() != true) {
 <script>
     
     $( window ).on("load", function() {
-        $('.latest-videos-slider').hide();
+        $('.latest-view-episode-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.latest-videos-slider').slick({
+        $('.latest-view-episode-slider').slick({
             slidesToShow: 1,
             initialSlide:0,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
             draggable: false,
-            asNavFor: '.latest-videos-slider-nav',
+            asNavFor: '.latest-view-episode-slider-nav',
         });
 
-        $('.latest-videos-slider-nav').slick({
+        $('.latest-view-episode-slider-nav').slick({
             slidesToShow: 6,
             slidesToScroll: 4,
-            asNavFor: '.latest-videos-slider',
+            asNavFor: '.latest-view-episode-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
@@ -204,13 +204,13 @@ if (Auth::guest() != true) {
             ],
         });
 
-        $('.latest-videos-slider-nav').on('click', function() {
+        $('.latest-view-episode-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.latest-videos-slider').show();
+            $('.latest-view-episode-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
-            $('.latest-videos-slider').hide();
+            $('.latest-view-episode-slider').hide();
         });
     });
 </script>

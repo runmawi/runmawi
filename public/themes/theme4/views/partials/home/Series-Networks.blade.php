@@ -169,48 +169,70 @@
 
 <script>
     $(window).on("load", function() {
-        $('.series-networks-slider').hide();
+        $('.series-networks-slider').fadeOut();
     });
 
     $(document).ready(function() {
+
         $('.series-networks-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
+
             asNavFor: '.series-networks-slider-nav',
         });
 
         $('.series-networks-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 1,
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
                 {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 5,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.networks-depends-series').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
                         slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
                         slidesToScroll: 1,
                     },
                 },
@@ -218,27 +240,19 @@
         });
 
         $('.series-networks-slider-nav').on('click', function() {
-            $('.series-networks-slider').show();
+            $( ".drp-close" ).trigger( "click" );
+            $('.series-networks-slider').fadeIn();
         });
 
         $('body').on('click', '.drp-close', function() {
             $('.series-networks-slider').hide();
         });
-
         $('.slick-next, .slick-prev').on('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
         });
-        $('.networks-depends-series-slider-' + category_key_id).slick({
-            dots: false,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 6,
-            slidesToScroll: 4,
-        });
     });
 </script>
-
 <style>
     .series-networks-slider-nav a.slick-slide.slick-current.slick-active{
         display:none;
@@ -246,5 +260,4 @@
     a[aria-controls="1"] {
         display:none;
     }
-
 </style>
