@@ -14,7 +14,7 @@
                         <ul id="trending-slider-nav" class="series-category-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $seriesGenre )
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                                 <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
                                         </div>

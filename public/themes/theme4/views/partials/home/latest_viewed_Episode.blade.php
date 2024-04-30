@@ -30,10 +30,10 @@ if (Auth::guest() != true) {
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-view-episode-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div  class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $latest_view_episode->title }}" src="{{ $latest_view_episode->image ?  URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}"
@@ -50,7 +50,7 @@ if (Auth::guest() != true) {
                         </ul>
 
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
+                        <ul id="trending-slider latest-view-episode-slider" class="list-inline p-0 m-0 align-items-center latest-view-episode-slider theme4-slider">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -76,7 +76,7 @@ if (Auth::guest() != true) {
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-viewed_episode-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-viewed_episode-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -115,7 +115,7 @@ if (Auth::guest() != true) {
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -154,25 +154,25 @@ if (Auth::guest() != true) {
 <script>
     
     $( window ).on("load", function() {
-        $('.latest-videos-slider').hide();
+        $('.latest-view-episode-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.latest-videos-slider').slick({
+        $('.latest-view-episode-slider').slick({
             slidesToShow: 1,
             initialSlide:0,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
             draggable: false,
-            asNavFor: '.latest-videos-slider-nav',
+            asNavFor: '.latest-view-episode-slider-nav',
         });
 
-        $('.latest-videos-slider-nav').slick({
+        $('.latest-view-episode-slider-nav').slick({
             slidesToShow: 6,
             slidesToScroll: 4,
-            asNavFor: '.latest-videos-slider',
+            asNavFor: '.latest-view-episode-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
@@ -204,13 +204,13 @@ if (Auth::guest() != true) {
             ],
         });
 
-        $('.latest-videos-slider-nav').on('click', function() {
+        $('.latest-view-episode-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.latest-videos-slider').show();
+            $('.latest-view-episode-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
-            $('.latest-videos-slider').hide();
+            $('.latest-view-episode-slider').hide();
         });
     });
 </script>

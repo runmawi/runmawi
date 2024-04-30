@@ -18,7 +18,7 @@
                             <ul id="trending-slider-nav" class="my-playlist-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $My_Playlist)
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                     <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
                                             </div>
