@@ -105,7 +105,7 @@
                         <ul id="trending-slider-nav" class="artist-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $artist_details)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="artist_details">
                                         </div>

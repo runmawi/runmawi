@@ -53,7 +53,7 @@ $data = App\Series::where('active', '1')->limit(15)
                         <ul id="trending-slider-nav" class="trending-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $Episode_details)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : default_vertical_image_url() }}"

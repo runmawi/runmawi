@@ -14,7 +14,7 @@
                         <ul id="trending-slider-nav" class="live-category-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $livecategories)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                                 <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="livecategories">
                                         </div>
