@@ -209,7 +209,7 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-     
+     <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1702963924.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
