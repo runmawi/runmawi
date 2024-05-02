@@ -165,7 +165,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" alt="epg_channel_data">
+                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" alt="epg_channel_data" width="300" height="200">
                                             @endif 
 
                                             @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)

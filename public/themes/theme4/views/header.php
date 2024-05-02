@@ -209,7 +209,7 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-     
+     <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1702963924.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -1017,7 +1017,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="200" height="100"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
