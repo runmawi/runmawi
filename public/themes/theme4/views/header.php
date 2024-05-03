@@ -2165,10 +2165,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
             // console.log(DOB);
             // console.log(currentdate);
 
-            if (filldate == currentdate && DOB != null && !empty(DOB) && currentdate != null && filldate !=
+            if (filldate == currentdate && DOB != null && DOB != null && currentdate != null && filldate !=
                null) {
                $("body").append(
-                  '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
+                  // '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
                   );
                setTimeout(function() {
                   $('.add_watch').slideUp('fast');
