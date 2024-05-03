@@ -20,9 +20,9 @@
                                                 <img class="img-fluid position-relative" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}" >
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}"  width="300" height="200">
                                             @else
-                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series">
+                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series"  width="300" height="200">
                                             @endif
 
                                             @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
@@ -103,10 +103,10 @@
                                                 <img  alt="latest_series" src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_player_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_player_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" alt="latest_series" width="300" height="200">
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" alt="latest_series">
 
                                             @else
-                                                <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="latest_series" width="300" height="200">
+                                                <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="latest_series">
                                             @endif 
                                         </div>
                                         <div class="col-lg-6">
