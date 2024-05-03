@@ -5,8 +5,10 @@
             if ($order_settings_list[8]->header_name) { echo URL::to('/').'/'.$order_settings_list[8]->url ;} else { echo "" ; } ?>">
                  <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[8]->header_name) ;} else { echo "" ; } ?>
             </a>
-        </h4>   
-        <h4 class="main-title"><a><?php echo (__('View All')); ?></a></h4>                   
+        </h4>  
+        <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+            <h4 class="main-title"><a><?php echo (__('View All')); ?></a></h4>     
+        <?php endif; ?>              
     </div>
 
     <div class="favorites-contens">
