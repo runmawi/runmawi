@@ -98,7 +98,7 @@
    </div>
 
    <div class="auto-load text-center" style="display: none" >
-      <img src="{{ URL::to('public/Thumbnai_images/Loading_1.gif') }}" width="35px" height="35px">
+      <img src="{{ URL::to('public/Thumbnai_images/Loading_1.gif') }}" width="35" height="35">
    </div>
 
             {{-- End Ads banners --}}
