@@ -735,6 +735,24 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Enable Home-Page Views All  </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ !is_null($settings->homepage_views_all_button_status) && $settings->homepage_views_all_button_status == 1 ? 'checked' : null }} value="{{ $settings->homepage_views_all_button_status }}"
+                                                name="homepage_views_status" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
