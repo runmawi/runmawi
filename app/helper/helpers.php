@@ -1785,7 +1785,7 @@ function compress_responsive_image_enable()
 
 
 
-function send_video_push_notifications($title,$message,$video_name,$video_id,$user_id,$video_img=''){
+function send_video_push_notifications($title,$message,$video_name,$video_id,$user_id,$video_img){
     $fcm_postt ="https://fcm.googleapis.com/fcm/send";
     $settings = App\Setting::first();
     $server_key = $settings->notification_key;
@@ -1797,7 +1797,7 @@ function send_video_push_notifications($title,$message,$video_name,$video_id,$us
     if($userdata != null){
         $user = $userdata->token;
         $headers = array('Authorization:key='.$server_key,'Content-Type:application/json');
-        $field = array('to'=>$user,'notification'=>array('title'=> $title,'body'=>strip_tags($message),'tag'=> $video_name,'icon'=> $video_img,'link'=> URL::to('/public/uploads/') . '/settings/' . $notification_icon));
+        $field = array('to'=>$user,'notification'=>array('title'=> $video_name,'body'=>strip_tags($message),'tag'=> $message,'icon'=> $video_img,'link'=> URL::to('/public/uploads/') . '/settings/' . $notification_icon));
         $payload =json_encode($field);
         $curl_session = curl_init();
         curl_setopt($curl_session, CURLOPT_URL, $fcm_postt);
