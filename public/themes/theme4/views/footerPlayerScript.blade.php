@@ -1,9 +1,21 @@
 <?php 
     $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
+    $firstSegment = Request::segment(1);
+    // $lastSegment = Request::segment(2);
+
 ?>
 
 <script>
-    var type = $('#video_type').val();
+    var choosen_player = <?php  echo json_encode( choosen_player() ); ?>; 
+    var firstSegment =  <?php  echo json_encode( $firstSegment); ?>; 
+    
+    if (choosen_player == 1){
+        var type = '';
+    }else if (firstSegment == 'category'){
+        var type = $('#video_type').val();
+    }else{
+        var type = '';
+    }
     var request_url = $('#request_url').val();
     var live = $('live').val();
     var video_video = $('#video_video').val();
