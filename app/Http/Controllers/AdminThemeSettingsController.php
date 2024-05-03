@@ -244,6 +244,10 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->Tv_Logged_User_List       = !empty($data['Tv_Logged_User_List']) ? '1' : '0';
 
+        $theme_settings->enable_channel_payment       = !empty($data['enable_channel_payment']) ? '1' : '0';
+
+        $theme_settings->enable_moderator_payment       = !empty($data['enable_moderator_payment']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);
