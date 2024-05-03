@@ -210,6 +210,7 @@
 
   
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -264,8 +265,8 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script>
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {
@@ -1022,7 +1023,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="200" height="100" style="width:100px;"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
