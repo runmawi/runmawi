@@ -159,7 +159,18 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" >
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : default_vertical_image_url() }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" alt="epg_channel_data" width="300" height="200">
+                                            @endif 
+
+                                            @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)
+                                                <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
+                                            @endif 
                                         </div>
                                     </a>
                                 </li>

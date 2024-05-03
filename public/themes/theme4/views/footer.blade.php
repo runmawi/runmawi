@@ -259,7 +259,6 @@
         loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
     try {

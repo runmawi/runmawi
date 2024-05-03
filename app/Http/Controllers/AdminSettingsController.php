@@ -245,6 +245,8 @@ class AdminSettingsController extends Controller
         $settings->show_artist = $request['show_artist'];
         $settings->show_subtitle = $request['show_subtitle'];
         $settings->show_views = $request['show_views'];
+        
+        $settings->homepage_views_all_button_status = $request['homepage_views_all_button_status'];
 
         $settings->search_title_status  = $request['search_title_status'];
         $settings->search_category_status = $request['search_category_status'];

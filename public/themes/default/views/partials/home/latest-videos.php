@@ -2,12 +2,20 @@
 if(count($latest_video) > 0) : ?>
   <?php  if( !Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h2 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
-                    </a></h2>  
-                    <h2 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>                    
-                 </div>
+
+                  <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h2 class="main-title">
+                      <a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
+                        <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
+                      </a>
+                    </h2>  
+                  
+                    <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+                      <h2 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>                    
+                    <?php endif; ?>
+                  </div>
+
+
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                          <?php  if(isset($latest_video)) :

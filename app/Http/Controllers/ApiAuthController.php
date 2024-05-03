@@ -24274,7 +24274,8 @@ public function SendVideoPushNotification(Request $request)
     ->get();
       if(count($videos) > 0){
         foreach($videos as $key => $video){
-          send_video_push_notifications('Notification From '. GetWebsiteName(),'Latest Video Available',$video->title,$video->id,$userId,'');
+          $video_img = URL::to('/public/uploads/images/'.$video->player_image);
+          send_video_push_notifications('Notification From '. GetWebsiteName(),'Latest Video Available',$video->title,$video->id,$userId,$video_img);
         }
         $response = array(
           'status'=>'true',

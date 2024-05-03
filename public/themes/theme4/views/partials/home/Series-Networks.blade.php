@@ -38,7 +38,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
+                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
@@ -217,8 +217,8 @@
             slidesToScroll: 1,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

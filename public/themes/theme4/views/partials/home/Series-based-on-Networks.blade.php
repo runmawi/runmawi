@@ -1,6 +1,6 @@
-@if (!empty($Series_based_on_Networks) && $Series_based_on_Networks->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
 
-    @foreach( $Series_based_on_Networks as $key => $series_networks )
+    @foreach( $data as $key => $series_networks )
         @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid pl-0">
@@ -111,7 +111,7 @@
 
     {{-- Networks depends Episode Modal --}}
 
-    @foreach( $Series_based_on_Networks as $key => $series_networks )
+    @foreach( $data as $key => $series_networks )
         @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key =>  $series )
             @foreach ($series->Series_depends_episodes as $episode_key =>  $episode )
                 <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
