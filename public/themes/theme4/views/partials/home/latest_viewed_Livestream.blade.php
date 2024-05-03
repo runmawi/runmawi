@@ -29,49 +29,62 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[16]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[16])->header_name }}</a></h4>
                     </div>
 
-                    <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $livestream_videos)
-                                <li class="slide-item">
-                                    <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
-                                                <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <h6> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}
-                                                </h6>
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($livestream_videos)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $livestream_videos->duration != null ? gmdate('H:i:s', $livestream_videos->duration) : null }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
+                                <li class="slick-slide">
+                                    <a href="javascript:;">
+                                        <div class="movie-slick position-relative">
+                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
+
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
+                            @foreach ($data as $key => $livestream_videos)
+                                <li class="slick-slide">
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
+                                        <button class="drp-close">×</button>
+
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                    <div class="caption pl-4">
+
+                                                        <h2 class="caption-h2"> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}</h2>
+
+                                                        
+                                                        @if (optional($livestream_videos)->description)
+                                                            <div class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->description) !!}</div>
+                                                        @endif
+
+                                                        <div class="p-btns">
+                                                            <div class="d-flex align-items-center p-0">
+                                                                <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <!-- <a href="{{ URL::to('category/videos/'.$latest_view_video->slug ) }}" class="btn btn-hover button-groups mr-2" tabindex="0" ><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> -->
+                                                                <!-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-viewed_videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> -->
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+                                                        <div class="dropdown_thumbnail">
+                                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
+
+                    
                 </div>
             </div>
         </div>

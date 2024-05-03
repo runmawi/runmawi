@@ -18,7 +18,7 @@
 
                                 @foreach ($series_networks->Series_depends_Networks as $series )
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                     <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network">
                                             </div>

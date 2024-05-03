@@ -13,7 +13,7 @@
                         <ul id="trending-slider-nav" class="audios-category-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $audioscategories)
                                 <li>
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="audioscategories">
                                         </div>
@@ -70,7 +70,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $audioscategories->player_image ?  URL::to('public/uploads/images/'.$audioscategories->player_image) : default_horizontal_image_url() }}" alt="audioscategories" width="100%">
+                                            <img  src="{{ $audioscategories->player_image ?  URL::to('public/uploads/images/'.$audioscategories->player_image) : default_horizontal_image_url() }}" alt="audioscategories">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

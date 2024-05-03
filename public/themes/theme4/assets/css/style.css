@@ -495,3 +495,17 @@ li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!
 body.dark .form-control option{background:#121111!important;color:#fff!important}
 .modal-body img{width:100%}
 ul#trending-slider{display:none}
+.list-group-item img {
+    width: 100%; /* Ensure image fills its container */
+    max-width: 100%; /* Limit image to container width */
+    height: auto; /* Maintain aspect ratio */
+  }
+  .modal-body img {
+    width: 100%; /* Ensure image fills its container */
+    max-width: 100%; /* Limit image to container width */
+    height: auto; /* Maintain aspect ratio */
+  }
+  .apps1 {
+    max-width: 100%; /* Limit image to container width */
+    height: auto; /* Maintain aspect ratio */
+  }

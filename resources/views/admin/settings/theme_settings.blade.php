@@ -545,6 +545,48 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+
+
+                <div class="row d-flex"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Moderator Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_moderator_payment"  type="checkbox" @if( $settings->enable_moderator_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Channel Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_payment"  type="checkbox" @if( $settings->enable_channel_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+
+                    </div>
+                    </div>
+
+                </div>
+
                     </div>
                 
                 </div>

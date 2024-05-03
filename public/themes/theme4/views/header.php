@@ -209,12 +209,15 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-     
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+
+    <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
 
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -222,6 +225,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
@@ -250,9 +254,13 @@
       <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-   
+   <!-- Remixicon -->
+      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      
    <!-- Ply.io -->
 
+    <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1014,7 +1022,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -1102,7 +1110,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              if ( $menu->in_menu == "video" ) {  ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-video" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1153,7 +1161,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "live") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-live" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1188,7 +1196,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "audios") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-audio" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1250,7 +1258,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "series") { ?>
                                                 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-series" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1285,7 +1293,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "networks") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="down-network" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1418,7 +1426,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="down" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1456,7 +1464,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
+                                                      <a class="nav-link justify-content-between" id="dn-movie" href="<?= URL::to($menu->url) ?>">
                                                          <?= $menu->name ?>
                                                       </a>
                                                       <ul class="dropdown-menu categ-head">
@@ -1477,7 +1485,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-live" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1515,7 +1523,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-audio" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1582,7 +1590,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-series" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1620,7 +1628,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                         <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                         <a class="nav-link dropdown-toggle justify-content-between" id="dn-network" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                          </a>
 
@@ -2157,10 +2165,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
             // console.log(DOB);
             // console.log(currentdate);
 
-            if (filldate == currentdate && DOB != null && !empty(DOB) && currentdate != null && filldate !=
+            if (filldate == currentdate && DOB != null && DOB != null && currentdate != null && filldate !=
                null) {
                $("body").append(
-                  '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
+                  // '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
                   );
                setTimeout(function() {
                   $('.add_watch').slideUp('fast');
@@ -2370,6 +2378,9 @@ window.onload = function () {
    };
 
 </script>
+
+
+<input type="checkbox" id="toggle" style="display:none;">
 
 <script>
     const toggle = document.getElementById('toggle');

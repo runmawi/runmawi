@@ -139,7 +139,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_player_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_player_image.' 420w') }}" >
                                             @else
-                                                <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
+                                                <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}" alt="Videos" >
                                             @endif
                                         </div>
                                         <div class="col-lg-6">

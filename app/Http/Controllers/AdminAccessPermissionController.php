@@ -65,6 +65,8 @@ class AdminAccessPermissionController extends Controller
                     'document_list_checkout'                    => !empty($request->document_list_checkout) ? 1 : 0 ,
                     'music_genre_checkout'                      => !empty($request->music_genre_checkout) ? 1 : 0 ,
                     'writer_checkout'                           => !empty($request->writer_checkout) ? 1 : 0 ,
+                    'enable_channel_payment'                    => !empty($request->enable_channel_payment) ? 1 : 0 ,
+                    'enable_moderator_payment'                  => !empty($request->enable_moderator_payment) ? 1 : 0 ,
                  ]);
             }else{
                 
@@ -85,6 +87,8 @@ class AdminAccessPermissionController extends Controller
                     'document_list_checkout'                    => !empty($request->document_list_checkout) ? 1 : 0 ,
                     'music_genre_checkout'                      => !empty($request->music_genre_checkout) ? 1 : 0 ,
                     'writer_checkout'                           => !empty($request->writer_checkout) ? 1 : 0 ,
+                    'enable_channel_payment'                    => !empty($request->enable_channel_payment) ? 1 : 0 ,
+                    'enable_moderator_payment'                  => !empty($request->enable_moderator_payment) ? 1 : 0 ,
                 ]);
             }
 

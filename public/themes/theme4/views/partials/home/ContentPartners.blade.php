@@ -17,7 +17,7 @@
                         <ul id="trending-slider-nav" class="cpp-portal-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $CPP_details)
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                 @if ( $multiple_compress_image == 1)
                                                     <img class="img-fluid position-relative" alt="{{ $CPP_details->title }}" src="{{ $CPP_details->image ?  URL::to('public/uploads/images/'.$CPP_details->image) : default_vertical_image_url() }}"

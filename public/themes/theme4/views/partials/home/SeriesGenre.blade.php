@@ -14,7 +14,7 @@
                         <ul id="trending-slider-nav" class="series-category-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $seriesGenre )
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                                 <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
                                         </div>
@@ -149,7 +149,7 @@
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series_details->responsive_player_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$series_details->responsive_player_image.' 420w') }}" >
                                                 @else
-                                                    <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
+                                                    <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="Videos" >
                                                 @endif
                                             </div>
                                             <div class="col-lg-6">

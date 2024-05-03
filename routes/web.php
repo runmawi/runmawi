@@ -742,9 +742,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
     
-    // Multiple Subscription Plans
+    // Multiple channel Subscription Plans
     Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
+
+    Route::get('/channel-subscription-plans', 'AdminChannelPlansController@subscriptionindex');
+    Route::post('/channel-subscription-plans/store', 'AdminChannelPlansController@subscriptionstore');
+    Route::get('/channel-subscription-plans/edit/{id}', 'AdminChannelPlansController@subscriptionedit');
+    Route::get('/channel-subscription-plans/delete/{id}', 'AdminChannelPlansController@subscriptiondelete');
+    Route::post('/channel-subscription-plans/update', 'AdminChannelPlansController@subscriptionupdate');
+    
+    // Multiple Moderator Subscription Plans
+    Route::post('Update-Multiple-Channel-Subscription-Plans', 'AdminChannelPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
+
+    Route::get('/moderator-subscription-plans', 'AdminCPPPlansController@subscriptionindex');
+    Route::post('/moderator-subscription-plans/store', 'AdminCPPPlansController@subscriptionstore');
+    Route::get('/moderator-subscription-plans/edit/{id}', 'AdminCPPPlansController@subscriptionedit');
+    Route::get('/moderator-subscription-plans/delete/{id}', 'AdminCPPPlansController@subscriptiondelete');
+    Route::post('/moderator-subscription-plans/update', 'AdminCPPPlansController@subscriptionupdate');
+    
+    // Multiple Subscription Plans
+    Route::post('Update-Multiple-Moderator-Subscription-Plans', 'AdminChannelPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
+
+    
     // Life-Time Subscription Plans
     Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');
     Route::post('/Life-time-subscription-store', 'AdminLifeTimeSubscriptionController@update')->name('Life-time-subscription-update');
