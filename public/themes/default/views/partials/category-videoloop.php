@@ -45,9 +45,11 @@
                         ?>
                     </h2>
                 </a>
-                <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h2 class="main-title"><?php echo('View all') ?>  </h2>
-                </a>
+                <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
+                        <h2 class="main-title"><?php echo('View all') ?>  </h2>
+                    </a>
+                <?php endif; ?>  
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
