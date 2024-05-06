@@ -90,7 +90,11 @@
                               
                            {{-- continue watching videos --}}
       @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
-         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
+         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', [
+            'data' => $cnt_watching, 'order_settings_list' => $order_settings_list ,
+            'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ,
+            'default_horizontal_image_url' => $default_horizontal_image_url , 'default_vertical_image_url' => $default_vertical_image_url 
+             ])->content() !!}
       @endif
       
       @partial('home_sections')
