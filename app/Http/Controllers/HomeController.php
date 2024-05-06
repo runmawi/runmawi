@@ -992,7 +992,7 @@ class HomeController extends Controller
                     
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                     
-                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodesfeatured_videos
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
@@ -1025,7 +1025,7 @@ class HomeController extends Controller
                 
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                 
-                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodesfeatured_videos
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                         return $item;
