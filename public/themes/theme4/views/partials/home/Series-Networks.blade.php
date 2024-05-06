@@ -53,7 +53,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show" style="height:100%;">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100" style="height: 100%;">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -185,7 +185,7 @@
         });
 
         $('.series-networks-slider-nav').slick({
-            slidesToShow: 6,
+            slidesToShow: 8,
             slidesToScroll: 1,
             asNavFor: '.series-networks-slider',
             dots: false,
