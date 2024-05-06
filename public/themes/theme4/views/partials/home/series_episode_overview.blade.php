@@ -28,9 +28,9 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $item['season'] = App\SeriesSeason::where('series_id', $item->id)->limit(15)->get();
 
-        $item['Episode_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Traler_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
 
         $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->limit(15)->get();
 

@@ -95,7 +95,7 @@
 </style>
    
 @php    
-    $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) {
                 
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
                 
@@ -103,7 +103,7 @@
                 
                 $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
 
-                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->get()->map(function ($item) {
+                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->limit(15)->get()->map(function ($item) {
 
                                                         $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
 
@@ -116,13 +116,13 @@
                                                     });
 
                                                     
-                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->limit(15)->get()->map(function ($item) {
                                                                 $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                                 return $item;
                                                             });
                                                     
                 $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::today()->format('n-j-Y') )
-                                                                            ->get()->map(function ($item) {
+                                                                    ->limit(15)->get()->map(function ($item) {
 
                                                                                 $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
                                                                                     
