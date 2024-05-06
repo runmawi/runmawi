@@ -6,16 +6,19 @@
 ?>
 
 <script>
-    var choosen_player = <?php  echo json_encode( choosen_player() ); ?>; 
-    var firstSegment =  <?php  echo json_encode( $firstSegment); ?>; 
+    // var choosen_player = <?php  echo json_encode( choosen_player() ); ?>; 
+    // var firstSegment =  <?php  echo json_encode( $firstSegment); ?>; 
     
-    if (choosen_player == 1){
-        var type = '';
-    }else if (firstSegment == 'category'){
-        var type = $('#video_type').val();
-    }else{
-        var type = '';
-    }
+    // if (choosen_player == 1){
+    //     var type = '';
+    // }else if (firstSegment == 'category'){
+    //     var type = $('#video_type').val();
+    // }else{
+    //     var type = '';
+    // }
+
+    var type = $('#video_type').val();
+    // alert(type);
     var request_url = $('#request_url').val();
     var live = $('live').val();
     var video_video = $('#video_video').val();
@@ -617,64 +620,62 @@
         });
     }
     // Normal Video M3U8 URL Script   
-            document.addEventListener("DOMContentLoaded", () => {
+    else {
+        // alert('ss');
+
+        document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
+            const source = video.getElementsByTagName("source")[0].src;
 
-            if (video) {
-                const source = video.getElementsByTagName("source")[0].src;
+            const defaultOptions = {};
 
-                const defaultOptions = {};
+            if (Hls.isSupported()) {
 
-                if (Hls.isSupported()) {
-                    // Enable ads if supported
-                    defaultOptions.ads = {
-                        enabled: true,
-                        tagUrl: video_tag_url
+                defaultOptions.ads = {
+                    enabled: true,
+                    tagUrl: video_tag_url
+                }
+
+                const hls = new Hls();
+                hls.loadSource(source);
+
+                hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+
+                    // Transform available levels into an array of integers (height values).
+                    const availableQualities = hls.levels.map((l) => l.height)
+                    availableQualities.unshift(0) //prepend 0 to quality array
+
+                    // Add new qualities to option
+                    defaultOptions.quality = {
+                        default: 0, //Default - AUTO
+                        options: availableQualities,
+                        forced: true,
+                        onChange: (e) => updateQuality(e),
+                    }
+                    // Add Auto Label 
+                    defaultOptions.i18n = {
+                        qualityLabel: {
+                            0: 'Auto',
+                        },
                     }
 
-                    const hls = new Hls();
-                    hls.loadSource(source);
-
-                    hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-                        // Get available quality levels
-                        const availableQualities = hls.levels.map((l) => l.height)
-                        availableQualities.unshift(0) // prepend 0 to quality array
-
-                        // Setup quality options
-                        defaultOptions.quality = {
-                            default: 0, // Default - AUTO
-                            options: availableQualities,
-                            forced: true,
-                            onChange: (e) => updateQuality(e),
+                    hls.on(Hls.Events.LEVEL_SWITCHED, function(event, data) {
+                        var span = document.querySelector(
+                            ".plyr__menu__container [data-plyr='quality'][value='0'] span")
+                        if (hls.autoLevelEnabled) {
+                            span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+                        } else {
+                            span.innerHTML = `AUTO`
                         }
+                    })
 
-                        // Add AUTO label
-                        defaultOptions.i18n = {
-                            qualityLabel: {
-                                0: 'Auto',
-                            },
-                        }
-
-                        hls.on(Hls.Events.LEVEL_SWITCHED, function(event, data) {
-                            // Update quality display in Plyr controls
-                            const span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span");
-                            if (hls.autoLevelEnabled) {
-                                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-                            } else {
-                                span.innerHTML = `AUTO`
-                            }
-                        })
-
-                        // Initialize Plyr player with custom options
-                        const player = new Plyr(video, {
-                            ...defaultOptions,
-                            controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
-                        });
-                    });
-                }
-            }
-        });
-
+                    // Initialize new Plyr player with quality options
+                    // var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
 
                         // Ads Views Count
                     player.on('adsloaded', (event) => {
