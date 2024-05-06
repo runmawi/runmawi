@@ -43,7 +43,7 @@
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -94,7 +94,7 @@
     $(document).ready(function() {
 
         $('.content-portal').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
             fade: true,
@@ -104,7 +104,7 @@
 
         $('.content-portal-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.content-portal',
             dots: false,
             arrows: true,
