@@ -6,7 +6,9 @@
   <?php if ($order_settings_list[0]->header_name) { echo __($order_settings_list[0]->header_name) ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h2> 
-                  <h2 class="main-title"><a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>                     
+                  <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <h2 class="main-title"><a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>   
+                  <?php endif; ?>                         
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">

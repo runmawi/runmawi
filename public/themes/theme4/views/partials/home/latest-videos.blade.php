@@ -20,9 +20,9 @@
                                                 <img class="img-fluid position-relative" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}" >
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}"  width="300" height="200">
                                             @else
-                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series">
+                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="latest_series"  width="300" height="200">
                                             @endif
 
                                             @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
@@ -42,7 +42,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
@@ -103,7 +103,7 @@
                                                 <img  alt="latest_series" src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_player_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_player_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" >
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" alt="latest_series">
 
                                             @else
                                                 <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="latest_series">
@@ -160,7 +160,7 @@
 
         $('.latest-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,

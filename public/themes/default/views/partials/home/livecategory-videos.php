@@ -56,7 +56,9 @@ $currency = App\CurrencySetting::first();
                           echo __($category->name);?>
                     </h4>
                 </a>
-                <h4 class="main-title"><a href="<?= URL::to('/') ?><?= '/LiveCategory'.'/' . $category->slug ?>"><?php echo (__('View All')); ?></a></h4>
+                <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+                    <h4 class="main-title"><a href="<?= URL::to('/') ?><?= '/LiveCategory'.'/' . $category->slug ?>"><?php echo (__('View All')); ?></a></h4>
+                <?php endif; ?>
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">

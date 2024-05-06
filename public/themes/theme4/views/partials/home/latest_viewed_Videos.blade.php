@@ -34,7 +34,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
+    <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
@@ -42,11 +42,11 @@
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[15]->url ? URL::to($order_settings_list[15]->url) : null }} ">{{ optional($order_settings_list[15])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[15]->url ? URL::to($order_settings_list[15]->url) : null }} ">{{ 'View all' }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[15]->url ? URL::to($order_settings_list[15]->url) : null }} ">{{ "View all" }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-viewed-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $latest_view_video)
                                 <li class="slick-slide">
                                     <a href="javascript:;">
@@ -69,7 +69,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider">
+                        <ul id="trending-slider latest-viewed-videos-slider" class="list-inline p-0 m-0 align-items-center latest-viewed-videos-slider theme4-slider">
                             @foreach ($data as $key => $latest_view_video)
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -77,7 +77,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
@@ -123,54 +123,13 @@
                         </ul>
                     </div>
 
-                    <!-- <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $latest_view_video)
-                                <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$latest_view_video->slug ) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
-                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <h6> {{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}
-                                                </h6>
-                                                <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($latest_view_video)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $latest_view_video->duration != null ? gmdate('H:i:s', $latest_view_video->duration) : null }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div> -->
+                   
                 </div>
             </div>
         </div>
 
-        
+
         @foreach ($data as $key => $latest_view_video )
             <div class="modal fade info_model" id="{{ "Home-Latest-viewed_videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
@@ -225,24 +184,24 @@
 <script>
     
     $( window ).on("load", function() {
-        $('.latest-videos-slider').hide();
+        $('.latest-viewed-videos-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.latest-videos-slider').slick({
-            slidesToShow: 6,
+        $('.latest-viewed-videos-slider').slick({
+            slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
             fade: true,
             draggable: false,
-            asNavFor: '.latest-videos-slider-nav',
+            asNavFor: '.latest-viewed-videos-slider-nav',
         });
 
-        $('.latest-videos-slider-nav').slick({
+        $('.latest-viewed-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
-            asNavFor: '.latest-videos-slider',
+            slidesToScroll: 6,
+            asNavFor: '.latest-viewed-videos-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
@@ -274,15 +233,13 @@
             ],
         });
 
-        $('.latest-videos-slider-nav').on('click', function() {
+        $('.latest-viewed-videos-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.latest-videos-slider').show();
+            $('.latest-viewed-videos-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
-            $('.latest-videos-slider').hide();
+            $('.latest-viewed-videos-slider').hide();
         });
     });
 </script>
-
-<style>

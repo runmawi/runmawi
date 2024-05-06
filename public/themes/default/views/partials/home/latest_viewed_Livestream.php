@@ -31,11 +31,13 @@
                 echo '';
             } ?></a>
     </h4>
+    <?php if( $settings->homepage_views_all_button_status == 1 ):?>
     <h4 class="main-title"><a href="<?php if ($order_settings_list[16]->header_name) {
             echo URL::to('/') . '/' . $order_settings_list[16]->url;
         } else {
             echo '';
         } ?>"><?php echo (__('View All')); ?></a></h4>
+        <?php endif; ?>
 </div>
 
 <div class="favorites-contens">
