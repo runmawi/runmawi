@@ -20,7 +20,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                    <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
@@ -49,7 +49,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                    <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : $default_vertical_image_url }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>

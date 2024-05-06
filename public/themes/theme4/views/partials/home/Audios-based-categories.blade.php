@@ -14,6 +14,7 @@
         ])
         ->select('audio_categories.id', 'audio_categories.name', 'audio_categories.slug', 'audio_categories.order')
         ->orderBy('audio_categories.order')
+        ->limit(15)
         ->get();
 
     $data->each(function ($category) {
@@ -54,7 +55,7 @@
                                             <div class="block-images position-relative">
 
                                                 <div class="img-box">
-                                                    <img src="{{ $audios_details->image ? URL::to('public/uploads/images/' . $audios_details->image) : default_vertical_image_url() }}"
+                                                    <img src="{{ $audios_details->image ? URL::to('public/uploads/images/' . $audios_details->image) : $default_vertical_image_url }}"
                                                         class="img-fluid" alt="">
                                                 </div>
 

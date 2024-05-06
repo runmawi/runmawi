@@ -17,7 +17,7 @@
                                     <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ $series_details->image ? URL::to('public/uploads/images/' . $series_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $series_details->image ? URL::to('public/uploads/images/' . $series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">

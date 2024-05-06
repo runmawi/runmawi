@@ -28,9 +28,9 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $item['season'] = App\SeriesSeason::where('series_id', $item->id)->limit(15)->get();
 
-        $item['Episode_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Traler_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
 
         $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->limit(15)->get();
 
@@ -56,7 +56,7 @@ $data = App\Series::where('active', '1')->limit(15)
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$Episode_details->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
@@ -96,12 +96,12 @@ $data = App\Series::where('active', '1')->limit(15)
 
                                                             <div class="dropdown_thumbnail">
                                                                 @if ( $multiple_compress_image == 1)
-                                                                    <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$item->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$item->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$item->responsive_player_image.' 420w') }}" >
                                                                 @else
-                                                                    <img  src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                    <img  src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : $default_vertical_image_url }}" alt="Videos">
                                                                 @endif
                                                             </div>
                                                         </div>

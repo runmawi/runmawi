@@ -17,7 +17,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : default_vertical_image_url() }}" alt="album-img" class="img-fluid" >
+                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : $default_vertical_image_url }}" alt="album-img" class="img-fluid" >
                                         </div>
                                     </a>
                                 </li>
@@ -51,7 +51,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_horizontal_image_url }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,7 +75,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_horizontal_image_url }}" alt="" width="100%">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

@@ -3,7 +3,9 @@
      $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
                               'multiple_compress_image' => $multiple_compress_image, 
                               'videos_expiry_date_status' => $videos_expiry_date_status,
-                              'getfeching' => $getfeching
+                              'getfeching' => $getfeching,
+                              'default_vertical_image_url' => $default_vertical_image_url,
+                              'default_horizontal_image_url' => $default_horizontal_image_url,
                          ];
 @endphp
 
@@ -49,6 +51,7 @@
           <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->limit(15)->get(); ?>
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', array_merge($homepage_array_data, ['data' => $ModeratorsUser]) )->content() !!}
      @endif
+
      
      @if(  $item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
      
