@@ -111,13 +111,13 @@
                     <p><?= __('Available on Play Store') ?></p>
                     <!-- <img src="<?php //echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class=""> -->
                     <?php if(!empty($app_settings->android_url)){ ?> 
-                      <a href="<?= $app_settings->android_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;"></a>
+                      <a href="<?= $app_settings->android_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.webp')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                     <?php if(!empty($app_settings->ios_url)){ ?> 
-                      <a href="<?= $app_settings->ios_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;"></a>
+                      <a href="<?= $app_settings->ios_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.webp')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                     <?php if(!empty($app_settings->android_tv)){ ?> 
-                      <a href="<?= $app_settings->android_tv ?>"><img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;"></a>
+                      <a href="<?= $app_settings->android_tv ?>"><img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.webp')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                 </div>
             </div>

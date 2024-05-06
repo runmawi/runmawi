@@ -1006,7 +1006,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> /> 
+                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
                      </div>
                   <?php endif ;?>
 
@@ -1023,7 +1023,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="200" height="100" style="width:100px;"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -2179,7 +2179,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
         
    </script>
 
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+   <!-- <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script> -->
 
    <script>
 
