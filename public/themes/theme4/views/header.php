@@ -210,7 +210,7 @@
 
   
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
-   <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
