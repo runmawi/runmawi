@@ -15,7 +15,7 @@
                                 <li>
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="audioscategories">
+                                            <img src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : $default_vertical_image_url }}" class="img-fluid" alt="audioscategories">
                                         </div>
                                     </a>
                                 </li>
@@ -45,7 +45,7 @@
                                                         </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : default_horizontal_image_url() }}" alt="audioscategories">
+                                                                <img  src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : $default_horizontal_image_url }}" alt="audioscategories">
                                                             </div>
                                                     </div>
                                                 </div>
@@ -70,7 +70,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $audioscategories->player_image ?  URL::to('public/uploads/images/'.$audioscategories->player_image) : default_horizontal_image_url() }}" alt="audioscategories">
+                                            <img  src="{{ $audioscategories->player_image ?  URL::to('public/uploads/images/'.$audioscategories->player_image) : $default_horizontal_image_url }}" alt="audioscategories">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

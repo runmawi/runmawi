@@ -50,6 +50,7 @@
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', array_merge($homepage_array_data, ['data' => $ModeratorsUser]) )->content() !!}
      @endif
      
+     
      @if(  $item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
      
           <?php $channels = App\Channel::where('status',1)->limit(15)->get(); ?>

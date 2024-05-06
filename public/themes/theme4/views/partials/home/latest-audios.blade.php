@@ -18,7 +18,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" alt="audio-img" class="img-fluid" >
+                                            <img src="{{ $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : $default_vertical_image_url }}" alt="audio-img" class="img-fluid" >
                                         </div>
                                     </a>
                                 </li>
@@ -52,7 +52,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="modal">
+                                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : $default_horizontal_image_url }}" alt="modal">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,7 +77,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : default_horizontal_image_url() }}" alt="modal">
+                                            <img  src="{{ $audios_details->player_image ?  URL::to('public/uploads/images/'.$audios_details->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

@@ -273,7 +273,7 @@
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
+                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : $default_vertical_image_url }}" alt="Videos" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>

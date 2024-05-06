@@ -21,14 +21,14 @@
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img class="img-fluid position-relative" alt="{{ $channel->title }}" src="{{ $channel->image ?  URL::to('public/uploads/images/'.$channel->image) : default_vertical_image_url() }}"
+                                                    <img class="img-fluid position-relative" alt="{{ $channel->title }}" src="{{ $channel->image ?  URL::to('public/uploads/images/'.$channel->image) : $default_vertical_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$channel->responsive_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$channel->responsive_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$channel->responsive_image.' 420w') }}" >
                                                 @else
-                                                    <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="channel">
+                                                    <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid" alt="channel">
                                                 @endif
-                                                <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" >
+                                                <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid" >
                                             </div>
                                         </a>
                                     </li>
@@ -58,12 +58,12 @@
 
                                                             <div class="dropdown_thumbnail">
                                                                 @if ( $multiple_compress_image == 1)
-                                                                    <img  alt="latest_series" src="{{$channel->player_image ?  URL::to('public/uploads/images/'.$channel->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="latest_series" src="{{$channel->player_image ?  URL::to('public/uploads/images/'.$channel->player_image) : $default_horizontal_image_url }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$channel->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$channel->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$channel->responsive_player_image.' 420w') }}" >
                                                                 @else
-                                                                    <img  src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" alt="channel">
+                                                                    <img  src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" alt="channel">
                                                                 @endif
                                                             </div>
                                                         </div>

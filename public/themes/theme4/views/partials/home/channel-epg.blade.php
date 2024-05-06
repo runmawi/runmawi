@@ -97,11 +97,11 @@
 @php    
     $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) {
                 
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
                 
-                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
                 
-                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
                 $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->limit(15)->get()->map(function ($item) {
 
@@ -160,7 +160,7 @@
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
@@ -230,7 +230,7 @@
 
                                                         <div class="dropdown_thumbnail">
                                                             @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$epg_channel_data->player_image ?  URL::to('public/uploads/images/'.$epg_channel_data->player_image) : default_horizontal_image_url() }}"
+                                                                <img  alt="latest_series" src="{{$epg_channel_data->player_image ?  URL::to('public/uploads/images/'.$epg_channel_data->player_image) : $default_horizontal_image_url }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_player_image.' 640w') }},
                                                                     {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_player_image.' 420w') }}" >
