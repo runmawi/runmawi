@@ -43,7 +43,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -151,7 +151,7 @@
     $(document).ready(function() {
 
         $('.featured-videos-slider').slick({
-            slidesToShow: 1,
+            slidesToShow: 2,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
@@ -161,7 +161,7 @@
 
         $('.featured-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.featured-videos-slider',
             dots: false,
             arrows: true,
