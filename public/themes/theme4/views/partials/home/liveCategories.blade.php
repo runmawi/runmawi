@@ -148,8 +148,8 @@
             asNavFor: '.live-category-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -179,11 +179,11 @@
 
         $('.Category-depends-live-stream').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

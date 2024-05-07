@@ -82,9 +82,9 @@
     $(document).ready(function() {
 
         $('.my-playlist').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.my-playlist-nav',
@@ -96,8 +96,8 @@
             asNavFor: '.my-playlist',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
