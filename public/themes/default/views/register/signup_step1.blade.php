@@ -253,7 +253,8 @@ i.fa.fa-google-plus {
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
-                                    <input id="email" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                    <input id="email" type="email" placeholder="{{ __('Email Address') }}"  class="form-control email @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                    <span class="invalid-feedback" id="email_error_Valid" role="alert">{{ __('Please enter a valid email address') }}
                                     <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
                                     </span>
 
@@ -559,6 +560,9 @@ i.fa.fa-google-plus {
         var onloadCallback = function(){
       
     }
+
+
+
 $('form[id="stripe_plan"]').validate({
     ignore: [],
     rules: {
@@ -576,7 +580,7 @@ $('form[id="stripe_plan"]').validate({
         username: 'This field is required',
         email: {
             required: 'Email address is required',
-            email: 'Please enter a valid email address',
+            // email: 'Please enter a valid email address',
         },
     },
     submitHandler: function(form) {
@@ -614,6 +618,7 @@ var specialKeys = new Array();
 
 
     $('#email_error').hide();
+    $('#email_error_Valid').hide();
     $("#profileUpdate").click(function(){
 
         var email = $('#email').val();
@@ -710,6 +715,17 @@ $('#country').on('change', function() {
     });
 
     function ValidationEvent(form) {
+
+            var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            var email = $(".email").val();
+            if(!filter.test(email)){
+                $('#email_error_Valid').show(500);
+                setTimeout(function() {
+                    $('#email_error_Valid').hide(500); // Hide the element with a slide-up animation
+                }, 2000);
+                return false;
+            }
+            $('#email_error_Valid').hide();
 
     var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
     if(password_confirm == 0){
