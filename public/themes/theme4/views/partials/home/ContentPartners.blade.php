@@ -20,12 +20,12 @@
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img class="img-fluid position-relative" alt="{{ $CPP_details->title }}" src="{{ $CPP_details->image ?  URL::to('public/uploads/images/'.$CPP_details->image) : default_vertical_image_url() }}"
+                                                    <img class="img-fluid position-relative" alt="{{ $CPP_details->title }}" src="{{ $CPP_details->image ?  URL::to('public/uploads/images/'.$CPP_details->image) : $default_vertical_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$CPP_details->responsive_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$CPP_details->responsive_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$CPP_details->responsive_image.' 420w') }}" >
                                                 @else
-                                                    <img src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : default_vertical_image_url() }}" class="img-fluid" alt="content">
+                                                    <img src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : $default_vertical_image_url }}" class="img-fluid" alt="content">
                                                 @endif 
                                             </div>
                                         </a>
@@ -41,7 +41,7 @@
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -56,12 +56,12 @@
 
                                                             <div class="dropdown_thumbnail">
                                                                 @if ( $multiple_compress_image == 1)
-                                                                    <img  alt="latest_series" src="{{$CPP_details->player_image ?  URL::to('public/uploads/images/'.$CPP_details->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="latest_series" src="{{$CPP_details->player_image ?  URL::to('public/uploads/images/'.$CPP_details->player_image) : $default_horizontal_image_url }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$CPP_details->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$CPP_details->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$CPP_details->responsive_player_image.' 420w') }}" >
                                                                 @else
-                                                                    <img  src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : default_vertical_image_url() }}" alt="cpp">
+                                                                    <img  src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : $default_vertical_image_url }}" alt="cpp">
                                                                 @endif 
                                                             </div>
                                                         </div>
@@ -92,9 +92,9 @@
     $(document).ready(function() {
 
         $('.cpp-portal').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.cpp-portal-nav',
@@ -102,12 +102,12 @@
 
         $('.cpp-portal-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.cpp-portal',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

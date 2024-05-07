@@ -17,7 +17,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : default_vertical_image_url() }}" alt="album-img" class="img-fluid" >
+                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : $default_vertical_image_url }}" alt="album-img" class="img-fluid" >
                                         </div>
                                     </a>
                                 </li>
@@ -32,7 +32,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -51,7 +51,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_horizontal_image_url }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,7 +75,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_horizontal_image_url }}" alt="" width="100%">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -130,12 +130,12 @@
 
         $('.albums-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.albums-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

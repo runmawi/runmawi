@@ -33,7 +33,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -49,7 +49,7 @@
 
                                                         <div class="dropdown_thumbnail">
                                                             @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$series_network_list->player_image ?  URL::to('public/uploads/images/'.$series_network_list->player_image) : default_horizontal_image_url() }}"
+                                                                <img  alt="latest_series" src="{{$series_network_list->player_image ?  URL::to('public/uploads/images/'.$series_network_list->player_image) : $default_horizontal_image_url }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$series_network_list->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$series_network_list->responsive_player_image.' 640w') }},
                                                                     {{ URL::to('public/uploads/mobileimages/'.$series_network_list->responsive_player_image.' 420w') }}" >
@@ -91,12 +91,12 @@
 
         $('.series-networks-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

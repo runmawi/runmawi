@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $videocategories->image ?  URL::to('public/uploads/videocategory/'.$videocategories->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $videocategories->image ?  URL::to('public/uploads/videocategory/'.$videocategories->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">
                                         </div>
                                     </a>
                                 </li>
@@ -31,7 +31,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -82,7 +82,7 @@
                                                                     <li>
                                                                         <a href="{{ URL::to('category/videos/'.$video_details->slug) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ URL::to('category/videos/'.$video_details->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -109,7 +109,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $videocategories->banner_image ?  URL::to('public/uploads/videocategory/'.$videocategories->banner_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                                <img  src="{{ $videocategories->banner_image ?  URL::to('public/uploads/videocategory/'.$videocategories->banner_image) : $default_horizontal_image_url }}" alt="Videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,12 +134,12 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             @if ( $multiple_compress_image == 1)
-                                                <img  alt="latest_series" src="{{$video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}"
+                                                <img  alt="latest_series" src="{{$video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : $default_horizontal_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$video_details->responsive_player_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_player_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_player_image.' 420w') }}" >
                                             @else
-                                                <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}" alt="Videos" >
+                                                <img  src="{{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : $default_horizontal_image_url }}" alt="Videos" >
                                             @endif
                                         </div>
                                         <div class="col-lg-6">
@@ -196,12 +196,12 @@
 
         $('.videos-category-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.videos-category-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -234,8 +234,8 @@
             slidesToScroll: 1,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

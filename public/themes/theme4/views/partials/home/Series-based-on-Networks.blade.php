@@ -1,6 +1,6 @@
-@if (!empty($Series_based_on_Networks) && $Series_based_on_Networks->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
 
-    @foreach( $Series_based_on_Networks as $key => $series_networks )
+    @foreach( $data as $key => $series_networks )
         @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid pl-0">
@@ -34,7 +34,7 @@
                                             <button class="drp-close">×</button>
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -92,7 +92,7 @@
 
                                                             <div class="dropdown_thumbnail">
                                                                 @if ( $multiple_compress_image == 1)
-                                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
@@ -118,7 +118,7 @@
 
     {{-- Networks depends Episode Modal --}}
 
-    @foreach( $Series_based_on_Networks as $key => $series_networks )
+    @foreach( $data as $key => $series_networks )
         @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key =>  $series )
             @foreach ($series->Series_depends_episodes as $episode_key =>  $episode )
                 <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
@@ -130,7 +130,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
@@ -179,9 +179,9 @@
     $(document).ready(function() {
 
         $('.series-networks-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-networks-videos-slider-nav',
@@ -189,12 +189,12 @@
 
         $('.series-networks-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -228,7 +228,10 @@
 
              let category_key_id = $(this).attr("data-key-id");
              $('.series-networks-videos-slider').hide();
-             $('.category-series-' + category_key_id).show();
+
+             setTimeout(function() {
+                    $('.category-series-' + category_key_id).fadeIn(400); // Show slider with fade effect after delay
+                }, 500);
 
             $('.series-depends-episode-slider-'+ category_key_id).slick({
                 dots: false,

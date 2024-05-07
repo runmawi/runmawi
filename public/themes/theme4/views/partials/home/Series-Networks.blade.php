@@ -1,15 +1,15 @@
 @php
-    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) {
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
-                $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
+    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+                $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
                 $item['series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
                                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
                                                                                                     ->latest()->limit(15)->get()->map(function ($item) {
-                                                                                                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                                                                                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
-                                                                                                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
+                                                                                                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                                                                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                                                                                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
                                                                                                             $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
                                                                                                             $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
                                                                                                             return $item;
@@ -53,7 +53,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show" style="height:100%;">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -74,7 +74,7 @@
                                                                     <li class="slick-slide"  style="width:220px;">
                                                                         <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                                                <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -186,7 +186,7 @@
 
         $('.series-networks-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,

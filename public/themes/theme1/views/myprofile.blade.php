@@ -681,10 +681,24 @@
                             <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required />
                         </div>
         
-                        <div class="form-group">
-                            <label>{{ __('Phone') }} :</label>
-                            <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile"
+                        <label>{{ __('Phone') }} :</label>
+                        
+
+                        <div class="form-group row d-flex">
+
+                            <div class="col-md-4">
+                                <select class="form-control"  name="ccode">
+                                    @foreach ($jsondata as $code)
+                                        <option value="{{ $code['dial_code'] }}" @if($code['dial_code'] == $user->ccode) selected="selected" @endif>
+                                            {{ $code['name'] . ' (' . $code['dial_code'] . ')' }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-8">
+                                <input type="text" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile"
                                 value="{{ $user->mobile ?? '' }}" class="form-control" placeholder="{{ __('Phone') }}">
+                            </div>
                         </div>
         
                         <div class="form-group">

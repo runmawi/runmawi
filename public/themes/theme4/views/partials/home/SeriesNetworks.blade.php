@@ -273,7 +273,7 @@
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" alt="Videos" style="object-fit: cover; height: 350px;" />
+                            <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : $default_vertical_image_url }}" alt="Videos" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -390,7 +390,7 @@
         $('.series-category-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-category-slider-nav',
@@ -398,12 +398,12 @@
 
         $('.series-category-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-category-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -451,5 +451,5 @@
 </script>
 
 @php
-    include public_path('themes/default/views/footer.blade.php');
+    include public_path('themes/theme4/views/footer.blade.php');
 @endphp
