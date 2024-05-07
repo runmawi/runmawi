@@ -45,14 +45,14 @@ border-radius: 0px 4px 4px 0px;
                        
                         <div class="row">
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/assign_Series/partner') }}"><button type="button" class="btn btn-default">Move Series CPP </button></a>
+                              <a href="{{ URL::to('/admin/assign_Series/partner') }}"><button type="button" class="btn btn-default">Move TV Shows CPP </button></a>
                            </div>
                            <div class="col-md-5">
                               <a href="{{ URL::to('/admin/assign_Series/channel_partner') }}"><button type="button" class="btn btn-default" >Move Videos Channel </button></a>
                            </div>
                         <div>
                            <br>
-                        <h4>Move Series CPP</h4>
+                        <h4>Move TV Shows CPP</h4>
                            
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
@@ -77,7 +77,7 @@ border-radius: 0px 4px 4px 0px;
                               <br>
                               <div class="row">
                                  <div class="col-md-12">
-                                 <label for="">Choose Series (*To Be Moved)</label>
+                                 <label for="">Choose TV Shows (*To Be Moved)</label>
                                        <select name="Series_data" class="form-control" id="Series_data">
                                           @foreach(@$Series as $value)
                                              <option value="{{ $value->id }}">{{ $value->title }}</option>

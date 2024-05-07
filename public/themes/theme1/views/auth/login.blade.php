@@ -5,8 +5,48 @@
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
 
+
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
     @$translate_language = App\Setting::pluck('translate_language')->first();
+
+        if(Auth::guest()){
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+            if(!empty($UserTranslation)){
+                $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+        }else if(!Auth::guest()){
+
+            $subuser_id=Session::get('subuser_id');
+            if($subuser_id != ''){
+                $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+                if(!empty($Subuserranslation)){
+                    $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else if(Auth::user()->id != ''){
+                $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+                if(!empty($UserTranslation)){
+                    $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+
     \App::setLocale(@$translate_language);
+
 ?>
 <html>
 
@@ -100,7 +140,7 @@
             width: 100%;
             padding: 10px;
             height: 59px;
-            padding-left: 55px;
+            padding-left: 77px;
         }
 
 
@@ -148,6 +188,16 @@
             padding-top: 100px;
             border-radius: 20px;
         }
+        .reveal {
+            margin-left: -57px;
+            height: 45px !important;
+            background: transparent !important;
+            color: #fff !important;
+            position: absolute;
+            right: 0px;
+            border-radius: 0!important;
+            top: -61px;
+        }
     </style>
 </head>
 
@@ -158,15 +208,16 @@
             <div class="row  align-items-center justify-content-center height-self-center">
                 <div class="col-lg-6 col-12 col-md-12 align-self-center">
                     <div class="text-center">
+                        <a href="{{ URL::to('home') }}">
 
-                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                            <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php }else { ?> 
-                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php } ?>
-
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php }else { ?> 
+                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php } ?>
+                        </a>
                     </div>
                     <div class="sign-user_card "
                         style=" background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;">
@@ -183,7 +234,7 @@
                                 <?php } else  { } ?>
 
                                 @if (Session::has('message'))
-                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}
+                                    <div id="successMessage" class="alert alert-info">{{ __(Session::get('message')) }}
                                     </div>
                                 @endif
 
@@ -191,7 +242,7 @@
                                     @foreach ($errors->all() as $message)
                                         <div class="alert alert-danger display-hide" id="successMessage">
                                             <button id="successMessage" class="close" data-close="alert"></button>
-                                            <span>{{ $message }}</span>
+                                            <span>{{ ( __($message)) }}</span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -217,7 +268,7 @@
                                                 <img class=" fa fa-user icon mr-3" src="<?php echo URL::to('/') . '/assets/img/uss.png'; ?>"> </i>
                                             <input id="email" type="email"
                                                 class=" input-field form-control @error('email') is-invalid @enderror"
-                                                name="email" placeholder="{{ __('USER NAME') }}"
+                                                name="email" placeholder="{{ __('USER EMAIL') }}"
                                                 value="{{ old('email') }}" required autocomplete="email" autofocus>
                                         </div>
                                     </div>
@@ -232,6 +283,14 @@
                                                 class="input-field  form-control @error('password') is-invalid @enderror"
                                                 placeholder="{{ __('PASSWORD') }}" name="password" required
                                                 autocomplete="current-password">
+                                        </div>
+                                        <div class="position-relative">
+                                            <span class="input-group-btn" id="eyeSlash">
+                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                            </span>
+                                            <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                            </span>
                                         </div>
                                     </div>
 
@@ -257,8 +316,8 @@
                     </div>
                     <div class="mt-3">
                         <div class="d-flex justify-content-center  links">
-                            <p class="text-primary text-white ml-2">{{ __('Not having an Account ? Click') }} <a class="sig"
-                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ __('to Sign Up') }}! </p>
+                            <p class="text-primary text-white ml-2">{{ (__('Not having an Account ? Click')) }} <a class="sig"
+                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ (__('to Sign Up!')) }} </p>
                         </div>
                     </div>
                 </div>
@@ -276,6 +335,36 @@
             }, 3000);
         })
     </script>
+      <script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+    <script>
+           $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+       </script>
 </body>
 
 @php

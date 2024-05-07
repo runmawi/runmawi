@@ -24,6 +24,11 @@
                             <h4 class="card-title">Add New Landing Page</h4>
                         </div>
                     </div>
+
+                    @if (Session::has('error-message'))
+                         <div id="successMessage" class=" col-md-12 alert alert-danger">{{ Session::get('error-message') }}</div>
+                    @endif 
+                  
                     <div class="iq-card-body table-responsive">
                         <form  accept-charset="UTF-8" action="{{ route('landing_page_store') }}" method="post" >
                         @csrf
@@ -42,6 +47,24 @@
                                                 <label class="m-0"> Slug :</label>
                                                 <input type="text"  class="form-control" name="slug" id="slug" placeholder=" Landing Page Slug" value="">
                                              </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Title :</label>
+                                                <input type="text"  class="form-control" name="meta_title" id="meta_title" placeholder=" Landing Page Meta Title" value="">
+                                             </div>
+    
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Keywords :</label>
+                                                <input type="text"  class="form-control" name="meta_keywords" id="meta_keywords" placeholder=" Landing Page Meta Keywords" value="">
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 form-group" >
+                                                <label class="m-0"> Meta Description :</label>
+                                                    <textarea class="form-control mt-2" name="meta_description" id="meta-description-ckeditors">
+                                                    </textarea>
+                                            </div>
                                         </div>
 
                                                             {{-- Custom CSS  --}}
@@ -197,34 +220,61 @@
 </div>
 
 <script>
+
+    CKEDITOR.replace( 'meta-description-ckeditor', {
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
         var i = 0;
 
         $(".section_1").click(function(){
                 ++i;
                 $('#sections_1').prop('checked', true);
                 $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_1[]" class="form-control mt-2" id= '+ 'ck_editor_section1-' + i  +' placeholder="" > </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td> </tr>');
-                CKEDITOR.replace( 'ck_editor_section1-'+ i );
+                // CKEDITOR.replace( 'ck_editor_section1-'+ i );
+
+                CKEDITOR.replace('ck_editor_section1-'+ i, {
+                    filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    filebrowserUploadMethod: 'form'
+
+                });
+
             });
 
         $(".Section_2").click(function(){
                 ++i;
                 $('#sections_2').prop('checked', true);
                 $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2" id= '+ 'ck_editor_section2-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-                CKEDITOR.replace( 'ck_editor_section2-'+ i );
+                // CKEDITOR.replace( 'ck_editor_section2-'+ i );
+                CKEDITOR.replace('ck_editor_section2-'+ i, {
+                    filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    filebrowserUploadMethod: 'form'
+
+                });
             });
 
        $(".Section_3").click(function(){
            ++i;
            $('#sections_3').prop('checked', true);
            $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-           CKEDITOR.replace( 'ck_editor_section3-'+ i );
+        //    CKEDITOR.replace( 'ck_editor_section3-'+ i );
+            CKEDITOR.replace('ck_editor_section3-'+ i, {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+
+            });
         });
 
        $(".Section_4").click(function(){
            ++i;
            $('#sections_4').prop('checked', true);
            $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2" id= '+ 'ck_editor_section4-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-           CKEDITOR.replace( 'ck_editor_section4-'+ i );
+        //    CKEDITOR.replace( 'ck_editor_section4-'+ i );
+            CKEDITOR.replace('ck_editor_section4-'+ i, {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+
+            });
         });
 
       
@@ -244,14 +294,11 @@
                 toolbar : 'simple'
         });
 
+        $(document).ready(function(){
+
+            setTimeout(function() {
+                $('#successMessage').fadeOut('fast');
+            }, 3000);
+        });
+
 </script>
-
-
-
-
-
-
-
-
-
-

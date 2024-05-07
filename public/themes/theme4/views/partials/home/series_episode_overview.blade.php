@@ -1,6 +1,6 @@
 <?php
 
-$data = App\Series::where('active', '=', '1')
+$data = App\Series::where('active', '1')->limit(15)
     ->get()
     ->map(function ($item) {
         $item['image_url'] = URL::to('/public/uploads/images/' . $item->image);
@@ -11,25 +11,28 @@ $data = App\Series::where('active', '=', '1')
         $item['Series_Category'] = App\SeriesCategory::select('category_id', 'series_id', 'name', 'slug')
             ->join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
         $item['Series_Language'] = App\SeriesLanguage::select('language_id', 'series_id', 'name', 'slug')
             ->join('languages', 'languages.id', '=', 'series_languages.language_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
         $item['Series_artist'] = App\Seriesartist::select('artist_id', 'artist_name as name', 'artist_slug')
             ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
-        $item['season'] = App\SeriesSeason::where('series_id', $item->id)->get();
+        $item['season'] = App\SeriesSeason::where('series_id', $item->id)->limit(15)->get();
 
         $item['Episode_details'] = $item->Series_depends_episodes;
 
         $item['Episode_Traler_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->get();
+        $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->limit(15)->get();
 
         return $item;
     });
@@ -38,271 +41,146 @@ $data = App\Series::where('active', '=', '1')
 
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="show-category.html">Trending</a></h4>
+                        <h4 class="main-title mar-left"><a href="#">{{ optional($order_settings_list[29])->header_name }}</a></h4>
                     </div>
+
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
-                            @foreach ($data as $series_details)
-                                <li>
-                                    <a href="javascript:void(0);">
+
+                        <ul id="trending-slider-nav" class="trending-nav list-inline p-0 mar-left row align-items-center">
+                            @foreach ($data as $Episode_details)
+                                <li class="slick-slide">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_details->image_url }}" class="img-fluid">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : $default_vertical_image_url }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$Episode_details->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $Episode_details->image_url }}" class="img-fluid" alt="Videos">
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
+                        
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                            @foreach ($data as $key => $series_details )
-                                <li>
-                                    <div class="tranding-block position-relative"
-                                        style="background-image: url( {{ $series_details->Player_image_url }} );">
-                                        <div class="trending-custom-tab">
-                                            <div class="tab-title-info position-relative">
-                                                <ul class="trending-pills d-flex nav nav-pills justify-content-center align-items-center text-center"
-                                                    role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active show" data-toggle="pill"  href="{{'#trending-data-overview-'.$key }}" role="tab"
-                                                            aria-selected="true">Overview</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Episodes-'.$key }}"
-                                                            role="tab" aria-selected="false">Episodes</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Trailers-'.$key }}"
-                                                            role="tab" aria-selected="false">Trailers</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Similar-'.$key }}"
-                                                            role="tab" aria-selected="false">Similar Like This</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                                            
-                                            <div class="trending-content">
+                        <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending theme4-slider">
+                                @foreach ($Episode_details->Episode_details as $key => $item)
+                                    <li class="slick-slide">
+                                        <div class="tranding-block position-relative trending-thumbnail-image" >
+                                            <button class="drp-close">×</button>
 
-                                                                {{-- overview --}}
-                                                <div id="{{'trending-data-overview-'.$key }}" class="overview-tab tab-pane fade active show">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="javascript:void(0);" tabindex="0">
-                                                            <div class="res-logo">
-                                                                <div class="channel-logo">
-                                                                    <img src="{{ front_end_logo() }}"
-                                                                        class="c-logo" alt="streamit">
-                                                                </div>
-                                                            </div>
-                                                        </a>
+                                            <div class="trending-custom-tab">
+                                                <div class="trending-content">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
+                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
+                                                            <div class="caption pl-4">
+                                                                <h2 class="caption-h2">{{ optional($Episode_details)->title }}</h2>
 
-                                                        <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="badge badge-secondary p-3">18+</span>
-                                                            <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
-                                                            <span class="trending-year">{{ optional($series_details)->year }}</span>
-                                                        </div>
-
-                                                        <div class="d-flex align-items-center series mb-4">
-                                                            <img src="{{ front_end_logo() }}" class="img-fluid" alt="">
-                                                            <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
-                                                        </div>
-
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
-
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
-                                                                <a href="#" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My List</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="trending-list mt-4">
-
-                                                            @if ( $series_details->Series_artist->isNotEmpty() )
-                                                                <div class="text-primary title">Starring:
-                                                                    <span class="text-body"> 
-                                                                        @foreach($series_details->Series_artist as $item )
-                                                                            <a href="{{ route('artist',[ $item->artist_slug ])}}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
-                                                                        @endforeach
-                                                                    </span>
-                                                                </div>
+                                                                @if (optional($Episode_details)->description)
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($Episode_details)->description) !!}</div>
                                                             @endif
-
-                                                            @if ( ($series_details->Series_Category)->isNotEmpty() )
-                                                                <div class="text-primary title">Genres: 
-                                                                    <span class="text-body"> 
-                                                                        @foreach($series_details->Series_Category as  $item)
-                                                                            <a href=" {{  URL::to('/series/category'.'/'.$item->slug ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }} 
-                                                                        @endforeach
-                                                                    </span>
+                                                                <div class="p-btns">
+                                                                    <div class="d-flex align-items-center p-0">
+                                                                        <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play </a>
+                                                                    </div>
                                                                 </div>
-                                                            @endif
-                                                            
-                                                            @if ( $series_details->Series_Language->isNotEmpty() )
-                                                                <div class="text-primary title">This Is:
-                                                                    <span class="text-body">
-                                                                        @foreach($series_details->Series_Language as $item)
-                                                                            <a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
-                                                                        @endforeach
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                                {{--  Episode --}}
-                                                <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                             </div>
-                                                        </a>
 
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1></h1>
-
-                                                        {{-- <div class="iq-custom-select d-inline-block sea-epi">
-                                                            <select name="cars" class="form-control season-select">
-                                                                @foreach ( $series_details->season as $key =>  $item )
-                                                                    <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div> --}}
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div
-                                                                class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                
-                                                                @foreach ($series_details->Episode_details as $key => $item)
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                                {{-- Trailers --}}
-                                                <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
-                                                            </div>
-                                                        </a>
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ($series_details->Episode_Traler_details as $key => $item)
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                                    
-                                                                    {{-- Similar --}}
-                                                <div id="{{ 'trending-data-Similar-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
-                                                            </div>
-                                                        </a>
-
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ( $series_details->Episode_Similar_content as $key =>  $item )
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
+                                                            <div class="dropdown_thumbnail">
+                                                                @if ( $multiple_compress_image == 1)
+                                                                    <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url }}"
+                                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$item->responsive_player_image.' 860w') }},
+                                                                        {{ URL::to('public/uploads/Tabletimages/'.$item->responsive_player_image.' 640w') }},
+                                                                        {{ URL::to('public/uploads/mobileimages/'.$item->responsive_player_image.' 420w') }}" >
+                                                                @else
+                                                                    <img  src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : $default_vertical_image_url }}" alt="Videos">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                @endforeach
+                            </ul>
 
-                            @endforeach
-                        </ul>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endif
+
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.trending').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.trending').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.trending-nav',
+        });
+
+        $('.trending-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 6,
+            asNavFor: '.trending',
+            dots: false,
+            arrows: true,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.trending-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.trending').show();
+        });
+
+        $('body').on('click', '.drp-close', function() {
+            $('.trending').hide();
+        });
+    });
+</script>

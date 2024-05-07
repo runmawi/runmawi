@@ -20,7 +20,9 @@
   ?>
   </a>
   </h4>  
-  <h4 class="main-title"><a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>
+  <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+    <h4 class="main-title"><a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>
+  <?php endif; ?>
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -32,14 +34,14 @@
             <div class="border-bg">
               <div class="img-box">
                 <a class="playTrailer" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
-              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
-                  </a>
+                    <img class="img-fluid w-100" loading="lazy" src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>"  alt="">
+                </a>
               </div>
               </div>
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
-              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
+              <img class="img-fluid w-100" src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->player_image;  ?>"  alt="player">
                   </a>
 
               <div class="hover-buttons text-white">

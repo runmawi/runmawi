@@ -72,6 +72,7 @@ use App\RecentView;
 use Session;
 use Redirect;
 use Theme;
+use App\CPPSignupMenu;
 
 class ModeratorsLoginController extends Controller
 {
@@ -97,8 +98,8 @@ class ModeratorsLoginController extends Controller
         {
             $settings = Setting::first();
             $user = User::where('id', '=', 1)->first();
-
-            return Theme::view('moderator.register', compact('settings', 'user'));
+            $CPPSignupMenu = CPPSignupMenu::first();
+            return Theme::view('moderator.register', compact('settings', 'user', 'CPPSignupMenu'));
         }
         else
         {

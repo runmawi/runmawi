@@ -35,11 +35,13 @@
                 echo '';
             } ?></a>
     </h4>
+    <?php if( $settings->homepage_views_all_button_status == 1 ):?>
     <h4 class="main-title"><a href="<?php if ($order_settings_list[17]->header_name) {
             echo URL::to('/') . '/' . $order_settings_list[17]->url;
         } else {
             echo '';
         } ?>"><?php echo (__('View All')); ?></a></h4>
+        <?php endif; ?>
 </div>
 
 <div class="favorites-contens">
@@ -56,25 +58,23 @@
                         <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid loading w-100"
-                                        alt="l-img">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" alt="l-img">
                                 </a>
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                        
                                     <?php } ?>
 
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                         <p class="published_on1"><?= "Published"; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                
                             </div>
                             </div>
                             
                             <div class="block-description">
                             <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" class="img-fluid loading w-100"
-                                        alt="l-img">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" alt="l-img">
                                 
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>

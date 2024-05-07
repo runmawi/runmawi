@@ -3,7 +3,7 @@
 <h4 class="main-title">
         <!-- Live Videos -->
 <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
-  <?php if ($order_settings_list[3]->header_name) { echo __($order_settings_list[3]->header_name) ;} else { echo "" ; } ?></a>
+  <?php if ($order_settings_list[3]->header_name) { echo (__($order_settings_list[3]->header_name)) ;} else { echo "" ; } ?></a>
     </h4>
 </div>
 <div class="favorites-contens">
@@ -84,6 +84,15 @@
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
                         </a>
+
+                        <div class="block-description" >
+                          <div class="hover-buttons">
+                              <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                  <img class="ply mr-2" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                    <!-- Live Now-->
+                              </a>
+                          </div>
+                        </div>
                         
                       <!-- PPV price -->
                        
@@ -102,15 +111,7 @@
                           <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                         <?php  } ?>
                 </div>
-                <div class="block-description" >
-               
-                <div class="hover-buttons">
-                     <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img class="ply mr-2" style="width: 20%; height: 20%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                               <!-- Live Now-->
-                        </a>
-                    </div>
-                </div>
+                
                    <?php if($ThumbnailSetting->title == 1) { ?>
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <span class="text-white"><?= (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
@@ -169,8 +170,9 @@
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                 $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

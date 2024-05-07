@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">
+  <h2 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,9 +20,10 @@
         } 
   ?>
   </a>
-  </h4>  
-  <h4 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h4>
-
+  </h2> 
+  <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+  <h2 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h2>
+  <?php endif; ?>
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -35,7 +36,7 @@
             <div class="border-bg">
               <div class="img-box">
               <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>"  alt="series">
               </a>
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -57,7 +58,7 @@
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" class="img-fluid lazyload w-100" alt="series">
+                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" alt="series">
               
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -94,24 +95,23 @@
                   <?php echo __($latest_serie->title); ?></p>
                
                 <div class="movie-time d-flex align-items-center my-2">
-                  <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
-                  <div class="badge badge-secondary p-1 mr-2"><?php 
+                  <p class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></p>
+                  <p class="badge badge-secondary p-1 mr-2"><?php 
                   $SeriesSeason = App\SeriesSeason::where('series_id',$latest_serie->id)->count(); 
                   echo $SeriesSeason.' '.'Season'
-                  ?></div>
-                  <div class="badge badge-secondary p-1 mr-2"><?php 
+                  ?></p>
+                  <p class="badge badge-secondary p-1 mr-2"><?php 
                   $Episode = App\Episode::where('series_id',$latest_serie->id)->count(); 
                   echo $Episode.' '.'Episodes'
-                  ?></div>
+                  ?></p>
 
                   <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>-->
                 </div>
                 </a>
 
                
-                  <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Watch Series
+                  <a class="epi-name mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                    <i class="fa fa-play mr-1" aria-hidden="true"></i> <?=  ('Watch Series') ?>
                   </a>
                 </div>
               </div>
@@ -122,3 +122,7 @@
   </ul>
 </div>
 <?php endif; ?>
+
+<style>
+
+</style>

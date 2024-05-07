@@ -112,26 +112,38 @@
 
 <?php if( (count($latest_videos) > 1) || (count($latest_livestreams) > 1) || (count($latest_audio) > 1) ||  (count($latest_Episode) > 1) ||  (count($latest_Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0; ">
-    <h6 style="margin: 0; text-align: left; padding: 10px;">{{ __('Recent Videos') }} </h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;"><?= __('Recent Videos') ?> </h6>
 
     <?php foreach ($latest_videos as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image; ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($latest_livestreams as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($latest_audio as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -139,17 +151,25 @@
     <?php foreach ($latest_Episode as $row) {  
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
 
     <?php foreach ($latest_Series as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -161,26 +181,38 @@
 <!-- Top Trending -->
 <?php if( (count($Most_view_videos) > 1) || (count($Most_view_live) > 1) || (count($Most_view_audios) > 1) ||  (count($Most_view_episode) > 1) ||  (count($Most_view_Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;background:#000;">
-    <h6 style="margin: 0; text-align: left; padding: 10px;">{{ __('Trending  Video') }}</h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;"><?= __('Trending  Video') ?></h6>
 
     <?php foreach ($Most_view_videos as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($Most_view_live as $row) { ?>
-        <li class="list-group-item home-search">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($Most_view_audios as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -188,17 +220,25 @@
     <?php foreach ($Most_view_episode as $row) {  
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
 
     <?php foreach ($Most_view_Series as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -210,26 +250,38 @@
 
 <?php if( (count($videos) > 1) || (count($livestreams) > 1) || (count($audio) > 1) ||  (count($Episode) > 1) ||  (count($Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;">
-    <h6 style="margin: 0; text-align: left; padding: 10px;">{{ __('Highlighted videos') }} </h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;"><?= __('Highlighted videos') ?> </h6>
 
     <?php foreach ($videos as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($livestreams as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
     <?php foreach ($audio as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -237,17 +289,25 @@
     <?php foreach ($Episode as $row) {  
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
 
     <?php foreach ($Series as $row) { ?>
-        <li class="list-group-item">
-            <img width="35px" height="35px" src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" />
-            <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="font-color: #c61f1f00; color: #000; text-decoration: none;"> <?php echo $row->title ; ?> </a>
+        <li class="list-group-item" style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; margin-right: 10px;">
+                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $row->image ;  ?>" alt="<?php echo $row->title; ?>" style="max-width: 35px; max-height: 35px; width: auto; height: auto;">
+            </div>
+            <div>
+                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
+            </div>
         </li>
     <?php } ?>
 
@@ -261,7 +321,7 @@
         background: black;
     }
 </style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 
     $( document ).ready(function() {

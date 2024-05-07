@@ -87,6 +87,13 @@ use App\AdminVideoPlaylist as AdminVideoPlaylist;
 use App\VideoPlaylist as VideoPlaylist;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\VideoExtractedImages;
+use FFMpeg\Filters\Video\VideoResizeFilter;
+use FFMpeg\Filters\Video\Resizer;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\SiteTheme;
+use App\AdminVideoAds;
 
 class AdminVideosController extends Controller
 {
@@ -436,7 +443,21 @@ class AdminVideosController extends Controller
             }
         }
     }
+    // Image extraction function
+        private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
+        {
+            // Open the video file
+            $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
 
+            // Set the time to capture the frame (in seconds)
+            // $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($timeInSeconds))
+            $video->filters()->clip(TimeCode::fromSeconds($timeInSeconds))
+            // $video->frame(TimeCode::fromSeconds($timeInSeconds))
+            ->export()
+            ->toDisk('local')
+            ->inFormat(new X264)
+            ->save($outputPath);
+        }
     public function uploadFile(Request $request)
     {
         $value = [];
@@ -457,7 +478,19 @@ class AdminVideosController extends Controller
         $pack = $package->package;
         $mp4_url = $data["file"];
         $settings = Setting::first();
+        $libraryid = $data['UploadlibraryID'];
+        $client = new Client();
 
+        $storage_settings = StorageSetting::first();
+        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        if($enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }               
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
@@ -541,6 +574,12 @@ class AdminVideosController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
 
+                // $outputFolder = storage_path('app/public/frames');
+
+                // if (!is_dir($outputFolder)) {
+                //     mkdir($outputFolder, 0755, true);
+                // }
+                                    
                 $video = new Video();
                 $video->disk = "public";
                 $video->status = 0;
@@ -560,7 +599,63 @@ class AdminVideosController extends Controller
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
                 $video->save();
+                
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                $interval = 5; // Interval for extracting frames in seconds
+                $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                $totalDuration = intval($totalDuration);
 
+
+                if ( 600 < $totalDuration) { 
+                    $timecodes = [5, 120, 240, 360, 480]; 
+                } else { 
+                    $timecodes = [5, 10, 15, 20, 25]; 
+                }
+
+                
+                foreach ($timecodes as $index => $time) {
+                    $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$index}.jpg");
+                    $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$index}.jpg");
+            
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+            
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+            
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Video';
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $index . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $index . '.jpg');
+                        $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $index . '.jpg';
+                        $VideoExtractedImage->save();
+                    } catch (\Exception $e) {
+                        dd($e->getMessage());
+                    }
+                }
+            
+            }
+                
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
@@ -631,6 +726,113 @@ class AdminVideosController extends Controller
 
             $video->duration = $Video_duration;
             $video->save();
+
+            // if(Enable_Extract_Image() == 1){
+            //     // extractImageFromVideo
+
+            //     $ffmpeg = \FFMpeg\FFMpeg::create();
+            //     $videoFrame = $ffmpeg->open($Video_storepath);
+                
+            //     // Define the dimensions for the frame (16:9 aspect ratio)
+            //     $frameWidth = 1280;
+            //     $frameHeight = 720;
+                
+            //     // Define the dimensions for the frame (9:16 aspect ratio)
+            //     $frameWidthPortrait = 1080;  // Set the desired width of the frame
+            //     $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+            //     $randportrait = 'portrait_' . $rand;
+                
+            //     for ($i = 1; $i <= 5; $i++) {
+            //         // $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+            //         // $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    
+            //         $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$i}.jpg");
+            //         $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$i}.jpg");
+
+                    
+            //         try {
+            //             $videoFrame
+            //                 ->frame(TimeCode::fromSeconds($i * 5))
+            //                 ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+            //             $videoFrame
+            //                 ->frame(TimeCode::fromSeconds($i * 5))
+            //                 ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+            //             $VideoExtractedImage = new VideoExtractedImages();
+            //             $VideoExtractedImage->user_id = Auth::user()->id;
+            //             $VideoExtractedImage->socure_type = 'Video';
+            //             $VideoExtractedImage->video_id = $video->id;
+            //             $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+            //             $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+            //             $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $i . '.jpg';
+            //             $VideoExtractedImage->save();
+             
+                
+            //             } catch (\Exception $e) {
+            //                 dd($e->getMessage());
+            //             }
+            //         }
+            //     }
+
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                $interval = 5; // Interval for extracting frames in seconds
+                $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                $totalDuration = intval($totalDuration);
+
+
+                if ( 600 < $totalDuration) { 
+                    $timecodes = [5, 120, 240, 360, 480]; 
+                } else { 
+                    $timecodes = [5, 10, 15, 20, 25]; 
+                }
+
+                
+                foreach ($timecodes as $index => $time) {
+                    $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$index}.jpg");
+                    $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$index}.jpg");
+            
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+            
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+            
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Video';
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $index . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $index . '.jpg');
+                        $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $index . '.jpg';
+                        $VideoExtractedImage->save();
+                    } catch (\Exception $e) {
+                        dd($e->getMessage());
+                    }
+                }
+            
+            }
+            
 
             $video_id = $video->id;
             $video_title = Video::find($video_id);
@@ -715,7 +917,6 @@ class AdminVideosController extends Controller
 
                 $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
-
                 // Bunny Cdn get Videos 
                 
                 $storage_settings = StorageSetting::first();
@@ -724,7 +925,7 @@ class AdminVideosController extends Controller
                 && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
                 && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
 
-                    $url = "{$storage_settings->bunny_cdn_hostname}/{$storage_settings->bunny_cdn_storage_zone_name}/";
+                    $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
                     
                     $ch = curl_init();
                     
@@ -732,7 +933,7 @@ class AdminVideosController extends Controller
                         CURLOPT_URL => $url,
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_HTTPHEADER => array(
-                            "AccessKey: {$storage_settings->bunny_cdn_ftp_access_key}",
+                            "AccessKey: {$storage_settings->bunny_cdn_access_key}",
                             'Content-Type: application/json',
                         ),
                     );
@@ -753,10 +954,43 @@ class AdminVideosController extends Controller
                     }
                     curl_close($ch);
                     // dd($decodedResponse);
+
+                    
+                    $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                    
+                    $ch = curl_init();
+                    
+                    $options = array(
+                        CURLOPT_URL => $videolibraryurl,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_HTTPHEADER => array(
+                            "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                            'Content-Type: application/json',
+                        ),
+                    );
+                    
+                    curl_setopt_array($ch, $options);
+                    
+                    $response = curl_exec($ch);
+                    $videolibrary = json_decode($response, true);
+                    curl_close($ch);
+                    // dd($videolibrary); ApiKey
+
                 }else{
                     $decodedResponse = [];
+                    $videolibrary = [];
+
                 }
-                
+          
+                // $response->getBody();
+
+                if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
+                    $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
+                }else{
+                    $streamUrl = '';
+                }
+                $theme_settings = SiteTheme::first();
+
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
                 "post_route" => URL::to("admin/videos/fileupdate"),
@@ -782,6 +1016,10 @@ class AdminVideosController extends Controller
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 'Bunny_Cdn_Videos' => $decodedResponse ,
                 'storage_settings' => $storage_settings ,
+                'videolibrary' => $videolibrary ,
+                'streamUrl' => $streamUrl ,
+                'theme_settings' => $theme_settings ,
+                'advertisements_category' => Adscategory::get(),
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -960,9 +1198,10 @@ class AdminVideosController extends Controller
         }
 
         $data['video_js_pre_position_ads'] = $request->video_js_pre_position_ads ;
-        $data['video_js_post_position_ads'] = $request->video_js_post_position_ads ;
+        $data['video_js_post_position_ads'] = $request->video_js_pre_position_ads ;
         $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
         $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
+        $data['expiry_date'] = $request->expiry_date ;
 
         if (!empty($data["embed_code"])) {
             $video = new Video();
@@ -1183,16 +1422,20 @@ class AdminVideosController extends Controller
             }
 
                     //  Delete Existing Trailer Video - M3u8 Format
-            $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            $directory = base_path('public/uploads/trailer/');
-                    
-            $pattern =  $video_trailer_m3u8.'*';
+            if (!is_null($videos->trailer)) {
 
-            $files = glob($directory . $pattern);
+                $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
 
-            foreach ($files as $file) {
-                File::delete($file);
+                $directory = base_path('public/uploads/trailer/');
+                        
+                $pattern =  $video_trailer_m3u8.'*';
+
+                $files = glob($directory . $pattern);
+
+                foreach ($files as $file) {
+                    File::delete($file);
+                }
             }
 
                      //  Delete Existing Trailer Video - MP4 Format
@@ -1205,14 +1448,20 @@ class AdminVideosController extends Controller
                     //  Delete Existing  Video
             $directory = storage_path('app/public');
                     
-            $info = pathinfo($videos->path);
+            if (!is_null($videos->path)) {
 
-            $pattern =  $info['filename'] . '*';
+                $info = pathinfo($videos->path);
 
-            $files = glob($directory . '/' . $pattern);
-
-            foreach ($files as $file) {
-                unlink($file);
+                $pattern =  $videos->path ? $info['filename'] . '*' : " ";
+    
+                $files = glob($directory . '/' . $pattern);
+    
+                foreach ($files as $file) {
+    
+                    if(file_exists( $file )){
+                        unlink($file);
+                    }
+                }   
             }
 
                     // Video uploaded by CPP user while deleting Mail
@@ -1333,7 +1582,9 @@ class AdminVideosController extends Controller
 
             $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
-            
+
+            $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
+
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
                 "page"     => "Edit",
@@ -1381,7 +1632,8 @@ class AdminVideosController extends Controller
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
                 "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
                 'video_js_Advertisements' => $video_js_Advertisements ,
-
+                'admin_videos_ads'        => $admin_videos_ads ,
+                'advertisements_category' => Adscategory::get(),
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -1427,11 +1679,145 @@ class AdminVideosController extends Controller
         $settings = Setting::first();
 
         $video = Video::findOrFail($id);
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if ($request->slug == "") {
             $data["slug"] = $this->createSlug($data["title"]);
         } else {
             $data["slug"] = str_replace(" ", "-", $request->slug);
+        }
+
+    if (compress_responsive_image_enable() == 1) {
+
+         $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+                $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                $image_filename = $image_filename;
+
+                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                
+                $responsive_image = $image_filename;
+
+        }else{
+
+            $responsive_image = $video->responsive_image; 
+        }
+
+        if ($request->hasFile('player_image')) {
+
+            $player_image = $request->file('player_image');
+
+                $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                
+                $responsive_player_image = $player_image_filename;
+
+        }else{
+
+            $responsive_player_image = $video->responsive_player_image; 
+        }
+
+
+        
+        if ($request->hasFile('video_tv_image')) {
+
+            $video_tv_image = $request->file('video_tv_image');
+
+                $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+
+                Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                
+                $responsive_tv_image = $video_tv_image_filename;
+
+        }else{
+
+            $responsive_tv_image = $video->responsive_tv_image; 
+        }
+
+
+        }else{
+            $responsive_image = $video->responsive_image; 
+            $responsive_player_image = $video->responsive_player_image; 
+            $responsive_tv_image = $video->responsive_tv_image; 
+        }
+
+        if ($request->hasFile('image')) {
+            $tinyimage = $request->file('image');
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            }
+            $tiny_video_image = $tiny_video_image;
+
+        }else{
+            $tiny_video_image = $video->tiny_video_image; 
+        }
+        if ($request->hasFile('player_image')) {
+
+            $tinyplayer_image = $request->file('player_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyplayer_image->getClientOriginalExtension();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+
+            }
+            $tiny_player_image = $tiny_player_image;
+        }else{
+            $tiny_player_image = $video->tiny_player_image; 
+        }
+        if ($request->hasFile('video_title_image')) {
+
+            $tinyvideo_title_image = $request->file('video_title_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+
+            }
+            $tiny_video_title_image = $tiny_video_title_image;
+
+        }else{
+            $tiny_video_title_image = $video->tiny_video_title_image; 
         }
 
         $image = isset($data["image"]) ? $data["image"] : "";
@@ -1450,7 +1836,9 @@ class AdminVideosController extends Controller
         // Trailer Update
 
         $path = public_path() . "/uploads/videos/";
-        $video->trailer_type = $data["trailer_type"];
+        if($trailer != ""){
+            $video->trailer_type = $data["trailer_type"];
+        }
 
         $StorageSetting = StorageSetting::first();
 
@@ -1461,6 +1849,7 @@ class AdminVideosController extends Controller
                 $settings->transcoding_access == 1 &&
                 $data["trailer_type"] == "video_mp4"
             ) {
+
                 if ($settings->transcoding_resolution != null) {
                     $convertresolution = [];
                     $resolution = explode(",", $settings->transcoding_resolution);
@@ -1489,27 +1878,28 @@ class AdminVideosController extends Controller
                         }
                         if ($value == "1080p") {
                             $r_1080p = (new Representation())
-                                ->setKiloBitrate(750)
-                                ->setResize(854, 480);
+                                ->setKiloBitrate(4096)
+                                ->setResize(1920, 1080);
                             array_push($convertresolution, $r_1080p);
                         }
                     }
                 }
                 $trailer = $data["trailer"];
-                $trailer_path = URL::to("public/uploads/trailer/");
+                $trailer_path = URL::to("storage/app/trailer/");
                 $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                 $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
+                $trailer->move(storage_path("app/trailer/"), $trailer_Video);
                 $trailer_video_name = strtok($trailer_Video, ".");
                 $M3u8_save_path =
                     $trailer_path . "/" . $trailer_video_name . ".m3u8";
-                $storepath = URL::to("public/uploads/trailer/");
+                $storepath = URL::to("storage/app/trailer/");
     
                 $data["trailer"] = $M3u8_save_path;
                 $video->trailer_type = "m3u8";
                 $data["trailer_type"] = "m3u8";
             } else {
-                if ($data["trailer_type"] == "video_mp4") {
+                
+                if ($trailer != "" && $data["trailer_type"] == "video_mp4") {
                     if (!empty($trailer)) {
                         if ($trailer != "" && $trailer != null) {
                             $file_old = $path . $trailer;
@@ -1531,6 +1921,7 @@ class AdminVideosController extends Controller
                             URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
                     } else {
                         $data["trailer"] = $video->trailer;
+                        $data["trailer_type"] = $video->trailer_type;
                     }
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
@@ -1543,6 +1934,9 @@ class AdminVideosController extends Controller
                     $data["trailer"] = $data["embed_trailer"];
                 } else {
                     $data["trailer"] = $video->trailer;
+                    $data["trailer_type"] = $video->trailer_type;
+                    // dd('test'.$video);
+
                 }
                 // $data['trailer'] = "";
             }
@@ -1620,27 +2014,27 @@ class AdminVideosController extends Controller
                         }
                         if ($value == "1080p") {
                             $r_1080p = (new Representation())
-                                ->setKiloBitrate(750)
-                                ->setResize(854, 480);
+                                ->setKiloBitrate(4096)
+                                ->setResize(1920, 1080);
                             array_push($convertresolution, $r_1080p);
                         }
                     }
                 }
                 $trailer = $data["trailer"];
-                $trailer_path = URL::to("public/uploads/trailer/");
+                $trailer_path = URL::to("storage/app/trailer/");
                 $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                 $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
+                $trailer->move(storage_path("app/trailer/"), $trailer_Video);
                 $trailer_video_name = strtok($trailer_Video, ".");
                 $M3u8_save_path =
                     $trailer_path . "/" . $trailer_video_name . ".m3u8";
-                $storepath = URL::to("public/uploads/trailer/");
+                $storepath = URL::to("storage/app/trailer/");
     
                 $data["trailer"] = $M3u8_save_path;
                 $video->trailer_type = "m3u8";
                 $data["trailer_type"] = "m3u8";
             } else {
-                if ($data["trailer_type"] == "video_mp4") {
+                if ( $trailer != "" && $data["trailer_type"] == "video_mp4") {
                     if (!empty($trailer)) {
                         if ($trailer != "" && $trailer != null) {
                             $file_old = $path . $trailer;
@@ -1662,6 +2056,8 @@ class AdminVideosController extends Controller
                             URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
                     } else {
                         $data["trailer"] = $video->trailer;
+                        $data["trailer_type"] = $video->trailer_type;
+
                     }
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
@@ -1674,8 +2070,9 @@ class AdminVideosController extends Controller
                     $data["trailer"] = $data["embed_trailer"];
                 } else {
                     $data["trailer"] = $video->trailer;
+                    $data["trailer_type"] = $video->trailer_type;
                 }
-            }
+                }
             }
 
 
@@ -1840,6 +2237,8 @@ class AdminVideosController extends Controller
                 $video->tablet_image = $Tablet_image;
             }
           
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
             $data["image"] = $video->image;
         }
@@ -1868,6 +2267,8 @@ class AdminVideosController extends Controller
                 Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
+        }else if (!empty($request->selected_image_url)) {
+            $players_image = $request->selected_image_url;
         } else {
             $players_image = $video->player_image;
         }
@@ -2003,7 +2404,59 @@ class AdminVideosController extends Controller
         // Reels videos
         $reels_videos = $request->reels_videos;
 
-        if ($reels_videos != null) {
+        if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+            ReelsVideo::where("video_id", $video->id)->delete();
+
+            foreach ($reels_videos as $Reel_Videos) {
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
+
+                $reelvideo_names = "reels" . $reelvideo_name;
+
+            
+                $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                $shorts_name = 'shorts_'.$reelvideo_name; 
+                $videoPath = str_replace('\\', '/', $videoPath);
+                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                // Ensure the output directory exists
+                File::ensureDirectoryExists(dirname($outputPath));
+                // FFmpeg command to resize to 9:16 aspect ratio
+                $command = [
+                    'ffmpeg',
+                    '-y', // Add this option to force overwrite
+                    '-i', $videoPath,
+                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                    '-c:a', 'copy',
+                    $outputPath,
+                ];
+
+                $process = new Process($command);
+
+                try {
+                    $process->mustRun();
+                    // return 'Video resized successfully!';
+                } catch (ProcessFailedException $exception) {
+                    // Error message
+                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                }
+
+                $Reels_videos = new ReelsVideo();
+                $Reels_videos->video_id = $video->id;
+                // $Reels_videos->reels_videos = $reelvideo_name;
+                $Reels_videos->reels_videos = $shorts_name;
+                $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                $Reels_videos->save();
+
+                $video->reels_thumbnail = "default.jpg";
+            }
+        }else if($reels_videos != null){
             ReelsVideo::where("video_id", $video->id)->delete();
 
             foreach ($reels_videos as $Reel_Videos) {
@@ -2017,36 +2470,22 @@ class AdminVideosController extends Controller
 
                 $reelvideo_names = "reels" . $reelvideo_name;
                 $reelvideo = $Reel_Videos->move(
-                    public_path("uploads/reelsVideos"),
+                    public_path("uploads/reelsVideos/shorts"),
                     $reelvideo_name
                 );
 
-                $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open(
-                    "public/uploads/reelsVideos" . "/" . $reelvideo_name
-                );
-                $videos
-                    ->filters()
-                    ->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(
-                    new \FFMpeg\Format\Video\X264("libmp3lame"),
-                    "public/uploads/reelsVideos" . "/" . $reelvideo_names
-                );
-
-                unlink($reelvideo);
-
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
-                $Reels_videos->reels_videos = $reelvideo_names;
+                $Reels_videos->reels_videos = $reelvideo_name;
+                // $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
                 $video->reels_thumbnail = "default.jpg";
             }
         }
-
+        // dd($reelvideo_name);
         // Reels Thumbnail
-
         if (!empty($request->reels_thumbnail)) {
             $Reels_thumbnail ="reels_" .time() . "." .$request->reels_thumbnail->extension();
             $request->reels_thumbnail->move(public_path("uploads/images"), $Reels_thumbnail);
@@ -2114,10 +2553,12 @@ class AdminVideosController extends Controller
                 Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
             }
             $video->video_tv_image = $Tv_image_filename;
-        }
+        }else if (!empty($request->selected_tv_image_url)) {
+            $video->video_tv_image = $request->selected_tv_image_url;
+        } 
 
                     // Video Title Thumbnail
-
+        // dd($request->all());
         if($request->hasFile('video_title_image')){
 
             if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
@@ -2189,7 +2630,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data["ppv_price"];
+        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : null ;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];
@@ -2199,9 +2640,18 @@ class AdminVideosController extends Controller
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $request->ios_ppv_price;
         $video->video_js_pre_position_ads = $request->video_js_pre_position_ads;
-        $video->video_js_post_position_ads = $request->video_js_post_position_ads;
+        $video->video_js_post_position_ads = $request->video_js_pre_position_ads;
         $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
+        $video->expiry_date = $request->expiry_date;
+        $video->today_top_video = $request->today_top_video;
+        $video->tiny_video_image = $tiny_video_image;
+        $video->tiny_player_image = $tiny_player_image;
+        $video->tiny_video_title_image = $tiny_video_title_image;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
+
         $video->save();
 
         if (
@@ -2394,29 +2844,150 @@ class AdminVideosController extends Controller
             BlockVideo::where("video_id", $video->id)->delete();
         }
 
+        // if (!empty($files != "" && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = "public/uploads/subtitles/";
+        //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data["sub_language"] =
+        //                 $languages[
+        //                     $key
+        //                 ]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data["shortcode"] = $shortcodes[$key];
+        //             $subtitle_data["movie_id"] = $id;
+        //             $subtitle_data["url"] =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
         if (!empty($files != "" && $files != null)) {
             foreach ($files as $key => $val) {
                 if (!empty($files[$key])) {
                     $destinationPath = "public/uploads/subtitles/";
                     $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data["sub_language"] =
-                        $languages[
-                            $key
-                        ]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data["shortcode"] = $shortcodes[$key];
-                    $subtitle_data["movie_id"] = $id;
-                    $subtitle_data["url"] =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle->save();
+
+                    MoviesSubtitles::where('movie_id',$video->id)->where('shortcode',$shortcodes[$key])->delete();
+                    
+                    // Move uploaded file to destination path
+                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                    // Read contents of the uploaded file
+                    $contents = file_get_contents($destinationPath . $filename);
+                    
+                    // Convert time format and add line numbers
+                    $lineNumber = 0;
+                    $convertedContents = preg_replace_callback(
+                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                        function ($matches) use (&$lineNumber) {
+                            $lineNumber++;
+                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                        },
+                        $contents
+                    );
+                    
+                    // Store converted contents to a new file
+                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+                    if (!file_exists($newDestinationPath)) {
+                        mkdir($newDestinationPath, 0755, true);
+                    }
+                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                    // Save subtitle data to database
+                    $subtitle_data = [
+                        "movie_id" => $video->id,
+                        "shortcode" => $shortcodes[$key],
+                        "sub_language" => $languages[$key],
+                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                    $video_subtitle = MoviesSubtitles::create($subtitle_data);
                 }
             }
+        }
+        // Admin Video Ads inputs
+
+        if( !empty($request->ads_devices)){
+
+            $Admin_Video_Ads_inputs = array(
+
+                'video_id' => $video->id ,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+                'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+                'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+
+                'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+                'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+                'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+                'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+
+                'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+                'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+                'ios_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+
+                'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+                'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+                'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+                'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+
+                'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+                'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+                'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+                'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+
+                'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+                'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+                'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+                'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+
+                'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+                'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+                'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+                'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+
+                // plyr.io
+
+                'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+                'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                
+                'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+                'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+
+                'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+                'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+
+                'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+                'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+
+                'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+                'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+
+                'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+                'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                
+                'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+                'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+
+                'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            );
+
+            $AdminVideoAds = AdminVideoAds::where('video_id', $video->id )->first();
+
+
+            is_null($AdminVideoAds) ? AdminVideoAds::create( $Admin_Video_Ads_inputs ) : AdminVideoAds::where('video_id',$video->id)->update( $Admin_Video_Ads_inputs) ;
+           
+        }else{
+
+            AdminVideoAds::where('video_id',$video->id)->delete();
         }
 
         \LogActivity::addVideoUpdateLog("Update Video.", $video->id);
@@ -2548,15 +3119,17 @@ class AdminVideosController extends Controller
             return redirect('/home');
         }
 
+    
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
 
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
-
+        
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if (!empty($video->embed_code)) {
             $embed_code = $video->embed_code;
@@ -2597,10 +3170,65 @@ class AdminVideosController extends Controller
         $image_path = public_path() . '/uploads/images/';
 
         // Image
+        if ($request->hasFile('image')) {
+                $tinyimage = $request->file('image');
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+
+            }
+        }else{
+            $tiny_video_image = null;
+
+        }
+        if ($request->hasFile('player_image')) {
+
+            $tinyplayer_image = $request->file('player_image');
+
+            if (compress_image_enable() == 1) {
+                $player_image_filename = time() . '.' . compress_image_format();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyplayer_image->getClientOriginalExtension();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+
+            }
+        }else{
+            $tiny_player_image = null;
+
+        }
+        if ($request->hasFile('video_title_image')) {
+
+            $tinyvideo_title_image = $request->file('video_title_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+
+            }
+        }else{
+            $tiny_video_title_image = null;
+
+        }
+
+        $data["tiny_video_image"] = $tiny_video_image;
+        $data["tiny_player_image"] = $tiny_player_image;
+        $data["tiny_video_title_image"] = $tiny_video_title_image;
 
         if ($request->hasFile('image')) {
             $file = $request->image;
-
             if (compress_image_enable() == 1) {
                 $image_filename = time() . '.' . compress_image_format();
                 $video_image = 'pc-image-' . $image_filename;
@@ -2626,6 +3254,8 @@ class AdminVideosController extends Controller
             $data["mobile_image"] = $Mobile_image;
             $data["tablet_image"] = $Tablet_image;
 
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
             // Default Image
 
@@ -2636,7 +3266,7 @@ class AdminVideosController extends Controller
         }
 
         // Player Image
-
+        // $request->selected_image_url = '';
         if ($request->hasFile('player_image')) {
             $player_image = $request->player_image;
 
@@ -2652,10 +3282,12 @@ class AdminVideosController extends Controller
 
             $data["player_image"] = $players_image;
 
+        }else if (!empty($request->selected_image_url)) {
+            $data["player_image"] = $request->selected_image_url;
         } else {
             $data["player_image"] = default_horizontal_image();
         }
-
+        // dd($data["player_image"]);
         // Tv video Image
 
         if ($request->hasFile('video_tv_image')) {
@@ -2673,6 +3305,8 @@ class AdminVideosController extends Controller
 
             $data["video_tv_image"] = $Tv_image_filename;
 
+        }else if (!empty($request->selected_tv_image_url)) {
+            $data["video_tv_image"] = $request->selected_tv_image_url;
         } else {
             $data["video_tv_image"] = default_horizontal_image();
         }
@@ -2834,22 +3468,22 @@ class AdminVideosController extends Controller
                                 array_push($convertresolution, $r_720p);
                             }
                             if ($value == '1080p') {
-                                $r_1080p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+                                $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
                                 array_push($convertresolution, $r_1080p);
                             }
                         }
                     }
                     $trailer = $data['trailer'];
-                    $trailer_path = URL::to('public/uploads/trailer/');
+                    $trailer_path = URL::to('storage/app/trailer/');
                     $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
                     $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
 
                     // $trailer_Video =
                     //     time() . "_" . $trailer->getClientOriginalName();
-                    $trailer->move(public_path('uploads/trailer/'), $trailer_Video);
+                    $trailer->move(storage_path('app/trailer/'), $trailer_Video);
                     $trailer_video_name = strtok($trailer_Video, '.');
                     $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-                    $storepath = URL::to('public/uploads/trailer/');
+                    $storepath = URL::to('storage/app/trailer/');
 
                     $data['trailer'] = $M3u8_save_path;
                     $data['trailer_type'] = 'm3u8';
@@ -2936,21 +3570,21 @@ class AdminVideosController extends Controller
                                 array_push($convertresolution, $r_720p);
                             }
                             if ($value == '1080p') {
-                                $r_1080p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+                                $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
                                 array_push($convertresolution, $r_1080p);
                             }
                         }
                     }
                     $trailer = $data['trailer'];
-                    $trailer_path = URL::to('public/uploads/trailer/');
+                    $trailer_path = URL::to('storage/app/trailer/');
                     $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
                     $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
                     // $trailer_Video =
                     //     time() . "_" . $trailer->getClientOriginalName();
-                    $trailer->move(public_path('uploads/trailer/'), $trailer_Video);
+                    $trailer->move(storage_path('app/trailer/'), $trailer_Video);
                     $trailer_video_name = strtok($trailer_Video, '.');
                     $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-                    $storepath = URL::to('public/uploads/trailer/');
+                    $storepath = URL::to('storage/app/trailer/');
 
                     $data['trailer'] = $M3u8_save_path;
                     $data['trailer_type'] = 'm3u8';
@@ -3018,31 +3652,135 @@ class AdminVideosController extends Controller
 
         // Reels videos
         $reels_videos = $request->reels_videos;
+        if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+            ReelsVideo::where("video_id", $video->id)->delete();
 
-        if ($reels_videos != null) {
             foreach ($reels_videos as $Reel_Videos) {
-                $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
-                $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
-                $reelvideo_names = 'reels' . $reelvideo_name;
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
 
+                $reelvideo_names = "reels" . $reelvideo_name;
+
+            
                 $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
 
-                $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
-                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
+                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                $shorts_name = 'shorts_'.$reelvideo_name; 
+                $videoPath = str_replace('\\', '/', $videoPath);
+                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                // Ensure the output directory exists
+                File::ensureDirectoryExists(dirname($outputPath));
+                // FFmpeg command to resize to 9:16 aspect ratio
+                $command = [
+                    'ffmpeg',
+                    '-y', // Add this option to force overwrite
+                    '-i', $videoPath,
+                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                    '-c:a', 'copy',
+                    $outputPath,
+                ];
 
-                unlink($reelvideo);
+                $process = new Process($command);
+
+                try {
+                    $process->mustRun();
+                    // return 'Video resized successfully!';
+                } catch (ProcessFailedException $exception) {
+                    // Error message
+                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                }
 
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
-                $Reels_videos->reels_videos = $reelvideo_names;
+                // $Reels_videos->reels_videos = $reelvideo_name;
+                $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
-                $video->reels_thumbnail = default_vertical_image();
+                $video->reels_thumbnail = "default.jpg";
+            }
+        }else if($reels_videos != null){
+            ReelsVideo::where("video_id", $video->id)->delete();
+
+            foreach ($reels_videos as $Reel_Videos) {
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
+
+                $reelvideo_names = "reels" . $reelvideo_name;
+                $reelvideo = $Reel_Videos->move(
+                    public_path("uploads/reelsVideos/shorts"),
+                    $reelvideo_name
+                );
+
+                $Reels_videos = new ReelsVideo();
+                $Reels_videos->video_id = $video->id;
+                $Reels_videos->reels_videos = $reelvideo_name;
+                // $Reels_videos->reels_videos = $shorts_name;
+                $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                $Reels_videos->save();
+
+                $video->reels_thumbnail = "default.jpg";
             }
         }
+        // if ($reels_videos != null) {
+        //     foreach ($reels_videos as $Reel_Videos) {
+        //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
+        //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
+        //         $reelvideo_names = 'reels' . $reelvideo_name;
+
+        //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+        //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+        //         $shorts_name = 'shorts_'.$reelvideo_name; 
+        //         $videoPath = str_replace('\\', '/', $videoPath);
+        //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+        //         // Ensure the output directory exists
+        //         File::ensureDirectoryExists(dirname($outputPath));
+        //         // FFmpeg command to resize to 9:16 aspect ratio
+        //         $command = [
+        //             'ffmpeg',
+        //             '-y', // Add this option to force overwrite
+        //             '-i', $videoPath,
+        //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+        //             '-c:a', 'copy',
+        //             $outputPath,
+        //         ];
+        //         $process = new Process($command);
+
+        //         try {
+        //             $process->mustRun();
+        //             // return 'Video resized successfully!';
+        //         } catch (ProcessFailedException $exception) {
+        //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
+        //         }
+
+
+        //         $ffmpeg = \FFMpeg\FFMpeg::create();
+        //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
+        //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+        //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
+
+        //         unlink($reelvideo);
+
+        //         $Reels_videos = new ReelsVideo();
+        //         $Reels_videos->video_id = $video->id;
+        //         $Reels_videos->reels_videos = $shorts_name;
+        //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+        //         $Reels_videos->save();
+
+        //         $video->reels_thumbnail = default_vertical_image();
+        //     }
+        // }
 
         // Reels Thumbnail
 
@@ -3070,7 +3808,82 @@ class AdminVideosController extends Controller
             $video->urlEnd_linksec = $startSec + 60;
         }
 
-       
+        if (compress_responsive_image_enable() == 1){
+
+                $mobileimages = public_path('/uploads/mobileimages');
+                $Tabletimages = public_path('/uploads/Tabletimages');
+                $PCimages = public_path('/uploads/PCimages');
+
+            if (!file_exists($mobileimages)) {
+                mkdir($mobileimages, 0755, true);
+            }
+
+            if (!file_exists($Tabletimages)) {
+                mkdir($Tabletimages, 0755, true);
+            }
+
+            if (!file_exists($PCimages)) {
+                mkdir($PCimages, 0755, true);
+            }
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+
+                    $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+
+            }else{
+
+                $responsive_image = default_vertical_image(); 
+            }
+
+            if ($request->hasFile('player_image')) {
+
+                $player_image = $request->file('player_image');
+
+                    $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+
+            }else{
+                $responsive_player_image = default_horizontal_image(); 
+            }
+
+
+            
+            if ($request->hasFile('video_tv_image')) {
+
+                $video_tv_image = $request->file('video_tv_image');
+
+                    $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+
+                    Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $video_tv_image_filename;
+
+            }else{
+
+                $responsive_tv_image = default_horizontal_image(); 
+            }
+
+        }else{
+            $responsive_image = null;
+            $responsive_player_image = null;
+            $responsive_tv_image = null;
+        }
 
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
@@ -3100,6 +3913,13 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price = $data['ios_ppv_price'];
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
+        $video->today_top_video = !empty($data["today_top_video"]) ? $data["today_top_video"] : 0 ;
+        $video->tiny_video_image = $data["tiny_video_image"] ;
+        $video->tiny_player_image = $data["tiny_player_image"] ;
+        $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -3295,25 +4115,71 @@ class AdminVideosController extends Controller
         //         }
         //     }
         // }
-        if (!empty($files != '' && $files != null)) {
+        // if (!empty($files != '' && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = 'public/uploads/subtitles/';
+        //             $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data['shortcode'] = $shortcodes[$key];
+        //             $subtitle_data['movie_id'] = $id;
+        //             $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
+
+
+        if (!empty($files != "" && $files != null)) {
             foreach ($files as $key => $val) {
                 if (!empty($files[$key])) {
-                    $destinationPath = 'public/uploads/subtitles/';
-                    $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data['shortcode'] = $shortcodes[$key];
-                    $subtitle_data['movie_id'] = $id;
-                    $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle->save();
+                    $destinationPath = "public/uploads/subtitles/";
+                    $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+                    
+                    // Move uploaded file to destination path
+                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                    // Read contents of the uploaded file
+                    $contents = file_get_contents($destinationPath . $filename);
+                    
+                    // Convert time format and add line numbers
+                    $lineNumber = 0;
+                    $convertedContents = preg_replace_callback(
+                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                        function ($matches) use (&$lineNumber) {
+                            $lineNumber++;
+                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                        },
+                        $contents
+                    );
+                    
+                    // Store converted contents to a new file
+                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+
+                    if (!file_exists($newDestinationPath)) {
+                        mkdir($newDestinationPath, 0755, true);
+                    }
+                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                    // Save subtitle data to database
+                    $subtitle_data = [
+                        "movie_id" => $video->id,
+                        "shortcode" => $shortcodes[$key],
+                        "sub_language" => $languages[$key],
+                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                    $video_subtitle = MoviesSubtitles::create($subtitle_data);
                 }
             }
         }
+
         /*Advertisement Video update starts*/
         //  if($data['ads_id'] != 0){
 
@@ -3324,6 +4190,78 @@ class AdminVideosController extends Controller
         //         $ad_video->save();
         // }
         /*Advertisement Video update End*/
+
+                // Admin Video Ads inputs
+
+        if( !empty($request->ads_devices)){
+
+            $Admin_Video_Ads_inputs = array(
+
+                'video_id' => $video->id ,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+                'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+                'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+                'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+
+                'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+                'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+                'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+                'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+
+                'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+                'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+                'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+
+                'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+                'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+                'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+                'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+
+                'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+                'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+                'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+                'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+
+                'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+                'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+                'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+                'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+
+                'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+                'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+                'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+                'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+
+                // plyr.io
+
+                'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+                'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                
+                'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+                'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+
+                'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+                'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+
+                'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+                'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+
+                'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+                'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+
+                'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+                'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                
+                'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+                'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+
+                'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            );
+
+            AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
+            
+        }
 
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 
@@ -7167,6 +8105,20 @@ class AdminVideosController extends Controller
         $ffprobe = \FFMpeg\FFProbe::create();
         $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
         $video_duration = explode(".", $duration)[0];
+    }elseif(!empty($Video_data) && $Video_data->type == "m3u8_url"){
+
+        $m3u8_url = $Video_data->m3u8_url;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $video_duration = round($duration);
+
+            if($duration == 'N/A'){
+                $duration = 3600;
+                $video_duration  = 3600;
+            }
+
     }else{
         $video_duration = $Video_data->duration;
     }
@@ -7176,7 +8128,6 @@ class AdminVideosController extends Controller
     date_default_timezone_set($time_zone);
     $now = date("Y-m-d h:i:s a", time());
     $current_time = date("h:i A", time());
-
     // Date Choosed By user  Calendar
 
     $Schedule_current_date = date("Y-m-d");
@@ -7282,23 +8233,49 @@ class AdminVideosController extends Controller
 
             if($sheduled_endtime < '12:00 AM' && $last_shedule_endtime < '12:00 AM' 
             && date("A", strtotime($now)) == 'AM'){
+                $TimeFormat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+                $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
 
-                $shedule_endtime =
-                    $hours .
-                    ":" .
-                    $minutes .
-                    " " .
-                    date("A", strtotime($now));
-                $sheduled_endtime = $hours . ":" . $minutes;
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                                   
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }else{
+                                                       
+                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                // print_r($shedule_endtime);exit;
+                
+                // $shedule_endtime =
+                //     $hours .
+                //     ":" .
+                //     $minutes .
+                //     " " .
+                //     date("A", strtotime($now));
+                // $sheduled_endtime = $hours . ":" . $minutes;
     
-                $starttime = date("h:i ", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+                // $starttime = date("h:i ", strtotime($store_current_time));
+                // $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
                 }
                 else{
     
                     $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
-                    // print_r($TimeFormat);exit;
+                    $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
 
                     if(!empty($TimeFormat)){
         
@@ -7339,24 +8316,55 @@ class AdminVideosController extends Controller
 
             $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
             $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+            // $time = explode(":", $sheduled_starttime);
+            // $sheduled_starttime = "03:00 PM";
 
-            // print_r($TimeFormatformat);
 
-            // exit;
  
             if(!empty($TimeFormat)){
 
-                $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+                
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                                   
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
 
-                $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }else{
+                                                       
+                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                
+
+
             }elseif(!empty($TimeFormatformat)){
-                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
-
-                $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
+      
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."AM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                
 
                 $total_content = ScheduleVideos::where(
                     "shedule_date",
@@ -7367,29 +8375,42 @@ class AdminVideosController extends Controller
                     ->get();
                     
             }else{
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+               
+                
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                
+                        $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
 
-                $sheduled_endtime = $hours . ":" . $minutes;
+                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }
 
-                $starttime = date("h:i", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
-            }
+
     
             $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
             $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
             $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
 
+            $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
             $check = $checkshedule_endtime->between($startTime, $endTime);
             // echo'<pre>'; print_r($check);    exit;
             if(empty($check) && $check == null){
-
-            }elseif(!empty($check) && $check == 1){
-            // echo'<pre>'; print_r($shedule_endtime);    exit;
-
-                $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
-                return $value;    
+                
+            }elseif($sheduled_starttime >= "11:00 PM" && $shedule_endtime >= "12:00 PM"  ||  $sheduled_starttime_zone_time == "PM" && $shedule_endtime >= "12:00 PM" ){
+                // echo'<pre>'; print_r($shedule_endtime);    exit;
+    
+                    $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+                    return $value;    
             }
+            // elseif(!empty($check) && $check == 1 ){
+            // // echo'<pre>'; print_r($shedule_endtime);    exit;
+
+            //     $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+            //     return $value;    
+            // }
             // echo'<pre>'; print_r('$check');    exit;
 
 
@@ -7404,7 +8425,6 @@ class AdminVideosController extends Controller
         // }
         //     exit; 
          }else{
-            // echo'<pre>'; print_r('testone');exit;     
             $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
             $last_sheduled_endtime = @$ScheduleVideos->sheduled_endtime; // Just Time
             $lastsheduleendtime =  explode(" ", $last_shedule_endtime);
@@ -7539,7 +8559,6 @@ class AdminVideosController extends Controller
                 ->get();
 
     }else{
-        // print_r('$shedule_endtime'); print_r($sheduled_endtime);exit;
 
         // Time Format Calculation For video AM and PM Format 
 
@@ -9805,5 +10824,380 @@ class AdminVideosController extends Controller
             // Output the contents of the merged M3U8 file
             echo file_get_contents($outputFile);
         }
+
+
+        
+    public function BunnycdnVideolibrary(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+           // Bunny Cdn get Videos 
+                
+           $storage_settings = StorageSetting::first();
+
+           if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+           && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+           && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+               
+               $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+               
+               $ch = curl_init();
+               
+               $options = array(
+                   CURLOPT_URL => $videolibraryurl,
+                   CURLOPT_RETURNTRANSFER => true,
+                   CURLOPT_HTTPHEADER => array(
+                       "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                       'Content-Type: application/json',
+                   ),
+               );
+               
+               curl_setopt_array($ch, $options);
+               
+               $response = curl_exec($ch);
+               $videolibrary = json_decode($response, true);
+               curl_close($ch);
+               // dd($videolibrary); ApiKey
+
+           }else{
+               $decodedResponse = [];
+               $videolibrary = [];
+
+           }
+
+           if(count($videolibrary) > 0){
+
+                foreach($videolibrary as $key => $value){
+
+
+
+                    if( $value['Id'] == $request->videolibrary_id){
+
+
+
+                        $videolibrary_id = $value['Id'];
+                        $videolibrary_ApiKey = $value['ApiKey']; 
+                        $videolibrary_PullZoneId = $value['PullZoneId']; 
+                        break;
+                    }else{
+                        $videolibrary_id = null;
+                        $videolibrary_ApiKey = null; 
+                        $videolibrary_PullZoneId = null; 
+                    }
+                }
+         
+
+           }else{
+                $videolibrary_id = null;
+                $videolibrary_ApiKey = null; 
+                $videolibrary_PullZoneId = null; 
+            }
+
+        
+            if($videolibrary_id != null && $videolibrary_ApiKey != null){
+
+                $client = new \GuzzleHttp\Client();
+                // $videolibrary_PullZoneId
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }
+                    // dd($PullZoneURl);
+
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+                $streamvideos = $response->getBody()->getContents();
+                // echo $response->getBody();
+                // exit;
+           
+            }else{
+                $streamvideos = [];
+            }
+
+        // print_r($response);exit;
+            // return $streamvideos;
+            $responseData = [
+                'streamvideos' => $streamvideos,
+                'PullZoneURl' => $PullZoneURl,
+            ];
+        
+            return $responseData;
+        
+    }
+
+    
+    public function StreamBunnyCdnVideo(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["bunny_cdn_linked_video"])) {
+
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->title = $data["bunny_cdn_linked_video"];
+            $video->m3u8_url = $data["bunny_cdn_linked_video"];
+            $video->type = "m3u8_url";
+            $video->draft = 0;
+            $video->active = 1;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+
+            \LogActivity::addVideoLog("Added Bunny CDN VIDEO URl Video.", $video_id);
+
+            return $value;
+        }
+    }
+
+    
+    
+    public function ExtractedImage(Request $request)
+    {
+        try {
+            // print_r($request->all());exit;
+            $value = [];
+
+            $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->where('socure_type','Video')->get();
+           
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $request->video_id;
+            $value["ExtractedImage"] = $ExtractedImage;
+
+
+            return $value;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+    }
+
+    public function combinevideo(Request $request){
+        try {
+            // Array of video URLs
+                $m3u8Urls = [
+                    'https://localhost/flicknexs/storage/app/public/Gs6LJZ0PTl3ynjn3.m3u8',
+                    'https://localhost/flicknexs/storage/app/public/B5Lh9CdVSPoe5QTN.m3u8',
+                ];
+                // 'https://localhost/flicknexs/storage/app/public/GOM8pKrjNNCLGACc.mp4',
+                // 'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
+
+    // Create a master playlist file (M3U8)
+    $masterPlaylistPath = 'master_playlist.m3u8';
+
+    // Generate the content for the master playlist
+    $masterPlaylistContent = "#EXTM3U\n";
+
+    // Add each M3U8 URL to the master playlist
+    foreach ($m3u8Urls as $index => $m3u8Url) {
+        $masterPlaylistContent .= "#EXT-X-STREAM-INF:BANDWIDTH=1000000,RESOLUTION=640x360,CODECS=\"mp4a.40.2,avc1.64001f\"\n";
+        $masterPlaylistContent .= $m3u8Url . "\n";
+    }
+
+    // Save the master playlist file
+    Storage::disk('local')->put($masterPlaylistPath, $masterPlaylistContent);
+
+    // Optionally, serve the master playlist using Laravel
+    return response()->file(storage_path("app/{$masterPlaylistPath}"));
+
+                    // Save the master playlist file
+                    // file_put_contents($masterPlaylistPath, $masterPlaylistContent);
+
+                    // // Optionally, serve the master playlist using Laravel
+                    // return response()->file($masterPlaylistPath);
+                
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    private  function UploadVideoBunnyCDNStream(  $storage_settings,$libraryid,$mp4_url){
+    // Bunny Cdn get Videos 
+
+    $storage_settings = StorageSetting::first();
+
+    if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+    && !empty($storage_settings->bunny_cdn_access_key) ){
+        
+        $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+        
+        $ch = curl_init();
+        
+        $options = array(
+            CURLOPT_URL => $libraryurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                'Content-Type: application/json',
+            ),
+        );
+        
+        curl_setopt_array($ch, $options);
+        
+        $response = curl_exec($ch);
+        $librarys = json_decode($response, true);
+        curl_close($ch);
+
+    }else{
+        $librarys = [];
+
+    }
+    if(count($librarys) > 0){
+        foreach($librarys as $key => $value){
+            if( $value['Id'] == $libraryid){
+                $library_id = $value['Id'];
+                $library_ApiKey = $value['ApiKey']; 
+                $library_PullZoneId = $value['PullZoneId']; 
+                break;
+            }else{
+                $library_id = null;
+                $library_ApiKey = null; 
+                $library_PullZoneId = null; 
+            }
+        }
+    }else{
+        $library_id = null;
+        $library_ApiKey = null; 
+        $library_PullZoneId = null; 
+    }
+    
+    if($library_id != null && $library_ApiKey != null){
+
+        $client = new \GuzzleHttp\Client();
+        
+        $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+            'headers' => [
+                'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                'accept' => 'application/json',
+            ],
+        ]);
+
+        $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+            if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+            }else{
+                $PullZoneURl = null;
+            }    
+        }
+        
+        $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
+        $filename =  str_replace(' ', '_',$file_name);
+
+        // Step 1: Create the video entry in the library
+        try {
+            $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                'headers' => [
+                    'AccessKey' => $library_ApiKey,
+                    'Accept' => 'application/json',
+                ]
+            ]);
+        
+            $responseData = json_decode($response->getBody(), true);
+            $guid = $responseData['guid'];
+        } catch (RequestException $e) {
+            echo "Error creating video entry: " . $e->getMessage();
+            exit;
+        }
+        
+        // Step 2: Upload the video file
+
+        try {
+
+            $context = stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]);
+            // Fetch video file content using file_get_contents with SSL context
+            $videoData = file_get_contents($mp4_url, false, $context);
+            
+            $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                'headers' => [
+                    'AccessKey' => $library_ApiKey,
+                    'Content-Type' => 'video/mp4' 
+                ],
+                'body' => $videoData 
+            ]);
+
+            $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
+            // echo "<pre>";
+            // echo "Video uploaded successfully: " . $videoUrl;
+            // echo "<pre>";
+            // echo "Video uploaded successfully: " . $guid;
+            // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
+
+            $responseuploaded = json_decode($response->getBody(), true);
+            $statusCode = $responseuploaded['statusCode'];
+
+        } catch (RequestException $e) {
+            echo "Error uploading video: " . $e->getMessage();
+            exit;
+        }
+        $value = [];
+        if($statusCode == 200){
+            
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->title = $file_name;
+            $video->m3u8_url = $videoUrl;
+            $video->type = "m3u8_url";
+            $video->draft = 1;
+            $video->active = 0;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $file_name;
+
+            \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
+            return $value ;
+        }else{
+            $value["success"] = 2;
+            \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
+            return $value ;
+        }
+    }
 }
     

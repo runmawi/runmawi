@@ -1,6 +1,8 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?php echo (__('Top Most Watched Videos')); ?> </a></h4>   
-    <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                   
+    <h4 class="main-title"><a href=""><?php echo (__('Top Most Watched Videos')); ?> </a></h4> 
+    <?php if( $settings->homepage_views_all_button_status == 1 ):?>   
+        <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>    
+    <?php endif; ?>                   
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -15,7 +17,7 @@
                     <div class="img-box">
                 
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                     <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid loading w-100" alt=""> 
+                                     <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  alt="Top-img"> 
                                   
                                 </a>
 
@@ -40,7 +42,7 @@
 
                             <div class="block-description">
                             <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                     <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>" class="img-fluid loading w-100" alt=""> 
+                                     <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>" alt="Top-img" > 
                                   
                                 
 
@@ -82,7 +84,9 @@
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>  
                                               <!-- Title -->
-                                        <p class="epi-name text-left m-0"><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></p>
+                                        <p class="epi-name text-left m-0">
+                                            <?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?>
+                                    </p>
                                     
                                  <?php } ?>  
 
@@ -158,7 +162,7 @@
                                 </a>
 
                                 <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                    <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                    <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                 </a>
                             </div>
                         </div>

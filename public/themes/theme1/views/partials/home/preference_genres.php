@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?= __('Preference By Genres')  ?> </a></h4>
+    <h4 class="main-title"><a href=""><?= (__('Preference By Genres'))  ?> </a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -12,11 +12,17 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" class="img-fluid w-100" alt=""> -->
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" class="img-fluid w-100" alt=""> 
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" data-play="hover">
                                 <source src="<?php echo $preference_genre->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                         
@@ -33,16 +39,9 @@
                                     <?php } ?>
                               
 
-                    </div>
+                   
                 </div>
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                        <!-- <div>
-                                       <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_genre->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>
-                                </div> -->
-                    </div>
-                </div>
+                
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <h6><?php  echo (strlen($preference_genre->title) > 17) ? substr($preference_genre->title,0,18).'...' : $preference_genre->title; ?></h6>
@@ -104,8 +103,9 @@
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                 $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

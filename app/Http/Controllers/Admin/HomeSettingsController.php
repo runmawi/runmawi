@@ -71,6 +71,7 @@ class HomeSettingsController extends Controller
     }
     }
     public function save_settings(Request $request){
+
         
         $settings = HomeSetting::first();
         if(!empty($request['featured_videos'])){
@@ -173,10 +174,15 @@ class HomeSettingsController extends Controller
         $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
         $settings->Today_Top_videos = !empty($request->Today_Top_videos) ?  "1" : "0" ;
         $settings->series_episode_overview = !empty($request->series_episode_overview) ?  "1" : "0" ;
-
-
-
-
+        $settings->Series_Networks = !empty($request->Series_Networks) ?  "1" : "0" ;
+        $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
+        $settings->Leaving_soon_videos = !empty($request->Leaving_soon_videos) ?  "1" : "0" ;
+        $settings->Document = !empty($request->Document) ?  "1" : "0" ;
+        $settings->Document_Category = !empty($request->Document_Category) ?  "1" : "0" ;
+        $settings->watchlater_videos = !empty($request->watchlater_videos) ?  "1" : "0" ;
+        $settings->wishlist_videos = !empty($request->wishlist_videos) ?  "1" : "0" ;
+        $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
+        $settings->epg = !empty($request->epg) ?  "1" : "0" ;
         $settings->save();
         
         return redirect::to('/admin/home-settings');
@@ -382,12 +388,15 @@ class HomeSettingsController extends Controller
         $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
         $settings->Today_Top_videos = !empty($request->Today_Top_videos) ?  "1" : "0" ;
         $settings->series_episode_overview = !empty($request->series_episode_overview) ?  "1" : "0" ;
+        $settings->Series_Networks = !empty($request->Series_Networks) ?  "1" : "0" ;
+        $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
+        $settings->Document = !empty($request->Document) ?  "1" : "0" ;
+        $settings->Document_Category = !empty($request->Document_Category) ?  "1" : "0" ;
+        $settings->watchlater_videos = !empty($request->watchlater_videos) ?  "1" : "0" ;
+        $settings->wishlist_videos = !empty($request->wishlist_videos) ?  "1" : "0" ;
+        $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');
     }
-
-
-
-    
 }

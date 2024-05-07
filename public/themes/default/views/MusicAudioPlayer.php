@@ -7,24 +7,54 @@
 
  ?>
 <style>
+  .plus-minus-toggle {
+    cursor: pointer;
+    position: relative;
+    width: 21px;
+    &: before,;
+}
+.collapsed {
+    text-decoration: none;
+    font-size: 35px;
+    color: #fff;
+}
+.plus-minus-toggle
+&:after {
+    transform-origin: center;
+}
+  .playlist-ctn td {
+  color: white;
+}
+.active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
+    color: #ffc266 !important;
+  }
+  .playlist-ctn::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+      
+  }
+  .active-track{
+    background: #4d4d4d;
+    color: #ffc266 !important;
+    font-weight: bold;
+    
+  }
 
 </style>
 <div id="music-player">
   
         <img id="album-art"/>
         <div id="top-bar">
-          <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
           <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
-          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'><?php echo __('Add to Queue'); ?></button></div>
+          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%; margin-right:2%'><?php echo __('Add to Queue'); ?></button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
           <div class="<?php echo URL::to('/becomesubscriber'); ?>">
-              <img height="250" width="250"  id="audio_img" src="" style="object-fit: contain;">
+              <img height="250" width="250"  id="audio_img" src="<?php echo URL::to('/').'/public/uploads/images/' . @$first_album_image ;?>" style="object-fit: contain;">
               <!-- height="150" width="150"  -->
            </div>
            <div id="description-content">
@@ -68,7 +98,64 @@
           <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
           <?php } ?>
           </div>
+          
         </div>
+
+        <?php if(!empty(@$All_Playlist_Audios) && count(@$All_Playlist_Audios) > 0){ ?>
+            <div class="playlist-ctn mb-5">
+                <!-- Add the new code here -->
+              <h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
+                <table class="w-100">
+                    <?php foreach ($All_Playlist_Audios as $key => $audio) { //dd($All_Playlist_Audios);?>
+                        <tr>
+                            <td><?= $key + 1 ?></td>
+                            <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
+                            <td><h4><?= $audio->title ?></h4></td>
+                            <td><?= $audio->albumname ?></td>
+                            <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
+                            <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <ol>
+                  <li>
+                    <div class="track d-flex">
+                    </div>
+                  </li>
+                </ol>
+            </div>
+
+        <?php } ?>
+        <?php if(count(@$recommended_audios) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Audios'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/recommeded_audio.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
+          
+      <?php if(count(@$OtherMusicStation) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other MusicStation'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_music_station.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
+
+      <?php if(count(@$Otherplaylist) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other Albums'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_palylist.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
+
         <div id="playlist">
 
           <div id="label">
@@ -76,7 +163,7 @@
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
 
-        <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+        <button id="backbutton"><i class="fas fa-times"></i></button> 
 
           <div id="show-box">
             <div id="show-list">
@@ -84,6 +171,7 @@
           </div>
         </div>
         <div id="playlistStation">
+        <button id="backStationbutton"><i class="fas fa-times"></i></button> 
           <div id="label">
             <h1><?php echo __('Other Music Station') ; ?></h1>
             <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
@@ -361,7 +449,59 @@ var data = listAudio; // Assuming listAudio contains the URL
             break;
         }
     });
-    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}function toggleShuffle(){if(songShuffle == 0){$('#shuffle').css("color",buttonColorOnPress);songShuffle = 1;}else{$('#shuffle').css("color","grey");songShuffle = 0;}}function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
+    
+    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}
+    function toggleShuffle() {
+            if (songShuffle == 0) {
+                $('#shuffle').css("color", buttonColorOnPress);
+                songShuffle = 1;
+
+                // Shuffle the playlist
+                shufflePlaylist();
+
+                // Start playing the first song in the shuffled playlist
+                playShuffledSong();
+            } else {
+                $('#shuffle').css("color", "grey");
+                songShuffle = 0;
+            }
+        }
+
+        
+        function shuffleArray(array) {
+            var currentIndex = array.length, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (currentIndex != 0) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        }
+
+        function shufflePlaylist() {
+            playlist.songs = shuffleArray(playlist.songs);
+            updateCurrentSong();
+        }
+
+        function updateCurrentSong() {
+            index = 0;
+            indexing = playlist.songs[index];
+        }
+
+        function playShuffledSong() {
+            loadSong();
+        }
+
+
+    function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
     $(document).bind('keypress',function(event){
         //console.log(event.keyCode);
         switch(event.keyCode){
@@ -824,7 +964,6 @@ $('#backstation').on('click',function(){
 });
 
 $('#backStationbutton').on('click',function(){
-
 var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
 
@@ -1078,8 +1217,9 @@ html,body{
 }
 #music-player{
   width:100%;
-  height:100vh;
+  height:90vh;
   background: var(--bg-color);
+  overflow: auto;
 }
 #album-art{ position:fixed; z-index:-1; left: 50%; transform: translateX(-50%);opacity: 0.15;width: auto; height: 100%;}
 #top-bar{
@@ -1132,7 +1272,7 @@ html,body{
 }
 #player{
   background: var(--menu-color);
-  position: fixed;
+  position: relative;
   bottom: 0;
   height: 25vh;
   width: 100%;
@@ -1419,6 +1559,19 @@ html,body{
     padding: 5px 10px;
     left: 5%;
   }
-  
+  #backStationbutton{
+    opacity: 1;
+    margin: 0;
+    position: relative;
+    background: inherit;
+    border: none;
+    color: white;
+    font-size: 100%;
+    vertical-align: middle;
+    transform: translateY(-40%);
+    padding: 5px 10px;
+    left: 5%;
+    top: 15%; 
+  }
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>

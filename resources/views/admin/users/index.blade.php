@@ -188,6 +188,9 @@
 .form-control {
 background-color: #f7f7f7;
 }
+body.dark input[type="search"] {
+    color: #000 !important;
+}
 
 </style>
 	@stop

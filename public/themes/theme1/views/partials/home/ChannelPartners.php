@@ -14,7 +14,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($order_settings_list[13]->header_name) 
       {
-        echo __($order_settings_list[13]->header_name) ;
+        echo (__($order_settings_list[13]->header_name)) ;
         }
         else {
             echo "" ; 
@@ -50,7 +50,7 @@
             </div>
             <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> ">
 
-              <h6><?php echo __($channel->channel_name); ?></h6>
+              <h6><?php echo (__($channel->channel_name)) ?></h6>
               </a>
           
         </li>

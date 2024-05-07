@@ -13,7 +13,47 @@ $uppercase =  ucfirst($request_url);
 $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 $theme = App\SiteTheme::first();
 
+
+    
+$translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
 @$translate_language = App\Setting::pluck('translate_language')->first();
+
+if(Auth::guest()){
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+    if(!empty($UserTranslation)){
+        $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+    }else{
+        $translate_language = GetWebsiteName().'en';
+    }
+}else if(!Auth::guest()){
+
+    $subuser_id=Session::get('subuser_id');
+    if($subuser_id != ''){
+        $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+        if(!empty($Subuserranslation)){
+            $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else if(Auth::user()->id != ''){
+        $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+        if(!empty($UserTranslation)){
+            $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else{
+        $translate_language = GetWebsiteName().'en';
+    }
+
+}else{
+    $translate_language = GetWebsiteName().'en';
+}
+
 \App::setLocale(@$translate_language);
 
 // print_r($uppercase);
@@ -229,7 +269,7 @@ i.fa.fa-google-plus {
 
 </style>
 
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page" /*style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;"*/>
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

@@ -8,6 +8,7 @@
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[11]->url ? URL::to($order_settings_list[11]->url) : null }} ">{{ optional($order_settings_list[11])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[11]->url ? URL::to($order_settings_list[11]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
@@ -20,7 +21,7 @@
                                                 <img src="{{ $videoCategories->image ?  URL::to('public/uploads/videocategory/'.$videoCategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</h6>
+                                                <p> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 

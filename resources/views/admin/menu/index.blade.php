@@ -67,6 +67,17 @@
 					</div>
 										   <br />
 
+						<label for="name">Show In-Side Menu</label>
+							<div class="mt-1 d-flex align-items-center justify-content-around">
+								<div class="mr-2">OFF</div>
+								<label class="switch mt-2">
+									<input  type="checkbox"  name="in_side_menu">
+									<span class="slider round"></span>
+								</label>
+							<div class="ml-2">ON</div>
+						</div>
+										   <br />
+
 						<label for="name">Menu Item URL</label>
 						<select name="select_url" id="select_url" class="form-control">
 							<option value="">Select URL</option>
@@ -87,8 +98,14 @@
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="videos" /> Video Categories 
                         <input type="radio" class="menu-dropdown-radio" name="type" value="audios" /> Audio Categories
                         <input type="radio" class="menu-dropdown-radio" name="type" value="live" /> Live Categories
+				        <input type="radio" class="menu-dropdown-radio" name="type" value="series" /> Tv Shows Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="posts" /> Post Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="tv_show" /> Tv Shows
+						
+						@if (Series_Networks_Status() == 1)
+							<input type="radio" class="menu-dropdown-radio" name="type" value="networks" />Tv Shows Networks
+						@endif
+
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				    </form>
 				</div>

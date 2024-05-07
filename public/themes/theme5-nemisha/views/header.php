@@ -220,6 +220,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="stylesheet">
 
 
 
@@ -416,10 +417,22 @@
     .dropdown-toggle::after {
         display: none !important;
     }
-
+    .navbar-light .navbar-toggler{
+        border-color:transparent;
+    }
     /* Dark mode and light Mode */
     body.light-theme {
         background-color: <?php echo GetLightBg(); ?>;
+    }
+    body.light-theme .navbar-light .navbar-toggler-icon{background: none !important; }
+    body.light-theme i.ri-more-line{
+        color: <?php echo GetLightText(); ?>!important;
+    }
+    body.light-theme #top-menu a{
+        color: #fff !important;
+    }
+    body.light-theme #top-menu h6{
+        color: #fff !important;
     }
 
     body.light-theme h4 {
@@ -460,7 +473,9 @@
         color: <?php echo GetLightText(); ?>;
         box-shadow: 0 0 50px #ccc;
     }
-
+    body.light-theme #translator-table_filter input[type="search"]{
+        color: <?php echo GetLightText(); ?>;
+    }
     body.light-theme footer {
         background-color: <?php echo GetLightBg(); ?> !important;
         color: <?php echo GetLightText(); ?>;
@@ -768,7 +783,9 @@
         font-family: 'Titillium Web';
         font-style: normal;
         font-weight: 300;
-        src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+        src: local('Titillium Web Light'), local('TitilliumWeb-Light'),
+         url(https://fonts.gstatic.com/s/titilliumweb/v11/NaPDcZTIAOhVxoMyOr9n_E7ffGjD9g.ttf) format('truetype');
+        /* src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff'); */
     }
 
     .sidebar {
@@ -858,6 +875,20 @@
 
     .Search_error_class {
       color: red;
+    }
+    .mobile-menu-header .btn-close {
+        font-weight: 700;
+        color: red;
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 4%;
+        right: 7%;
+    }
+    @media (min-width: 768px){
+    .navbar-expand-lg .navbar-toggler {
+        display: none !important;
+    }
     }
 </style>
 
@@ -1071,9 +1102,7 @@
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
                                     <div class="navbar-toggler-icon" data-toggle="collapse">
-                                        <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                                        <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                                        <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
                                     </div>
                                 </a>
                                 <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
@@ -1088,6 +1117,17 @@
                                 <?php } ?>
 
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <div class="mobile-menu-header">
+                                        <div class="btn-close" data-toggle="collapse">
+                                            <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                                aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
+                                                border-top: none; float:right"><i class="fa fa-times" style="
+                                                font-size: 20px;
+                                                color: white;"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                     <div class="menu-main-menu-container">
                                         <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
@@ -1271,6 +1311,120 @@
                                             <!-- <ul class="dropdown-menu categ-head"> -->
                                             <?php //foreach ( $languages as $language) {
                                             ?>
+                                            <div class="mobile-side-menus d-flex justify-content-end"> 
+                                                <?php if(Auth::guest()): ?>
+                                                    <li class="nav-item nav-icon">
+                                                        <!-- <img src="<?php echo URL::to('/') . '/public/uploads/avatars/lockscreen-user.png'; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                                        <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+                                                                    <svg version="1.1" id="Layer_1"
+                                                                        xmlns="http://www.w3.org/2000/svg" x="0"
+                                                                        y="0" viewBox="0 0 70 70"
+                                                                        style="enable-background:new 0 0 70 70"
+                                                                        xml:space="preserve">
+                                                                        <path class="st5"
+                                                                            d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z" />
+                                                                        <path class="st5"
+                                                                            d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z" />
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Signin</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item nav-icon">
+                                                        <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+                                                                    <svg version="1.1" id="Layer_1"
+                                                                        xmlns="http://www.w3.org/2000/svg" x="0"
+                                                                        y="0" viewBox="0 0 70 70"
+                                                                        style="enable-background:new 0 0 70 70"
+                                                                        xml:space="preserve">
+                                                                        <path class="st6"
+                                                                            d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
+                                                                        <path class="st6"
+                                                                            d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Signup</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                                <?php if(!Auth::guest()){ ?>
+                                                    <a href="<?php echo URL::to('logout'); ?>"  class="iq-sub-card setting-dropdown">
+                                                        <div class="media align-items-center">
+                                                            <div class="right-icon">
+                                                                <svg version="1.1" id="Layer_1"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    x="0" y="0"
+                                                                    viewBox="0 0 70 70"
+                                                                    style="enable-background:new 0 0 70 70"
+                                                                    xml:space="preserve">
+                                                                    <path class="st6"
+                                                                        d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
+                                                                    <path class="st6"
+                                                                        d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="media-body ml-3">
+                                                                <h6 class="mb-0 ">Sign Out</h6>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <a href="<?php echo URL::to('myprofile'); ?>"
+                                                            class="iq-sub-card setting-dropdown">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+
+                                                                    <svg version="1.1" id="Layer_1"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                        x="0px" y="0px"
+                                                                        viewBox="0 0 70 70"
+                                                                        style="enable-background:new 0 0 70 70;"
+                                                                        xml:space="preserve">
+                                                                        <style type="text/css">
+                                                                            .st0 {}
+                                                                        </style>
+                                                                        <g>
+                                                                            <path class="st0"
+                                                                                d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
+		c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z" />
+                                                                            <path class="st0"
+                                                                                d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.5,8.4,1.1,11.5,3.6c0.1,0.1,0.5,0.1,0.4,0l1.8-1.8
+		c0.5-0.5,0.5-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
+		l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z" />
+                                                                            <path class="st0"
+                                                                                d="M62.2,48.6v-2.4c0-0.5-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.5-0.7-0.4-1.1
+		C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
+		c-0.5-0.2-0.7-0.5-1-0.4c-0.2-0.1-0.4-0.5-0.4-0.5v-2.8c0-0.5-0.2-0.5-0.5-0.5h-2.4c-0.5,0-0.5,0.2-0.5,0.5v2.8
+		c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
+		c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.5-0.5,0.7-0.4,1.1c-0.1,0.2-0.5,0.4-0.5,0.4h-2.7
+		c-0.5,0-0.5,0.2-0.5,0.5v2.4c0,0.5,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.5,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
+		L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.5,0.2,0.7,0.5,1.1,0.4
+		c0.2,0.1,0.4,0.5,0.4,0.5V57c0,0.5,0.2,0.5,0.5,0.5h2.4c0.5,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.5,1-0.4
+		c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
+		c0.2-0.5,0.5-0.7,0.4-1c0.1-0.2,0.5-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
+		c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
+		L48.7,47.4z" />
+                                                                        </g>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Manage Profile</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
+                                                    <?php } ?>
+                                            </div>
                                             <li>
                                                  <?php                         
                         if(!Auth::guest()){                                                              
@@ -1400,7 +1554,7 @@
                                                     <div class="form-group position-relative">
                                                         <input type="text" name="search"
                                                             class="text search-input font-size-12 searches"
-                                                            placeholder="Type here to Search Videos" />
+                                                            placeholder="Type Here" />
                                                         <i class="search-link ri-search-line"></i>
 
                                                         <?php include 'public/themes/default/partials/Search_content.php'; ?>
@@ -1464,58 +1618,61 @@
                                             </div>
                                         </li>
                                         <?php if(Auth::guest()): ?>
-                                        <li class="nav-item nav-icon">
-                                            <!-- <img src="<?php echo URL::to('/') . '/public/uploads/avatars/lockscreen-user.png'; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                            <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
-                                                <div class="media align-items-center">
-                                                    <div class="right-icon">
-                                                        <svg version="1.1" id="Layer_1"
-                                                            xmlns="http://www.w3.org/2000/svg" x="0"
-                                                            y="0" viewBox="0 0 70 70"
-                                                            style="enable-background:new 0 0 70 70"
-                                                            xml:space="preserve">
-                                                            <path class="st5"
-                                                                d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z" />
-                                                            <path class="st5"
-                                                                d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z" />
-                                                        </svg>
+                                            <li class="nav-item nav-icon">
+                                                <!-- <img src="<?php echo URL::to('/') . '/public/uploads/avatars/lockscreen-user.png'; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                                <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
+                                                    <div class="media align-items-center">
+                                                        <div class="right-icon">
+                                                            <svg version="1.1" id="Layer_1"
+                                                                xmlns="http://www.w3.org/2000/svg" x="0"
+                                                                y="0" viewBox="0 0 70 70"
+                                                                style="enable-background:new 0 0 70 70"
+                                                                xml:space="preserve">
+                                                                <path class="st5"
+                                                                    d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z" />
+                                                                <path class="st5"
+                                                                    d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Signin</h6>
+                                                        </div>
                                                     </div>
-                                                    <div class="media-body ml-3">
-                                                        <h6 class="mb-0 ">Signin</h6>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item nav-icon">
+                                                <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
+                                                    <div class="media align-items-center">
+                                                        <div class="right-icon">
+                                                            <svg version="1.1" id="Layer_1"
+                                                                xmlns="http://www.w3.org/2000/svg" x="0"
+                                                                y="0" viewBox="0 0 70 70"
+                                                                style="enable-background:new 0 0 70 70"
+                                                                xml:space="preserve">
+                                                                <path class="st6"
+                                                                    d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
+                                                                <path class="st6"
+                                                                    d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Signup</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item nav-icon">
-                                            <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
-                                                <div class="media align-items-center">
-                                                    <div class="right-icon">
-                                                        <svg version="1.1" id="Layer_1"
-                                                            xmlns="http://www.w3.org/2000/svg" x="0"
-                                                            y="0" viewBox="0 0 70 70"
-                                                            style="enable-background:new 0 0 70 70"
-                                                            xml:space="preserve">
-                                                            <path class="st6"
-                                                                d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
-                                                            <path class="st6"
-                                                                d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="media-body ml-3">
-                                                        <h6 class="mb-0 ">Signup</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
+                                                </a>
+                                            </li>
                                         <?php else: ?>
                                         <li class="nav-item nav-icon">
                                             <a href="#"
                                                 class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                                 data-toggle="search-toggle">
                                                 
-                                                <?php if(Auth::user() && Auth::user()->avatar != null ): ?>
-                                                    <img src="<?php echo URL::to('public/uploads/avatars/'  . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                                <?php if(Auth::user() && Auth::user()->avatar != null): ?>
+                                                    <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
+                                                <?php else: ?>
+                                                    <img src="<?php echo URL::to('/assets/img/placeholder.webp'); ?>" class="img-fluid avatar-40 rounded-circle" alt="Placeholder Image">
                                                 <?php endif; ?>
+
 
                                                 <p class="ml-3 mt-3">
 
@@ -1679,7 +1836,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1701,7 +1858,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Logout</h6>
+                                                                    <h6 class="mb-0 ">Sign Out</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1850,7 +2007,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1975,7 +2132,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Logout</h6>
+                                                                    <h6 class="mb-0 ">Sign Out</h6>
                                                                 </div>
                                                             </div>
                                                         </a>

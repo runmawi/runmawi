@@ -11,10 +11,86 @@
 
 ?>
 
-<footer class="mb-0">
+<footer>
     <div class="container-fluid">
         <div class="block-space">
             <div class="row">
+
+            <div class="col-lg-3 col-md-12 r-mt-15 p-1">
+                    <p class="footer-title">Contact with us:</p>
+                    <div class="d-flex footer-title">
+
+                        <?php if (!empty($settings->instagram_page_id)) { ?>
+                            <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon" aria-label="insta">
+                                <i class="ri-instagram-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->twitter_page_id)) { ?>
+                            <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon" aria-label="twitter">
+                                <i class="ri-twitter-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->facebook_page_id)) { ?>
+                            <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon" aria-label="fb">
+                                <i class="ri-facebook-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->skype_page_id)) { ?>
+                            <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon" aria-label="skype">
+                                <i class="ri-skype-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->linkedin_page_id)) { ?>
+
+                            <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon" aria-label="linkedin">
+                                <i class="ri-linkedin-fill"></i>
+                            </a>
+
+                        <?php } ?>
+
+                        <?php if (!empty($settings->whatsapp_page_id)) { ?>
+                            <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon" aria-label="whatsapp">
+                                <i class="ri-whatsapp-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->youtube_page_id)) { ?>
+                            <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon" aria-label="youtube">
+                                <i class="ri-youtube-fill"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->google_page_id)) { ?>
+                            <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon" aria-label="google">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->tiktok_page_id)) { ?>
+                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon" aria-label="tiktok">
+                                <i class="ri-tiktok-fill"></i>
+                            </a>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <?php if (!empty($app_settings->android_url)) { ?>
+                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="apps1"  alt="apps1" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
+                        <?php } ?>
+                        <?php if (!empty($app_settings->ios_url)) { ?>
+                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="apps1"  alt="apps" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
+                        <?php } ?>
+                        <?php if (!empty($app_settings->android_tv)) { ?>
+                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="apps1"  alt="and" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                        <?php } ?>
+                    </div>
+                </div>
+
+
                 <?php
                 for ($i = 1; $i <= 3; $i++) {
 
@@ -23,7 +99,7 @@
                         ->get();
                 ?>
 
-                    <div class="col-lg-3 col-md-4">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
                         <ul class="f-link list-unstyled mb-0">
                             <?php foreach ($footerLinks as $key => $footerLink) { ?>
                                 <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
@@ -32,116 +108,50 @@
                     </div>
                 <?php } ?>
 
-                <div class="col-lg-3 col-md-12 r-mt-15 p-1">
-                    <div class="d-flex">
-
-                        <?php if (!empty($settings->instagram_page_id)) { ?>
-                            <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-instagram-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->twitter_page_id)) { ?>
-                            <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-threads-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->facebook_page_id)) { ?>
-                            <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-facebook-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->skype_page_id)) { ?>
-                            <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-skype-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->linkedin_page_id)) { ?>
-
-                            <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon">
-                                <i class="ri-linkedin-fill"></i>
-                            </a>
-
-                        <?php } ?>
-
-                        <?php if (!empty($settings->whatsapp_page_id)) { ?>
-                            <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon">
-                                <i class="ri-whatsapp-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->youtube_page_id)) { ?>
-                            <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-youtube-fill"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->google_page_id)) { ?>
-                            <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                        <?php } ?>
-
-                        <?php if (!empty($settings->tiktok_page_id)) { ?>
-                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
-                                <i class="ri-tiktok-fill"></i>
-                            </a>
-                        <?php } ?>
-                    </div>
-                    
-                    <div class="d-flex">
-                        <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
-                        <?php } ?>
-                        <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
-                        <?php } ?>
-                        <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
-                        <?php } ?>
-                    </div>
-                </div>
+                
 
                 
             </div>
         </div>
-    </div>
-    <div class="copyright py-2">
-        <div class="container-fluid">
-            <p class="mb-0 text-center font-size-14 text-body">
-                <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved
-            </p>
+        <div class="copyright py-2">
+            <div class="container-fluid">
+                <p class="mb-0 text-center font-size-14 text-body">
+                    <?= $settings->website_name . ' <i class="ri-copyright-line"></i> ' . Carbon::now()->year ?> All Rights Reserved
+                </p>
+            </div>
         </div>
     </div>
+    
 </footer>
 
+
+
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/jquery-3.4.1.min.js') ?>"></script>
-   <script src="<?= asset('public/themes/theme6/assets/js/popper.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/bootstrap.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
+   
    
    <!-- Slick JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/slick.min.js') ?>"></script>
-   
+   <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
+
    <!-- owl carousel Js -->
-   <script src="<?= asset('public/themes/theme6/assets/js/owl.carousel.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
    
    <!-- select2 Js -->
-   <script src="<?= asset('public/themes/theme6/assets/js/select2.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>"></script>
    
    <!-- Magnific Popup-->
-   <script src="<?= asset('public/themes/theme6/assets/js/jquery.magnific-popup.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>"></script>
    
    <!-- Slick Animation-->
-    <script src="<?= asset('public/themes/theme6/assets/js/slick-animation.min.js') ?>"></script>
+    <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
    
-   <!-- Custom JS-->
-    <script src="<?= asset('public/themes/theme6/assets/js/custom.js') ?>"></script>
+
+    <!-- Custom JS-->
+    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
 
@@ -171,7 +181,7 @@
 
         }
 
-        document.getElementById(id).style display = "block";
+        document.getElementById(id).style.display = "block";
 
     }
 </script>
@@ -232,9 +242,11 @@
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
-<script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
-<script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script> -->
 
 <script>
     function loadJS(u) {
@@ -247,13 +259,12 @@
         loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
     try {
         if (Route::currentRouteName() == 'LiveStream_play') {
             include 'livevideo_player_script.blade.php';
-        } elseif (Route::currentRouteName() == 'play_episode') {
+        } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
             include 'episode_player_script.blade.php';
         } else {
             include 'footerPlayerScript.blade.php';

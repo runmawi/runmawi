@@ -31,14 +31,16 @@ if (Auth::guest() != true) {
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
-                                        <div class="block-images position-relative">
+                                    <div class="block-images position-relative">
+                                        <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
+
                                             <div class="img-box">
                                                 <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
+                                
                                             <div class="block-description">
-                                                <h6> {{ strlen($latest_view_episode->title) > 17 ? substr($latest_view_episode->title, 0, 18) . '...' : $latest_view_episode->title }}
-                                                </h6>
+                                                <p> {{ strlen($latest_view_episode->title) > 17 ? substr($latest_view_episode->title, 0, 18) . '...' : $latest_view_episode->title }}</p>
+
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">
@@ -57,15 +59,22 @@ if (Auth::guest() != true) {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+
+                                            {{-- WatchLater & wishlist --}}
+
+                                        @php
+                                            $inputs = [
+                                                'source_id'     => $latest_view_episode->id ,
+                                                'type'          => null,  
+                                                'wishlist_where_column'   => 'episode_id',
+                                                'watchlater_where_column' => 'episode_id',
+                                            ];
+                                        @endphp
+
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                    
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

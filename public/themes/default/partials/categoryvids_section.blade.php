@@ -16,7 +16,7 @@
                                 
                             <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
-                                         <h6><?php  echo (strlen($testinfg->title) > 17) ? substr($testinfg->title,0,18).'...' : $testinfg->title; ?></h6>
+                                         <p class="epi-name text-left m-0"><?php  echo (strlen($testinfg->title) > 17) ? substr($testinfg->title,0,18).'...' : $testinfg->title; ?></p>
                                 </a>
                             <?php } ?>  
                                 
@@ -89,8 +89,8 @@
                                 
 
                                 <div class="hover-buttons">
-                                    <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
-                                        <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>  {{ __('Watch Now') }}</span>
+                                    <a class="epi-name mb-0 btn text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>" >
+                                        <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
                                     </a>
                                 </div>
                             </div>
@@ -113,3 +113,4 @@
     </div>
     
  </div>
+

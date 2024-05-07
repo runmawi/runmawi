@@ -5,58 +5,61 @@
     .close{
         color: red;
         text-shadow: none;
+
+
     }
+
     .come-from-modal.left .modal-dialog,
-.come-from-modal.right .modal-dialog {
-   
-    margin: auto;
-    width: 400px;
-    background-color: #000!important;
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
+    .come-from-modal.right .modal-dialog {
+        margin: auto;
+        width: 400px;
+        background-color: #000!important;
+        height: 100%;
+        -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+    }
 
-.come-from-modal.left .modal-content,
-.come-from-modal.right .modal-content {
-    height: 100%;
-    overflow-y: auto;
-    border-radius: 0px;
-}
+    .come-from-modal.left .modal-content,
+    .come-from-modal.right .modal-content {
+        height: 100%;
+        overflow-y: auto;
+        border-radius: 0px;
+    }
 
-.come-from-modal.left .modal-body,
-.come-from-modal.right .modal-body {
-    padding: 15px 15px 80px;
-}
-.come-from-modal.right.fade .modal-dialog {
-    right: 0;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
+    .come-from-modal.left .modal-body,
+    .come-from-modal.right .modal-body {
+        padding: 15px 15px 80px;
+    }
+    .come-from-modal.right.fade .modal-dialog {
+        right: 0;
+        -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+        transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
 
-.come-from-modal.right.fade.in .modal-dialog {
-    right: 0;
-}
+    .come-from-modal.right.fade.in .modal-dialog {
+        right: 0;
+    }
+
     #sidebar-wrapper {
-  height: calc(100vh - 80px - 75px)!important;
+        height: calc(100vh - 80px - 75px)!important;
   /*background-color: #000;*/
         border-radius: 10px;
         box-shadow: inset 0 0 10px #000000;
         color: #fff;
-  transition: margin 0.25s ease-out;
+        transition: margin 0.25s ease-out;
     }.list-group-item-action:hover {
         color: #000!important;
     }
     .list-group-item-light{
-         background-color:transparent;
-       
-         
+        background-color:transparent;
+
+
     }
-     .list-group-item-light:hover{
+    .list-group-item-light:hover{
         background-color: #fff;
         color: #000!important;
     }
@@ -197,8 +200,8 @@ if(empty($new_date)){
 
 if(!Auth::guest()){
 if(!empty($password_hash)){
-if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-<div id="video_bg"> 
+    if ( ($ppv_exist > 0 )|| ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 ) || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" ) || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+        <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -346,15 +349,18 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     <div class="ppv-block">
                         <h2 class="mb-3"> <?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
 
-                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
+
+                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
 
                            <!-- PPV button -->
                             <?php $users = Auth::user();  ?>
 
-                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin") && ($video->access == "ppv")  ) { ?>
                                     <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
-                                    <?php echo __('Purchase Now ');?> </button>
+                                    <?php echo __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price;  ;?> </button>
                             <?php } ?>
+
+
                     </div>
                 </div>
             </div>
@@ -364,7 +370,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
 
 else{  
 
-        if (Auth::guest() && empty($video->ppv_price)) {  ?>
+        if (Auth::guest() && $video->access == "guest" ) {  ?>
        <div id="video_bg"> 
 <div class="">
     <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -488,7 +494,7 @@ else{
 
      <?php } ?>
 
-    <?php  } else { ?>       
+    <?php  } else {  ?>       
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
             <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
             <div class="row justify-content-center pay-live">
@@ -496,8 +502,12 @@ else{
                     <div class="ppv-block">
                         <h2 class="mb-3"><?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
+
                         <?php if(Auth::guest()){ ?>
-                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" ><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
+                            <?php if($video->access == "ppv"): ?>
+                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" ><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <?php endif; ?>
                         <?php }else{ ?>
                         <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                         <?php } ?>
@@ -533,10 +543,11 @@ else{
                                     <a class="black-text" href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
                                         <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                     </a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
                                 <?php } ?>
 
-                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                
 
                                 <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                             </ol>
@@ -646,7 +657,7 @@ else{
                             </li>
                         <?php } ?>
                             <!-- PPV button -->
-                        <?php if ($video->access != 'guest' ) { ?>
+                        <?php if ($video->access == 'ppv' ) { ?>
                             <li>
                                 <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                                     <?php echo __('Rent');?> </a>

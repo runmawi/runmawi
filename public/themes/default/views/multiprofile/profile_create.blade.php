@@ -24,7 +24,7 @@
                             <div class="form-group">  
                                 <img src="{{URL::asset('public/multiprofile/chooseimage.jpg')}}" id="upfile1"  />
                                      <p class="" style="color:#fff "  style="cursor:pointer" id="upfile"  >{{ __('Change') }}</p>
-                                <input type="file" id="subuser_image"  name="image" style="display:none"  />
+                                <input type="file" id="subuser_image"  name="image" style="display:none" accept="image/*" />
                             </div>
   
                             <div class="form-group">  
@@ -34,7 +34,7 @@
                             <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                             <h5 style="text-align: left"> {{ __('kid's profile ?') }}</h5>
+                                             <h5 style="text-align: left"> {{ __("kid's profile ?") }}</h5>
                                         </div>
                                     </div>
 
@@ -58,8 +58,8 @@
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Multiprofile')}}'" >{{ __('Cancel') }}</button>
-                            <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button>
+                            <button class="btn btn-hover ab" ><a href="{{ route('myprofile') }}">Cancel</a> {!! "&nbsp;" !!}</button>
+                            <button type="submit" class="btn btn-hover ab" >Save Changes</button>
                         </div>
 
                         </form>
@@ -83,4 +83,10 @@ $( document ).ready(function() {
 });
 
 </script>
+<style>
+    .ab {
+        font-size: 14px;
+        padding: 5px;
+    }
+</style>
 

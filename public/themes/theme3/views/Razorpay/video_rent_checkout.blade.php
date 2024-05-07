@@ -7,6 +7,10 @@
     <div class="d-flex justify-content-center">
         <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
     </div>
+</div><div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
 </div>
 
 <script>

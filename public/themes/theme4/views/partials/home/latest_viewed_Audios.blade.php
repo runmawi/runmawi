@@ -11,7 +11,7 @@
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                 $data = $data  ->whereNotIn('audio.id',Block_audios());
             }
-            $data = $data->get();
+            $data = $data->limit(15)->get();
    }
    else
    {
@@ -22,7 +22,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
+    <section id="iq-favorites" class="s-margin">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
@@ -39,7 +39,7 @@
                                     <a href="{{ URL::to('audio/'.$audios_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{  $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <h6> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}

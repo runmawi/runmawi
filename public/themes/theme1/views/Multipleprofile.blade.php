@@ -13,6 +13,50 @@
 
     </style>
 </head>
+@php
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    $translate_language = App\Setting::pluck('translate_language')->first();
+
+    if(Auth::guest()){
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+            if(!empty($UserTranslation)){
+                $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+        }else if(!Auth::guest()){
+
+            $subuser_id=Session::get('subuser_id');
+            if($subuser_id != ''){
+                $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+                if(!empty($Subuserranslation)){
+                    $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else if(Auth::user()->id != ''){
+                $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+                if(!empty($UserTranslation)){
+                    $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+
+
+    \App::setLocale($translate_language);
+@endphp
+
       
 @section('content')
 <div class="container">
@@ -22,7 +66,13 @@
                  
 <div class="col-md-4">
     <div class="row1">
-    <h1 class="mt-5">{{ __("Who's Watching ?") }}</h1>
+                    <h1 class="mt-5">
+                    {{ 
+                        request()->segment(count(request()->segments())) === 'change-profile' ? __("Change Profile") :
+                        (request()->segment(count(request()->segments())) === 'choose-profile' ? __("Who's Watching") . '?' :
+                            __("Who's Watching") . '?') 
+                    }}  
+                    </h1>
                     <div class="row-data" style="display:flex; " >
                       
                     

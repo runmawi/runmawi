@@ -2,12 +2,20 @@
 if(count($latest_video) > 0) : ?>
   <?php  if( !Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
-                    </a></h4>  
-                    <h4 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>                    
-                 </div>
+
+                  <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h2 class="main-title">
+                      <a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
+                        <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
+                      </a>
+                    </h2>  
+                  
+                    <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+                      <h2 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>                    
+                    <?php endif; ?>
+                  </div>
+
+
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                          <?php  if(isset($latest_video)) :
@@ -67,9 +75,10 @@ if(count($latest_video) > 0) : ?>
                              <!-- block-images -->
                              <div class="border-bg">
                                 <div class="img-box">
-                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="l-img">
-                                   </a>
+                                  <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                      <?php $imageUrl = $watchlater_video->image ? URL::to('/').'/public/uploads/images/'.$watchlater_video->image : $settings->default_video_image; ?>
+                                      <img class="img-fluid w-100" loading="lazy" data-src="<?php echo $imageUrl; ?>" class="img-fluid w-100" alt="l-img">
+                                  </a>
                                 <!-- PPV price --> 
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -87,14 +96,20 @@ if(count($latest_video) > 0) : ?>
                                             <?php } ?> 
                                           <?php } ?>
 
-                                          <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                                          <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                                             <p class="published_on1"><?php echo $publish_time; ?></p>
-                                            <?php  } ?>
+                                            <?php  } ?> -->
                                 </div>
                                 </div>
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                                  <?php if(!empty($watchlater_video->player_image)) { ?>
+                                      <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->player_image; ?>" alt="playerimage">
+                                  <?php } else { ?>
+                                      <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" alt="l-img">
+                                  <?php } ?>
+
+
                                    
                                 <!-- PPV price --> 
                                     

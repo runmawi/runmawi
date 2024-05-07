@@ -185,6 +185,13 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         color-scheme: dark;
     }
+    input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
@@ -275,7 +282,9 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    type = "number"
+    maxlength = "15" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
@@ -432,9 +441,9 @@ i.fa.fa-google-plus {
                                 @endif
                             </div>
 
-							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3" id="mob">
-                                <input id="password-confirm" type="checkbox" class="custom-control-input" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right custom-control-label" style="display: inline-block;
+							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3 pl-3" id="mob">
+                                <input id="password-confirm" type="checkbox"  name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right pl-2" style="display: inline-block;
     cursor: pointer;">{{ __('I accept') }} <a class="text-primary" data-toggle="modal" data-target="#terms" style="text-decoration:none;"> {{ __('Terms and  Conditions' ) }}</a></label>
                             </div>
 

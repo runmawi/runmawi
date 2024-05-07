@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
     
 <section id="iq-tvthrillers" class="s-margin">
@@ -84,7 +84,7 @@
                                                             <div class="hover-buttons">
                                                                 <a type="button" class="text-white d-flex align-items-center"
                                                                     href="<?php echo URL::to('play_series') ?><?= '/' . $category_video->slug ?>">
-                                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
+                                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
                                                                 </a>
                                                                 <div class="d-flex"></div>  
                                                             </div>                
@@ -104,5 +104,5 @@
     </div>
 </section>
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

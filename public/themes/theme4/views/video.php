@@ -183,7 +183,7 @@ hr {
         font-weight: 400;
         font-size: 20px;
         line-height: 30px;
-        color: #000 !important;
+        color: #000;
     }
 
     .movie {
@@ -402,6 +402,16 @@ hr {
         /* margin: 0 auto !important;  */
         object-fit: contain;
     }
+    .btn-hover{
+        color: var(--iq-white) !important;
+    }
+    a.button-groups.btn.btn-hover.mr-2:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 0.5s;
+}
 
 </style>
 
@@ -799,7 +809,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> 
+                                        <?php echo __('Rent Now'); ?> 
                                     </button>
                                 <?php } ?>
                             </div>
@@ -1388,12 +1398,12 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             <input type="hidden" class="videocategoryid"
                                 data-videocategoryid="<?= $video->video_category_id ?>"
                                 value="<?= $video->video_category_id ?>">
-                            <div class="container-fluid video-details">
+                            <div class="container-fluid video-details pl-0 mar-left">
 
                                                       <!-- BREADCRUMBS -->
-                                <div class="col-sm-12 col-md-12 col-xs-12">
+                                <div class="col-sm-12 col-md-12 col-xs-12 pl-0">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 pl-0">
                                             <div class="bc-icons-2">
                                                 <ol class="breadcrumb">
                                                     <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords( __('videos')) ?></a>
@@ -1406,10 +1416,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                         <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
                                                             <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                                         </a>
+                                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                                     </li>
                                                     <?php } ?>
 
-                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                                    
 
                                                     <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                                                 </ol>
@@ -1731,24 +1742,15 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                     data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
                                                     type="video/mp4" src="<?php echo $video->trailer; ?>">
                                                 </video>
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+                                                <?php }elseif($video->trailer_type !=null && ($video->trailer_type == "m3u8" ||  $video->trailer_type == "m3u8_url" )){ ?>
 
-                                                <video id="videos" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
-                                                </video>
-
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
-
-                                                <video id="videoPlayer1" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                </video>
+                                                    <video id="videos" class=""
+                                                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                                        controls
+                                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
+                                                        type="application/x-mpegURL">
+                                                        <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
+                                                    </video>
 
                                                 <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
 
@@ -2187,14 +2189,14 @@ $artists = [];
 
                         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
                         <div class="row m-0 p-0">
-                            <div class=" container-fluid video-list you-may-like overflow-hidden">
+                            <div class=" container-fluid video-list you-may-like overflow-hidden pl-0 mar-left">
                                 <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                                 <?php include 'comments/index.blade.php'; ?>
                             </div>
                         </div>
                         <?php endif; ?>
 
-                        <div class=" container-fluid video-list you-may-like overflow-hidden">
+                        <div class=" container-fluid video-list you-may-like overflow-hidden pl-0 mar-left">
                             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos'); ?></h4>
                             <div class="slider"
                                 data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
@@ -2539,7 +2541,7 @@ $artists = [];
 
                                 } else {
                                     //  $(this).html('<i class="ri-add-circle-line"></i>');
-                                    $(this).html('<i class="ri-heart-line"></i>');
+                                    $(this).html('<i class="fa fa-minus-circle"></i>');
                                     $(".add_data_test").empty();
                                     //  $(this).html('<i class="ri-heart-line"></i>');
                                     $(".add_data_test").append("<div>Added to Watchlater</div> ");
@@ -2909,20 +2911,7 @@ $artists = [];
                     var trailer_video_type = <?php echo json_encode($video->trailer_type); ?>;
 
 
-                    if (trailer_video_type == "m3u8_url") {
-                        (function() {
-                            var video = document.querySelector('#videoPlayer1');
-
-                            if (Hls.isSupported()) {
-                                var hls = new Hls();
-                                hls.loadSource(trailer_video_m3u8);
-                                hls.attachMedia(video);
-                                hls.on(Hls.Events.MANIFEST_PARSED, function() {});
-                            }
-
-                        })();
-
-                    } else if (trailer_video_type == "m3u8") {
+                    if (trailer_video_type == "m3u8" || trailer_video_type == "m3u8_url" ) {
                         // alert(trailer_video_type);
                         document.addEventListener("DOMContentLoaded", () => {
                             const videos = document.querySelector('#videos');
@@ -2994,7 +2983,6 @@ $artists = [];
                         });
 
                     }
-
 
                     // Trailer - Modal
                     $(document).ready(function() {

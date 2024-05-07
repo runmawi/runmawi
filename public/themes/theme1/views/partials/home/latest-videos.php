@@ -6,7 +6,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">
         <a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
-            <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
+            <?php if ($order_settings_list[1]->header_name) { echo (__($order_settings_list[1]->header_name)) ; } else { echo "" ; } ?>
         </a>
     </h4>  
 </div>
@@ -74,6 +74,12 @@
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                       
@@ -92,16 +98,9 @@
                                         <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?>
 
-                    </div>
+                   
                 </div>
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                        <div class="hover-buttons d-flex">
-
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="p-0">
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
@@ -164,8 +163,9 @@
                                 $Category_Thumbnail = array();
                                     foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                     $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    echo (__($CategoryThumbnail).' ');
                                     }
-                                echo implode(','.' ', $Category_Thumbnail);
+                                // echo implode(','.' ', $Category_Thumbnail);
                             ?>
                         </span>
                         <?php } ?>

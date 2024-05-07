@@ -14,15 +14,16 @@
                                         <div class="img-box">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
+                                        <div class="block-description">
+                                            <div class="hover-buttons">
+                                                <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">		
+                                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                                </a>
+                                            </div>
+                                            </div>
                                     </div>
 
-                                    <div class="block-description">
-                                       <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">		
-                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
-                                           </a>
-                                       </div>
-                                    </div>
+                                    
 
                                      <div class="">
                                         <div class="movie-time  align-items-center d-flex justify-content-between">

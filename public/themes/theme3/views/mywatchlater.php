@@ -1,96 +1,90 @@
  <?php include('header.php');?>
 
-      <!-- loader Start -->
-      <!--<div id="loading">
-         <div id="loading-center">
-         </div>
-      </div>-->
-      <!-- loader END -->
-
-
+  
 <!-- MainContent -->
- <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
-    padding: 0px 60px 40px;!important;">
-     <div class="container-fluid">
-          <div class="row justify-content-center">
-     <div class="col-sm-12 overflow-hidden">
-        <div class="iq-main-header d-flex align-items-center justify-content-between">
-           <!-- <h4 class="Continue Watching">Media in My Watchlater</h4>-->
-        </div>
-     </div>
-     <section class="movie-detail ">
-         <div class="row">
-            <?php if(count($channelwatchlater) > 0): 
-            foreach($channelwatchlater as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
-                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                <li class="slide-item position-relative">
-                <!-- block-images -->
-                   <div class="block-images position-relative">
-                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
-                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
-                        </video>
-                   
-<!--
-                    <div class="corner-text-wrapper">
-                        <div class="corner-text">
-                            <p class="p-tag1">
-                                <?php /*if(!empty($video->ppv_price)) {
-                                    echo $video->ppv_price.' '.$currency->symbol ; 
-                                    } elseif(!empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo $video->global_ppv .' '.$currency->symbol;
-                                    } elseif(empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo "Free"; 
-                                }*/
-                                ?>
-                            </p>
-                        </div>
-                    </div>
--->
-                        <div class="block-description">
-                            <h3><?php echo __($video->title); ?></h3>
-                            <div class="movie-time d-flex align-items-center my-2">
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                                <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                            </div>
-                            <div class="hover-buttons">
-                                <a type="button" class="text-white"
-                                href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                Watch Now
-                                </a>
-                                <div>
-                                    <a style="color: white;"class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
-                                        <i style="" <?php if(isset($video->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?> style="" ></i>
-                                    <div style="color:white;" id="<?= $video->id ?>">
-                                        <?php if(@$video->mywatchlatered->user_id == Auth::user()->id && @$video->mywatchlatered->video_id == $video->id  ) { echo "Remove From Watchlater"; } 
-                                        else { echo "Add To Watchlater" ; } ?>
-                                    </div> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                </a>
+ <div class="main-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-12 overflow-hidden">
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h2 class="Continue Watching">Media in My Watchlater</h2>
+                </div>
             </div>
-    <?php endforeach; 
-        else: ?>
-          <!--  <h2>No Media in My Watchlater</h2>-->
-                 <div class="col-md-12 text-center mt-4">
-             <img class=" text-center w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
-                     <p class="text-white text-center med">We are having a temporary playback issue,we are <br>working on it and 
-                                         will be back very soon!</p>
-                     <a class="mb-5 text-white pag">Please refresh your page to retry</a>
-         </div>
-        <?php endif; ?>
-         </div>
-      </section>
-         </div>
-     </div>
+        </div>
+
+        <div class="favorites-contens">
+            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <?php  if(isset($channelwatchlater)) :
+                        foreach($channelwatchlater as $channelwatchlater_videos):  ?>
+                        <li class="slide-item">
+                            <a href="<?php echo URL::to('home') ?>">
+                                <div class="block-images position-relative">
+                                    <div class="img-box">
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>">
+                                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$channelwatchlater_videos->image;  ?>" class="img-fluid loading" alt=""> 
+                                        </a>
+                                    </div>
+
+                                    <div class="block-description">
+                                        <div class="hover-buttons">
+                                            <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>">
+                                                <div class="playbtn" style="gap:5px">  
+                                                    <span class="text pr-2"> <?php echo (__('Play')) ?> </span>
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endforeach; endif; ?>
+
+                    <!-- Episode -->
+
+                    <?php  if(isset($episode_videos)) :
+                        foreach($episode_videos as $episode_videos):  ?>
+                        <li class="slide-item">
+                            <a href="<?php echo URL::to('home') ?>">
+
+                                <?php 
+                                    $series_slug = App\Series::where('id',$episode_videos->series_id)->pluck('slug')->first();
+                                 ?>
+                                <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a  href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
+                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$episode_videos->image;  ?>" class="img-fluid loading" alt=""> 
+                                            </a>
+                                        </div>
+
+                                        <div class="block-description">
+                                            <div class="hover-buttons">
+                                                <a class="" href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
+                                                    <div class="playbtn" style="gap:5px">  
+                                                        <span class="text pr-2"> <?php echo (__('Play')) ?> </span>
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                        </svg>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endforeach; endif; ?>
+            </ul>
+        </div>
+
+    </div>
  </div>
+
+ <!-- watchlater -->
  <script>
 $('.watchlater').click(function(){
      var video_id = $(this).data('videoid');

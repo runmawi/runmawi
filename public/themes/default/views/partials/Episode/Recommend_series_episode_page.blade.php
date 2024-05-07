@@ -1,5 +1,5 @@
-<div class="iq-main-header ">
-    <h4 class="main-title"> {{ __('Series') }} </h4>
+<div class="iq-main-header pl-3">
+    <h4 class="main-title"> <?= __('Series') ?></h4>
 </div>
 
 <div class="col-sm-12 overflow-hidden">
@@ -10,27 +10,85 @@
                 foreach($series_lists as $key => $series_list):
             ?>
             <li class="slide-item">
-                <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
-                    <div class="block-images position-relative">
-                        <div class="img-box">
-                            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="w-100">
-                        </div>
-                        <div class="block-description">
-                            <h6><?php echo strlen($series_list->title) > 15 ? substr($series_list->title, 0, 15) . '...' : $series_list->title; ?></h6>
-                            <?php if($ThumbnailSetting->free_or_cost_label == 1): ?> 
-                                <p class="date" style="color:#fff;font-size:14px;">
-                                    <?= date('F jS, Y', strtotime($series_list->created_at)) ?>
-                                    <?php if($series_list->access == 'guest'): ?>
-                                    <span class="label label-info">{{ __('Free') }}</span>
-                                    <?php elseif($series_list->access == 'subscriber'): ?>
-                                    <span class="label label-success">{{ __('Subscribers Only') }}</span>
-                                    <?php elseif($series_list->access == 'registered'): ?>
-                                    <span class="label label-warning">{{ __('Registered Users') }}</span>
-                                    <?php endif; ?>
-                                </p>
-                            <?php endif; ?>
+                <div class="block-images position-relative">
 
-                            <div class="movie-time d-flex align-items-center my-2">
+                    <!-- block-images -->
+                    <div class="border-bg">
+                    <div class="img-box">
+                        <a class="playTrailer"
+                        href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+                        <img class="img-fluid w-100" loading="lazy"
+                            data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" alt="episode">
+                        </a>
+
+
+                        <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                        <?php if (!empty($series_list->ppv_price == 1)) { ?>
+                            <p class="p-tag1">
+                            <?php echo $currency->symbol . ' ' . $series_list->ppv_price; ?>
+                            </p>
+                        <?php } elseif (!empty($series_list->ppv_status || !empty($series_list->ppv_status) && $series_list->ppv_price == 1)) { ?>
+                            <p class="p-tag1">
+                            <?php echo $series_list->ppv_status . ' ' . $currency->symbol; ?>
+                            </p>
+                        <?php } elseif ($series_list->ppv_status == null && $series_list->ppv_price == null) { ?>
+                            <p class="p-tag">
+                            <?php echo (__('Free')); ?>
+                            </p>
+                        <?php } ?>
+                        <?php } ?>
+                    </div>
+                    </div>
+
+                    <div class="block-description">
+                    <a class="playTrailer"
+                        href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+                        <img class="img-fluid w-100" loading="lazy"
+                        data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->player_image; ?>"
+                        alt="episode">
+
+
+
+                        <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                        <?php if (!empty($series_list->ppv_price == 1)) { ?>
+                            <p class="p-tag1">
+                            <?php echo $currency->symbol . ' ' . $series_list->ppv_price; ?>
+                            </p>
+                        <?php } elseif (!empty($series_list->ppv_status || !empty($series_list->ppv_status) && $series_list->ppv_price == 1)) { ?>
+                            <p class="p-tag1">
+                            <?php echo $series_list->ppv_status . ' ' . $currency->symbol; ?>
+                            </p>
+                        <?php } elseif ($series_list->ppv_status == null && $series_list->ppv_price == null) { ?>
+                            <p class="p-tag">
+                            <?php echo (__('Free')); ?>
+                            </p>
+                        <?php } ?>
+                        <?php } ?>
+                    </a>
+                    <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                        <?php if (!empty($series_list->ppv_price == 1)) { ?>
+                        <p class="p-tag1">
+                            <?php echo $currency->symbol . ' ' . $series_list->ppv_price; ?>
+                        </p>
+                        <?php } elseif (!empty($series_list->ppv_status || !empty($series_list->ppv_status) && $series_list->ppv_price == 1)) { ?>
+                        <p class="p-tag1">
+                            <?php echo $series_list->ppv_status . ' ' . $currency->symbol; ?>
+                        </p>
+                        <?php } elseif ($series_list->ppv_status == null && $series_list->ppv_price == null) { ?>
+                        <p class="p-tag">
+                            <?php echo (__('Free')); ?>
+                        </p>
+                        <?php } ?>
+                    <?php } ?>
+
+                    <div class="hover-buttons text-white">
+                        <a  href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+
+                            <p class="epi-name text-left m-0">
+                                <?php echo __($series_list->title); ?>
+                            </p>
+
+                            <div class="movie-time align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2">
                                     <?php
                                         $SeriesSeason = App\SeriesSeason::where('series_id', $series_list->id)->count();
@@ -43,18 +101,20 @@
                                         echo $Episode . ' ' . 'Episodes';
                                     ?>
                                 </div>
-
-                                <div class="hover-buttons">
-                                    <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
-                                        <span class="text-white">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Series') }} 
-                                        </span>
-                                    </a>
-                                </div>
                             </div>
-                        </div>
-                </a>
+                        </a>
+
+
+                        <a class="epi-name mt-3 mb-0 btn"
+                        href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                        Watch Series
+                        </a>
+                    </div>
+                    </div>
+                </div>
             </li>
+            
             <?php endforeach; ?>
         </ul>
     </div>

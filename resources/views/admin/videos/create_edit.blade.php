@@ -180,13 +180,16 @@ border-radius: 0px 4px 4px 0px;
 }
 .tags-input-wrapper .tag{
     display: inline-block;
-    background-color: #20222c;
-    color: white;
-    border-radius: 40px;
     padding: 0px 3px 0px 7px;
     margin-right: 5px;
     margin-bottom:5px;
-    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+    /* box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7) */
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
 }
 .tags-input-wrapper .tag a {
     margin: 0 7px 3px;
@@ -206,6 +209,10 @@ border-radius: 0px 4px 4px 0px;
 	}
 }
  
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -461,36 +468,36 @@ border-radius: 0px 4px 4px 0px;
                </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
-                        <span><p id="error_skip_intro_time" style="color:red;">* Fill Skip Intro Time </p></span>
+                        <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
-                        <span><p id="error_intro_start_time" style="color:red;">* Fill Intro Start Time </p></span>
+                        <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" placeholder="HH:MM:SS" >
+                        <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
-                        <span><p id="error_intro_end_time" style="color:red;">* Fill Intro End Time </p></span>
+                        <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_intro_end_time" style="color:red !important; ">* Fill Intro End Time </p></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
-                        <span><p id="error_skip_recap_time" style="color:red;">* Fill Skip Recap Time </p></span>
+                        <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                        <span> <small> Recap Time Always Lesser than video duration </small> </span>
+                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif" placeholder="HH:MM:SS" >
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
-                        <span><p id="error_recap_start_time" style="color:red;" >* Fill Recap Start Time </p></span>
+                        <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label><br>
+                        <span> <small> Start Time Always Lesser Than End Time </small> </span>
+                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif" placeholder="HH:MM:SS" >
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
-                        <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
+                        <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label><br> 
+                        <span> <small> Recap Time Always Greater than video duration </small> </span>
+                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" placeholder="HH:MM:SS">
                     </div>
                 </div>
 
@@ -537,6 +544,16 @@ border-radius: 0px 4px 4px 0px;
                         <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
                 </div>
+
+               @if (videos_expiry_date_status() == 1)
+                  <div class="row">
+                     <div class="col-sm-4 form-group mt-3" id="">
+                        <label class="">Expiry Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
+                     </div>
+                  </div>     
+               @endif
+
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                <button type="submit" style = "float: right;
     margin: 10px 5px 10px 0px;
@@ -566,7 +583,7 @@ border-radius: 0px 4px 4px 0px;
                @endif      
                @endforeach
                </select>
-               <span><p id="error_video_Category" style="color:red;" >* Choose the Video Category </p></span>
+               <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span>
                </div>
                <div class="col-sm-6 form-group" >                               
                <div class="panel panel-primary" data-collapsed="0"> 
@@ -607,7 +624,7 @@ border-radius: 0px 4px 4px 0px;
                         @endif 
                      @endforeach
                   </select>
-               <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+               <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
 
                </div> 
                <div class="col-sm-4 form-group">
@@ -635,13 +652,23 @@ border-radius: 0px 4px 4px 0px;
                </div> 
                   <div class="col-sm-6 form-group">
                      <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                           <div style="color:red;">Decode Reels </div>
+                           <div class="mt-1">
+                                 <label class="switch">
+                                    <input name="enable_reel_conversion"  type="checkbox"  >
+                                    <span class="slider round"></span>
+                                 </label>
+                           </div>
+                           <div style="color:green;">Encode Reels </div>
+                        </div>
                      <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
 
                      @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
                         <div class="d-flex">
                               @foreach($Reels_videos as $reelsVideo)
                                  <video width="200" height="200" controls style="padding: 6px;">
-                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/shorts/' . $reelsVideo->reels_videos }}" type="video/mp4">
                                  </video>
                               @endforeach
                            </div>
@@ -656,8 +683,7 @@ border-radius: 0px 4px 4px 0px;
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
                         @endif
                   </div>
-
-               </div>   
+                    </div>
 
             
             <div class="row">
@@ -857,16 +883,27 @@ border-radius: 0px 4px 4px 0px;
                                         <label class="" for="featured">Enable this video as Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
+
                                    <div class="clear"></div>
+
                                    <div>
                                        <label class="" for="active">Enable this Video:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
+
                                     <div class="clear"></div>
                                    <div>
+
                                        <label class="" for="banner">Enable this Video as Slider:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
+                                   <div class="clear"></div>
+
+                                    <div>
+                                       <label class="" for="banner">Enable this Today Top Video :</label>
+                                       <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
+                                    </div>
+
                                     <div class="clear"></div>
                                </div> 
                            </div>
@@ -891,6 +928,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div id="VideoImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br />
                                  <input type="file" name="image" id="image" />
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 9:16 ratio </p></span>
@@ -902,6 +940,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
+                                <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
                                  <input type="file" name="player_image" id="player_image" />
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
@@ -918,6 +957,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                            <div class="col-sm-6 form-group">
+                              <div id="VideoTVImagesContainer" class="gridContainer mt-3"></div>
                               <label class="mb-1">  Video TV Thumbnail  </label><br>
                               <input type="file" name="video_tv_image" id="video_tv_image" >
                               <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920 X 1080 pixels dimension or 16:9 ratio </p></span>
@@ -1052,146 +1092,8 @@ border-radius: 0px 4px 4px 0px;
                   <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
               </fieldset>
               
-               <fieldset id="ads_data">
-                  <div class="form-card">
-                     
-                                 {{-- ADS Management --}}
-                   
-                     @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
-
-                        <div class="row">
-                           
-                           <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
-
-                           <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
-                              <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                              <select class="form-control" name="video_js_pre_position_ads" >
-
-                                 <option value=" " > Select the Pre-Position Advertisement </option>
-
-                                 <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                                 @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                 @endforeach
-                              
-                              </select>
-                           </div>
-
-                           <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
-                              <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                              <select class="form-control" name="video_js_post_position_ads" >
-
-                                 <option value=" " > Select the Post-Position Advertisement </option>
-
-                                 <option value="random_ads" {{  ( $video->video_js_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                                 @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                 @endforeach
-                              
-                              </select>
-                           </div>
-
-                           <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                              <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                              <select class="form-control" name="video_js_mid_position_ads_category" >
-
-                                 <option value=" " > Select the Mid-Position Advertisement Category </option>
-
-                                 <option value="random_category"  {{  ( $video->video_js_mid_position_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-
-                                 @foreach( $ads_category as $ads_category )
-                                    <option value="{{ $ads_category->id }}"  {{  ( $video->video_js_mid_position_ads_category == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
-                                 @endforeach
-
-                              </select>
-                           </div>
-
-                           <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
-                              <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                              <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $video->video_js_mid_advertisement_sequence_time }}" >
-                           </div>
-                        </div>
- 
-                     @else                           {{-- Plyr.io Player --}}
-
-                        <div class="row">
-
-                           <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
-
-                           <div class="col-sm-6 form-group mt-3">                        {{-- Ads Category--}}
-                              <label class="">Choose the Ads Position</label>
-                              <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
-                                 <option value=" ">Select the Ads Position </option>
-                                 <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                                 <option value="mid"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                                 <option value="post" @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                                 <option value="all"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-                              </select>
-                           </div>
-
-                           <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >   {{-- Ads --}}
-                              <label class="">Choose Advertisement</label>
-                              <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
-                                 @if( $ads_tag_urls != null)
-                                    <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
-                                 @else
-                                    <option value=" ">Select the Advertisement</option>
-                                 @endif
-                              </select>
-                           </div>
-                        </div>
-
-                     @endif
-
-                     <div class="row">
-                        @if($page == 'Edit' && $video->status == 0)
-                        <div class="col-7">
-                           <h2 class="fs-title">Transcoding:</h2>
-                        </div>
-                        @endif
-                        <div class="col-sm-6 form-group mt-3">
-                           <div id="success">
-                           </div>
-                           <div class="row text-center">
-                              <input type="hidden" id="page" value="{{ $page }}">
-                              @if(isset($video->id))
-                              <input type="hidden" id="status" value="{{ $video->status }}">
-                              @else
-                              <input type="hidden" id="status" value="0">
-                              @endif
-                              @if($page == 'Create' || $page == 'Edit')
-                              <!-- <div class="progress">
-                                 <div class="bar"></div >
-                                 </div>
-                                 <div class="percent">0%</div > -->
-                              @endif
-                              @if($page == 'Edit' && $video->status == 0 && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
-                              <br><br><br>
-                              <div class="col-sm-12">
-                                 Video Transcoding is under Progress
-                                 <div class="progress">
-                                    <div class="low_bar"></div >
-                                 </div>
-                                 <div class="low_percent">0%</div >
-                              </div>
-                              @endif
-                           </div>
-                        </div>
-                     </div>
-
-                     @if(isset($video->id))
-                     <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
-                     <input type="hidden" id="publish_status" name="publish_status" value="{{ $video->publish_status }}" >
-                     <input type="hidden" id="type" name="type" value="{{ $video->type }}" />                                @endif
-                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                     <!-- <input type="hidden" id="video_id" name="video_id" value=""> -->
-                  </div>
-                  <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
-                  <!-- <input type="button" name="next" class="next action-button" value="Submit" />  -->
-                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               </fieldset>
+                           {{-- ADS Management --}}
+                  @include('admin.videos.create_edit_ads_fieldset'); 
             </form>
          </div>
       </div>
@@ -1619,80 +1521,7 @@ $(document).ready(function($){
             $('#next2').removeAttr('disabled');
       }
    });
-
-
-   // validation Recap 
-
-      $('#error_recap_start_time').hide();
-      $('#error_recap_end_time').hide();
-      $('#error_skip_recap_time').hide();
-
-   $('#recap_start_time').on('keyup keypress change', function(event) {
-          $('#error_recap_start_time').hide();
-
-      if($('#skip_recap').val() == ""){
-         $('#error_skip_recap_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#skip_recap').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-
-            $("#error_recap_start_time").empty();
-            $("#error_recap_start_time").append("Skip intro time always greater than intro Start time");
-            $('#error_recap_start_time').show();
-            $('#error_recap_end_time').show();
-            $('#error_recap_start_time').hide();
-
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#skip_recap').on('keyup keypress change', function(event) {
-      if($('#recap_start_time').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-            $("#error_skip_recap_time").empty();
-            $("#error_skip_recap_time").append("Skip Recap time always lesser than recap Start time ");
-            $('#error_skip_recap_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#recap_end_time').on('keyup keypress change', function(event) {
-
-      if($('#skip_recap').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#recap_start_time').val() >= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End intro time always greater than intro start time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End recap time always lesser than Skip recap time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_recap_end_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
+   
 // video category
 $('#error_video_Category').hide();
    $('#error_language').hide();
@@ -1750,7 +1579,14 @@ $('#error_video_Category').hide();
       $('#skip_recap').mask("00:00:00");
       $('#url_linktym').mask("00:00:00");
       $("#free_duration").mask("00:00:00");
+
       $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
+      $("#andriod_mid_sequence_time").mask("00:00:00");
+      $("#ios_mid_sequence_time").mask("00:00:00");
+      $("#tv_mid_sequence_time").mask("00:00:00");
+      $("#samsung_mid_sequence_time").mask("00:00:00");
+      $("#lg_mid_sequence_time").mask("00:00:00");
+      $("#roku_mid_sequence_time").mask("00:00:00");
    });
 </script>
 
@@ -1816,6 +1652,115 @@ $('#error_video_Category').hide();
    
 
    $(document).ready(function(){
+
+      $.ajax({
+        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        type: "post",
+        data: {
+            _token: '{{ csrf_token() }}',
+            video_id : "{{ $video->id }}",
+        },
+        success: function(value) {
+            // console.log(value.ExtractedImage.length);
+
+            if (value && value.ExtractedImage.length > 0) {
+                $('#VideoImagesContainer').empty();
+                $('#VideoPlayerImagesContainer').empty();
+                var ExtractedImage = value.ExtractedImage;
+                var previouslySelectedElement = null;
+                var previouslySelectedVideoImag = null;
+                var previouslySelectedTVImage = null;
+
+                ExtractedImage.forEach(function(Image, index) {
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var VideoPlayerImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var VideoTVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
+
+                    imgElement.click(function() {
+                        $('.ajax-image').css('border', 'none');
+                        // Remove border from the previously selected image
+                        if (previouslySelectedElement) {
+                           previouslySelectedElement.css('border', 'none');
+                        }
+                        imgElement.css('border', '2px solid red');
+                        var clickedImageUrl = Image.image_path;
+
+                        var SelectedImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedElement = $(this);
+
+                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    });
+                                    // Default selection for the first image
+                     // if (index === 0) {
+                     //       imgElement.click();
+                     // }
+                    $('#VideoImagesContainer').append(imgElement);
+
+                    VideoPlayerImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        if (previouslySelectedVideoImag) {
+                           previouslySelectedVideoImag.css('border', 'none');
+                        }
+                        VideoPlayerImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedVideoImag = $(this);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+
+                  //   if (index === 0) {
+                  //    VideoPlayerImagesContainer.click();
+                  //    }
+
+                    $('#VideoPlayerImagesContainer').append(VideoPlayerImagesContainer);
+
+                    VideoTVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        if (previouslySelectedTVImage) {
+                           previouslySelectedTVImage.css('border', 'none');
+                        }
+                        VideoTVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+                        previouslySelectedTVImage = $(this);
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+
+                  // if (index === 0) {
+                  //    VideoTVImagesContainer.click();
+                  // }
+
+                  $('#VideoTVImagesContainer').append(VideoTVImagesContainer);
+
+
+                });
+            } else {
+                     var SelectedImageUrl = '';
+
+                     $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            }
+        },
+        error: function(error) {
+
+            var SelectedImageUrl = '';
+
+            $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            console.error(error);
+        }
+    });
+
       // $('#player_data').hide();
       // $('#slug_validate').hide();
       // $('#videocategory_data').hide();
@@ -1895,11 +1840,51 @@ $('#error_video_Category').hide();
       
       $('.js-example-basic-multiple').select2();
       $('.js-example-basic-single').select2();
-   
-      // $('#duration').mask("00:00:00");
-
    });
-   
+
+   $(document).ready(function() {
+
+      $('.ads_devices').select2();
+
+      $('.ads_devices').on('change', function() {
+         var selectedValues = $(this).val();
+         
+         $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
+         
+         selectedValues.forEach(function(value) {
+               switch(value) {
+                  case 'website':
+                     $('.website-ads-button').show();
+                     break;
+                  case 'android':
+                     $('.Andriod-ads-button').show();
+                     break;
+                  case 'IOS':
+                     $('.IOS-ads-button').show();
+                     break;
+                  case 'TV':
+                     $('.TV-ads-button').show();
+                     break;
+                  case 'roku':
+                     $('.Roku-ads-button').show();
+                     break;
+                  case 'lg':
+                     $('.LG-ads-button').show();
+                     break;
+                  case 'samsung':
+                     $('.Samsung-ads-button').show();
+                     break;
+                     
+                     
+                  // Add cases for other devices if needed
+                  default:
+                     break;
+               }
+         });
+      });
+   });
+
+
    
    $('#publishlater').hide();
    

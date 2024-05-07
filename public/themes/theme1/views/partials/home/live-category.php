@@ -6,7 +6,7 @@
             <a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration:none;color:#fff">
                <h4 class="movie-title">
                   <?php
-                     if(!empty($category->home_genre)){ echo __('Live').' '.__($category->home_genre) ; }else{ echo __('Live').' '.__($category->name) ; }  
+                     if(!empty($category->home_genre)){ echo (__('Live')).' '.(__($category->home_genre)) ; }else{ echo (__('Live')).' '.(__($category->name)) ; }  
                      //   echo __($category->name);
                        ?>
                </h4>
@@ -84,6 +84,8 @@
                     <div class="img-box">
                         <!-- block-images -->
                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="">
+                        
+                        
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                         <p class="p-tag1">
                            <?php if($livestream->access == 'subscriber' ){ ?>
@@ -169,8 +171,9 @@
                                 $Category_Thumbnail = array();
                                     foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                     $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                    echo (__($CategoryThumbnail).' ');
                                     }
-                                echo implode(','.' ', $Category_Thumbnail);
+                                // echo implode(','.' ', $Category_Thumbnail);
                                 ?>
                             </span>
                             <?php } ?>

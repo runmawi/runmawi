@@ -4,7 +4,9 @@
     <?php if ($order_settings_list[6]->header_name) { echo __($order_settings_list[6]->header_name) ;} else { echo "" ; } ?>
     <!-- Albums -->
 </a></h4>  
-<h4 class="main-title"><a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>                    
+<?php if( $settings->homepage_views_all_button_status == 1 ):?>
+<h4 class="main-title"><a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>   
+<?php endif; ?>                 
 </div>
 <div class="favorites-contens">
 <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -16,7 +18,7 @@
          <div class="border-bg">
          <div class="img-box">
                <a class="playTrailer" href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
-                  <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="album">
+                  <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="album">
                </a>   
          </div>
             </div>

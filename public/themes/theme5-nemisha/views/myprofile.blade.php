@@ -216,6 +216,10 @@
         color: #FFFFFF;
         font-size: 20px;
     }
+    a.edit-button.Text-white{color:#fff !important;}
+    body.light-theme .sigk{background: linear-gradient(180deg, rgba(220, 220, 220, 0.85) 0%, rgba(220, 220, 220, 0) 100%);}
+    body.light-theme .account{background: linear-gradient(180deg, #c0c6ca -35.59%, rgba(200, 204, 207, 0.36) 173.05%);}
+    body.light-theme a.edit-button.Text-white{color:#000 !important;}
 </style>
 
 <body>
@@ -363,8 +367,10 @@
 
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
                             src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
-                        <div> <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white"
-                                style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
+                        <div> 
+                            <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i> Edit
+                            </a>
+                        </div>
 
                         <div class="text-center">
                             <p class="account row ">
@@ -457,7 +463,7 @@
             <div class="col-md-8 targetDiv" id="div4">
                 <div class=" mb-3">
                     <h4 class="card-title mb-0">Preference for videos</h4>
-                    <form action="{{ URL::to('admin/profilePreference') }}" method="POST">
+                    <form action="{{ route('users-profile-Preference') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 

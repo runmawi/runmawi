@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
     
 <section id="iq-favorites">
@@ -37,9 +37,9 @@
                                             </div>
                                                  
                                             </div>
-                                              <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
+                                              <!-- <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
                                                     <span class="text-center thumbarrow-sec"></span>
-                                                </button>
+                                                </button> -->
                                         </a>
                                     </li>
                                 @endforeach
@@ -57,6 +57,6 @@
 </section>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 

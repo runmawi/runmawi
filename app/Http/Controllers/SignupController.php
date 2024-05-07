@@ -384,9 +384,9 @@ else {
               $password2 = $user->password;
         
                 if (Auth::attempt(['email' => $email, 'password' => $password2])) {
-                    return redirect('/');
+                    return redirect('/login');
                 }
-                return redirect('/');
+                return redirect('/login');
             }
 
 
@@ -407,7 +407,7 @@ public function createStep2(Request $request)
         $website_name = Setting::pluck('website_name')->first();  // Note - Free Registration 
         if(@$free_registration == 1) {
             // session()->put('message',"You have successfully registered your account. Please login below.");
-            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
+            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment.");
             return Theme::view('auth.login');
         }
 
@@ -998,31 +998,53 @@ public function PostcreateStep3(Request $request)
     
     public function submitpaypal(Request $request)
         {
-                $register = $request->session()->get('register');
-                $email = $request->email;
-                $user_email = User::where('email','=',$email)->count();
-                $user_first = User::where('email','=',$email)->first();
-                $id = $user_first->id;  
+            $register = $request->session()->get('register');
+            $email = $request->session()->get('register.email');
+            $user_email = User::where('email','=',$email)->count();
+            $user_first = User::where('email','=',$email)->first();
+            $id = $user_first->id;  
+            $plandetail = SubscriptionPlan::where('plan_id','=',$request->plan_id)->first();
+            $payment_type = $plandetail->payment_type;
+
+            if ( $user_email > 0 ) {
+            // $subIds = $request->get('subId'); 
+            $current_date = date('Y-m-d h:i:s');
+            $next_date = $plandetail->days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+
+            $subscription = Subscription::where('user_id',$user_first->id)->first();
             
-                if ( $user_email > 0 ) {
-                   // $subIds = $request->get('subId');           
-                    $subId = $request->subId;        
-                    $new_user = User::find($id);
-                    $new_user->role = 'subscriber';
-                    $new_user->paypal_id = $subId;
-                    $new_user->payment_type ='paypal';
-                    $new_user->save();
-                    $response = array(
-                          'status' => 'success'
-                    );
-                } else {
-                     $response = array(
-                          'status' => 'failed'
-                     );
-                  }
-             return response()->json($response);
-            
-        }   
+            $subscription = new Subscription;
+            $subscription->price = $plandetail->price;
+            $subscription->name = $user_first->username;
+            $subscription->days = $plandetail->days;
+            $subscription->user_id =  $id;
+            $subscription->stripe_id = $request->plan_id;
+            $subscription->stripe_status  = 'active';
+            $subscription->stripe_plan = $request->plan_id;
+            $subscription->regionname = Region_name();
+            $subscription->countryname = Country_name();
+            $subscription->cityname = city_name();
+            $subscription->PaymentGateway =  'paypal';
+            $subscription->ends_at = $date;
+            $subscription->save();
+
+                $subId = $request->subId;        
+                $new_user = User::find($id);
+                $new_user->role = 'subscriber';
+                $new_user->paypal_id = $subId;
+                $new_user->payment_type ='paypal';
+                $new_user->save();
+                $response = array(
+                    'status' => 'success'
+                );
+            } else {
+                $response = array(
+                    'status' => 'failed'
+                );
+            }
+        return response()->json($response);
+    }   
     public function subscribepaypal(Request $request)
         {
                 $user_email = Auth::user()->email;
@@ -1485,4 +1507,55 @@ public function GetCity(Request $request)
         ->json($data);
 }
 
+
+        public function upgradepaypalsubscription(Request $request)
+        {
+                $register = $request->session()->get('register');
+                $email = $request->email;
+                $user_email = User::where('email','=',$email)->count();
+                $user_first = User::where('email','=',$email)->first();
+                $id = $user_first->id;  
+                $plandetail = SubscriptionPlan::where('plan_id','=',$request->plan_id)->first();
+                $payment_type = $plandetail->payment_type;
+
+                if ( $user_email > 0 ) {
+                // $subIds = $request->get('subId'); 
+                $current_date = date('Y-m-d h:i:s');
+                $next_date = $plandetail->days;
+                $date = Carbon::parse($current_date)->addDays($next_date);
+    
+                $subscription = Subscription::where('user_id',$user_first->id)->first();
+                
+                $subscription = new Subscription;
+                $subscription->price = $plandetail->price;
+                $subscription->name = $user_first->username;
+                $subscription->days = $plandetail->days;
+                $subscription->user_id =  Auth::user()->id;
+                $subscription->stripe_id = $request->plan_id;
+                $subscription->stripe_status  = 'active';
+                $subscription->stripe_plan = $request->plan_id;
+                $subscription->regionname = Region_name();
+                $subscription->countryname = Country_name();
+                $subscription->cityname = city_name();
+                $subscription->PaymentGateway =  'paypal';
+                $subscription->ends_at = $date;
+                $subscription->save();
+
+                    $subId = $request->subId;        
+                    $new_user = User::find($id);
+                    $new_user->role = 'subscriber';
+                    $new_user->paypal_id = $subId;
+                    $new_user->payment_type ='paypal';
+                    $new_user->save();
+                    $response = array(
+                        'status' => 'success'
+                    );
+                } else {
+                    $response = array(
+                        'status' => 'failed'
+                    );
+                }
+            return response()->json($response);
+            
+        }   
 }

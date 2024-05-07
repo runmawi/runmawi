@@ -36,8 +36,25 @@
 					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 					<section class="">
 						<h2></h2>
-                        <div class="row align-items-center" id="pda">
+                        <div class="row" id="pda">
 						<div class="col-md-6">
+							<div class="flex">
+								<div>
+									<label class="mb-0">Allow Embed player on specfic Domain  
+										</label>
+									<p class="p1 " style="line-height:16px!important;">
+									(Note: Saving without a domain name will restrict <br>your embed player for all the Domain.)
+									</p>
+								</div>
+								<div>
+									<label class="switch">
+									<input type="hidden" value="0" name="embed_player">    
+	
+									<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="1"@else value="1"@endif>
+										<span class="slider round"></span>
+									</label>
+								</div>
+							</div>
 						<div class="flex">
 							<div>
 								<label> Show logos on player</label>
@@ -50,23 +67,7 @@
 								</label>
 							</div>
 						</div>
-						<div class="flex">
-							<div>
-								<label class="mb-0">Allow Embed player on specfic domians 
-									</label>
-                                <p class="p1 " style="line-height:16px!important;">
-                                (Note: Saving without a domain name will restrict <br>your embed player for all the domains.)
-								</p>
-							</div>
-							<div>
-								<label class="switch">
-								<input type="hidden" value="0" name="embed_player">    
-
-								<input type="checkbox" name="embed_player" @if(!isset($playerui->embed_player) || (isset($playerui->embed_player) && $playerui->embed_player))checked="checked" value="1"@else value="1"@endif>
-									<span class="slider round"></span>
-								</label>
-							</div>
-						</div>
+						
 						<div class="flex">
 							<div>
 								<label>Add Watermark on the player</label>
@@ -81,6 +82,26 @@
 								</label>
 							</div>
 						</div>
+
+						<div class="flex">
+							<div>
+								<label>Ads Marker On the Player</label>
+								<p class="p1 " style="line-height:16px!important;">
+									(Note:Only for videos-js Player ) 
+									</p>
+	
+							</div>
+							<div>
+								<label class="switch">
+								<input type="hidden" value="0" name="ads_marker_status">    
+
+								<input type="checkbox" name="ads_marker_status" @if(!isset($playerui->ads_marker_status) || (isset($playerui->ads_marker_status) && $playerui->ads_marker_status))checked="checked" value="1"@else value="1"@endif>
+									<span class="slider round"></span>
+
+								</label>
+							</div>
+						</div>
+
 						{{-- <div class="flex">
 							<div>
 								<label>Thumbnails on seekbar</label>
@@ -97,7 +118,7 @@
 						</div> --}}
 					
                      </div>
-					 <div class="col-md-6 Section2" style="margin-top: -4%;">
+					 <div class="col-md-6 Section2">
 						<div class="flex">
 							<div>
 								<label class="mb-0">Skip intro</label>
@@ -175,40 +196,48 @@
 						<div class="p-3">
 							<h4 class="card-title">Subtitle option</h4>
 						</div>
-						<div class="col-md-6">
-						<div class="flex">
-							<div>
-								<label>Subtitle on as Default</label>
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="flex">
+										<div>
+											<label>Subtitle on as Default</label>
+										</div>
+										<div>
+											<label class="switch">
+											<input type="hidden" value="0" name="subtitle">    
+		
+											<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="1"@else value="1"@endif>
+												<span class="slider round"></span>
+		
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+
+									<div class="flex">
+										<div>
+											<label>Remember subtitle preferences</label>
+										</div>
+										<div>
+											<label class="switch">
+											<input type="hidden" value="0" name="subtitle_preference">    
+		
+											<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="1"@else value="1"@endif>
+												<span class="slider round"></span>
+		
+											</label>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div>
-								<label class="switch">
-								<input type="hidden" value="0" name="subtitle">    
 
-								<input type="checkbox" name="subtitle" @if(!isset($playerui->subtitle) || (isset($playerui->subtitle) && $playerui->subtitle))checked="checked" value="1"@else value="1"@endif>
-									<span class="slider round"></span>
 
-								</label>
-							</div>
 						</div>
-						</div>
+						
 
-						<div class="col-md-6">
-
-						<div class="flex">
-							<div>
-								<label>Remeber subtitle preferences</label>
-							</div>
-							<div>
-								<label class="switch">
-								<input type="hidden" value="0" name="subtitle_preference">    
-
-								<input type="checkbox" name="subtitle_preference" @if(!isset($playerui->subtitle_preference) || (isset($playerui->subtitle_preference) && $playerui->subtitle_preference))checked="checked" value="1"@else value="1"@endif>
-									<span class="slider round"></span>
-
-								</label>
-							</div>
-						</div>
-						</div>
+						
 <!-- 
 						<div class="p-3">
 							<h4 class="card-title">Subtitle apperance</h4>

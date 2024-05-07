@@ -47,6 +47,7 @@ $system_settings = App\SystemSetting::find(1);
                       <form action="{{ URL::to('cpp/moderatoruser/store') }}" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->username)
                                 <div class="col-md-12 p-0">
                                     <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
                                     @error('username')
@@ -55,84 +56,101 @@ $system_settings = App\SystemSetting::find(1);
                                         </span>
                                     @enderror
                                 </div>
+                            @endif
+
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->email)
                                 <div class="col-md-12 p-0">
-                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-12 p-0">
-                                <div class="row">
-                                    <div class="col-sm-5 ">
-                                        <select class="form-control" name="ccode" id="ccode" style="">
-                                        <option>{{ __('Select Country') }}</option>
-                                        @foreach($jsondata as $code)
-                                        <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile_number" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile_number') }}" required autocomplete="off" autofocus> 
-                                        <span class="verify-error"></span>
-                                        @error('mobile')
+                                    <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                    @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror                                    
+                                    @enderror
+                                </div>
+                            @endif
+
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->mobile)
+                                <div class="col-md-12 p-0">
+                                    <div class="row">
+                                        <div class="col-sm-5 ">
+                                            <select class="form-control" name="ccode" id="ccode" style="">
+                                            <option>{{ __('Select Country') }}</option>
+                                            @foreach($jsondata as $code)
+                                            <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                            @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile_number" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile_number') }}" required autocomplete="off" autofocus> 
+                                            <span class="verify-error"></span>
+                                            @error('mobile')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror                                    
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                                 
                                 
-                            <div class="col-md-12 p-0 text-left">
-                                <label for="" style="color: white;">{{ __('Upload Picture') }}  :</label>
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
-                            </div>
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->image)
+                                <div class="col-md-12 p-0 text-left">
+                                    <label for="" style="color: white;">{{ __('Upload Picture') }}  :</label>
+                                    <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
+                                </div>
+                            @endif
 
-                            <div class="col-md-12 p-0 text-left">
-                                <label for="" style="color: white;">{{ __('Upload your best work') }}  :</label>
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
-                            </div>
-                            <div class="col-md-12 p-0">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
-                                    </div>
-                                <div >
-                                <span class="input-group-btn pl-4" id="eyeSlash">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->upload_video)
+                                <div class="col-md-12 p-0 text-left">
+                                    <label for="" style="color: white;">{{ __('Upload your best work') }}  :</label>
+                                    <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
+                                </div>
+                            @endif
+
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password)
+                                <div class="col-md-12 p-0">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                        </div>
+                                    <div >
+                                    <span class="input-group-btn pl-4" id="eyeSlash">
+                                        <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                    </span>
+                                    <span class="input-group-btn pl-4" id="eyeShow" style="display: none;">
+                                        <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
                                 </span>
-                                <span class="input-group-btn pl-4" id="eyeShow" style="display: none;">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                </span>
+                                @enderror
                             </div>
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                        </div>
+                    @endif
+
+                    @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password_confirm)
+                        <div class="col-md-12 p-0">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
+                                </div>
+                            <div >
+                            <span class="input-group-btn pl-4" id="eyeSlash1">
+                                <button class="btn btn-default reveal" onclick="visibility2()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                             </span>
-                            @enderror
+                            <span class="input-group-btn pl-4" id="eyeShow1" style="display: none;">
+                                <button class="btn btn-default reveal" onclick="visibility2()" type="button"  ><i class="fa fa-eye" aria-hidden="true"></i></button>
+                            </span>
                         </div>
                     </div>
-                    <div class="col-md-12 p-0">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        <div >
-                        <span class="input-group-btn pl-4" id="eyeSlash1">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                        </span>
-                        <span class="input-group-btn pl-4" id="eyeShow1" style="display: none;">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button"  ><i class="fa fa-eye" aria-hidden="true"></i></button>
-                        </span>
+                        <!-- <p style="color: var(--iq-white);font-size: 12px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</p> -->
                     </div>
-                </div>
-                <!-- <p style="color: var(--iq-white);font-size: 12px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</p> -->
-            </div>
 
                     </div>
+                @endif
                         
                         <div class="form-group" >
 							

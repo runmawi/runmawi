@@ -1,5 +1,5 @@
 <?php 
-   include(public_path('themes/theme7/views/header.php'));
+   include(public_path('themes/theme4/views/header.php'));
    ?>
 <!-- MainContent -->
 <section id="iq-favorites">
@@ -30,7 +30,7 @@
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white d-flex align-items-center" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>" >
-                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> <?= __('Watch Now') ?>
+                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> <?= __('Watch Now') ?>
                                        </a>
                                        <div class="hover-buttons d-flex">
                                     </div>
@@ -49,4 +49,4 @@
       </div>
    </div>
 </div>
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>

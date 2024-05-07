@@ -133,26 +133,24 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;">
+style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 50%), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;">
+
     <div> </div>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
         <div class="row mt-3 align-items-center">
-            <?php if ( $ppv_exits > 0 || $video_access == 'free' ||
+            <?php  if ( $ppv_exits > 0 || $video_access == 'free' ||
                 ($series->access == 'guest' && $series->ppv_status != 1) ||
                 (($series->access == 'subscriber' || $series->access == 'registered') &&
                     !Auth::guest() &&
                     Auth::user()->subscribed() &&
                     $series->ppv_status != 1) ||
-                (!Auth::guest() &&
-                    (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
-                (!Auth::guest() &&
-                    $series->access == 'registered' &&
-                    $settings->free_registration &&
-                    Auth::user()->role != 'registered' &&
-                    $series->ppv_status != 1)
-            ) : ?>
+                (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
+                ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() && $series->access == 'registered' &&
+                    $settings->free_registration && $series->ppv_status != 1)
+            ) :  ?>
 
             <div class="col-md-7 p-0">
                 <div id="series_title" class="show-movie">
@@ -293,142 +291,25 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                 </nav>
             </div> -->
 
-        <!-- $series->title -->
         <div class="container-fluid mt-5">
             <div class="favorites-contens">
-                <div class="col-md-3 p-0" style="width:150px">
-                    <select class="form-control" id="season_id" name="season_id" style="box-shadow: none;">
-                        @foreach ($season as $key => $seasons)
-                            <option data-key="<?= $key + 1 ?>" value="season_<?= $seasons->id ?>">Season
-                                <?= $key + 1 ?></option>
-                        @endforeach
-                    </select>
-                </div>
 
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 
-                <!-- Season dropdown start -->
-                <div class="tab-container">
-                <div class="tab-navigation">              
-                    <select id="select-box">
-                    <option value="1">Season 1</option>
-                    <option value="2">Season 2</option>
-                    <option value="3">Season 3</option>
-                    </select>
-                </div>
-  
-                <!-- Season 1 Start Here -->
-                <div id="tab-1" class="tab-season">           
-                
-                <!-- Tablist -->
-
-                <div class="trending-custom-tab ">
-                     <div class="tab-title-info position-relative">
-                        <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
-                           <li class="nav-item">
-                              <a class="nav-link m-0 active show" data-toggle="pill" href="#episodes" role="tab" aria-selected="true">Episodes</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link m-0 " data-toggle="pill" href="#feature-clips" role="tab" aria-selected="false">FEATURED CLIPS</a>
-                           </li>
-                        </ul>
-                     </div>
-
-                     <div class="tab-content" id="nav-tabContent" style="display: block !important ;">
-                        
-                        <!-- Episode -->
-                        <div id="episodes" class="tab-pane animated fadeInUp">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid transimga img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E04</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 22, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">41min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 4</h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <!-- Features clips -->
-                        
-                        <div id="feature-clips" class="tab-pane animated fadeInUp active show">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction">
-                              
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E02</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 8, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">35min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 2 </h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                </div>
-                <!-- Season 1 End Here -->
-
-
-                <!-- Season 2 Start Here -->
-                <div id="tab-2" class="tab-season">
-                    <p> Money Heist Season 2 </p>
-                </div>
-                <!-- Season 2 End Here -->
-
-                <!-- Season 3 Start Here -->
-                <div id="tab-3" class="tab-season">
-                    <p> Money Heist Season 3 </p>
-                </div>
-                <!-- Season 3 End Here -->
-
-
-                  </div>
-
-                  <script>
-                    $('.tab-season').hide();
-                    $('#tab-1').show();
-
-                    $('#select-box').change(function () {                   
-                    dropdown = $('#select-box').val();
-                    $('.tab-season').hide();
-                    $('#' + "tab-" + dropdown).show();                                    
-                    });
-                </script>
-                <!-- Season dropdwon end -->
-
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
 
                 <ul class="category-page list-inline row p-3 mb-0">
                     <?php 
@@ -485,7 +366,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
 <!-- Starring -->
 
-                    <div class="sectionArtists-Artists">   
+                    {{-- <div class="sectionArtists-Artists">   
                         <div class="Headingartist-artist">Starring</div>
                             <div class="listItems">
                                 <a href="https://dev-flick.webnexs.org/artist/The_Chainsmokers_-_Halsey">
@@ -501,38 +382,358 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                                 </a>
                                                   
                             </div>
-                    </div>
+                    </div> --}}
 
 
 
             </div>
         </div>
-        <?php elseif( Auth::guest() && $series->access == "subscriber"):
-						
-					// }
-						?>
+        <?php elseif( Auth::guest() && $series->access == "registered"): ?>
+
+            <div class="col-md-7 p-0">
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
+                        <div class="trending-info p-0">
+                                                        
+                                                        {{-- Ṭitle --}}
+                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                                {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
+                            </h1>
+
+                                                        {{-- Rating --}}
+                            <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                @if (optional($series)->rating)
+                                    <ul
+                                        class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                        @php $rating = ($series->rating / 2) ; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($rating >= $i)
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            @elseif ($rating + 0.5 == $i)
+                                                <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                            @endif
+                                        @endfor
+                                    </ul>
+                                @endif
+                                <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
+                            </div>
+
+                                                        {{-- Category --}}
+                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                @foreach ($Series_Category as $key => $Series_Category_details)
+                                    <li class="trending-list"><a class="text-primary title"
+                                            href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                                                        {{-- year & season Count --}}
+                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                <span class="trending-year">{{ optional($series)->year }}</span>
+                            </div>
+
+                                                        {{-- Details --}}
+                            <div class="trending-">
+                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
+                            </div>
+                        </div>
+
+                                                        {{-- Episode --}}
+                        @if( Auth::guest() && $series->access == 'registered' )
+                            <div class="position-relative mt-5">
+                                <a href="{{ URL::to('signup' ) }}" class="d-flex align-items-center">
+                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
+                                    <h4 class="w-name text-white font-weight-700">Become a Registered User to watch this Episodes</h4>
+                                </a>
+                            </div>
+                        @endif
+
+                        <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                                <li class="share mb-0">
+                                    <span><i class="ri-share-fill"></i></span>
+                                    <div class="share-box">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
+                                <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
+                            </ul>
+
+                            <ul
+                                class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center" id="theDiv">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-5">
+            <div class="favorites-contens">
+
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
+
+                <ul class="category-page list-inline row p-3 mb-0">
+                    <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
+							 ?>
+
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                            <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+                                <div class="img-box">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+
+                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif(!empty($seasons->ppv_price)){?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+
+                            <div class="block-description"></div>
+
+
+                            <h6><?= $episodes->title ?></h6>
+                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
+
+                           
+
+                        </a>
+                    </li>
+
+                    <?php else : ?>
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                        
+
+                        </a>
+                    </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+
+
+        <?php elseif( Auth::guest() && $series->access == "subscriber"): ?>
     </div>
 
-    <!-- <div  style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-    <div class="col-sm-12">
-        <div id="ppv">
-            <h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series
-                <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-            <div class="clear"></div>
+
+    <div class="col-md-7 p-0">
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
+                        <div class="trending-info p-0">
+                                                        
+                                                        {{-- Ṭitle --}}
+                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                                {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
+                            </h1>
+
+                                                        {{-- Rating --}}
+                            <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                @if (optional($series)->rating)
+                                    <ul
+                                        class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                        @php $rating = ($series->rating / 2) ; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($rating >= $i)
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            @elseif ($rating + 0.5 == $i)
+                                                <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                            @endif
+                                        @endfor
+                                    </ul>
+                                @endif
+                                <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
+                            </div>
+
+                                                        {{-- Category --}}
+                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                @foreach ($Series_Category as $key => $Series_Category_details)
+                                    <li class="trending-list"><a class="text-primary title"
+                                            href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                                                        {{-- year & season Count --}}
+                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                <span class="trending-year">{{ optional($series)->year }}</span>
+                            </div>
+
+                                                        {{-- Details --}}
+                            <div class="trending-">
+                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
+                            </div>
+                        </div>
+
+                                                        {{-- Episode --}}
+                        @if( $latest_Episode != null )
+                            <div class="position-relative mt-5">
+                                <a href="{{ URL::to('/signup') }}" class="d-flex align-items-center">
+                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
+                                    <h4 class="w-name text-white font-weight-700">Become a subscriber to watch this Episodes</h4>
+                                </a>
+                            </div>
+                        @endif
+
+                        <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                                <li class="share mb-0">
+                                    <span><i class="ri-share-fill"></i></span>
+                                    <div class="share-box">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
+                                <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
+                            </ul>
+
+                            <ul
+                                class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center" id="theDiv">
+            </div>
         </div>
-        <!-- </div>  -->
+    </div>
+</div>
+<div class="container-fluid mt-5">
+            <div class="favorites-contens">
+
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
+
+                <ul class="category-page list-inline row p-3 mb-0">
+                    <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
+							 ?>
+
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                            <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+                                <div class="img-box">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+
+                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif(!empty($seasons->ppv_price)){?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+
+                            <div class="block-description"></div>
 
 
-        <div class="col-md-2 text-center text-white">
-            <div class="col-md-4">
-                <?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
-                <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)">
-                    Purchase For <?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></button>
-                <?php } ?>
-                <br>
-                <!-- </div> -->
+                            <h6><?= $episodes->title ?></h6>
+                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
 
-                <!-- </div> -->
+                           
+
+                        </a>
+                    </li>
+
+                    <?php else : ?>
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                        
+
+                        </a>
+                    </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+
+
             </div>
         </div>
     </div>
@@ -544,7 +745,6 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 <?php endif;?>
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
 
 
 <!-- Modal -->
@@ -1007,3 +1207,27 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         }, 3000);
     }
 </script>
+
+<script>
+    $(".season-depends-episode").change(function() {
+        
+        const season_id = $(this,':selected').val();
+
+        const series_id = $('#series_id').val();
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('front-end.series.season-depends-episode') }}",
+            data: {
+                series_id: series_id ,
+                season_id: season_id ,
+            },
+            success: function(data) {
+                $(".data").html(data);
+            },
+        });
+    });
+</script>
+<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
+
+<!-- series -->

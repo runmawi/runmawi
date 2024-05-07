@@ -26,6 +26,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\File;
 use Str;
+use App\AdminAccessPermission as AdminAccessPermission;
 
 class AdminThemeSettingsController extends Controller
 {
@@ -74,7 +75,8 @@ class AdminThemeSettingsController extends Controller
             $data = [
                 'settings' => $settings,
                 'admin_user' => $user,
-            ];
+                'AdminAccessPermission' => AdminAccessPermission::first(),
+        ];
             return View::make('admin.settings.theme_settings', $data);
         }
     }
@@ -227,6 +229,24 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->content_partner_checkout       = !empty($data['content_partner_checkout']) ? '1' : '0';
 
         $theme_settings->translate_checkout       = !empty($data['translate_checkout']) ? '1' : '0';
+
+        $theme_settings->header_top_position       = !empty($data['header_top_position']) ? '1' : '0';
+        
+        $theme_settings->header_side_position       = !empty($data['header_side_position']) ? '1' : '0';
+        
+        $theme_settings->enable_extract_image       = !empty($data['enable_extract_image']) ? '1' : '0';
+
+        $theme_settings->admin_ads_pre_post_position = !empty($data['admin_ads_pre_post_position']) ? '1' : '0';
+
+        $theme_settings->enable_bunny_cdn       = !empty($data['enable_bunny_cdn']) ? '1' : '0';
+
+        $theme_settings->Tv_Activation_Code       = !empty($data['Tv_Activation_Code']) ? '1' : '0';
+
+        $theme_settings->Tv_Logged_User_List       = !empty($data['Tv_Logged_User_List']) ? '1' : '0';
+
+        $theme_settings->enable_channel_payment       = !empty($data['enable_channel_payment']) ? '1' : '0';
+
+        $theme_settings->enable_moderator_payment       = !empty($data['enable_moderator_payment']) ? '1' : '0';
 
         $theme_settings->save();
 

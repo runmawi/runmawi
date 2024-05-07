@@ -38,6 +38,8 @@ use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Illuminate\Support\Facades\Storage;
+use App\UserTranslation;
+use Session;
 
 class AdminDashboardController extends Controller
 {
@@ -140,9 +142,43 @@ class AdminDashboardController extends Controller
                             $space_available = intval(round($spaceavailable  / 1024 ,3)).' '.'GB';
                         }
 
-                        $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                        // $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
                         $space_disk = intval(round($spacedisk  / 1024 ,3)).' '.'GB';	
+                        if(!empty($spaceusage)){
 
+                            $spaceusage_array = explode('.', $spaceusage);
+
+                            if(!empty($spaceusage_array[0]) && $spaceusage_array[0] >  0 ){
+                                $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                            }else{
+                                $spaceusage =  $spaceusage_array[1];
+                                $spaceusage = '009765625'; 
+
+                                $space_str = (string) $spaceusage;
+
+                                // Remove leading zeros
+                                $space_str = ltrim($space_str, '0');
+
+                                // If the resulting string is empty, set it to '0'
+                                if ($space_str === '') {
+                                    $space_str = '0';
+                                }
+                                $space_usage = $spaceusage_array[0].'.'.substr($space_str, 0, 3).' '.'TB';
+                                        // If space usage exceeds 1 TB, round it to the nearest TB
+                                    // if (intval($spaceusage) >= 1024) {
+                                    //     $space_usage = substr(round(intval($spaceusage) / 1024), 0, 3) . ' ' . 'GB';
+                                    // }
+                            }
+                            
+                        }else{
+                            $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                        }
+
+                        
+                        $terabytes = $spacedisk / 1024 / 1024; 
+                
+                        $space_disk = number_format($terabytes, 2) . " TB.";
+                        
                         // dd(intval($fileSize));
 
                         // $spaceavailable = $space_available * 1024; // space_available Convert TB to GB
@@ -449,8 +485,58 @@ class AdminDashboardController extends Controller
     public function TranslateLanguage(Request $request){
 
         try {
+            
 
-            $Setting = Setting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            if(!Auth::guest()){
+
+                $Setting =  Setting::first();
+                $data = Session::all();
+                $subuser_id = (!empty($data['subuser_id'])) ? $data['subuser_id'] : null ;
+                $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                $UserTranslation = UserTranslation::where('user_id',Auth::user()->id)->first();
+
+                if($subuser_id != null){
+                    $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                    if(!empty($Subuserranslation)){
+                        UserTranslation::where('multiuser_id',$subuser_id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                    }else{
+                        UserTranslation::create([
+                            'multiuser_id'        =>  $subuser_id,
+                            'translate_language'  => $request->languageCode ,
+                        ]);
+                    }
+                }else if(!empty($UserTranslation)){
+                    UserTranslation::where('user_id',Auth::user()->id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }else{
+                    UserTranslation::create([
+                        'user_id'               =>  Auth::user()->id,
+                        'translate_language'    => $request->languageCode ,
+                    ]);
+                }
+            }else{
+
+                $UserTranslation = UserTranslation::where('ip_address',$userIp)->first();
+
+                if(!empty($UserTranslation)){
+                    UserTranslation::where('ip_address',$userIp)->first()->update([
+                    'translate_language'  => $request->languageCode ,
+                ]);
+                }else{
+                    UserTranslation::create([
+                        'ip_address'        =>  $userIp,
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }
+
+            }
+
             Setting::first()
             ->update([
                     'translate_language'  => $request->languageCode ,
@@ -577,5 +663,111 @@ class AdminDashboardController extends Controller
                 throw $th;
             }
            
+        }
+
+
+        public function BunnyCDNStream(Request $request){
+            
+            $client = new Client();
+
+
+            $client = new \GuzzleHttp\Client();
+
+            $response = $client->request('GET', 'https://video.bunnycdn.com/library/120702/videos?page=1&itemsPerPage=100&orderBy=date', [
+            'headers' => [
+                'AccessKey' => '4ff64e8f-227f-482a-8234c571e2ae-edd6-402e',
+                'accept' => 'application/json',
+            ],
+            ]);
+            echo "<pre>";
+            print_r( $response->getBody()->getContents());
+            exit;
+            // $body = $response->getBody()->getContents();
+
+            // dd($body);   
+            $response = $client->request('GET', 'https://api.bunny.net/videolibrary/120702?includeAccessKey=false', [
+                'headers' => [
+                'AccessKey' => 'ed136712-3082-4ed2-a942-2aa01890bc2fa25f5d0c-fa5b-4738-aeb2-cdd4c9e22854 ',
+                'accept' => 'application/json',
+                ],
+            ]);
+
+
+        }
+
+    public function FFplayoutlogin(Request $request)
+        {
+            // Get username and password from the request
+            $username = 'admin';
+            $password = 'o737{@&|3TCr';
+
+            // Create a Guzzle client instance
+            $client = new Client();
+
+            try {
+                // Send a POST request to the authentication endpoint
+                $response = $client->post('http://69.197.189.34:8787/auth/login/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'username' => $username,
+                        'password' => $password,
+                    ],
+                ]);
+
+                // Get the response body
+                $body = $response->getBody()->getContents();
+
+                // Decode the JSON response
+                $responseData = json_decode($body, true);
+
+                // Extract the token from the response data
+                $token = $responseData['user']['token'];
+            
+                // Get channel data from the request
+                $channelData = [
+                    'name' => 'Channel 2',
+                    'preview_url' => 'http://69.197.189.34:8787/live/stream.m3u8',
+                    'config_path' => '/etc/ffplayout/channel2.yml',
+                    'extra_extensions' => 'jpg,jpeg,png,mp4,mov,avi',
+                    'service' => 'ffplayout@channel2.service',
+                ];
+            
+
+                // Send a POST request to the channel creation endpoint
+                $responses = $client->post('http://69.197.189.34:8787/api/channel/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                    'json' => $channelData,
+                ]);
+
+                // Get the response body
+                $bodys = $responses->getBody()->getContents();
+                // Send a GET request to the channel endpoint
+                $responsechannels = $client->get('http://69.197.189.34:8787/api/channels', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                ]);
+
+                // Get the response body
+                $bodyresponsechannels = $responsechannels->getBody()->getContents();
+
+                // Decode the JSON response
+
+                // Decode the JSON response
+                $channelsresponseData = json_decode($bodyresponsechannels, true);
+            dd($channelsresponseData);
+            
+                // Return the JSON response
+                return response()->json(json_decode($bodys), $responses->getStatusCode());
+            } catch (RequestException $e) {
+                // Handle request exceptions (e.g., connection errors, 4xx, 5xx errors)
+                // You can customize the error handling based on your requirements
+                return $e->getMessage();
+            }
         }
 }

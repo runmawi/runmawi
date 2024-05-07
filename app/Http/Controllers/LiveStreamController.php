@@ -34,6 +34,7 @@ use App\Channel;
 use App\ModeratorsUser;
 use App\M3UFileParser;
 use App\AdminLandingPage;
+use App\BlockLiveStream;
 
 class LiveStreamController extends Controller
 {
@@ -92,7 +93,7 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
     {
-      try {
+      // try {
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
@@ -227,6 +228,8 @@ class LiveStreamController extends Controller
 
              $stripe_payment_setting = PaymentSetting::where('payment_type','Stripe')->where('stripe_status',1)->first();
 
+             $paydunya_payment_setting = PaymentSetting::where('payment_type','Paydunya')->where('status',1)->first();
+
              $view = new RecentView;
              $view->user_id      = Auth::User() ? Auth::User()->id : null ;
              $view->country_name = $this->countryName ? $this->countryName : null ;
@@ -264,6 +267,73 @@ class LiveStreamController extends Controller
                   
             $free_duration_condition = $live_purchase_status == 0 && ( ( $categoryVideos->access == "ppv" && Auth::check() == true && Auth::user()->role != "admin" ) || ( $categoryVideos->access == "subscriber" && ( Auth::guest() || Auth::user()->role == "registered"))) && $categoryVideos->free_duration_status == 1 && $categoryVideos->free_duration !== null ? 1 : 0;
 
+            // video Js
+
+            $Livestream_details = LiveStream::where('id',$vid)->get()->map( function ($item)   {
+
+              $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+              $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+              $item['TV_Thumbnail'] = !is_null($item->video_tv_image)  ? URL::to('public/uploads/images/'.$item->video_tv_image)  : default_horizontal_image_url() ;
+
+                  //  Livestream URL
+          
+              switch (true) {
+
+                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                      $item['livestream_URL'] =  $item->mp4_url ;
+                      $item['livestream_player_type'] =  'video/mp4' ;
+                  break;
+
+                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                    $item['livestream_URL'] =  $item->mp4_url ;
+                    $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "embed":
+                      $item['livestream_URL'] =  $item->embed_url ;
+                      $item['livestream_player_type'] =  'video/mp4' ;
+                  break;
+
+                  case $item['url_type'] == "live_stream_video":
+                      $item['livestream_URL'] = $item->live_stream_video ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "m3u_url":
+                      $item['livestream_URL'] =  $item->m3u_url ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "Encode_video":
+                      $item['livestream_URL'] =  $item->hls_url ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                  break;
+
+                  case $item['url_type'] == "acc_audio_url":
+                    $item['livestream_URL'] =  $item->acc_audio_url ;
+                    $item['livestream_player_type'] =  'audio/aac' ;
+                  break;
+    
+                  case $item['url_type'] == "acc_audio_file":
+                      $item['livestream_URL'] =  $item->acc_audio_file ;
+                      $item['livestream_player_type'] =  'audio/aac' ;
+                  break;
+                  
+                  case $item['url_type'] == "aws_m3u8":
+                    $item['livestream_URL'] =  $item->hls_url ;
+                    $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  default:
+                      $item['livestream_URL'] =  null ;
+                      $item['livestream_player_type'] =  null ;
+                  break;
+              }
+
+              return $item;
+
+          })->first();
+          
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -280,6 +350,7 @@ class LiveStreamController extends Controller
                  'Razorpay_payment_setting' => $Razorpay_payment_setting,
                  'Paystack_payment_setting' => $Paystack_payment_setting ,
                  'stripe_payment_setting'   => $stripe_payment_setting ,
+                 'paydunya_payment_setting'   => $paydunya_payment_setting ,
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
                  'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                  'M3U_channels' => $M3U_channels ,
@@ -290,6 +361,7 @@ class LiveStreamController extends Controller
                  'category_name'   => $category_name ,
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
+                 'Livestream_details'      => $Livestream_details ,
            );
 
            return Theme::view('livevideo', $data);
@@ -298,11 +370,11 @@ class LiveStreamController extends Controller
 
           //   return view('auth.login',compact('system_settings'));
           // }
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-          // return $th->getMessage();
-            return abort(404);
-        }
+        //   // return $th->getMessage();
+        //     return abort(404);
+        // }
         }
 
 
@@ -315,12 +387,29 @@ class LiveStreamController extends Controller
           $countryName = $geoip->getCountry();
           $ThumbnailSetting = ThumbnailSetting::first();
           $parentCategories = LiveCategory::where('slug',$cid)->first();
+
           if(!empty($parentCategories)){
             $parentCategories_id = $parentCategories->id;
             $parentCategories_name = $parentCategories->name;
             $live_videos = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
                ->where('livecategories.category_id','=',$parentCategories_id)
-               ->where('active', '=', '1')->get();
+               ->where('active', '=', '1');
+
+               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+
+                $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
+                
+                if(!$BlockLiveStream->isEmpty()){
+                   foreach($BlockLiveStream as $block_LiveStream){
+                      $blockLiveStreams[]=$block_LiveStream->live_id;
+                   }
+                }else{
+                   $blockLiveStreams[]='';
+                }
+                $live_videos =   $live_videos->whereNotIn('live_streams.id',$blockLiveStreams);
+            }
+            $live_videos = $live_videos->orderBy('live_streams.created_at','desc')->get();
+
           }else{
             $parentCategories_id = '';
             $parentCategories_name = '';
@@ -337,12 +426,11 @@ class LiveStreamController extends Controller
                     'ThumbnailSetting' => $ThumbnailSetting,
                     'live_videos' => $live_videos,
                     'parentCategories_name' => $parentCategories_name,
+                    'parentCategories'     => $parentCategories ,
                 );
            return Theme::view('livecategoryvids',$data);
             
         } 
-
-
 
 
         public function EmbedLivePlay($vid)
@@ -437,7 +525,7 @@ class LiveStreamController extends Controller
           try {
               $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
-              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('livestream_view_count',0)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
 
               if(  $unseen_expiry_date != null && $unseen_expiry_date <= $current_time ){
 

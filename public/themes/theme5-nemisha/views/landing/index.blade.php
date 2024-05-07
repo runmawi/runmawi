@@ -15,40 +15,66 @@
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); ?>
 
-    <title><?php echo $uppercase . ' | ' . $settings->website_name; ?></title>
+    <title><?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?></title>
 
     <meta name="description" content="<?php echo $settings->website_description; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <meta name="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?>">
+    <meta itemprop="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_name   ;} ?>">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>">
+    <meta name="twitter:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>" />
+    <meta property="og:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
+    <!-- <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        rel="stylesheet"> -->
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" fetchpriority="high">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
+    <link  rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>"  as="style" fetchpriority="high" />
+    <link  rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" />
 
     <!-- Typography CSS -->
+    <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
+    <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
 
 
     <!-- Responsive -->
-    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="preload" href="<?php echo URL::to('assets/css/responsive.css'); ?>" as="style" fetchpriority="high" />
+    <link rel="stylesheet" href="<?php echo URL::to('assets/css/responsive.css'); ?>" />
+    <link rel="preload" href="https://cdn.plyr.io/3.7.3/plyr.css" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" defer></script>
+
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <style>
         h1,
@@ -1109,7 +1135,15 @@
 
             }
         }
-
+        @media (max-width:425px){
+            .bp{
+                padding:5px 10px;
+                font-size:12px;
+            }
+            .land-logo{
+                width:100px;
+            }
+        }
         .lan h4 {
             font-weight: 700;
         }
@@ -1151,7 +1185,7 @@
             border: none !important;
             background-color: transparent !important;
             /* padding: 6px 15px; */
-            padding: 10px 0 !important;
+            /* padding: 10px 0 !important; */
         }
 
         #MuteButton::before {
@@ -1178,6 +1212,10 @@
             line-height: 2.8rem;
             text-align: center;
         }
+        .collapse:not(.show){
+            display:flex !important;
+            flex-basis: auto;
+        }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1186,15 +1224,10 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <a type="button" class="btn btn-outline-danger bp mr-3" href="{{ route('login') }}">Sign In </a>
+                <img class="lazy land-logo" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
+               
+                <div class="collapse justify-content-end" id="navbarSupportedContent">
+                    <a type="button" class="btn btn-outline-danger bp my-2 mr-2 my-sm-0" href="{{ route('login') }}">Sign In </a>
                     <a class="btn btn-success1  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign
                         Up</a>
                 </div>
@@ -1253,7 +1286,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style="">
+                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555" heiht="343" alt="v1">
                     </div>
                 </div>
             </div>
@@ -1267,8 +1300,8 @@
                         <div class="col-lg-6 p-0">
 
                             <video id="player" height="618" controls autoplay muted
-                                poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
-                                <source src="https://dev.nemisatv.co.za/public/uploads/videos/youthtech-2.mp4"
+                                poster="<?php //echo URL::to('/assets/img/lan/tv.webp'); ?>">
+                                <source src="<?php echo URL::to('/assets/img/Youthtech-2.mp4'); ?>"
                                     type="video/mp4">
                                 <source src="" type="video/ogg">
                             </video>
@@ -1304,46 +1337,19 @@
 
                             @foreach ($SeriesGenre as $key => $category)
                                 @if ($key <= 8)
-                                    <li class="nav-item">
+                                    <li class="nav-item" role="tab">
                                         <a class="{{ 'nav-link' . ' ' . 'series-category-key-id-' . ($key + 1) }}"
-                                            id="pills-profile-tab" data-toggle="pill"
+                                            id="pills-profile-tab-{{ $key + 1 }}" data-toggle="pill"
                                             data-category-id={{ $category->id }} onclick="Series_Category(this)"
-                                            role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            aria-controls="pills-profile" aria-selected="false">
                                             {{ $category->name }}
                                         </a>
                                     </li>
                                 @endif
                             @endforeach
-
-                            <li class="nav-item">
-
-                                <!-- <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </a>  --!>
-
-                                <div class="dropdown-menu">
-                                    <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"
-                                        style="display: flex; justify-content: start; flex-direction: column;">
-                                        @foreach ($SeriesGenre as $key => $category)
-                                            @if ($key > 8)
-                                                <li class="nav-item">
-                                                    <a class="nav-link " id="pills-kids-tab" data-toggle="pill"
-                                                        data-category-id={{ $category->id }}
-                                                        onclick="Series_Category(this)" href="#pills-kids"
-                                                        role="tab" aria-controls="pills-kids"
-                                                        aria-selected="false">{{ $category->name }}</a>
-                                            @endif
-                                        @endforeach
-                            </li>
                         </ul>
                     </div>
-                    </li>
                 </div>
-            </div>
-            </div>
-
-            </ul>
             </div>
             <div class="container">
 
@@ -1406,7 +1412,7 @@
                         <div class="row align-items-center justify-content-center mt-4">
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href=" https://dev.nemisatv.co.za/live/category/live-radio">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/radio.jpg'); ?>" style=>
+                                    <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/radio.webp'); ?>" alt="radio" width="204" height="217">
                                     <p class="io">Radio</p>
                                 </a>
                             </div>
@@ -1414,13 +1420,13 @@
                             <div class="col-lg-2 p-0 ">
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/series/category/Education"> <img
-                                            class="w-100" src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
+                                            class="lazy" data-src="<?php echo URL::to('/assets/img/lan/education.webp'); ?>" alt="education" width="184" height="193" >
                                         <p class="io">Education</p>
                                     </a>
                                 </div>
 
                                 <div class="position-relative mn"> <a href="https://dev.nemisatv.co.za/Live-list">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.jpg'); ?>" style=>
+                                        <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/live.webp'); ?>" alt="live" width="184" height="193" >
                                         <p class="io">Live <br>Streaming</p>
                                     </a>
                                 </div>
@@ -1428,7 +1434,7 @@
 
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/audios">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/podcast.jpg'); ?>" style=>
+                                    <img class="lazy w-100" data-src="<?php echo URL::to('/assets/img/lan/podcast.webp'); ?>" alt="online" width="204" height="396">
                                     <p class="io">Podcast</p>
                                 </a>
                             </div>
@@ -1436,14 +1442,14 @@
                             <div class="col-lg-2 p-0">
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/live/category/live-tv">
-                                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/online.jpg'); ?>" style=>
+                                        <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/online.webp'); ?>" alt="online" width="184" height="120">
                                         <p class="io">Online <br>Streaming </p>
                                     </a>
                                 </div>
 
                                 <div class="position-relative mn">
                                     <a href=" https://dev.nemisatv.co.za/series/category/Movie">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/movies.jpg'); ?>" style=>
+                                        <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/movies.webp'); ?>" alt="movie" width="184" height="193">
                                         <p class="io">Movies</p>
                                     </a>
                                 </div>
@@ -1451,7 +1457,7 @@
 
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/series/category/Animation">
-                                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.jpg'); ?>" style=>
+                                    <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/animation.webp'); ?>" alt="animation" width="204" height="217">
                                     <p class="io">Animation</p>
                                 </a>
                             </div>
@@ -1460,7 +1466,7 @@
 
                     <!-- <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
-                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r1.png'); ?>" style=>
+                    <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/r1.png'); ?>" alt="online" width="184" height="120">
                     <p class="io">Digitech news update</p>
                 </div>
                 <div class="col-lg-2 p-0">
@@ -1582,7 +1588,7 @@
                             <div class="" style="margin:4px;">
                                 <video id="player1" height="800" controls autoplay muted
                                     poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
-                                    <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
+                                    <source src="<?php echo URL::to('/assets/img/Vq(1).mp4'); ?>" type="video/mp4">
                                     <source src="" type="video/ogg">
                                 </video>
 
@@ -1607,8 +1613,8 @@
                                 <div class="col-lg-6 pa">
                                     <div></div>
                                     <div class=" lan">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
-                                        <h4 class="">User Feedback and Interaction</h4>
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" alt="v3">
+                                        <h5 class="">User Feedback and Interaction</h5>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
@@ -1617,16 +1623,16 @@
                                 <div class="col-lg-6 p-0">
                                     <div></div>
                                     <div class="lan ">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
-                                        <h4 class="">Aggregated User generated content</h4>
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" alt="v4">
+                                        <h5 class="">Aggregated User generated content</h5>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
                                     </div>
                                 </div>
 
                                 <div class=" col-lg-6 rated mt-3">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
-                                    <h4 class="">Curated multiformat<br> training content</h4>
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" alt="v5">
+                                    <h5 class="">Curated multiformat<br> training content</h5>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
                                 </div>
@@ -1691,32 +1697,32 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c1.png'); ?>" style="">
+                            <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/c1.webp'); ?>" alt="c1" width="146" height="146">
                         </div>
 
                         <p class=" map">“Salute has inspired me to work smarter on
                             my craft using Technology as a Dj.”</p>
-                        <h4 class="text-black">LIYA NDAMASE</h4>
+                        <p class="text-white">LIYA NDAMASE</p>
                         <p>Television</p>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c2.png'); ?>" style="">
+                            <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/c2.webp'); ?>" alt="c2" width="146" height="146">
                         </div>
-                        <p class=" map">“Through the digital marketing course on NEMISA TV. I was able to create a
+                        <p class=" map" style="margin-bottom:0;">“Through the digital marketing course on NEMISA TV. I was able to create a
                             successful online skateboard.”</p>
-                        <h4 class="text-black">MUSA BALOYI</h4>
+                        <p class="text-white" style="margin-bottom:0;">MUSA BALOYI</p>
                         <p>Sound</p>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="">
-                            <img class="w-50" src="<?php echo URL::to('/assets/img/lan/c3.png'); ?>" style="">
+                            <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/c3.webp'); ?>" alt="c3" width="146" height="146">
                         </div>
                         <p class=" map">“A data free content is the next big
                             thing. I love NEMISA TV.”</p>
-                        <h4 class="text-black">JOEY MANGKA</h4>
+                        <p class="text-white">JOEY MANGKA</p>
                         <p>Web Developer</p>
                     </div>
                 </div>
@@ -1736,7 +1742,7 @@
 
                 <div class="col-lg-7 vid">
                     <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
-                        <source src="<?php echo URL::to('/assets/img/dance.mp4'); ?>" type="video/mp4">
+                        <source src="<?php echo URL::to('/assets/img/danc.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
 
@@ -1761,7 +1767,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="comp">
-                                <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" style="">
+                                <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" alt="comp">
                             </div>
                             <h3>Watch Everywhere</h3>
                             <p>Watch videos, podcasts and live events
@@ -1773,7 +1779,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color1" style="min-height: 266px;">
                             <div class="clive">
-                                <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" style="">
+                                <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" alt="clive">
                             </div>
                             <h3>Stream Live </h3>
                             <p>Stream unlimited videos, podcasts
@@ -1787,7 +1793,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="set">
-                                <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" style="">
+                                <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" alt="set">
                             </div>
                             <h3>Quality Videos</h3>
                             <p>Explore our edutainment video
@@ -1814,7 +1820,7 @@
 
     </section>
 
-    <section style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+    <section style=" no-repeat scroll 0 0; background-size: cover;">
         @section('content')
 
             <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1828,8 +1834,8 @@
 
         </section>
 
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <link rel="preload" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" as="stylesheet" fetchpriority="high" />
+         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> 
         <script>
             function toggleMute() {
                 var button = document.getElementById("MuteButton")
@@ -1843,125 +1849,6 @@
 
                 button.classList.toggle('muted');
             }
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
-                const player = new Plyr('#player1');
-
-                // Expose
-                window.player = player;
-
-                // Bind event listener
-                function on(selector, type, callback) {
-                    document.querySelector(selector).addEventListener(type, callback, false);
-                }
-
-                // Play
-                on('.js-play', 'click', () => {
-                    player.play();
-                });
-
-                // Pause
-                on('.js-pause', 'click', () => {
-                    player.pause();
-                });
-
-                // Stop
-                on('.js-stop', 'click', () => {
-                    player.stop();
-                });
-
-                // Rewind
-                on('.js-rewind', 'click', () => {
-                    player.rewind();
-                });
-
-                // Forward
-                on('.js-forward', 'click', () => {
-                    player.forward();
-                });
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-
-                const player = new Plyr('#player2');
-
-                // Expose
-                window.player = player;
-
-                // Bind event listener
-                function on(selector, type, callback) {
-                    document.querySelector(selector).addEventListener(type, callback, false);
-                }
-
-                // Play
-                on('.js-play', 'click', () => {
-                    player.play();
-                });
-
-                // Pause
-                on('.js-pause', 'click', () => {
-                    player.pause();
-                });
-
-                // Stop
-                on('.js-stop', 'click', () => {
-                    player.stop();
-                });
-
-                // Rewind
-                on('.js-rewind', 'click', () => {
-                    player.rewind();
-                });
-
-                // Forward
-                on('.js-forward', 'click', () => {
-                    player.forward();
-                });
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
-                const player = new Plyr('#player');
-
-                // Expose
-                window.player = player;
-
-                // Bind event listener
-                function on(selector, type, callback) {
-                    document.querySelector(selector).addEventListener(type, callback, false);
-                }
-
-                // Play
-                on('.js-play', 'click', () => {
-                    player.play();
-                });
-
-                // Pause
-                on('.js-pause', 'click', () => {
-                    player.pause();
-                });
-
-                // Stop
-                on('.js-stop', 'click', () => {
-                    player.stop();
-                });
-
-                // Rewind
-                on('.js-rewind', 'click', () => {
-                    player.rewind();
-                });
-
-                // Forward
-                on('.js-forward', 'click', () => {
-                    player.forward();
-                });
-            });
         </script>
 
         <script>
@@ -2004,9 +1891,9 @@
             }
 
             // Onload - Active First Series category 
-            $(window).load(function() {
-                $(".series-category-key-id-1").addClass("active show").attr("aria-selected", "true");
-            });
+                $(window).on('load', function() {
+                    $(".series-category-key-id-1").addClass("active show").attr("aria-selected", "true");
+                });
         </script>
 
         @php

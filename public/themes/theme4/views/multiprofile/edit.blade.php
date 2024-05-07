@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme7/views/header.php')); ?>
+<?php include(public_path('themes/theme4/views/header.php')); ?>
 @extends('multiprofile.style')
 
 @section('content')
@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                         <h5 style="text-align: left"> {{ __('kid's profile ?') }}</h5>
+                                        <h5 style="text-align: left"> {{ __("kid's profile ?") }}</h5>
                                     </div>
                                 </div>
 
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="row sumbit_btn">
-                        <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >Cancel</button>
+                        <a href="{{ url('choose-profile') }}"><button type="button"  class="btn btn-hover ab">{{ __('Cancel') }}</button></a>
                         <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button>
                     </div>
 
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
 
 @endsection 
 

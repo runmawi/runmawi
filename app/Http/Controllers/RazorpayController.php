@@ -102,9 +102,11 @@ class RazorpayController extends Controller
 
         if($users_details != null){
             $user_details =Auth::User();
+            $redirection_back = URL::to('/becomesubscriber'); 
         }else{
             $userEmailId = $request->session()->get('register.email');
             $user_details =User::where('email',$userEmailId)->first();
+            $redirection_back = URL::to('/register2'); 
         }
 
         $plan_Id =Crypt::decryptString($Plan_Id);
@@ -134,6 +136,7 @@ class RazorpayController extends Controller
             'regionName'     =>  $regionName,
             'cityName'       =>  $cityName,
             'PaymentGateway' =>  'razorpay',
+            'redirection_back' => $redirection_back ,
         );
 
         return Theme::view('Razorpay.checkout',compact('respond'),$respond);
@@ -170,27 +173,6 @@ class RazorpayController extends Controller
             return false;
         }
     }
-
-    public function RazorpayUpgrade(Request $request){
-
-        $subscriptionId = "sub_IzpuMPU38PntuD";
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $subscription = $api->subscription->fetch($subscriptionId);
-        $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
-        $carbon = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-
-
-        ThemeIntegration::where('id',1)->update([
-            'created_at'    =>  $carbon ,
-    ]);
-
-dd($carbon);
-        $testing =   $api->subscription->fetch($subscriptionId)->update($attributes);
-
-    }
     
     public function RazorpaySubscriptionStore(Request $request){
 
@@ -199,12 +181,12 @@ dd($carbon);
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $subscription = $api->subscription->fetch($razorpay_subscription_id);
         $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+        
+        $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+        $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
         $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-
-            Subscription::create([
+    
+        Subscription::create([
             'user_id'        =>  $request->userId,
             'name'           =>  $plan_id['item']->name,
             // 'days'        =>  $fileName_zip,
@@ -227,6 +209,8 @@ dd($carbon);
             'subscription_start'    =>  $Sub_Startday,
             'subscription_ends_at'  =>  $Sub_Endday,
             'payment_gateway'       =>  'Razorpay',
+            'payment_type'          =>  'recurring',
+            'payment_status'        =>  'active',
         ]);
 
         return Redirect::route('home');
@@ -247,9 +231,9 @@ dd($carbon);
         $subscription = $api->subscription->fetch($subscriptionId);
         $remaining_count  =  $subscription['remaining_count'] ;
 
+        $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+        $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
         $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
 
         if($subscription->payment_method != "upi"){
             
@@ -265,7 +249,7 @@ dd($carbon);
                 Subscription::where('user_id',$user_id)->latest()->update([
                     'price'          =>  $updatedPlan['item']->amount,
                     'stripe_id'      =>  $UpdatedSubscription['id'],
-                    'stripe_status' =>  $UpdatedSubscription['status'],
+                    'stripe_status' =>   $UpdatedSubscription['status'],
                     'stripe_plan'    =>  $UpdatedSubscription['plan_id'],
                     'quantity'       =>  $UpdatedSubscription['quantity'],
                     'countryname'    =>  $countryName,
@@ -273,12 +257,17 @@ dd($carbon);
                     'cityname'       =>  $cityName,
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
+                    'PaymentGateway' =>  'Razorpay',
                 ]);
 
                 User::where('id',$user_id)->update([
+                    'role'                  =>  'subscriber',
+                    'stripe_id'             =>  $UpdatedSubscription['id'] ,
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Razorpay',
+                    'payment_type'          =>  'recurring',
+                    'payment_status'        =>  'active',
                 ]);
             }
             return Redirect::route('home');
@@ -290,23 +279,35 @@ dd($carbon);
 
     public function RazorpayCancelSubscriptions(Request $request)
     {
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        try {
 
-        $subscriptionId = User::where('id',Auth::user()->id)->pluck('stripe_id')->first();
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+            $subscriptionId = User::where('id',Auth::user()->id)->where('payment_gateway','Razorpay')->pluck('stripe_id')->first();
+            
+            $options  = array('cancel_at_cycle_end'  => 0);
+
+            $api->subscription->fetch($subscriptionId)->cancel($options);
+
+            Subscription::where('stripe_id',$subscriptionId)->update([
+                'stripe_status' =>  'Cancelled',
+            ]);
+
+            User::where('id',Auth::user()->id )->update([
+                'payment_status' =>   'Cancel' ,
+            ]);
+
+            $Error_msg = "Subscription has been Cancel Successfully";
+            $url = URL::to('/myprofile');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+
+
+        } catch (\Throwable $th) {
+            $msg = 'Some Error occuring while Cancelling the Subscription, Please check this query with admin..';
+            $url = URL::to('myprofile/');
+            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+        }
         
-        $options  = array('cancel_at_cycle_end'  => 0);
-
-        $api->subscription->fetch($subscriptionId)->cancel($options);
-
-        Subscription::where('stripe_id',$subscriptionId)->update([
-            'stripe_status' =>  'Cancelled',
-        ]);
-
-        User::where('id',Auth::user()->id )->update([
-            'payment_gateway' =>  null ,
-        ]);
-
-        return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
 
     public function RazorpayVideoRent(Request $request,$video_id,$amount){

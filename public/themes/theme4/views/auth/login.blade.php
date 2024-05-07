@@ -17,15 +17,20 @@
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
+        <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
       <link rel="stylesheet" href="" />
       <!-- Typography CSS -->
       <link rel="stylesheet" href="<?= typography_link()?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= style_sheet_link()?>" />
       <!-- Responsive -->
+      <link rel="preload" fetchpriority="high" href="assets/css/responsive.css" as="style"/>
       <link rel="stylesheet" href="assets/css/responsive.css" />
+      <!-- Logo preload -->
+    <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>" as="image">
+    <link rel="preload" fetchpriority="high" href="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>" as="image">
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -82,16 +87,22 @@ border-radius: 15px;
 border: 2px dashed #51bce8;
 text-align: left;
 }    
+    .sign-in-page {
+        background: url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;
+        background-size: cover;
+    }
 </style>
+
+        <link rel="preload" href="<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>" as="image">
     </head>
 
 <body>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page">
    <div class="container">
       <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
              
-              <h1 class="km"><?php echo $settings->login_text; ?></h1>
+              <p class="km text-white"><?php echo $settings->login_text; ?></p>
                 
           </div>
          <div class="col-lg-5 col-12 col-md-12 align-self-center">
@@ -102,13 +113,14 @@ text-align: left;
                           <div class="col-md-12">
 
                             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>" width="200" height="100" style="margin-bottom:1rem;"></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>" width="200" height="100" style="margin-bottom:1rem;"></div></div>
                             <?php }else { ?> 
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php } ?>
 
+                            
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
@@ -154,10 +166,10 @@ text-align: left;
                         </div>
 <div class="position-relative">
                                  <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-theme4 reveal" aria-label="Toggle visibility" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-theme4 reveal" aria-label="Toggle visibility" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                             </div>
                         
@@ -213,13 +225,13 @@ text-align: left;
                                <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" height="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                <?php } ?>
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" height="30" style="margin-bottom:1rem;">
                                         </a>
                                     </div>
                                 <?php  } ?>
@@ -288,7 +300,7 @@ text-align: left;
 </body>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
 

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme7/views/header.php')); ?>
+<?php include(public_path('themes/theme4/views/header.php')); ?>
 
 <head>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -16,7 +16,7 @@
                             @foreach ($multiprofile as $profile)
                             <div>
                                 <div class="member">
-                                    <a  href="{{ route('Multiprofile.edit', $profile->id)}}">
+                                    <a  href="{{ route('Choose-profile.edit', $profile->id)}}">
                                         <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
                                     </a> 
 
@@ -29,7 +29,7 @@
                             </div>
                             @endforeach   
                             <li class=""> 
-                                <a class="fa fa-plus-circle fa-10x" href="{{route('Multiprofile.create') }}"></a>
+                                <a class="fa fa-plus-circle fa-10x" href="{{route('Choose-profile.create') }}"></a>
                             </li>  
                         </div>    
                         
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
 
  @endsection
 

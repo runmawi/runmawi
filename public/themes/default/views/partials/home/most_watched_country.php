@@ -1,6 +1,8 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-        <h4 class="main-title"><a href=""><?php echo (__('Most Watched Videos in')); ?> <?php echo $countryName;?></a></h4>    
-        <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                  
+        <h4 class="main-title"><a href=""><?php echo (__('Most Watched Videos in')); ?> <?php echo $countryName;?></a></h4> 
+        <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+            <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>      
+        <?php endif; ?>            
 </div>
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -14,7 +16,7 @@
                         <div class="border-bg">
                             <div class="img-box">
                                     <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid loading w-100" alt="m-img"> 
+                                       <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>"  alt="m-img"> 
                                       
                                     </a>
 
@@ -41,7 +43,7 @@
 
                                 <div class="block-description">
                                      <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->player_image;  ?>" class="img-fluid loading w-100" alt="m-img"> 
+                                       <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->player_image;  ?>" alt="m-img"> 
                                       
                                   
 

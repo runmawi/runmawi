@@ -132,7 +132,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light " id="registration_setting" href="#!">Registration Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="email_setting" href="#!">Email Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="social_setting" href="#!">Social Networks Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light " id="series_setting" href="#!">Series Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="series_setting" href="#!">TV Shows Settings</a>
                     <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
@@ -145,6 +145,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light " id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
                     <a class="list-group-item list-group-item-action list-group-item-light" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>  
                     <a class="list-group-item list-group-item-action list-group-item-light " id="timezone_setting" href="#!">TimeZone Settings</a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="search_setting" href="#!">Search Settings</a>  
                     <!-- Content Partner -->
                 </div>
             </div></div>
@@ -477,23 +478,39 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-sm-6" >
-                            <div class="form-group">
-                                <p class="p1"> Enable Rent as PPV  </p>
-                                <div class="make-switch" data-on="success" data-off="warning">
-                                     <div class="mr-2">OFF</div>
+                            {{-- <div class="col-sm-6" >
+                                <div class="form-group">
+                                    <p class="p1">{{ ucwords('Enable Rent as PPV') }}</p>
+                                    <div class="make-switch" data-on="success" data-off="warning">
+                                        <div class="mr-2">OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
-                                            <input type="checkbox" @if(!isset($settings->enable_ppv_rent) ||
-                                                (isset($settings->enable_ppv_rent) && $settings->enable_ppv_rent))checked="checked"
-                                                value="1"@else value="0"@endif name="enable_ppv_rent" id="enable_ppv_rent" />
+                                                <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
                                                 <span class="slider round"></span>
-                                            </div>
+                                            </label>
+                                        </div>
                                         <div class="ml-2">ON</div>
+                                    </div>
                                 </div>
-                            </div>
+                        </div> --}}
 
-                </div>
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="mt-1"> Enable Rent as PPV</label>
+                            <span>( Free for subscriber )</span>
+                        </div>
+
+                        <div class="d-flex ">
+                            <div>OFF</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div>ON</div>
+                        </div>
+                    </div>
             </div>
         </div>
                                 {{-- End Set Expiry time --}}
@@ -528,6 +545,46 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  Admin Video Expiry   </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->videos_expiry_status) || (isset($settings->videos_expiry_status) &&
+                                                $settings->videos_expiry_status))checked="checked" value="1"@else value="0"@endif
+                                                name="videos_expiry_status" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> {{ ucwords('EPG status') }}  </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->epg_status) || (isset($settings->epg_status) &&
+                                                $settings->epg_status))checked="checked" value="1"@else value="0"@endif
+                                                name="epg_status" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
@@ -564,7 +621,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Enable Show Genre </label></div>
@@ -600,7 +659,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> {{ ucwords('Enable show subtitle') }} </label></div>
@@ -619,7 +680,6 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1">  Show Artist </label></div>
@@ -637,7 +697,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1">  Show Recommended Videos </label></div>
@@ -666,6 +728,23 @@ border-radius: 0px 4px 4px 0px;
                                                 <input type="checkbox" @if(!isset($settings->show_views) || (isset($settings->show_views) &&
                                                 $settings->show_views))checked="checked" value="1"@else value="0"@endif
                                                 name="show_views" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Enable Home-Page Views All  </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ !is_null($settings->homepage_views_all_button_status) && $settings->homepage_views_all_button_status == 1 ? 'checked' : null }} value="{{ $settings->homepage_views_all_button_status }}"
+                                                name="homepage_views_status" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
@@ -855,6 +934,35 @@ border-radius: 0px 4px 4px 0px;
                         <input type="checkbox" @if($settings->coupon_status == 1)checked="checked" value="1"@else
                         value="0"@endif name="coupon_status">
                     </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Address</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Address:</p>
+                        <textarea id="summary-ckeditor" name="system_address" class="form-control"
+                                placeholder="Email System Address"
+                                value="@if(!empty($settings->system_address)){{ $settings->system_address }}@endif"><?php echo $settings->system_address; ?></textarea>
+
+                    </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Phone Number</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Phone Number:</p>
+                        <input type="text" class="form-control" name="system_phone_number" id="system_phone_number"
+                            placeholder="System Phone Number"
+                            value="@if(!empty($settings->system_phone_number)){{ $settings->system_phone_number }}@endif" />
+                    </div>
                 </div></div>
             </div>
         </div>
@@ -871,7 +979,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row d-flex">
                     <div class="col-md-6">
                 <div class="panel-body" style="display: block;">
 
@@ -897,7 +1005,7 @@ border-radius: 0px 4px 4px 0px;
                     <br />
 
                     <p class="p1">TikTok:</p>
-                    <input type="text" class="form-control" name="tiktok_page_id" id="tiktok_page_id" placeholder="TikTok User ID:"
+                    <input type="text" class="form-control" name="tiktok_page_id" id="tiktok_page_id" placeholder="TikTok User ID"
                         value="@if(!empty($settings->tiktok_page_id)){{ $settings->tiktok_page_id }}@endif" />
 
                 </div>
@@ -924,6 +1032,12 @@ border-radius: 0px 4px 4px 0px;
                     <input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id"
                         placeholder="YouTube Channel"
                         value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
+                        <br />
+
+                        <p class="p1">E-Mail:</p>
+                    <input type="email" class="form-control" name="email_page_id" id="email_page_id"
+                        placeholder="E-Mail ID"
+                        value="@if(!empty($settings->email_page_id)){{ $settings->email_page_id }}@endif"  />
                         <br />
 
                   
@@ -968,39 +1082,62 @@ border-radius: 0px 4px 4px 0px;
 
 
     <!-- Series  Setting-->
-    <div class="container-fluid" id="seasonsetting" style="">
-            <div class="row" data-collapsed="0">
-                <div class="panel-heading">
-                    <div class="panel-title"><label>Series Setting</label></div>
-                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            
-                                <div>
-                                 <div><p class="mt-1">Enable PPV Season</p></div>
-                                 <div class="d-flex align-items-center">
+    <div class="container-fluid" id="seasonsetting">
 
-                        <div class="mr-2">OFF</div>
+        <div class="row d-flex" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title"><label>TV Shows Setting</label></div>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            </div>
 
+            <div class="panel-body">
+                <div class="row d-flex">
+                    <div class="col-md-6">
+                        <div>
+                            <div class="panel-title"><label>Enable PPV Season</label></div>
+                            <div class="d-flex align-items-center">
+
+                            <div class="mr-2">OFF</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                    <input type="checkbox" @if(!isset($settings->series_season) ||
-                                    (isset($settings->series_season) && $settings->series_season))checked="checked"
-                                    value="1"@else value="0"@endif name="series_season" id="series_season" />
-                                        <span class="slider round"></span>
+                                        <input type="checkbox" @if(!isset($settings->series_season) ||
+                                            (isset($settings->series_season) && $settings->series_season))checked="checked"
+                                            value="1"@else value="0"@endif name="series_season" id="series_season" />
+                                            <span class="slider round"></span>
                                     </label>
                                 </div>
                                 <div class="ml-2">On</div>
                             </div>                                
-                               
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="panel-body">
+                <div class="row d-flex">
+                    <div class="col-md-6">
+                        <div>
+                            <div class="panel-title"><label> TV Shows Networks</label></div>
+                            <p>Enable & Disable Networks</p>
+                            <div class="d-flex align-items-center">
+                            <div class="mr-2">OFF</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input type="checkbox" @if(!isset($settings->series_networks_status) ||
+                                            (isset($settings->series_networks_status) && $settings->series_networks_status))checked="checked"
+                                            value="1"@else value="0"@endif name="series_networks_status" id="series_networks_status" />
+                                            <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="ml-2">On</div>
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </div>
     
     <!-- Transcoding  Setting -->
         <div class="container-fluid" id="transcodingsetting" style="">
@@ -1091,7 +1228,7 @@ border-radius: 0px 4px 4px 0px;
 
         
     <!-- Time Zone Setting -->
-    <div class="container-fluid" id="time_zone_setting" style="">
+        <div class="container-fluid" id="time_zone_setting" style="">
             <div class="panel panel-primary mt-3" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Time Zone Setting</label></div>
@@ -1118,6 +1255,111 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
+
+          
+    <!-- Time Zone Setting -->
+    <div class="container-fluid" id="search_setting_form" style="">
+        <div class="panel panel-primary mt-3" data-collapsed="0">
+
+            <div class="panel-heading">
+                <h5 class="panel-title mb-4"> Search Enable/Disable Setting </h5>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                            <div><label class="mt-1">  {{ ucwords('Show title')}}  </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" name="search_title_status" id="" value = {{ $settings->search_title_status }} {{ $settings->search_title_status ? 'checked' : null }}/>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                            <div><label class="mt-1"> {{ ucwords('Show category') }}  </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" name="search_category_status" value = {{ $settings->search_category_status }} {{ $settings->search_category_status ? 'checked' : null }}  />
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                            <div><label class="mt-1"> {{ ucwords('Show search tags') }}  </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox"  name="search_tags_status" value = {{ $settings->search_tags_status }} {{ $settings->search_tags_status ? 'checked' : null }} />
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                            <div><label class="mt-1">  {{ ucwords('show description') }}  </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" name="search_description_status"  value={{ $settings->search_description_status }}  {{ $settings->search_description_status ? 'checked' : null }}/>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                            <div><label class="mt-1">  {{ ucwords('show details') }}  </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" name="search_details_status" value={{ $settings->search_details_status }}  {{ $settings->search_details_status ? 'checked' : null }}/>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     
 
@@ -1640,7 +1882,7 @@ border-radius: 0px 4px 4px 0px;
         $("#expiry_time_started").mask("00");
     })
 </script>
-	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+	<script src="{{ '/assets/admin/js/bootstrap-switch.min.js' }}"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
@@ -1676,6 +1918,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#cpp_payouts').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 
 
 	$('#site_setting').click(function(){
@@ -1699,7 +1942,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
-
+        $('#search_setting_form').hide();
 	});
 
 	$('#recpatcha_setting').click(function(){
@@ -1724,6 +1967,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').show();
 		$('#settingupdate').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
     });
 
 	$('#ppv_setting').click(function(){
@@ -1748,7 +1992,9 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
+
 	$('#video_setting').click(function(){
 		$('#site').hide();
 		$('#ppv').hide();
@@ -1769,6 +2015,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#registration_setting').click(function(){
@@ -1791,6 +2038,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#email_setting').click(function(){
@@ -1813,6 +2061,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#social_setting').click(function(){
@@ -1836,6 +2085,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#subscription_setting').click(function(){
@@ -1859,6 +2109,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#login_setting').click(function(){
@@ -1883,6 +2134,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#advertisement_setting').click(function(){
@@ -1906,6 +2158,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 
@@ -1932,6 +2185,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -1956,7 +2210,8 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
-		$('#time_zone_setting').hide();
+		$('#time_zone_setting').hide();  
+        $('#search_setting_form').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1985,6 +2240,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
     });
      
     $("#transcoding_setting").click(function () {
@@ -2009,7 +2265,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
-		$('#time_zone_setting').hide();
+		$('#time_zone_setting').hide();     
+        $('#search_setting_form').hide();
     });
 
     $("#series_setting").click(function () {
@@ -2036,6 +2293,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -2063,6 +2321,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -2090,6 +2349,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
     });
 
 
@@ -2115,8 +2375,36 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting,#settingupdate').show();
+        $('#search_setting_form').hide();
     });
 
+    $("#search_setting").click(function () {
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#Defaut_image_setting").hide();
+        $("#ppv_setting").hide();
+        $("#demo_mode").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
+		$('#search_setting_form').show();
+        $('#settingupdate').show();
+
+        
+    });
 
 	});
 </script>

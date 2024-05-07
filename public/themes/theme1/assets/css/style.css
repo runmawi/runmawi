@@ -204,15 +204,18 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale(1.1); transform-o
 .block-description {position: absolute;
     left: 0;
     width: 100%;
-    height: 75%;
+    height: 100%;
     top: 0;
    display: flex;
+   flex-wrap: wrap;
+   backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
     z-index: 999;
     opacity: 0;
     font-size: 12px;
     color: var(--TEXT_COLOR_L0);
+    background-image:linear-gradient(to bottom, rgba(4,8,15,0), rgb(0 0 0 / 25%), rgb(0 0 0 / 50%), rgb(0 0 0 / 75%));
   }
 .block-description > h6{font-size: 1.5em;}
 li.slide-item .block-images::before { }
@@ -842,7 +845,7 @@ padding: 20px 20px;
   }
 }
 .h-100 {height: 400px !important;}
-a {color: var(--iq-body-text) !important;}
+a {color: var(--iq-body-text);}
 li.list-group-item a:hover{color: var(--iq-primary) !important;}
 /* scroller */
 .scroller { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
@@ -2008,9 +2011,10 @@ body{
     text-decoration: none;
 }
 footer ul li{
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    color: #D1D0CF;
 }
 footer p{
   font-size: 16px;
@@ -2438,4 +2442,7 @@ height: 29px;
 }
 .Refine{
     margin: 10px;
+}
+ul.favorites-slider.list-inline.row.p-0.mb-0.slick-initialized.slick-slider {
+    overflow: hidden;
 }

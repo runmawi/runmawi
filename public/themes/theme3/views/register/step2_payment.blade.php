@@ -448,7 +448,7 @@ i.fa.fa-google-plus {
   background: rgba(124, 20, 20, 0.8)!important;
 }
     .dg{
-        padding: 10px;
+        /*padding: 10px;*/
         color: #000!important;
         background-color: #fff;
         margin: 7px;
@@ -459,7 +459,7 @@ i.fa.fa-google-plus {
 
     .actives {
         border:5px solid #a5a093;
-        padding: 10px!important;
+       
     }
    
         .dg:hover{
@@ -475,16 +475,29 @@ i.fa.fa-google-plus {
     #card-button{
         background-color:  {{ button_bg_color() .'!important' }} ;
     }
-    
+    .blk li{
+            font-size: 14px;
+        }
+         .blk p{
+            font-size: 14px;
+        }
 </style>
 
 <style>
+    .plan_details{
+        min-height: 300px;
+    }
     #card-element {
       height: 50px;
       background: #f4f6f7;
       padding: 10px;
     }
-
+    .blk{
+        height: 200px;
+        padding: 15px;
+    }
+.ambk{
+background-color: #000;padding: 10px!important;}
     html {
         scroll-behavior: smooth;
     }
@@ -529,6 +542,7 @@ i.fa.fa-google-plus {
     $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
     $Razorpay_lable = App\PaymentSetting::where('payment_type','Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() : "Razorpay";
     $CinetPay_lable = App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() : "CinetPay";
+    $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 
 @endphp
 
@@ -538,7 +552,7 @@ i.fa.fa-google-plus {
                        
                </div>
         <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-6">
+            <div class="col-lg-8 col-md-7">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
                     <p class="text-white">Hello, {{ $user_mail }}</p>
@@ -546,10 +560,10 @@ i.fa.fa-google-plus {
                     <div class="col-md-12 p-0 mt-2">
 
                                                 <!-- <h5> Payment Method</h5> -->
-
+<div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                     <label class=" ml-2"> <p>{{ $stripe_lable }} </p></label> 
                                 </div>
@@ -557,7 +571,7 @@ i.fa.fa-google-plus {
                            
                                                 <!-- Paystack -->
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
                                     <label class="ml-2" ><p> {{ $paystack_lable }} </p></label> 
                                 </div>
@@ -565,7 +579,7 @@ i.fa.fa-google-plus {
 
                                                 <!-- Razorpay -->
                             @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center ml-2">
                                     <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
                                     <label class="ml-2" ><p> {{ $Razorpay_lable }} </p></label> 
                                 </div>
@@ -573,7 +587,7 @@ i.fa.fa-google-plus {
 
                                                 <!-- PayPal -->
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
                                 </div>
@@ -581,14 +595,14 @@ i.fa.fa-google-plus {
 
                                             <!-- CinetPay -->
                             @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
                                     <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
                                 </div>
                             @endif
                            
                     </div>      
-
+</div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="data-plans row align-items-center m-0 p-0">
@@ -597,21 +611,22 @@ i.fa.fa-google-plus {
                                 $plan_name = $plan->plans_name;
                             @endphp
 
-                            <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
-                                <a href="#payment_card_scroll" >
+                            <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                
+                                <a href="#payment_card_scroll">
                                     <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
-                                        <div class="col-md-7 p-0">
-                                            <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
-                                            <p>{{ $plan->plans_name  }} Membership</p>
+                                        <div class="col-md-12 ambk p-0 text-center" >
+                                            <div>
+                                                <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
+                                                <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} Membership</p>
+                                            </div>
                                         </div>
-                                        <div class="vl "></div>
-                                        <div class="col-md-4 p-2" >
-                                            <h4 class="text-black">{{ "$".$plan->price }}</h4>
-                                            <p>Billed as {{ "$".$plan->price }}</p>
+                                        <div class="col-md-12 blk" >
+                                             <p>@php echo html_entity_decode($plan->plan_content) @endphp</p>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex justify-content-between align-items-center " > 
+                                    <div class="d-flex justify-content-between align-items-center " >
                                         <div class="bgk"></div>
                                     </div>
                                 </a>
@@ -657,7 +672,6 @@ i.fa.fa-google-plus {
                              <div>
                                  <h3>Payment</h3>
                              </div>
-                             
 
                              <div>
                                  <label for="fname">Accepted Cards</label>
@@ -1103,7 +1117,7 @@ for (var i = 0; i < btns.length; i++) {
 	
     if( swal({
         title: "Payment Failed!",
-        text: "Your Payment is failed",
+        text: "Kindly, fill out every field with a value.",
         type: "warning"
         }).then(function() {
             window.location = base_url+'/register2';
@@ -1123,6 +1137,7 @@ for (var i = 0; i < btns.length; i++) {
             stripe.createToken(cardElement).then(function(result) {
                  console.log(result.token.id);
             var stripToken = result.token.id;
+
             $.post(base_url+'/register3', {
                      py_id:py_id, 
                      stripToken:stripToken, 
@@ -1134,19 +1149,34 @@ for (var i = 0; i < btns.length; i++) {
                    }, 
 
                 function(data){
-                        $('#loader').css('display','block');
-                        swal({
-                            title: "Subscription Purchased Successfully!",
-                            text: "Your Payment done Successfully!",
-                            icon: payment_images+'/Successful_Payment.gif',
-                            buttons: false,      
-                            closeOnClickOutside: false,
-                        });
-
-                        $("#card-button").html('Pay Now');
-                        setTimeout(function() {
-                            window.location.replace(base_url+'/login');
-                    }, 2000);
+                    if(data.status == "success"){
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Subscription Purchased Successfully!",
+                                    text: data.message,
+                                    icon: payment_images+'/Successful_Payment.gif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    window.location.replace(base_url+'/login');
+                            }, 2500);
+                        }
+                        else{
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Payment Failed!",
+                                    text: data.message,
+                                    icon: payment_images+'/fails_Payment.avif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                     location.reload();
+                            }, 5000);
+                        }
                });
             });
         }
@@ -1399,7 +1429,7 @@ function paypalplan_details(ele){
                         text: data.message,
                         icon: "warning",
                         }).then(function() {
-                            window.location = base_url+'/login';
+                            location.reload();
                         })
                     }
                 } 
@@ -1437,7 +1467,7 @@ function paypalplan_details(ele){
                         text: data.message,
                         icon: "warning",
                         }).then(function() {
-                            window.location = base_url+'/login';
+                            location.reload();
                         })
                     }
                 } 
@@ -1485,16 +1515,16 @@ function paypalplan_details(ele){
                                     html += '<a href="#payment_card_scroll" > <div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
                                         html += '<div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
                                             
-                                            html +=   '<div class="col-md-7 p-0">';
-                                                html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
-                                                html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+
+                                            html +=   '<div class="col-md-12 ambk p-0 text-center">';
+                                                html += '<div>' ;
+                                                    html +=   '<h6 class="font-weight-bold">  '+ plan_data.plans_name +'   </h6>';
+                                                    html +=   '<p class="text-white mb-0">' + plan_data.plans_name + ' Membership </p>';
+                                                html += '</div>' ;
                                             html += '</div>' ;
 
-                                            html += '<div class="vl "></div>' ;
-
-                                            html += '<div class="col-md-4 p-2" >' ;
-                                                html +=    '<h4 class="text-black">'+currency_symbol+ plan_data.price +' </h4>'  ;
-                                                html +=    '<p>Billed as '+ currency_symbol + plan_data.price +' </p>' ;
+                                            html += '<div class="col-md-12 blk" >' ;
+                                                html +=    '<h4 class="text-black">'+  plan_data.plan_content +' </h4>'  ;
                                             html += '</div>' ;
 
                                         html += '</div>' ;
@@ -1621,7 +1651,6 @@ function paypalplan_details(ele){
         var transaction_id          = Math.floor(Math.random() * 100000000).toString();
         var currency                =  '{{ currency_symbol() }}'
 
-
           CinetPay.setConfig({
               apikey: CinetPay_APIKEY,//   YOUR APIKEY
               site_id: CinetPay_SITE_ID,//YOUR_SITE_ID
@@ -1643,8 +1672,8 @@ function paypalplan_details(ele){
              customer_phone_number: mobile,//the customer's email
              customer_address: "BP 0024",//customer address
              customer_city: "Antananarivo",// The customer's city
-             customer_country: "CM",// the ISO code of the country
-             customer_state: "CM",// the ISO state code
+             customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
+             customer_state: "CM,CA,US",// the ISO state code
              customer_zip_code: "06510", // postcode
 
           });

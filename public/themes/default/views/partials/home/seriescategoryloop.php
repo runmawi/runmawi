@@ -42,7 +42,9 @@
                         ?>
                     </h4>
                 </a>
-                <h4 class="main-title"><a href="<?php echo URL::to('/series/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
+                <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <h4 class="main-title"><a href="<?php echo URL::to('/series/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
+                <?php endif; ?>    
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -60,7 +62,7 @@
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>"  alt="cate">
                                 </a>
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -87,7 +89,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->player_image; ?>" alt="cate">
                                 
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>

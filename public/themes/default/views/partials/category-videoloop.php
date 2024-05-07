@@ -26,13 +26,16 @@
         border-bottom: 0px !important;
         border-top: 0px !important;
     }
+    /* body.light-theme li{
+        color: <?php echo GetAdminDarkText(); ?> !important;
+    }  */
 </style>
 <div class="container-fluid overflow-hidden">
     <div class="row">
         <div class="col-sm-12 ">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title">
+                    <h2 class="main-title">
                         <?php
                         if (!empty($category->home_genre)) {
                             echo __($category->home_genre);
@@ -40,8 +43,13 @@
                             echo __($category->name);
                         }
                         ?>
-                    </h4>
+                    </h2>
                 </a>
+                <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
+                        <h2 class="main-title"><?php echo('View all') ?>  </h2>
+                    </a>
+                <?php endif; ?>  
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -94,7 +102,7 @@
                             <div class="border-bg">
                             <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" alt="cate">
                                 </a>
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -114,15 +122,16 @@
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                 </div>
                                 </div>
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
+
                                 
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -142,30 +151,10 @@
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                     </a>
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
-                                          }
-                                       ?>
-                                    </p>
-                                    <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
 
 
                                     <div class="hover-buttons text-white">
@@ -360,7 +349,7 @@
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Remove From Wishlist');
                             $("body").append(
-                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.add_watch').slideUp('fast');
@@ -370,7 +359,7 @@
                             $('#' + video_id).text('');
                             $('#' + video_id).text('Add To Wishlist');
                             $("body").append(
-                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
+                                '<div class="remove_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
                             );
                             setTimeout(function() {
                                 $('.remove_watch').slideUp('fast');

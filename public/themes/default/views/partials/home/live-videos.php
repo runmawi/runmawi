@@ -5,7 +5,9 @@
 <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
   <?php if ($order_settings_list[3]->header_name) { echo __($order_settings_list[3]->header_name) ;} else { echo "" ; } ?></a>
     </h4>
-    <h4 class="main-title"><a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>
+    <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+      <h4 class="main-title"><a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>
+    <?php endif; ?>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -24,8 +26,8 @@
                                   if ($currentdate < $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->publish_time));
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_time  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('l');
 
                                   }else{
                                     $publish_time = 'Published';
@@ -41,8 +43,8 @@
                                   if ($currentdate == $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->created_at));
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_time  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('l');
 
                                   }else{
                                     $publish_time = 'Published';
@@ -65,9 +67,9 @@
                                   if ($currentdate == $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->created_at));
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_day  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('l');
 
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_time  = \Carbon\Carbon::parse($video->created_at, 'Asia/Kolkata')->format('h:i');
 
                                   }else{
                                     $publish_time = 'Published';
@@ -83,7 +85,7 @@
                 <div class="border-bg">
                     <div class="img-box">
                         <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="live" />
+                            <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>"  alt="live" />
                         </a>
 
                       <!-- PPV price -->
@@ -101,15 +103,15 @@
                                 <?php } ?>
                          <?php } ?>   
 
-                         <?php if($ThumbnailSetting->published_on == 1) { ?>      
+                         <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>      
                           <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
-                        <?php  } ?>
+                        <?php  } ?> -->
                     </div>
                     </div>
 
                     <div class="block-description" >
                         <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid w-100" alt="live" />
+                            <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>"  alt="live" />
                         
 
                       <!-- PPV price -->
@@ -220,7 +222,7 @@
 
                                 
                                     <a class="epi-name mt-3 mb-0 btn" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                        <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
+                                        <img class="d-inline-block ply" alt="ply"src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
                                         Live Now
                                     </a>
                                 </div>

@@ -89,24 +89,25 @@
                         <button class="tablinks1 btn btn-light">Web Home Page</button>
                         <button class="tablinks2 btn btn-light">Mobile Home Page</button>
                     </div>
-                    <div class="admin-section-title mt-3">
 
+                    <div class="admin-section-title mt-3">
                         <h4><i class="entypo-monitor"></i> Home Page Menu Settings</h4>
                     </div>
+
                     <div class="clear"></div>
 
 
                     <form action="{{ URL::to('/admin/home-settings/save') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="panel panel-primary mt-3" data-collapsed="0">
+
                             <div class="panel-heading">
-                                <div class="panel-options"> <a href="#" data-rel="collapse"><i
-                                            class="entypo-down-open"></i></a> </div>
+                                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
                             </div>
+
                             <div class="panel-body">
                                 <div class="row align-items-center p-2">
-                                    <!-- <div class="row"> -->
-
+                                   
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -130,6 +131,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -154,6 +156,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -177,6 +180,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -200,6 +204,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -223,6 +228,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -246,6 +252,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -270,6 +277,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -294,6 +302,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -318,6 +327,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
@@ -794,6 +804,229 @@
 
                                         </div>
                                     </div>
+
+                                    @if (Series_Networks_Status() == 1)
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[30]->header_name)
+                                                            {{ @$order_settings_list[30]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="Series_Networks"
+                                                            @if ($settings->Series_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[31]->header_name)
+                                                            {{ @$order_settings_list[31]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="Series_based_on_Networks"
+                                                            @if ($settings->Series_based_on_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[32]->header_name)
+                                                            {{ @$order_settings_list[32]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="Leaving_soon_videos"
+                                                            @if ($settings->Leaving_soon_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[33]->header_name)
+                                                            {{ @$order_settings_list[33]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="epg"
+                                                            @if ($settings->epg == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[34]->header_name)
+                                                            {{ @$order_settings_list[34]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="Document"
+                                                            @if ($settings->Document == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[35]->header_name)
+                                                            {{ @$order_settings_list[35]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="Document_Category"
+                                                            @if ($settings->Document_Category == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[36]->header_name)
+                                                            {{ @$order_settings_list[36]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="watchlater_videos"
+                                                            @if ($settings->watchlater_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[37]->header_name)
+                                                            {{ @$order_settings_list[37]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="wishlist_videos"
+                                                            @if ($settings->wishlist_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">
+                                                        @if (@$order_settings_list[38]->header_name)
+                                                            {{ @$order_settings_list[38]->header_name }}
+                                                        @else
+                                                            {{ '' }}
+                                                        @endif
+                                                    </label></div>
+
+                                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                    <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input type="checkbox" name="latest_episode_videos" {{ $settings->latest_episode_videos == 1 ? 'checked' : null }} >
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <div class="ml-2">ON</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    @endif
+
                                     <!-- <div class="col-sm-6">
                                                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                                                 <div><label class="mt-1"> @if (@$order_settings_list[23]->header_name)
@@ -1622,6 +1855,180 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[30]->header_name)
+                                                        {{ @$order_settings_list[30]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Series_Networks"
+                                                        @if ($mobilesettings->Series_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[31]->header_name)
+                                                        {{ @$order_settings_list[31]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Series_based_on_Networks"
+                                                        @if ($mobilesettings->Series_based_on_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                        
+                        <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[34]->header_name)
+                                                        {{ @$order_settings_list[34]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Document"
+                                                        @if ($mobilesettings->Document == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[35]->header_name)
+                                                        {{ @$order_settings_list[35]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Document_Category"
+                                                        @if ($mobilesettings->Document_Category == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[36]->header_name)
+                                                        {{ @$order_settings_list[36]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="watchlater_videos"
+                                                        @if ($mobilesettings->watchlater_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[37]->header_name)
+                                                        {{ @$order_settings_list[37]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="wishlist_videos"
+                                                        @if ($mobilesettings->wishlist_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[38]->header_name)
+                                                        {{ @$order_settings_list[38]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="latest_episode_videos"
+                                                        @if ($mobilesettings->latest_episode_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
                             {{-- <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
@@ -1646,7 +2053,6 @@
                             </div> --}}
                             {{-- </div> --}}
                         </div>
-
                         <div class="row ">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary mt-3" name="submit"> Save
@@ -1938,24 +2344,4 @@
 
         });
     </script>
-    <!--
-                                        <script>
-                                            $(document).ready(function() {
-                                                $(".theme_color").on("click", function() {
-                                                    if ($(this).is(":checked")) {
-                                                        $(this).val(1);
-                                                    } else {
-                                                        $(this).val(0);
-                                                    }
-                                                });
-                                                $(".theme_color").on("click", function() {
-                                                    if ($(this).is(":checked")) {
-                                                        $(this).val(1);
-                                                    } else {
-                                                        $(this).val(0);
-                                                    }
-                                                });
-                                            });
-                                        </script>
-                                -->
 @stop

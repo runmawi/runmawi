@@ -108,6 +108,7 @@ class AdminUsersController extends Controller
         $user = $request->user();
         
         $total_subscription = Subscription::where('stripe_status', '=', 'active')->count();
+        $total_subscription = Subscription::count();
 
         $total_videos = Video::where('active', '=', 1)->count();
 
@@ -282,6 +283,7 @@ class AdminUsersController extends Controller
             'post_route' => URL::to('admin/user/store') ,
             'admin_user' => Auth::user() ,
             'button_text' => 'Create User',
+            'SubscriptionPlan' => SubscriptionPlan::all(),
         );
 
         return \View::make('admin.users.create_edit', $data);
@@ -315,7 +317,7 @@ class AdminUsersController extends Controller
         $validatedData = $request->validate(['email' => 'required|max:255', 'username' => 'required|max:255', ]);
 
         $input = $request->all();
-       
+
 
         if(empty($input['active'])){
             $active = 0 ;
@@ -354,26 +356,66 @@ class AdminUsersController extends Controller
             $avatar = $file->getClientOriginalName();
 
         }else{
-            $avatar = null;
+            $avatar = 'profile.png';
         }
         $string = Str::random(60);
 
         $password = Hash::make($request['passwords']);
 
-        DB::table('users')->insert(
-            [
-                'username' => $request['username'],
-                'email' => $request['email'],
-                'mobile' => $request['mobile'],
-                'ccode' => $request['ccode'],
-                'role' => $request['role'],
-                'activation_code' => $string,
-                'active' => $active,
-                'avatar' =>  $avatar ,
-                //  terms = $request['terms'],
-                'password' => $password,
-        ]);
+        if($input['role'] == 'subscriber' && !empty($input['plan'])  
+        || $input['role'] == 'registered' || $input['role'] == 'admin'){
 
+            $User = new User();
+            $User->username = $request['username'];
+            $User->email = $request['email'];
+            $User->mobile = $request['mobile'];
+            $User->ccode = $request['ccode'];
+            $User->role = $request['role'];
+            $User->activation_code = $string;
+            $User->active = $active;
+            $User->avatar = $avatar;
+            $User->password = $password;
+            $User->save();
+            $User_id = $User->id;
+
+        }else{
+
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Need to Add User',
+                'note_type' => 'failed'
+            ));
+        }
+
+        if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($User_id)){
+
+            $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+
+            $current_date = date('Y-m-d h:i:s');    
+            $next_date = $SubscriptionPlan->days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+
+            $subscription = new Subscription();
+            $subscription->name = $User->username;
+            $subscription->price = $SubscriptionPlan->price;
+            $subscription->user_id = $User_id;
+            $subscription->stripe_id = $SubscriptionPlan->plan_id;
+            $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+            $subscription->stripe_status  = 'active';
+            $subscription->name = $user->username;
+            $subscription->days = $SubscriptionPlan->days;
+            $subscription->regionname = Region_name();
+            $subscription->countryname = Country_name();
+            $subscription->cityname = city_name();
+            $subscription->PaymentGateway =  $SubscriptionPlan->type;
+            $subscription->ends_at = $date;
+            $subscription->save();
+
+        }else{
+            return Redirect::to('admin/user/create')->with(array(
+                'message' => 'Added User Successfully',
+                'note_type' => 'failed'
+            ));
+        }
 
 
         $settings = Setting::first();
@@ -553,6 +595,64 @@ class AdminUsersController extends Controller
                 'stripe_active' => $input['stripe_active'],
             ]);
 
+        $User = User::where('id',$id)->first();
+
+
+        if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($id)){
+
+            $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+
+            $current_date = date('Y-m-d h:i:s');    
+            $next_date = $SubscriptionPlan->days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+            $Subscription = Subscription::where('user_id',$id)->first();
+            if(!empty($Subscription)){
+                $User = User::where('id',$id)->first();
+                $subscription = Subscription::where('user_id',$id)->first();
+
+                $subscription->name = $User->username;
+                $subscription->price = $SubscriptionPlan->price;
+                $subscription->user_id = $id;
+                $subscription->stripe_id = $SubscriptionPlan->plan_id;
+                $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+                $subscription->stripe_status  = 'active';
+                $subscription->name = $user->username;
+                $subscription->days = $SubscriptionPlan->days;
+                $subscription->regionname = Region_name();
+                $subscription->countryname = Country_name();
+                $subscription->cityname = city_name();
+                $subscription->PaymentGateway =  $SubscriptionPlan->type;
+                $subscription->ends_at = $date;
+                $subscription->save();
+
+            }else{
+
+                $subscription = new Subscription();
+                $subscription->name = $User->username;
+                $subscription->price = $SubscriptionPlan->price;
+                $subscription->user_id = $id;
+                $subscription->stripe_id = $SubscriptionPlan->plan_id;
+                $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+                $subscription->stripe_status  = 'active';
+                $subscription->name = $user->username;
+                $subscription->days = $SubscriptionPlan->days;
+                $subscription->regionname = Region_name();
+                $subscription->countryname = Country_name();
+                $subscription->cityname = city_name();
+                $subscription->PaymentGateway =  $SubscriptionPlan->type;
+                $subscription->ends_at = $date;
+                $subscription->save();
+            }
+
+        }else{
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Need to Add Plan',
+                'note_type' => 'failed'
+            ));
+            return Redirect::to('admin/users')->with(array('message' => 'Need to Select Plan ID','note_type' => 'success'));
+        }
+
+
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User','note_type' => 'success'));
     }
 
@@ -603,6 +703,7 @@ class AdminUsersController extends Controller
             'post_route' => URL::to('admin/user/update') ,
             'admin_user' => Auth::user() ,
             'button_text' => 'Update User',
+            'SubscriptionPlan' => SubscriptionPlan::all(),
         );
         return View::make('admin.users.edit', $data);
     }
@@ -786,12 +887,14 @@ class AdminUsersController extends Controller
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
             $file->move($path, $input['avatar']);
+            
+            $user_update = User::find($id);
+            $user_update->avatar = $file->getClientOriginalName();
+            $user_update->save();
 
         }
 
-        $user_update = User::find($id);
-        $user_update->avatar = $file->getClientOriginalName();
-        $user_update->save();
+
 
         return Redirect::back();
 
@@ -1167,6 +1270,34 @@ class AdminUsersController extends Controller
         // return Redirect::back();
         
     }
+
+
+    public function DeviceLogout($userIp,$id)
+    {
+        $device = LoggedDevice::find($id);
+        $username = @$device
+            ->user_name->username;
+        $email = @$device
+            ->user_name->email;
+        $device_name = @$device->device_name;
+        $user_ip = @$device->user_ip;
+
+        $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
+        $LoggedDevice = LoggedDevice::get();
+        if (!empty($LoggedDevice))
+        {
+            $user_id = $LoggedDevice[0]->user_id;
+            $user = User::where('id', $user_id)->first();
+            $username = $user->username;
+        }
+        LoggedDevice::destroy($id);
+        $settings = Setting::find(1);
+
+
+        return Redirect::to('home');
+        
+    }
+
     public function ApporeDevice($ip, $id, $device_name)
     {
         // $adddevice = new LoggedDevice;
@@ -1206,8 +1337,10 @@ class AdminUsersController extends Controller
     public function RejectDevice($userIp, $device_name)
     {
         $maildevice = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
-        $maildevice->status = 2;
-        $maildevice->save();
+        if(!empty($maildevice)){
+            $maildevice->status = 2;
+            $maildevice->save();
+        }
         $system_settings = SystemSetting::first();
         $user = User::where('id', '=', 1)->first();
         $message = 'Approved User For Login';
@@ -2808,30 +2941,19 @@ class AdminUsersController extends Controller
 
     public function profilePreference(Request $request)
     {
-        $data = $request->all();
-        $id = $data['user_id'];
-        $preference = User::find($id);
 
-        if (!empty($data['preference_language']))
-        {
-            $preference_language = json_encode($data['preference_language']);
-            $preference->preference_language = $preference_language;
-        }
-        if (!empty($data['preference_genres']))
-        {
-            $preference_genres = json_encode($data['preference_genres']);
-            $preference->preference_genres = $preference_genres;
-        }
-        $preference->save();
+        $inputs = array(
+            'preference_language' => !empty($request->preference_language) ? json_encode($request->preference_language) : null ,
+            'preference_genres'   => !empty($request->preference_genres ) ? json_encode($request->preference_genres ) : null ,
+        ) ;
+        
+        User::find($request->user_id)->update($inputs);
 
-        return Redirect::to('/myprofile')
-            ->with(array(
-            'message' => 'Successfully Created Preference',
-            'note_type' => 'success'
-        ));
+        return Redirect::to('/myprofile')->with(array('message' => 'Successfully Created Preference', 'note_type' => 'success'));
 
     }
- public function myprofile()
+
+    public function myprofile()
     {
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -2960,6 +3082,9 @@ class AdminUsersController extends Controller
             {
                 $video = [];
             }
+
+
+
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
@@ -2976,7 +3101,6 @@ class AdminUsersController extends Controller
                 'UserTVLoginCode' => $UserTVLoginCode,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
-
             );
             
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
@@ -3218,7 +3342,32 @@ class AdminUsersController extends Controller
          \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
         \DB::raw('(subscription_plans.price) as count') ,
         ]);
+        $subscriber_Revenue = Subscription::
+            // join('users', 'subscriptions.user_id', '=', 'users.id')
+        join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
 
+        // ->where('subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
+        // ->where('users.role','subscriber')
+        // ->select(
+        //     // 'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
+        //      'subscription_plans.price as total_amount',
+        // 'subscription_plans.plans_name',  'subscriptions.created_at',
+        // // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
+        // \DB::raw('(subscription_plans.price) as count')
+    // )
+    ->get();
+    $subscriber_Revenue = Subscription::join('users', 'subscriptions.user_id', '=', 'users.id')
+    ->select(
+            'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
+             'subscriptions.price as total_amount',
+             'subscriptions.stripe_plan as stripe_plan',
+        'subscriptions.created_at',
+        // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
+        \DB::raw('(subscriptions.price) as count')
+    )->orderBy('subscriptions.created_at','desc')
+    ->get();
+
+        // dd($subscriber_Revenue);
 
         $data = array(
             'settings' => $settings,

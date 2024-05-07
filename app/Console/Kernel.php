@@ -13,15 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+
         Commands\SubscriptionExpiredUsersCron::class,
-        Commands\LivestreamCron::class,
-        Commands\VideostreamCron::class,
-        Commands\Autodeploy::class,
-        Commands\SubscriptionReminder::class,
-        Commands\SubscriptionRenewal::class,
-        Commands\SubscriptionExpiry::class,
-        Commands\GenerateSitemap::class,
+        Commands\SubscriptionExpiredRoleChangeCron::class,
+        Commands\SubscriberAutoRenewalCron::class,
+
     ];
 
     /**
@@ -32,30 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscriptionexpiredusers:cron')
-        ->everyMinute();
+        $schedule->command('subscriptionexpiredusers:cron')->dailyAt('02:00');
 
-        $schedule->command('Autodeploy:cron')
-        ->everyMinute();
+        $schedule->command('SubscriptionExpiredRoleChange:cron')->dailyAt('12:30');
 
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('livestream:cron')
-        ->everyMinute();
-
-        $schedule->command('videostream:cron')
-        ->everyMinute();
-
-        $schedule->command('SubscriptionReminder:cron')
-        ->everyMinute();
-
-        $schedule->command('SubscriptionRenewal:cron')
-        ->everyMinute();
-
-        $schedule->command('SubscriptionExpiry:cron')
-        ->everyMinute();
-
-        $schedule->command('sitemap:generate')->everyMinute();
-
+        $schedule->command('SubscriberAutoRenewal:cron')->everyMinute();
     }
 
     /**

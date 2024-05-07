@@ -48,16 +48,16 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                            href="<?= route('latest-videos') ?>"><?= __(ucwords('Videos')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('categoryList') ?>"><?= ucwords('Category') ?></a>
+                                            href="<?= route('categoryList') ?>"><?= __(ucwords('Category')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 
-                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? ucwords(substr($categoryVideos['category_title'], 0, 120) . '...') : ucwords($categoryVideos['category_title']); ?>
+                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? __(ucwords(substr($categoryVideos['category_title'], 0, 120) . '...')) : __(ucwords($categoryVideos['category_title'])); ?>
                                         </a></li>
                                 </ol>
                             </div>

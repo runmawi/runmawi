@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<?php include(public_path('themes/theme7/views/header.php')); 
+<?php include(public_path('themes/theme4/views/header.php')); 
   $music_station_url = array_slice(explode('/', request()->url()), -2, 1); 
   if(count($music_station_url) > 0){
     $music_station_button = $music_station_url[0];
@@ -76,7 +76,7 @@
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
 
-        <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+        <button id="backbutton"><i class="fas fa-times"></i></button> 
 
           <div id="show-box">
             <div id="show-list">
@@ -1421,4 +1421,4 @@ html,body{
   }
   
 </style>
-<?php include(public_path('themes/theme7/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php')); ?>

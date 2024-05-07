@@ -26,13 +26,13 @@
                               <div class="block-images position-relative">
                                  <div class="img-box">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="">
-                                       @if(!empty($video->ppv_price))
+                                       <!-- @if(!empty($video->ppv_price))
                                           <p class="p-tag1" ><?php echo $respond_data['currency']->symbol.' '.$video->ppv_price; ?></p>
                                        @elseif( !empty($video->global_ppv || !empty($video->global_ppv) && $video->ppv_price == null)) 
                                           <p class="p-tag1"><?php echo $video->global_ppv.' '. $respond_data['currency']->symbol; ?></p>
                                        @elseif($video->global_ppv == null && $video->ppv_price == null )
                                           <p class="p-tag" ><?php echo __("Free"); ?></p>
-                                       @endif
+                                       @endif -->
                                  </div>
 
                                  <div class="block-description">

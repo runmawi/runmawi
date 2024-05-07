@@ -1,126 +1,97 @@
-<?php include('header.php');?>
+<?php include('header.php'); ?>
 
- <!-- loader Start -->
- <!--<div id="loading">
-    <div id="loading-center">
-    </div>
- </div>-->
- <!-- loader END -->
+<!-- MainContent -->
+<div class="main-content">
+    <div class="container-fluid">
 
- <!-- MainContent -->
- <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%); padding: 15px 60px 40px;!important;">
-     <div class="container-fluid">
-          <div class="row">
-     <div class="col-sm-12 overflow-hidden">
-        <div class="iq-main-header d-flex align-items-center justify-content-between"> </div>
-     </div>
-     <section class="movie-detail ">
-        <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
-            <h4 class="main-title">Videos</h4>       
-        <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-             <?php if(count($channelwatchlater) > 0):
-                   foreach($channelwatchlater as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
-                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                <li class="slide-item position-relative">
-                <!-- block-images -->
-                   <div class="block-images position-relative">
-                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
-                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
-                        </video>
-                    </div>
-
-                        <div class="block-description">
-                            <div class="hover-buttons d-flex">
-                                <a type="button" class="text-white"
-                                href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
-                                </a>
-                                <div >
-                                </div>
-                            </div>
-                        </div>
-                       <div>
-                           
-                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                 <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                               
-                            </div>
-                            <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                       </div>
-                </li>
-                </a>
+        <div class="row">
+            <div class="col-sm-12 overflow-hidden">
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h2 class="Continue Watching">Media in My Wishlist</h2>
+                </div>
             </div>
-                              <?php endforeach; 
-            endif; ?>
-            </ul>
-         </div>
-
-         <h4 class="main-title">Live Videos</h4>  
-         <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-            <?php if(count($livevideos) > 0): ?>
-
-            <?php
-                   foreach($livevideos as $video): ?>
-                             
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
-                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                <li class="slide-item position-relative">
-                <!-- block-images -->
-                   <div class="block-images position-relative">
-                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
-                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
-                        </video>
-                    </div>
-
-                        <div class="block-description">
-                            <div class="hover-buttons d-flex">
-                                <a type="button" class="text-white"
-                                href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
-                                </a>
-                                <div >
-                                </div>
-                            </div>
-                        </div>
-                       <div>
-                            
-                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                                
-                            </div>
-                           <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                       </div>
-                </li>
-                </a>
-            </div>
-                            <?php endforeach; 
-                        endif; ?>
-             </ul>
-         </div>
-                
-            <?php else: ?>
-           
-                <div class="col-md-12 text-center mt-4" style="margin-left:30%;">
-            <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" >
-                      <p class="med">No Media in My WishLists</p>
-                     <a class="mb-5 text-white pag">Please refresh your page to retry</a>
         </div>
-        <?php endif; ?>
-        
-        
-      </section>
-         </div>
-     </div>
+
+        <div class="favorites-contens">
+            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <?php  if(isset($channelwatchlater)) {
+                        foreach($channelwatchlater as $channelwatchlater_videos){  ?>
+                        <li class="slide-item">
+                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>">
+                                <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>">
+                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$channelwatchlater_videos->image;  ?>" class="img-fluid loading" alt=""> 
+                                            </a>
+                                        </div>
+
+                                        <div class="block-description">
+                                            <div class="hover-buttons">
+                                                <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>">
+                                                    <div class="playbtn" style="gap:5px">  
+                                                        <span class="text pr-2"> <?php echo (__('Play')) ?> </span>
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                        </svg>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php } }elseif((count($channelwatchlater) == 0) || (count($episode_videos) == 0)) {  ;?>
+
+                        <p><h2>No Media in My WishLists</h2></p>
+                        <div class="col-md-12 text-center mt-4">
+                            <img class="w-50" style="width: 50%!important;" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+                        </div>
+                </ul>
+
+                    <?php }?>
+
+                    <!-- Episode -->
+                <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <?php  if(isset($episode_videos)) :
+                        foreach($episode_videos as $episode_videos):  ?>
+                        <li class="slide-item">
+                            <a href="<?php echo URL::to('home') ?>">
+
+                                <?php 
+                                    $series_slug = App\Series::where('id',$episode_videos->series_id)->pluck('slug')->first();
+                                 ?>
+                                <div class="block-images position-relative">
+                                    <div class="img-box">
+                                        <a  href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
+                                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$episode_videos->image;  ?>" class="img-fluid loading" alt=""> 
+                                        </a>
+                                    </div>
+
+                                    <div class="block-description">
+                                        <div class="hover-buttons">
+                                            <a class="" href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
+                                                <div class="playbtn" style="gap:5px">  
+                                                    <span class="text pr-2"> <?php echo (__('Play')) ?> </span>
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endforeach; endif; ?>
+                </ul>
+        </div>
+
+    </div>
  </div>
+
  <script>
 $('.mywishlist').click(function(){
      var video_id = $(this).data('videoid');

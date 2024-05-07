@@ -45,6 +45,7 @@ class HomesettingTableSeeder extends Seeder
                     'AudioGenre' => 0,
                     'AudioGenre_audios' => 0,
                     'AudioAlbums' => 0,
+                    'Leaving_soon_videos' => 0 ,
                     'created_at' => Carbon::now(),
                 ],
         ];

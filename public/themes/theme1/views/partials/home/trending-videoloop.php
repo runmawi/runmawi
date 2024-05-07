@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title">
 <a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>">                   
-  <?php if ($order_settings_list[0]->header_name) { echo __($order_settings_list[0]->header_name) ;} else { echo "" ; } ?>
+  <?php if ($order_settings_list[0]->header_name) { echo (__($order_settings_list[0]->header_name)) ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h4>    
 </div>
@@ -100,7 +100,7 @@
                     </div></div>
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($watchlater_video->title) > 17) ? mb_substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
@@ -159,8 +159,9 @@
                             $Category_Thumbnail = array();
                                 foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                 $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                echo (__($CategoryThumbnail).' ');
                                 }
-                            echo implode(','.' ', $Category_Thumbnail);
+                            // echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
                     <?php } ?>

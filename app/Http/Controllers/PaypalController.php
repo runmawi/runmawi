@@ -20,6 +20,15 @@ use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Agreement;
 use PayPal\Api\Payer;
 use PayPal\Api\ShippingAddress;
+use PayPal\Api\Amount;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use App\Video;
+use App\ModeratorsUser;
+use App\VideoCommission;
+use App\Channel;
+use App\PpvPurchase;
 
 class PaypalController extends Controller
 {
@@ -31,7 +40,7 @@ class PaypalController extends Controller
     // Create a new instance with our paypal credentials
     public function __construct()
     {
-        // Detect if we are running in live mode or sandbox
+        // // Detect if we are running in live mode or sandbox
         if(config('paypal.settings.mode') == 'live'){
             $this->client_id = config('paypal.live_client_id');
             $this->secret = config('paypal.live_secret');
@@ -43,6 +52,16 @@ class PaypalController extends Controller
         // Set the Paypal API Context/Credentials
         $this->apiContext = new ApiContext(new OAuthTokenCredential($this->client_id, $this->secret));
         $this->apiContext->setConfig(config('paypal.settings'));
+
+        // $this->apiContext = new ApiContext(
+        //     new OAuthTokenCredential(
+        //         config('services.paypal.client_id'),
+        //         config('services.paypal.secret')
+        //     )
+        // );
+
+        // $this->apiContext->setConfig(config('services.paypal.settings'));
+
     }
 
     public function create_plan(){
@@ -228,5 +247,64 @@ class PaypalController extends Controller
         return response()->json($response);
 
     }
-    
+
+    public function createPayment(Request $request)
+    {
+        $apiContext = $this->apiContext;
+
+        $payer = new Payer();
+        $payer->setPaymentMethod('paypal');
+
+        $amount = new Amount();
+        $amount->setTotal(10.00); // Set the total amount
+        $amount->setCurrency('USD'); // Set the currency
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount);
+        $transaction->setDescription('Your payment description');
+
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl(url('/paypal/execute-payment')); // Set your return URL
+        $redirectUrls->setCancelUrl(url('/')); // Set your cancel URL
+
+        $payment = new Payment();
+        $payment->setIntent('sale');
+        $payment->setPayer($payer);
+        $payment->setTransactions([$transaction]);
+        $payment->setRedirectUrls($redirectUrls);
+
+        try {
+            $payment->create($apiContext);
+            // Redirect the user to PayPal for approval
+            return redirect($payment->getApprovalLink());
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()], 500);
+        }
+    }
+
+    public function executePayment(Request $request)
+    {
+        $apiContext = $this->apiContext;
+
+        $paymentId = $request->input('paymentId');
+        $payerId = $request->input('PayerID');
+
+        $payment = Payment::get($paymentId, $apiContext);
+
+        $execution = new PaymentExecution();
+        $execution->setPayerId($payerId);
+
+        try {
+            $result = $payment->execute($execution, $apiContext);
+
+            // Handle the successful payment execution
+            // You can store payment information or perform other actions here
+
+            return response()->json(['success' => 'Payment completed successfully']);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()], 500);
+        }
+    }
+
+
 }

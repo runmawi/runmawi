@@ -1,6 +1,8 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
         <h4 class="main-title"><a href=""><?php echo (__('Preference By Genres')); ?> </a></h4>   
-        <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                   
+        <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+            <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>      
+        <?php endif; ?>             
 </div>
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -14,7 +16,7 @@
                     <div class="border-bg">
                         <div class="img-box">
                                     <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
+                                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>"  alt="p-img"> 
                                          
                                     </a>
 
@@ -37,7 +39,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->player_image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
+                                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->player_image;  ?>"  alt="p-img"> 
                                          
                                     
 
@@ -153,7 +155,7 @@
 
                                   
                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>" >
-                                          <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                          <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                 </div>
                             </div>

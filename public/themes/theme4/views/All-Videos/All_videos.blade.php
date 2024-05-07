@@ -1,4 +1,4 @@
-@php include(public_path('themes/theme7/views/header.php')); @endphp
+@php include(public_path('themes/theme4/views/header.php')); @endphp
 
 <section id="iq-favorites mt-4">
    <div class="container-fluid mb-5 mt-4">
@@ -157,4 +157,4 @@
       </div>
    </div>
 </div>
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>

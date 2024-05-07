@@ -473,7 +473,7 @@ div#lottie-beil svg path, div#lottie-mail svg path, div#lottie-fullscreen svg pa
 /*---------------------------------------------------------------------
 content Page
 -----------------------------------------------------------------------*/
-.content-page { overflow: hidden; margin-left: 300px; padding: 100px 15px 0;-webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
+.content-page {  margin-left: 300px; padding: 100px 15px 0;-webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .content-page1 { overflow: hidden; margin-left: 300px; padding: 60px 15px 0; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .media-body{
     border-left :1px solid #f1f1f1;
@@ -517,7 +517,7 @@ body.sidebar-main .content-page { margin-left: 80px; }
 .form_textarea { border: 1px solid transparent; display: block; height: 136px; position: relative; color: var(--iq-white); font-size: 16px; width: 100%; padding: 15px 20px; letter-spacing: 0.4px; resize: none; background-color: rgba(210, 201, 255, 0.04); -webkit-border-radius: 6px; border-radius: 6px; }
 .form_video-upload { position: absolute; top: 0; left: 0; right: 0; background:#f7f7f7; }
 .form_video-upload p { width: 100%; height: 100%; text-align: center; line-height: 200px; color: #000000; }
-.form_video-upload input { position: absolute; margin: 0; padding: 0; width: 100%; height: 100%; outline: none; opacity: 0; }
+.form_video-upload input { position: absolute; margin: 0; padding: 0; width: 100%; height: 100%; outline: none; opacity: 1; }
 .radio-box label { color: var(--iq-body-text); }
 .radio-btn { margin-left: 20px; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b{ z-index: 9; }
@@ -621,7 +621,7 @@ Select 2
 .select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected=true] { background-color: var(--iq-primary); color: var(--iq-white); }
 .select2-container .select2-selection--single .select2-selection__rendered { line-height: calc(1.5em + 1.2rem); padding-left: 10px; }
 .select2-container--bootstrap4.select2-container--focus .select2-selection { box-shadow: none; }
-.select2-search--dropdown .select2-search__field { border-radius: 0; border: none; background: var(--iq-light-card); color: var(--iq-white); }
+.select2-search--dropdown .select2-search__field { border-radius: 0; border: none; /*background: var(--iq-light-card); color: var(--iq-white);*/ }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { border: none; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: "remixicon"; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
 .select2-container--bootstrap4.select2-container--open .select2-selection__arrow b:before { transform: translateY(-50%) rotate(180deg); }

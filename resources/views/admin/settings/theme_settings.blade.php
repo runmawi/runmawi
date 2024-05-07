@@ -219,16 +219,17 @@ border-radius: 0px 4px 4px 0px;
 
                             </div>
                         </div>
-
-                        <div class="col-sm-6">
-                            <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Audio_Page_checkout == 1)
+                            <div class="col-sm-6">
+                                <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        @endif 
                     </div>
 
                     <br>
@@ -382,27 +383,13 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;"> Player 2 (Only for Videos) </div>
                             </div>
                         </div>
-                    </div>  
 
+                        
+                    </div> 
 
                     <div class="row d-flex"> 
-                        <div class="col-md-6">
-                            <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
+                        
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                                <div style="color:red;">Vod</div>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="content_partner_checkout"  type="checkbox" @if( $settings->content_partner_checkout == "1") checked  @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div style="color:green;">Aod</div>
-                            </div>
-                        </div>
-
-
-                    
                         <div class="col-md-6">
                             <label>{{ (__('Enable Translate Option')) }} </label>
 
@@ -418,11 +405,190 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Admin Ads Pre/Post Position')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                                <div style="color:#006AFF;"> Individual  <span> (Default)</span>  </div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="admin_ads_pre_post_position"  type="checkbox" @if( $settings->admin_ads_pre_post_position == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;"> Combine (Only for Videos) </div>
+                            </div>
+                        </div>
+
                     </div>
 
+                    <div class="row d-flex">
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Content_Partner_Page_checkout == 1)
+                            <div class="col-md-6">
+                                <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
+
+                                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                    <div style="color:red;">Vod</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="content_partner_checkout"  type="checkbox" @if( $settings->content_partner_checkout == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div style="color:green;">Aod</div>
+                                </div>
+                            </div>
+                        @endif 
+                    </div>
+
+                    
+                    <div class="row d-flex"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Header_Top_Position_checkout == 1)
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Header Top Position')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="header_top_position"  type="checkbox" @if( $settings->header_top_position == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable (Only for theme-4)</div>
+                            </div>
+                        </div>
+                        @endif 
+
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Header_Side_Position_checkout == 1)
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Header Side Position')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="header_side_position"  type="checkbox" @if( $settings->header_side_position == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable (Only for theme-4)</div>
+                            </div>
+                        </div>
+                        @endif 
+            
+                    </div>
+                    
+                    <div class="row d-flex"> 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Extract_Images_checkout == 1)
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable Extract Images')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:blue;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_extract_image"  type="checkbox" @if( $settings->enable_extract_image == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+
+                    <div class="col-md-6">
+                        <label>{{ (__('Enable Bunny CDN Option')) }} </label>
+
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div style="color:red;">Off</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="enable_bunny_cdn"  type="checkbox" @if( $settings->enable_bunny_cdn == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div style="color:green;">On</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex"> 
                 
+                    <div class="col-md-6">
+                            <label>{{ (__('Enable Tv Activation Code')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="Tv_Activation_Code"  type="checkbox" @if( $settings->Tv_Activation_Code == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                            <label>{{ (__('Enable Tv Logged User List')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="Tv_Logged_User_List"  type="checkbox" @if( $settings->Tv_Logged_User_List == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                <div class="row d-flex"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Moderator Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_moderator_payment"  type="checkbox" @if( $settings->enable_moderator_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Channel Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_payment"  type="checkbox" @if( $settings->enable_channel_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
 
                     </div>
+                    </div>
+
+                </div>
+
+                    </div>
+                
                 </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">

@@ -1,7 +1,7 @@
 {{-- Header --}}
 @php 
-    include(public_path('themes/theme3/views/header.php')); 
-    include(public_path('themes/theme7/views/ChannelPartner/channelpartner_style.blade.php')); 
+    include(public_path('themes/theme4/views/header.php')); 
+    include(public_path('themes/theme4/views/ChannelPartner/channelpartner_style.blade.php')); 
 @endphp
 
     <section class="sign-in-page" style="background: linear-gradient(86.02deg, #04152C 12.81%, rgba(0, 0, 0, 0) 95.61%), url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover; ">
@@ -59,4 +59,4 @@
     </section>
 
 {{-- Footer --}}
-@php include(public_path('themes/theme3/views/footer.blade.php')); @endphp
+@php include(public_path('themes/theme4/views/footer.blade.php')); @endphp

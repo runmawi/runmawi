@@ -57,7 +57,7 @@ use GuzzleHttp\Message\Response;
 use App\Videoartist;
 use App\RelatedVideo;
 use App\LanguageVideo;
-use App\Blockvideo;
+use App\BlockVideo;
 use App\ReelsVideo;
 use App\PlayerAnalytic;
 use App\CategoryVideo;
@@ -77,6 +77,9 @@ use App\SeriesSubtitle;
 use App\SeriesLanguage;
 use App\SeriesCategory;
 use App\SeriesSeason;
+use App\ChannelRoles;
+use App\ModeratorsPermission;
+use App\ChannelSignupMenu;
 use App\Episode;
 
 class ChannelLoginController extends Controller
@@ -110,6 +113,7 @@ class ChannelLoginController extends Controller
         $settings = Setting::first();
         $data = array(
             'settings' => $settings,
+            'ChannelSignupMenu' => ChannelSignupMenu::first(),
         );
         return Theme::view('Channel.register', $data);
 
@@ -119,7 +123,8 @@ class ChannelLoginController extends Controller
     {
         $input = $request->all();
         $request->validate(['email_id' => 'required|email|unique:channels,email', 'password' => 'min:6', ]);
-        // dd($input);
+        
+        $ChannelRoles = ChannelRoles::where('id', 3)->first();
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
@@ -199,9 +204,11 @@ class ChannelLoginController extends Controller
             $channel->activation_code = $string;
             $channel->intro_video = $intro_video;
             $channel->channel_image = $image;
+            $channel->role_id       = !empty($ChannelRoles) ? $ChannelRoles->id : 3;
+            $channel->user_permission = !empty($ChannelRoles) ? $ChannelRoles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
             $channel->status = 0;
             $channel->save();
-
+            
             $user_data = User::where('email', $request->email_id)->first();
 
             if(empty($user_data)){
@@ -247,7 +254,7 @@ class ChannelLoginController extends Controller
 
                 $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
                 $email_template = "43";
-                $user_id = $user->id;
+                $user_id = $channel->id;
 
                 Email_sent_log($user_id, $email_log, $email_template);
             }
@@ -284,7 +291,7 @@ class ChannelLoginController extends Controller
             {
                 $email_log = $e->getMessage();
                 $email_template = "43";
-                $user_id = $user->id;
+                $user_id = $channel->id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
             }
@@ -350,12 +357,29 @@ class ChannelLoginController extends Controller
 
                 if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
+                    if(!empty($channel->parent_channel_id) || $channel->parent_channel_id != null){
+                        $channel->id = $channel->parent_channel_id;
+                    }
+                        // dd($channel);
+
+                    if(!empty($channel->user_permission)){
+
+                        $userPermissions = explode(',', $channel->user_permission);
+
+                        $userPermissions = ModeratorsPermission::whereIn('id', $userPermissions)->get();
+                    }else{
+                        $userPermissions = [];
+                    }
+
+
                     $settings = Setting::first();
                     $data = array(
                         'settings' => $settings,
                         'channel' => $channel,
+                        'userPermissions' => $userPermissions,
                     );
                     Session::put('channel', $channel);
+                    Session::put('userPermissions', $userPermissions);
                     return \View::make('channel.dashboard', $data);
                 }
                 elseif (!empty($channel) && $channel->status == 0)
@@ -1087,7 +1111,7 @@ public function destroy($id)
     Videoartist::where('video_id', $Video_id)->delete();
     RelatedVideo::where('video_id', $Video_id)->delete();
     LanguageVideo::where('video_id', $Video_id)->delete();
-    Blockvideo::where('video_id', $Video_id)->delete();
+    BlockVideo::where('video_id', $Video_id)->delete();
     ReelsVideo::where("video_id", $Video_id)->delete();
     PlayerAnalytic::where("videoid", $Video_id)->delete();
     CategoryVideo::where("video_id", $Video_id)->delete();
@@ -1130,6 +1154,8 @@ public function ChannelCreate(Request $request)
     $settings = Setting::first();
     $data = array(
         'settings' => $settings,
+        'Channels' => Channel::select('id','channel_name')->get(),
+        'ChannelRoles' => ChannelRoles::get(),
     );
 
     return \View::make('channel.admin.create', $data);
@@ -1143,7 +1169,9 @@ public function ChannelStore(Request $request)
         $input = $request->all();
         $request->validate(['email' => 'required|email|unique:channels,email' ]);
 
-            $channel_logo = (isset($input['channel_logo'])) ? $input['channel_logo'] : '';
+        $channel_roles = ChannelRoles::where('id',$input['channel_roles'])->first();
+
+        $channel_logo = (isset($input['channel_logo'])) ? $input['channel_logo'] : '';
 
 
             $logopath = URL::to("/public/uploads/channel/");
@@ -1212,6 +1240,11 @@ public function ChannelStore(Request $request)
             $channel->mobile_number = $request->mobile_number;
             $channel->channel_logo = $channel_logo;
             $channel->intro_video = $intro_video;
+            $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
+            $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
+            $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
+            $channel->password = Hash::make($request->password);
+            $channel->unhased_password = $request->password;
             $channel->status = 1;
             $channel->save();
 
@@ -1242,6 +1275,8 @@ public function ChannelEdit( $id)
     $Channel = Channel::where('id',$id)->first();
     $data = array(
         'Channel' => $Channel,
+        'Channels' => Channel::select('id','channel_name')->where('id','!=',$id)->get(),
+        'ChannelRoles' => ChannelRoles::get(),
     );
 
     return \View::make('channel.admin.edit', $data);
@@ -1255,6 +1290,7 @@ public function ChannelUpdate(Request $request)
     
     $id = $data['id'];
 
+    $channel_roles = ChannelRoles::where('id',$data['channel_roles'])->first();
     
     $channel = Channel::where('id',$id)->first();
     if(!empty($data['channel_name'])){
@@ -1360,6 +1396,11 @@ public function ChannelUpdate(Request $request)
     $channel->intro_video = $intro_video;
     $channel->channel_about = $request->channel_about;
     $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
+    $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
+    $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
+    $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
+    $channel->password = Hash::make($request->password);
+    $channel->unhased_password = $request->password;
     $channel->save();
 
     return \Redirect::back()->with('message','Update User Profile');

@@ -1,6 +1,6 @@
 <?php  if(isset($latest_episodes)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title"><?= __('Recently Added Episodes')  ?></h4>                      
+  <h4 class="main-title"><?= (__('Recently Added Episodes'))  ?></h4>                      
 </div>
 <?php  endif; ?>
 <div class="favorites-contens">
@@ -16,16 +16,18 @@
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
                 
-              </div></div>
+              </div>
               <div class="block-description">
               
                 <div class="hover-buttons d-flex">
                 <a class="text-white " href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
-                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                    <i class="fa fa-play mr-1"></i> <?= __('Watch Now') ?> 
                   
                   </a>
                 </div>
               </div>
+            </div>
+              
               <div>
                   
                 <div class="movie-time d-flex align-items-center justify-content-between my-2">

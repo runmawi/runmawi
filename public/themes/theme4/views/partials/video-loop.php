@@ -5,60 +5,112 @@
 <section id="">
             <div class="">
                <div class="row">
-                  <div class="col-sm-12 ">
+                  <div class="col-sm-12 pl-0">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens ml-2">
-                        <ul class="favorites-slider list-inline row mb-0">
-                            <?php if(isset($recomended)) :
-                           foreach($recomended as $watchlater_video): ?>
+                     <div class="favorites-contens">
 
-                           <li class="slide-item">
-                             <div class="block-images position-relative">
-                              <!-- block-images -->
-                              
-                              <div class="border-bg">
-                                <div class="img-box">
-                                  <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
-                                  </a>
-                                </div>
-                                    <div class="block-description">
-                                       <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
-                                       <div class="movie-time  align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                       </div>
-                                       <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">	
-                                          <span class="text-white">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          <?= __('Play Now') ?>
-                                          </span>
-                                           </a>
-                                       </div>
-                                        <!--<div>
-                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
-                                                <span class="text-center thumbarrow-sec">
-                                                    <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                                </span>
-                                                    </button></div>-->
+                      <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                          <?php if(isset($recomended)) :
+                            foreach($recomended as $watchlater_video): ?>
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <div class="movie-slick position-relative">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" >
                                         </div>
-                                <!--    <div class="block-social-info">
-                                       <ul class="list-inline p-0 m-0 music-play-lists">
-                                          <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                          <li><span><i class="ri-heart-fill"></i></span></li>
-                                          <li><span><i class="ri-add-line"></i></span></li>
-                                       </ul>
-                                    </div>-->
-                                 </div>
-                              </a>
-                           </li>
-                           
+                                    </a>
+                                </li>
                             <?php endforeach; 
-		                          endif; ?>
+		                      endif; ?>
                         </ul>
+
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                          <?php if(isset($recomended)) :
+                              foreach($recomended as $watchlater_video): ?>
+                                <li>
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
+                                        <button class="drp-close">×</button>
+
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                    <div class="caption pl-5">
+                                                            <h2 class="caption-h2" style="text-align: left;"><?php  echo $watchlater_video->title ?></h2>
+                                                            
+                                                       
+
+       
+                                                        <div class="p-btns">
+                                                            <div class="d-flex align-items-center p-0">
+                                                                <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="<?php echo '#watchlater_video-videoloop-Modal-'.$key ?>"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+                                                        <div class="dropdown_thumbnail">
+                                                            <img  src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                              <?php endforeach; 
+		                      endif; ?>
+                        </ul>
+                      </div>
+
+                      <?php if(isset($recomended)) :
+                              foreach($recomended as $watchlater_video): ?>
+                        <div class="modal fade info_model" id="<?php echo "watchlater_video-videoloop-Modal-".$key ?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                <div class="container">
+                                    <div class="modal-content" style="border:none; background-color: transparent;">
+                                        <div class="modal-body">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <img  src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" alt="" width="100%">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                <p class="caption-h2"><?php  echo $watchlater_video->title ?></p>
+
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                          <div class="trending-dec mt-4"><?php  echo $watchlater_video->description ?></div>
+
+                                                        <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      <?php endforeach; 
+                        endif; ?>
+
+
+
+
+
+                        
                      </div>
                   </div>
                </div>
@@ -643,3 +695,66 @@ vid.onloadeddata = function() {
 };
 </script>-->
 
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.latest-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.latest-videos-slider').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: true,
+            fade: true,
+            draggable: false,
+            asNavFor: '.latest-videos-slider-nav',
+        });
+
+        $('.latest-videos-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.latest-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.latest-videos-slider-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.latest-videos-slider').show();
+        });
+
+        $('body').on('click', '.drp-close', function() {
+            $('.latest-videos-slider').hide();
+        });
+    });
+</script>

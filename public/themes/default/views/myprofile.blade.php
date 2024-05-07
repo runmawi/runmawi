@@ -42,7 +42,6 @@ $settings = App\Setting::first();
 
   .name{
      font-size: larger;
-     font-family: auto;
      color: white;
      text-align: center;
   }
@@ -208,9 +207,9 @@ $settings = App\Setting::first();
          <div class="sign-user_card">
         <div class="row align-items-center">
             <div class="col-lg-4 mb-3 bdr">
-                  <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> {{ (__('Home')) }}</button></a>
+                  <a class="" href="{{ URL::to('/home') }}"><button class=' btn bd btn-action back'  style=''> <i class="fas fa-arrow-alt-circle-left"></i> {{ (__('Home')) }}</button></a>
                   <br><br>
-                <h3>{{ (__('Account Settings')) }}</h3>
+                <h4 class="text-white">{{ (__('Account Settings')) }}</h4>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
@@ -221,8 +220,12 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="5">{{ (__('Preference for videos')) }}</a></li>
                         <li><a class="showSingle" target="6">{{ (__('Profile')) }}</a></li>
                         <li><a class="showSingle" target="7">{{ (__('Recently Viewed Items')) }}</a></li>
+                        @if(Tv_Activation_Code()== 1)
                         <li><a class="showSingle" target="8">{{ (__('Tv Activation Code')) }}</a></li>
+                        @endif
+                        @if(Tv_Logged_User_List()== 1)
                         <li><a class="showSingle" target="9">{{ (__('Tv Logged User List')) }}</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -234,21 +237,21 @@ $settings = App\Setting::first();
                     <?php }else{ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
                      <?php } ?>
-                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                    <h4 class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                    </div>
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                 <div class="" id="personal_det">
                 <div class="" >
                     <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h5></div>
-                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
+                    <div><h4 class="mb-2 pb-3 text-white">{{ __('Personal Details') }}</h4></div>
+                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                         </div></div>
                     </div>
                     <div class="a-border"></div>
                    <div class="a-border"></div>
                       <div class="row jusitfy-content-center">
                         <div class="col-md-3 mt-3">
-                            <h5>{{ __('Account Details') }}</h5>
+                            <h4 class="text-white">{{ __('Account Details') }}</h4>
                           </div>
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
@@ -301,7 +304,7 @@ $settings = App\Setting::first();
                           <div class="a-border"></div>
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">{{ __('Update Profile') }}</h5></div>
+                              <div class="col-md-3"> <h4 class="card-title mb-2 text-white">{{ __('Update Profile:') }}</h4></div>
                               <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
@@ -309,11 +312,12 @@ $settings = App\Setting::first();
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                     <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                    <span style="color:red" id="Error_image">Image is Requried*</span>
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
                                  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" id = "profileImageUpdate" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
                             </div>
                         </div>
                                   
@@ -322,6 +326,19 @@ $settings = App\Setting::first();
                    
                       
                 </div>
+
+                <script>
+                  $('#Error_image').hide();
+                  $("#profileImageUpdate").click(function(){
+                     if($('#avatar').val() == ""){
+                           $('#Error_image').show();
+                           return false; // Prevent form submission
+                     }else{
+                        $('#Error_image').hide();
+                     }
+                  });
+
+                </script>
                     <!-- Add New Modal -->
 <div class="modal fade" id="add-profile">
   <div class="modal-dialog">
@@ -386,8 +403,8 @@ $settings = App\Setting::first();
                         <?php }else{ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
                            <?php } ?>
-                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                      <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
+                    <h4 class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                      <h4 class="mb-3 text-white"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
                       <h4 class="mb-3"></h4>
                     
       <div class="text-center">
@@ -407,28 +424,38 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-4 ">
+                     <!-- <div class=" text-center col-sm-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
-                     </div>
+                     </div> -->
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="row text-center">
                            @if(Auth::user()->role == "subscriber")
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
+                           </div>
                            
                            @elseif( Auth::user()->role == "admin")
-
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
                            @else
-                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('Become Subscriber') }} </a>
+                           </div>
                            @endif
                         </div>
 
                         @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
-                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >{{ __('Cancel Membership') }}</a>
+                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
                         @endif
 
                         @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
-                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Cancel Membership') }} </a>
+                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
                         @endif
 
                     </div>
@@ -466,25 +493,25 @@ $settings = App\Setting::first();
                 </div>
                 <div class="targetDiv" id="div5">
                     <div class=" mb-3">
-                  <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
-                  <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                  <h4 class="card-title mb-0 text-white">{{ __('Preference for videos') }}</h4>
+                  <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                   @csrf
                   <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 
                   <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>{{ __('Preference Language') }}</h5></label>
+                    <label><h5 style="color:#fff !important;">{{ __('Preference Language') }}</h5></label>
                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($preference_languages as $preference_language)
-                            <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                        @foreach ($preference_languages as $preference_language)
+                           <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ $preference_language->name }}</option>
                         @endforeach
                     </select>
                  </div>
 
                  <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>{{ __('Preference Genres') }}</h5></label>
+                    <label><h5 style="color:#fff !important;">{{ __('Preference Genres') }}</h5></label>
                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($videocategory as $preference_genres)
-                            <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                        @foreach ($videocategory as $preference_genres)
+                           <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ $preference_genres->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -493,45 +520,50 @@ $settings = App\Setting::first();
                   </form>		
               </div>
                 </div>
-                <div class="targetDiv" id="div6"><div class=" mb-3">
-           <h4 class="card-title mb-0 manage">{{ __('Profile') }} </h4>
-              <div class="col-md-12 profile_image mt-3 p-0">                  
-                  @forelse  ( $profile_details as $profile )
+               <div class="targetDiv" id="div6">
+                  <div class=" mb-3">
+                     <div class="d-flex justify-content-between">
+                        <h4 class="card-title mb-0 manage text-white">{{ __('Profile') }}</h4>
+                        <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> Add Profile</a> 
+                     </div>
+                     <div class="col-md-12 profile_image mt-3 p-0">                  
+                        @forelse  ( $profile_details as $profile )
 
-                    <div class="">
-                        <div>
-                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                           <div class="">
+                              <div>
+                                 <h2 class="name" style="color:#fff !important;">{{ $profile ? $profile->user_name : ''  }}</h2>
 
-                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                              </div>
+                              <div class=" text-center text-white">
+                                 
+                                 <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
+
+                                 @if($Multiuser == null)
+                                    <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                       <i class="fa fa-trash"></i>
+                                    </a> 
+                                 @endif
+
+                              </div>
+                           </div> 
+                        @empty
+                           <div class="col-sm-6">  
+                              <p class="name text-white">{{ __('No Profile') }}  </p>  
+                           </div>
+                        @endforelse
+
+                        <div class="col-md-6">
                         </div>
-                        <div class=" text-center text-white">
-                            
-                           <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
 
-                           @if($Multiuser == null)
-                              <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                 <i class="fa fa-trash"></i>
-                              </a> 
-                           @endif
-
-                        </div>
-                    </div> 
-                  @empty
-                    <div class="col-sm-6">  
-                        <p class="name">{{ __('No Profile') }}  </p>  </div>
-                  @endforelse
-
-                  <div class="col-md-6" style="margin-top: 63px;">
-                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
-                  </div>
-
-              </div>    
-          </div> </div>
-                <div class="targetDiv" id="div7">
+                     </div>    
+                  </div> 
+               </div>
+               <div class="targetDiv" id="div7">
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
-                       <h4 class="card-title">{{ __('Recently Viewed Items') }}</h4>
+                       <h4 class="card-title text-white">{{ __('Recently Viewed Items') }}</h4>
                     </div>
                     
                  </div>
@@ -566,7 +598,28 @@ $settings = App\Setting::first();
                                    </div>
                                 </td>
                                 <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
-                                <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
+
+                                 <td>
+                                    <!-- Genres -->
+                                    @php
+                                        $category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                                                       ->where('categoryvideos.video_id', $val->id)->get();
+                                    @endphp
+
+                                       @foreach ($category_name as $key => $video_category_name) 
+                                          <?php $category_name_length = count($category_name); ?>
+                                          
+                                              <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
+                                                  <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' , ' : '') ?> 
+                                  
+                                       @endforeach
+                                       </td>
+
+
+                                    </p>
+                                 </td>
+                        
+                             
                                <!-- <td>{{ $val->views }}</td> 
                               
                                  <td>{{ $val->created_at }}</td>
@@ -607,14 +660,14 @@ $settings = App\Setting::first();
                   
                   <p class="text-white">{{ __('Tv Logged User List') }}</p>
        
-                               <div class="col-md-4">
+                               <div class="col-md-8 pl-0">
 
                                <table class="table  artists-table iq-card text-center p-0">
-                                          <tr class="r1">
-                                             <th><label> {{ __('S.No') }} </label></th>
-                                             <th><label> {{ __('Email') }} </label></th>
-                                             <th><label> {{ __('TV Code') }} </label></th>
-                                             <th><label> {{ __('Action') }} </label></th>
+                                          <tr class="r1 text-white">
+                                             <th class="text-white"><label> {{ __('S.No') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Email') }} </label></th>
+                                             <th class="text-white"><label> {{ __('TV Code') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Action') }} </label></th>
                                              
                                              @foreach($LoggedusersCode as $key=>$Logged_usersCode)
                                              <tr>
@@ -1009,6 +1062,30 @@ $('#submit-new-cat').click(function(){
     input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
 });
 </script>
+
+<?php 
+$lastSegment = request()->segment(count(request()->segments()));
+?>
+<script>
+        var lastSegment =  <?php  echo json_encode( $lastSegment); ?>; 
+      // alert(lastSegment);
+      if(lastSegment == 'activationcode'){
+
+         $(".targetDiv").hide(); 
+        $(".targetDiv#div8").show();
+        $(".showSingle .dimg").hide();
+
+      }else{
+
+        $(".targetDiv").hide(); 
+        $(".targetDiv#div1").show();
+        $(".showSingle .dimg").hide();
+        
+      }
+</script>
+
+
+
 @php
 include(public_path('themes/default/views/footer.blade.php'));
 @endphp

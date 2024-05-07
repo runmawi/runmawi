@@ -72,6 +72,12 @@
         cursor: pointer;
     }
 </style>
+<style>
+    .admin-section-title {
+        height: 500px; /* Set a fixed height for your container */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+</style>
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -83,7 +89,7 @@
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
-            <div class="admin-section-title">
+            <div class="admin-section-titles">
                 @if(!empty($episodes->id))
                 <h4>{{ $episodes->title }}</h4>
                 <!-- {{ URL::to('episodes') . '/' . $episodes->id }} -->
@@ -96,6 +102,20 @@
             </div>
             <div class="clear"></div>
             <div id="episode_uploads">
+                @if(@$theme_settings->enable_bunny_cdn == 1)
+
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                    <!-- videolibrary -->
+                    <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                            <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select> 
+                    @else
+                        <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                     @endif 
+                    <br>
                 <div class="content file">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
@@ -103,8 +123,45 @@
                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>
+
+            
+                <!-- BunnyCDN Video -->        
+                <div id="bunnycdnvideo" style="">
+                <div class="new-audio-file mt-3">
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                <!-- videolibrary -->
+                <select class="phselect form-control" name="episodelibrary" id="episodelibrary" >
+                            <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select>  
+                </div>
+                    
+                <div class="new-audio-file mt-3">
+                <select class="form-control" id="stream_bunny_cdn_episode" name="stream_bunny_cdn_episode">
+                    <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                </select>
+                </div>
+                <div class="new-audio-file mt-3">
+                <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
+                </div>
+            </div>
+            
+
+
             <div class="text-center" id="buttonNext" style="margin-top: 30px;">
                 <input type="button" id="Next" value="Proceed to Next Step" class="btn btn-primary" />
+            </div>
+            <br>
+
+            <div class="col-md-12 text-center">
+                <div id="optionradio"  >
+                    <input type="radio" class="text-black" value="episodeupload" id="episodeupload" name="episodefile" checked="checked"> Episode Upload &nbsp;&nbsp;&nbsp;
+                    @if(@$theme_settings->enable_bunny_cdn == 1)
+                        <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="episodefile"> Bunny CDN Episodes              
+                    @endif
+                </div>
             </div>
 
             <?php //dd($season_id); ?>
@@ -149,6 +206,9 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="ImagesContainer" class="d-flex mt-3"></div>
+                            </div>
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading">
                                     <div class="panel-title"><label>Episode Image Cover</label></div>
@@ -167,6 +227,9 @@
                         </div>
                         
                         <div class="col-sm-6">
+                                <div class="col-md-3">
+                                    <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
+                                    </div>
                             <label class="m-0">Episode Player Image</label>
                             <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
 
@@ -179,6 +242,10 @@
                         </div>
 
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="TVImagesContainer" class="d-flex mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
+                                </div>
                             <label class="m-0">Episode TV Image</label>
                             <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080 px)</p>
     
@@ -355,6 +422,93 @@
                                  </div>
                               </div>
                            </div>
+
+                           
+                @if( choosen_player() == 1 && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+
+                    @if ( admin_ads_pre_post_position() == 1 )
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                            <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="pre_post_ads" >
+
+                                <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                <option value="random_ads" > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
+                            </select>
+                        </div>
+                        
+                    @elseif ( admin_ads_pre_post_position() == 0 )
+
+                        <div class="row mt-3">
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                                <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                                
+                                <select class="form-control" name="pre_ads" >
+
+                                    <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                                <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                                
+                                <select class="form-control" name="post_ads" >
+
+                                    <option value=" " > Select the Post-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"> {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                
+                                </select>
+                            </div>
+                        </div>
+
+                    @endif
+
+                    <div class="row">
+                        <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                            <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                            <select class="form-control" name="mid_ads" >
+
+                                <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                <option value="random_category"> Random Category </option>
+
+                                @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}" > {{ $ads_category->name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                            <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                            <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time"  >
+                        </div>
+
+                    </div>
+                
+                        {{-- Ply.io --}}
+                @else    
                     <div class="row mt-3">
                         <div class="col-sm-6"  >
                             <label class="m-0">Choose Ads Position</label>
@@ -374,6 +528,7 @@
                             </select>
                         </div>
                     </div>
+                @endif
 
                     <div class="clear"></div>
 
@@ -408,9 +563,9 @@
                                         <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
                                         <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                         <?php if($settings->ppv_status == 1){ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } else{ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } ?>
                                     </select>
                                     <div class="clear"></div>
@@ -485,9 +640,13 @@
 
                         @if(isset($episodes->id))
                         <input type="hidden" id="id" name="id" value="{{ $episodes->id }}" />
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
                         @endif
                         <input type="hidden" id="episode_id" name="episode_id" value="" />
-
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
                     </div>
@@ -505,21 +664,25 @@
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
                 <div class="admin-section-title">
-                    <div class="row">
+                    <div class="row"  id="orderepisode">
 
                         <table class="table table-bordered iq-card text-center" id="categorytbl">
                             <tr class="table-header r1">
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
+                                <th><label>Episode Duration</label></th>
                                 <th><label>Slider</label></th>
                                 <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
 
                             @foreach($episodes as $key => $episode)
+                                <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
+                                <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
                                 <tr id="{{ $episode->id }}">
                                     <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
                                     <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                    <td valign="bottom"><p>@if(!empty($episode->duration)){{ gmdate('H:i:s', $episode->duration) }}@endif</p></td>
                                     <td valign="bottom">
                                         <div class="mt-1">
                                             <label class="switch">
@@ -589,7 +752,92 @@
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
     <script>
+         	$('#bunnycdnvideo').hide();
+             $('#episodeupload').click(function(){
+                $('#episode_uploads').show();
+                $('#bunnycdnvideo').hide();
+                // $("#episode_uploads").addClass('collapse');
+                // $("#bunny_cdn_video").removeClass('collapse');         
+            })
+            
+            $('#bunny_cdn_video').click(function(){
 
+                $('#episode_uploads').hide();
+                $('#bunnycdnvideo').show();
+                $("#episode_uploads").removeClass('collapse');
+                // $("#bunny_cdn_video").removeClass('collapse');
+
+            })
+
+
+
+   $(document).ready(function(){
+            
+         $(document).ready(function() {
+            $('#stream_bunny_cdn_episode').select2();
+         });
+
+    
+            $('#episodelibrary').on('change', function() {
+                  
+                  var episodelibrary_id = this.value;
+                  $("#stream_bunny_cdn_episode").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/bunnycdn_episodelibrary')}}",
+                     type: "POST",
+                     data: {
+                     episodelibrary_id: episodelibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
+
+                  // console.log(decodedStreamVideos);
+
+
+                  $('#stream_bunny_cdn_episode').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
+                        console.log(value.title);
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#stream_bunny_cdn_episode").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                        // $("#stream_bunny_cdn_episode").append('<option value="'+videoUrl+'">'+value.title+'</option>');
+                     });
+
+                     }
+                });
+
+            }); 
+
+
+
+      $('#submit_bunny_cdn').click(function(){
+            $.ajax({
+                url: '{{ URL::to('/admin/stream_bunny_cdn_episode') }}',
+                type: "post",
+                 data: {
+                        _token: '{{ csrf_token() }}',
+                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
+        
+                    },        success: function(value){
+                        console.log(value);
+                                       // console.log(value);
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.Episode_id);
+            
+                    }
+                });
+            })
+
+        });
+        
         CKEDITOR.replaceAll( 'description_editor', {
             toolbar : 'simple'
         });
@@ -721,20 +969,20 @@
             rules: {
                 title: "required",
 
-                image: {
-                    required: true,
-                    dimention:[1080,1920]
-                },
+                // image: {
+                //     required: true,
+                //     dimention:[1080,1920]
+                // },
 
-                player_image: {
-                    required: true,
-                    player_dimention:[1280,720]
-                },
+                // player_image: {
+                //     required: true,
+                //     player_dimention:[1280,720]
+                // },
 
-                tv_image: {
-                    required: true,
-                    tv_image_dimention:[1920,1080]
-                },
+                // tv_image: {
+                //     required: true,
+                //     tv_image_dimention:[1920,1080]
+                // },
             },
             messages: {
                 title: "This field is required",
@@ -755,7 +1003,9 @@
                 $('#recap_end_time').mask("00:00:00");
                 $('#skip_intro').mask("00:00:00");
                 $('#skip_recap').mask("00:00:00");
+                $('#video_js_mid_advertisement_sequence_time').mask("00:00:00");
         });
+        
         $(document).ready(function () {
             $("#duration").mask("00:00:00");
             $("#tags").tagsInput();
@@ -846,15 +1096,22 @@
         Dropzone.autoDiscover = false;
         var myDropzone = new Dropzone(".dropzone", {
             //   maxFilesize: 900,  // 3 mb
+            parallelUploads: 10,
             maxFilesize: 15000,
             acceptedFiles: "video/mp4,video/x-m4v,video/*",
         });
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append('series_id',series_id);
             formData.append('season_id',season_id);
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
             formData.append("_token", CSRF_TOKEN);
             // console.log(value)
             this.on("success", function (file, value) {
+                if(value.error == 3){
+                    console.log(value.error);
+                    alert("File not uploaded Choose Library!");   
+                    location.reload();
+                }
                 // console.log(value);
                 $("#buttonNext").show();
                 $("#episode_id").val(value.episode_id);
@@ -863,10 +1120,119 @@
             });
         });
         $("#buttonNext").click(function () {
+         	$('#bunnycdnvideo').hide();
             $("#episode_uploads").hide();
+            $('#optionradio').hide();
             $("#Next").hide();
             $("#episode_video_data").show();
             $("#submit").show();
+            
+                $.ajax({
+                        url: '{{ URL::to('admin/episode/extractedimage') }}',
+                        type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            episode_id: $('#episode_id').val()
+                        },
+                        success: function(value) {
+                            // console.log(value.ExtractedImage.length);
+
+                            if (value && value.ExtractedImage.length > 0) {
+                                $('#ajaxImagesContainer').empty();
+                                $('#ImagesContainer').empty();
+                                var ExtractedImage = value.ExtractedImage;
+                                var ExtractedImage = value.ExtractedImage;
+
+                                var previouslySelectedElement = null;
+                                var previouslySelectedVideoImag = null;
+                                var previouslySelectedTVImage = null;
+                                
+                                ExtractedImage.forEach(function(Image,index ) {
+                                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+
+                                    imgElement.click(function() {
+                                        $('.ajax-image').css('border', 'none');
+                                        if (previouslySelectedElement) {
+                                            previouslySelectedElement.css('border', 'none');
+                                        }
+                                        imgElement.css('border', '2px solid red');
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var SelectedImageUrl = Image.image_original_name;
+                                        console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                                        previouslySelectedElement = $(this);
+
+                                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    });
+
+                                    if (index === 0) {
+                                        imgElement.click();
+                                    }
+                                    $('#ajaxImagesContainer').append(imgElement);
+
+                                    ImagesContainer.click(function() {
+                                        $('.video-image').css('border', 'none');
+                                        if (previouslySelectedVideoImag) {
+                                            previouslySelectedVideoImag.css('border', 'none');
+                                        }
+                                        ImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var VideoImageUrl = Image.image_original_name;
+                                        console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                                        previouslySelectedVideoImag = $(this);
+
+                                        $('#videoImageUrlInput').val(VideoImageUrl);
+                                    });
+                                    if (index === 0) {
+                                        ImagesContainer.click();
+                                        }
+                                    $('#ImagesContainer').append(ImagesContainer);
+
+                                    TVImagesContainer.click(function() {
+                                        $('.tv-video-image').css('border', 'none');
+                                        if (previouslySelectedTVImage) {
+                                            previouslySelectedTVImage.css('border', 'none');
+                                        }
+                                        TVImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var TVImageUrl = Image.image_original_name;
+                                        previouslySelectedTVImage = $(this);
+
+                                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                                    });
+                                    
+                                    if (index === 0) {
+                                        TVImagesContainer.click();
+                                    }
+                                    $('#TVImagesContainer').append(TVImagesContainer);
+
+                                });
+                            } else {
+                                    var SelectedImageUrl = '';
+
+                                    $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                            }
+                        },
+                        error: function(error) {
+
+                            var SelectedImageUrl = '';
+
+                            $('#selectedImageUrlInput').val(SelectedImageUrl);
+                            $('#videoImageUrlInput').val(SelectedImageUrl);
+                            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            console.error(error);
+                        }
+                    });
+                
         });
     </script>
 
@@ -891,23 +1257,28 @@
                         selectedData.push($(this).attr("id"));
                     }
                 });
-                updateOrder(selectedData)
+                var seriesid  = $('.seriesid').val();
+                var season_id  = $('.season_id').val();
+                updateOrder(selectedData,seriesid,season_id)
             }
         });
     });
 
-    function updateOrder(data) {
-        
+    function updateOrder(data,seriesid,season_id) {
+
         $.ajax({
             url:'{{  URL::to('admin/episode_order') }}',
             type:'post',
             data:{
                     position:data,
+                    seriesid:seriesid,
+                    season_id:season_id,
                      _token :  "{{ csrf_token() }}",
                     },
-            success:function(){
-                alert('Position changed successfully.');
-                location.reload();
+            success:function(data){
+                // alert('Position changed successfully.');
+                // location.reload(); id="orderepisode"
+                $("#orderepisode").html(data);
             }
         })
     }

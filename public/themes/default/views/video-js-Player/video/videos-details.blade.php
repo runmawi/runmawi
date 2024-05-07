@@ -1,5 +1,45 @@
 @php  include public_path('themes/default/views/header.php'); @endphp
 
+<style>
+    body.light-theme h4, body.light-theme p {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .vpageBanner .content .right .utilities {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name.titleoverflow {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .genre {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .heading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .infoItem {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .info {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .vpageBanner .opacity-layer {
+        background:none;
+    }
+</style>
+
+
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
 
@@ -63,9 +103,9 @@
                 </div>
 
                 <div class="right">
-                    <div class="title">    {{--  Title & Year--}}
+                    <h4 class="title">    {{--  Title & Year--}}
                         {{ optional($videodetail)->title }} 
-                    </div>
+                    </h4>
 
                     <div class="utilities d-flex align-items-center">  
                         {{ optional($videodetail)->year }} 
@@ -146,7 +186,9 @@
                     <div class="row">  
                             @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
                             || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
-                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
+                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' 
+                            || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'registered'
+                             || Auth::guest() && $videodetail->access == 'guest'  ||  !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'guest' ) 
                                 <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
                                             <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
@@ -179,6 +221,19 @@
                                                 <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
                                             </div>
                                     </a>
+
+                            @elseif(  Auth::guest() && $videodetail->access == 'guest')
+
+                                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                </svg>
+                                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                                            </div>
+                                    </a>
+
                             @else
 
                                 <a class="btn"  href="{{ URL::to('/login') }}" >
@@ -258,7 +313,7 @@
                     @endif
 
                     <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
+                        <div class="infoItem">
                             <span classname="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
@@ -399,9 +454,9 @@
                                                         @endif
                                                      @endif
         
-                                                     @if ($ThumbnailSetting->published_on == 1)
+                                                     <!-- @if ($ThumbnailSetting->published_on == 1)
                                                        <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
+                                                    @endif -->
                                                 </div>
                                             </div>
                                                     
@@ -424,9 +479,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 </a>
                                                            <!-- PPV price -->
                                                         @if ($ThumbnailSetting->free_or_cost_label == 1)
@@ -443,9 +498,9 @@
                                                             @endif
                                                         @endif
         
-                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                        <!-- @if ($ThumbnailSetting->published_on == 1)
                                                            <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
+                                                        @endif -->
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
 
@@ -512,7 +567,7 @@
                                                         @endif
                                                     </a>
 
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">{{ __('Watch Now') }}</a>
+                                                    <a class="epi-name text-white mb-0 btn btn-primary" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">{{ __('Watch Now') }}</a>
 
                                                 </div>
                                             </div>

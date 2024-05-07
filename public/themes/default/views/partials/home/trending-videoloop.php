@@ -1,12 +1,14 @@
 
   
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title">
+                    <h2 class="main-title">
 <a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>">                   
   <?php if ($order_settings_list[0]->header_name) { echo __($order_settings_list[0]->header_name) ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
-                  </a></h4> 
-                  <h4 class="main-title"><a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>                     
+                  </a></h2> 
+                  <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <h2 class="main-title"><a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h2>   
+                  <?php endif; ?>                         
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -59,8 +61,8 @@
                              <div class="border-bg">
                                 <div class="img-box">
                                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
-                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                <img class="img-fluid w-100"  loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
+                                alt="f-img"> 
                         </a>
                                 
                                        
@@ -79,16 +81,16 @@
                                             <?php } ?>
                                         <?php } ?>
 
-                                        <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                                        <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                                         <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                             </div>
                                         </div>
 
                                         <div class="block-description">
                                         <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
-                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                          <img class="img-fluid w-100"  loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
+                                  alt="f-img"> 
                         
                                 
                                        
@@ -204,7 +206,7 @@
 
                                             
                                             <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                                <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                             </a>
                                             </div>
                                             </div>

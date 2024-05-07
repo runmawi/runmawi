@@ -8,6 +8,7 @@
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[19]->url ? URL::to($order_settings_list[19]->url) : null }} ">{{ optional($order_settings_list[19])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[19]->url ? URL::to($order_settings_list[19]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
@@ -22,7 +23,7 @@
                                             </div>
 
                                             <div class="block-description">
-                                                <h6> {{ strlen($seriesGenre->name ) > 17 ? substr($seriesGenre->name , 0, 18) . '...' : $seriesGenre->name  }}</h6>
+                                                <p> {{ strlen($seriesGenre->name ) > 17 ? substr($seriesGenre->name , 0, 18) . '...' : $seriesGenre->name  }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 

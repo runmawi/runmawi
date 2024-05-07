@@ -42,7 +42,7 @@
 
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>">
-                                            <h6><?php  echo (strlen($preference_genre->title) > 17) ? substr($preference_genre->title,0,18).'...' : $preference_genre->title; ?></h6>
+                                            <p><?php  echo (strlen($preference_genre->title) > 17) ? substr($preference_genre->title,0,18).'...' : $preference_genre->title; ?></p>
                                         </a>
                                     <?php } ?> 
 

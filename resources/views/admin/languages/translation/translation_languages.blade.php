@@ -23,6 +23,7 @@
             border-color: #66afe9;
             box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
             }
+            body.dark #translator-table_filter input[type="search"]{color: <?php echo GetLightText(); ?> !important;}
    </style>
 
 @section('content')
@@ -38,7 +39,7 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
     <div id="content-page" class="content-page">
-            <div class="container-fluid">
+            <div class="container-fluid" style=" overflow: scroll">
                 <div class="container">
 
                 <h1>Language Translation</h1>
@@ -55,7 +56,7 @@
                                 <input type="text" name="value" class="form-control" placeholder="Enter Value...">
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="submit" class="btn btn-success mt-5">Add</button>
                             </div>
                         </div>
                     </form>
@@ -74,8 +75,10 @@
                         </tr>
                         </thead>
                         <tbody>
+      
                             @if($columnsCount > 0)
                                 @foreach($columns[0] as $columnKey => $columnValue)
+                         
                                     <tr>
                                         <td><a href="#" class="translate-key" data-title="Enter Key" data-type="text" data-pk="{{ $columnKey }}" data-url="{{ route('translation.update.json.key') }}">{{ $columnKey }}</a></td>
                                         @for($i=1; $i<=$columnsCount; ++$i)

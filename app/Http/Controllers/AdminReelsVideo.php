@@ -76,43 +76,54 @@ use Theme;
 
 
 class AdminReelsVideo extends Controller
-{   
+{
+    public function __construct()
+    {
+        $settings = Setting::first();
+        $this->videos_per_page = $settings->videos_per_page;
 
-      public function index()
-      {
-        
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        $this->Theme = HomeSetting::pluck('theme_choosen')
+            ->first();
+        Theme::uses($this->Theme);
+    }
+    public function index()
+    {
+
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
+
+        if (!Auth::guest() && Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP') {
             return redirect('/admin/restrict');
         }
-        
-        $user =  User::where('id',1)->first();
+
+        $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
-        if ($current_date > $duedate)
-        {
-          $client = new Client();
-          $url = "https://flicknexs.com/userapi/allplans";
-          $params = [
-              'userid' => 0,
-          ];
-  
-          $headers = [
-              'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-          ];
-          $response = $client->request('post', $url, [
-              'json' => $params,
-              'headers' => $headers,
-              'verify'  => false,
-          ]);
-  
-          $responseBody = json_decode($response->getBody());
-         $settings = Setting::first();
-         $data = array(
-          'settings' => $settings,
-          'responseBody' => $responseBody,
-  );
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify' => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            );
             return View::make('admin.expired_dashboard', $data);
-        }else if(check_storage_exist() == 0){
+        } else if (check_storage_exist() == 0) {
             $settings = Setting::first();
 
             $data = array(
@@ -120,19 +131,23 @@ class AdminReelsVideo extends Controller
             );
 
             return View::make('admin.expired_storage', $data);
-        }else{
+        } else {
 
-        $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')
-        // ->where('videos.id',$vid)
-        ->get();
-        // dd($Reels_videos);
-        $revenue_settings = RevenueSetting::where('id','=',1)->first();          
-           $data = array(
-            'Reels_videos'  => $Reels_videos,
-        );
-        return Theme::view('reels', $data); 
+            $Reels_videos = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
+                ->get();
+            $footer_link = 'themes/' . $this->Theme . '/views/footer.blade.php';
+            $header_link = 'themes/' . $this->Theme . '/views/header.php';
+            $revenue_settings = RevenueSetting::where('id', '=', 1)->first();
+            $data = array(
+                'Reels_videos' => $Reels_videos,
+                'header_link' => $header_link,
+                'footer_link' => $footer_link,
+                
+
+            );
+            return Theme::view('reels', $data);
+        }
     }
-      }
-  
+
 
 }

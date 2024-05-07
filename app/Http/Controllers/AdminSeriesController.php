@@ -59,6 +59,10 @@ use App\StorageSetting as StorageSetting;
 use App\Advertisement;
 use App\Playerui as Playerui;
 use App\SeriesSubtitle as SeriesSubtitle;
+use App\SeriesNetwork;
+use App\Adscategory;
+use App\VideoExtractedImages;
+use App\SiteTheme;
 
 
 class AdminSeriesController extends Controller
@@ -116,14 +120,8 @@ class AdminSeriesController extends Controller
 
           $search_value = $request->get('s');
         
-            if(!empty($search_value)):
-                $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-            else:
-                $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-            endif;
+            $series = Series::latest()->get();
         
-       // $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-       
         $user = Auth::user();
 
         $data = array(
@@ -185,23 +183,27 @@ class AdminSeriesController extends Controller
 
             return View::make('admin.expired_storage', $data);
         }else{
-        $data = array(
-            'settings ' => $settings,
-            'headline' => '<i class="fa fa-plus-circle"></i> New Series',
-            'post_route' => URL::to('admin/series/store'),
-            'button_text' => 'Add New Series',
-            'admin_user' => Auth::user(),
-            'series_categories' => SeriesGenre::all(),
-            'video_categories' => VideoCategory::all(),
-            'languages' => Language::all(),
-            'artists' => Artist::all(),
-            'series_artist' => [],
-            'category_id' => [],
-            'languages_id' => [],
-            'InappPurchase' => InappPurchase::all(),
-            
+
+            $data = array(
+                'settings ' => $settings,
+                'headline' => '<i class="fa fa-plus-circle"></i> New Series',
+                'post_route' => URL::to('admin/series/store'),
+                'button_text' => 'Add New TV Shows',
+                'admin_user' => Auth::user(),
+                'series_categories' => SeriesGenre::all(),
+                'video_categories' => VideoCategory::all(),
+                'languages' => Language::all(),
+                'artists' => Artist::all(),
+                'series_artist' => [],
+                'category_id' => [],
+                'languages_id' => [],
+                'series_networks_id' => [],
+                'InappPurchase' => InappPurchase::all(),
+                'SeriesNetwork' => SeriesNetwork::all(),
+                'Header_name' => "Edit TV Shows "
             );
-        return View::make('admin.series.create_edit', $data);
+
+           return View::make('admin.series.create_edit', $data);
         }
     }
 
@@ -380,8 +382,11 @@ class AdminSeriesController extends Controller
         if(!empty($data['ppv_status'])){
 
             $ppv_status = $data['ppv_status'];
+            $access = 'ppv';
+
         }else{
             $ppv_status = 0;
+            $access = $data['access'];
         }
 
         if(!empty($data['season_trailer'])){
@@ -414,6 +419,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series->id);
         $series->slug = $series_slug;
         $series->ppv_status = $ppv_status;
+        $series->ppv_status = $access;
         $series->player_image = $player_image;
         $series->tv_image = $tv_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
@@ -421,6 +427,7 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
         $series->save();  
 
 
@@ -516,16 +523,19 @@ class AdminSeriesController extends Controller
             'settings' => $settings,
             'seasons' => $seasons,
             'post_route' => URL::to('admin/series/update'),
-            'button_text' => 'Update Series',
+            'button_text' => 'Update TV Shows',
             'admin_user' => Auth::user(),
             'series_categories' => SeriesGenre::all(),
             'videos_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
-            'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
+            'category_id'   => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             'InappPurchase' => InappPurchase::all(),
+            'SeriesNetwork' => SeriesNetwork::all(),
+            'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
+            'Header_name' => "Edit TV Shows "
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -542,7 +552,7 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $series = Series::findOrFail($id);
-       
+
         $data = $input;
 
         if(isset($data['duration'])){
@@ -691,8 +701,13 @@ class AdminSeriesController extends Controller
         }else{
             $series_trailer = 0;
         }
+        if(!empty($data['ppv_status']) && $data['ppv_status'] == 1){
+            $access = 'ppv';
+        }else{
+            $access = $data['access'];
 
-        
+        }
+        // dd($data);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->player_image = $player_image;
@@ -705,8 +720,10 @@ class AdminSeriesController extends Controller
         }
         $series->player_image = $player_image;
         $series->slug = $data['slug'];
+        $series->access = $access;
         $series->ppv_status = $ppv_status;
         $series->details =($data['details']);
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
         $series->save();
 
         if(!empty($data['artists'])){
@@ -817,7 +834,7 @@ class AdminSeriesController extends Controller
 
                     $vseason_trailer = pathinfo($season->trailer)['filename'];
 
-                    $directory = base_path('public/uploads/season_trailer/');
+                    $directory = base_path('storage/app/season_trailer/');
                             
                     $pattern =  $vseason_trailer.'*';
 
@@ -1028,7 +1045,7 @@ class AdminSeriesController extends Controller
 
                     }
                     if($value == "1080p"){
-                        $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                        $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                         array_push($convertresolution,$r_1080p);
                     }
             }
@@ -1043,14 +1060,14 @@ class AdminSeriesController extends Controller
                     $settings = Setting::first();
 
                         $trailer = $data['trailer'];
-                        $trailer_path  = URL::to('public/uploads/season_trailer/');
+                        $trailer_path  = URL::to('storage/app/season_trailer/');
                         // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                         $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                         $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                        $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                        $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                         $trailer_video_name = strtok($trailer_Video, '.');
                         $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                        $storepath  = URL::to('public/uploads/season_trailer/');
+                        $storepath  = URL::to('storage/app/season_trailer/');
                         $data['trailer'] = $M3u8_save_path;
                         $data['trailer_type']  = 'm3u8_url';
                         $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
@@ -1133,14 +1150,14 @@ class AdminSeriesController extends Controller
             if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
 
                 $trailer = $data['trailer'];
-                $trailer_path  = URL::to('public/uploads/season_trailer/');
+                $trailer_path  = URL::to('storage/app/season_trailer/');
                 // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                 $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                 $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                 $trailer_video_name = strtok($trailer_Video, '.');
                 $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                $storepath  = URL::to('public/uploads/season_trailer/');
+                $storepath  = URL::to('storage/app/season_trailer/');
                 // $ffmpeg = \Streaming\FFMpeg::create();
                 // $videos = $ffmpeg->open('public/uploads/season_trailer'.'/'.$trailer_Video);
                 
@@ -1259,6 +1276,8 @@ class AdminSeriesController extends Controller
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
         $series->landing_mp4_url = $data['landing_mp4_url'];
+        $series->series_seasons_name = $data['series_seasons_name'];
+        $series->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1278,10 +1297,12 @@ class AdminSeriesController extends Controller
     public function Edit_season($id)
     {
         $season = SeriesSeason::where('id',$id)->first();
+        $series = Series::where('id',$season->series_id)->first();
         // dd($season);
         $data =array(
             'season' => $season,
             'InappPurchase' => InappPurchase::all(),
+            'series' => $series,
         );
 
         return View::make('admin/series/season/edit',$data);
@@ -1326,7 +1347,7 @@ class AdminSeriesController extends Controller
 
                         }
                         if($value == "1080p"){
-                            $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                            $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                             array_push($convertresolution,$r_1080p);
                         }
                 }
@@ -1338,14 +1359,14 @@ class AdminSeriesController extends Controller
                 if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
 
                     $trailer = $data['trailer'];
-                    $trailer_path  = URL::to('public/uploads/season_trailer/');
+                    $trailer_path  = URL::to('storage/app/season_trailer/');
                     // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
                     $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                     $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                    $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+                    $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
                     $trailer_video_name = strtok($trailer_Video, '.');
                     $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
-                    $storepath  = URL::to('public/uploads/season_trailer/');
+                    $storepath  = URL::to('storage/app/season_trailer/');
 
                     $data['trailer'] = $M3u8_save_path;
                     $data['trailer_type']  = 'm3u8_url';
@@ -1371,7 +1392,7 @@ class AdminSeriesController extends Controller
 
                 } else {
                     $data['trailer'] = $series_season->trailer;
-                    $data['trailer_type']  = 'mp4_url';
+                    $data['trailer_type']  = $series_season->trailer_type;
                     $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
@@ -1418,7 +1439,7 @@ class AdminSeriesController extends Controller
 
             } else {
                 $data['trailer'] = $series_season->trailer;
-                $data['trailer_type']  = 'mp4_url';
+                $data['trailer_type']  = $series_season->trailer_type;
                 $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
@@ -1430,16 +1451,16 @@ class AdminSeriesController extends Controller
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
 
             $trailer = $data['trailer'];
-            $trailer_path  = URL::to('public/uploads/season_trailer/');
+            $trailer_path  = URL::to('storage/app/season_trailer/');
             // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
             $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
             $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-            $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
+            $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
             $trailer_video_name = strtok($trailer_Video, '.');
             $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
             $landing_mp4_url_path = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
-            $storepath  = URL::to('public/uploads/season_trailer/');
+            $storepath  = URL::to('storage/app/season_trailer/');
 
             $data['trailer'] = $M3u8_save_path;
             $data['trailer_type']  = 'm3u8_url';
@@ -1465,7 +1486,7 @@ class AdminSeriesController extends Controller
 
             } else {
                 $data['trailer'] = $series_season->trailer;
-                $data['trailer_type']  = 'mp4_url';
+                $data['trailer_type']  = $series_season->trailer_type;
                 $data['landing_mp4_url'] = $series_season->landing_mp4_url;
             }
         }
@@ -1510,7 +1531,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_price = $series_season->ppv_price;
         }
-        if(!empty($data['ppv_interval'])){
+        if(!empty($data['ppv_interval']) || $data['ppv_interval'] == 0){
             $ppv_interval = $data['ppv_interval'];
         }else{
             $ppv_interval = $series_season->ppv_interval;
@@ -1535,6 +1556,8 @@ class AdminSeriesController extends Controller
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->landing_mp4_url = $data['landing_mp4_url'];
+        $series_season->series_seasons_name = $data['series_seasons_name'];
+        $series_season->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
@@ -1600,7 +1623,7 @@ class AdminSeriesController extends Controller
 
             $vseason_trailer = pathinfo($season->trailer)['filename'];
 
-            $directory = base_path('public/uploads/season_trailer/');
+            $directory = base_path('storage/app/season_trailer/');
                     
             $pattern =  $vseason_trailer.'*';
 
@@ -1610,10 +1633,11 @@ class AdminSeriesController extends Controller
                 File::delete($file);
             }
           
-             SeriesSeason::destroy($id);
+            SeriesSeason::destroy($id);
+             
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
         }
@@ -1638,6 +1662,82 @@ class AdminSeriesController extends Controller
             $dropzone_url =  URL::to('admin/episode_upload');
         }
 
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
+            // Bunny Cdn get Videos 
+    
+            $storage_settings = StorageSetting::first();
+
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+            && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+            && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+
+                $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                
+                if (!$response) {
+                    die("Error: " . curl_error($ch));
+                } else {
+                    $decodedResponse = json_decode($response, true);
+                
+                    if ($decodedResponse === null) {
+                        die("Error decoding JSON response: " . json_last_error_msg());
+                    }
+            
+                }
+                curl_close($ch);
+                // dd($decodedResponse);
+
+                
+                $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $videolibraryurl,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                $videolibrary = json_decode($response, true);
+                curl_close($ch);
+                // dd($videolibrary); ApiKey
+
+            }else{
+                $decodedResponse = [];
+                $videolibrary = [];
+
+            }
+        
+            // $response->getBody();
+
+            if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
+                $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
+            }else{
+                $streamUrl = '';
+            }
+
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
                 'episodes' => $episodes,
@@ -1651,7 +1751,12 @@ class AdminSeriesController extends Controller
                 'InappPurchase' => InappPurchase::all(),
                 'post_dropzone_url' => $dropzone_url,
                 "subtitles" => Subtitle::all(),
-
+                'video_js_Advertisements' => $video_js_Advertisements ,
+                "ads_category" => Adscategory::all(),
+                'theme_settings' => SiteTheme::first(),
+                'storage_settings' => $storage_settings ,
+                'videolibrary' => $videolibrary ,
+                'streamUrl' => $streamUrl ,
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -1662,7 +1767,6 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
-
         $settings =Setting::first();
 
         if(!empty($data['ppv_price'])){
@@ -1684,8 +1788,26 @@ class AdminSeriesController extends Controller
         
         elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
-        }else{
+        } elseif($episodes->type == 'bunny_cdn'){
+            $type = 'bunny_cdn';
+        } else{
             $type = 'file';
+        }
+
+       $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
         }
 
         $path = public_path().'/uploads/episodes/';
@@ -1694,6 +1816,70 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
+        if (compress_responsive_image_enable() == 1) {
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+                $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                $image_filename = $image_filename;
+
+                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                
+                $data["responsive_image"] = $image_filename;
+
+        }else{
+
+            $data["responsive_image"] = default_vertical_image(); 
+        }
+
+        if ($request->hasFile('player_image')) {
+
+            $player_image = $request->file('player_image');
+
+                $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                
+                $data["responsive_player_image"] = default_horizontal_image();
+
+        }else{
+
+            $data["responsive_player_image"] = $video->responsive_player_image; 
+        }
+
+
+        
+        if ($request->hasFile('tv_image')) {
+
+            $tv_image = $request->file('tv_image');
+
+                $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+
+                Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                
+                $data["responsive_tv_image"] = $tv_image_filename;
+
+        }else{
+
+            $data["responsive_tv_image"] = default_horizontal_image(); 
+        }
+
+
+        }else{
+
+            $data["responsive_image"] = null;
+            $data["responsive_player_image"] = null; 
+            $data["responsive_tv_image"] = null; 
+            
+        }
 
             if(!empty($image)){
 
@@ -1719,11 +1905,12 @@ class AdminSeriesController extends Controller
 
             $data['image'] = $episode_image ;
 
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
 
             $data['image'] = 'placeholder.jpg';
         }
-
         
         $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
 
@@ -1752,7 +1939,9 @@ class AdminSeriesController extends Controller
 
            $player_image  = $episode_player_image ;
 
-         } else {
+         }else if (!empty($request->selected_image_url)) {
+            $player_image  = $request->selected_image_url;
+        } else {
             $player_image = "default_horizontal_image.jpg";
          }
 
@@ -1773,6 +1962,8 @@ class AdminSeriesController extends Controller
 
             $episodes->tv_image = $Episode_tv_filename;
 
+        }else if (!empty($request->selected_tv_image_url)) {
+            $episodes->tv_image  = $request->selected_tv_image_url;
         }
 
         if(!empty($data['searchtags'])){
@@ -1902,39 +2093,109 @@ class AdminSeriesController extends Controller
             $episodes->intro_end_time =  $data['intro_end_time'];
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
+            $episodes->responsive_image =  $data['responsive_image'];
+            $episodes->responsive_player_image =  $data['responsive_player_image'];
+            $episodes->responsive_tv_image =  $data['responsive_tv_image'];
             $episodes->status =  1;
-            $episodes->ads_position =  $request->ads_position;
-            $episodes->episode_ads =  $request->episode_ads;
-            $episodes->save();
+            
+            // {{-- Video.Js Player--}}
 
+            if( choosen_player() == 1  && ads_theme_status() == 1){
+
+                if( admin_ads_pre_post_position() == 1){
+                    
+                    $episodes->pre_post_ads =  $data['pre_post_ads'];
+                    $episodes->post_ads     =  $data['pre_post_ads'];
+                    $episodes->pre_ads      =  $data['pre_post_ads'];
+                }
+                else{
+                    
+                    $episodes->pre_ads      =  $data['pre_ads'];
+                    $episodes->post_ads     =  $data['post_ads'];
+                    $episodes->mid_ads      =  $data['mid_ads'];
+                    $episodes->pre_post_ads =  null ;
+                }
+
+                $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            }
+            else{
+                $episodes->ads_position =  $data['ads_position'];
+                $episodes->episode_ads  =  $data['episode_ads'];
+            }
+
+            $episodes->save();
 
             $shortcodes = $request["short_code"];
             $languages = $request["sub_language"];
             $subtitles = isset($data["subtitle_upload"])? $data["subtitle_upload"] : "";
+            // if (!empty($subtitles != "" && $subtitles != null)) {
+            //     foreach ($subtitles as $key => $val) {
+            //         if (!empty($subtitles[$key])) {
+            //             $destinationPath = "public/uploads/subtitles/";
+            //             $filename = $episodes->id . "-" . $shortcodes[$key] . ".srt";
+            //             $subtitles[$key]->move($destinationPath, $filename);
+            //             $subtitle_data["sub_language"] =
+            //                 $languages[
+            //                     $key
+            //                 ]; /*URL::to('/').$destinationPath.$filename; */
+            //             $subtitle_data["shortcode"] = $shortcodes[$key];
+            //             $subtitle_data["episode_id"] = $id;
+            //             $subtitle_data["url"] =
+            //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+            //             $episode_subtitle = new SeriesSubtitle();
+            //             $episode_subtitle->episode_id = $episodes->id;
+            //             $episode_subtitle->shortcode = $shortcodes[$key];
+            //             $episode_subtitle->sub_language = $languages[$key];
+            //             $episode_subtitle->url =
+            //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+            //             $episode_subtitle->save();
+            //         }
+            //     }
+            // }
+
             if (!empty($subtitles != "" && $subtitles != null)) {
                 foreach ($subtitles as $key => $val) {
                     if (!empty($subtitles[$key])) {
                         $destinationPath = "public/uploads/subtitles/";
-                        $filename = $episodes->id . "-" . $shortcodes[$key] . ".srt";
-                        $subtitles[$key]->move($destinationPath, $filename);
-                        $subtitle_data["sub_language"] =
-                            $languages[
-                                $key
-                            ]; /*URL::to('/').$destinationPath.$filename; */
-                        $subtitle_data["shortcode"] = $shortcodes[$key];
-                        $subtitle_data["episode_id"] = $id;
-                        $subtitle_data["url"] =
-                            URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                        $episode_subtitle = new SeriesSubtitle();
-                        $episode_subtitle->episode_id = $episodes->id;
-                        $episode_subtitle->shortcode = $shortcodes[$key];
-                        $episode_subtitle->sub_language = $languages[$key];
-                        $episode_subtitle->url =
-                            URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                        $episode_subtitle->save();
+                        $filename = $episodes->id . "-episode-" . $shortcodes[$key] . ".srt";
+                        
+                        // Move uploaded file to destination path
+                        move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                        
+                        // Read contents of the uploaded file
+                        $contents = file_get_contents($destinationPath . $filename);
+                        
+                        // Convert time format and add line numbers
+                        $lineNumber = 0;
+                        $convertedContents = preg_replace_callback(
+                            '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                            function ($matches) use (&$lineNumber) {
+                                $lineNumber++;
+                                return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                            },
+                            $contents
+                        );
+                        
+                        // Store converted contents to a new file
+                        $newDestinationPath = "public/uploads/convertedsubtitles/";
+                        if (!file_exists($newDestinationPath)) {
+                            mkdir($newDestinationPath, 0755, true);
+                        }
+                        file_put_contents($newDestinationPath . $filename, $convertedContents);
+                        
+                        // Save subtitle data to database
+                        $subtitle_data = [
+                            "episode_id" => $episodes->id,
+                            "shortcode" => $shortcodes[$key],
+                            "sub_language" => $languages[$key],
+                            "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                            "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                        $episode_subtitle = SeriesSubtitle::create($subtitle_data);
                     }
                 }
             }
+
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
 
@@ -1997,7 +2258,9 @@ class AdminSeriesController extends Controller
         }
 
         $SeriesSubtitle = SeriesSubtitle::where('episode_id', $id)->get();
-        // dd($SeriesSubtitle);
+
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
                 'episodes' => $episodes,
@@ -2010,6 +2273,8 @@ class AdminSeriesController extends Controller
                 // "subtitles" => $subtitles,
                 "SeriesSubtitle" => $SeriesSubtitle ,
                 "subtitlescount" => $subtitlescount,
+                "ads_category" => Adscategory::all(),
+                "video_js_Advertisements" => $video_js_Advertisements ,
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -2028,6 +2293,22 @@ class AdminSeriesController extends Controller
 
     public function update_episode(Request $request)
     {
+
+         $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
 
         $input = $request->all();
         $id = $input['id'];
@@ -2061,7 +2342,7 @@ class AdminSeriesController extends Controller
         }
 
         $data = $request->all();
-          
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['ppv_status'])){
@@ -2114,10 +2395,79 @@ class AdminSeriesController extends Controller
 
                 $data['image'] = $episode_image ;
 
+            }else if (!empty($request->video_image_url)) {
+                $data["image"] = $request->video_image_url;
             } else {
                 $data['image'] = $episode->image ;
             }
 
+            if (compress_responsive_image_enable() == 1) {
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+                
+                    $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+                
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+                
+                }else if (!empty($request->responsive_image)) {
+                    $responsive_image  = $request->responsive_image;
+                } else{
+                    $responsive_image = $episode->responsive_image; 
+                }
+                
+                if ($request->hasFile('player_image')) {
+                
+                $player_image = $request->file('player_image');
+                
+                    $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+                
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+                
+                }else if (!empty($request->responsive_player_image)) {
+                    $responsive_player_image  = $request->responsive_player_image;
+                }else{
+                
+                    $responsive_player_image = $episode->responsive_player_image; 
+                }
+                
+                
+                
+            if ($request->hasFile('tv_image')) {
+                
+                $tv_image = $request->file('tv_image');
+                
+                    $tv_image_filename = 'episode_' .time() . '_tv_image.' . $tv_image->getClientOriginalExtension();
+                
+                    Image::make($tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $tv_image_filename, compress_image_resolution());
+                    Image::make($tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $tv_image_filename;
+                
+                }else if (!empty($request->responsive_tv_image)) {
+                    $responsive_tv_image  = $request->responsive_tv_image;
+                }else{
+                
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+                }    
+
+            }else{
+                    $responsive_image = $episode->responsive_image; 
+                    $responsive_player_image = $episode->responsive_player_image; 
+                    $responsive_tv_image = $episode->responsive_tv_image; 
+
+            }
 
             if($request->hasFile('player_image')){
 
@@ -2144,10 +2494,13 @@ class AdminSeriesController extends Controller
 
                $player_image  = $episode_player_image;
 
-             } else {
+             }else if (!empty($request->selected_image_url)) {
+                $player_image  = $request->selected_image_url;
+            } else if(!empty($episode->player_image)) {
                 $player_image = $episode->player_image;
-
-             }
+             }else{
+                $player_image = "default_horizontal_image.jpg";
+            }
 
              if($request->hasFile('tv_image')){
 
@@ -2169,8 +2522,9 @@ class AdminSeriesController extends Controller
                 }
 
                 $episode->tv_image = $Episode_tv_filename;
+            }else if (!empty($request->selected_tv_image_url)) {
+                $episode->tv_image  = $request->selected_tv_image_url;
             }
-             
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -2243,33 +2597,107 @@ class AdminSeriesController extends Controller
         $episode->ppv_status =  $data['ppv_status'];
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
+        $episode->responsive_image =  $responsive_image;
+        $episode->responsive_player_image =  $responsive_player_image;
+        $episode->responsive_tv_image =  $responsive_tv_image;
         $episode->status =  1;
-        $episode->ads_position =  $data['ads_position'];
-        $episode->episode_ads =  $data['episode_ads'];
+
+
+            // {{-- Video.Js Player--}}
+
+        if( choosen_player() == 1  && ads_theme_status() == 1 ){
+
+            if( admin_ads_pre_post_position() == 1){
+
+                $episode->pre_post_ads =  $data['pre_post_ads'];
+                $episode->post_ads     =  $data['pre_post_ads'];
+                $episode->pre_ads      =  $data['pre_post_ads'];
+            }
+            else{
+                
+                $episode->pre_ads      =  $data['pre_ads'];
+                $episode->mid_ads      =  $data['mid_ads'];
+                $episode->post_ads     =  $data['post_ads'];
+                $episode->pre_post_ads =  null ;
+            }
+
+            $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+        }
+        else{
+            $episode->ads_position =  $data['ads_position'];
+            $episode->episode_ads  =  $data['episode_ads'];
+        }
+
         $episode->save();
+
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
+        // if (!empty($subtitles != "" && $subtitles != null)) {
+        //     foreach ($subtitles as $key => $val) {
+        //         if (!empty($subtitles[$key])) {
+        //             $destinationPath = "public/uploads/subtitles/";
+        //             $filename = $episode->id . "-" . $shortcodes[$key] . ".srt";
+        //             $subtitles[$key]->move($destinationPath, $filename);
+        //             $subtitle_data["sub_language"] =
+        //                 $languages[
+        //                     $key
+        //                 ]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data["shortcode"] = $shortcodes[$key];
+        //             $subtitle_data["episode_id"] = $id;
+        //             $subtitle_data["url"] =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $episode_subtitle = new SeriesSubtitle();
+        //             $episode_subtitle->episode_id = $episode->id;
+        //             $episode_subtitle->shortcode = $shortcodes[$key];
+        //             $episode_subtitle->sub_language = $languages[$key];
+        //             $episode_subtitle->url =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $episode_subtitle->save();
+        //         }
+        //     }
+        // }
         if (!empty($subtitles != "" && $subtitles != null)) {
             foreach ($subtitles as $key => $val) {
                 if (!empty($subtitles[$key])) {
+
+                    SeriesSubtitle::where('episode_id',$episode->id)->where('shortcode',$shortcodes[$key])->delete();
+
                     $destinationPath = "public/uploads/subtitles/";
-                    $filename = $episode->id . "-" . $shortcodes[$key] . ".srt";
-                    $subtitles[$key]->move($destinationPath, $filename);
-                    $subtitle_data["sub_language"] =
-                        $languages[
-                            $key
-                        ]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data["shortcode"] = $shortcodes[$key];
-                    $subtitle_data["episode_id"] = $id;
-                    $subtitle_data["url"] =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $episode_subtitle = new SeriesSubtitle();
-                    $episode_subtitle->episode_id = $episode->id;
-                    $episode_subtitle->shortcode = $shortcodes[$key];
-                    $episode_subtitle->sub_language = $languages[$key];
-                    $episode_subtitle->url =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $episode_subtitle->save();
+                    $filename = $episode->id . "-episode-" . $shortcodes[$key] . ".srt";
+                    
+                    // Move uploaded file to destination path
+                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                    // Read contents of the uploaded file
+                    $contents = file_get_contents($destinationPath . $filename);
+                    
+                    // Convert time format and add line numbers
+                    $lineNumber = 0;
+                    $convertedContents = preg_replace_callback(
+                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+                        function ($matches) use (&$lineNumber) {
+                            $lineNumber++;
+                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+                        },
+                        $contents
+                    );
+                    
+                    // Store converted contents to a new file
+                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+                    if (!file_exists($newDestinationPath)) {
+                        mkdir($newDestinationPath, 0755, true);
+                    }
+                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                    // Save subtitle data to database
+                    $subtitle_data = [
+                        "episode_id" => $episode->id,
+                        "shortcode" => $shortcodes[$key],
+                        "sub_language" => $languages[$key],
+                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                    ];
+                    $episode_subtitle = SeriesSubtitle::create($subtitle_data);
                 }
             }
         }
@@ -2289,6 +2717,21 @@ class AdminSeriesController extends Controller
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
         ]);
+
+        $mp4_url = $data['file'];
+
+        $libraryid = $data['UploadlibraryID'];
+
+        $storage_settings = StorageSetting::first();
+        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        if($enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }      
 
         $file = (isset($data['file'])) ? $data['file'] : '';
 
@@ -2329,6 +2772,71 @@ class AdminSeriesController extends Controller
                 $episode->save(); 
 
                 $episode_id = $episode->id;
+                
+                // $outputFolder = storage_path('app/public/frames');
+
+                // if (!is_dir($outputFolder)) {
+                //     mkdir($outputFolder, 0755, true);
+                // }
+
+                if(Enable_Extract_Image() == 1){
+                    // extractImageFromVideo
+                
+                    $ffmpeg = \FFMpeg\FFMpeg::create();
+                    $videoFrame = $ffmpeg->open($Video_storepath);
+                    
+                    // Define the dimensions for the frame (16:9 aspect ratio)
+                    $frameWidth = 1280;
+                    $frameHeight = 720;
+                    
+                    // Define the dimensions for the frame (9:16 aspect ratio)
+                    $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                    $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                    
+                    $randportrait = 'portrait_' . $rand;
+                    
+                    $interval = 5; // Interval for extracting frames in seconds
+                    $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                    $totalDuration = intval($totalDuration);
+    
+    
+                    if ( 600 < $totalDuration) { 
+                        $timecodes = [5, 120, 240, 360, 480]; 
+                    } else { 
+                        $timecodes = [5, 10, 15, 20, 25]; 
+                    }
+    
+                    
+                    foreach ($timecodes as $index => $time) {
+                        $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$index}.jpg");
+                        $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$index}.jpg");
+                
+                        try {
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                            $VideoExtractedImage = new VideoExtractedImages();
+                            $VideoExtractedImage->user_id = Auth::user()->id;
+                            $VideoExtractedImage->socure_type = 'Episode';
+                            $VideoExtractedImage->video_id = $episode_id;
+                            $VideoExtractedImage->image_original_name = $episode_id;
+                            $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $index . '.jpg');
+                            $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $index . '.jpg');
+                            $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $index . '.jpg';
+                            $VideoExtractedImage->save();
+    
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                
+                }
+                
                 $episode_title = Episode::find($episode_id);
                 $title =$episode_title->title; 
             
@@ -2383,6 +2891,72 @@ class AdminSeriesController extends Controller
                 $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
                 $video->duration = $Video_duration;
                 $video->save();
+                
+                $episode_id = $video->id;
+                
+                $outputFolder = storage_path('app/public/frames');
+
+                if (!is_dir($outputFolder)) {
+                    mkdir($outputFolder, 0755, true);
+                }
+             
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                $interval = 5; // Interval for extracting frames in seconds
+                $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                $totalDuration = intval($totalDuration);
+
+
+                if ( 600 < $totalDuration) { 
+                    $timecodes = [5, 120, 240, 360, 480]; 
+                } else { 
+                    $timecodes = [5, 10, 15, 20, 25]; 
+                }
+
+                
+                foreach ($timecodes as $index => $time) {
+                    $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$index}.jpg");
+                    $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$index}.jpg");
+            
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+            
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+            
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $episode_id;
+                        $VideoExtractedImage->image_original_name = $episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $index . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $index . '.jpg');
+                        $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $index . '.jpg';
+                        $VideoExtractedImage->save();
+
+                    } catch (\Exception $e) {
+                        dd($e->getMessage());
+                    }
+                }
+            
+            }
 
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
@@ -2692,9 +3266,14 @@ class AdminSeriesController extends Controller
           $videocategory->save();
           $i++;
         }
-        return 1;
 
-    }
+        $series = Series::find($request->seriesid);
+        $episodes = Episode::where('series_id' ,'=', $request->seriesid)
+                    ->where('season_id' ,'=', $request->season_id)->orderBy('episode_order')->get();
+
+        $data = array( 'episodes' => $episodes );
+        return View::make('admin.series.order_episodes', $data);
+     }
 
     public function series_slider_update(Request $request)
     {
@@ -3531,4 +4110,340 @@ class AdminSeriesController extends Controller
             return response()->json($response, 200);
         }
 
+        public function ExtractedImage(Request $request)
+        {
+            try {
+                // print_r($request->all());exit;
+                $value = [];
+    
+                $ExtractedImage =  VideoExtractedImages::where('video_id',$request->episode_id)->where('socure_type','Episode')->get();
+               
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["episode_id"] = $request->episode_id;
+                $value["ExtractedImage"] = $ExtractedImage;
+    
+    
+                return $value;
+    
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+    
+        }
+
+
+        
+        
+    public function BunnycdnEpisodelibrary(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+           // Bunny Cdn get Episodes 
+                
+           $storage_settings = StorageSetting::first();
+
+           if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+           && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+           && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+               
+               $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+               
+               $ch = curl_init();
+               
+               $options = array(
+                   CURLOPT_URL => $videolibraryurl,
+                   CURLOPT_RETURNTRANSFER => true,
+                   CURLOPT_HTTPHEADER => array(
+                       "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                       'Content-Type: application/json',
+                   ),
+               );
+               
+               curl_setopt_array($ch, $options);
+               
+               $response = curl_exec($ch);
+               $videolibrary = json_decode($response, true);
+               curl_close($ch);
+               // dd($videolibrary); ApiKey
+
+           }else{
+               $decodedResponse = [];
+               $videolibrary = [];
+
+           }
+
+           if(count($videolibrary) > 0){
+
+                foreach($videolibrary as $key => $value){
+
+
+
+                    if( $value['Id'] == $request->episodelibrary_id){
+
+
+
+                        $videolibrary_id = $value['Id'];
+                        $videolibrary_ApiKey = $value['ApiKey']; 
+                        $videolibrary_PullZoneId = $value['PullZoneId']; 
+                        break;
+                    }else{
+                        $videolibrary_id = null;
+                        $videolibrary_ApiKey = null; 
+                        $videolibrary_PullZoneId = null; 
+                    }
+                }
+         
+
+           }else{
+                $videolibrary_id = null;
+                $videolibrary_ApiKey = null; 
+                $videolibrary_PullZoneId = null; 
+            }
+
+        
+            if($videolibrary_id != null && $videolibrary_ApiKey != null){
+
+                $client = new \GuzzleHttp\Client();
+                // $videolibrary_PullZoneId
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }
+                    // dd($PullZoneURl);
+
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+                $streamvideos = $response->getBody()->getContents();
+                // echo $response->getBody();
+                // exit;
+           
+            }else{
+                $streamvideos = [];
+            }
+
+        // print_r($response);exit;
+            // return $streamvideos;
+            $responseData = [
+                'streamvideos' => $streamvideos,
+                'PullZoneURl' => $PullZoneURl,
+            ];
+        
+            return $responseData;
+        
+    }
+
+    
+    public function StreamBunnyCdnEpisode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["stream_bunny_cdn_episode"])) {
+
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $data["stream_bunny_cdn_episode"];
+            $Episode->url = $data["stream_bunny_cdn_episode"];
+            $Episode->series_id = $data["series_id"];
+            $Episode->season_id = $data["season_id"];
+            $Episode->type = "bunny_cdn";
+            $Episode->active = 1;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = Auth::user()->id;
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+
+            return $value;
+        }
+    }
+
+    
+    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data){
+
+        // Bunny Cdn get Videos 
+    
+        $mp4_url = $data['file'];
+
+        $storage_settings = StorageSetting::first();
+    
+        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+        && !empty($storage_settings->bunny_cdn_access_key) ){
+            
+            $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $libraryurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            $librarys = json_decode($response, true);
+            curl_close($ch);
+    
+        }else{
+            $librarys = [];
+    
+        }
+        if(count($librarys) > 0){
+            foreach($librarys as $key => $value){
+                if( $value['Id'] == $libraryid){
+                    $library_id = $value['Id'];
+                    $library_ApiKey = $value['ApiKey']; 
+                    $library_PullZoneId = $value['PullZoneId']; 
+                    break;
+                }else{
+                    $library_id = null;
+                    $library_ApiKey = null; 
+                    $library_PullZoneId = null; 
+                }
+            }
+        }else{
+            $library_id = null;
+            $library_ApiKey = null; 
+            $library_PullZoneId = null; 
+        }
+        
+        if($library_id != null && $library_ApiKey != null){
+    
+            $client = new \GuzzleHttp\Client();
+            
+            $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+                'headers' => [
+                    'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                    'accept' => 'application/json',
+                ],
+            ]);
+    
+            $PullZoneData = json_decode($PullZone->getBody()->getContents());
+    
+                if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                    $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                }else{
+                    $PullZoneURl = null;
+                }    
+            }
+            
+            $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename =  str_replace(' ', '_',$file_name);
+    
+            // Step 1: Create the video entry in the library
+            try {
+                $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                    'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                    'headers' => [
+                        'AccessKey' => $library_ApiKey,
+                        'Accept' => 'application/json',
+                    ]
+                ]);
+            
+                $responseData = json_decode($response->getBody(), true);
+                $guid = $responseData['guid'];
+            } catch (RequestException $e) {
+                echo "Error creating video entry: " . $e->getMessage();
+                exit;
+            }
+            
+            // Step 2: Upload the video file
+    
+            try {
+    
+                $context = stream_context_create([
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]);
+                // Fetch video file content using file_get_contents with SSL context
+                $videoData = file_get_contents($mp4_url, false, $context);
+                
+                $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                    'headers' => [
+                        'AccessKey' => $library_ApiKey,
+                        'Content-Type' => 'video/mp4' 
+                    ],
+                    'body' => $videoData 
+                ]);
+    
+                $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
+                // echo "<pre>";
+                // echo "Video uploaded successfully: " . $videoUrl;
+                // echo "<pre>";
+                // echo "Video uploaded successfully: " . $guid;
+                // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
+    
+                $responseuploaded = json_decode($response->getBody(), true);
+                $statusCode = $responseuploaded['statusCode'];
+    
+            } catch (RequestException $e) {
+                echo "Error uploading video: " . $e->getMessage();
+                exit;
+            }
+            $value = [];
+            if($statusCode == 200){
+                
+                $series_id = $data['series_id'];
+                $season_id = $data['season_id'];
+                    
+                $Episode = new Episode();
+                $Episode->disk = "public";
+                $Episode->title = $file_name;
+                $Episode->series_id = $series_id;
+                $Episode->season_id = $season_id;
+                $Episode->url = $videoUrl;
+                $Episode->type = "bunny_cdn";
+                $Episode->active = 1;
+                $Episode->image = default_vertical_image();
+                $Episode->tv_image = default_horizontal_image();
+                $Episode->player_image = default_horizontal_image();
+                $Episode->user_id = Auth::user()->id;
+                $Episode->save();
+
+                $Episode_id = $Episode->id;
+
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["Episode_id"] = $Episode_id;
+        
+    
+                return $value ;
+            }else{
+                $value["success"] = 2;
+                return $value ;
+            }
+        }
+    
 }

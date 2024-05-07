@@ -1,0 +1,176 @@
+.vjs-theme-fantasy {
+    --vjs-theme-fantasy--primary: #00b3ff;
+    --vjs-theme-fantasy--secondary: #fff;
+}
+.vjs-theme-fantasy .vjs-big-play-button {
+    width: 60px;
+    height: 60px;
+    background: none;
+    line-height: 60px;
+    font-size: 45px;
+    border: none;
+    top: 50%;
+    left: 50%;
+    margin-top: -35px;
+    margin-left: -35px;
+    color: #ffffff;
+    border-radius: 40px;
+    background: #000000e0;
+    transition: 3s;
+}
+
+.vjs-theme-fantasy.vjs-big-play-button:focus, .vjs-theme-fantasy:hover .vjs-big-play-button {
+    background-color: #0000009c;
+    color: #fff;
+}
+.my-video-dimensions.vjs-fluid {padding-top: 0;height: 100vh !important;}
+.video-js .vjs-tech {object-fit: cover;}
+.vjs-theme-fantasy .vjs-control-bar {height: 64px;}
+.video-js .vjs-control-bar {
+    background: linear-gradient(transparent,rgba(0,0,0,.75));
+    background: var(--plyr-video-controls-background,linear-gradient(transparent,rgba(0,0,0,.75)));
+    transition: opacity .4s ease-in-out,transform .4s ease-in-out;
+    z-index: 3;
+}
+.vjs-theme-fantasy .vjs-play-control .vjs-icon-placeholder:before {
+    height: 1em;
+    width: 1em;
+    margin-top: 0.25em;
+    border-radius: 4px;
+    border: 0px solid #fff0;
+    top: -11px;
+    left: 18px;
+    line-height: 1.1;
+}
+.vjs-button>.vjs-icon-placeholder:before {font-size: 3em;}
+.vjs-theme-fantasy .vjs-play-control:hover .vjs-icon-placeholder:before {
+    border: 0px solid var(--vjs-theme-fantasy--secondary);
+    background: var(--vjs-theme-fantasy--primary);
+}
+.vjs-theme-fantasy .vjs-volume-panel {order: 0;}
+.video-js .vjs-volume-bar {margin: 0;}
+.vjs-volume-bar.vjs-slider-horizontal {width: 5em;height: 0.5em;}
+.video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-horizontal, .video-js .vjs-volume-panel .vjs-volume-control:active.vjs-volume-horizontal, .video-js .vjs-volume-panel.vjs-hover .vjs-mute-control~.vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel.vjs-hover .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel:active .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel:focus .vjs-volume-control.vjs-volume-horizontal {
+    width: 5em;
+    height: 2em;
+    margin-top: 1.25em;
+    top: 1.25em;
+}
+.vjs-theme-fantasy .vjs-progress-control {font-size: 10px;}
+.video-js .vjs-slider {border-radius: 3px;}
+.vjs-slider-horizontal .vjs-volume-level {height: 0.5em;}
+.video-js .vjs-volume-level:before {font-size: 1.4em;box-shadow: 0px 0px 6px #000;}
+.video-js .vjs-progress-holder .vjs-load-progress, 
+.video-js .vjs-progress-holder .vjs-load-progress div, .video-js .vjs-progress-holder .vjs-play-progress{border-radius: 3px;}
+.vjs-theme-fantasy .vjs-play-progress:before {
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 0.8em;
+    top: -0.6em;
+    box-shadow: 0 0 3px #000;
+}
+.vjs-theme-fantasy .vjs-play-progress, .vjs-theme-fantasy .vjs-play-progress:before {background-color: var(--vjs-theme-fantasy--secondary);}
+.video-js .vjs-time-tooltip {border-radius: 1.3em;top: -3.8em;}
+.video-js .vjs-progress-control:hover .vjs-progress-holder:focus .vjs-time-tooltip, .video-js .vjs-progress-control:hover .vjs-time-tooltip {font-size: 0.8em;}
+.vjs-playback-rate .vjs-playback-rate-value {font-size: 1.75em;line-height: 2em;}
+.vjs-playback-rate .vjs-menu {top: 30px;}
+.vjs-menu li {padding: 0.5em 0;line-height: 1.5em;font-size: 1.5em;}
+.vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+    background-color: #2b333f;
+    background-color: rgb(0 0 0 / 70%);
+    position: absolute;
+    width: 100%;
+    bottom: 3.5em;
+    max-height: 25em;
+    border-radius: 5px;
+}
+.video-js .vjs-control.vjs-menu-button {background: var(--vjs-theme-fantasy--primary);background: #2d2d2d; margin: 10px;height: 50%;border-radius: 3px;}
+.video-js .vjs-big-play-button .vjs-icon-placeholder:before, .video-js .vjs-play-control .vjs-icon-placeholder, .vjs-icon-play {
+    font-family: 'FontAwesome';
+}
+.video-js .vjs-big-play-button .vjs-icon-placeholder:before, .video-js .vjs-play-control .vjs-icon-placeholder:before, .vjs-icon-play:before {
+    content: "\f144";
+}
+.video-js .vjs-fullscreen-control .vjs-icon-placeholder, .vjs-icon-fullscreen-enter {
+    font-family: 'FontAwesome';
+    font-size: 0.78em;
+}
+.video-js .vjs-fullscreen-control .vjs-icon-placeholder:before, .vjs-icon-fullscreen-enter:before {
+    content: "\f065";
+}
+.video-js .vjs-mute-control .vjs-icon-placeholder, .vjs-icon-volume-high{
+    font-family: 'FontAwesome';
+}
+.video-js .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder, .vjs-icon-volume-mid {
+    font-family: 'FontAwesome';
+}
+.video-js .vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder, .vjs-icon-volume-low {
+    font-family: 'FontAwesome';
+}
+.video-js .vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder:before, .vjs-icon-volume-low:before {
+    content: "\f026";
+}
+.video-js .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder:before, .vjs-icon-volume-mid:before {
+    content: "\f027";
+}
+.video-js .vjs-mute-control .vjs-icon-placeholder:before, .vjs-icon-volume-high:before {
+    content: "\f028";
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-js .vjs-volume-panel:active .vjs-volume-control.vjs-volume-vertical{
+    left: -2.5em;
+}
+.vjs-slider-vertical .vjs-volume-level:before {
+    top: -.5em;
+    left: -0.4em;
+    z-index: 1;
+}
+.video-js .vjs-volume-panel .vjs-volume-control.vjs-volume-vertical{
+    width: 0.3em !important;
+    background-color: transparent;
+}
+.video-js .vjs-volume-vertical{
+    bottom: 5em;
+}
+.vjs-slider-vertical .vjs-volume-level:before {
+    top: -.5em;
+    left: -.4em;
+    z-index: 1;
+}
+.video-js .vjs-volume-level:before {
+    font-size: 1em;
+    box-shadow: 0px 0px 6px #000;
+}
+.video-js .vjs-volume-vertical{
+    bottom: 7em;
+}
+.vjs-volume-bar.vjs-slider-vertical{
+    height:8em !important;
+    left: 10px;
+}
+.video-js .vjs-volume-panel:focus .vjs-volume-control.vjs-volume-vertical {
+    left: -2.5em !important;
+    transition: left 0s;
+}
+.vjs-menu-button-popup .vjs-menu{
+    width:12em !important;
+}
+.vjs-menu-button-popup .vjs-menu .vjs-menu-content{
+    bottom: 2em !important;
+}
+.vjs-menu-button-popup .vjs-menu.vjs-lock-showing{
+    display:none !important;
+}
+.vjs-workinghover .vjs-menu-button-popup.vjs-hover .vjs-menu {
+    display:block !important;
+}

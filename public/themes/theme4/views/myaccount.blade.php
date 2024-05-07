@@ -132,6 +132,9 @@ $user = App\User::where('id',$id)->first();
 a{
 cursor: pointer;
 }
+.font-size-13{
+   font-size: 13px !important;
+}
 
     </style>
    <body>
@@ -740,7 +743,7 @@ cursor: pointer;
                                  <span class="text-light font-size-13">{{ __('Display Image') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
-                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png')   }}" height="50px" width="50px" />
+                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/theme4_profile_image.png')   }}" height="50px" width="50px" />
                                     </span>
                                  </div>
                               </div>
@@ -1119,7 +1122,7 @@ cursor: pointer;
                     <div class="targetDiv mt-5" id="div5">
                         <div class=" mb-3">
                       <h4 class="card-title mb-0">Preference for videos</h4>
-                      <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                      <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
@@ -1319,7 +1322,7 @@ cursor: pointer;
                 <div class="col-lg-6 mb-3" id="">
                   <div class="sign-user_card mb-3">
                       <h4 class="card-title mb-0">Preference for videos</h4>
-                      <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
+                      <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
@@ -1947,5 +1950,5 @@ jQuery(document).ready(function($){
 });
    </script>
 @php
-include(public_path('themes/theme7/views/footer.blade.php'));
+include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

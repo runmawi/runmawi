@@ -1,61 +1,191 @@
-
 @if (!empty($data) && $data->isNotEmpty())
+    <section id="iq-trending" class="s-margin">
+        <div class="container-fluid pl-0">
+            <div class="row">
+                <div class="col-sm-12 overflow-hidden">
+                                    
+                                    {{-- Header --}}
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title mar-left">
+                            <a href="#">{{ "Featured Episodes" }}</a>
+                        </h4>                   
+                    </div>
 
-  <section id="iq-favorites">
-      <div class="container-fluid">
-          <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="Free-Content-Episode-slider-nav list-inline p-0 mar-left row align-items-center">
+                            @foreach ($data as $episode_details)
+                                <li class="slick-slide">
+                                    <a href="javascript:void(0);">
+                                        <div class="movie-slick position-relative">
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="episode_details">
+                                            @endif 
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
 
-                  {{-- Header --}}
-                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                      <h4 class="main-title">{{ 'Free Episodes' }}</a></h4>
-                  </div>
+                        <ul id="trending-slider Free-Content-Episode-slider" class="list-inline p-0 m-0 align-items-center Free-Content-Episode-slider theme4-slider">
+                            @foreach ($data as $key => $episode_details )
+                                <li class="slick-slide">
+                                    <div class="tranding-block position-relative trending-thumbnail-image">
+                                        <button class="drp-close">×</button>
 
-                  <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline  row p-0 mb-0">
-                          @foreach ($data as $key => $episode_details)
-                              <li class="slide-item">
-                                  <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
-                                      <div class="block-images position-relative">
-                                          <div class="img-box">
-                                              <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                          </div>
-                                          <div class="block-description">
-                                              <h6> {{ strlen($episode_details->title) > 17 ? substr($episode_details->title, 0, 18) . '...' : $episode_details->title }}
-                                              </h6>
-                                              <div class="movie-time d-flex align-items-center my-2">
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                  <div class="badge badge-secondary p-1 mr-2">
-                                                      {{ optional($episode_details)->age_restrict.'+' }}
-                                                  </div>
+                                                        <div class="caption pl-4">
+                                                            <h2 class="caption-h2">{{ optional($episode_details)->title }}</h2>
 
-                                                  <span class="text-white">
-                                                      {{ $episode_details->duration != null ? gmdate('H:i:s', $episode_details->duration) : null }}
-                                                  </span>
-                                              </div>
+                                                            @if (optional($episode_details)->episode_description)
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($episode_details)->episode_description) !!}</div>
+                                                            @endif
 
-                                              <div class="hover-buttons">
-                                                  <span class="btn btn-hover">
-                                                      <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                      Play Now
-                                                  </span>
-                                              </div>
-                                          </div>
-                                          <div class="block-social-info">
-                                              <ul class="list-inline p-0 m-0 music-play-lists">
-                                                  {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                  <li><span><i class="ri-heart-fill"></i></span></li>
-                                                  <li><span><i class="ri-add-line"></i></span></li>
-                                              </ul>
-                                          </div>
-                                      </div>
-                                  </a>
-                              </li>
-                          @endforeach
-                      </ul>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
+
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Free-content-Modal-'.$key }}"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="dropdown_thumbnail">
+                                                            @if ( $multiple_compress_image == 1)
+                                                                <img  alt="latest_series" src="{{$episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}"
+                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_player_image.' 860w') }},
+                                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_player_image.' 640w') }},
+                                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_player_image.' 420w') }}" >
+                                                            @else
+                                                                <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="episode_details">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @foreach ($data as $key => $episode_details )
+            <div class="modal fade info_model" id="{{ "Home-Free-content-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none; background:transparent;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="episode_details">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($episode_details)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+
+                                            @if (optional($episode_details)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode_details)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
+
+    </section>
 @endif
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.Free-Content-Episode-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.Free-Content-Episode-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.Free-Content-Episode-slider-nav',
+        });
+
+        $('.Free-Content-Episode-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 6,
+            asNavFor: '.Free-Content-Episode-slider',
+            dots: false,
+            arrows: true,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.Free-Content-Episode-slider-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.Free-Content-Episode-slider').show();
+        });
+
+        $('body').on('click', '.drp-close', function() {
+            $('.Free-Content-Episode-slider').hide();
+        });
+    });
+</script>

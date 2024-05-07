@@ -10,6 +10,44 @@
       $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
+
+
+
+      if(Auth::guest()){
+         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+         $userIp = $geoip->getip();
+         $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+         if(!empty($UserTranslation)){
+             $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+         }else{
+             $translate_language = GetWebsiteName().'en';
+         }
+     }else if(!Auth::guest()){
+
+         $subuser_id=Session::get('subuser_id');
+         if($subuser_id != ''){
+             $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+             if(!empty($Subuserranslation)){
+                 $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
+         }else if(Auth::user()->id != ''){
+             $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+             if(!empty($UserTranslation)){
+                 $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
+         }else{
+             $translate_language = GetWebsiteName().'en';
+         }
+
+     }else{
+         $translate_language = GetWebsiteName().'en';
+     }
+
       \App::setLocale(@$translate_language);
 
 
@@ -65,7 +103,8 @@
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       // }
       ?>
-   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first(); ?>
+   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
+   //dd($request_url); ?>
 
    <?php    $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first(); 
             $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first(); ?>
@@ -74,33 +113,36 @@
 
 <!-- Place this data between the <head> tags of your website -->
 <title><?php
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+      if(!empty($videos_data)){  echo urldecode($videos_data->title) .' | '. $settings->website_name ;
        }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_title .' | '. $settings->website_name ; }
-      else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
+      elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
+      elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?></title>
 <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
+      elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+      
+ <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="<?php
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;
        }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_name .' | '. $settings->website_name ; }
-      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+      elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
+      elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_name) .' | '. $settings->website_name ; }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>">
 <meta itemprop="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
@@ -122,14 +164,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <?php if(!empty($settings->twitter_page_id)){ ?><meta name="twitter:site" content="<?php echo $settings->twitter_page_id ;?>"><?php } ?>
 <meta name="twitter:title" content="<?php
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+      if(!empty($videos_data)){  echo urldecode($videos_data->title) .' | '. $settings->website_name ;
        }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_title .' | '. $settings->website_name ; }
-      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+      elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
+      elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>">
 <meta name="twitter:description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
@@ -149,14 +191,14 @@
 
 <!-- Open Graph data -->
 <meta property="og:title" content="<?php
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;
        }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_title .' | '. $settings->website_name ; }
-      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
+      elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
+      elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>" />
 <meta property="og:image" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
       }
@@ -207,28 +249,39 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+   
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
+     <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" as="style"/>
      <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
    <!-- Typography CSS  -->
+   <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
    <!-- Style -->
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
    <!-- Responsive -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+
+   <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
    <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
+
+   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
    <?php 
       if(count($Script) > 0){
       foreach($Script as $Scriptheader){   ?>
@@ -377,7 +430,7 @@
    }
    body.light-theme header#main-header{
    background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
+   color: <?php echo GetLightText(); ?> !important;
    box-shadow: 0 0 50px #ccc;
    }
    body.light-theme footer{
@@ -418,6 +471,12 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    }  
+   body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme li.breadcrumb-item{
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme .p-tag1{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
@@ -433,6 +492,9 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    } 
+   body.light-theme .list-group-item a{
+   color: <?php echo GetAdminDarkText(); ?> !important;
+   } 
     body.light-theme .block-description{
   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
     backdrop-filter: blur(2px);
@@ -444,6 +506,9 @@
    color: <?php echo GetLightText(); ?>!important;
    }
    body.light-theme h2{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h5{
    color: <?php echo GetLightText(); ?>!important;
    }
    body.light-theme .filter-option-inner-inner{
@@ -630,12 +695,11 @@
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
     border-top: none; float:right"> -->
                         <div class="btn-close" data-toggle="collapse">
-                        <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
-    border-top: none; float:right"><i class="fa fa-times" style="
-    font-size: 20px;
-    color: white;"></i></a>
+                        <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                           data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                           aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
+                              <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                        </button>
                         </div>
                      <!-- </a> -->
                               </li>      
@@ -675,7 +739,7 @@
                                        </a>
                                  </li> -->
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -692,7 +756,7 @@
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -709,7 +773,7 @@
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -729,13 +793,13 @@
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $AudioCategory as $category){ ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/').'/'.$category->name;?>"> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audios/category/').'/'.$category->name;?>"> 
                                        <?php echo (__($category->name));?> 
                                        </a>
                                     </li>
@@ -747,7 +811,7 @@
                               <!-- Tv show dropdown -->
 
                               <?php }elseif ( $menu->in_menu == "tv_show") { 
-                                 $tv_shows_series = App\Series::get();
+                                 $tv_shows_series = App\SeriesGenre::get();
                                  ?>
                               <li class="dropdown menu-item ">
                                  <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
@@ -759,11 +823,11 @@
                                        <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
                                           <li>
                                              <?php if($key < 5): ?>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series').'/'.$tvshows_series->slug;?>"> 
-                                                   <?php echo $tvshows_series->title;?> 
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/series/category').'/'.$tvshows_series->slug;?>"> 
+                                                   <?php echo $tvshows_series->name;?> 
                                                 </a>
                                              <?php else: ?>
-                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
+                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/SeriescategoryList');?>"> 
                                                    <?php echo 'More...';?> 
                                                 </a>
                                              <?php endif; ?>
@@ -782,70 +846,111 @@
 
                               <?php  } } ?>
 
+
+
                               
-                              
+                              <?php if(Auth::guest()):  ?>
+                                       <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
+                                          <!-- <div class="row "> -->
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                                <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon">
+                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                            <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
+                                                            <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
+                                                         </svg>
+                                                      </div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 "><?php echo (__('Signin'));?></h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                          </li> 
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                <div class="media align-items-center">
+                                                   <div class="right-icon">
+                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                         <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
+                                                         <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
+                                                      </svg>
+                                                   </div>
+                                                   <div class="media-body">
+                                                      <h6 class="mb-0 "><?php echo (__('Signup'));?></h6>
+                                                   </div>
+                                                </div>
+                                             </a>
+                                          </li>      
+                                       </div>
+                                 <?php endif; ?>
+
                      <?php if(!Auth::guest()){ ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
-                              <?php echo __('Logout');?>
-                                       </a> </li>      
-                           </div>
+                                       <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                       <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
+                                       <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                       <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                       <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                       <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
+                                    </form>
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                                   </a> </li>      
+                                 </div>
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
-                                          <?php echo __('My Profile');?>
-                                       </a> </li>      
-                           </div>
+                                    <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                    <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
+                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
+                                 </form>
+                                    <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                                   <?php echo __('My Profile');?>
+                                                </a> </li>      
+                                 </div>
+
+                                 
+
+                                 
                            
                            
                            <!-- Mobile responsive buttons -->
-                           <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                           <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn">
                               <div class="row ">
-                              <div class="col-sm-6  menu-item pt-3">
-                              <li class="menu-item dk" style="display:none;">
-                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                 <div class="col-sm-6  menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none;">
+                                          <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
-                              </div>
-                              <div class="col-sm-6 menu-item pt-3">
-                              <li class="menu-item dk" style="display:none">
-                                       <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 <div class="col-sm-6 menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none">
+                                          <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 
                               </div>
-                              
-                           </div>
                            </div> 
 
                               <!-- </div> -->
@@ -888,14 +993,20 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+               <a href="<?= $app_settings->android_url ?>">
+                  <img src="<?php echo URL::to('/assets/img/apps1.webp') ?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
+
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+               <a href="<?= $app_settings->ios_url ?>">
+                  <img src="<?php echo  URL::to('/assets/img/apps.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-                  <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+               <a href="<?= $app_settings->android_tv ?>">
+                  <img src="<?php echo  URL::to('/assets/img/and.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               </div>
               
@@ -937,23 +1048,20 @@
                         </div>
                      </div>
                      <div class="mobile-more-menu">
-                        <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                           data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="ri-more-line"></i>
-                        </a>
+                        <button class="more-toggle" id="dropdownMenuButton" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
+                           <i class="ri-more-line"></i>
+                        </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
                                  <li class="hidden-xs">
                                     <div id="navbar-search-form">
-                                       <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="POST">
-                                          <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                          <div>
-                                             <i class="fa fa-search">
-                                             </i>
-                                             <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
-                                          </div>
-                                       </form>
+                                    <form role="search" action="<?= route('searchResult') ?>" method="get">
+                                       <div>
+                                          <i class="fa fa-search"></i>
+                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                       </div>
+                                    </form>
                                     </div>
                                     <div id="search_list" class="search_list" style="position: absolute;">
                                     </div>
@@ -998,8 +1106,7 @@
                               </a>
 
                               <div class="search-box iq-search-bar d-search">
-                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
-                                    <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="get" class="searchbox">
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
                                        <i class="search-link ri-search-line"></i>
@@ -1017,11 +1124,11 @@
                               
                            </li>
                            
-                           <?php if(!Auth::guest()){ ?>
+                           <?php //if(!Auth::guest()){ ?>
 
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
-                              <a href="#" class="search-toggle active" data-toggle="search-toggle">
+                              <a href="#"  class="search-toggle active" aria-label="Toggle Search" data-toggle="search-toggle">
                                  <?php if(@$translate_checkout == 1){ ?>
                                     <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
                                        <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
@@ -1045,7 +1152,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if(GetWebsiteName().$Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1062,7 +1169,7 @@
                               </div>
                            </li>
    
-                           <?php } ?>
+                           <?php // } ?>
 
                            <li class="nav-item nav-icon">
 
@@ -1081,42 +1188,7 @@
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                            </svg>
-                              <div class="iq-sub-dropdown">
-                                 <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body">
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                <small class="font-size-12"> just now</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                <small class="font-size-12">15 minutes ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                <small class="font-size-12">1 hour ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                    </div>
-                                 </div>
-                              </div>
+                              
                            </li>
                            <?php if(Auth::guest()): ?>
                               <?php if( $signin_header == 1 ): ?>
@@ -1213,6 +1285,37 @@
                                              </div>
                                              <div class="media-body ml-3">
                                                 <h6 class="mb-0 "><?php echo (__('Manage Profile'));?></h6>
+                                             </div>
+                                          </div>
+                                       </a>
+                                       <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
+                                          <div class="media align-items-center">
+                                             <div class="right-icon">
+                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                   viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                   <style type="text/css">
+                                                   </style>
+                                                   <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
+                                                      c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z"/>
+                                                   <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.3,8.4,1.1,11.5,3.6c0.1,0.1,0.3,0.1,0.4,0l1.8-1.8
+                                                      c0.3-0.3,0.3-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
+                                                      l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z"/>
+                                                   <path class="st0" d="M62.2,48.6v-2.4c0-0.3-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.3-0.7-0.4-1.1
+                                                      C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
+                                                      c-0.3-0.2-0.7-0.3-1-0.4c-0.2-0.1-0.4-0.3-0.4-0.5v-2.8c0-0.3-0.2-0.5-0.5-0.5h-2.4c-0.3,0-0.5,0.2-0.5,0.5v2.8
+                                                      c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
+                                                      c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.3-0.3,0.7-0.4,1.1c-0.1,0.2-0.3,0.4-0.5,0.4h-2.7
+                                                      c-0.3,0-0.5,0.2-0.5,0.5v2.4c0,0.3,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.3,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
+                                                      L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.3,0.2,0.7,0.3,1.1,0.4
+                                                      c0.2,0.1,0.4,0.3,0.4,0.5V57c0,0.3,0.2,0.5,0.5,0.5h2.4c0.3,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.3,1-0.4
+                                                      c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
+                                                      c0.2-0.3,0.3-0.7,0.4-1c0.1-0.2,0.3-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
+                                                      c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
+                                                      L48.7,47.4z"/>
+                                                </svg>
+                                             </div>
+                                             <div class="media-body ml-3">
+                                                <h6 class="mb-0 "><?php echo (__('Change Profile'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1367,7 +1470,7 @@
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 pl-3 pr-3">
-                                       <a class="p-0">
+                                       <a href="#" class="p-0">
                                           <!-- <div class="toggle mt-3 text-right">
                                              <input type="checkbox" id="toggle" />
                                              <label for="toggle"></label>
@@ -1413,6 +1516,37 @@
                                              </div>
                                              <div class="media-body ml-3">
                                                 <h6 class="mb-0 "><?php echo (__('Manage Profile'));?></h6>
+                                             </div>
+                                          </div>
+                                       </a>
+                                       <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
+                                          <div class="media align-items-center">
+                                             <div class="right-icon">
+                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                   viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                   <style type="text/css">
+                                                   </style>
+                                                   <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
+                                                      c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z"/>
+                                                   <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.3,8.4,1.1,11.5,3.6c0.1,0.1,0.3,0.1,0.4,0l1.8-1.8
+                                                      c0.3-0.3,0.3-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
+                                                      l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z"/>
+                                                   <path class="st0" d="M62.2,48.6v-2.4c0-0.3-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.3-0.7-0.4-1.1
+                                                      C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
+                                                      c-0.3-0.2-0.7-0.3-1-0.4c-0.2-0.1-0.4-0.3-0.4-0.5v-2.8c0-0.3-0.2-0.5-0.5-0.5h-2.4c-0.3,0-0.5,0.2-0.5,0.5v2.8
+                                                      c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
+                                                      c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.3-0.3,0.7-0.4,1.1c-0.1,0.2-0.3,0.4-0.5,0.4h-2.7
+                                                      c-0.3,0-0.5,0.2-0.5,0.5v2.4c0,0.3,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.3,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
+                                                      L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.3,0.2,0.7,0.3,1.1,0.4
+                                                      c0.2,0.1,0.4,0.3,0.4,0.5V57c0,0.3,0.2,0.5,0.5,0.5h2.4c0.3,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.3,1-0.4
+                                                      c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
+                                                      c0.2-0.3,0.3-0.7,0.4-1c0.1-0.2,0.3-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
+                                                      c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
+                                                      L48.7,47.4z"/>
+                                                </svg>
+                                             </div>
+                                             <div class="media-body ml-3">
+                                                <h6 class="mb-0 "><?php echo (__('Change Profile'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1674,7 +1808,7 @@
          // console.log(currentdate);
          
          if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
-         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
+         $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
          setTimeout(function() {
          $('.add_watch').slideUp('fast');
          }, 3000);
@@ -1745,7 +1879,9 @@
             }
           });
       </script>
-
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
 <script>
                   document.getElementById('languageSearch').addEventListener('click', function(event) {
             event.stopPropagation();
@@ -1764,19 +1900,35 @@
                 });
             });
             
-            document.addEventListener("click", function (event) {
-                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-                    dropdownContent.style.display = "none";
-                }
+            document.addEventListener("DOMContentLoaded", function() {
+               const dropdownIcon = document.querySelector('.dropdown-icon');
+               const dropdownContent = document.querySelector('.dropdown-content');
+
+               // Check if both dropdownIcon and dropdownContent are not null
+               if (dropdownIcon && dropdownContent) {
+                  document.addEventListener("click", function (event) {
+                        // Check if the clicked target is neither dropdownIcon nor within dropdownContent
+                        if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                           dropdownContent.style.display = "none";
+                        }
+                  });
+               } 
             });
 
 
-      // Close the dropdown if the user clicks outside of it
-      document.addEventListener("click", function (event) {
-      if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
-      dropdownContent.style.display = "none";
-      }
-      });
+            // document.addEventListener("click", function (event) {
+            //     if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            //         dropdownContent.style.display = "none";
+            //     }
+            // });
+
+
+            // Close the dropdown if the user clicks outside of it
+            // document.addEventListener("click", function (event) {
+            // if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+            // dropdownContent.style.display = "none";
+            // }
+            // });
 
 
 
@@ -1786,7 +1938,7 @@
          var languageCode = $(this).data("language-code");
 
       $.ajax({
-            url: '<?php echo URL::to("admin/translate_language") ;?>',
+            url: '<?php echo URL::to("/translate_language") ;?>',
             method: 'post',
             data: 
                {
@@ -1795,7 +1947,7 @@
                },
                success: (response) => {
                   console.log(response);
-                  alert("Changed The Language !");
+                  // alert("Changed The Language !");
                   location.reload();
 
                },
