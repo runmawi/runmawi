@@ -226,9 +226,9 @@
     $(document).ready(function() {
 
         $('.category-videos-slider').slick({
-            slidesToShow: 6,
-            slidesToScroll: 4,
-            arrows: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.category-videos-slider-nav',
@@ -240,8 +240,8 @@
             asNavFor: '.category-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

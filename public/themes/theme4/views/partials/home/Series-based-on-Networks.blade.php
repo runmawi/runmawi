@@ -181,7 +181,7 @@
         $('.series-networks-videos-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-networks-videos-slider-nav',
@@ -193,8 +193,8 @@
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -228,7 +228,10 @@
 
              let category_key_id = $(this).attr("data-key-id");
              $('.series-networks-videos-slider').hide();
-             $('.category-series-' + category_key_id).show();
+
+             setTimeout(function() {
+                    $('.category-series-' + category_key_id).fadeIn(400); // Show slider with fade effect after delay
+                }, 500);
 
             $('.series-depends-episode-slider-'+ category_key_id).slick({
                 dots: false,
