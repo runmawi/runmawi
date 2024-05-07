@@ -403,7 +403,7 @@
         }
 
         .btn1 {
-            background: rgba(138, 3, 3, 1) !important;
+            background: {{ $button_bg_color . '!important' }};
             border: none;
             border-radius: 30px;
             padding: 15px;
@@ -448,13 +448,13 @@
 
         .actives {
             border: 5px solid #a5a093;
-
+            border: {{ '5px solid' . $button_bg_color . '!important' }};
         }
 
         .dg:hover {
             transition: 0.5s;
             color: #000 !important;
-            border: {{ '5px solid' . button_bg_color() . '!important' }};
+            border: {{ '5px solid' . $button_bg_color . '!important' }};
         }
 
         .cont {
@@ -464,7 +464,7 @@
         }
 
         #card-button {
-            background-color: {{ button_bg_color() . '!important' }};
+            background-color: {{ $button_bg_color . '!important' }};
         }
 
         .blk li {
@@ -528,7 +528,7 @@
                 <div class="col-lg-8 col-md-7">
                     <div class="flick1">
                         <div class="small-heading text-white">Step 2 of <span class="ml-2">2</span></div>
-                        <p class="text-white">Hello, {{ '$user_mail' }}</p>
+                        <p class="text-white">Hello, {{ 'Manikandan@webnexs.in'}}</p>
                         <div class="medium-heading text-white"> {{ !is_null($SiteTheme) &&  !is_null($SiteTheme->signup_step2_title) ? $SiteTheme->signup_step2_title : null  }} </div>
                         <div class="col-md-12 p-0 mt-2">
 
@@ -549,7 +549,7 @@
                                 <div class="data-plans row align-items-center m-0 p-0">
                                     @foreach ($subscriptions_plans as $key => $plan)
 
-                                        <div style="" class="col-md-6 plan_details p-0" data-active-status={{ 'active' . $plan->id }} data-plan-price="{{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : round($plan->price,2) }}"
+                                        <div style="" class="col-md-6 plan_details p-0" data-active-status={{ 'active' . $plan->id }} data-plan-price="{{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $currency_symbol. round($plan->price,2) }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
@@ -558,7 +558,7 @@
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0">
-                                                                {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol(). round($plan->price,2) }} Membership</p>
+                                                                {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $currency_symbol. round($plan->price,2) }} Membership</p>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 blk">
@@ -583,7 +583,7 @@
                                 <div class="bg-white mt-4 dgk">
                                     <h4> Due today: 
                                         <span class='plan_price Summary'>
-                                            {{-- {{ $SubscriptionPlan ? currency_symbol() . round($SubscriptionPlan->price,2) : currency_symbol() . '0:0' }} --}}
+                                            {{-- {{ $SubscriptionPlan ? $currency_symbol . round($SubscriptionPlan->price,2) : $currency_symbol . '0:0' }} --}}
                                         </span>
                                     </h4>
                                     <hr />
@@ -604,7 +604,7 @@
 
                                 <input type="hidden" id="plan_id" name="plan_id" >
                                 <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
-                                <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
+                                <input type="hidden" id="currency_symbol" value="{{ $currency_symbol }}">
                             </div>
                         </div>
                     </div>
@@ -629,6 +629,7 @@
             let currency_symbols = document.getElementById("currency_symbol").value;
             let active_status = $(ele).attr('data-active-status');
 
+            $('.stripe_payment').show();
 
             $('.plan_price').empty(plan_price).append( plan_price);
             $('#plan_id').replaceWith('<input type="hidden" name="plan_id" id="plan_id" value="' + plans_id + '">');
@@ -680,6 +681,7 @@
         });
   
         $(document).ready(function() {
+            $('.stripe_payment').hide();
             setTimeout(function() {
                 $('#successMessage').fadeOut('fast');
             }, 3000);

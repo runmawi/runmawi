@@ -52,6 +52,8 @@ class CPPSubscriptionController extends Controller
             'subscriptions_plans' => $subscriptions_plans,
             'stripe_lable' => $stripe_lable ,
             'footer_url'   => $footer_url ,
+            'button_bg_color' => button_bg_color() ,
+            'currency_symbol' => currency_symbol(),
         );
 
         return Theme::view('moderator.subscriptions_plans', $data );
