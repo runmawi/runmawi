@@ -18,12 +18,12 @@
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $video_details->title }}" src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $video_details->title }}" src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url) }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$video_details->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="video_details" width="300" height="200">
+                                                <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url) }}" class="img-fluid" alt="video_details" width="300" height="200">
                                             @endif 
 
                                             @if ( $videos_expiry_date_status == 1 && optional($video_details)->expiry_date)
