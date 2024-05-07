@@ -194,6 +194,7 @@
         $('.cnt-videos-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.cnt-videos-slider').show();
+            $('#trending-slider').addClass('display-block-important');
         });
 
         $('body').on('click', '.drp-close', function() {
