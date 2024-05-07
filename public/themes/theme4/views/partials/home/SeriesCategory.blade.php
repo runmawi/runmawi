@@ -273,7 +273,7 @@
                         <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" alt="Videos"/>
+                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : $default_vertical_image_url }}" style="object-fit: cover; height: 350px;" alt="Videos"/>
                     </div>
                 </div> 
             </div>

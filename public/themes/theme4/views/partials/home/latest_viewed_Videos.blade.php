@@ -52,12 +52,12 @@
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $latest_view_video->title }}" src="{{ $latest_view_video->image ?  URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $latest_view_video->title }}" src="{{ $latest_view_video->image ?  URL::to('public/uploads/images/'.$latest_view_video->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_episode">
+                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : $default_vertical_image_url }}" class="img-fluid" alt="latest_view_episode">
                                             @endif  
                                             @if ($videos_expiry_date_status == 1 && optional($latest_view_video)->expiry_date)
                                                 <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
@@ -105,12 +105,12 @@
 
                                                         <div class="dropdown_thumbnail">
                                                         @if ( $multiple_compress_image == 1)
-                                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}"
+                                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : $default_horizontal_image_url }}"
                                                                 srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_player_image.' 860w') }},
                                                                 {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_player_image.' 640w') }},
                                                                 {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_player_image.' 420w') }}" >
                                                         @else
-                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="latest_view_episode">
+                                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : $default_horizontal_image_url }}" alt="latest_view_episode">
                                                         @endif 
                                                         </div>
                                                     </div>
@@ -140,12 +140,12 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                         @if ( $multiple_compress_image == 1)
-                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}"
+                                            <img  alt="" width="100%" src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : $default_horizontal_image_url }}"
                                                 srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_video->responsive_player_image.' 860w') }},
                                                 {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_player_image.' 640w') }},
                                                 {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_player_image.' 420w') }}" >
                                         @else
-                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $latest_view_video->player_image ?  URL::to('public/uploads/images/'.$latest_view_video->player_image) : $default_horizontal_image_url }}" alt="" width="100%">
                                         @endif 
                                         </div>
                                         <div class="col-lg-6">

@@ -25,9 +25,9 @@
         }
 
         $data = $data->latest()->limit(15)->get()->map(function ($item) {
-            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  $default_vertical_image_url ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  $default_horizontal_image_url ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  $default_horizontal_image_url ;
             $item['source_type']        = "Videos" ;
             return $item;
         });
@@ -53,7 +53,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="expiry_videos">
+                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative" alt="expiry_videos">
                                             <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span>
                                         </div>
                                     </a>
@@ -95,7 +95,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="expiry_videos">
+                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="expiry_videos">
+                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

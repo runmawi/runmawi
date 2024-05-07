@@ -2,7 +2,7 @@
     $data->map(function($item){
         $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
                                                     ->map(function ($item) {
-                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                                         return $item;
                                                 });
 
@@ -32,7 +32,7 @@
                                 <li class="slick-slide" data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="latest_series">
+                                                <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}" class="img-fluid lazy" alt="latest_series">
                                         </div>
                                     </a>
                                 </li>
@@ -98,7 +98,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : default_horizontal_image_url() }}" alt="latest_series">
+                                                                <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : $default_horizontal_image_url }}" alt="latest_series">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -127,7 +127,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : default_horizontal_image_url() }}" alt="series">
+                                                <img class="lazy" src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="series">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">

@@ -238,7 +238,7 @@
 <!-- @if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
     @foreach ($Episode_sliders as $item)
 
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ $item->image ? URL::to('public/uploads/images/'.$item->player_image) : default_vertical_image_url() }}'); background-repeat: no-repeat;background-size: cover;" >
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ $item->image ? URL::to('public/uploads/images/'.$item->player_image) : $default_vertical_image_url }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100 pl-4">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">

@@ -37,7 +37,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div  class="movie-slick position-relative">
-                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_live">
+                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="latest_view_live">
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
@@ -89,7 +89,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_vertical_image_url() }}" class="img-fluid" alt="latest_view_live">
+                                                            <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_vertical_image_url }}" class="img-fluid" alt="latest_view_live">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -117,7 +117,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="modal">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

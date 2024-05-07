@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">
                                         </div>
                                     </a>
                                 </li>
@@ -58,9 +58,9 @@
                                                                                                     ->where('active', '1')->whereIn('id',$SeriesCategory);
 
                                                                     $series = $series->latest()->limit(15)->get()->map(function ($item) {
-                                                                                $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                                                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
-                                                                                $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
+                                                                                $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                                                                $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
                                                                                 $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
                                                                                 $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
                                                                                 return $item;
@@ -72,7 +72,7 @@
                                                                     <li>
                                                                         <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
                                                                             <div class=" position-relative">
-                                                                                <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                                                <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
                                                                                    
                                                                                     <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -95,7 +95,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                                <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : $default_horizontal_image_url }}" alt="Videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,9 +124,9 @@
                                                 ->where('active', '1')->whereIn('id',$SeriesCategory);
 
                 $series = $series->latest()->limit(15)->get()->map(function ($item) {
-                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
-                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
+                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
                             $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
                             $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
                             return $item;
@@ -144,12 +144,12 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img  alt="latest_series" src="{{$series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}"
+                                                    <img  alt="latest_series" src="{{$series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series_details->responsive_player_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series_details->responsive_player_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$series_details->responsive_player_image.' 420w') }}" >
                                                 @else
-                                                    <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="Videos" >
+                                                    <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : $default_horizontal_image_url }}" alt="Videos" >
                                                 @endif
                                             </div>
                                             <div class="col-lg-6">

@@ -320,6 +320,7 @@ class HomeController extends Controller
                     ])
                     ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
                     ->orderBy('series_genre.order')
+                    ->limit(15)
                     ->get();
         
             $Series_based_on_category->each(function ($category) {
@@ -403,7 +404,7 @@ class HomeController extends Controller
                 'artist'                => Artist::all(),
                 'Series_based_on_Networks' => $Series_based_on_Networks ,
                 'Series_based_on_category' => $Series_based_on_category ,
-                'VideoSchedules'        => VideoSchedules::where('in_home',1)->get(),
+                'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                 'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
@@ -415,6 +416,8 @@ class HomeController extends Controller
                 'videos_expiry_date_status' => $videos_expiry_date_status,
                 'Series_Networks_Status' => Series_Networks_Status(),
                 'latest_episode'  => $latest_episode ,
+                'default_vertical_image_url' => default_vertical_image_url(),
+                'default_horizontal_image_url' => default_horizontal_image_url(),
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -989,7 +992,7 @@ class HomeController extends Controller
                     
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                     
-                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
@@ -1022,7 +1025,7 @@ class HomeController extends Controller
                 
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                 
-                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                         return $item;
@@ -1104,6 +1107,8 @@ class HomeController extends Controller
                         'videos_expiry_date_status' => $videos_expiry_date_status,
                         'Series_Networks_Status' => Series_Networks_Status(),
                         'latest_episode'  => $latest_episode ,
+                        'default_vertical_image_url' => default_vertical_image_url(),
+                        'default_horizontal_image_url' => default_horizontal_image_url(),
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1769,6 +1774,7 @@ class HomeController extends Controller
                     ])
                     ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
                     ->orderBy('series_genre.order')
+                    ->limit(15)
                     ->get();
             
                 $Series_based_on_category->each(function ($category) {
@@ -1865,7 +1871,7 @@ class HomeController extends Controller
                     'ThumbnailSetting'     => $ThumbnailSetting,
                     'latest_series'        => $latest_series,
                     'artist'               => Artist::limit(15)->get(),
-                    'VideoSchedules'       => VideoSchedules::where('in_home',1)->get(),
+                    'VideoSchedules'       => VideoSchedules::where('in_home',1)->limit(15)->get(),
                     'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                     'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                     'Series_based_on_Networks' => $Series_based_on_Networks ,
@@ -1878,7 +1884,9 @@ class HomeController extends Controller
                     'getfeching'      => $getfeching ,
                     'videos_expiry_date_status' => $videos_expiry_date_status,
                     'Series_Networks_Status' => Series_Networks_Status(),
-                    'latest_episode'  => $latest_episode ,
+                    'latest_episode'  => $latest_episode , 
+                    'default_vertical_image_url' => default_vertical_image_url(),
+                    'default_horizontal_image_url' => default_horizontal_image_url(),
                 );
                 
                 if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -4665,7 +4673,7 @@ public function uploadExcel(Request $request)
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  
 
-        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->get()->map(function ($item )  use( $request) {
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $request) {
 
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
 
@@ -4679,7 +4687,7 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->orderBy('start_time')->get()->map(function ($item) {
+                                                ->orderBy('start_time')->limit(15)->get()->map(function ($item) {
 
                                                     $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
                                                     $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');

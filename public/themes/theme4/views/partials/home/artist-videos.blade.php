@@ -25,8 +25,8 @@
                                             }
 
         $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) {
-                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['source']           = 'series';
                                         return $item;
                                     });
@@ -39,8 +39,8 @@
                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                     ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                                     ->map(function ($item) {
-                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
                                         $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                         $item['source']           = 'series';
@@ -56,8 +56,8 @@
                             'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                             ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                             ->map(function ($item) {
-                                $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                 $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
                                 $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                 $item['source']           = 'series';
@@ -79,8 +79,8 @@
                 }
 
             $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) {
-                            $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : default_vertical_image_url() ;
-                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : default_horizontal_image_url() ; 
+                            $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : $default_vertical_image_url ;
+                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : $default_horizontal_image_url ; 
                             return $item;
                         });
 
@@ -107,7 +107,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="artist_details" width="300" height="200">
+                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="artist_details" width="300" height="200">
                                         </div>
                                     </a>
                                 </li>
@@ -219,7 +219,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}" alt="artist_details">
+                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_horizontal_image_url }}" alt="artist_details">
                                                         </div>
                                                     </div>
                                                 </div>
