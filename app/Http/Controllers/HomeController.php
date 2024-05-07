@@ -115,8 +115,8 @@ class HomeController extends Controller
         $Recomended = $this->HomeSetting;
         $ThumbnailSetting = ThumbnailSetting::first();
         $videos_expiry_date_status = videos_expiry_date_status();
+        $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
-        $default_vertical_image = default_vertical_image();
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
@@ -416,8 +416,8 @@ class HomeController extends Controller
                 'videos_expiry_date_status' => $videos_expiry_date_status,
                 'Series_Networks_Status' => Series_Networks_Status(),
                 'latest_episode'  => $latest_episode ,
-                'default_vertical_image_url' => default_vertical_image_url(),
-                'default_horizontal_image_url' => default_horizontal_image_url(),
+                'default_vertical_image_url' => $default_vertical_image_url,
+                'default_horizontal_image_url' => $default_horizontal_image_url,
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -1107,8 +1107,8 @@ class HomeController extends Controller
                         'videos_expiry_date_status' => $videos_expiry_date_status,
                         'Series_Networks_Status' => Series_Networks_Status(),
                         'latest_episode'  => $latest_episode ,
-                        'default_vertical_image_url' => default_vertical_image_url(),
-                        'default_horizontal_image_url' => default_horizontal_image_url(),
+                        'default_vertical_image_url' => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1135,6 +1135,8 @@ class HomeController extends Controller
 
         $data = Session::all();
         $ThumbnailSetting = ThumbnailSetting::first();
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
 
         $agent = new Agent();
         $settings = $this->settings;
@@ -1885,8 +1887,8 @@ class HomeController extends Controller
                     'videos_expiry_date_status' => $videos_expiry_date_status,
                     'Series_Networks_Status' => Series_Networks_Status(),
                     'latest_episode'  => $latest_episode , 
-                    'default_vertical_image_url' => default_vertical_image_url(),
-                    'default_horizontal_image_url' => default_horizontal_image_url(),
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
                 );
                 
                 if ($this->HomeSetting->theme_choosen == "theme4") {
