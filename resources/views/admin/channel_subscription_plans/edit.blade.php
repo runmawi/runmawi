@@ -49,6 +49,9 @@
                         <div class="form-group">
                             <label>{{ $plan->type }} Plan ID:</label>
                             <input type="text" id="plans_id" name="plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
+
+                            <label>{{ $plan->type }} One Time Plan ID:</label>
+                            <input type="text" id="one_time_subscription_plan_id" name="one_time_subscription_plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->one_time_subscription_plan_id }}" class="form-control" placeholder="Plan ID">
                         </div> 
                     @endforeach
 
