@@ -38,7 +38,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_networks->image ? URL::to('public/uploads/images/'.$series_networks->image) : default_vertical_image_url() }}" class="img-fluid lazy" alt="network">
+                                            <img src="{{ $series_networks->image_url }}" class="img-fluid lazy" alt="network">
                                         </div>
                                     </a>
                                 </li>
@@ -190,8 +190,8 @@
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -214,11 +214,11 @@
 
         $('.networks-depends-series').slick({
             slidesToShow: 6,
-            slidesToScroll: 6,
+            slidesToScroll: 1,
             dots: false,
             arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
