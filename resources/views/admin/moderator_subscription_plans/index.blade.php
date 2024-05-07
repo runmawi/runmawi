@@ -106,9 +106,14 @@
                                         <div class="form-group">
                                             @forelse ($payment_settings as $payment_setting)
                                                 @if ($payment_setting->status == 1)
-                                                    <label>{{ $payment_setting->payment_type }} Plan ID:</label>
+                                                    <label>{{ $payment_setting->payment_type }} Recurring Plan ID:</label>
                                                     <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
                                                     <p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
+
+                                                    <label>{{ $payment_setting->payment_type }} One Time Plan ID:</label>
+                                                    <input type="text" id="one_time_subscription_plan_id" name="one_time_subscription_plan_id[]" value="" class="form-control" placeholder="Plan ID">
+                                                    <p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
+
                                                 @endif
                                             @empty
                                             @endforelse
