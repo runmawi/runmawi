@@ -351,7 +351,7 @@ class HomeController extends Controller
                 'currency' => $currency,
                 'videos' => $latest_videos ,
                 'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
+                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')->where('active', '=', '1')
                                     ->where('draft', '1')
                                     ->where('status', '1')
                                     ->where('banner', '1')
@@ -1042,7 +1042,7 @@ class HomeController extends Controller
                         'currency' => $currency,
                         'videos' => $latest_videos ,
                        
-                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description')
+                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type')
                                             ->where('active', '1')->where('draft', '1')
                                             ->where('status', '1')->where('banner', '1')
                                             ->latest()->limit(15)->get() ,
@@ -1821,7 +1821,7 @@ class HomeController extends Controller
                                     ->limit(15)->get() ,
 
                     'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')
                                         ->where('active', '1')
                                         ->where('draft', '1')->where('status', '1')->where('banner', '1')
                                         ->latest()->limit(15)->get() ,
@@ -2864,7 +2864,7 @@ class HomeController extends Controller
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
             $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image', 'trailer','trailer_type')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
                                         ->where('banner', '1')->latest()
                                         ->get() ;
