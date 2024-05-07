@@ -190,7 +190,7 @@ class CPPSubscriptionController extends Controller
                     $message->to($user->email, $user->username)->subject($email_subject);
                 });
 
-                $email_log      = 'Mail Sent Successfully from Become Subscription';
+                $email_log      = 'Mail Sent Successfully from CPP Subscription';
                 $email_template = "23";
                 $user_id = $user->id;
 
