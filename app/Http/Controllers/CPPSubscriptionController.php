@@ -42,7 +42,7 @@ class CPPSubscriptionController extends Controller
         $subscriptions_plans     = ModeratorSubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
         $CurrencySetting         = CurrencySetting::pluck('enable_multi_currency')->first();
         $SiteTheme               = SiteTheme::first();
-        $stripe_lable            = PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
+        $stripe_lable            = PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
         $footer_url              = "themes/{$this->Theme->theme_choosen}/views/footer.blade.php";
 
         $data = array(

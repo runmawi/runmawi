@@ -234,7 +234,9 @@ class ModeratorsLoginController extends Controller
                     'email_id' => 'required|email|unique:moderators_users,email',
                     'password' => 'min:6',
                 ]);
-        
+
+        $enable_moderator_payment = SiteTheme::first()->pluck('enable_moderator_payment')->first();
+        // dd($enable_moderator_payment);
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
 
@@ -337,6 +339,9 @@ class ModeratorsLoginController extends Controller
                 $userrolepermissiom->save();
             }
 
+            $request->session()->put('email_id', $request->email_id);
+            $email = $request->session()->get('email_id');
+            
                     // Note: While CPP Signup Email - Template for CPP registered user and Admin
             try
             {
@@ -414,9 +419,14 @@ class ModeratorsLoginController extends Controller
             //  function($message)  use ($request) {
             //       $message->to($request->email_id, $request->username)->subject('Verify your email address');
             //    });
+            if($enable_moderator_payment == 1){
 
-            return redirect('/cpp/login')
-            ->with('message', 'You have successfully registered. Please login If You Approved below.');
+                return redirect('/cpp-subscriptions-plans')
+                ->with('message', 'You have successfully registered. Please Choose Plan to Subscribe.');
+            }else{
+                return redirect('/cpp/login')
+                ->with('message', 'You have successfully registered. Please login If You Approved below.');
+            }
         }
         else
         {
