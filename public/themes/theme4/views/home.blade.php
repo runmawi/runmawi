@@ -251,12 +251,12 @@
                   },
                   complete: function () {
                      isFetching = false; 
+                     // $('.theme4-slider').hide();
                      $('.auto-load').hide();
-                     $('.theme4-slider').hide();
                   }
                });
          }
-      }, 1000);
+      }, 500);
    });
 
 </script>
