@@ -211,6 +211,7 @@
   
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
    <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -264,7 +265,7 @@
     <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
     

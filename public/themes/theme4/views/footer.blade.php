@@ -243,7 +243,7 @@
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
 <!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js" async></script>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
 <!-- <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script> -->
