@@ -2788,6 +2788,7 @@ public function verifyandupdatepassword(Request $request)
             'mobile'   => $request->user_mobile,
             'gender'   => $request->gender,
             'DOB'      => $request->DOB,
+            'country'      => $request->country,
           );
 
           if($request->hasFile('avatar')){
