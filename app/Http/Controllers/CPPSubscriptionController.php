@@ -63,7 +63,9 @@ class CPPSubscriptionController extends Controller
     {
         try {
 
-            $email = 'manikandan@webnexs.in';
+            $email = Session::get('email_id');
+
+            // $email = 'manikandan@webnexs.in';
 
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
 
