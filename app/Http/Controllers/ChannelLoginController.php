@@ -81,6 +81,9 @@ use App\ChannelRoles;
 use App\ModeratorsPermission;
 use App\ChannelSignupMenu;
 use App\Episode;
+use App\ChannelSubscription;
+use App\ChannelSubscriptionPlan;
+use App\SiteTheme;
 
 class ChannelLoginController extends Controller
 {
@@ -124,6 +127,8 @@ class ChannelLoginController extends Controller
         $input = $request->all();
         $request->validate(['email_id' => 'required|email|unique:channels,email', 'password' => 'min:6', ]);
         
+        $enable_channel_payment = SiteTheme::first()->pluck('enable_channel_payment')->first();
+
         $ChannelRoles = ChannelRoles::where('id', 3)->first();
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
@@ -225,6 +230,9 @@ class ChannelLoginController extends Controller
                 $user->save();
 
             }
+
+            $request->session()->put('email_id', $request->email_id);
+
             $template = EmailTemplate::where('id', '=', 13)->first();
             $heading = $template->heading;
             $settings = Setting::first();

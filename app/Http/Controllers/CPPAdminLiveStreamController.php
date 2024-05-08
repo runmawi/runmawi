@@ -28,6 +28,10 @@ use Streaming\Representation;
 use App\InappPurchase;
 use App\ModeratorsUser;
 use App\EmailTemplate;
+use App\Audio;
+use App\Episode;
+use App\Video;
+use App\ModeratorSubscription;
 use Mail;
 
 class CPPAdminLiveStreamController extends Controller
@@ -85,6 +89,20 @@ class CPPAdminLiveStreamController extends Controller
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
+
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            if($ModeratorSubscription == 0 ){
+                $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+                if($total_uploads >= 30){
+                    return View::make('moderator.expired_upload');
+                }
+            }
+                    
+
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('cpp/livestream/store'),
