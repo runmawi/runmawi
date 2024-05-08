@@ -528,7 +528,7 @@
                 <div class="col-lg-8 col-md-7">
                     <div class="flick1">
                         <div class="small-heading text-white">Step 2 of <span class="ml-2">2</span></div>
-                        <p class="text-white">Hello, {{ 'Manikandan@webnexs.in'}}</p>
+                        <p class="text-white">Hello, {{ Session::get('email_id') }}</p>
                         <div class="medium-heading text-white"> {{ !is_null($SiteTheme) &&  !is_null($SiteTheme->signup_step2_title) ? $SiteTheme->signup_step2_title : null  }} </div>
                         <div class="col-md-12 p-0 mt-2">
 
