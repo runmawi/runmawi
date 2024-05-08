@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="livestream_videos">
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="livestream_videos" width="300" height="200">
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
