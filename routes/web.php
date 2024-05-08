@@ -1489,6 +1489,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
 
+    // CPP Payment
+Route::get('/cpp-subscriptions-plans', 'CPPSubscriptionController@CPP_subscriptions_plans')->name('CPP_subscriptions_Plans');
+Route::post('/cpp-stripe-authorization-url', 'CPPSubscriptionController@CPP_Stripe_authorization_url')->name('CPP_Stripe_authorization_url');
+Route::get('/cpp-stripe-payment-verify', 'CPPSubscriptionController@CPP_Stripe_payment_verify')->name('CPP_Stripe_payment_verify');
+
+
 Route::get('cpp/signup/', 'ModeratorsLoginController@index')->name('CPPRegister');
 Route::get('/cpp', 'ModeratorsLoginController@Signin')->name('CPPSignin');
 // Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
