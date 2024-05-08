@@ -48,7 +48,7 @@
                         </ul>
 
 
-                        <ul id="trending-slider latest-view-livestream-slider" class="list-inline p-0 m-0 align-items-center latest-view-livestream-slider theme4-slider">
+                        <ul id="trending-slider latest-view-livestream-slider" class="list-inline p-0 m-0 align-items-center latest-view-livestream-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $livestream_videos)
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -209,6 +209,7 @@
         $('.latest-view-livestream-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.latest-view-livestream-slider').show();
+            $('')
         });
 
         $('body').on('click', '.drp-close', function() {

@@ -35,7 +35,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider content-portal" class="list-inline p-0 m-0 align-items-center content-portal theme4-slider">
+                            <ul id="trending-slider content-portal" class="list-inline p-0 m-0 align-items-center content-portal theme4-slider" style="display:none;">
                                 @foreach ($data as $channel)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >

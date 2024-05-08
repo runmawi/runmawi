@@ -27,7 +27,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider my-playlist" class="list-inline p-0 m-0 align-items-center my-playlist theme4-slider">
+                            <ul id="trending-slider my-playlist" class="list-inline p-0 m-0 align-items-center my-playlist theme4-slider" style="display:none;">
                                 @foreach ($data as $My_Playlist)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
