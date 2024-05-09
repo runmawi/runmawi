@@ -32,11 +32,18 @@ use App\Audio;
 use App\Episode;
 use App\Video;
 use App\ModeratorSubscription;
+use App\SiteTheme;
 use Mail;
 
 class CPPAdminLiveStreamController extends Controller
 {
+
     
+    public function __construct()
+    {
+        $this->enable_moderator_Monetization = SiteTheme::pluck('enable_moderator_Monetization')->first();
+    }
+
     public function CPPindex()
         {
             $Stream_key = Session::get('Stream_key');
@@ -90,32 +97,34 @@ class CPPAdminLiveStreamController extends Controller
             $user = Session::get('user'); 
             $user_id = $user->id;
 
+            if($this->enable_moderator_Monetization == 1){
 
-            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
-            
-            if($ModeratorSubscription == 0 ){
-                return View::make('moderator.becomeSubscriber');
-            }elseif($ModeratorSubscription > 0){
+                $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+                
+                if($ModeratorSubscription == 0 ){
+                    return View::make('moderator.becomeSubscriber');
+                }elseif($ModeratorSubscription > 0){
 
-                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
-                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
-                                        ->first(); 
+                    $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                            ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                            ->first(); 
 
-                if( !empty($ModeratorSubscription) ){
+                    if( !empty($ModeratorSubscription) ){
 
-                    $upload_live_limit = $ModeratorSubscription->upload_live_limit;
-                    $uploaded_lives = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-                    
-                    if($upload_live_limit < $uploaded_lives){
-                        return View::make('moderator.expired_upload');
+                        $upload_live_limit = $ModeratorSubscription->upload_live_limit;
+                        $uploaded_lives = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                        
+                        if($upload_live_limit <= $uploaded_lives){
+                            return View::make('moderator.expired_upload');
+                        }
+
+                    }else{
+                        return View::make('moderator.becomeSubscriber');
                     }
-
+                    
                 }else{
                     return View::make('moderator.becomeSubscriber');
                 }
-                
-            }else{
-                return View::make('moderator.becomeSubscriber');
             }
 
             // $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 

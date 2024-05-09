@@ -61,6 +61,7 @@ use Mail;
 use App\Livestream;
 use App\ModeratorSubscription;
 use App\Audio;
+use App\SiteTheme;
 
 class CPPSeriesController extends Controller
 {
@@ -69,6 +70,12 @@ class CPPSeriesController extends Controller
      *
      * @return Response
      */
+
+    public function __construct()
+    {
+        $this->enable_moderator_Monetization = SiteTheme::pluck('enable_moderator_Monetization')->first();
+    }
+ 
     public function index(Request $request)
     {
 
@@ -1296,38 +1303,40 @@ class CPPSeriesController extends Controller
         $user = Session::get('user');
         $user_id = $user->id;
 
-        $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
-            
-        if($ModeratorSubscription == 0 ){
+        if($this->enable_moderator_Monetization == 1){
 
-            return View::make('moderator.becomeSubscriber');
-
-
-        }elseif($ModeratorSubscription > 0){
-
-            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
-                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
-                                    ->first(); 
-
-            if( !empty($ModeratorSubscription) ){
-
-                $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
-                $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
                 
-                if($upload_episode_limit < $uploaded_Episodes){
-                    return View::make('moderator.expired_upload');
-                }
+            if($ModeratorSubscription == 0 ){
 
+                return View::make('moderator.becomeSubscriber');
+
+
+            }elseif($ModeratorSubscription > 0){
+
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ModeratorSubscription) ){
+
+                    $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
+                    $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    
+                    if($upload_episode_limit <= $uploaded_Episodes){
+                        return View::make('moderator.expired_upload');
+                    }
+
+                }else{
+                    return View::make('moderator.becomeSubscriber');
+
+                }
+                
             }else{
                 return View::make('moderator.becomeSubscriber');
 
             }
-            
-        }else{
-            return View::make('moderator.becomeSubscriber');
-
         }
-
         $series = Series::find($series_id);
         // dd($series_id);
         $episodes = Episode::where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->orderBy('episode_order')
@@ -1837,41 +1846,44 @@ class CPPSeriesController extends Controller
         $user = Session::get('user');
         $user_id = $user->id;
 
+        if($this->enable_moderator_Monetization == 1){
+    
         $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
             
-        if($ModeratorSubscription == 0 ){
+            if($ModeratorSubscription == 0 ){
 
-            $value = [];
-            $value['total_uploads'] = 0;
-            return $value;
+                $value = [];
+                $value['total_uploads'] = 0;
+                return $value;
 
-        }elseif($ModeratorSubscription > 0){
+            }elseif($ModeratorSubscription > 0){
 
-            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
-                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
-                                    ->first(); 
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
 
-            if( !empty($ModeratorSubscription) ){
+                if( !empty($ModeratorSubscription) ){
 
-                $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
-                $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-                
-                if($upload_episode_limit < $uploaded_Episodes){
+                    $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
+                    $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    
+                    if($upload_episode_limit <= $uploaded_Episodes){
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+
+                }else{
                         $value = [];
                         $value['total_uploads'] = 0;
                         return $value;
                 }
-
+                
             }else{
-                    $value = [];
-                    $value['total_uploads'] = 0;
-                    return $value;
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
             }
-            
-        }else{
-                    $value = [];
-                    $value['total_uploads'] = 0;
-                    return $value;
         }
         // if($ModeratorSubscription == 0 ){
         //     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
