@@ -110,20 +110,47 @@ class CPPAdminAudioController extends Controller
         $settings = Setting::first();
 
         $user_id = $user->id;
-
         $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            
         if($ModeratorSubscription == 0 ){
-            $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
-            // $total_uploads = 31 ;
-            // dd($total_uploads); 
-            if($total_uploads >= 30){
-                return View::make('moderator.expired_upload');
+
+            return View::make('moderator.becomeSubscriber');
+
+        }elseif($ModeratorSubscription > 0){
+
+            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                    ->first(); 
+
+            if( !empty($ModeratorSubscription) ){
+
+                $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
+                $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                
+                if($upload_audio_limit < $uploaded_Audios){
+                    return View::make('moderator.expired_upload');
+                }
+
+            }else{
+                return View::make('moderator.becomeSubscriber');
             }
+            
+        }else{
+            return View::make('moderator.becomeSubscriber');
         }
+        // $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+        // if($ModeratorSubscription == 0 ){
+        //     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+        //     // $total_uploads = 31 ;
+        //     // dd($total_uploads); 
+        //     if($total_uploads >= 30){
+        //         return View::make('moderator.expired_upload');
+        //     }
+        // }
 
 
         $data = array(
@@ -660,19 +687,40 @@ class CPPAdminAudioController extends Controller
         $user = Session::get('user'); 
         $user_id = $user->id;
         $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
-        if($ModeratorSubscription == 0 ){
-            $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
-            // $total_uploads = 31 ;
-            if($total_uploads >= 30){
             
-                $value = [];
-                $value['total_uploads'] = 0;
-                return $value;
+        if($ModeratorSubscription == 0 ){
+
+            $value = [];
+            $value['total_uploads'] = 0;
+            return $value;
+
+        }elseif($ModeratorSubscription > 0){
+
+            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                    ->first(); 
+
+            if( !empty($ModeratorSubscription) ){
+
+                $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
+                $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                
+                if($upload_audio_limit < $uploaded_Audios){
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                }
+
+            }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
             }
+            
+        }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
         }
 
     $audio = new Audio();
@@ -698,19 +746,40 @@ class CPPAdminAudioController extends Controller
         $user_id = $user->id;
 
         $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
-        if($ModeratorSubscription == 0 ){
-            $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-            $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
-            // $total_uploads = 31 ;
-            if($total_uploads >= 30){
             
-                $value = [];
-                $value['total_uploads'] = 0;
-                return $value;
+        if($ModeratorSubscription == 0 ){
+
+            $value = [];
+            $value['total_uploads'] = 0;
+            return $value;
+
+        }elseif($ModeratorSubscription > 0){
+
+            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                    ->first(); 
+
+            if( !empty($ModeratorSubscription) ){
+
+                $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
+                $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                
+                if($upload_audio_limit < $uploaded_Audios){
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                }
+
+            }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
             }
+            
+        }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
         }
         $audio_upload = $request->file('file');
         $ext = $audio_upload->extension();
