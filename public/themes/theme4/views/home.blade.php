@@ -105,7 +105,6 @@
 
       <video autoplay loop muted playsinline>
          <source src="{{ URL::to('public/Thumbnai_images/Loading_1.webm') }}" type="video/webm" />
-         <source src="{{ URL::to('public/Thumbnai_images/Loading_1.mp4') }}" type="video/mp4" />
       </video>
    </div>
 
