@@ -62,7 +62,7 @@ $data->each(function ($category) {
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="livestream_videos">
+                                                    <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="livestream_videos" width="300" height="200">
                                             </div>
                                             
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
@@ -78,7 +78,7 @@ $data->each(function ($category) {
                             <ul id="trending-slider" class= "{{ 'theme4-slider category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" style="display:none;">
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li class="slick-slide">
-                                        <div class="tranding-block position-relative home-page-bg-img" >
+                                        <div class="tranding-block position-relative home-page-bg-img trending-thumbnail-image">
                                             <button class="drp-close">×</button>
 
                                             <div class="trending-custom-tab">

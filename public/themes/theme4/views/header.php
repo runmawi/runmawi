@@ -211,6 +211,7 @@
   
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
    <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -264,7 +265,7 @@
     <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
     
@@ -1006,7 +1007,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
+                        <img class="img-fluid logo lazy" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
                      </div>
                   <?php endif ;?>
 

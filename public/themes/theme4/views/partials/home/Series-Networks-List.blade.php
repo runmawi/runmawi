@@ -18,7 +18,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $series_network_list->image_url }}" class="img-fluid" alt="Videos">
+                                            <img src="{{ $series_network_list->image_url }}" class="img-fluid" alt="Videos" width="300" height="200">
                                         </div>
                                     </a>
                                 </li>
