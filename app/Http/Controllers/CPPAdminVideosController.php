@@ -56,6 +56,10 @@ use Mail;
 use App\Adscategory;
 use App\StorageSetting;
 use App\Playerui;
+use App\Livestream;
+use App\Episode;
+use App\ModeratorSubscription;
+use App\Audio;
 
 class CPPAdminVideosController extends Controller
 {
@@ -305,6 +309,59 @@ class CPPAdminVideosController extends Controller
         $package = $user_package->package;
         $user = Session::get('user');
 
+        $user_id = $user->id;
+
+        $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+
+        if($ModeratorSubscription == 0 ){
+
+            $value = [];
+            $value['total_uploads'] = 0;
+            return $value;
+
+        }elseif($ModeratorSubscription > 0){
+
+            $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                    ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                    ->first(); 
+
+            if( !empty($ModeratorSubscription) ){
+
+                $upload_video_limit = $ModeratorSubscription->upload_video_limit;
+                $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                
+                if($upload_video_limit < $uploaded_videos){
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                }
+
+            }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+            }
+            
+        }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+        }
+        // if($ModeratorSubscription == 0 ){
+        //     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+        //     // $total_uploads = 31 ;
+        //     if($total_uploads >= 30){
+            
+        //         $value = [];
+        //         $value['total_uploads'] = 0;
+        //         return $value;
+        //     }
+        // }
+        // print_r($total_uploads);exit;
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $value = [];
             $data = $request->all();
@@ -540,6 +597,44 @@ class CPPAdminVideosController extends Controller
 
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $settings = Setting::first();
+            $user = Session::get('user'); 
+            $user_id = $user->id;
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            if($ModeratorSubscription == 0 ){
+
+                return View::make('moderator.becomeSubscriber');
+
+            }elseif($ModeratorSubscription > 0){
+
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ModeratorSubscription) ){
+
+                    $upload_video_limit = $ModeratorSubscription->upload_video_limit;
+                    $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    // $uploaded_videos = 0;
+                    
+                    if($upload_video_limit < $uploaded_videos){
+                        return View::make('moderator.expired_upload');
+                    }
+
+                }else{
+                    return View::make('moderator.becomeSubscriber');
+                }
+                // $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                // $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                // $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                // $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+                // // $total_uploads = 31 ;
+
+                // if($total_uploads >= 30){
+                //     return View::make('moderator.expired_upload');
+                // }
+            }else{
+                return View::make('moderator.becomeSubscriber');
+            }
 
             $data = [
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -2149,11 +2244,52 @@ class CPPAdminVideosController extends Controller
     {
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
+
+
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $data = $request->all();
             $value = [];
             $user = Session::get('user');
 
+            $user_id = $user->id;
+
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            
+                if($ModeratorSubscription == 0 ){
+
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+
+                }elseif($ModeratorSubscription > 0){
+
+                    $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                            ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                            ->first(); 
+
+                    if( !empty($ModeratorSubscription) ){
+
+                        $upload_video_limit = $ModeratorSubscription->upload_video_limit;
+                        $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                        
+                        if($upload_video_limit < $uploaded_videos){
+                                $value = [];
+                                $value['total_uploads'] = 0;
+                                return $value;
+                        }
+
+                    }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+                    
+                }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                }
             if (!empty($data['mp4_url'])) {
                 $video = new Video();
                 $video->disk = 'public';
@@ -2208,6 +2344,45 @@ class CPPAdminVideosController extends Controller
             $data = $request->all();
             $value = [];
             $user = Session::get('user');
+
+            $user_id = $user->id;
+
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            
+            if($ModeratorSubscription == 0 ){
+
+                $value = [];
+                $value['total_uploads'] = 0;
+                return $value;
+
+            }elseif($ModeratorSubscription > 0){
+
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ModeratorSubscription) ){
+
+                    $upload_video_limit = $ModeratorSubscription->upload_video_limit;
+                    $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    
+                    if($upload_video_limit < $uploaded_videos){
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+
+                }else{
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                }
+                
+            }else{
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+            }
 
             if (!empty($data['m3u8_url'])) {
                 $video = new Video();
@@ -2269,6 +2444,45 @@ class CPPAdminVideosController extends Controller
             // print_r($data);
             // exit();
             $user = Session::get('user');
+
+            $user_id = $user->id;
+
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            
+                if($ModeratorSubscription == 0 ){
+
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+
+                }elseif($ModeratorSubscription > 0){
+
+                    $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                            ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                            ->first(); 
+
+                    if( !empty($ModeratorSubscription) ){
+
+                        $upload_video_limit = $ModeratorSubscription->upload_video_limit;
+                        $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                        
+                        if($upload_video_limit < $uploaded_videos){
+                                $value = [];
+                                $value['total_uploads'] = 0;
+                                return $value;
+                        }
+
+                    }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+                    
+                }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                }
 
             if (!empty($data['embed'])) {
                 $video = new Video();

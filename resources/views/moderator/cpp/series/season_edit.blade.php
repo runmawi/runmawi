@@ -912,6 +912,9 @@
             // console.log(value)
             this.on("success", function (file, value) {
                 // console.log(value);
+                if(value.total_uploads == 0){
+                    location.reload();
+                }
                 $("#buttonNext").show();
                 $("#episode_id").val(value.episode_id);
                 $("#title").val(value.episode_title);

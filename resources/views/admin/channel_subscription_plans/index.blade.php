@@ -184,6 +184,30 @@
                                             <input type="text" id="ios_plan_price" name="ios_plan_price" value="" class="form-control" placeholder="IOS Plan Price">
                                         </div>
 
+                                        <div class="form-group">
+                                            <label>Upload Video Content Limit:</label>
+                                            <input type="text" onkeypress="return VideoIsNumeric(event);" ondrop="return false;" onpaste="return false;" id="upload_video_limit" name="upload_video_limit" value="" class="form-control" placeholder="Video Content Limit">
+                                            <span id="Videoerror" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Upload LiveStream Content Limit:</label>
+                                            <input type="text" onkeypress="return LiveStreamIsNumeric(event);" ondrop="return false;" onpaste="return false;" id="upload_live_limit" name="upload_live_limit" value="" class="form-control" placeholder="LiveStream Content Limit">
+                                            <span id="LiveStreamerror" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Upload Episode Content Limit:</label>
+                                            <input type="text" onkeypress="return EpisodeIsNumeric(event);" ondrop="return false;" onpaste="return false;" id="upload_episode_limit" name="upload_episode_limit" value="" class="form-control" placeholder="Episode Content Limit">
+                                            <span id="Episodeerror" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Upload Audio Content Limit:</label>
+                                            <input type="text" onkeypress="return AudioIsNumeric(event);" ondrop="return false;" onpaste="return false;" id="upload_audio_limit" name="upload_audio_limit" value="" class="form-control" placeholder="Audio Content Limit">
+                                            <span id="Audioerror" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
+                                        </div>
+
                                                 <!-- {{--  coupon on checkout --}}
 
                                         <div class="d-flex form-group">
@@ -288,6 +312,90 @@
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 	<script type="text/javascript">
+
+           
+var specialKeys = new Array();
+                specialKeys.push(8); //Backspace
+
+            function VideoIsNumeric(e) {
+                var keyCode = e.which ? e.which : e.keyCode;
+                var inputField = e.target || e.srcElement;
+                var inputValue = inputField.value;
+                var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+                var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+                if (digitCount >= 12) {
+                    alert('Please enter atleast 12 characters');
+                    ret = ret || specialKeys.indexOf(keyCode) !== -1;
+                    document.getElementById("Videoerror").style.display = ret ? "none" : "inline";
+                    return false;
+                }
+
+                document.getElementById("Videoerror").style.display = ret ? "none" : "inline";
+                return ret;
+            }
+
+            function LiveStreamIsNumeric(e) {
+                var keyCode = e.which ? e.which : e.keyCode;
+                var inputField = e.target || e.srcElement;
+                var inputValue = inputField.value;
+                var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+                var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+                if (digitCount >= 12) {
+                    alert('Please enter atleast 12 characters');
+                    ret = ret || specialKeys.indexOf(keyCode) !== -1;
+                    document.getElementById("LiveStreamerror").style.display = ret ? "none" : "inline";
+                    return false;
+                }
+
+                document.getElementById("LiveStreamerror").style.display = ret ? "none" : "inline";
+                return ret;
+            }
+
+
+            function EpisodeIsNumeric(e) {
+                var keyCode = e.which ? e.which : e.keyCode;
+                var inputField = e.target || e.srcElement;
+                var inputValue = inputField.value;
+                var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+                var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+                if (digitCount >= 12) {
+                    alert('Please enter atleast 12 characters');
+                    ret = ret || specialKeys.indexOf(keyCode) !== -1;
+                    document.getElementById("Episodeerror").style.display = ret ? "none" : "inline";
+                    return false;
+                }
+
+                document.getElementById("Episodeerror").style.display = ret ? "none" : "inline";
+                return ret;
+            }
+
+
+            function AudioIsNumeric(e) {
+                var keyCode = e.which ? e.which : e.keyCode;
+                var inputField = e.target || e.srcElement;
+                var inputValue = inputField.value;
+                var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+                var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+                if (digitCount >= 12) {
+                    alert('Please enter atleast 12 characters');
+                    ret = ret || specialKeys.indexOf(keyCode) !== -1;
+                    document.getElementById("Audioerror").style.display = ret ? "none" : "inline";
+                    return false;
+                }
+
+                document.getElementById("Audioerror").style.display = ret ? "none" : "inline";
+                return ret;
+            }
+            
+
 		jQuery(document).ready(function($) {
 			$('#submit-new-cat').click(function() {
 				$('#new-cat-form').submit(); // Add New Category

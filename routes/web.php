@@ -1263,6 +1263,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // ExecuteShell Command For Maintanace sytsem
 
     // Route::get('/execute-shell', 'HomeController@ExecuteShell');
+    Route::get('/resend/Activation_Code/{id}', 'AdminUsersController@ActivationCode');
 
     // Channel Payouts
 
