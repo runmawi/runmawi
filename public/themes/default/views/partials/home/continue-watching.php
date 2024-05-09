@@ -201,10 +201,3 @@
      });
    
 </script>
-
- <style>
-   h2.main-title {
-      font-size: 1.3em;
-      font-weight: 500;
-   }
- </style>
