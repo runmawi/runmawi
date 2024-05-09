@@ -294,6 +294,7 @@ class ApiAuthController extends Controller
               $user->password = Hash::make($request->get('password'));
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
+              $user->activation_code = Str::random(60);
               $user->referral_token = $ref_token;
               $user->country = $request->country;
               $user->state = $request->state;
@@ -304,9 +305,7 @@ class ApiAuthController extends Controller
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
-
-
-               // welcome Email
+        // welcome Email
                                   
                try {
 
@@ -359,18 +358,84 @@ class ApiAuthController extends Controller
 
     try {
       
-      if($settings->free_registration && $settings->activation_email == 1){
+      if($settings->free_registration == 0 && $settings->activation_email == 1){
 
-        try {
-          $email = $input['email'];
-          $uname = $input['username'];
-          Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-          $message->to($email,$uname)->subject('Verify your email address');
-        });
+        
+                // verify email
+                try {
+                  \Mail::send('emails.verify', array(
+                      'activation_code' => $userdata->activation_code,
+                      'website_name' => $settings->website_name
+                  ) , function ($message) use ($userdata)
+                  {
+                      $message->to($userdata->email, $userdata->name)
+                          ->subject('Verify your email address');
+                  });
+                  
+                  $email_log      = 'Mail Sent Successfully from Verify';
+                  $email_template = "verify";
+                  $user_id = $userdata->id;
+  
+                  Email_sent_log($user_id,$email_log,$email_template);
+  
+                  // return redirect('/verify-request');
+  
+              } catch (\Throwable $th) {
+  
+                  $email_log      = $th->getMessage();
+                  $email_template = "verify";
+                  $user_id = $userdata->id;
+  
+                  Email_notsent_log($user_id,$email_log,$email_template);
+  
+                  // return redirect('/verify-request-sent');
+  
+              }
+                // // welcome Email
 
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
+                // try {
+
+                //     $data = array(
+                //         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                //     );
+
+                //     Mail::send('emails.welcome', array(
+                //         'username' => $name,
+                //         'website_name' => GetWebsiteName(),
+                //         'url' => URL::to('/'),
+                //         'useremail' => $email,
+                //         'password' => $get_password,
+                //     ), 
+                //     function($message) use ($data,$user) {
+                //         $message->from(AdminMail(),GetWebsiteName());
+                //         $message->to($user->email, $user->name)->subject($data['email_subject']);
+                //     });
+
+                //     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                //     $email_template = "1";
+                //     $user_id = $user->id;
+
+                //     Email_sent_log($user_id,$email_log,$email_template);
+
+                // }catch (\Exception $e) {
+
+                //     $email_log      = $e->getMessage();
+                //     $email_template = "1";
+                //     $user_id = $user->id;
+
+                //     Email_notsent_log($user_id,$email_log,$email_template);
+
+                // }
+        // try {
+        //   $email = $input['email'];
+        //   $uname = $input['username'];
+        //   Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+        //   $message->to($email,$uname)->subject('Verify your email address');
+        // });
+
+        // } catch (\Throwable $th) {
+        //   //throw $th;
+        // }
 
         $response = array('status'=>'true','message' => 'Registered Successfully.');
       }
@@ -625,7 +690,7 @@ class ApiAuthController extends Controller
 
             }
                       
-                      // Stripe Payment
+          // Stripe Payment
             elseif( $paymentMode == "stripe"  ){
 
               try {
@@ -816,7 +881,7 @@ class ApiAuthController extends Controller
                             );
 
                            }
-
+                         
                             // try {
                             //     Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
                             //       $message->to($email,$uname)->subject('Verify your email address');

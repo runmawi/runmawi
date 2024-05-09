@@ -73,6 +73,9 @@ use Session;
 use Redirect;
 use Theme;
 use App\CPPSignupMenu;
+use App\ModeratorSubscriptionPlan;
+use App\ModeratorSubscription;
+
 
 class ModeratorsLoginController extends Controller
 {
@@ -150,6 +153,21 @@ class ModeratorsLoginController extends Controller
                             ->join('moderators_permissions', 'moderators_permissions.id', '=', 'user_accesses.permissions_id')
                             ->where(['user_id' => $id])->get();
                         Session::put('userrolepermissiom ', $userrolepermissiom);
+
+                        $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $id)->count(); 
+                        if($ModeratorSubscription > 0 ){
+                            $total_uploads = 1000000000;
+                        }else{
+
+                            $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+                            // dd($ModeratorSubscription);
+                        }
+                        
+                        Session::put('total_uploads ', $total_uploads);
 
                         $settings = Setting::first();
 
@@ -341,7 +359,7 @@ class ModeratorsLoginController extends Controller
 
             $request->session()->put('email_id', $request->email_id);
             $email = $request->session()->get('email_id');
-            
+
                     // Note: While CPP Signup Email - Template for CPP registered user and Admin
             try
             {
