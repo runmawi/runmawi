@@ -547,3 +547,6 @@ ul#trending-slider{display:none}
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 }
+
+img{max-width:100%;height: auto;}
+
