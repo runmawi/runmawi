@@ -330,7 +330,7 @@ class CPPAdminVideosController extends Controller
                 $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                 $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                 
-                if($upload_video_limit < $uploaded_videos){
+                if($upload_video_limit <= $uploaded_videos){
                         $value = [];
                         $value['total_uploads'] = 0;
                         return $value;
@@ -616,7 +616,7 @@ class CPPAdminVideosController extends Controller
                     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     // $uploaded_videos = 0;
                     
-                    if($upload_video_limit < $uploaded_videos){
+                    if($upload_video_limit <= $uploaded_videos){
                         return View::make('moderator.expired_upload');
                     }
 
@@ -2273,7 +2273,7 @@ class CPPAdminVideosController extends Controller
                         $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit < $uploaded_videos){
+                        if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
                                 return $value;
@@ -2366,7 +2366,7 @@ class CPPAdminVideosController extends Controller
                     $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_video_limit < $uploaded_videos){
+                    if($upload_video_limit <= $uploaded_videos){
                             $value = [];
                             $value['total_uploads'] = 0;
                             return $value;
@@ -2466,7 +2466,7 @@ class CPPAdminVideosController extends Controller
                         $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit < $uploaded_videos){
+                        if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
                                 return $value;
