@@ -1766,7 +1766,6 @@ class HomeController extends Controller
                     });
                     return $item;
                 });
-                dd($Series_based_on_Networks);
                 
                 $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
                     ->with([
