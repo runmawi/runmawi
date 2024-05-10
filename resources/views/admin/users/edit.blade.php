@@ -41,7 +41,7 @@
 					</div>
 
 					@if(isset($user->activation_code))
-					<a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><button class="btn btn-primary float-right">Send Activation Code Mail </button></a>
+					<a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><button class="btn btn-primary float-right">Send Email Verification </button></a>
 							<!-- <p>Click <a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><i class="ri-links-fill"></i> here</a> to Send Activation Code</p> -->
 					@endif
 					<br>
