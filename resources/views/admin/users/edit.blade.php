@@ -39,6 +39,14 @@
 							<h4><i class="entypo-user"></i> Add New User</h4> 
 						@endif
 					</div>
+
+					@if(isset($user->activation_code))
+					<a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><button class="btn btn-primary float-right">Send Email Verification </button></a>
+							<!-- <p>Click <a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><i class="ri-links-fill"></i> here</a> to Send Activation Code</p> -->
+					@endif
+					<br>
+					<br>
+					<br>
 					@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
@@ -161,6 +169,7 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="col-md-6 mt-2" id="SubscriptionPlan">
 							<div class="panel panel-primary mt-2" data-collapsed="0"> 
 								<div class="panel-heading"> 

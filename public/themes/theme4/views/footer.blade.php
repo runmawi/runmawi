@@ -127,7 +127,7 @@
 
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <!-- <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script> -->
    <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
@@ -241,9 +241,9 @@
 
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
-<script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script> -->
 <!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js" async></script> -->
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
 <!-- <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script> -->
@@ -262,15 +262,15 @@
 
 <?php
     try {
-        if (Route::currentRouteName() == 'LiveStream_play') {
-            include 'livevideo_player_script.blade.php';
-        } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
-            include 'episode_player_script.blade.php';
-        } else {
-            include 'footerPlayerScript.blade.php';
-        }
+        // if (Route::currentRouteName() == 'LiveStream_play') {
+        //     include 'livevideo_player_script.blade.php';
+        // } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
+        //     include 'episode_player_script.blade.php';
+        // } else {
+        //     include 'footerPlayerScript.blade.php';
+        // }
     } catch (\Throwable $th) {
-        //throw $th;
+        // throw $th;
     }
 ?>
 
@@ -331,4 +331,29 @@ if ($Prevent_inspect == 1) { ?>
             }
         });
     </script>
+
+<!-- scrolling performance -->
+<script>
+    jQuery.event.special.touchstart = {
+    setup: function( _, ns, handle ) {
+        this.addEventListener("touchstart", handle, { passive: !ns.includes("noPreventDefault") });
+    }
+    };
+    jQuery.event.special.touchmove = {
+        setup: function( _, ns, handle ) {
+            this.addEventListener("touchmove", handle, { passive: !ns.includes("noPreventDefault") });
+        }
+    };
+    jQuery.event.special.wheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("wheel", handle, { passive: true });
+        }
+    };
+    jQuery.event.special.mousewheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("mousewheel", handle, { passive: true });
+        }
+    };
+</script>
+
 <?php } ?>

@@ -285,15 +285,15 @@ class HomeController extends Controller
                 $livetreams =$livetreams->limit(15)->get();
             }
 
-            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url){
+            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
                 $item['Series_depends_Networks'] = Series::where('series.active', 1)
                             ->whereJsonContains('network_id', [(string)$item->id])
             
                             ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
                     
-                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : $default_horizontal_image_url ;
+                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
             
                     $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
             
@@ -301,7 +301,7 @@ class HomeController extends Controller
             
                     $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                             ->map(function ($item) {
-                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_horizontal_image_url ;
+                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                             return $item;
                                                         });
             
@@ -324,10 +324,10 @@ class HomeController extends Controller
                     ->get();
         
             $Series_based_on_category->each(function ($category) {
-                $category->category_series->transform(function ($item) use ($default_vertical_image,$default_horizontal_image_url) {
+                $category->category_series->transform(function ($item) {
         
-                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image ;
-                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : $default_horizontal_image_url ;
+                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
         
                     $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
         
@@ -335,7 +335,7 @@ class HomeController extends Controller
         
                     $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                             ->map(function ($item) {
-                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image ;
+                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                 return $item;
                                                         });
         
@@ -1747,8 +1747,8 @@ class HomeController extends Controller
                 
                                 ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
                         
-                        $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                        $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                        $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                        $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
                 
                         $item['upload_on'] = Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
                 
@@ -1756,7 +1756,7 @@ class HomeController extends Controller
                 
                         $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                 ->map(function ($item) {
-                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                 return $item;
                                                             });
                 
@@ -1766,7 +1766,6 @@ class HomeController extends Controller
                     });
                     return $item;
                 });
-
                 
                 $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
                     ->with([

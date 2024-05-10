@@ -177,7 +177,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider">
+                        <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $epg_channel_data )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >

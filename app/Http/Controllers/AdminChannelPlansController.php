@@ -237,6 +237,10 @@ class AdminChannelPlansController extends Controller
                         $new_plan->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
                         // $new_plan->andriod_paystack_url = $request->andriod_paystack_url;
                         $new_plan->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
+                        $new_plan->upload_video_limit = $request->upload_video_limit;
+                        $new_plan->upload_live_limit = $request->upload_live_limit;
+                        $new_plan->upload_episode_limit = $request->upload_episode_limit;
+                        $new_plan->upload_audio_limit = $request->upload_audio_limit;
                         $new_plan->save();
                     }
                 }
@@ -290,6 +294,10 @@ class AdminChannelPlansController extends Controller
             $plans->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
             $plans->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;
             $plans->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
+            $plans->upload_video_limit = $request->upload_video_limit;
+            $plans->upload_live_limit = $request->upload_live_limit;
+            $plans->upload_episode_limit = $request->upload_episode_limit;
+            $plans->upload_audio_limit = $request->upload_audio_limit;
             foreach ($input['plan_id'] as $key => $values) {
                 if ($key == $value) {
                     $plans->plan_id = $values;

@@ -101,8 +101,11 @@
 
    </div>
 
-   <div class="auto-load text-center" style="display: none" >
-      <img src="{{ URL::to('public/Thumbnai_images/Loading_1.gif') }}" width="35" height="35">
+   <div class="auto-load text-center d-flex align-items-center justify-content-center" style="display: none; width:35px; height:35px;margin-right:auto;margin-left:auto;" >
+
+      <video autoplay loop muted playsinline>
+         <source src="{{ URL::to('public/Thumbnai_images/Loading_1.webm') }}" type="video/webm" />
+      </video>
    </div>
 
             {{-- End Ads banners --}}
@@ -176,7 +179,7 @@
        height: 100%; 
       width: 37px;
       position: fixed;
-      z-index: 99;
+      z-index: 9;
       left: 0;
    }
    .rightnav {
@@ -251,12 +254,12 @@
                   },
                   complete: function () {
                      isFetching = false; 
+                     // $('.theme4-slider').hide();
                      $('.auto-load').hide();
-                     $('.theme4-slider').hide();
                   }
                });
          }
-      }, 1000);
+      }, 500);
    });
 
 </script>

@@ -7,7 +7,7 @@
         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
     @endif
 
-    @if(count($errors) > 0)
+    @if(!empty($errors) && count($errors) > 0)
         @foreach( $errors->all() as $message )
             <div class="alert alert-danger display-hide" id="successMessage" >
                 <button id="successMessage" class="close" data-close="alert"></button>
