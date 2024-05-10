@@ -65,27 +65,38 @@ class CPPSubscriptionController extends Controller
 
             $email = Session::get('email_id');
 
-            // $email = 'manikandan@webnexs.in';
-
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
 
             $success_url = URL::to('cpp-stripe-payment-verify?stripe_payment_session_id={CHECKOUT_SESSION_ID}') ;
 
             $CPP_Subscription_Plan = ModeratorSubscriptionPlan::where('type','Stripe')->where('recurring_subscription_plan_id',$request->Stripe_Plan_id)->latest()->first();
 
-                // Stripe Checkout
+            $payment_exists = ModeratorsUser::where('email',$email)->first();
 
-            $Subscription_Plan_item = [
-                        [
-                            'price' => $CPP_Subscription_Plan->recurring_subscription_plan_id,
-                            'quantity' => 1,
-                        ],
-            
-                        [
-                            'price' => $CPP_Subscription_Plan->one_time_subscription_plan_id,
-                            'quantity' => 1,
-                        ],
-                    ];
+            if( is_null($payment_exists->stripe_id) ){
+
+                $Subscription_Plan_item = [
+                    [
+                        'price' => $CPP_Subscription_Plan->recurring_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+        
+                    [
+                        'price' => $CPP_Subscription_Plan->one_time_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+                ];
+            }else{
+
+                $Subscription_Plan_item = [
+                    [
+                        'price' => $CPP_Subscription_Plan->recurring_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+                ];
+
+            }
+                // Stripe Checkout
             
             $Checkout_details = array(
                 'success_url' => $success_url,
@@ -135,14 +146,13 @@ class CPPSubscriptionController extends Controller
             $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
             $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
 
-            ModeratorSubscription::create([
+            $ModeratorSubscription_array = array(
                 'user_id'        =>  $user->id,
                 'name'           =>  $subscription->plan['product'],
                 'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
                 'stripe_id'      =>  $subscription['id'],
                 'stripe_status'  =>  $subscription['status'],
                 'stripe_plan'    =>  $subscription->plan['id'],
-                'one_time_subscription_plan_id'     =>  !is_null($CPP_Subscription_Plan) && !is_null($CPP_Subscription_Plan->one_time_subscription_plan_id) ? $CPP_Subscription_Plan->one_time_subscription_plan_id : null ,
                 'recurring_subscription_plan_id'    =>  $subscription->plan['id'],
                 'quantity'       =>  $subscription['quantity'],
                 'countryname'    =>  Country_name(),
@@ -151,7 +161,15 @@ class CPPSubscriptionController extends Controller
                 'PaymentGateway' =>  'Stripe',
                 'trial_ends_at'  =>  $trial_ends_at,
                 'ends_at'        =>  $trial_ends_at,
-            ]);
+            );
+
+            if( is_null($user->stripe_id) ){
+
+               $ModeratorSubscription_array += [ 'one_time_subscription_plan_id' =>  !is_null($CPP_Subscription_Plan) && !is_null($CPP_Subscription_Plan->one_time_subscription_plan_id) ? $CPP_Subscription_Plan->one_time_subscription_plan_id : null ] ;
+
+            }
+
+            ModeratorSubscription::create( $ModeratorSubscription_array );
 
             $user_data = array(
                 'role'                  =>  'subscriber',
@@ -161,9 +179,14 @@ class CPPSubscriptionController extends Controller
                 'payment_type'          => 'recurring',
                 'payment_status'        => $subscription['status'],
                 'payment_gateway'       =>  'Stripe',
-                'one_time_subscription_plan_id'     =>  !is_null($CPP_Subscription_Plan) && !is_null($CPP_Subscription_Plan->one_time_subscription_plan_id) ? $CPP_Subscription_Plan->one_time_subscription_plan_id : null ,
                 'recurring_subscription_plan_id'    =>  $subscription->plan['id'],
             );
+
+            if( is_null($user->stripe_id) ){
+
+                $user_data += [ 'one_time_subscription_plan_id' =>  !is_null($CPP_Subscription_Plan) && !is_null($CPP_Subscription_Plan->one_time_subscription_plan_id) ? $CPP_Subscription_Plan->one_time_subscription_plan_id : null ] ;
+ 
+             }
 
             ModeratorsUser::where('id',$user->id)->update( $user_data );
             
@@ -209,7 +232,7 @@ class CPPSubscriptionController extends Controller
 
             $respond = array(
                 'status'  => 'true',
-                'redirect_url' => URL::to('cpp'),
+                'redirect_url' => URL::to('cpp\dashboard'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
 

@@ -546,6 +546,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');
     Route::post('/OTP-Credentials-update', 'AdminOTPCredentialsController@update')->name('admin.OTP-Credentials-update');
 
+        // Users Package 
+    Route::get('/users-package', 'SuperAdminPackageController@users_package')->name('admin.users-package');
+    Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
+
     Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');

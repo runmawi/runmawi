@@ -277,6 +277,8 @@ h2{
             <p >We understand that choosing the right plan is an important decision, and we're here to help. If you have any questions about our plans or need assistance with the upgrade process, please don't hesitate to reach out to our support team. We're committed to providing you with the assistance you need to make the best choice for your requirements.
 </p>
 </p>
+<a href="{{ URL::to('cpp-subscriptions-plans')  }}"><button class="btn btn-primary"> Upgrade Subscription</button></a>
+
 </div>
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
 <div class="tab-slider--container">

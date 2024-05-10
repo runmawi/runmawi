@@ -61,71 +61,82 @@
             <a class="black" href="{{ URL::to('admin/AdminOTPCredentials    ') }}">Email Settings</a>
             <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
             <a class="black" href="{{ URL::to('admin/settings') }}">RTMP URL Settings</a>
+            <a class="black" href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
         </div>
 
         <div class="d-flex">
-            <a class="black" href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a>
             <a class="black" href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a>
             <a class="black" href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a>
             <a class="black" href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a>
             <a class="black" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a>
-            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">OTP Credentials Setting</a>
+            <a class="black"  href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">OTP Credentials Setting</a>
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ route('admin.users-package') }}" class="iq-waves-effect">Users Package Management</a>
+
         </div>
 
         <div class="container-fluid p-0">
             <div class="iq-card">
                 <div id="admin-container">
                     <div class="admin-section-title">
-                        <h4><i class="entypo-globe"></i> OTP Credentials Setting </h4>
+                        <h4><i class="entypo-globe"></i> Users Package Management </h4>
                         <hr>
                     </div>
                     <div class="clear"></div>
 
-                    <form method="POST" action="{{ route('admin.OTP-Credentials-update') }}" accept-charset="UTF-8" >
+                    <form method="POST" action="{{ route('admin.users-package-update') }}" accept-charset="UTF-8" >
                         @csrf
 
-                        <div class="row col-md-6">
-                            <label>{{ ucfirst(trans('Enable OTP')) }} <small>( signup & Login )</small> </label>
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                                <div style="color:red;">Disable</div>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="status" class="status" id="status" type="checkbox"  @if( !is_null($AdminOTPCredentials) && $AdminOTPCredentials->status == 1 ) checked @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div style="color:green;">Enable</div>
-                            </div>
-                        </div>
-                        <br>
-
                         <div class="row md-12">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
-                                        <div class="panel-title"><label>OTP Through</label></div>
+                                        <div class="panel-title"><label> {{ _('Users') }}</label></div>
                                         <div class="panel-options">
                                             <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                         </div>
                                     </div>
-                                    <div class="panel-body" style="display: block;">
-                                       <select  class="form-control"  name="otp_vai" >
-                                          <option value="fast2sms"> fast2sms </option>
+                                    <div class="panel-body">
+                                       <select  class="form-control"  name="user_id" >
+                                            <option value= {{ null }} > {{ _('select the user') }} </option>
+                                            @foreach( $users as $key => $user )
+                                                <option value="{{ $user->id }}"> {{ $user->email }} </option>
+                                            @endforeach
                                        </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-7">
+                            <div class="col-md-3">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
-                                        <div class="panel-title"><label> API KEY - fast2sms </label></div>
+                                        <div class="panel-title"><label> {{ _('Package') }} </label></div>
                                         <div class="panel-options">
                                             <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                         </div>
                                     </div>
-                                    <div class="panel-body" style="display: block;">
-                                        <input type="text" class="form-control" name="otp_fast2sms_api_key" id="otp_fast2sms_api_key" value="{{ !empty($AdminOTPCredentials->otp_fast2sms_api_key) ? $AdminOTPCredentials->otp_fast2sms_api_key : null }}" placeholder="fast2sms API Key" />
+                                    <div class="panel-body">
+                                        <select  class="form-control"  name="package" >
+                                            <option value= {{ null }} > {{ _('select the package') }} </option>
+                                           <option value="Basic"> Basic </option>
+                                           <option value="Pro">   Pro </option>
+                                           <option value="Business"> Business </option>
+                                           <option value="CPP"> CPP </option>
+                                           <option value="Channel "> Channel  </option>
+                                        </select>
+                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                        <div class="panel-title"><label> {{ _('Package Ends Date') }}</label></div>
+                                        <div class="panel-options">
+                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="Date" class="form-control" name="package_ends" >
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +147,6 @@
                             <input type="submit" value="Update" class="btn btn-primary" />
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
