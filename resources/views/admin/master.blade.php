@@ -827,7 +827,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Image Setting </a></li>
                             <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
-
+                            
+                           @if ( Auth::user()->plan_name == 'SuperAdmin')
+                              <li><a href="{{ route('admin.users-package') }}" class="iq-waves-effect">{{ (__('Users Package Management')) }} </a></li>
+                           @endif
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
@@ -1205,6 +1208,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                            <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
 
+                           @if ( Auth::user()->plan_name == 'SuperAdmin')
+                              <li><a href="{{ route('admin.users-package') }}" class="iq-waves-effect">{{ (__('Users Package Management')) }} </a></li>
+                           @endif
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
@@ -1525,6 +1532,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
                             <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
 
+                              @if ( Auth::user()->plan_name == 'SuperAdmin')
+                                 <li><a href="{{ route('admin.users-package') }}" class="iq-waves-effect">{{ (__('Users Package Management')) }} </a></li>
+                              @endif
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->

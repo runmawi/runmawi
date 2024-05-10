@@ -304,9 +304,16 @@ class ChannelLoginController extends Controller
                 Email_notsent_log($user_id, $email_log, $email_template);
             }
 
-            return redirect('/channel/login')
+            if($enable_channel_payment == 1){
+
+                return redirect('/channel-subscriptions-plans')
+                ->with('message', 'You have successfully registered. Please Choose Plan to Subscribe.');
+            }else{
+                return redirect('/channel/login')
                 ->with('message', 'You have successfully registered. Please login If You Approved below.');
 
+            }
+           
         }
         else
         {

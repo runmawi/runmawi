@@ -546,6 +546,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');
     Route::post('/OTP-Credentials-update', 'AdminOTPCredentialsController@update')->name('admin.OTP-Credentials-update');
 
+        // Users Package 
+    Route::get('/users-package', 'SuperAdminPackageController@users_package')->name('admin.users-package');
+    Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
+
     Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
@@ -1495,6 +1499,11 @@ Route::get('/cpp-subscriptions-plans', 'CPPSubscriptionController@CPP_subscripti
 Route::post('/cpp-stripe-authorization-url', 'CPPSubscriptionController@CPP_Stripe_authorization_url')->name('CPP_Stripe_authorization_url');
 Route::get('/cpp-stripe-payment-verify', 'CPPSubscriptionController@CPP_Stripe_payment_verify')->name('CPP_Stripe_payment_verify');
 
+// Channel Payment
+    Route::get('/channel-subscriptions-plans', 'ChannelSubscriptionController@Channel_subscriptions_plans')->name('Channel_subscriptions_plans');
+    Route::post('/channel-stripe-authorization-url', 'ChannelSubscriptionController@Channel_Stripe_authorization_url')->name('Channel_Stripe_authorization_url');
+    Route::get('/channel-stripe-payment-verify', 'ChannelSubscriptionController@Channel_Stripe_payment_verify')->name('Channel_Stripe_payment_verify');
+    
 
 Route::get('cpp/signup/', 'ModeratorsLoginController@index')->name('CPPRegister');
 Route::get('/cpp', 'ModeratorsLoginController@Signin')->name('CPPSignin');
