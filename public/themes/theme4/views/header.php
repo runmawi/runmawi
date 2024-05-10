@@ -265,7 +265,7 @@
 
     <script src="public\themes\theme4\assets\js\jquery-3.5.1.min.js" async></script>
     
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {
