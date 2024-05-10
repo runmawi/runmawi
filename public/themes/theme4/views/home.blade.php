@@ -179,7 +179,7 @@
        height: 100%; 
       width: 37px;
       position: fixed;
-      z-index: 99;
+      z-index: 9;
       left: 0;
    }
    .rightnav {

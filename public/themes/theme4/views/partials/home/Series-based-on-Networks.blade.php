@@ -228,17 +228,16 @@
 
              let category_key_id = $(this).attr("data-key-id");
              $('.series-networks-videos-slider').hide();
-
-             setTimeout(function() {
-                    $('.category-series-' + category_key_id).fadeIn(400); // Show slider with fade effect after delay
-                }, 500);
+             $('.category-series-' + category_key_id).show();
 
             $('.series-depends-episode-slider-'+ category_key_id).slick({
                 dots: false,
                 infinite: false,
                 speed: 300,
                 slidesToShow: 6,
-                slidesToScroll: 4,
+                slidesToScroll: 6,
+                prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+                nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             });
         });
 
