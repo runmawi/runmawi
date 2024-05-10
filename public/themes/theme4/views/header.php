@@ -209,8 +209,6 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
-   <link rel="preload" fetchpriority="high" href="https://test.e360tv.com/public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
 
     <!-- Favicon -->
@@ -267,7 +265,7 @@
 
     <script src="public\themes\theme4\assets\js\jquery-3.5.1.min.js" async></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {

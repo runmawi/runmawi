@@ -127,7 +127,7 @@
 
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <!-- <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script> -->
    <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
