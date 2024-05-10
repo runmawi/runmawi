@@ -20,7 +20,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network" width="300" height="200">
+                                                <img src="{{ $series->image_url }}" class="img-fluid lazy" alt="based-network" width="300" height="200">
                                             </div>
                                         </a>
                                     </li>
@@ -58,7 +58,7 @@
                                                                         <li  class="slick-slide">
                                                                             <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
                                                                                     <div class="controls">
                                                                                         
                                                                                         <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }} ">
