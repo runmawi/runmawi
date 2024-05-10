@@ -166,7 +166,9 @@ class ModeratorsLoginController extends Controller
                             $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
                             // dd($ModeratorSubscription);
                         }
-                        
+  
+                        Session::put('email_id ', $user->email);
+
                         Session::put('total_uploads ', $total_uploads);
 
                         $settings = Setting::first();
