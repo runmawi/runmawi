@@ -289,7 +289,7 @@ h2{
 
 <p>Thank you for considering this opportunity, and we look forward to welcoming you as a valued channel partner!</p>
 
-
+<a href="{{ URL::to('cpp-subscriptions-plans')  }}"><button class="btn btn-primary">Become a Subscriber</button></a>
 </div>
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
 <div class="tab-slider--container">
