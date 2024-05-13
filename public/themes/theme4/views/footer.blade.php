@@ -277,6 +277,19 @@
 <!-- Lazy load script -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script>
 
+<script>
+    if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img.lazy');
+        images.forEach(img => {
+            img.src = img.dataset.src;
+        });
+    } else {
+        const script = document.createElement('script');
+        script.src =
+            'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+        document.body.appendChild(script);
+    }
+</script>
 <?php  
 $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
 if ($Prevent_inspect == 1) { ?>
