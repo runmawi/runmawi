@@ -167,9 +167,9 @@ class ModeratorsLoginController extends Controller
                             // dd($ModeratorSubscription);
                         }
   
-                        Session::put('email_id ', $user->email);
+                        Session::put('email_id', $user->email);
 
-                        Session::put('total_uploads ', $total_uploads);
+                        Session::put('total_uploads', $total_uploads);
 
                         $settings = Setting::first();
 
