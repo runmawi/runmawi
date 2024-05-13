@@ -562,10 +562,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 blk">
-                                                    <p>@php echo  (!empty($plan->upload_video_limit) ? $plan->upload_video_limit : '∞').' Videos Per ' .$plan->plans_name ; @endphp</p>
-                                                        <p>@php echo  (!empty($plan->upload_audio_limit) ? $plan->upload_audio_limit : '∞').' Audio Per ' .$plan->plans_name; @endphp</p>
-                                                        <p>@php echo  (!empty($plan->upload_live_limit) ? $plan->upload_live_limit : '∞').' LiveStream Per ' .$plan->plans_name; @endphp</p>
-                                                        <p>@php echo  (!empty($plan->upload_episode_limit) ? $plan->upload_episode_limit : '∞').' Episode Per ' .$plan->plans_name; @endphp</p>
+                                                    <p>@php echo  (!empty($plan->upload_video_limit) ? $plan->upload_video_limit : '∞').' Videos Per ' .$plan->billing_interval ; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_audio_limit) ? $plan->upload_audio_limit : '∞').' Audio Per ' .$plan->billing_interval; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_live_limit) ? $plan->upload_live_limit : '∞').' LiveStream Per ' .$plan->billing_interval; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_episode_limit) ? $plan->upload_episode_limit : '∞').' Episode Per ' .$plan->billing_interval; @endphp</p>
                                                         <p>@php echo html_entity_decode($plan->plan_content) @endphp</p>
                                                     </div>
                                                 </div>
