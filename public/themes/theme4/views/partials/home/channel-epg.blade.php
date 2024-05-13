@@ -203,7 +203,7 @@
                                                                 <ul>
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->TimeZone->time_zone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
-                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
+                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
                                                                 </ul>
 
                                                             </div>
