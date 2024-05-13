@@ -1310,7 +1310,7 @@ class ChannelSeriesController extends Controller
                     $upload_episode_limit = $ChannelSubscription->upload_episode_limit;
                     $uploaded_Episodes = Episode::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
 
-                    if($upload_episode_limit != null){
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
                             if($upload_episode_limit <= $uploaded_Episodes){
                             return View::make('channel.expired_upload');
                         }
@@ -1857,7 +1857,7 @@ class ChannelSeriesController extends Controller
 
                 $upload_episode_limit = $ChannelSubscription->upload_episode_limit;
                 $uploaded_Episodes = Episode::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
-                if($upload_episode_limit != null){
+                if($upload_episode_limit != null && $upload_episode_limit != 0){
                     if($upload_episode_limit <= $uploaded_Episodes){
                         $value = [];
                         $value['total_uploads'] = 0;
