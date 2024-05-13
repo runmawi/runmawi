@@ -134,7 +134,7 @@ class CPPAdminAudioController extends Controller
 
                     $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
                     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
-                    if($upload_audio_limit != null){
+                    if($upload_audio_limit != null && $upload_audio_limit != 0){
                         if($upload_audio_limit <= $uploaded_Audios){
                             return View::make('moderator.expired_upload');
                         }
@@ -718,7 +718,7 @@ class CPPAdminAudioController extends Controller
                     $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
                     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_audio_limit != null){
+                    if($upload_audio_limit != null && $upload_audio_limit != 0){
                         if($upload_audio_limit <= $uploaded_Audios){
                             $value = [];
                             $value['total_uploads'] = 0;
@@ -780,7 +780,7 @@ class CPPAdminAudioController extends Controller
                     $upload_audio_limit = $ModeratorSubscription->upload_audio_limit;
                     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_audio_limit != null){
+                    if($upload_audio_limit != null && $upload_audio_limit != 0){
                         if($upload_audio_limit <= $uploaded_Audios){
                             $value = [];
                             $value['total_uploads'] = 0;

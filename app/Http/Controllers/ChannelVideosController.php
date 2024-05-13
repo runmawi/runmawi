@@ -316,7 +316,7 @@ class ChannelVideosController extends Controller
                         $upload_video_limit = $ChannelSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit != null){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
                             if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
@@ -637,7 +637,7 @@ class ChannelVideosController extends Controller
                         $uploaded_videos = Video::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         // $uploaded_videos = 0;
                         
-                        if($upload_video_limit != null){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
                             if($upload_video_limit <= $uploaded_videos){
                                 return View::make('channel.expired_upload');
                             }
@@ -2599,7 +2599,7 @@ class ChannelVideosController extends Controller
                         $upload_video_limit = $ChannelSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
 
-                        if($upload_video_limit != null){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
                             if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
@@ -2707,7 +2707,7 @@ class ChannelVideosController extends Controller
                         $upload_video_limit = $ChannelSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit != null){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
                             if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
@@ -2821,7 +2821,7 @@ class ChannelVideosController extends Controller
                         $upload_video_limit = $ChannelSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit != null){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
                             if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;

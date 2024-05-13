@@ -124,7 +124,7 @@ class ChannelAudioController extends Controller
 
                         $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
                         $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
-                        if($upload_audio_limit != null){
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
                             if($upload_audio_limit <= $uploaded_Audios){
                                 return View::make('channel.expired_upload');
                             }
@@ -707,7 +707,7 @@ class ChannelAudioController extends Controller
                         $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
                         $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_audio_limit != null){
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
                             if($upload_audio_limit <= $uploaded_Audios){
                                 $value = [];
                                 $value['total_uploads'] = 0;
@@ -776,7 +776,7 @@ class ChannelAudioController extends Controller
                         $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
                         $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_audio_limit != null){
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
                             if($upload_audio_limit <= $uploaded_Audios){
                                 $value = [];
                                 $value['total_uploads'] = 0;

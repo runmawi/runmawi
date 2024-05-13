@@ -529,7 +529,7 @@
                     <div class="flick1">
                         <div class="small-heading text-white">Step 2 of <span class="ml-2">2</span></div>
                         <p class="text-white">Hello, {{ Session::get('email_id') }}</p>
-                        <div class="medium-heading text-white"> {{ !is_null($SiteTheme) &&  !is_null($SiteTheme->signup_step2_title) ? $SiteTheme->signup_step2_title : null  }} </div>
+                        <div class="medium-heading text-white"> {{ !is_null($SiteTheme) &&  !is_null($SiteTheme->signup_channel_title) ? $SiteTheme->signup_channel_title : null  }} </div>
                         <div class="col-md-12 p-0 mt-2">
 
                             <div class="d-flex">
@@ -559,9 +559,14 @@
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0">
                                                                 {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $currency_symbol. round($plan->price,2) }} Membership</p>
+                                                                
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 blk">
+                                                    <div class="col-md-12 blk"> 
+                                                        <p>@php echo  (!empty($plan->upload_video_limit) ? $plan->upload_video_limit : '∞').' Videos Per ' .$plan->plans_name ; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_audio_limit) ? $plan->upload_audio_limit : '∞').' Audio Per ' .$plan->plans_name; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_live_limit) ? $plan->upload_live_limit : '∞').' LiveStream Per ' .$plan->plans_name; @endphp</p>
+                                                        <p>@php echo  (!empty($plan->upload_episode_limit) ? $plan->upload_episode_limit : '∞').' Episode Per ' .$plan->plans_name; @endphp</p>
                                                         <p>@php echo html_entity_decode($plan->plan_content) @endphp</p>
                                                     </div>
                                                 </div>

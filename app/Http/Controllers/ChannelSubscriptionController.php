@@ -72,7 +72,7 @@ class ChannelSubscriptionController extends Controller
             $Channel_Subscription_Plan = ChannelSubscriptionPlan::where('type','Stripe')->where('recurring_subscription_plan_id',$request->Stripe_Plan_id)->latest()->first();
 
             $payment_exists = Channel::where('email',$email)->first();
-
+            
             if( is_null($payment_exists->stripe_id) ){
 
                 $Subscription_Plan_item = [

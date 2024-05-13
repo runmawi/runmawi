@@ -112,7 +112,7 @@ class ChannelLiveStreamController extends Controller
 
                     $upload_live_limit = $ChannelSubscription->upload_live_limit;
                     $uploaded_lives = Livestream::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
-                    if($upload_live_limit != null){
+                    if($upload_live_limit != null && $upload_live_limit != 0){
                         if($upload_live_limit <= $uploaded_lives){
                             return View::make('channel.expired_upload');
                         }
