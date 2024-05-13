@@ -114,8 +114,10 @@ class CPPAdminLiveStreamController extends Controller
                         $upload_live_limit = $ModeratorSubscription->upload_live_limit;
                         $uploaded_lives = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_live_limit <= $uploaded_lives){
-                            return View::make('moderator.expired_upload');
+                        if($upload_live_limit != null){
+                            if($upload_live_limit <= $uploaded_lives){
+                                return View::make('moderator.expired_upload');
+                            }
                         }
 
                     }else{
