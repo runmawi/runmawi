@@ -232,7 +232,7 @@ class ChannelSubscriptionController extends Controller
 
             $respond = array(
                 'status'  => 'true',
-                'redirect_url' => URL::to('channel\dashboard'),
+                'redirect_url' => URL::to('channel/dashboard'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
 
