@@ -76,7 +76,7 @@
                                                                                     
                                                                                     @if ($livestream_details->publish_type == "publish_now" || ($livestream_details->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_details->publish_time))) 
                                                                                         <p class="vod-info">
-                                                                                            <img src="{{ URL::to('public\themes\theme4\views\img\Live-Icon.png') }}" alt="" width="25%">
+                                                                                            <img src="{{ URL::to('public\themes\theme4\views\img\Live-Icon.webp') }}" alt="" width="25%">
                                                                                         </p>
                                                                                     @endif
 
