@@ -65,27 +65,38 @@ class ChannelSubscriptionController extends Controller
 
             $email = Session::get('email_id');
 
-            // $email = 'manikandan@webnexs.in';
-
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
 
             $success_url = URL::to('channel-stripe-payment-verify?stripe_payment_session_id={CHECKOUT_SESSION_ID}') ;
 
             $Channel_Subscription_Plan = ChannelSubscriptionPlan::where('type','Stripe')->where('recurring_subscription_plan_id',$request->Stripe_Plan_id)->latest()->first();
 
-                // Stripe Checkout
+            $payment_exists = Channel::where('email',$email)->first();
 
-            $Subscription_Plan_item = [
-                        [
-                            'price' => $Channel_Subscription_Plan->recurring_subscription_plan_id,
-                            'quantity' => 1,
-                        ],
-            
-                        [
-                            'price' => $Channel_Subscription_Plan->one_time_subscription_plan_id,
-                            'quantity' => 1,
-                        ],
-                    ];
+            if( is_null($payment_exists->stripe_id) ){
+
+                $Subscription_Plan_item = [
+                    [
+                        'price' => $Channel_Subscription_Plan->recurring_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+        
+                    [
+                        'price' => $Channel_Subscription_Plan->one_time_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+                ];
+            }else{
+
+                $Subscription_Plan_item = [
+                    [
+                        'price' => $Channel_Subscription_Plan->recurring_subscription_plan_id,
+                        'quantity' => 1,
+                    ],
+                ];
+
+            }
+                // Stripe Checkout
             
             $Checkout_details = array(
                 'success_url' => $success_url,
@@ -135,14 +146,13 @@ class ChannelSubscriptionController extends Controller
             $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
             $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
 
-            ChannelSubscription::create([
+            $ChannelSubscription_array = array(
                 'user_id'        =>  $user->id,
                 'name'           =>  $subscription->plan['product'],
                 'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
                 'stripe_id'      =>  $subscription['id'],
                 'stripe_status'  =>  $subscription['status'],
                 'stripe_plan'    =>  $subscription->plan['id'],
-                'one_time_subscription_plan_id'     =>  !is_null($Channel_Subscription_Plan) && !is_null($Channel_Subscription_Plan->one_time_subscription_plan_id) ? $Channel_Subscription_Plan->one_time_subscription_plan_id : null ,
                 'recurring_subscription_plan_id'    =>  $subscription->plan['id'],
                 'quantity'       =>  $subscription['quantity'],
                 'countryname'    =>  Country_name(),
@@ -151,7 +161,15 @@ class ChannelSubscriptionController extends Controller
                 'PaymentGateway' =>  'Stripe',
                 'trial_ends_at'  =>  $trial_ends_at,
                 'ends_at'        =>  $trial_ends_at,
-            ]);
+            );
+
+            if( is_null($user->stripe_id) ){
+
+               $ChannelSubscription_array += [ 'one_time_subscription_plan_id' =>  !is_null($Channel_Subscription_Plan) && !is_null($Channel_Subscription_Plan->one_time_subscription_plan_id) ? $Channel_Subscription_Plan->one_time_subscription_plan_id : null ] ;
+
+            }
+
+            ChannelSubscription::create( $ChannelSubscription_array );
 
             $user_data = array(
                 'role'                  =>  'subscriber',
@@ -161,9 +179,14 @@ class ChannelSubscriptionController extends Controller
                 'payment_type'          => 'recurring',
                 'payment_status'        => $subscription['status'],
                 'payment_gateway'       =>  'Stripe',
-                'one_time_subscription_plan_id'     =>  !is_null($Channel_Subscription_Plan) && !is_null($Channel_Subscription_Plan->one_time_subscription_plan_id) ? $Channel_Subscription_Plan->one_time_subscription_plan_id : null ,
                 'recurring_subscription_plan_id'    =>  $subscription->plan['id'],
             );
+
+            if( is_null($user->stripe_id) ){
+
+                $user_data += [ 'one_time_subscription_plan_id' =>  !is_null($Channel_Subscription_Plan) && !is_null($Channel_Subscription_Plan->one_time_subscription_plan_id) ? $Channel_Subscription_Plan->one_time_subscription_plan_id : null ] ;
+ 
+             }
 
             Channel::where('id',$user->id)->update( $user_data );
             
@@ -192,7 +215,7 @@ class ChannelSubscriptionController extends Controller
                     $message->to($user->email, $user->username)->subject($email_subject);
                 });
 
-                $email_log      = 'Mail Sent Successfully from Channel Subscription';
+                $email_log      = 'Mail Sent Successfully from CPP Subscription';
                 $email_template = "23";
                 $user_id = $user->id;
 
@@ -209,7 +232,7 @@ class ChannelSubscriptionController extends Controller
 
             $respond = array(
                 'status'  => 'true',
-                'redirect_url' => URL::to('channel'),
+                'redirect_url' => URL::to('channel\dashboard'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
 

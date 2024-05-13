@@ -1,4 +1,4 @@
-@extends('moderator.master')
+@extends('channel.master')
 <style>
     .form-control {
     background: #fff!important; */
@@ -253,7 +253,7 @@ h2{
                   <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header">
                         <div class="iq-header-title">
-                           <h4 class="card-title text-center" style="color: #4295D2;">Become a Content Partner to Unlock Content Uploads </h4>
+                           <h4 class="card-title text-center" style="color: #4295D2;">Become a Channel Partner to Unlock Content Uploads </h4>
                            <!-- <h5>Payment Declined!</h5> -->
                            <!-- <p>Warning your account is pending deletion, Update your payment to resume service.</p> -->
                            <!-- <p>Your Services are up for renewal, Please ask your store owner / admin / accountant to renew now to enjoy streaming services!</p>                   -->
@@ -268,14 +268,14 @@ h2{
                   </div>
                      <div class="panel-body become-sub">
                          <div class="row justify-content-center">
-            <p style="text-align: left; font-weight: bold;">*Become a Content Partner to Unlock Content Uploads !*</p>
-            <?php $user = Session::get('user'); ?>
+            <p style="text-align: left; font-weight: bold;">*Become a Channel Partner to Unlock Content Uploads !*</p>
+            <?php $user = Session::get('channel'); ?>
             <br>
-            <p>Dear  {{ $user->username }},</p>
+            <p>Dear  {{ $user->channel_name }},</p>
 
-<p>We hope you're doing well. We're reaching out to inform you about an exciting opportunity to become a Content partner with us and unlock exclusive benefits, including the ability to upload content directly onto our platform.</p>
+<p>We hope you're doing well. We're reaching out to inform you about an exciting opportunity to become a channel partner with us and unlock exclusive benefits, including the ability to upload content directly onto our platform.</p>
 
-<p>As a Content partner, you'll gain access to a range of features designed to elevate your experience and amplify your content distribution efforts. Here's why you should consider becoming a Content partner:</p>
+<p>As a channel partner, you'll gain access to a range of features designed to elevate your experience and amplify your content distribution efforts. Here's why you should consider becoming a channel partner:</p>
 
 <p>Content Upload Privileges: Gain the ability to upload your content directly onto our platform, reaching our audience and expanding your reach.</p>
 
@@ -283,13 +283,13 @@ h2{
 
 <p>Collaborative Opportunities: Access exclusive collaboration opportunities and network with other content creators within our community.</p>
 
-<p>Don't miss out on this chance to take your content distribution to the next level. Join us as a Content partner and unlock a world of possibilities!</p>
+<p>Don't miss out on this chance to take your content distribution to the next level. Join us as a channel partner and unlock a world of possibilities!</p>
 
-<p>If you're interested in learning more about our Content partner program or have any questions, please don't hesitate to reach out to us. We're here to help you every step of the way.</p>
+<p>If you're interested in learning more about our channel partner program or have any questions, please don't hesitate to reach out to us. We're here to help you every step of the way.</p>
 
-<p>Thank you for considering this opportunity, and we look forward to welcoming you as a valued Content partner!</p>
+<p>Thank you for considering this opportunity, and we look forward to welcoming you as a valued channel partner!</p>
 
-<a href="{{ URL::to('cpp-subscriptions-plans')  }}"><button class="btn btn-primary">Become a Subscriber</button></a>
+<a href="{{ URL::to('channel-subscriptions-plans')  }}"><button class="btn btn-primary">Become a Subscriber</button></a>
 </div>
 <div id="stripe_pg" class="tabcontent" style="display:block;"> 
 <div class="tab-slider--container">
