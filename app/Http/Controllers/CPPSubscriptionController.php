@@ -232,7 +232,7 @@ class CPPSubscriptionController extends Controller
 
             $respond = array(
                 'status'  => 'true',
-                'redirect_url' => URL::to('cpp\dashboard'),
+                'redirect_url' => URL::to('cpp/dashboard'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
 
