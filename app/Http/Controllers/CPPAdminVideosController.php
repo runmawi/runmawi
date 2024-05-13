@@ -338,10 +338,12 @@ class CPPAdminVideosController extends Controller
                     $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_video_limit <= $uploaded_videos){
+                    if($upload_video_limit != null && $upload_video_limit != 0){
+                        if($upload_video_limit <= $uploaded_videos){
                             $value = [];
                             $value['total_uploads'] = 0;
                             return $value;
+                        }
                     }
 
                 }else{
@@ -626,9 +628,10 @@ class CPPAdminVideosController extends Controller
                         $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                         // $uploaded_videos = 0;
-                        
-                        if($upload_video_limit <= $uploaded_videos){
-                            return View::make('moderator.expired_upload');
+                        if($upload_video_limit != null && $upload_video_limit != 0){
+                            if($upload_video_limit <= $uploaded_videos){
+                                return View::make('moderator.expired_upload');
+                            }
                         }
 
                     }else{
@@ -644,8 +647,6 @@ class CPPAdminVideosController extends Controller
                 // if($total_uploads >= 30){
                 //     return View::make('moderator.expired_upload');
                 // }
-            }else{
-                return View::make('moderator.becomeSubscriber');
             }
 
             $data = [
@@ -2286,10 +2287,12 @@ class CPPAdminVideosController extends Controller
                             $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                             $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                             
-                            if($upload_video_limit <= $uploaded_videos){
+                            if($upload_video_limit != null && $upload_video_limit != 0){
+                                if($upload_video_limit <= $uploaded_videos){
                                     $value = [];
                                     $value['total_uploads'] = 0;
                                     return $value;
+                                }
                             }
 
                         }else{
@@ -2382,10 +2385,12 @@ class CPPAdminVideosController extends Controller
                         $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                         $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                         
-                        if($upload_video_limit <= $uploaded_videos){
+                        if($upload_video_limit != null && $upload_video_limit != 0){
+                            if($upload_video_limit <= $uploaded_videos){
                                 $value = [];
                                 $value['total_uploads'] = 0;
                                 return $value;
+                            }
                         }
 
                     }else{
@@ -2483,10 +2488,12 @@ class CPPAdminVideosController extends Controller
                             $upload_video_limit = $ModeratorSubscription->upload_video_limit;
                             $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                             
-                            if($upload_video_limit <= $uploaded_videos){
+                            if($upload_video_limit != null && $upload_video_limit != 0){
+                                if($upload_video_limit <= $uploaded_videos){
                                     $value = [];
                                     $value['total_uploads'] = 0;
                                     return $value;
+                                }
                             }
 
                         }else{

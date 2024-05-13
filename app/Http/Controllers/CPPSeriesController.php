@@ -1323,9 +1323,11 @@ class CPPSeriesController extends Controller
                     $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
                     $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_episode_limit <= $uploaded_Episodes){
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
+                        if($upload_episode_limit <= $uploaded_Episodes){
                         return View::make('moderator.expired_upload');
                     }
+                }
 
                 }else{
                     return View::make('moderator.becomeSubscriber');
@@ -1867,10 +1869,12 @@ class CPPSeriesController extends Controller
                     $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
                     $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
                     
-                    if($upload_episode_limit <= $uploaded_Episodes){
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
+                        if($upload_episode_limit <= $uploaded_Episodes){
                             $value = [];
                             $value['total_uploads'] = 0;
                             return $value;
+                        }
                     }
 
                 }else{

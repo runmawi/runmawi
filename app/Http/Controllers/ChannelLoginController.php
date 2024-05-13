@@ -395,6 +395,8 @@ class ChannelLoginController extends Controller
                     );
                     Session::put('channel', $channel);
                     Session::put('userPermissions', $userPermissions);
+                    Session::put('email_id', $channel->email);
+                    
                     return \View::make('channel.dashboard', $data);
                 }
                 elseif (!empty($channel) && $channel->status == 0)
