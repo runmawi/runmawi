@@ -274,6 +274,9 @@
     }
 ?>
 
+<!-- Lazy load script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script>
+
 <script>
     if ('loading' in HTMLImageElement.prototype) {
         const images = document.querySelectorAll('img[loading="lazy"]');
@@ -287,7 +290,6 @@
         document.body.appendChild(script);
     }
 </script>
-
 <?php  
 $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
 if ($Prevent_inspect == 1) { ?>

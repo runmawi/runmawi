@@ -210,6 +210,7 @@
 
   
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -265,7 +266,7 @@
 
     <script src="public\themes\theme4\assets\js\jquery-3.5.1.min.js" async></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {
@@ -1005,7 +1006,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo lazy" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
+                        <img class="img-fluid logo lazy" loading="lazy" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
                      </div>
                   <?php endif ;?>
 
@@ -2154,8 +2155,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    <script>
 
       $(document).ready(function() {
+         console.log($(".dropdown-toggle")); 
          $(".dropdown-toggle").dropdown();
       });
+
 
       $(document).ready(function() {
             var currentdate = "<?=  $currentdate ?>";

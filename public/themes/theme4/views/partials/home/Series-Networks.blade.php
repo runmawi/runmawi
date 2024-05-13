@@ -190,8 +190,8 @@
             asNavFor: '.series-networks-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            nextArrow: '<a href="#" aria-label="Previous" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="next" class="slick-arrow slick-prev"></a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
