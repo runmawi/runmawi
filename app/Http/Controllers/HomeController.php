@@ -117,6 +117,7 @@ class HomeController extends Controller
         $videos_expiry_date_status = videos_expiry_date_status();
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
+        $current_timezone = current_timezone();
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
@@ -265,25 +266,45 @@ class HomeController extends Controller
             
             $currency = CurrencySetting::first();
             
-            $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                        ->where('active', '=', '1')->latest();
-
-                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
-
-                        $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                        
-                        if(!$BlockLiveStream->isEmpty()){
-                            foreach($BlockLiveStream as $block_LiveStream){
-                                $blockLiveStreams[]=$block_LiveStream->live_id;
-                            }
-                        }else{
-                            $blockLiveStreams[]='';
-                        }
-                        $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams)->limit(15)->get();
-            } else{
-                $livetreams =$livetreams->limit(15)->get();
-            }
+            $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                            'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                        ->where('active', '1')
+                                        ->latest()
+                                        ->limit(15)
+                                        ->get();
+        
+            $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+            
+                if ($livestream->publish_type === 'recurring_program') {
+            
+                    $Current_time = Carbon\Carbon::now($current_timezone);
+                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                    $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+            
+                    switch ($livestream->recurring_program) {
+                        case 'custom':
+                            $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                            break;
+                        case 'daily':
+                            $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'weekly':
+                            $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'monthly':
+                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        default:
+                            $recurring_program_Status = false;
+                            break;
+                    }
+            
+                    return $recurring_program_Status;
+                }
+                return true;
+            });
 
             $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
@@ -390,7 +411,7 @@ class HomeController extends Controller
                 'suggested_videos'    => $trending_videos,
                 'video_categories'    => $genre_video_display ,
                 'home_settings'       => $this->HomeSetting ,
-                'livetream'           => $livetreams,
+                'livetream'           => $livestreams,
                 'audios'              => $latest_audios ,
                 'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
                 'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
@@ -952,25 +973,46 @@ class HomeController extends Controller
 
                     $currency = CurrencySetting::first();
                    
-                    $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                            ->where('active', '1')->latest();
-    
-                                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                                ->where('active', '1')
+                                                ->latest()
+                                                ->limit(15)
+                                                ->get();
 
-                                                    $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                                                    
-                                                    if(!$BlockLiveStream->isEmpty()){
-                                                        foreach($BlockLiveStream as $block_LiveStream){
-                                                            $blockLiveStreams[]=$block_LiveStream->live_id;
-                                                        }
-                                                    }else{
-                                                        $blockLiveStreams[]='';
-                                                    }
-                                                    $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
-                                            }
-                                            
-                    $livetreams =$livetreams->limit(15)->get();
+                    $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+                        if ($livestream->publish_type === 'recurring_program') {
+
+                            $Current_time = Carbon\Carbon::now($current_timezone);
+                            $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                            $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+
+                            switch ($livestream->recurring_program) {
+                                case 'custom':
+                                    $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                    break;
+                                case 'daily':
+                                    $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                case 'weekly':
+                                    $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                case 'monthly':
+                                    $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                default:
+                                    $recurring_program_Status = false;
+                                    break;
+                            }
+
+                            return $recurring_program_Status;
+                        }
+
+                        return true;
+                    });
 
                     
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
@@ -1079,7 +1121,7 @@ class HomeController extends Controller
                         'suggested_videos'      => $trending_videos,
                         'video_categories'      => $genre_video_display  ,
                         'home_settings'         => $this->HomeSetting ,
-                        'livetream'             => $livetreams ,
+                        'livetream'             => $livestreams ,
                         'audios'                => $latest_audios ,
                         'albums'                => AudioAlbums::latest()->limit(15)->get() ,
                         'countryName'            => $countryName,
@@ -1137,6 +1179,7 @@ class HomeController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
+        $current_timezone = current_timezone();
 
         $agent = new Agent();
         $settings = $this->settings;
@@ -1720,25 +1763,45 @@ class HomeController extends Controller
 
                 $currency = CurrencySetting::first();
 
-                $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                ->where('active', '1')->orderBy('created_at', 'DESC');
-
-                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
-
-                            $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                            
-                            if(!$BlockLiveStream->isEmpty()){
-                                foreach($BlockLiveStream as $block_LiveStream){
-                                    $blockLiveStreams[]=$block_LiveStream->live_id;
-                                }
-                            }else{
-                                $blockLiveStreams[]='';
-                            }
-                            $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                    ->where('active', '1')
+                    ->latest()
+                    ->limit(15)
+                    ->get();
+                
+                $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+                
+                    if ($livestream->publish_type === 'recurring_program') {
+                
+                        $Current_time = Carbon\Carbon::now($current_timezone);
+                        $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                        $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                
+                        switch ($livestream->recurring_program) {
+                            case 'custom':
+                                $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                break;
+                            case 'daily':
+                                $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'weekly':
+                                $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'monthly':
+                                $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            default:
+                                $recurring_program_Status = false;
+                                break;
                         }
-
-                $livetreams =$livetreams->limit(15)->get();
+                
+                        return $recurring_program_Status;
+                    }
+                    return true;
+                });
 
                 $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
@@ -1857,7 +1920,7 @@ class HomeController extends Controller
                     'suggested_videos'    => $trending_videos,
                     'video_categories'    => $genre_video_display ,
                     'home_settings'       => $this->HomeSetting ,
-                    'livetream'           => $livetreams,
+                    'livetream'           => $livestreams,
                     'audios'              => $latest_audios ,
                     'albums'              => AudioAlbums::latest()->limit(15) ->get() ,
                     'most_watch_user'        => !empty($most_watch_user) ? $most_watch_user : [],
@@ -1903,12 +1966,12 @@ class HomeController extends Controller
             }
         }
     }
-  
-        
+
     public function social()
     {
         return View::make('social');
     }
+    
     public function ViewStripe(Request $request)
     {
 
@@ -4669,7 +4732,7 @@ public function uploadExcel(Request $request)
 
     public function EPG_date_filter(Request $request)
     {
-        $theme = Theme::uses($this->Theme);
+        $theme = Theme::uses($this->HomeSetting->theme_choosen);
         
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  

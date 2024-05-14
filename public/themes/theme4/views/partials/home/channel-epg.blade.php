@@ -95,7 +95,7 @@
 </style>
    
 @php    
-    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) {
+    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url) {
                 
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
                 
