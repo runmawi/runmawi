@@ -1134,7 +1134,7 @@ class HomeController extends Controller
     {
 
         $data = Session::all();
-        $ThumbnailSetting = ThumbnailSetting::first();
+        $ThumbnailSetting = ThumbnailSettEPG_date_filtering::first();
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
 
@@ -4669,7 +4669,7 @@ public function uploadExcel(Request $request)
 
     public function EPG_date_filter(Request $request)
     {
-        $theme = Theme::uses($this->Theme);
+        $theme = Theme::uses($this->HomeSetting->theme_choosen);
         
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  
