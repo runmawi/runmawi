@@ -61,7 +61,7 @@ $data = App\Series::where('active', '1')->limit(15)
                                                     {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $Episode_details->image_url }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $Episode_details->image_url }}" class="img-fluid w-100" alt="Videos">
                                             @endif
                                         </div>
                                     </a>

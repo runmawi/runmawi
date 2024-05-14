@@ -41,7 +41,7 @@ if (Auth::guest() != true) {
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_view_episode->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" class="img-fluid" alt="latest_view_episode">
+                                                <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="latest_view_episode">
                                             @endif
                                          </div>
                                     </a>

@@ -16,7 +16,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">
+                                            <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos">
                                         </div>
                                     </a>
                                 </li>

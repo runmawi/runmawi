@@ -57,7 +57,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_view_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_view_video->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : $default_vertical_image_url }}" class="img-fluid" alt="latest_view_episode">
+                                                <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="latest_view_episode">
                                             @endif  
                                             @if ($videos_expiry_date_status == 1 && optional($latest_view_video)->expiry_date)
                                                 <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>

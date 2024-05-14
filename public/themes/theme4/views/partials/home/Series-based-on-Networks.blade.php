@@ -20,7 +20,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid lazy" alt="based-network" width="300" height="200">
+                                                <img src="{{ $series->image_url }}" class="img-fluid lazy w-100" alt="based-network" width="300" height="200">
                                             </div>
                                         </a>
                                     </li>
