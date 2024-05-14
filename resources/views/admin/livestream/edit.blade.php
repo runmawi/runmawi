@@ -797,10 +797,10 @@ border-radius: 0px 4px 4px 0px;
                     </select>
                 </div>
 
-                <div class="col-sm-2 recurring_program_week_day" style="{{ !empty($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
+                <div class="col-sm-2 recurring_program_week_day" style="{{ !is_null($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
                     <label class="m-0">{{ _('Week Days ')}} </label>
                     <select class="form-control" name="recurring_program_week_day" >
-                        <option value="0"  {{ !empty(($video->recurring_program_week_day=="0"))? "selected" : "" }}  > Sunday </option>
+                        <option value="0"  {{ !is_null(($video->recurring_program_week_day=="0"))? "selected" : "" }}  > Sunday </option>
                         <option value="1"  {{ !empty(($video->recurring_program_week_day=="1"))? "selected" : "" }}  >  Monday </option>
                         <option value="2"  {{ !empty(($video->recurring_program_week_day=="2"))? "selected" : "" }} >  Tuesday </option>
                         <option value="3"  {{ !empty(($video->recurring_program_week_day=="3"))? "selected" : "" }} > Wednesday </option>
@@ -1392,7 +1392,7 @@ $(document).ready(function(){
         
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day  ").hide();
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day,.recurring_timezone").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 

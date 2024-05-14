@@ -1326,11 +1326,11 @@
 
     $(document).ready(function () {
         
-        $("#publishlater, #recurring_program , .recurring_timezone ,.custom_program_time , .program_time ,.recurring_program_week_day, .recurring_program_month_day").hide();
+        $("#publishlater, #recurring_program ,.custom_program_time , .program_time ,.recurring_program_week_day, .recurring_program_month_day, .recurring_timezone").hide();
 
         $("input[name='publish_type']").change(function () {
             
-            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day  ").hide();
+            $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day ,.recurring_timezone ").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
 
