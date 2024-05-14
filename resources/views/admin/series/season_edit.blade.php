@@ -116,7 +116,7 @@
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
                      @endif 
                     <br>
-                <div class="content file">
+                <div class="content file UploadEnable">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
                     <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
@@ -659,10 +659,14 @@
             </div>
             <div class="clear"></div>
             <!-- Manage Season -->
+            <div class="float-right">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                </div>
             <div class="p-4">
 
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
+  
                 <div class="admin-section-title">
                     <div class="row"  id="orderepisode">
 
@@ -727,7 +731,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-    <script>
+   
+   <script>
+
+            $(document).ready(function(){
+                $("#searchInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#categorytbl tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+
+        var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+         if(enable_bunny_cdn == 1){
+            $('.UploadEnable').hide();
+         }
+
+            $('#UploadlibraryID').change(function(){
+               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+               // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
 
         // $("#intro_start_time").datetimepicker({
         //     format: "hh:mm ",
