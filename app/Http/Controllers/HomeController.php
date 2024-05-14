@@ -124,7 +124,7 @@ class HomeController extends Controller
             return $value === '1' || $value === 1;  
         })->keys()->toArray(); 
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
 
         $check_Kidmode = 0;
@@ -270,31 +270,31 @@ class HomeController extends Controller
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                        ->where('active', '1')
-                                        ->latest()
-                                        ->limit(15)
-                                        ->get();
+                                    ->where('active', '1')
+                                    ->latest()
+                                    ->limit(15)
+                                    ->get();
         
             $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-            
                 if ($livestream->publish_type === 'recurring_program') {
             
                     $Current_time = Carbon\Carbon::now($current_timezone);
                     $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                     $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                    $midnight = $convert_time->copy()->startOfDay();
             
                     switch ($livestream->recurring_program) {
                         case 'custom':
-                            $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                             break;
                         case 'daily':
-                            $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                             break;
                         case 'weekly':
-                            $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
                             break;
                         case 'monthly':
-                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                             break;
                         default:
                             $recurring_program_Status = false;
@@ -981,40 +981,38 @@ class HomeController extends Controller
                                                 ->latest()
                                                 ->limit(15)
                                                 ->get();
-
+                                                
                     $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-
                         if ($livestream->publish_type === 'recurring_program') {
-
+                    
                             $Current_time = Carbon\Carbon::now($current_timezone);
                             $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                             $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-
+                            $midnight = $convert_time->copy()->startOfDay();
+                    
                             switch ($livestream->recurring_program) {
                                 case 'custom':
-                                    $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                                     break;
                                 case 'daily':
-                                    $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                                     break;
                                 case 'weekly':
-                                    $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
                                     break;
                                 case 'monthly':
-                                    $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                                     break;
                                 default:
                                     $recurring_program_Status = false;
                                     break;
                             }
-
+                    
                             return $recurring_program_Status;
                         }
-
                         return true;
                     });
 
-                    
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
                                         ->where('active', '1')->latest()->limit(15)->get();
 
@@ -1174,7 +1172,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-
         $data = Session::all();
         $ThumbnailSetting = ThumbnailSetting::first();
         $default_vertical_image_url = default_vertical_image_url();
@@ -1773,25 +1770,25 @@ class HomeController extends Controller
                     ->get();
                 
                 $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-                
                     if ($livestream->publish_type === 'recurring_program') {
                 
                         $Current_time = Carbon\Carbon::now($current_timezone);
                         $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                         $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                        $midnight = $convert_time->copy()->startOfDay();
                 
                         switch ($livestream->recurring_program) {
                             case 'custom':
-                                $recurring_program_Status = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                                 break;
                             case 'daily':
-                                $recurring_program_Status = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                                 break;
                             case 'weekly':
-                                $recurring_program_Status = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
                                 break;
                             case 'monthly':
-                                $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                                 break;
                             default:
                                 $recurring_program_Status = false;
@@ -1870,7 +1867,7 @@ class HomeController extends Controller
                     return $value === '1' || $value === 1;  
                 })->keys()->toArray(); 
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
                 $data = array(
 
@@ -2076,7 +2073,7 @@ class HomeController extends Controller
                     'support_username' =>  ['required'],
                 ]);
             }
-            // dd(1);
+            
             $validatedData = $request->validate([
                 'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
             ]);
@@ -2093,7 +2090,6 @@ class HomeController extends Controller
                  ]);
         }
         
-        // dd( $request->get('dob'));
 
         $free_registration = FreeRegistration();
         $length = 10;
@@ -2959,7 +2955,6 @@ class HomeController extends Controller
         {
             if ($request->payment_method == "Stripe")
             {
-                // dd($request->payment_method);
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
@@ -3094,11 +3089,8 @@ class HomeController extends Controller
                     "payment_type" => $plan_details->payment_type
                 );
                 return Theme::view('register.upgrade.stripe', ['intent' => $user->createSetupIntent() ], $response);
-            }
-            // dd($subscriptions->id);
-            
+            }   
         }
-
     }
 
     public function verifyOtp(Request $request)
