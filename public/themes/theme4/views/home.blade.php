@@ -245,18 +245,18 @@
                isFetching = true; 
                $.ajax({
                   url: page_url,
-                  beforeSend: function () {
-                     $('.auto-load').show();
-                  },
+                  // beforeSend: function () {
+                  //    $('.auto-load').show();
+                  // },
                   success: function (data) {
                      $("#home_sections").append(data.view);
                      $("#home_sections").attr('next-page-url', data.url);
                   },
-                  complete: function () {
-                     isFetching = false; 
-                     // $('.theme4-slider').hide();
-                     $('.auto-load').hide();
-                  }
+                  // complete: function () {
+                  //    isFetching = false; 
+                  //    $('.theme4-slider').hide();
+                  //    $('.auto-load').hide();
+                  // }
                });
          }
       }, 500);

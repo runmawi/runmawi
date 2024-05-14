@@ -886,7 +886,7 @@ header#main-header.menu-sticky{
    }
    ul.top-colps li.menu-item a{
       padding:10px 10px !important;
-      font-size:10px !important;
+      /* font-size:10px !important; */
    }
    ul.top-colps{
       align-items:center;
@@ -1021,6 +1021,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Side Position  -->
                               <?php if($theme->header_side_position == 1): ?>
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                              <?php endif ;?>
+
+                              <?php if($theme->header_top_position == 1): ?>
+                                 <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
@@ -2401,4 +2405,10 @@ window.onload = function () {
             location.reload(true);
         }
     });
+</script>
+<script>
+  function toggleMenu() {
+    var menu = document.querySelector('.top-colps');
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+  }
 </script>
