@@ -266,7 +266,9 @@ class HomeController extends Controller
             $currency = CurrencySetting::first();
             
             $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
+                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration',
+                                        'recurring_program','program_start_time','program_end_time','custom_start_program_time','custom_end_program_time',
+                                        'recurring_timezone','recurring_program_week_day','recurring_program_month_day')
                                         ->where('active', '=', '1')->latest();
 
                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
@@ -953,7 +955,9 @@ class HomeController extends Controller
                     $currency = CurrencySetting::first();
                    
                     $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
+                                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration',
+                                                        'recurring_program','program_start_time','program_end_time','custom_start_program_time','custom_end_program_time',
+                                                        'recurring_timezone','recurring_program_week_day','recurring_program_month_day')
                                             ->where('active', '1')->latest();
     
                                             if($getfeching !=null && $getfeching->geofencing == 'ON'){
@@ -1721,7 +1725,9 @@ class HomeController extends Controller
                 $currency = CurrencySetting::first();
 
                 $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
+                                'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration',
+                                'recurring_program','program_start_time','program_end_time','custom_start_program_time','custom_end_program_time',
+                                'recurring_timezone','recurring_program_week_day','recurring_program_month_day')
                                 ->where('active', '1')->orderBy('created_at', 'DESC');
 
                         if($getfeching !=null && $getfeching->geofencing == 'ON'){
@@ -1903,12 +1909,12 @@ class HomeController extends Controller
             }
         }
     }
-  
-        
+
     public function social()
     {
         return View::make('social');
     }
+    
     public function ViewStripe(Request $request)
     {
 
