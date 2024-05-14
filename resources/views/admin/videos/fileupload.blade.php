@@ -270,7 +270,7 @@
                      @else
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
                      @endif
-                     <div class='content file'>
+                     <div class='content file UploadEnable'>
                         <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
                         <!-- Dropzone -->
                         <form action="{{ $post_dropzone_url }}" method= "post" class='dropzone' ></form>
@@ -318,6 +318,20 @@
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
+
+         var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+         if(enable_bunny_cdn == 1){
+            $('.UploadEnable').hide();
+         }
+
+            $('#UploadlibraryID').change(function(){
+               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+               // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
 
          $(document).ready(function() {
             $('#bunny_cdn_linked_video').select2();
