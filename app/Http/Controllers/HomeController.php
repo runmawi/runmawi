@@ -1134,7 +1134,7 @@ class HomeController extends Controller
     {
 
         $data = Session::all();
-        $ThumbnailSetting = ThumbnailSettEPG_date_filtering::first();
+        $ThumbnailSetting = ThumbnailSetting::first();
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
 
