@@ -22,7 +22,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$video->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos">
                                             @endif
                                         </div>
                                     </a>

@@ -25,7 +25,7 @@
                                                         {{ URL::to('public/uploads/Tabletimages/'.$CPP_details->responsive_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$CPP_details->responsive_image.' 420w') }}" >
                                                 @else
-                                                    <img src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : $default_vertical_image_url }}" class="img-fluid" alt="content">
+                                                    <img src="{{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : $default_vertical_image_url }}" class="img-fluid w-100" alt="content">
                                                 @endif 
                                             </div>
                                         </a>

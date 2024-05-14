@@ -26,7 +26,7 @@
                                                         {{ URL::to('public/uploads/Tabletimages/'.$channel->responsive_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$channel->responsive_image.' 420w') }}" >
                                                 @else
-                                                    <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid" alt="channel">
+                                                    <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid w-100" alt="channel">
                                                 @endif
                                                 <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid" >
                                             </div>

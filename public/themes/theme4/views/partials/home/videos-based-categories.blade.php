@@ -94,7 +94,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
                                                 @else
-                                                    <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative" alt="Videos">
+                                                    <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="Videos">
                                                 @endif  
 
                                                 @if ($videos_expiry_date_status == 1 && optional($videos)->expiry_date)

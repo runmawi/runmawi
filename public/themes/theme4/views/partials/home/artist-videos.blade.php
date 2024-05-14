@@ -107,7 +107,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="artist_details" width="300" height="200">
+                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="artist_details" width="300" height="200">
                                         </div>
                                     </a>
                                 </li>
@@ -275,7 +275,7 @@
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },

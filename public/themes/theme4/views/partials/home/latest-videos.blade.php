@@ -22,7 +22,7 @@
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}"  width="300" height="200">
                                             @else
-                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}" class="img-fluid position-relative" alt="latest_series"  width="300" height="200">
+                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="latest_series"  width="300" height="200">
                                             @endif
 
                                             @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
