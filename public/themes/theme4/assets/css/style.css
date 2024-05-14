@@ -70,7 +70,7 @@ header .navbar ul li:last-child{margin-right:0}
 .block-space{padding:40px 0}
 #iq-trending,#iq-favorites{margin-top:40px}
 .iq-main-header{margin-bottom:20px}
-.main-title{font-size:1.4vw}
+.main-title{font-size:1.2em}
 .main-title a:hover,.main-title a:focus{color:var(--iq-primary)!important}
 :focus{outline:none!important}
 .favorites-slider .slick-list,#top-ten-slider-nav .slick-list{overflow:visible;padding-bottom:40px!important}
