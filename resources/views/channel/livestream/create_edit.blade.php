@@ -28,6 +28,12 @@
 		display: inline-block;
 		cursor: pointer;
 	} 
+	.tags-input-wrapper {
+		background: transparent;
+		padding: 10px;
+		border-radius: 4px;
+		border: 1px solid #ccc;
+	}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -327,32 +333,45 @@
             
 			
 			<div class="clear"></div>
-			<div class="row mt-3"> 
-			<div class="col-sm-6">
-		
-			<div class="col-sm-6"> 
-			<div class="panel panel-primary" data-collapsed="0"> 
-				<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body"> 
-					<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
-					<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-				</div> 
-			</div>
-			</div>
-			</div>
+				<div class="row mt-3"> 
+			
+					<div class="col-sm-6"> 
+						<div class="panel panel-primary" data-collapsed="0"> 
+							<div class="panel-heading"> 
+								<div class="panel-title">
+									<label> Duration</label>
+								</div> 
+								<div class="panel-options"> 
+									<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+								</div>
+							</div> 
+							<div class="panel-body"> 
+								<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
+								<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
+							</div> 
+						</div>
+					</div>
 
-			<div class="col-sm-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-                    <p class="p1">Publish Type</p>
-					<div class="form-group"> 
-                            <label class="radio-inline">
-							<input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked>Publish Now <br>
-							<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
-                        </div></div> 
-			</div>
-			</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title">
+								<label></label>
+							</div> 
+							<div class="panel-options"> 
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+							</div>
+						</div> 
+						<div class="panel-body" style="display: block;"> 
+							<p class="p1">Publish Type</p>
+							<div class="form-group"> 
+								<label class="radio-inline">
+								<input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked>Publish Now <br>
+								<input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+							</div>
+						</div> 
+					</div>
+				</div>
 			</div>
 
 			<div class="clear"></div>

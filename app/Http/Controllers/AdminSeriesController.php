@@ -1990,48 +1990,108 @@ class AdminSeriesController extends Controller
             //     }
             // }
 
-            if (!empty($subtitles != "" && $subtitles != null)) {
-                foreach ($subtitles as $key => $val) {
-                    if (!empty($subtitles[$key])) {
-                        $destinationPath = "public/uploads/subtitles/";
-                        $filename = $episodes->id . "-episode-" . $shortcodes[$key] . ".srt";
+            // if (!empty($subtitles != "" && $subtitles != null)) {
+            //     foreach ($subtitles as $key => $val) {
+            //         if (!empty($subtitles[$key])) {
+            //             $destinationPath = "public/uploads/subtitles/";
+            //             $filename = $episodes->id . "-episode-" . $shortcodes[$key] . ".srt";
                         
-                        // Move uploaded file to destination path
-                        move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+            //             // Move uploaded file to destination path
+            //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
                         
-                        // Read contents of the uploaded file
-                        $contents = file_get_contents($destinationPath . $filename);
+            //             // Read contents of the uploaded file
+            //             $contents = file_get_contents($destinationPath . $filename);
                         
-                        // Convert time format and add line numbers
-                        $lineNumber = 0;
-                        $convertedContents = preg_replace_callback(
-                            '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
-                            function ($matches) use (&$lineNumber) {
-                                $lineNumber++;
-                                return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
-                            },
-                            $contents
-                        );
+            //             // Convert time format and add line numbers
+            //             $lineNumber = 0;
+            //             $convertedContents = preg_replace_callback(
+            //                 '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+            //                 function ($matches) use (&$lineNumber) {
+            //                     $lineNumber++;
+            //                     return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+            //                 },
+            //                 $contents
+            //             );
                         
-                        // Store converted contents to a new file
-                        $newDestinationPath = "public/uploads/convertedsubtitles/";
-                        if (!file_exists($newDestinationPath)) {
-                            mkdir($newDestinationPath, 0755, true);
+            //             // Store converted contents to a new file
+            //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+            //             if (!file_exists($newDestinationPath)) {
+            //                 mkdir($newDestinationPath, 0755, true);
+            //             }
+            //             file_put_contents($newDestinationPath . $filename, $convertedContents);
+                        
+            //             // Save subtitle data to database
+            //             $subtitle_data = [
+            //                 "episode_id" => $episodes->id,
+            //                 "shortcode" => $shortcodes[$key],
+            //                 "sub_language" => $languages[$key],
+            //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+            //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+            //         ];
+            //             $episode_subtitle = SeriesSubtitle::create($subtitle_data);
+            //         }
+            //     }
+            // }
+
+                        // Define the convertTimeFormat function globally
+                        function convertTimeFormat($hours, $minutes, $milliseconds) {
+                            $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+                            $formattedTime = gmdate("H:i:s", $totalSeconds);
+                            $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                            return "{$formattedTime},{$formattedMilliseconds}";
                         }
-                        file_put_contents($newDestinationPath . $filename, $convertedContents);
-                        
-                        // Save subtitle data to database
-                        $subtitle_data = [
-                            "episode_id" => $episodes->id,
-                            "shortcode" => $shortcodes[$key],
-                            "sub_language" => $languages[$key],
-                            "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
-                            "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
-                    ];
-                        $episode_subtitle = SeriesSubtitle::create($subtitle_data);
-                    }
-                }
-            }
+            
+                        if (!empty($subtitles != "" && $subtitles != null)) {
+                            foreach ($subtitles as $key => $val) {
+                                if (!empty($subtitles[$key])) {
+                                    $destinationPath = "public/uploads/subtitles/";
+            
+                                    if (!file_exists($destinationPath)) {
+                                        mkdir($destinationPath, 0755, true);
+                                    }
+            
+                                    $filename = $episodes->id . "-episode-" . $shortcodes[$key] . ".srt";
+            
+                                    SeriesSubtitle::where('episode_id', $episodes->id)->where('shortcode', $shortcodes[$key])->delete();
+            
+                                    // Move uploaded file to destination path
+                                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+            
+                                    // Read contents of the uploaded file
+                                    $contents = file_get_contents($destinationPath . $filename);
+            
+                                    // Convert time format and add line numbers
+                                    $lineNumber = 0;
+                                    $convertedContents = preg_replace_callback(
+                                        '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+                                        function ($matches) use (&$lineNumber) {
+                                            // Increment line number for each match
+                                            $lineNumber++;
+                                            // Convert time format and return with the line number
+                                            return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+                                        },
+                                        $contents
+                                    );
+            
+                                    // Store converted contents to a new file
+                                    $newDestinationPath = "public/uploads/convertedsubtitles/";
+                                    if (!file_exists($newDestinationPath)) {
+                                        mkdir($newDestinationPath, 0755, true);
+                                    }
+                                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+            
+                                    // Save subtitle data to database
+                                    $subtitle_data = [
+                                        "episode_id" => $episodes->id,
+                                        "shortcode" => $shortcodes[$key],
+                                        "sub_language" => $languages[$key],
+                                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                                    ];
+                                    $episode_subtitle = SeriesSubtitle::create($subtitle_data);
+                                }
+                            }
+                        }
 
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
@@ -2407,51 +2467,112 @@ class AdminSeriesController extends Controller
         //         }
         //     }
         // }
-        if (!empty($subtitles != "" && $subtitles != null)) {
-            foreach ($subtitles as $key => $val) {
-                if (!empty($subtitles[$key])) {
+        // if (!empty($subtitles != "" && $subtitles != null)) {
+        //     foreach ($subtitles as $key => $val) {
+        //         if (!empty($subtitles[$key])) {
 
-                    SeriesSubtitle::where('episode_id',$episode->id)->where('shortcode',$shortcodes[$key])->delete();
+        //             SeriesSubtitle::where('episode_id',$episode->id)->where('shortcode',$shortcodes[$key])->delete();
 
-                    $destinationPath = "public/uploads/subtitles/";
-                    $filename = $episode->id . "-episode-" . $shortcodes[$key] . ".srt";
+        //             $destinationPath = "public/uploads/subtitles/";
+        //             $filename = $episode->id . "-episode-" . $shortcodes[$key] . ".srt";
                     
-                    // Move uploaded file to destination path
-                    move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+        //             // Move uploaded file to destination path
+        //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
                     
-                    // Read contents of the uploaded file
-                    $contents = file_get_contents($destinationPath . $filename);
+        //             // Read contents of the uploaded file
+        //             $contents = file_get_contents($destinationPath . $filename);
                     
-                    // Convert time format and add line numbers
-                    $lineNumber = 0;
-                    $convertedContents = preg_replace_callback(
-                        '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
-                        function ($matches) use (&$lineNumber) {
-                            $lineNumber++;
-                            return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
-                        },
-                        $contents
-                    );
+        //             // Convert time format and add line numbers
+        //             $lineNumber = 0;
+        //             $convertedContents = preg_replace_callback(
+        //                 '/(\d{2}):(\d{2}):(\d{2})[,.](\d{3}) --> (\d{2}):(\d{2}):(\d{2})[,.](\d{3})/',
+        //                 function ($matches) use (&$lineNumber) {
+        //                     $lineNumber++;
+        //                     return "{$lineNumber}\n{$matches[1]}:{$matches[2]}:{$matches[3]},{$matches[4]} --> {$matches[5]}:{$matches[6]}:{$matches[7]},{$matches[8]}";
+        //                 },
+        //                 $contents
+        //             );
                     
-                    // Store converted contents to a new file
-                    $newDestinationPath = "public/uploads/convertedsubtitles/";
-                    if (!file_exists($newDestinationPath)) {
-                        mkdir($newDestinationPath, 0755, true);
-                    }
-                    file_put_contents($newDestinationPath . $filename, $convertedContents);
+        //             // Store converted contents to a new file
+        //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+        //             if (!file_exists($newDestinationPath)) {
+        //                 mkdir($newDestinationPath, 0755, true);
+        //             }
+        //             file_put_contents($newDestinationPath . $filename, $convertedContents);
                     
-                    // Save subtitle data to database
-                    $subtitle_data = [
-                        "episode_id" => $episode->id,
-                        "shortcode" => $shortcodes[$key],
-                        "sub_language" => $languages[$key],
-                        "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
-                        "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
-                    ];
-                    $episode_subtitle = SeriesSubtitle::create($subtitle_data);
-                }
-            }
-        }
+        //             // Save subtitle data to database
+        //             $subtitle_data = [
+        //                 "episode_id" => $episode->id,
+        //                 "shortcode" => $shortcodes[$key],
+        //                 "sub_language" => $languages[$key],
+        //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+        //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+        //             ];
+        //             $episode_subtitle = SeriesSubtitle::create($subtitle_data);
+        //         }
+        //     }
+        // }
+
+
+                                // Define the convertTimeFormat function globally
+                                function convertTimeFormat($hours, $minutes, $milliseconds) {
+                                    $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+                                    $formattedTime = gmdate("H:i:s", $totalSeconds);
+                                    $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                                    return "{$formattedTime},{$formattedMilliseconds}";
+                                }
+                    
+                                if (!empty($subtitles != "" && $subtitles != null)) {
+                                    foreach ($subtitles as $key => $val) {
+                                        if (!empty($subtitles[$key])) {
+                                            $destinationPath = "public/uploads/subtitles/";
+                    
+                                            if (!file_exists($destinationPath)) {
+                                                mkdir($destinationPath, 0755, true);
+                                            }
+                    
+                                            $filename = $episode->id . "-episode-" . $shortcodes[$key] . ".srt";
+                    
+                                            SeriesSubtitle::where('episode_id', $episode->id)->where('shortcode', $shortcodes[$key])->delete();
+                    
+                                            // Move uploaded file to destination path
+                                            move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                    
+                                            // Read contents of the uploaded file
+                                            $contents = file_get_contents($destinationPath . $filename);
+                    
+                                            // Convert time format and add line numbers
+                                            $lineNumber = 0;
+                                            $convertedContents = preg_replace_callback(
+                                                '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+                                                function ($matches) use (&$lineNumber) {
+                                                    // Increment line number for each match
+                                                    $lineNumber++;
+                                                    // Convert time format and return with the line number
+                                                    return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+                                                },
+                                                $contents
+                                            );
+                    
+                                            // Store converted contents to a new file
+                                            $newDestinationPath = "public/uploads/convertedsubtitles/";
+                                            if (!file_exists($newDestinationPath)) {
+                                                mkdir($newDestinationPath, 0755, true);
+                                            }
+                                            file_put_contents($newDestinationPath . $filename, $convertedContents);
+                    
+                                            // Save subtitle data to database
+                                            $subtitle_data = [
+                                                "episode_id" => $episode->id,
+                                                "shortcode" => $shortcodes[$key],
+                                                "sub_language" => $languages[$key],
+                                                "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                                                "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                                            ];
+                                            $episode_subtitle = SeriesSubtitle::create($subtitle_data);                                        
+                                        }
+                                    }
+                                }
 
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );

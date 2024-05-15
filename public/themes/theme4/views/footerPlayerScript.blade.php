@@ -6,16 +6,11 @@
 ?>
 
 <script>
-    var choosen_player = <?php  echo json_encode( choosen_player() ); ?>; 
-    var firstSegment =  <?php  echo json_encode( $firstSegment); ?>; 
-    
-    if (choosen_player == 1){
-        var type = '';
-    }else if (firstSegment == 'category'){
-        var type = $('#video_type').val();
-    }else{
-        var type = '';
-    }
+   var a=1,b=<?php echo json_encode(choosen_player()); ?>,c=<?php echo json_encode($firstSegment); ?>;if(1==a)var d='';else if('category'==c)var d=$('#video_type').val();else var d='';
+
+
+    var type = $('#video_type').val();
+    // alert(type);
     var request_url = $('#request_url').val();
     var live = $('live').val();
     var video_video = $('#video_video').val();

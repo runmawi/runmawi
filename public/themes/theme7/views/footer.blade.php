@@ -111,13 +111,13 @@
                     <p>On Playstore</p>
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.webp'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>

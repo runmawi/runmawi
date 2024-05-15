@@ -16,39 +16,90 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                                <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid lazy" alt="livestream_videos" width="300" height="200">
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
+                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="livestream_videos" width="100%"></div>
                                     @endif
                                 </li>
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider">
+                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $livestream_videos )
                                 <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image"                                        >
+                                    <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
+
+                                                            <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
 
                                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                                
                                                                 <ul class="vod-info">
                                                                     <li><span></span> LIVE NOW</li>
                                                                 </ul>
+
                                                             @elseif ($livestream_videos->publish_type == "publish_later")
-                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
+                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$livestream_videos->publish_time)->format('j F Y g:ia') }} </span>
+                                                            
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
+                                                                        
+                                                                @php
+                                                                     switch ($livestream_videos->recurring_program_week_day) {
+
+                                                                        case 0:
+                                                                            $recurring_program_week_day = 'Sunday' ;
+                                                                        break;
+
+                                                                        case 1 :
+                                                                            $recurring_program_week_day =  'Monday' ;
+                                                                        break;
+
+                                                                        case 2:
+                                                                            $recurring_program_week_day =  'Tuesday' ;
+                                                                        break;
+
+                                                                        case 3 :
+                                                                            $recurring_program_week_day = 'Wednesday' ;
+                                                                        break;
+
+                                                                        case 4:
+                                                                            $recurring_program_week_day =  'Thrusday' ;
+                                                                        break;
+
+                                                                        case 5:
+                                                                            $recurring_program_week_day =  'Friday' ;
+                                                                        break;
+
+                                                                        case 6:
+                                                                            $recurring_program_week_days =  'Saturday' ;
+                                                                        break;
+
+                                                                        default:
+                                                                            $recurring_program_week_day =  null ;
+                                                                        break;
+                                                                    }
+                                                                @endphp
+
+                                                                <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $recurring_program_week_day . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
+                                                                <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
                                                             @endif
 
-                                                            <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ?  $livestream_videos->description : " No description Available" !!}</div>
+                                                            <div class="d-flex align-items-center p-0 mt-3">
+                                                                <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
+                                                            </div>
+
+                                                            <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ??  $livestream_videos->description  !!}</div>
                                                         
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
@@ -58,9 +109,11 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="livestream_videos">
-                                                        </div>
+                                                        @if ( $livestream_videos->publish_type == "recurring_program")
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos">
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -84,7 +137,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="modal">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -139,12 +192,12 @@
 
         $('.livestream-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.livestream-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

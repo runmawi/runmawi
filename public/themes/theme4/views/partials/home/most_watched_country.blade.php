@@ -18,12 +18,12 @@
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos">
                                             @endif
                                         </div>
                                     </a>
@@ -31,7 +31,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider country-videos-slider" class="list-inline p-0 m-0 align-items-center country-videos-slider theme4-slider">
+                        <ul id="trending-slider country-videos-slider" class="list-inline p-0 m-0 align-items-center country-videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -39,7 +39,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -59,12 +59,12 @@
 
                                                         <div class="dropdown_thumbnail">
                                                             @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}"
+                                                                <img  alt="latest_series" src="{{$videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}"
                                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
                                                                     {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
                                                                     {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
                                                             @else
-                                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}" alt="Videos">
                                                             @endif
                                                         </div>
                                                     </div>
@@ -90,7 +90,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}" alt="Videos">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -146,12 +146,12 @@
 
         $('.country-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.country-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

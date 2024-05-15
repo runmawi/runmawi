@@ -73,6 +73,9 @@ use Session;
 use Redirect;
 use Theme;
 use App\CPPSignupMenu;
+use App\ModeratorSubscriptionPlan;
+use App\ModeratorSubscription;
+
 
 class ModeratorsLoginController extends Controller
 {
@@ -150,6 +153,23 @@ class ModeratorsLoginController extends Controller
                             ->join('moderators_permissions', 'moderators_permissions.id', '=', 'user_accesses.permissions_id')
                             ->where(['user_id' => $id])->get();
                         Session::put('userrolepermissiom ', $userrolepermissiom);
+
+                        $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $id)->count(); 
+                        if($ModeratorSubscription > 0 ){
+                            $total_uploads = 1000000000;
+                        }else{
+
+                            $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $id)->count();
+                            $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+                            // dd($ModeratorSubscription);
+                        }
+  
+                        Session::put('email_id', $user->email);
+
+                        Session::put('total_uploads', $total_uploads);
 
                         $settings = Setting::first();
 
@@ -234,7 +254,9 @@ class ModeratorsLoginController extends Controller
                     'email_id' => 'required|email|unique:moderators_users,email',
                     'password' => 'min:6',
                 ]);
-        
+
+        $enable_moderator_payment = SiteTheme::first()->pluck('enable_moderator_payment')->first();
+        // dd($enable_moderator_payment);
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
 
@@ -337,6 +359,9 @@ class ModeratorsLoginController extends Controller
                 $userrolepermissiom->save();
             }
 
+            $request->session()->put('email_id', $request->email_id);
+            $email = $request->session()->get('email_id');
+
                     // Note: While CPP Signup Email - Template for CPP registered user and Admin
             try
             {
@@ -414,9 +439,14 @@ class ModeratorsLoginController extends Controller
             //  function($message)  use ($request) {
             //       $message->to($request->email_id, $request->username)->subject('Verify your email address');
             //    });
+            if($enable_moderator_payment == 1){
 
-            return redirect('/cpp/login')
-            ->with('message', 'You have successfully registered. Please login If You Approved below.');
+                return redirect('/cpp-subscriptions-plans')
+                ->with('message', 'You have successfully registered. Please Choose Plan to Subscribe.');
+            }else{
+                return redirect('/cpp/login')
+                ->with('message', 'You have successfully registered. Please login If You Approved below.');
+            }
         }
         else
         {

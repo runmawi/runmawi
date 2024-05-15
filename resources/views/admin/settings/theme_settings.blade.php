@@ -248,6 +248,24 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div> <br>
 
+                    <div class="row"> 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
+                            <div class="col-sm-6">
+                            <label>{{ ucfirst(trans('Sign up - CPP Title')) }}</label>
+                            <input type="text" placeholder="CPP Signup Title" name="signup_cpp_title" class="form-control signup_cpp_title" id="signup_cpp_title" value="@if(!empty($settings->signup_cpp_title)){{ $settings->signup_cpp_title }}@endif">
+                            </div>
+                       @endif 
+
+                                    {{-- Sign up - Channel Title  --}}
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
+                            <div class="col-sm-6">
+                                <label>{{ ucfirst(trans('Sign up - Channel Title')) }}</label>
+                                <input type="text" placeholder="Channel Signup Title" name="signup_channel_title" class="form-control signup_channel_title" id="signup_channel_title" value="@if(!empty($settings->signup_channel_title)){{ $settings->signup_channel_title }}@endif">
+                            </div>
+                       @endif 
+
+                    </div><br>
+
                   {{-- Style sheet  --}}
 
                 <div>
@@ -581,7 +599,34 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     @endif 
+                    <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Moderator Monetization')) }} </label>
 
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_moderator_Monetization"  type="checkbox" @if( $settings->enable_moderator_Monetization == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Channel Monetization')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_Monetization"  type="checkbox" @if( $settings->enable_channel_Monetization == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
                     </div>
                     </div>
 

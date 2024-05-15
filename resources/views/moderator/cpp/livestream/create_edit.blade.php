@@ -142,7 +142,7 @@
 
 
 		
-                    <div class="row mt-3">
+                    				<div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="m-0">Video Image Cover</label>
                                             <p class="p1">Select the video image(1080x1920 px or 9:16 ratio):</p>
@@ -150,35 +150,30 @@
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
                                             </div>
-                                       
 
-                                        <div class="">
-                                            <div class="panel-body">
-                                                @if(!empty($video->image))
-                                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
-                                                @endif
-                                            </div>
-                                        </div>
+											<div class="">
+												<div class="panel-body">
+													@if(!empty($video->image))
+														<img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
+													@endif
+												</div>
+											</div>
                                   
-                   </div>
-                    <div class="col-md-6">
-                 
-                                      
+                   						</div>
+                    					<div class="col-md-6">
                                             <label class="m-0">Player Image Cover</label>
                                             <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
-
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                                             </div>
-                                       
-
-                                        <div class="">
-                                            <div class="panel-body">
-                                                @if(!empty($video->player_image))
-                                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200" />
-                                                @endif
-                                            </div>
-                                        </div>
+											<div class="">
+												<div class="panel-body">
+													@if(!empty($video->player_image))
+														<img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200" />
+													@endif
+												</div>
+											</div>
+                                    	</div>
                                     </div>
                  
              
@@ -188,106 +183,130 @@
 
 			<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Video Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-					<select class="form-control url_type" id="url_type" name="url_type"  >
-						<option value="" >Choose URL Format</option>
-						<option value="mp4" > MP4/M3U8 URL </option>
-						<option value="embed" >Embed URL</option>
-						<option value="live_stream_video">Live Stream Video</option>
+					<div class="panel-body" style="display: block;"> 
+						<select class="form-control url_type" id="url_type" name="url_type"  >
+							<option value="" >Choose URL Format</option>
+							<option value="mp4" > MP4/M3U8 URL </option>
+							<option value="embed" >Embed URL</option>
+							<option value="live_stream_video">Live Stream Video</option>
 
-						@foreach($Rtmp_urls as $key => $urls)
-							@php     $number = $key+1;  @endphp
-							 <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "RTMP Streaming Video"." ".$number }} </option>
-					  	@endforeach 
-					</select>
+							@foreach($Rtmp_urls as $key => $urls)
+								@php     $number = $key+1;  @endphp
+								<option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "RTMP Streaming Video"." ".$number }} </option>
+							@endforeach 
+						</select>
 					
-					<input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
+						<input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
 
-                    <div class="new-video-upload mt-2" id ="mp4_code">
-						<label for="embed_code"><label>Live Stream URL</label></label>
-						<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
-					</div>
+						<div class="new-video-upload mt-2" id ="mp4_code">
+							<label for="embed_code"><label>Live Stream URL</label></label>
+							<input type="text" name="mp4_url"  class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif">
+						</div>
 
-					<div class="new-video-upload mt-2" id="embed_code">
-						<label for="embed_code"><label>Live Embed URL</label></label>
-						<input type="text" name="embed_url"  class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif">
-					</div>
+						<div class="new-video-upload mt-2" id="embed_code">
+							<label for="embed_code"><label>Live Embed URL</label></label>
+							<input type="text" name="embed_url"  class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif">
+						</div>
 
-					<div class="new-video-upload mt-2" id="live_stream_video">
-						<label for=""><label>Live Stream Video</label></label>
-						<input type="file" multiple="true" class="form-group" name="live_stream_video"  />
-					</div>
+						<div class="new-video-upload mt-2" id="live_stream_video">
+							<label for=""><label>Live Stream Video</label></label>
+							<input type="file" multiple="true" class="form-group" name="live_stream_video"  />
+						</div>
 
-					@if(!empty($video->mp4_url) )
-					<video width="200" height="200" controls>
-					<source src="{{ $video->mp4_url }}" type="video/mp4">
-					</video>
-					@endif
+						@if(!empty($video->mp4_url) )
+							<video width="200" height="200" controls>
+								<source src="{{ $video->mp4_url }}" type="video/mp4">
+							</video>
+						@endif
 					
+					</div> 
+				</div>
+
+				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+					<div class="panel-title">
+						<label>Video Details, Links, and Info</label>
+					</div> 
+					<div class="panel-options"> 
+						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+					</div>
 				</div> 
-			</div>
-			
-
-
-
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Video Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block; padding:0px;">
 					<textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
 				</div> 
 			</div>
 
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+			<div class="panel panel-primary mt-3" data-collapsed="0"> 
+				<div class="panel-heading"> 
+					<div class="panel-title">
+						<label>Short Description</label>
+					</div> 
+					<div class="panel-options"> 
+						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+					</div>
+				</div> 
 				<div class="panel-body" style="display: block;"> 
 					<p class="p1">Add a short description of the video below:</p> 
 					<textarea class="form-control" name="description" id="description">@if(!empty($video->description)){{ htmlspecialchars($video->description) }}@endif</textarea>
 				</div> 
 			</div>
 			<div class="row mt-3"> 
-			<div class="col-sm-6">
-			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-					<p class="p1">Select a Video Category Below:</p>
-					<!-- <select class="form-control" id="video_category_id" name="video_category_id">
-						@foreach($video_categories as $category)
-							<option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
-						@endforeach
-					</select> -->
-				<select name="video_category_id[]" id="video_category_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-					@foreach($video_categories as $category)
-					@if(in_array($category->id, $category_id))
-					<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
-					@else
-					<option value="{{ $category->id }}">{{ $category->name }}</option>
-					@endif 
-					@endforeach
-				</select>
-				</div> 
-			</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title"><label>Video Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body" style="display: block;"> 
-                    <p class="p1">IMDb Ratings 10 out of 10</p>
-					<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
-					<select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
-					<option value="1" >1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8">8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
-				</select>
-				</div> 
-			</div>
-			</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title">
+								<label>Category</label>
+							</div> 
+							<div class="panel-options"> 
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+							</div>
+						</div> 
+						<div class="panel-body" style="display: block;"> 
+							<p class="p1">Select a Video Category Below:</p>
+							<!-- <select class="form-control" id="video_category_id" name="video_category_id">
+								@foreach($video_categories as $category)
+									<option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
+								@endforeach
+							</select> -->
+							<select name="video_category_id[]" id="video_category_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+								@foreach($video_categories as $category)
+									@if(in_array($category->id, $category_id))
+										<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+									@else
+										<option value="{{ $category->id }}">{{ $category->name }}</option>
+									@endif 
+								@endforeach
+							</select>
+						</div> 
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title">
+								<label>Video Ratings</label>
+							</div> 
+							<div class="panel-options"> 
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+							</div>
+						</div> 
+						<div class="panel-body" style="display: block;"> 
+							<p class="p1">IMDb Ratings 10 out of 10</p>
+							<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+							<select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+								<option value="1" >1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div> 
+					</div>
+				</div>
 			</div>
 
 			<div class="row mt-3"> 
@@ -328,24 +347,36 @@
 			
 			<div class="clear"></div>
 			<div class="row mt-3"> 
-			<div class="col-sm-6">
-		
-			<div class="col-sm-6"> 
-				<div class="panel panel-primary" data-collapsed="0"> 
-					<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="col-sm-6"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title">
+								<label> Duration</label>
+							</div> 
+							<div class="panel-options"> 
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+							</div>
+						</div> 
 						<div class="panel-body"> 
 							<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
 						</div> 
 					</div>
 				</div>
-			</div>
 
-			<div class="col-sm-6"> 
-				<div class="panel panel-primary" data-collapsed="0"> 
-					<div class="panel-heading"> <div class="panel-title"><label> Search Tag </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="col-sm-6"> 
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title">
+								<label> Search Tag </label>
+							</div> 
+							<div class="panel-options"> 
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+							</div>
+						</div> 
 						<div class="panel-body"> 
-							<input type="text" id="tag-input1" name="searchtags">						</div> 
+							<input type="text" id="tag-input1" name="searchtags">						
+						</div> 
 					</div>
 				</div>
 			</div>

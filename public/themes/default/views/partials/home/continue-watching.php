@@ -3,7 +3,9 @@
    $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
    <h2 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>"><?php echo (__('Continue watching')); ?></a></h2>
-   <h2 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>"> <?php echo (__('View All')); ?></a> </h2>
+   <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+      <h2 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>"> <?php echo (__('View All')); ?></a> </h2>
+   <?php endif; ?>
 </div>
 <div class="favorites-contens">
    <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -199,10 +201,3 @@
      });
    
 </script>
-
- <style>
-   h2.main-title {
-      font-size: 1.3em;
-      font-weight: 500;
-   }
- </style>

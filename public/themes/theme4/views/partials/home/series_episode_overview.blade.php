@@ -28,9 +28,9 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $item['season'] = App\SeriesSeason::where('series_id', $item->id)->limit(15)->get();
 
-        $item['Episode_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Traler_details'] = $item->theme4_Series_depends_episodes;
+        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
 
         $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->limit(15)->get();
 
@@ -56,12 +56,12 @@ $data = App\Series::where('active', '1')->limit(15)
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$Episode_details->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $Episode_details->image_url }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $Episode_details->image_url }}" class="img-fluid w-100" alt="Videos">
                                             @endif
                                         </div>
                                     </a>
@@ -70,7 +70,7 @@ $data = App\Series::where('active', '1')->limit(15)
                         </ul>
                         
 
-                        <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending theme4-slider">
+                        <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending theme4-slider" style="display:none;">
                                 @foreach ($Episode_details->Episode_details as $key => $item)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -78,7 +78,7 @@ $data = App\Series::where('active', '1')->limit(15)
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -96,12 +96,12 @@ $data = App\Series::where('active', '1')->limit(15)
 
                                                             <div class="dropdown_thumbnail">
                                                                 @if ( $multiple_compress_image == 1)
-                                                                    <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() }}"
+                                                                    <img  alt="latest_series" src="{{$item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url }}"
                                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$item->responsive_player_image.' 860w') }},
                                                                         {{ URL::to('public/uploads/Tabletimages/'.$item->responsive_player_image.' 640w') }},
                                                                         {{ URL::to('public/uploads/mobileimages/'.$item->responsive_player_image.' 420w') }}" >
                                                                 @else
-                                                                    <img  src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                    <img  src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : $default_vertical_image_url }}" alt="Videos">
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -131,9 +131,9 @@ $data = App\Series::where('active', '1')->limit(15)
     $(document).ready(function() {
 
         $('.trending').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.trending-nav',
@@ -141,12 +141,12 @@ $data = App\Series::where('active', '1')->limit(15)
 
         $('.trending-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.trending',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

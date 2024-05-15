@@ -90,15 +90,22 @@
                               
                            {{-- continue watching videos --}}
       @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
-         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ])->content() !!}
+         {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', [
+            'data' => $cnt_watching, 'order_settings_list' => $order_settings_list ,
+            'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ,
+            'default_horizontal_image_url' => $default_horizontal_image_url , 'default_vertical_image_url' => $default_vertical_image_url 
+             ])->content() !!}
       @endif
       
       @partial('home_sections')
 
    </div>
 
-   <div class="auto-load text-center" style="display: none" >
-      <img src="{{ URL::to('public/Thumbnai_images/Loading_1.gif') }}" width="35px" height="35px">
+   <div class="auto-load text-center d-flex align-items-center justify-content-center" style="display: none; width:35px; height:35px;margin-right:auto;margin-left:auto;" >
+
+      <!-- <video autoplay loop muted playsinline>
+         <source src="{{ URL::to('public/Thumbnai_images/Loading_1.webm') }}" type="video/webm" />
+      </video> -->
    </div>
 
             {{-- End Ads banners --}}
@@ -172,7 +179,7 @@
        height: 100%; 
       width: 37px;
       position: fixed;
-      z-index: 99;
+      z-index: 9;
       left: 0;
    }
    .rightnav {
@@ -238,21 +245,21 @@
                isFetching = true; 
                $.ajax({
                   url: page_url,
-                  beforeSend: function () {
-                     $('.auto-load').show();
-                  },
+                  // beforeSend: function () {
+                  //    $('.auto-load').show();
+                  // },
                   success: function (data) {
                      $("#home_sections").append(data.view);
                      $("#home_sections").attr('next-page-url', data.url);
                   },
-                  complete: function () {
-                     isFetching = false; 
-                     $('.auto-load').hide();
-                     $('.theme4-slider').hide();
-                  }
+                  // complete: function () {
+                  //    isFetching = false; 
+                  //    $('.theme4-slider').hide();
+                  //    $('.auto-load').hide();
+                  // }
                });
          }
-      }, 1000);
+      }, 500);
    });
 
 </script>

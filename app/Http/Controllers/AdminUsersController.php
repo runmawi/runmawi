@@ -4664,4 +4664,46 @@ class AdminUsersController extends Controller
        return redirect('/manage-devices');            
     }
 
+
+    
+    public function ActivationCode($id)
+
+    {
+        $activation_code = User::where('id',$id)->first()->pluck('activation_code');
+        $userdata = User::where('id',$id)->first();
+        $settings = Setting::first();
+                // verify email
+                try {
+                    \Mail::send('emails.verify', array(
+                        'activation_code' => $userdata->activation_code,
+                        'website_name' => $settings->website_name
+                    ) , function ($message) use ($userdata)
+                    {
+                        $message->to($userdata->email, $userdata->name)
+                            ->subject('Verify your email address');
+                    });
+                    
+                    $email_log      = 'Mail Sent Successfully from Verify';
+                    $email_template = "verify";
+                    $user_id = $userdata->id;
+    
+                    Email_sent_log($user_id,$email_log,$email_template);
+    
+                    // return redirect('/verify-request');
+    
+                } catch (\Throwable $th) {
+    
+                    $email_log      = $th->getMessage();
+                    $email_template = "verify";
+                    $user_id = $userdata->id;
+    
+                    Email_notsent_log($user_id,$email_log,$email_template);
+    
+                    // return redirect('/verify-request-sent');
+    
+                }
+
+       return Redirect::back()->with(array('message' => 'Successfully Sent Mail','note_type' => 'success'));
+    }
+
 }

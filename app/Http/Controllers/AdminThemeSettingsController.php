@@ -247,7 +247,15 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->enable_channel_payment       = !empty($data['enable_channel_payment']) ? '1' : '0';
 
         $theme_settings->enable_moderator_payment       = !empty($data['enable_moderator_payment']) ? '1' : '0';
+     
+        $theme_settings->enable_moderator_Monetization       = !empty($data['enable_moderator_Monetization']) ? '1' : '0';
 
+        $theme_settings->enable_channel_Monetization       = !empty($data['enable_channel_Monetization']) ? '1' : '0';
+
+        $theme_settings->signup_cpp_title = $request->signup_cpp_title ? $request->signup_cpp_title : null;
+        
+        $theme_settings->signup_channel_title = $request->signup_channel_title ? $request->signup_channel_title : null;
+        
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

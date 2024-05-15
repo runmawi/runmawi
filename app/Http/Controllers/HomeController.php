@@ -115,15 +115,16 @@ class HomeController extends Controller
         $Recomended = $this->HomeSetting;
         $ThumbnailSetting = ThumbnailSetting::first();
         $videos_expiry_date_status = videos_expiry_date_status();
+        $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
-        $default_vertical_image = default_vertical_image();
+        $current_timezone = current_timezone();
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
             return $value === '1' || $value === 1;  
         })->keys()->toArray(); 
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
 
         $check_Kidmode = 0;
@@ -265,25 +266,45 @@ class HomeController extends Controller
             
             $currency = CurrencySetting::first();
             
-            $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                        ->where('active', '=', '1')->latest();
-
-                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
-
-                        $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                        
-                        if(!$BlockLiveStream->isEmpty()){
-                            foreach($BlockLiveStream as $block_LiveStream){
-                                $blockLiveStreams[]=$block_LiveStream->live_id;
-                            }
-                        }else{
-                            $blockLiveStreams[]='';
-                        }
-                        $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams)->limit(15)->get();
-            } else{
-                $livetreams =$livetreams->limit(15)->get();
-            }
+            $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                            'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                    ->where('active', '1')
+                                    ->latest()
+                                    ->limit(15)
+                                    ->get();
+        
+            $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+                if ($livestream->publish_type === 'recurring_program') {
+            
+                    $Current_time = Carbon\Carbon::now($current_timezone);
+                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                    $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                    $midnight = $convert_time->copy()->startOfDay();
+            
+                    switch ($livestream->recurring_program) {
+                        case 'custom':
+                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                            break;
+                        case 'daily':
+                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'weekly':
+                            $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                            break;
+                        case 'monthly':
+                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        default:
+                            $recurring_program_Status = false;
+                            break;
+                    }
+            
+                    return $recurring_program_Status;
+                }
+                return true;
+            });
 
             $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
@@ -320,6 +341,7 @@ class HomeController extends Controller
                     ])
                     ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
                     ->orderBy('series_genre.order')
+                    ->limit(15)
                     ->get();
         
             $Series_based_on_category->each(function ($category) {
@@ -350,7 +372,7 @@ class HomeController extends Controller
                 'currency' => $currency,
                 'videos' => $latest_videos ,
                 'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')
+                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')->where('active', '=', '1')
                                     ->where('draft', '1')
                                     ->where('status', '1')
                                     ->where('banner', '1')
@@ -389,7 +411,7 @@ class HomeController extends Controller
                 'suggested_videos'    => $trending_videos,
                 'video_categories'    => $genre_video_display ,
                 'home_settings'       => $this->HomeSetting ,
-                'livetream'           => $livetreams,
+                'livetream'           => $livestreams,
                 'audios'              => $latest_audios ,
                 'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
                 'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
@@ -403,7 +425,7 @@ class HomeController extends Controller
                 'artist'                => Artist::all(),
                 'Series_based_on_Networks' => $Series_based_on_Networks ,
                 'Series_based_on_category' => $Series_based_on_category ,
-                'VideoSchedules'        => VideoSchedules::where('in_home',1)->get(),
+                'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                 'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
@@ -415,6 +437,8 @@ class HomeController extends Controller
                 'videos_expiry_date_status' => $videos_expiry_date_status,
                 'Series_Networks_Status' => Series_Networks_Status(),
                 'latest_episode'  => $latest_episode ,
+                'default_vertical_image_url' => $default_vertical_image_url,
+                'default_horizontal_image_url' => $default_horizontal_image_url,
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -949,27 +973,46 @@ class HomeController extends Controller
 
                     $currency = CurrencySetting::first();
                    
-                    $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                            ->where('active', '1')->latest();
-    
-                                            if($getfeching !=null && $getfeching->geofencing == 'ON'){
-
-                                                    $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                                                    
-                                                    if(!$BlockLiveStream->isEmpty()){
-                                                        foreach($BlockLiveStream as $block_LiveStream){
-                                                            $blockLiveStreams[]=$block_LiveStream->live_id;
-                                                        }
-                                                    }else{
-                                                        $blockLiveStreams[]='';
-                                                    }
-                                                    $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
-                                            }
-                                            
-                    $livetreams =$livetreams->limit(15)->get();
-
+                    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                                ->where('active', '1')
+                                                ->latest()
+                                                ->limit(15)
+                                                ->get();
+                                                
+                    $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+                        if ($livestream->publish_type === 'recurring_program') {
                     
+                            $Current_time = Carbon\Carbon::now($current_timezone);
+                            $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                            $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                            $midnight = $convert_time->copy()->startOfDay();
+                    
+                            switch ($livestream->recurring_program) {
+                                case 'custom':
+                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                                    break;
+                                case 'daily':
+                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                case 'weekly':
+                                    $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                                    break;
+                                case 'monthly':
+                                    $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                default:
+                                    $recurring_program_Status = false;
+                                    break;
+                            }
+                    
+                            return $recurring_program_Status;
+                        }
+                        return true;
+                    });
+
                     $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
                                         ->where('active', '1')->latest()->limit(15)->get();
 
@@ -989,7 +1032,7 @@ class HomeController extends Controller
                     
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                     
-                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
@@ -1022,7 +1065,7 @@ class HomeController extends Controller
                 
                             $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
                 
-                            $item['Series_depends_episodes'] = Series::find($item->id)->theme4_Series_depends_episodes
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
                                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                         return $item;
@@ -1039,7 +1082,7 @@ class HomeController extends Controller
                         'currency' => $currency,
                         'videos' => $latest_videos ,
                        
-                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description')
+                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type')
                                             ->where('active', '1')->where('draft', '1')
                                             ->where('status', '1')->where('banner', '1')
                                             ->latest()->limit(15)->get() ,
@@ -1076,7 +1119,7 @@ class HomeController extends Controller
                         'suggested_videos'      => $trending_videos,
                         'video_categories'      => $genre_video_display  ,
                         'home_settings'         => $this->HomeSetting ,
-                        'livetream'             => $livetreams ,
+                        'livetream'             => $livestreams ,
                         'audios'                => $latest_audios ,
                         'albums'                => AudioAlbums::latest()->limit(15)->get() ,
                         'countryName'            => $countryName,
@@ -1104,6 +1147,8 @@ class HomeController extends Controller
                         'videos_expiry_date_status' => $videos_expiry_date_status,
                         'Series_Networks_Status' => Series_Networks_Status(),
                         'latest_episode'  => $latest_episode ,
+                        'default_vertical_image_url' => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1127,9 +1172,11 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-
         $data = Session::all();
         $ThumbnailSetting = ThumbnailSetting::first();
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+        $current_timezone = current_timezone();
 
         $agent = new Agent();
         $settings = $this->settings;
@@ -1713,25 +1760,45 @@ class HomeController extends Controller
 
                 $currency = CurrencySetting::first();
 
-                $livetreams = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                ->where('active', '1')->orderBy('created_at', 'DESC');
-
-                        if($getfeching !=null && $getfeching->geofencing == 'ON'){
-
-                            $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                            
-                            if(!$BlockLiveStream->isEmpty()){
-                                foreach($BlockLiveStream as $block_LiveStream){
-                                    $blockLiveStreams[]=$block_LiveStream->live_id;
-                                }
-                            }else{
-                                $blockLiveStreams[]='';
-                            }
-                            $livetreams =   $livetreams->whereNotIn('id',$blockLiveStreams);
+                $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                    ->where('active', '1')
+                    ->latest()
+                    ->limit(15)
+                    ->get();
+                
+                $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+                    if ($livestream->publish_type === 'recurring_program') {
+                
+                        $Current_time = Carbon\Carbon::now($current_timezone);
+                        $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                        $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                        $midnight = $convert_time->copy()->startOfDay();
+                
+                        switch ($livestream->recurring_program) {
+                            case 'custom':
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                                break;
+                            case 'daily':
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'weekly':
+                                $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                                break;
+                            case 'monthly':
+                                $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            default:
+                                $recurring_program_Status = false;
+                                break;
                         }
-
-                $livetreams =$livetreams->limit(15)->get();
+                
+                        return $recurring_program_Status;
+                    }
+                    return true;
+                });
 
                 $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
@@ -1740,8 +1807,8 @@ class HomeController extends Controller
                 
                                 ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
                         
-                        $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                        $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                        $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                        $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
                 
                         $item['upload_on'] = Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
                 
@@ -1749,7 +1816,7 @@ class HomeController extends Controller
                 
                         $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                 ->map(function ($item) {
-                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                 return $item;
                                                             });
                 
@@ -1759,7 +1826,6 @@ class HomeController extends Controller
                     });
                     return $item;
                 });
-
                 
                 $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
                     ->with([
@@ -1769,6 +1835,7 @@ class HomeController extends Controller
                     ])
                     ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
                     ->orderBy('series_genre.order')
+                    ->limit(15)
                     ->get();
             
                 $Series_based_on_category->each(function ($category) {
@@ -1800,7 +1867,7 @@ class HomeController extends Controller
                     return $value === '1' || $value === 1;  
                 })->keys()->toArray(); 
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(2);
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
                 $data = array(
 
@@ -1813,7 +1880,7 @@ class HomeController extends Controller
                                     ->limit(15)->get() ,
 
                     'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')
                                         ->where('active', '1')
                                         ->where('draft', '1')->where('status', '1')->where('banner', '1')
                                         ->latest()->limit(15)->get() ,
@@ -1850,7 +1917,7 @@ class HomeController extends Controller
                     'suggested_videos'    => $trending_videos,
                     'video_categories'    => $genre_video_display ,
                     'home_settings'       => $this->HomeSetting ,
-                    'livetream'           => $livetreams,
+                    'livetream'           => $livestreams,
                     'audios'              => $latest_audios ,
                     'albums'              => AudioAlbums::latest()->limit(15) ->get() ,
                     'most_watch_user'        => !empty($most_watch_user) ? $most_watch_user : [],
@@ -1865,7 +1932,7 @@ class HomeController extends Controller
                     'ThumbnailSetting'     => $ThumbnailSetting,
                     'latest_series'        => $latest_series,
                     'artist'               => Artist::limit(15)->get(),
-                    'VideoSchedules'       => VideoSchedules::where('in_home',1)->get(),
+                    'VideoSchedules'       => VideoSchedules::where('in_home',1)->limit(15)->get(),
                     'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                     'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
                     'Series_based_on_Networks' => $Series_based_on_Networks ,
@@ -1878,7 +1945,9 @@ class HomeController extends Controller
                     'getfeching'      => $getfeching ,
                     'videos_expiry_date_status' => $videos_expiry_date_status,
                     'Series_Networks_Status' => Series_Networks_Status(),
-                    'latest_episode'  => $latest_episode ,
+                    'latest_episode'  => $latest_episode , 
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
                 );
                 
                 if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -1894,12 +1963,12 @@ class HomeController extends Controller
             }
         }
     }
-  
-        
+
     public function social()
     {
         return View::make('social');
     }
+    
     public function ViewStripe(Request $request)
     {
 
@@ -2004,7 +2073,7 @@ class HomeController extends Controller
                     'support_username' =>  ['required'],
                 ]);
             }
-            // dd(1);
+            
             $validatedData = $request->validate([
                 'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
             ]);
@@ -2021,7 +2090,6 @@ class HomeController extends Controller
                  ]);
         }
         
-        // dd( $request->get('dob'));
 
         $free_registration = FreeRegistration();
         $length = 10;
@@ -2854,7 +2922,7 @@ class HomeController extends Controller
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
             $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image', 'trailer','trailer_type')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
                                         ->where('banner', '1')->latest()
                                         ->get() ;
@@ -2887,7 +2955,6 @@ class HomeController extends Controller
         {
             if ($request->payment_method == "Stripe")
             {
-                // dd($request->payment_method);
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
@@ -3022,11 +3089,8 @@ class HomeController extends Controller
                     "payment_type" => $plan_details->payment_type
                 );
                 return Theme::view('register.upgrade.stripe', ['intent' => $user->createSetupIntent() ], $response);
-            }
-            // dd($subscriptions->id);
-            
+            }   
         }
-
     }
 
     public function verifyOtp(Request $request)
@@ -4660,12 +4724,12 @@ public function uploadExcel(Request $request)
 
     public function EPG_date_filter(Request $request)
     {
-        $theme = Theme::uses($this->Theme);
+        $theme = Theme::uses($this->HomeSetting->theme_choosen);
         
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  
 
-        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->get()->map(function ($item )  use( $request) {
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $request) {
 
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
 
@@ -4679,7 +4743,7 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->orderBy('start_time')->get()->map(function ($item) {
+                                                ->orderBy('start_time')->limit(15)->get()->map(function ($item) {
 
                                                     $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
                                                     $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');

@@ -20,14 +20,14 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider my-playlist" class="list-inline p-0 m-0 align-items-center my-playlist theme4-slider">
+                            <ul id="trending-slider my-playlist" class="list-inline p-0 m-0 align-items-center my-playlist theme4-slider" style="display:none;">
                                 @foreach ($data as $My_Playlist)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -35,7 +35,7 @@
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -49,7 +49,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" alt="Videos">
+                                                                    <img  src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : $default_vertical_image_url }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -82,9 +82,9 @@
     $(document).ready(function() {
 
         $('.my-playlist').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.my-playlist-nav',
@@ -92,12 +92,12 @@
 
         $('.my-playlist-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.my-playlist',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

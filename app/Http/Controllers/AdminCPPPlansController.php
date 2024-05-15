@@ -206,13 +206,11 @@ class AdminCPPPlansController extends Controller
         ]);
 
         $devices = $request->devices;
-
         if (!empty($request->plan_id)) {
             
             foreach ($request->plan_id as $key => $value) {
                 
-                foreach ($request->type as $typekey => $types) {
-                    
+                foreach ($request->type as $typekey => $types) {                    
                     if ($typekey == $key) {
                         $new_plan = new ModeratorSubscriptionPlan();
                         $new_plan->type = $types;
@@ -220,6 +218,8 @@ class AdminCPPPlansController extends Controller
                         $new_plan->payment_type = $request->payment_type;
                         $new_plan->price = $request->price;
                         $new_plan->plan_id = $value;
+                        $new_plan->recurring_subscription_plan_id = $value;
+                        $new_plan->one_time_subscription_plan_id = $request->one_time_subscription_plan_id[$key];
                         $new_plan->billing_interval = $request->billing_interval;
                         $new_plan->billing_type = $request->billing_type;
                         $new_plan->days = $request->days;
@@ -233,6 +233,10 @@ class AdminCPPPlansController extends Controller
                         $new_plan->plan_content = $request->plan_content;
                         $new_plan->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;
                         $new_plan->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
+                        $new_plan->upload_video_limit = $request->upload_video_limit;
+                        $new_plan->upload_live_limit = $request->upload_live_limit;
+                        $new_plan->upload_episode_limit = $request->upload_episode_limit;
+                        $new_plan->upload_audio_limit = $request->upload_audio_limit;
                         // $new_plan->andriod_paystack_url = $request->andriod_paystack_url;
                         $new_plan->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
                         $new_plan->save();
@@ -288,9 +292,19 @@ class AdminCPPPlansController extends Controller
             $plans->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
             $plans->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;
             $plans->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
+            $plans->upload_video_limit = $request->upload_video_limit;
+            $plans->upload_live_limit = $request->upload_live_limit;
+            $plans->upload_episode_limit = $request->upload_episode_limit;
+            $plans->upload_audio_limit = $request->upload_audio_limit;
             foreach ($input['plan_id'] as $key => $values) {
                 if ($key == $value) {
                     $plans->plan_id = $values;
+                    $plans->recurring_subscription_plan_id = $values;
+                }
+            }
+            foreach ($input['one_time_subscription_plan_id'] as $one_timekey => $one_timevalues) {
+                if ($one_timekey == $value) {
+                    $plans->one_time_subscription_plan_id = $one_timevalues;
                 }
             }
             $plans->save();

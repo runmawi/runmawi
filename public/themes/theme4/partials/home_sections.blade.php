@@ -3,7 +3,9 @@
      $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
                               'multiple_compress_image' => $multiple_compress_image, 
                               'videos_expiry_date_status' => $videos_expiry_date_status,
-                              'getfeching' => $getfeching
+                              'getfeching' => $getfeching,
+                              'default_vertical_image_url' => $default_vertical_image_url,
+                              'default_horizontal_image_url' => $default_horizontal_image_url,
                          ];
 @endphp
 
@@ -49,6 +51,7 @@
           <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->limit(15)->get(); ?>
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', array_merge($homepage_array_data, ['data' => $ModeratorsUser]) )->content() !!}
      @endif
+
      
      @if(  $item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
      
@@ -99,38 +102,37 @@
      @if( !Auth::guest() &&  $item->video_name == 'my_play_list' && $home_settings->my_playlist == 1 ) {{-- MY PlayList --}}
      
           @php $MyPlaylist = !Auth::guest() ? App\MyPlaylist::where('user_id',Auth::user()->id)->limit(15)->get() : []; @endphp
-          
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/my-playlist', [ 'data' => $MyPlaylist ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/my-playlist', array_merge($homepage_array_data , ['data' => $MyPlaylist ]))->content() !!}
      @endif
      
      @if(  $item->video_name == 'video_play_list' && $home_settings->video_playlist == 1 ) {{-- Video PlayList  --}}
           <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/playlist-videos', [ 'data' => $AdminVideoPlaylist ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/playlist-videos', array_merge($homepage_array_data , ['data' => $AdminVideoPlaylist ]))->content() !!}
      @endif
      
      
      @if(  $item->video_name == 'video_schedule' && $home_settings->video_schedule == 1 ) {{-- schedule  --}}
           <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/schedule', [ 'data' => $VideoSchedules ,'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/schedule', array_merge($homepage_array_data , ['data' => $VideoSchedules ]))->content() !!}
      @endif
      
      @if(  $item->video_name == 'Recommendation')  {{-- Recommendation --}}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Top_videos', ['data' => $top_most_watched, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_country', ['data' => $Most_watched_country, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_user', ['data' => $most_watch_user, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Top_videos', array_merge($homepage_array_data , ['data' => $top_most_watched ]))->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_country', array_merge($homepage_array_data , ['data' => $Most_watched_country ]))->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/most_watched_user', array_merge($homepage_array_data , ['data' => $most_watch_user ]))->content() !!}
      @endif
      
      @if(  $item->video_name == 'series_episode_overview' && $home_settings->series_episode_overview == 1 )    {{--  series_episode_overview  --}}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/series_episode_overview', ['data' => $latest_video, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/series_episode_overview', array_merge($homepage_array_data , ['data' => $latest_video ]))->content() !!}
      @endif
      
      @if(  $item->video_name == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
           <?php $video_details = App\Video::latest()->first(); ?>
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', array_merge($homepage_array_data , ['data' => $video_details ]))->content() !!}
      @endif
      
      @if( $Series_Networks_Status == 1 &&  $item->video_name == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', ['order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
      @endif
      
      @if(  $Series_Networks_Status == 1 &&   $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
@@ -138,11 +140,11 @@
      @endif
      
      @if(   $item->video_name == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos',($homepage_array_data) )->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', $homepage_array_data )->content() !!}
      @endif
      
      @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )     
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', [  'order_settings_list' => $order_settings_list , 'multiple_compress_image' => $multiple_compress_image ])->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', $homepage_array_data)->content() !!}
      @endif
 
 @empty

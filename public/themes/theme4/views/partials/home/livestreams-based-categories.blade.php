@@ -59,11 +59,11 @@ $data->each(function ($category) {
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
+                                                    <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="livestream_videos" width="300" height="200">
                                             </div>
                                             
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                                <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
+                                                <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                             @endif
                                         </a>
                                     </li>
@@ -72,15 +72,15 @@ $data->each(function ($category) {
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'theme4-slider category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" style="display:none;">
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li class="slick-slide">
-                                        <div class="tranding-block position-relative home-page-bg-img" >
+                                        <div class="tranding-block position-relative home-page-bg-img trending-thumbnail-image">
                                             <button class="drp-close">×</button>
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -113,7 +113,7 @@ $data->each(function ($category) {
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="livestream_videos">
+                                                                    <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="livestream_videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -138,7 +138,7 @@ $data->each(function ($category) {
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="modal">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -193,12 +193,12 @@ $data->each(function ($category) {
 
         $('.category-live-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.category-live-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

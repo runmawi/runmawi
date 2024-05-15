@@ -20,7 +20,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $series->image_url }}" class="img-fluid" alt="based-network">
+                                                <img src="{{ $series->image_url }}" class="img-fluid lazy w-100" alt="based-network" width="300" height="200">
                                             </div>
                                         </a>
                                     </li>
@@ -34,7 +34,7 @@
                                             <button class="drp-close">×</button>
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -58,7 +58,7 @@
                                                                         <li  class="slick-slide">
                                                                             <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
                                                                                     <div class="controls">
                                                                                         
                                                                                         <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }} ">
@@ -123,7 +123,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
@@ -172,9 +172,9 @@
     $(document).ready(function() {
 
         $('.series-networks-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-networks-videos-slider-nav',
@@ -182,12 +182,12 @@
 
         $('.series-networks-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -228,7 +228,9 @@
                 infinite: false,
                 speed: 300,
                 slidesToShow: 6,
-                slidesToScroll: 4,
+                slidesToScroll: 6,
+                prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+                nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             });
         });
 

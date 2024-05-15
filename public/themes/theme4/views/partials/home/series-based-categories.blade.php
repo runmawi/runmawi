@@ -19,21 +19,21 @@
                                     <li class="slick-slide">
                                         <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                    <img src="{{ $series->image_url }}" class="img-fluid" alt="Videos">
+                                                <img src="{{ $series->image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
                                             </div>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'theme4-slider series-genre-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider series-genre-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" style="display:none;">
                                 @foreach ($series_genre->category_series as $series_genre_key => $series )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -120,7 +120,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ( $multiple_compress_image == 1)
-                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : default_horizontal_image_url() }}"
+                                                    <img  alt="latest_series" src="{{$series->player_image ?  URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                         {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
                                                         {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" >
@@ -169,9 +169,9 @@
     $(document).ready(function() {
 
         $('.series-genre-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-genre-videos-slider-nav',
@@ -179,12 +179,12 @@
 
         $('.series-genre-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-genre-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

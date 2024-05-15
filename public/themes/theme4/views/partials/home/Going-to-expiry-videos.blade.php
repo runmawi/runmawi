@@ -25,9 +25,9 @@
         }
 
         $data = $data->latest()->limit(15)->get()->map(function ($item) {
-            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  $default_vertical_image_url ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  $default_horizontal_image_url ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  $default_horizontal_image_url ;
             $item['source_type']        = "Videos" ;
             return $item;
         });
@@ -53,7 +53,7 @@
                                 <li class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
+                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="expiry_videos">
                                             <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span>
                                         </div>
                                     </a>
@@ -61,7 +61,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider theme4-slider">
+                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $Going_to_expiry_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -69,7 +69,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
@@ -95,7 +95,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="">
+                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="expiry_videos">
+                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -162,9 +162,9 @@
     $(document).ready(function() {
 
         $('.Going_to_expiry_videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.Going_to_expiry_videos-slider-nav',
@@ -172,12 +172,12 @@
 
         $('.Going_to_expiry_videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.Going_to_expiry_videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

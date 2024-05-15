@@ -95,15 +95,15 @@
 </style>
    
 @php    
-    $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url) {
                 
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
                 
-                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
                 
-                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
-                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->get()->map(function ($item) {
+                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->limit(15)->get()->map(function ($item) {
 
                                                         $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
 
@@ -116,13 +116,13 @@
                                                     });
 
                                                     
-                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->limit(15)->get()->map(function ($item) {
                                                                 $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                                 return $item;
                                                             });
                                                     
                 $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::today()->format('n-j-Y') )
-                                                                            ->get()->map(function ($item) {
+                                                                    ->limit(15)->get()->map(function ($item) {
 
                                                                                 $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
                                                                                     
@@ -160,12 +160,12 @@
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : default_vertical_image_url() }}"
+                                                <img class="img-fluid position-relative w-100" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative" alt="epg_channel_data" width="300" height="200">
+                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative w-100" alt="epg_channel_data" width="300" height="200">
                                             @endif 
 
                                             @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)
@@ -177,7 +177,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider">
+                        <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $epg_channel_data )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -185,7 +185,7 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
@@ -203,7 +203,7 @@
                                                                 <ul>
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
                                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->TimeZone->time_zone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
-                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="70px" style="position: static !important ; margin:0% !important"></p>
+                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
                                                                 </ul>
 
                                                             </div>
@@ -350,9 +350,9 @@
     $(document).ready(function() {
 
         $('.epg-channel-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.epg-channel-slider-nav',
@@ -360,12 +360,12 @@
 
         $('.epg-channel-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.epg-channel-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

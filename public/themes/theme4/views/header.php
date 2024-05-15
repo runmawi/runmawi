@@ -207,7 +207,8 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/themes/theme4/views/img/DOWNLOAD-TAPP-TODAY-new-1536x58.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -249,8 +250,8 @@
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
-      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
    <!-- Remixicon -->
       <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
@@ -261,9 +262,9 @@
     <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script>
+    <script src="public\themes\theme4\assets\js\jquery-3.5.1.min.js" async></script>
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {
@@ -883,7 +884,7 @@ header#main-header.menu-sticky{
    }
    ul.top-colps li.menu-item a{
       padding:10px 10px !important;
-      font-size:10px !important;
+      /* font-size:10px !important; */
    }
    ul.top-colps{
       align-items:center;
@@ -1003,7 +1004,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
+                        <img class="img-fluid logo lazy" loading="lazy" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?> width="1536" height="58" style="width:1397px;height:53px;" /> 
                      </div>
                   <?php endif ;?>
 
@@ -1018,6 +1019,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Side Position  -->
                               <?php if($theme->header_side_position == 1): ?>
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                              <?php endif ;?>
+
+                              <?php if($theme->header_top_position == 1): ?>
+                                 <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
@@ -2152,8 +2157,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    <script>
 
       $(document).ready(function() {
+         console.log($(".dropdown-toggle")); 
          $(".dropdown-toggle").dropdown();
       });
+
 
       $(document).ready(function() {
             var currentdate = "<?=  $currentdate ?>";
@@ -2176,7 +2183,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
         
    </script>
 
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+   <!-- <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script> -->
 
    <script>
 
@@ -2396,4 +2403,10 @@ window.onload = function () {
             location.reload(true);
         }
     });
+</script>
+<script>
+  function toggleMenu() {
+    var menu = document.querySelector('.top-colps');
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+  }
 </script>
