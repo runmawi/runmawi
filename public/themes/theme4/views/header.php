@@ -823,7 +823,7 @@ header#main-header.menu-sticky{
 /* ============ desktop view ============ */
 @media(min-width: 991px) {
       .offcanvas-collapse{
-         top:59px !important;
+         top:89px !important;
       }
       header .navbar-collapse .offcanvas-collapse ul.navbar-nav{
         gap:10px;
@@ -903,6 +903,7 @@ header#main-header.menu-sticky{
       top:100%;
       left:59px;
    }
+   header .navbar ul.navbar-nav{display: none;}
 }
 @media (min-width:770px){
    ul.dropdown-menu.primary_menu.show{
@@ -936,11 +937,11 @@ header#main-header.menu-sticky{
     padding-left:6px;
 }
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
    ul.navbar-nav.top-colps {
     display:none !important;
 }
-}
+} */
 
 @media (min-width:992px){
    .mob_res{
@@ -961,7 +962,7 @@ body.dark-theme .offcanvas{
     box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
 }
 header .navbar ul.navbar-nav {
-    display: flex;
+    /* display: flex; */
     text-align: left;
     flex-direction: row;
 }
@@ -1024,7 +1025,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                               <?php endif ;?>
 
                               <?php if($theme->header_top_position == 1): ?>
-                                 <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle" data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu" onclick="toggleNavbarFlex()">
+                                    <i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i>
+                                 </button>
+                                 <!-- <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button> -->
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
@@ -1035,7 +1039,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
 
-                                    <ul class="navbar-nav top-colps">
+                                    <ul id="navbarList" class="navbar-nav top-colps">
 
                                        <?php  
 
@@ -1340,6 +1344,93 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php  } 
                                           } ?>
+                                          <ul class="d-flex justify-content-around p-0 mt-3 mob_res-top_position">
+                                             <?php if( Auth::guest() ) : ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Signin</h6>
+                                                         </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Signup</h6>
+                                                         </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/admin') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Admin</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Manage Profile</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Manage Profile</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                             <?php endif; ?>
+
+
+                                          </ul>
                                     </ul>
 
                                  <?php endif;
@@ -2407,8 +2498,13 @@ window.onload = function () {
     });
 </script>
 <script>
-  function toggleMenu() {
-    var menu = document.querySelector('.top-colps');
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-  }
+      function toggleNavbarFlex() {
+      var navbarList = document.getElementById('navbarList');
+      navbarList.classList.toggle('navbar-list-flex');
+      }
 </script>
+<style>
+   .navbar-list-flex {
+      display: flex !important;
+   }
+</style>
