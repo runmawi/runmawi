@@ -24281,7 +24281,7 @@ public function TV_login(Request $request)
         // Only for Play Store Testing 
         if( $request->mobile_number == "9876543210"){
 
-          $user = User::where('mobile',$request->mobile_number)->first()->update([
+          $user = User::where('mobile',$request->mobile)->first()->update([
             "otp" => "1234",
             "password" => Hash::make("1234"),
           ]);
