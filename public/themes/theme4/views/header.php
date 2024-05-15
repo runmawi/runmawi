@@ -1344,7 +1344,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php  } 
                                           } ?>
-                                          <ul class="d-flex justify-content-around p-0 mt-3 mob_res-top_position">
+                                          <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
                                              <?php if( Auth::guest() ) : ?>
                                                 <li class="nav-item nav-icon btn">
                                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
