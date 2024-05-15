@@ -1030,6 +1030,7 @@ class ApiAuthController extends Controller
       'password' => $request->get('password')
     );
 
+
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
 
       LoggedDevice::where('user_id', '=', Auth::user()->id)->delete();
@@ -24279,6 +24280,11 @@ public function TV_login(Request $request)
 
         // Only for Play Store Testing 
         if( $request->mobile_number == "8520903675"){
+
+          $user = User::where('user_id',$request->user_id)->where('mobile',$request->mobile_number)->first()->update([
+            "otp" => "1234",
+            "password" => Hash::make("1234"),
+          ]);
 
           return response()->json( [
             'status'    => 'true',
