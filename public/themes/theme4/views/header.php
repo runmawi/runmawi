@@ -1350,7 +1350,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                       <div class="media align-items-center">
                                                          <div class="media-body">
-                                                            <h6 class="mb-0 ">Signin</h6>
+                                                            <h6 class="mb-0 ">Sign In</h6>
                                                          </div>
                                                       </div>
                                                    </a>
@@ -1360,7 +1360,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                       <div class="media align-items-center">
                                                          <div class="media-body">
-                                                            <h6 class="mb-0 ">Signup</h6>
+                                                            <h6 class="mb-0 ">Sign Up</h6>
                                                          </div>
                                                       </div>
                                                    </a>
@@ -1775,7 +1775,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                          <div class="media align-items-center">
                                                             <div class="media-body">
-                                                               <h6 class="mb-0 ">Signin</h6>
+                                                               <h6 class="mb-0 ">Sign In</h6>
                                                             </div>
                                                          </div>
                                                       </a>
@@ -1785,7 +1785,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                          <div class="media align-items-center">
                                                             <div class="media-body">
-                                                               <h6 class="mb-0 ">Signup</h6>
+                                                               <h6 class="mb-0 ">Sign Up</h6>
                                                             </div>
                                                          </div>
                                                       </a>
@@ -2015,7 +2015,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
                                                                   <div class="media-body">
-                                                                     <h6 class="mb-0 ">Signin</h6>
+                                                                     <h6 class="mb-0 ">Sign In</h6>
                                                                   </div>
                                                                </div>
                                                             </a>
@@ -2026,7 +2026,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
                                                                   <div class="media-body">
-                                                                     <h6 class="mb-0 ">Signup</h6>
+                                                                     <h6 class="mb-0 ">Sign Up</h6>
                                                                   </div>
                                                                </div>
                                                             </a>
