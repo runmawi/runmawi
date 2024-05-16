@@ -270,7 +270,8 @@ class HomeController extends Controller
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                    ->where('active', '1')
+                                    ->where('active', 1)
+                                    ->where('status', 1)
                                     ->latest()
                                     ->limit(15)
                                     ->get();
@@ -977,7 +978,8 @@ class HomeController extends Controller
                                                     'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                                     'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                                     'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                                ->where('active', '1')
+                                                ->where('active', 1)
+                                                ->where('status', 1)
                                                 ->latest()
                                                 ->limit(15)
                                                 ->get();
@@ -1765,6 +1767,7 @@ class HomeController extends Controller
                     'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                     'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                     ->where('active', '1')
+                    ->where('status', 1)
                     ->latest()
                     ->limit(15)
                     ->get();
