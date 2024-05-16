@@ -608,7 +608,7 @@
                                 </div>
                                 <div class="d-flex justify-content-center" style="margin-right:auto;margin-left:auto;">
                                     <a class="btn bd  text-white mt-3" href="{{ $redirect_url }}">
-                                        <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
+                                        <span> <i class="ri-home-4-line"></i></span>  {{ __('Skip') }}
                                     </a>
                                 </div>
                                 <input type="hidden" id="plan_id" name="plan_id" >
