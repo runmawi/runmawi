@@ -21,7 +21,7 @@
                                     <div class="movie-sdivck position-relative">
                                         <img src="{{ $series_network_list->image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
                                         <div class="controls">        
-                                            <a href="#">
+                                            <a href="{{ URL::to('series/category/'. $series_network_list->slug) }}">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
                                             <nav>
@@ -53,8 +53,8 @@
                                                                         </button>
                                                                     </div>
                                                                 </div>
-                                                                <a href="#" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
-                                                                    <i class="far fa-eye mr-2" aria-hidden="true"></i> View Content
+                                                                <a href="{{ URL::to('series/category/'. $series_network_list->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
+                                                                    <i class="far fa-eye mr-2" aria-hidden="true"></i> {{ "View Content" }}
                                                                 </a>
                                                             </div>
                                                         </div>
