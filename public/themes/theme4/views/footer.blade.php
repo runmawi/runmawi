@@ -275,7 +275,7 @@
 ?>
 
 <!-- Lazy load script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script> -->
 
 <script>
     if ('loading' in HTMLImageElement.prototype) {
