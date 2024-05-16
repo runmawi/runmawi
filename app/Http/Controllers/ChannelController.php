@@ -65,6 +65,8 @@ use App\StorageSetting;
 use App\AdminLandingPage;
 use App\CommentSection;
 use App\BlockLiveStream;
+use App\LiveStream;
+use App\TimeZone;
 
 
 class ChannelController extends Controller
@@ -3687,17 +3689,108 @@ class ChannelController extends Controller
 
     public function liveList()
     {
-        $parentCategories = LiveCategory::orderBy('order')
-            ->where('in_menu', 1)
-            ->get();
+        try {
 
-        $data = [
-            'ThumbnailSetting' => ThumbnailSetting::first(),
-            'currency' => CurrencySetting::first(),
-            'parentCategories' => $parentCategories,
-        ];
+            $current_timezone = current_timezone();
 
-        return Theme::view('Live_list', $data);
+            $settings = Setting::first();
+
+            if($settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+            
+            $LiveCategory_data = LiveCategory::query()->limit(15)
+                    ->whereHas('category_livestream', function ($query) {
+                        $query->where('live_streams.active', 1)->where('live_streams.status', 1);
+                    })
+
+                    ->with([
+                        'category_livestream' => function ($live_stream_videos) use ($current_timezone) {
+                            $live_stream_videos = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                    ->where('active', 1)
+                                    ->where('status', 1)
+                                    ->latest()
+                                    ->limit(15)
+                                    ->get();
+                        
+                            $live_stream_videos = $live_stream_videos->filter(function ($livestream) use ($current_timezone) {
+                                if ($livestream->publish_type === 'recurring_program') {
+                            
+                                    $Current_time = Carbon::now($current_timezone);
+                                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                                    $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                                    $midnight = $convert_time->copy()->startOfDay();
+                            
+                                    switch ($livestream->recurring_program) {
+                                        case 'custom':
+                                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                                            break;
+                                        case 'daily':
+                                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        case 'weekly':
+                                            $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                                            break;
+                                        case 'monthly':
+                                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        default:
+                                            $recurring_program_Status = false;
+                                            break;
+                                    }
+                            
+                                    return $recurring_program_Status;
+                                }
+                                return true;
+                            });
+                                
+                        },
+                    ])
+                ->select('live_categories.id', 'live_categories.name', 'live_categories.slug', 'live_categories.order')
+                ->orderBy('live_categories.order')
+                ->get();
+
+            $LiveCategory_data->each(function ($category) {
+                $category->category_livestream->transform(function ($item) {
+                    $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+                    $item['Player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
+                    $item['description'] = $item->description;
+                    $item['source'] = 'Livestream';
+                    return $item;
+                });
+                $category->source = 'live_category';
+                return $category;
+            });
+
+
+            $parentCategories = LiveCategory::orderBy('order')
+                ->where('in_menu', 1)
+                ->get();
+
+            $data = [
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'parentCategories' => $parentCategories,
+                'videos_expiry_date_status' => videos_expiry_date_status(),
+                'default_vertical_image_url' => default_vertical_image_url() ,
+                'default_horizontal_image_url' => default_horizontal_image_url() ,
+                'LiveCategory_data' => $LiveCategory_data ,
+            ];
+
+            return Theme::view('Live_list', $data);
+                
+        } catch (\Throwable $th) {
+
+            return $th->getMessage();
+
+            return abort(404);
+        }
     }
 
     public function Series_List(Request $request)
