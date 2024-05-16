@@ -606,7 +606,11 @@
                                         Pay Now
                                     </button>
                                 </div>
-
+                                <div class="d-flex justify-content-center" style="margin-right:auto;margin-left:auto;">
+                                    <a class="btn bd  text-white mt-3" href="{{ $redirect_url }}">
+                                        <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
+                                    </a>
+                                </div>
                                 <input type="hidden" id="plan_id" name="plan_id" >
                                 <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                                 <input type="hidden" id="currency_symbol" value="{{ $currency_symbol }}">
