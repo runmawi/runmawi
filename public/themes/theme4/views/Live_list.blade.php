@@ -1,108 +1,148 @@
-<?php
-    include(public_path('themes/theme4/views/header.php'));
-?>
+<?php include(public_path('themes/theme4/views/header.php')); ?>
 
-@if (!empty($LiveCategory_data) && $LiveCategory_data->isNotEmpty())
+@if (!empty($livestreams_data) && $livestreams_data->isNotEmpty())
+    <section id="iq-trending" class="s-margin">
+        <div class="container-fluid pl-0">
+            <div class="row">
+                <div class="col-sm-12 overflow-hidden">
+                                    
+                                    {{-- Header --}}
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title mar-left"> {{ _("Today's Livestreams") }} </a></h4>
+                    </div>
 
-    @foreach( $LiveCategory_data as $key => $live_Category )
-        <section id="iq-trending" class="s-margin">
-            <div class="container-fluid pl-0">
-                <div class="row">
-                    <div class="col-sm-12 overflow-hidden">
-                                        
-                                        {{-- Header --}}
-                        <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title mar-left"><a
-                                href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
-                            </h4>
-                            <h4 class="main-title"><a
-                                href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ 'view all' }}</a>
-                            </h4>
-                        </div>
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                            @foreach ($livestreams_data as $livestream_videos)
+                                <li class="slick-slide">
+                                    <a href="javascript:;">
+                                        <div class="movie-slick position-relative">
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid lazy w-100" alt="livestream_videos" width="300" height="200">
+                                        </div>
+                                    </a>
+                                    @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                        <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
 
-                        <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
+                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider" style="display:none;">
+                            @foreach ($livestreams_data as $key => $livestream_videos )
+                                <li class="slick-slide">
+                                    <div class="tranding-block position-relative trending-thumbnail-image">
+                                        <button class="drp-close">×</button>
 
-                                @foreach ($live_Category->category_livestream as $livestream_videos )
-                                    <li class="slick-slide">
-                                        <a href="javascript:;">
-                                            <div class="movie-slick position-relative">
-                                                    <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid" alt="livestream_videos" width="300" height="200">
-                                            </div>
-                                            
-                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                                <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="livestream_videos" width="100%"></div>
-                                            @endif
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                            <ul id="trending-slider" class= "{{ 'theme4-slider category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" style="display:none;">
-                                @foreach ($live_Category->category_livestream as $livestream_videos )
-                                    <li class="slick-slide">
-                                        <div class="tranding-block position-relative home-page-bg-img trending-thumbnail-image">
-                                            <button class="drp-close">×</button>
+                                                        <div class="caption pl-4">
 
-                                            <div class="trending-custom-tab">
-                                                <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                                            <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
 
-                                                            <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h1>
-
-                                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                                                    <ul class="vod-info">
-                                                                        <li><span></span> LIVE NOW</li>
-                                                                    </ul>
-                                                                @elseif ($livestream_videos->publish_type == "publish_later")
-                                                                    <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
+                                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                                                 
-                                                                @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
-                                                                    <span class="trending"> {{ 'Live Streaming '. $livestream_videos->recurring_program ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
-    
-                                                                @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
-                                                                    <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                                <ul class="vod-info">
+                                                                    <li><span></span> LIVE NOW</li>
+                                                                </ul>
+
+                                                            @elseif ($livestream_videos->publish_type == "publish_later")
+                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$livestream_videos->publish_time)->format('j F Y g:ia') }} </span>
+                                                            
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
+                                                                        
+                                                                @php
+                                                                    switch ($livestream_videos->recurring_program_week_day) {
+
+                                                                        case 0:
+                                                                            $recurring_program_week_day = 'Sunday' ;
+                                                                        break;
+
+                                                                        case 1 :
+                                                                            $recurring_program_week_day =  'Monday' ;
+                                                                        break;
+
+                                                                        case 2:
+                                                                            $recurring_program_week_day =  'Tuesday' ;
+                                                                        break;
+
+                                                                        case 3 :
+                                                                            $recurring_program_week_day = 'Wednesday' ;
+                                                                        break;
+
+                                                                        case 4:
+                                                                            $recurring_program_week_day =  'Thrusday' ;
+                                                                        break;
+
+                                                                        case 5:
+                                                                            $recurring_program_week_day =  'Friday' ;
+                                                                        break;
+
+                                                                        case 6:
+                                                                            $recurring_program_week_days =  'Saturday' ;
+                                                                        break;
+
+                                                                        default:
+                                                                            $recurring_program_week_day =  null ;
+                                                                        break;
+                                                                    }
+                                                                @endphp
+
+                                                                @if ( $livestream_videos->recurring_program == "daily")
+
+                                                                    <span class="trending"> {{ 'Live Streaming Starts daily from '. Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                                    
+                                                                @elseif( $livestream_videos->recurring_program == "weekly" )
+                                                                    
+                                                                    <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $recurring_program_week_day . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                                                @elseif( $livestream_videos->recurring_program == "monthly" )
+                                                                    
+                                                                    <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
                                                                 @endif
 
-                                                                @if ( $livestream_videos->year != null && $livestream_videos->year != 0 )
-                                                                    <div class="d-flex align-items-center text-white text-detail">
-                                                                        <span class="trending">{{ ($livestream_videos->year != null && $livestream_videos->year != 0) ? $livestream_videos->year : null   }}</span>
-                                                                    </div>
-                                                                @endif
-                                                                                                                            
-                                                                @if ( optional($livestream_videos)->description )
-                                                                    <p class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->description) !!}</p>
-                                                                @endif
 
-                                                                <div class="p-btns">
-                                                                    <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Livestream-basedcategory-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                    </div>
+                                                            @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
+                                                                <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                            @endif
+
+                                                            <div class="d-flex align-items-center p-0 mt-3">
+                                                                <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
+                                                            </div>
+
+                                                            <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ??  $livestream_videos->description  !!}</div>
+                                                        
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-LiveStream-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="livestream_videos">
-                                                            </div>
                                                         </div>
+
+                                                        @if ( $livestream_videos->publish_type == "recurring_program")
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos">
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-
-            @foreach ($LiveCategory_data as $key => $livestream_videos )
-            <div class="modal fade info_model" id="{{ "Home-Livestream-basedcategory-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+        @foreach ($livestreams_data as $key => $livestream_videos )
+            <div class="modal fade info_model" id="{{ "Home-LiveStream-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none; background:transparent;">
@@ -140,33 +180,30 @@
                 </div>
             </div>
         @endforeach
-
-        </section>
-    @endforeach
+    </section>
 @endif
-
 
 <script>
     
     $( window ).on("load", function() {
-        $('.category-live-slider').hide();
+        $('.livestream-videos-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.category-live-slider').slick({
+        $('.livestream-videos-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
             draggable: false,
-            asNavFor: '.category-live-slider-nav',
+            asNavFor: '.livestream-videos-slider-nav',
         });
 
-        $('.category-live-slider-nav').slick({
+        $('.livestream-videos-slider-nav').slick({
             slidesToShow: 6,
             slidesToScroll: 6,
-            asNavFor: '.category-live-slider',
+            asNavFor: '.livestream-videos-slider',
             dots: false,
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
@@ -197,53 +234,49 @@
                 },
             ],
         });
-        
-        $('.category-live-slider-nav').click(function() {
 
+        $('.livestream-videos-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-
-             let category_key_id = $(this).attr("data-key-id");
-             $('.category-live-slider').hide();
-             $('.category-live-' + category_key_id).show();
+            $('.livestream-videos-slider').show();
         });
 
         $('body').on('click', '.drp-close', function() {
-            $('.category-live-slider').hide();
+            $('.livestream-videos-slider').hide();
         });
     });
 </script>
 
 <style>
-
     .blob {
         margin: 10px;
         height: 22px;
         width: 59px;
+        border-radius:25px;
         box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
         transform: scale(1);
         animation: pulse 2s infinite;
         position:absolute;
         top:0;
     }
-    
+
     @keyframes pulse {
         0% {
             transform: scale(0.95);
             box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
         }
-    
+
         70% {
             transform: scale(1);
             box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
         }
-    
+
         100% {
             transform: scale(0.95);
             box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
         }
     }
-    </style>
+</style>
 
-<?php
+@php
     include public_path('themes/theme4/views/footer.blade.php');
-?>
+@endphp
