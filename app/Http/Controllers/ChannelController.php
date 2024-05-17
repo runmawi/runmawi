@@ -3755,9 +3755,6 @@ class ChannelController extends Controller
                 return true;
             });
 
-            
-
-
             $parentCategories = LiveCategory::orderBy('order')
                 ->where('in_menu', 1)
                 ->get();
