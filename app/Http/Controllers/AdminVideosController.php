@@ -2868,53 +2868,117 @@ class AdminVideosController extends Controller
         //         }
         //     }
         // }
-            // Define the convertTimeFormat function globally
-            function convertTimeFormat($hours, $minutes, $milliseconds) {
-                $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+            // // Define the convertTimeFormat function globally
+            // function convertTimeFormat($hours, $minutes, $milliseconds) {
+            //     $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+            //     $formattedTime = gmdate("H:i:s", $totalSeconds);
+            //     $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+            //     return "{$formattedTime},{$formattedMilliseconds}";
+            // }
+
+            // if (!empty($files != "" && $files != null)) {
+            //     foreach ($files as $key => $val) {
+            //         if (!empty($files[$key])) {
+            //             $destinationPath = "public/uploads/subtitles/";
+
+            //             if (!file_exists($destinationPath)) {
+            //                 mkdir($destinationPath, 0755, true);
+            //             }
+
+            //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+            //             MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+
+            //             // Move uploaded file to destination path
+            //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+
+            //             // Read contents of the uploaded file
+            //             $contents = file_get_contents($destinationPath . $filename);
+
+            //             // Convert time format and add line numbers
+            //             $lineNumber = 0;
+            //             $convertedContents = preg_replace_callback(
+            //                 '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+            //                 function ($matches) use (&$lineNumber) {
+            //                     // Increment line number for each match
+            //                     $lineNumber++;
+            //                     // Convert time format and return with the line number
+            //                     return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+            //                 },
+            //                 $contents
+            //             );
+
+            //             // Store converted contents to a new file
+            //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+            //             if (!file_exists($newDestinationPath)) {
+            //                 mkdir($newDestinationPath, 0755, true);
+            //             }
+            //             file_put_contents($newDestinationPath . $filename, $convertedContents);
+
+            //             // Save subtitle data to database
+            //             $subtitle_data = [
+            //                 "movie_id" => $video->id,
+            //                 "shortcode" => $shortcodes[$key],
+            //                 "sub_language" => $languages[$key],
+            //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+            //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+            //             ];
+            //             $video_subtitle = MoviesSubtitles::create($subtitle_data);
+            //         }
+            //     }
+            // }
+
+
+
+            function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
                 $formattedTime = gmdate("H:i:s", $totalSeconds);
+                if (substr($formattedTime, 0, 3) == "00:") {
+                    $formattedTime = substr($formattedTime, 3);
+                }
                 $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
                 return "{$formattedTime},{$formattedMilliseconds}";
             }
-
+            
             if (!empty($files != "" && $files != null)) {
                 foreach ($files as $key => $val) {
                     if (!empty($files[$key])) {
                         $destinationPath = "public/uploads/subtitles/";
-
+            
                         if (!file_exists($destinationPath)) {
                             mkdir($destinationPath, 0755, true);
                         }
-
+            
                         $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-
+            
                         MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
-
+            
                         // Move uploaded file to destination path
                         move_uploaded_file($val->getPathname(), $destinationPath . $filename);
-
+            
                         // Read contents of the uploaded file
                         $contents = file_get_contents($destinationPath . $filename);
-
+            
                         // Convert time format and add line numbers
                         $lineNumber = 0;
                         $convertedContents = preg_replace_callback(
-                            '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+                            '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
                             function ($matches) use (&$lineNumber) {
                                 // Increment line number for each match
                                 $lineNumber++;
                                 // Convert time format and return with the line number
-                                return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+                                return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
                             },
                             $contents
                         );
-
+            
                         // Store converted contents to a new file
                         $newDestinationPath = "public/uploads/convertedsubtitles/";
                         if (!file_exists($newDestinationPath)) {
                             mkdir($newDestinationPath, 0755, true);
                         }
                         file_put_contents($newDestinationPath . $filename, $convertedContents);
-
+            
                         // Save subtitle data to database
                         $subtitle_data = [
                             "movie_id" => $video->id,
@@ -2928,7 +2992,7 @@ class AdminVideosController extends Controller
                 }
             }
 
-        // Admin Video Ads inputs
+            // Admin Video Ads inputs
 
         if( !empty($request->ads_devices)){
 
@@ -4152,9 +4216,13 @@ class AdminVideosController extends Controller
         // }
 
             // Define the convertTimeFormat function globally
-            function convertTimeFormat($hours, $minutes, $milliseconds) {
-                $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+
+            function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
                 $formattedTime = gmdate("H:i:s", $totalSeconds);
+                if (substr($formattedTime, 0, 3) == "00:") {
+                    $formattedTime = substr($formattedTime, 3);
+                }
                 $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
                 return "{$formattedTime},{$formattedMilliseconds}";
             }
@@ -4181,12 +4249,12 @@ class AdminVideosController extends Controller
                         // Convert time format and add line numbers
                         $lineNumber = 0;
                         $convertedContents = preg_replace_callback(
-                            '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+                            '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
                             function ($matches) use (&$lineNumber) {
                                 // Increment line number for each match
                                 $lineNumber++;
                                 // Convert time format and return with the line number
-                                return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+                                return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
                             },
                             $contents
                         );

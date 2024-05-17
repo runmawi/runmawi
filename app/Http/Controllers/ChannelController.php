@@ -4438,6 +4438,41 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+
+            $videoURl = Video::get()->map(function ($item)  {
+                //  Video URL
+
+                switch (true) {
+
+                    case $item['type'] == "mp4_url":
+                        $item['videos_url']  =  $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['type'] == "m3u8_url":
+                        $item['videos_url']  =  $item->m3u8_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+
+                    case $item['type'] == "embed":
+                        $item['videos_url']  =  $item->embed_code ;
+                        $item['video_player_type'] =  'video/webm' ;
+                    break;
+                    
+                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                        $item['video_player_type']   =  'application/x-mpegURL' ;
+                    break;
+
+                    default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type']   =  null ;
+                    break;
+                }
+
+                return $item;
+            });
+            // dd($videoURl);
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
             ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
             ->where('movies_subtitles.movie_id', $video_id)
@@ -4456,6 +4491,7 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail' => $videodetail ,
+                'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
             );
