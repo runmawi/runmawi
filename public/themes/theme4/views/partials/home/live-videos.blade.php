@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid pl-0">
+        <div class="container-fluid pl-0" id="home-live-videos-container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
@@ -185,14 +185,32 @@
     </section>
 @endif
 
-
 <script>
     
     $( window ).on("load", function() {
         $('.livestream-videos-slider').hide();
     });
 
-    $(document).ready(function() {
+    function reloadLiveVideos() {
+        
+        const container = document.getElementById('home-live-videos-container');
+
+        fetch('{{ route('home.livestream.section.autorefresh') }}')
+            .then(response => response.text())
+            .then(data => {
+                container.innerHTML = data;
+                initializeSlickSlider();
+            })
+            .catch(error => console.error('Error fetching live videos:', error));
+    }
+
+    setInterval(reloadLiveVideos, 90000);
+
+    reloadLiveVideos();
+
+    function initializeSlickSlider() {
+
+        $('.livestream-videos-slider').hide();
 
         $('.livestream-videos-slider').slick({
             slidesToShow: 1,
@@ -246,7 +264,7 @@
         $('body').on('click', '.drp-close', function() {
             $('.livestream-videos-slider').hide();
         });
-    });
+    }
 </script>
 
 
