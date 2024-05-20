@@ -13,7 +13,7 @@
 
                     <div class="trending-contens sub_dropdown_image mt-3">
                         <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($livestreams_data as $livestream_videos)
+                            @foreach ($livestreams_data as $key => $livestream_videos)
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
                                         <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
@@ -21,7 +21,7 @@
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                         @endif
                                         <div class="controls">        
-                                            <a href="#">
+                                            <a href="{{ URL::to('live/'.$livestream_videos->slug) }}">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
                                             <nav>
@@ -32,7 +32,7 @@
                                 </div>
 
                                 <!-- Modal -->
-                                <div class="modal fade info_model" id="network-series-{{ $key }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal fade info_model" id="network-series-{{ $loop->index }}" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                                         <div class="container">
                                             <div class="modal-content" style="border:none; background:transparent;">
