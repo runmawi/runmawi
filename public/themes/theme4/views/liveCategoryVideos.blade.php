@@ -25,14 +25,14 @@
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
                                             <nav>
-                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#network-series-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#live-list-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                             </nav>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Modal -->
-                                <div class="modal fade info_model" id="network-series-{{ $loop->index }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal fade info_model" id="live-list-{{ $key }}" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                                         <div class="container">
                                             <div class="modal-content" style="border:none; background:transparent;">
