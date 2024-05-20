@@ -2290,7 +2290,12 @@ class AdminSeriesController extends Controller
             $pattern =  $info['filename'] . '*';
         
             $files = glob($directory . '/' . $pattern);
-        
+            $destinationPath = storage_path('app/public/frames');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             foreach ($files as $file) {
                 unlink($file);
             }
