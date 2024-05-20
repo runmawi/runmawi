@@ -219,7 +219,7 @@
                                                                         <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                     @endif
 
-                                                                    <a class="btn btn-hover button-groups mr-2" data-choosed-date={{ $epg_channel_data->ChannelVideoScheduler_top_date->pluck('choosed_date')->first() }} data-channel-id={{ $epg_channel_data->id }}  onclick="EPG_date_filter(this)" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" data-choosed-date={{ $epg_channel_data->ChannelVideoScheduler_top_date->pluck('choosed_date')->first() }} data-channel-id={{ $epg_channel_data->id }}  onclick="EPG_date_filter(this)" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
                                                                 @endif
 
                                                                 <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
@@ -321,10 +321,10 @@
                                                 <div class="panel-heading panel-heading-nav d-flex position-relative">
                                                     <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
                                                     
-                                                    <ul class="nav nav-tabs m-0">
+                                                    <ul class="nav nav-tabs m-0" role="tablist">
                                                         @foreach ( $epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
                                                             <li role="presentation" class="active" data-choosed-date={{ $item->choosed_date }} data-channel-id={{ $item->channe_id }}  onclick="EPG_date_filter(this)">
-                                                                <a href="#" aria-controls="one" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}
+                                                                <a href="#tab{{ $index }}" aria-controls="tab{{ $index }}" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}
                                                             </li>
                                                         @endforeach
                                                     </ul>
