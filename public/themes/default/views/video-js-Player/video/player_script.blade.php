@@ -3,40 +3,45 @@
     let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-
-        var player = videojs('my-video', { // Video Js Player 
-            aspectRatio: '16:9',
-            fill: true,
-            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
-            fluid: true,
-
-            controlBar: {
-
-                volumePanel: {
-                    inline: false
+    var player = videojs('my-video', {
+        aspectRatio: '16:9',
+        fill: true,
+        playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+        fluid: true,
+        controlBar: {
+            volumePanel: { inline: false },
+            children: {
+                'playToggle': {},
+                'currentTimeDisplay': {},
+                'timeDivider': {},
+                'durationDisplay': {},
+                'liveDisplay': {},
+                'flexibleWidthSpacer': {},
+                'progressControl': {},
+                'subtitlesButton': {}, // Ensure the subtitles button is included
+                'settingsMenuButton': {
+                    entries: [ 'playbackRateMenuButton']
                 },
-
-                children: {
-                    'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
-                    'liveDisplay': {},
-
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                'fullscreenToggle': {}
             }
-        });
+        }
+    });
 
+        
+    player.ready(function() {
+        var tracks = player.textTracks();
+        console.log("Tracks: ", tracks); // Debugging to check if tracks are loaded
+
+        // Log each track's properties
+        for (var i = 0; i < tracks.length; i++) {
+            console.log("Track " + i + ": ", tracks[i].kind, tracks[i].label, tracks[i].language);
+        }
+
+        // Activate the first subtitle track by default if it exists
+        if (tracks.length > 0) {
+            tracks[0].mode = 'showing';
+        }
+    }); 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
