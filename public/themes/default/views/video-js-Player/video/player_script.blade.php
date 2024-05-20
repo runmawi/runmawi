@@ -20,22 +20,12 @@
                     'progressControl': {},
                     'subtitlesButton': {}, 
                     'settingsMenuButton': {
-                        entries: [ 'playbackRateMenuButton']
+                        entries: ['playbackRateMenuButton']
                     },
                     'fullscreenToggle': {}
                 }
             }
         });
-
-        
-        player.ready(function() {
-            var tracks = player.textTracks();
-            for (var i = 0; i < tracks.length; i++) {
-            }
-            if (tracks.length > 0) {
-                tracks[0].mode = 'showing';
-            }
-        }); 
 
         // Skip Intro & Skip Recap 
 
