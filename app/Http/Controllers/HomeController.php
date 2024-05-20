@@ -270,7 +270,8 @@ class HomeController extends Controller
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                    ->where('active', '1')
+                                    ->where('active', 1)
+                                    ->where('status', 1)
                                     ->latest()
                                     ->limit(15)
                                     ->get();
@@ -977,7 +978,8 @@ class HomeController extends Controller
                                                     'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                                     'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                                     'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                                ->where('active', '1')
+                                                ->where('active', 1)
+                                                ->where('status', 1)
                                                 ->latest()
                                                 ->limit(15)
                                                 ->get();
@@ -1765,6 +1767,7 @@ class HomeController extends Controller
                     'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                     'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                     ->where('active', '1')
+                    ->where('status', 1)
                     ->latest()
                     ->limit(15)
                     ->get();
@@ -4970,5 +4973,61 @@ public function uploadExcel(Request $request)
         return Theme::view('DocumentCategoryListPage',['DocumentCategoryListPage'=>$data]);
     }
 
-   
+    // only for theme4
+    public function home_livestream_section_auto_refresh()
+    {
+        $homepage_array_data = [ 
+            'order_settings_list' => OrderHomeSetting::get(), 
+            'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+            'videos_expiry_date_status' => videos_expiry_date_status(),
+            'getfeching' => Geofencing::first(),
+            'default_vertical_image_url' => default_vertical_image_url(),
+            'default_horizontal_image_url' => default_horizontal_image_url(),
+        ];
+
+        $current_timezone = current_timezone();
+
+        $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                        'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                        'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                        'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                ->where('active', 1)
+                                ->where('status', 1)
+                                ->latest()
+                                ->limit(15)
+                                ->get();
+    
+        $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+            if ($livestream->publish_type === 'recurring_program') {
+        
+                $Current_time = Carbon\Carbon::now($current_timezone);
+                $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                $midnight = $convert_time->copy()->startOfDay();
+        
+                switch ($livestream->recurring_program) {
+                    case 'custom':
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        break;
+                    case 'daily':
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    case 'weekly':
+                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                        break;
+                    case 'monthly':
+                        $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    default:
+                        $recurring_program_Status = false;
+                        break;
+                }
+        
+                return $recurring_program_Status;
+            }
+            return true;
+        });
+    
+        return Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livestreams , 'livestreams_data' => $livestreams ]) )->render();
+    }
 }

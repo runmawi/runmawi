@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid pl-0">
+        <div class="container-fluid pl-0" id="home-live-videos-container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
@@ -53,7 +53,7 @@
                                                             @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
                                                                         
                                                                 @php
-                                                                     switch ($livestream_videos->recurring_program_week_day) {
+                                                                    switch ($livestream_videos->recurring_program_week_day) {
 
                                                                         case 0:
                                                                             $recurring_program_week_day = 'Sunday' ;
@@ -89,14 +89,27 @@
                                                                     }
                                                                 @endphp
 
-                                                                <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $recurring_program_week_day . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                                @if ( $livestream_videos->recurring_program == "daily")
+
+                                                                    <span class="trending"> {{ 'Live Streaming Starts daily from '. Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                                    
+                                                                @elseif( $livestream_videos->recurring_program == "weekly" )
+                                                                    
+                                                                    <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $recurring_program_week_day . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                                                @elseif( $livestream_videos->recurring_program == "monthly" )
+                                                                    
+                                                                    <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                                                @endif
+
 
                                                             @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
                                                                 <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
                                                             @endif
 
                                                             <div class="d-flex align-items-center p-0 mt-3">
-                                                                <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
+                                                                <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
                                                             </div>
 
                                                             <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ??  $livestream_videos->description  !!}</div>
@@ -172,14 +185,32 @@
     </section>
 @endif
 
-
 <script>
     
     $( window ).on("load", function() {
         $('.livestream-videos-slider').hide();
     });
 
-    $(document).ready(function() {
+    function reloadLiveVideos() {
+        
+        const container = document.getElementById('home-live-videos-container');
+
+        fetch('{{ route('home.livestream.section.autorefresh') }}')
+            .then(response => response.text())
+            .then(data => {
+                container.innerHTML = data;
+                initializeSlickSlider();
+            })
+            .catch(error => console.error('Error fetching live videos:', error));
+    }
+
+    setInterval(reloadLiveVideos, 90000);
+
+    reloadLiveVideos();
+
+    function initializeSlickSlider() {
+
+        $('.livestream-videos-slider').hide();
 
         $('.livestream-videos-slider').slick({
             slidesToShow: 1,
@@ -233,7 +264,7 @@
         $('body').on('click', '.drp-close', function() {
             $('.livestream-videos-slider').hide();
         });
-    });
+    }
 </script>
 
 

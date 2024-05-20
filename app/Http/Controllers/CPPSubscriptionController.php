@@ -54,6 +54,7 @@ class CPPSubscriptionController extends Controller
             'footer_url'   => $footer_url ,
             'button_bg_color' => button_bg_color() ,
             'currency_symbol' => currency_symbol(),
+            'redirect_url' => URL::to('cpp/dashboard'),
         );
 
         return Theme::view('moderator.subscriptions_plans', $data );
