@@ -154,9 +154,9 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $epg_channel_data)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
@@ -173,9 +173,9 @@
                                             @endif 
                                         </div>
                                     </a>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $epg_channel_data )
@@ -318,19 +318,19 @@
                                             </div>
 
                                             <div class="panel panel-default">
-                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
-                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
-                                                    
-                                                    <ul class="nav nav-tabs m-0" role="tablist">
-                                                        @foreach ( $epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
-                                                            <li role="presentation" class="active" data-choosed-date={{ $item->choosed_date }} data-channel-id={{ $item->channe_id }}  onclick="EPG_date_filter(this)">
-                                                                <a href="#tab{{ $index }}" aria-controls="tab{{ $index }}" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
+                                            <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                
+                                                <ul class="nav nav-tabs m-0" role="tablist">
+                                                    @foreach ($epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
+                                                        <li role="presentation" data-choosed-date="{{ $item->choosed_date }}" data-channel-id="{{ $item->channe_id }}" onclick="EPG_date_filter(this)">
+                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
 
-                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right "><i class="fa fa-chevron-right"></i></button>
-                                                </div>
+                                                <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
 
                                                 {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data ])->content() !!}
 

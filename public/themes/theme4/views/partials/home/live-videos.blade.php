@@ -11,9 +11,9 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $livestream_videos)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid lazy w-100" alt="livestream_videos" width="300" height="200">
@@ -22,9 +22,9 @@
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                         <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                     @endif
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $livestream_videos )
