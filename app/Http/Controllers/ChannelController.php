@@ -4424,40 +4424,26 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+            $setting =  Setting::first();
+            $videoURl = [];
 
-            $videoURl = Video::get()->map(function ($item)  {
-                //  Video URL
-
-                switch (true) {
-
-                    case $item['type'] == "mp4_url":
-                        $item['videos_url']  =  $item->mp4_url ;
-                        $item['video_player_type'] =  'video/mp4' ;
-                    break;
-
-                    case $item['type'] == "m3u8_url":
-                        $item['videos_url']  =  $item->m3u8_url ;
-                        $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
-
-                    case $item['type'] == "embed":
-                        $item['videos_url']  =  $item->embed_code ;
-                        $item['video_player_type'] =  'video/webm' ;
-                    break;
-                    
-                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
+            if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
+                $videoClip = Setting::get()->map(function ($item)  {
+                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->video_clip);
                         $item['video_player_type']   =  'application/x-mpegURL' ;
-                    break;
 
-                    default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
-                    break;
+                    return $item;
+                })->first();
+                $videodetailCollection = collect([$videodetail->toArray()]);
+                
+                // Convert $videoClip object to collection of object format if it's set
+                if (isset($videoClip)) {
+                    $videoClipCollection = collect([$videoClip->toArray()]);
+                } else {
+                    $videoClipCollection = collect([]);
                 }
-
-                return $item;
-            });
+                $videoURl = $videoClipCollection->merge($videodetailCollection);
+            }           
             // dd($videoURl);
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
             ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
@@ -4480,6 +4466,7 @@ class ChannelController extends Controller
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
+                'setting'   => $setting,
             );
 
 
