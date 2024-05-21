@@ -3331,7 +3331,7 @@ class AdminUsersController extends Controller
         $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
         ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+        'subscriptions.platform','subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
          \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
          
         ]);
@@ -3359,7 +3359,7 @@ class AdminUsersController extends Controller
     $subscriber_Revenue = Subscription::join('users', 'subscriptions.user_id', '=', 'users.id')
     ->select(
             'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
-             'subscriptions.price as total_amount',
+             'subscriptions.price as total_amount','subscriptions.platform',
              'subscriptions.stripe_plan as stripe_plan',
         'subscriptions.created_at',
         // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
@@ -3462,7 +3462,7 @@ class AdminUsersController extends Controller
         $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
         ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
         ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-        'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+        'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
          \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
          
         ]);
@@ -3505,7 +3505,7 @@ class AdminUsersController extends Controller
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);
@@ -3543,6 +3543,7 @@ class AdminUsersController extends Controller
                <td>' . $row->role . '</td>    
                <td>' . $plans_name . '</td>    
                <td>' . $Content . '</td>    
+               <td>' . $row->platform . '</td>  
                <td>' . $row->total_amount . '</td>  
                <td>' . $country_name . '</td>    
                <td>' . $row->created_at . '</td>    
@@ -3587,7 +3588,7 @@ class AdminUsersController extends Controller
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->whereBetween('subscriptions.created_at', [$start_time, $end_time])->groupBy('month_name')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);
@@ -3625,7 +3626,8 @@ class AdminUsersController extends Controller
               <td>' . $row->role . '</td>    
               <td>' . $plans_name . '</td>    
               <td>' . $Content . '</td>    
-              <td>' . $row->total_amount . '</td>  
+               <td>' . $row->platform . '</td>  
+               <td>' . $row->total_amount . '</td>  
               <td>' . $country_name . '</td>    
               <td>' . $row->created_at . '</td>    
               <td>' . $card_type . '</td>    
@@ -3667,7 +3669,7 @@ class AdminUsersController extends Controller
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);
@@ -3679,7 +3681,7 @@ class AdminUsersController extends Controller
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->whereBetween('subscriptions.created_at', [$start_time, $end_time])->groupBy('month_name')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);
@@ -3690,7 +3692,7 @@ class AdminUsersController extends Controller
             $subscriber_Revenue = User::join('subscriptions', 'subscriptions.user_id', '=', 'users.id')
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);
@@ -3713,7 +3715,7 @@ class AdminUsersController extends Controller
         }
         $filename = public_path("/uploads/csv/" . $file);
         $handle = fopen($filename, 'w');
-        fputcsv($handle, ["User", "Transaction REF", "User Type", "Plan", "Content", "Price", "Country", "Date Time", "Source",]);
+        fputcsv($handle, ["User", "Transaction REF", "User Type", "Plan", "Content", "Platform", "Price", "Country", "Date Time", "Source",]);
         if (count($subscriber_Revenue) > 0)
         {
             foreach ($subscriber_Revenue as $each_user)
@@ -3725,7 +3727,7 @@ class AdminUsersController extends Controller
                  if(!empty($each_user->card_type))  { $card_type = @$each_user->card_type ;} else { $card_type = "No Transaction"; }
 
                 fputcsv($handle, ['#',$each_user->username, $stripe_id, $each_user->role, $plans_name
-                , $Content, $each_user->total_amount, $country_name, $each_user->created_at,$card_type,
+                , $Content, $each_user->platform, $each_user->total_amount, $country_name, $each_user->created_at,$card_type,
                 ]);
             }
         }
@@ -3954,7 +3956,7 @@ class AdminUsersController extends Controller
             ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
             ->whereDate('subscriptions.created_at', '>=', $start_time)->groupBy('month_name')
             ->get(['users.username','users.stripe_id','users.card_type','users.ccode', 'subscription_plans.price as total_amount',
-            'subscription_plans.plans_name', 'users.role','subscriptions.created_at',
+            'subscriptions.platform','subscription_plans.plans_name', 'users.role','subscriptions.created_at',
              \DB::raw("MONTHNAME(subscriptions.created_at) as month_name") ,
              
             ]);

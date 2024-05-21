@@ -201,6 +201,7 @@ class RazorpayController extends Controller
             'PaymentGateway' =>  'Razorpay',
             'trial_ends_at'  =>  $trial_ends_at,
             'ends_at'        =>  $trial_ends_at,
+            'platform'       => 'WebSite',
         ]);
 
         User::where('id',$request->userId)->update([

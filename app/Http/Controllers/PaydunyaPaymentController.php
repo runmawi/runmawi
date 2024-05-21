@@ -257,7 +257,8 @@ class PaydunyaPaymentController extends Controller
                         'days'           =>  $SubscriptionPlan->days,
                         'trial_ends_at'  =>  $trial_ends_at,
                         'ends_at'        =>  $trial_ends_at,
-                        'stripe_plan'    =>  $SubscriptionPlan->plan_id
+                        'stripe_plan'    =>  $SubscriptionPlan->plan_id,
+                        'platform'       => 'WebSite',
                     ]);
 
                     User::where('id',$user_id)->update([

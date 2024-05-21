@@ -140,6 +140,7 @@ class CinetPayController extends Controller
                 'PaymentGateway' =>  'CinetPay',
                 'trial_ends_at'  =>  $ends_at,
                 'ends_at'        =>  $ends_at,
+                'platform'       => 'WebSite',
             ]);
 
             User::where('id',$request->user_id)->update([
