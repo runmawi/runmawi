@@ -2304,6 +2304,8 @@ class AdminSeriesController extends Controller
 
             return Redirect::to('admin/season/edit' . '/' . $series_id.'/'.$season_id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
         } catch (\Throwable $th) {
+
+            return $th->getMessage();
             return abort(404);
         }
     }
