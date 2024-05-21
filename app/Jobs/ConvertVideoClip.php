@@ -59,18 +59,16 @@ class ConvertVideoClip implements ShouldQueue
         $video = $ffmpeg->open('storage/app/public/'.'/'.$video_clip_name_with_ext);
 
             $convertresolution=array();
-                $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
-                array_push($convertresolution,$r_240p);
-                $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
-                array_push($convertresolution,$r_360p);
-                $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
-                array_push($convertresolution,$r_480p);
-                $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
-                array_push($convertresolution,$r_720p);
                 $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                 array_push($convertresolution,$r_1080p);
-
-        
+                $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                array_push($convertresolution,$r_720p);
+                $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                array_push($convertresolution,$r_480p);
+                $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                array_push($convertresolution,$r_360p);
+                $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                array_push($convertresolution,$r_240p);
         $video->hls()
                 ->x264()
                 ->addRepresentations($convertresolution)
