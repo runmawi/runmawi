@@ -114,23 +114,38 @@ class ConvertVideoForStreaming implements ShouldQueue
             //  ->addFormat($highBitrateFormat, function($media) {
             //    $media->addFilter('scale=1920:1080');
             // })
-            ->addFormat($BitrateFormat250, function($media) {
-                $media->addFilter('scale=420:240');
-            })
-            ->addFormat($BitrateFormat360, function($media) {
-                $media->addFilter('scale=640:360');
-            })
-            ->addFormat($lowBitrateFormat, function($media) {
-                $media->addFilter('scale=896:480');
-            })
-             ->addFormat($midBitrateFormat, function($media) {
-               $media->addFilter('scale=1280:720');
-            })
-             ->addFormat($highBitrateFormat, function($media) {
-               $media->addFilter('scale=1920:1080');
-            })
-            ->save($converted_name);
+            // ->addFormat($BitrateFormat250, function($media) {
+            //     $media->addFilter('scale=420:240');
+            // })
+            // ->addFormat($BitrateFormat360, function($media) {
+            //     $media->addFilter('scale=640:360');
+            // })
+            // ->addFormat($lowBitrateFormat, function($media) {
+            //     $media->addFilter('scale=896:480');
+            // })
+            //  ->addFormat($midBitrateFormat, function($media) {
+            //    $media->addFilter('scale=1280:720');
+            // })
+            //  ->addFormat($highBitrateFormat, function($media) {
+            //    $media->addFilter('scale=1920:1080');
+            // })
+            // ->save($converted_name);
 
+            ->addFormat($highBitrateFormat, function($media) {
+                $media->addFilter('scale=1920:1080');
+             })
+             ->addFormat($midBitrateFormat, function($media) {
+                 $media->addFilter('scale=1280:720');
+              })
+              ->addFormat($lowBitrateFormat, function($media) {
+                 $media->addFilter('scale=896:480');
+             })
+             ->addFormat($BitrateFormat360, function($media) {
+                 $media->addFilter('scale=640:360');
+             })
+             ->addFormat($BitrateFormat250, function($media) {
+                 $media->addFilter('scale=420:240');
+             })->save($converted_name);
 
         $video_name = explode(".",$converted_name);
         $vid_name = $video_name[0];

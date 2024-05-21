@@ -659,9 +659,11 @@ class AdminVideosController extends Controller
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
-                }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                    VideoClip::dispatch($video);
-                }else{
+                }
+                // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                //     VideoClip::dispatch($video);
+                // }
+                else{
                     ConvertVideoForStreaming::dispatch($video);
                 }           
                 $video_id = $video->id;
@@ -1280,9 +1282,11 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
                 ConvertVideoForStreaming::dispatch($video);
             }             
         } else {
@@ -2306,9 +2310,11 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
                 ConvertVideoForStreaming::dispatch($video);
             }           
              // ConvertVideoForStreaming::dispatch($video);
@@ -4907,9 +4913,11 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
                 ConvertVideoForStreaming::dispatch($video);
             }          
             $video_id = $video->id;
