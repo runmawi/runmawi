@@ -1111,7 +1111,7 @@ class TvshowsController extends Controller
 
     public function PlayEpisode($episode_name)
     {
-        // try{
+        try{
             $settings = Setting::first();
 
             if (Auth::guest() && $settings->access_free == 0):
@@ -1119,7 +1119,6 @@ class TvshowsController extends Controller
             endif;
             
             $episode = Episode::where('slug', '=', $episode_name)->first();
-            dd( $episode_name);
             $id = $episode->id;
 
             $season = SeriesSeason::where('series_id', '=', $episode->series_id)
@@ -1183,9 +1182,9 @@ class TvshowsController extends Controller
             } else {
                 return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
-        // } catch (\Throwable $th) {
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function LikeEpisode(Request $request)
