@@ -1,65 +1,56 @@
 <?php
 namespace App\Http\Controllers;
-use App\User as User;
-use \Redirect as Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Setting;
-use App\Genre;
-use App\Audio;
-use App\Page as Page;
-use App\Watchlater as Watchlater;
-use App\Wishlist as Wishlist;
-use App\PpvVideo as PpvVideo;
-use App\PpvPurchase as PpvPurchase;
-use App\RecentView as RecentView;
-use App\Movie;
-use App\Episode;
-use App\ContinueWatching as ContinueWatching;
-use App\LikeDislike as LikeDislike;
-use App\VideoCategory;
-use App\RegionView;
-use App\UserLogs;
-use App\Videoartist;
-use App\Artist;
-use App\PaymentSetting;
-use App\ScheduleVideos;
-use App\Language;
-use URL;
-use Auth;
-use View;
-use Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
-//use Image;
 use Intervention\Image\ImageManagerStatic as Image;
-use Session;
-use App\Playerui as Playerui;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\Video as Video;
-use Carbon\Carbon;
-use DateTime;
-use App\CurrencySetting as CurrencySetting;
-use App\HomeSetting as HomeSetting;
-use App\BlockVideo as BlockVideo;
-use App\CategoryVideo as CategoryVideo;
-use App\LanguageVideo;
-use App\AdsVideo;
-use Theme;
-use App\ThumbnailSetting;
-use App\Geofencing;
-use App\AgeCategory;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\FFProbe;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
+use \Redirect;
+use App\ContinueWatching;
+use App\PpvPurchase;
+use App\RecentView;
+use App\Watchlater;
+use App\Setting;
+use App\Wishlist;
+use App\PpvVideo;
+use App\Movie;
+use App\Episode;
+use App\LikeDislike;
+use App\VideoCategory;
+use App\RegionView;
+use App\UserLogs;
+use App\Videoartist;
+use App\Artist;
+use App\User ;
+use App\Genre;
+use App\Audio;
+use App\Page ;
+use App\Language;
+use App\Playerui;
+use App\Video;
+use App\PaymentSetting;
+use App\ScheduleVideos;
+use App\MoviesSubtitles;
+use App\CurrencySetting;
+use App\HomeSetting ;
+use App\BlockVideo ;
+use App\CategoryVideo ;
+use App\LanguageVideo;
+use App\AdsVideo;
+use App\ThumbnailSetting;
+use App\Geofencing;
+use App\AgeCategory;
 use App\RelatedVideo;
 use App\LiveCategory;
 use App\SeriesGenre;
-use App\Series;
-use App\VideoSchedules as VideoSchedules;
-use App\Channel;
+use App\VideoSchedules;
 use App\ModeratorsUser;
 use App\StorageSetting;
 use App\AdminLandingPage;
@@ -67,7 +58,16 @@ use App\CommentSection;
 use App\BlockLiveStream;
 use App\LiveStream;
 use App\TimeZone;
-
+use App\Channel;
+use App\Series;
+use Carbon\Carbon;
+use URL;
+use Auth;
+use View;
+use Hash;
+use Session;
+use Theme;
+use DateTime;
 
 class ChannelController extends Controller
 {
@@ -78,7 +78,6 @@ class ChannelController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
 
@@ -3701,80 +3700,85 @@ class ChannelController extends Controller
 
                 return redirect()->route('landing_page', $landing_page_slug );
             }
-            
-            $livestreams_data = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                                'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                                'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                                'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                        ->where('active', 1)
-                                        ->where('status', 1)
-                                       ->latest()
-                                        ->get();
 
-            $livestreams_data = $livestreams_data->filter(function ($livestream) use ($current_timezone) {
 
-                if ($livestream->publish_type === 'recurring_program') {
+            $livestreams  = LiveStream::select( 'id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day'
+                            )
+                            ->where('active', 1)
+                            ->where('status', 1)
+                            ->latest()->get()
+                            ->filter(function ($livestream) use ($current_timezone) {
+                                
+                                if ($livestream->publish_type === 'recurring_program') {
 
-                    $Current_time = Carbon::now($current_timezone);
-                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                    $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                    $midnight = $convert_time->copy()->startOfDay();
+                                    $Current_time       = Carbon::now($current_timezone);
+                                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                                    $convert_time       = $Current_time->copy()->timezone($recurring_timezone);
+                                    $midnight           = $convert_time->copy()->startOfDay();
 
-                    switch ($livestream->recurring_program) {
-                        case 'custom':
-                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                        break;
+                                    switch ($livestream->recurring_program) {
+                                        case 'custom':
+                                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >= Carbon::parse($convert_time)->format('Y-m-d\TH:i');
+                                            break;
+                                        case 'daily':
+                                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        case 'weekly':
+                                            $recurring_program_Status = ($livestream->recurring_program_week_day == $convert_time->format('N')) && $convert_time->greaterThanOrEqualTo($midnight) && ($livestream->program_end_time >= $convert_time->format('H:i'));
+                                            break;
+                                        case 'monthly':
+                                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        default:
+                                            $recurring_program_Status = false;
+                                            break;
+                                    }
 
-                        case 'daily':
-                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                        case 'weekly':
-                            $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                        break;
+                                    switch ($livestream->recurring_program) {
+                                        case 'custom':
+                                            $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                            break;
+                                        case 'daily':
+                                            $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        case 'weekly':
+                                            $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        case 'monthly':
+                                            $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                            break;
+                                        default:
+                                            $recurring_program_live_animation = false;
+                                            break;
+                                    }
 
-                        case 'monthly':
-                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
+                                    $livestream->recurring_program_live_animation = $recurring_program_live_animation;
 
-                        default:
-                            $recurring_program_Status = false;
-                        break;
-                    }
+                                    return $recurring_program_Status;
+                                }
 
-                    switch ($livestream->recurring_program) {
-                        case 'custom':
-                            $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                            break;
-                        case 'daily':
-                            $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        case 'weekly':
-                            $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        case 'monthly':
-                            $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;  
-                            
-                        default:
-                            $recurring_program_live_animation = false;
-                        break;
-                    }
+                                if ($livestream->publish_type === 'publish_later') {
 
-                    $livestream->recurring_program_live_animation = $recurring_program_live_animation ;
+                                    $Current_time = Carbon::now($current_timezone);
+                                    $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i') <= $Current_time->format('Y-m-d\TH:i');
+                                    
+                                    return $publish_later_Status;
 
-                    return $recurring_program_Status;
-                }
+                                }
+                            return true;
+                        });
 
-                if( $livestream->publish_type === 'publish_later' ){
-
-                    $Current_time = Carbon::now($current_timezone);
-                            
-                    $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-
-                    return $publish_later_Status;
-                }
-                return true;
-            });
+            $page = LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 1;
+            $livestreams_data = new LengthAwarePaginator(
+                $livestreams->forPage($page, $perPage),
+                $livestreams->count(),
+                $perPage,
+                $page, ['path' => LengthAwarePaginator::resolveCurrentPath()]
+            );
 
             $parentCategories = LiveCategory::orderBy('order')
                 ->where('in_menu', 1)
