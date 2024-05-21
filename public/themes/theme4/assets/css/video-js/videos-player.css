@@ -903,3 +903,7 @@
     object-fit: contain;
   }
 }
+
+button.vjs-big-play-button {
+  display: none !important;
+}

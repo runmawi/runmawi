@@ -9,6 +9,7 @@
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            liveui: true,
 
             // controlBar: {
 
@@ -43,15 +44,14 @@
                     inline: false,
                     vertical: true
                 },
-                subtitlesButton: true,
+                subtitlesButton: false,
                 remainingTimeDisplay: true,
                 currentTimeDisplay:true,
                 flexibleWidthSpacer:true,
                 fullscreenToggle:false,
-                liveDisplay:true,
+                liveDisplay:false,
                 pictureInPictureToggle: true,
                 enableSmoothSeeking:false,
-                liveui:true,
             }
         });
 
@@ -101,14 +101,6 @@
                 }
             }
         });
-
-        
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
-
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
