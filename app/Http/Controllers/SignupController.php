@@ -901,6 +901,7 @@ public function PostcreateStep3(Request $request)
                     $subscription->cityname = city_name();
                     $subscription->PaymentGateway =  'Stripe';
                     $subscription->ends_at = $nextPaymentAttemptDate;
+                    $subscription->platform = 'WebSite';
                     $subscription->save();
 
                     $data = Session::all();

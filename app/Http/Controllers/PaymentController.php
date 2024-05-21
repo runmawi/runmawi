@@ -1052,6 +1052,7 @@ public function RentPaypal(Request $request)
                            $subscription->countryname = $countryName;
                            $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
+                           $subscription->platform = 'WebSite';
                            $subscription->save();
                           } catch (IncompletePayment $exception) {
                               return redirect()->route(
@@ -1083,7 +1084,8 @@ public function RentPaypal(Request $request)
                            $subscription->countryname = $countryName;
                            $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
-                          $subscription->save();
+                           $subscription->platform = 'WebSite';
+                           $subscription->save();
 
               } else {
 
@@ -1115,6 +1117,7 @@ public function RentPaypal(Request $request)
                                           $subscription->regionname = $regionName;
                                           $subscription->countryname = $countryName;
                                           $subscription->cityname = $cityName;
+                                          $subscription->platform = 'WebSite';
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'
@@ -1147,6 +1150,7 @@ public function RentPaypal(Request $request)
                                           $subscription->regionname = $regionName;
                                           $subscription->countryname = $countryName;
                                           $subscription->cityname = $cityName;
+                                          $subscription->platform = 'WebSite';
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'
