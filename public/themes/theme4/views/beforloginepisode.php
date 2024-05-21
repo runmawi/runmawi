@@ -47,7 +47,7 @@ ol.breadcrumb {
 }
 
 #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
-
+.vjs-icon-hd:before{display:none;}
 </style>
 
 <?php
@@ -76,17 +76,18 @@ ol.breadcrumb {
 
                         if ($series->access == 'guest' ||  $free_episode > 0): ?>
 
+                        <div id="series_container" class="fitvid">
                             <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                             </button>
-
-                            <div id="series_container">
-                                <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
-                                    controls preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay"
-                                    poster="<?= $episode_details->Player_thumbnail ?>">
-                                    <source src="<?= $episode_details->Episode_url ?>" type="<?= $episode_details->Episode_player_type ?>">
-                                </video>
-                            </div>
+                            <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
+                                controls preload="auto" width="auto" height="auto" playsinline="playsinline"
+                                muted="muted" preload="yes" autoplay="autoplay"
+                                poster="<?= $episode_details->Player_thumbnail ?>">
+                                <source src="<?= $episode_details->Episode_url ?>"
+                                    type="<?= $episode_details->Episode_player_type ?>">
+                            </video>
+                        </div>
 
                             <?php if ($episode->type == 'embed'): ?>
 
@@ -201,11 +202,10 @@ ol.breadcrumb {
     <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?=$episode->genre_id?>" value="<?=$episode->genre_id ?>">
     <br>
 
-    <div class="row">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="">
+        <div class="nav-fill mar-left " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
-
+                <ol class="breadcrumb pl-0">
                     <li class="breadcrumb-item"><a class="black-text" href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
@@ -217,16 +217,17 @@ ol.breadcrumb {
                                 href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                                 <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                             </a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>
                     <?php } ?>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?>
-                        </a></li>
+                        </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                     <li class="breadcrumb-item">
                         <a class="black-text">
@@ -238,14 +239,15 @@ ol.breadcrumb {
         </div>
     </div>
 
-    <div class="container-fluid series-details">
+    <div class="mar-left series-details">
         <div id="series_title">
             <div class="">
-                <div class="row align-items-center">
+                <div class="">
                     <?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::guest()){
                }
                else
-               { dd($free_episode); ?>
+               {
+                //  dd($free_episode); ?>
                     <div class="col-md-6">
                         <span class="text-white"
                             style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>:</span>
@@ -266,10 +268,7 @@ ol.breadcrumb {
                     <?php
                }
                } ?>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="col-md-6">
+                    <div class="col-md-12 pl-0">
                         <span class="text-white"
                             style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
@@ -283,7 +282,7 @@ ol.breadcrumb {
                     <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
                ?>
                </h3>-->
-                    <div class="col-md-2 text-center text-white">
+                    <!-- <div class="col-md-2 text-center text-white">
                         <span class="view-count  " style="float:right;">
                             <i class="fa fa-eye"></i>
                             <?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
@@ -291,9 +290,9 @@ ol.breadcrumb {
                   else: ?><?=$episode->views ?><?php
                   endif; ?> <?php echo __('Views'); ?>
                         </span>
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-12">
+                    <div class="col-md-12 pl-0">
                         <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
                             <li>
@@ -407,21 +406,25 @@ ol.breadcrumb {
          } ?>
 
             <!-- Comment Section -->
-
-            <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
-                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
-                    <?php include('comments/index.blade.php');?>
+            <!-- <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
+                <div class="">
+                    <div class="video-list you-may-like overflow-hidden">
+                        <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                        <?php  include public_path('themes/theme4/views/comments/index.blade.php'); ?>
+                    </div>
                 </div>
-            </div>
-            <?php endif; ?>
+            <?php endif; ?> -->
 
-            <div class="iq-main-header ">
+            <?php
+                include public_path('themes/theme4/views/partials/Episode/Other_episodes_list.blade.php');
+                include public_path('themes/theme4/views/partials/Episode/Recommend_series_episode_page.blade.php');
+            ?>
+
+            <!-- <div class="iq-main-header ">
                 <h4 class="main-title"><?php echo __('Season'); ?></h4>
-            </div>
+            </div> -->
 
-            <div class="col-sm-12 overflow-hidden">
+            <!-- <div class="col-sm-12 overflow-hidden">
                 <div class="favorites-contens ml-2">
                     <ul class="favorites-slider list-inline row mb-0">
                         <?php  
@@ -465,7 +468,7 @@ ol.breadcrumb {
                    ?>
                     </ul>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="clear">
