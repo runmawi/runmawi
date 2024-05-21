@@ -29,6 +29,7 @@ use App\TimeZone;
 use App\CommentSection;
 use App\WebComment;
 use Illuminate\Support\Facades\File;
+use App\Jobs\ConvertVideoClip;
 
 //use Illuminate\Http\Request;
 
@@ -269,11 +270,12 @@ class AdminSettingsController extends Controller
             //upload new file
             $randval = Str::random(16);
             $file = $video_clip;
-            $video_clip_vid  = $randval.'.'.$request->file('video_clip')->extension();
-            $video_clip_name  = str_replace(" ", "-", $video_clip_vid);
-            $file->move($path, $video_clip_name);
-            $settings->video_clip  = str_replace(" ", "-", $video_clip_name);
-
+            $video_clip_vid = $randval . '.' . $request->file('video_clip')->extension();
+            $video_clip_name_with_ext = str_replace(" ", "-", $video_clip_vid); // Replace spaces with dashes and keep extension
+            $file->move($path, $video_clip_name_with_ext);
+            $video_clip_name_without_ext = pathinfo($video_clip_name_with_ext, PATHINFO_FILENAME);
+            $settings->video_clip = $video_clip_name_without_ext; 
+            
         } else {
             $settings->video_clip = $settings->video_clip;
         }
@@ -521,6 +523,12 @@ class AdminSettingsController extends Controller
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
 
         $settings->save();
+
+        $storepath  = URL::to('storage/app/public/');
+
+        if($settings->video_clip_enable == 1 && $video_clip != ''){
+            ConvertVideoClip::dispatch($settings,$storepath,$video_clip_name_with_ext,$video_clip_name_without_ext);
+        }
 
         return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Site Settings!', 'note_type' => 'success']);
     }
