@@ -23,6 +23,7 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
 
     <div class="container-fluid p-0">
 
@@ -58,13 +59,18 @@
         @endif
     </div>
 @php 
-
     include public_path('themes/default/views/video-js-Player/video/videos_script_file.blade.php');
     include public_path('themes/default/views/video-js-Player/video/videos_ads.blade.php');
-    include public_path('themes/default/views/video-js-Player/video/player_script.blade.php');
     include public_path('themes/default/views/footer.blade.php'); 
-
 @endphp
+
+
+@if(isset($setting) && $setting->video_clip_enable == 1 && count($videoURl) > 0)
+    @php include public_path('themes/default/views/video-js-Player/video/Concat_Player_Script.blade.php'); @endphp
+@else
+    @php include public_path('themes/default/views/video-js-Player/video/player_script.blade.php'); @endphp
+@endif
+
 
 <style>
     #my-video_ima-ad-container div{ overflow:hidden;}

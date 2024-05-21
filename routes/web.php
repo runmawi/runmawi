@@ -277,6 +277,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('ads-theme-mode', 'HomeController@AdsThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('change-profile', 'HomeController@Multipleprofile');
+    Route::get('/home-livestream-section-auto-refresh', 'HomeController@home_livestream_section_auto_refresh')->name('home.livestream.section.autorefresh');
 
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');

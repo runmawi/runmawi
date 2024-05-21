@@ -52,6 +52,7 @@ use App\ModeratorsUser;
 use App\SeriesGenre;
 use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
+use App\CompressImage;
 
 class TvshowsController extends Controller
 {
@@ -1535,7 +1536,10 @@ class TvshowsController extends Controller
             return $item;
         });
 
-        $data = array( 'series_data' => $series_data );
+        $data = array(
+             'series_data' => $series_data,
+             'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+            );
 
         return Theme::view('partials.home.Series-Networks-List',$data);
 

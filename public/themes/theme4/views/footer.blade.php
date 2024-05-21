@@ -262,20 +262,20 @@
 
 <?php
     try {
-        // if (Route::currentRouteName() == 'LiveStream_play') {
-        //     include 'livevideo_player_script.blade.php';
-        // } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
-        //     include 'episode_player_script.blade.php';
-        // } else {
-        //     include 'footerPlayerScript.blade.php';
-        // }
+        if (Route::currentRouteName() == 'LiveStream_play') {
+            include 'livevideo_player_script.blade.php';
+        } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
+            include 'episode_player_script.blade.php';
+        } else {
+            include 'footerPlayerScript.blade.php';
+        }
     } catch (\Throwable $th) {
         // throw $th;
     }
 ?>
 
 <!-- Lazy load script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script> -->
 
 <script>
     if ('loading' in HTMLImageElement.prototype) {

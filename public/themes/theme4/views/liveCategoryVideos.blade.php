@@ -1,6 +1,5 @@
 <?php include(public_path('themes/theme4/views/header.php')); ?>
 
-
 @if (!empty($livestreams_data) && $livestreams_data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0" id="home-live-videos-container">
@@ -143,41 +142,10 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-12 d-flex mt-3 justify-content-end" >
-                {{ $livestreams_data->links() }}
-            </div>
         </div>
     </section>
 @endif
 
-<script>
-    
-    // function reloadLiveVideos() {
-    //     const container = document.getElementById('home-live-videos-container');
-
-    //     const requestData = {
-    //         request_from: 'live_list',  
-    //     };
-
-    //     fetch('{{ route('home.livestream.section.autorefresh') }}', {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json',  
-    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
-    //         },
-    //         body: JSON.stringify(requestData)  // Convert the data to JSON format
-    //     })
-    //     .then(response => response.text())
-    //     .then(data => {
-    //         container.innerHTML = data;
-    //     })
-    //     .catch(error => console.error('Error fetching live videos:', error));
-    // }
-
-    // setInterval(reloadLiveVideos, 90000);
-    // reloadLiveVideos();
-</script>
 
 <style>
 

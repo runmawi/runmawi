@@ -54,6 +54,7 @@ class ChannelSubscriptionController extends Controller
             'footer_url'   => $footer_url ,
             'button_bg_color' => button_bg_color() ,
             'currency_symbol' => currency_symbol(),
+            'redirect_url' => URL::to('channel/dashboard'),
         );
 
         return Theme::view('Channel.subscriptions_plans', $data );

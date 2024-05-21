@@ -240,6 +240,7 @@ class PaystackController extends Controller
                 'PaymentGateway' =>  'Paystack',
                 'trial_ends_at'  =>  $trial_ends_at,
                 'ends_at'        =>  $trial_ends_at,
+                'platform'       => 'WebSite',
             ]);
 
             User::where('id',$user_id)->update([
@@ -322,6 +323,7 @@ class PaystackController extends Controller
                     'PaymentGateway' =>  'Paystack',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
+                    'platform'       => 'WebSite',
                 ]);
     
                 User::where('id',$user_id)->update([

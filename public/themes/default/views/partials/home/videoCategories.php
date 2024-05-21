@@ -1,5 +1,4 @@
-<?php   
-if(count($latest_video) > 0) : ?>
+
   <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -15,7 +14,7 @@ if(count($latest_video) > 0) : ?>
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                          <?php  
                         $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
-                         if(isset($parentCategories)) :
+                        if(isset($parentCategories)) :
                          foreach($parentCategories as $Categories): ?>
                       
                       
@@ -62,7 +61,5 @@ if(count($latest_video) > 0) : ?>
                                    endif; ?>
                     </ul>
                  </div>
-                 <?php endif; ?>
-
 
 </script>

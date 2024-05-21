@@ -1,80 +1,85 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', {
-            aspectRatio: '16:9',
-            fill: true,
-            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
-            fluid: true,
-            controlBar: {
-                volumePanel: { inline: false },
-                children: {
-                    'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
-                    'liveDisplay': {},
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-                    'subtitlesButton': {}, 
-                    'settingsMenuButton': {
-                        entries: ['playbackRateMenuButton']
+document.addEventListener("DOMContentLoaded", function() {
+            // Initialize Video.js player
+            var player = videojs('my-video', {
+                aspectRatio: '16:9',
+                fill: true,
+                playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                fluid: true,
+                controlBar: {
+                    volumePanel: {
+                        inline: false
                     },
-                    'fullscreenToggle': {}
+                    children: {
+                        'playToggle': {},
+                        'currentTimeDisplay': {},
+                        'timeDivider': {},
+                        'durationDisplay': {},
+                        'liveDisplay': {},
+                        'flexibleWidthSpacer': {},
+                        'progressControl': {},
+                        'subtitlesButton': {}, 
+                        'settingsMenuButton': {
+                            entries: [ 'playbackRateMenuButton']
+                        },
+                        'fullscreenToggle': {}
+                    }
                 }
-            }
-        });
+            });
+
 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
 
-            const player_duration_Seconds        =  player.duration();
-            const video_skip_intro_seconds       = '<?= $videodetail->video_skip_intro_seconds ?>' ;
-            const video_intro_start_time_seconds = '<?= $videodetail->video_intro_start_time_seconds ?>' ;
-            const video_intro_end_time_seconds   = '<?= $videodetail->video_intro_end_time_seconds ?>' ;
+        const player_duration_Seconds        =  player.duration();
+        const video_skip_intro_seconds       = '<?= $videodetail->video_skip_intro_seconds ?>' ;
+        const video_intro_start_time_seconds = '<?= $videodetail->video_intro_start_time_seconds ?>' ;
+        const video_intro_end_time_seconds   = '<?= $videodetail->video_intro_end_time_seconds ?>' ;
 
-            const video_skip_recap_seconds       = '<?= $videodetail->video_skip_recap_seconds ?>' ;
-            const video_recap_start_time_seconds = '<?= $videodetail->video_recap_start_time_seconds ?>'  ;
-            const video_recap_end_time_seconds   = '<?= $videodetail->video_recap_end_time_seconds ?>'  ;
+        const video_skip_recap_seconds       = '<?= $videodetail->video_skip_recap_seconds ?>' ;
+        const video_recap_start_time_seconds = '<?= $videodetail->video_recap_start_time_seconds ?>'  ;
+        const video_recap_end_time_seconds   = '<?= $videodetail->video_recap_end_time_seconds ?>'  ;
 
-            if( player_duration_Seconds != "Infinity" && !!video_skip_intro_seconds && !!video_intro_start_time_seconds && !!video_intro_end_time_seconds ){
-                player.skipButton({
-                    text: "Skip Intro",
-                    from: video_intro_start_time_seconds,
-                    to: video_skip_intro_seconds,
-                    position: "bottom-right",
-                    offsetH: 46,
-                    offsetV: 96
-                });
+        if( player_duration_Seconds != "Infinity" && !!video_skip_intro_seconds && !!video_intro_start_time_seconds && !!video_intro_end_time_seconds ){
+            player.skipButton({
+                text: "Skip Intro",
+                from: video_intro_start_time_seconds,
+                to: video_skip_intro_seconds,
+                position: "bottom-right",
+                offsetH: 46,
+                offsetV: 96
+            });
 
-                player.on("timeupdate", function() {
-                    if(video_intro_end_time_seconds <= player.currentTime() ){
-                        $(".vjs-fg-skip-button").removeAttr("style").hide();
-                    }
-                });
-            }
+            player.on("timeupdate", function() {
+                if(video_intro_end_time_seconds <= player.currentTime() ){
+                    $(".vjs-fg-skip-button").removeAttr("style").hide();
+                }
+            });
+        }
 
-            if(  player_duration_Seconds != "Infinity" &&  !!video_skip_recap_seconds && !!video_recap_start_time_seconds && !!video_recap_end_time_seconds ){
-                player.skipButton({
-                    text: "Skip Recap",
-                    from: video_recap_start_time_seconds,
-                    to: video_skip_recap_seconds,
-                    position: "bottom-right",
-                    offsetH: 46,
-                    offsetV: 96
-                });
+        if(  player_duration_Seconds != "Infinity" &&  !!video_skip_recap_seconds && !!video_recap_start_time_seconds && !!video_recap_end_time_seconds ){
+            player.skipButton({
+                text: "Skip Recap",
+                from: video_recap_start_time_seconds,
+                to: video_skip_recap_seconds,
+                position: "bottom-right",
+                offsetH: 46,
+                offsetV: 96
+            });
 
-                player.on("timeupdate", function() {
-                    if(video_recap_end_time_seconds <= player.currentTime() ){
-                        $(".vjs-fg-skip-button").removeAttr("style").hide();
-                    }
-                });
-            }
+            player.on("timeupdate", function() {
+                if(video_recap_end_time_seconds <= player.currentTime() ){
+                    $(".vjs-fg-skip-button").removeAttr("style").hide();
+                }
+            });
+        }
         });
 
+
+        
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -120,25 +125,6 @@
                     marker_space.append(el);
                 }
             }
-        });
-
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
-
-        // Hls Quality Selector - M3U8 
-
-        player.hlsQualitySelector({ 
-            displayCurrentQuality: true,
         });
 
         // Advertisement
@@ -245,18 +231,35 @@
             player.play();
 
         });
-    });
+            // // HLS Quality Selector
+            // player.hlsQualitySelector({
+            //     displayCurrentQuality: true,
+            // });
 
+            // Example video URLs
+        let videoList = <?php echo json_encode($videoURl); ?>;
+
+           
+            var manifests = videoList.map(function(item) {
+                return {
+                    url: item.videos_url,
+                    mimeType: item.video_player_type,
+                };
+            });
+
+            player.concat({
+                manifests: manifests,
+                targetVerticalResolution: 3,
+                callback: function(err, result) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    player.src({
+                        src: `data:application/vnd.videojs.vhs+json,${JSON.stringify(result.manifestObject)}`,
+                        type: 'application/vnd.videojs.vhs+json',
+                    });
+                }
+            });
+        });
 </script>
-
-<style>
-    .vjs-marker {
-        position: absolute;
-        background: #d4d42b;
-        width: 5px;
-        height: 110%;
-        top: -5%;
-        z-index: 30;
-        margin-left: -3px;
-    }
-</style>

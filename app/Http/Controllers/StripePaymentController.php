@@ -191,6 +191,7 @@ class StripePaymentController extends Controller
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
                     'coupon_used'    =>  !is_null($subscription['discount'] ) ?  $subscription['discount']->promotion_code : null,
+                    'platform'       => 'WebSite',
                 ]);
 
                 $user_data = array(
