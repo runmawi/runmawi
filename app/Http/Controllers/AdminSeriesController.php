@@ -2297,7 +2297,7 @@ class AdminSeriesController extends Controller
             }
 
             foreach ($files as $file) {
-                if (File::exists($file)) {
+                if (File::exists($file) && File::isFile($file)) {
                     unlink($file);
                 } 
             }
@@ -2305,6 +2305,7 @@ class AdminSeriesController extends Controller
             Episode::destroy($id);
 
             return Redirect::to('admin/season/edit' . '/' . $series_id.'/'.$season_id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        
         } catch (\Throwable $th) {
 
             return $th->getMessage();
