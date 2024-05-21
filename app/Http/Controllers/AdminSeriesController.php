@@ -841,7 +841,9 @@ class AdminSeriesController extends Controller
                     $files = glob($directory . $pattern);
 
                     foreach ($files as $file) {
-                        File::delete($file);
+                        if (File::exists($file) && File::isFile($file)) {
+                            File::delete($file);
+                        }
                     }
                 
                     SeriesSeason::destroy($id);
@@ -1606,7 +1608,9 @@ class AdminSeriesController extends Controller
                 $files = glob($directory . '/' . $pattern);
             
                 foreach ($files as $file) {
-                    unlink($file);
+                    if ( File::isFile($file) && File::exists($file)) {
+                        unlink($file);
+                    } 
                 }
 
                 Episode::destroy($episode_id);
@@ -2297,7 +2301,7 @@ class AdminSeriesController extends Controller
             }
 
             foreach ($files as $file) {
-                if (File::exists($file) && File::isFile($file)) {
+                if ( File::isFile($file) && File::exists($file)) {
                     unlink($file);
                 } 
             }
@@ -2308,7 +2312,7 @@ class AdminSeriesController extends Controller
         
         } catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
