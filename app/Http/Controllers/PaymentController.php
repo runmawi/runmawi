@@ -1619,6 +1619,7 @@ public function UpgadeSubscription(Request $request){
                     'PaymentGateway' =>  'Stripe',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
+                    'platform'       => 'WebSite',
                 ]);
 
         
@@ -1828,7 +1829,8 @@ public function UpgadeSubscription(Request $request){
               'PaymentGateway' =>  'Stripe',
               'trial_ends_at'  =>  $trial_ends_at,
               'ends_at'        =>  $trial_ends_at,
-          ]);
+              'platform'       => 'WebSite',
+            ]);
 
           User::where('id',$user_id)->update([
               'role'                  =>  'subscriber',
@@ -2039,6 +2041,7 @@ public function UpgadeSubscription(Request $request){
           $subscription->cityname = city_name();
           $subscription->PaymentGateway =  'paypal';
           $subscription->ends_at = $date;
+          $subscription->platform = 'WebSite';
           $subscription->save();
 
               $subId = $request->subId;        

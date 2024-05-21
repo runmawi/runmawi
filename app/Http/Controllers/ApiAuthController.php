@@ -477,7 +477,8 @@ class ApiAuthController extends Controller
                     'PaymentGateway' =>  'Razorpay',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
-                  ]);
+                    'platform'       => $request->platform,
+                ]);
 
                 User::where('id',$userid)->update([
                     'role'                  =>  'subscriber',
@@ -558,7 +559,8 @@ class ApiAuthController extends Controller
                     'PaymentGateway' =>  'Paystack',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
-                ]);
+                    'platform'       => $request->platform,
+                  ]);
 
                 User::where('id',$userid)->update([
                     'role'            =>  'subscriber',
@@ -611,6 +613,7 @@ class ApiAuthController extends Controller
                       'PaymentGateway' =>  'CinetPay',
                       'trial_ends_at'  =>  $ends_at,
                       'ends_at'        =>  $ends_at,
+                      'platform'       => $request->platform,
                   ]);
 
                   User::where('id',$request->user_id)->update([
@@ -664,6 +667,7 @@ class ApiAuthController extends Controller
                       'PaymentGateway' =>  'PayPal',
                       'trial_ends_at'  =>  $ends_at,
                       'ends_at'        =>  $ends_at,
+                      'platform'       => $request->platform,
                   ]);
 
                   User::where('id',$request->user_id)->update([
@@ -768,6 +772,7 @@ class ApiAuthController extends Controller
                       'PaymentGateway' =>  'Stripe',
                       'trial_ends_at'  =>  $trial_ends_at,
                       'ends_at'        =>  $trial_ends_at,
+                      'platform'       => $request->platform,
                   ]);
           
                   $user_data = array(
@@ -4605,6 +4610,7 @@ public function verifyandupdatepassword(Request $request)
                 'PaymentGateway' =>  'Stripe',
                 'trial_ends_at'  =>  $trial_ends_at,
                 'ends_at'        =>  $trial_ends_at,
+                'platform'       => $request->platform,
             ]);
     
             $user_data = array(
@@ -7527,6 +7533,7 @@ public function SubscriptionPayment(Request $request){
         $subscription->cityname = $cityname;
         $subscription->ends_at = $date;
         $subscription->ios_product_id = $request->product_id;
+        $subscription->platform = $request->platform;
         $subscription->save();
 
         $user =  User::findOrFail($user_id);
@@ -8587,7 +8594,8 @@ public function LocationCheck(Request $request){
           'PaymentGateway' =>  'Paystack',
           'trial_ends_at'  =>  $trial_ends_at,
           'ends_at'        =>  $trial_ends_at,
-      ]);
+          'platform'       => $request->platform,
+        ]);
 
       User::where('id',$userid)->update([
           'role'            =>  'subscriber',
@@ -8678,6 +8686,7 @@ public function LocationCheck(Request $request){
                 'regionname'     =>  $regionName,
                 'cityname'       =>  $cityName,
                 'PaymentGateway' =>  'Razorpay',
+                'platform'       => $request->platform,
             ]);
 
             User::where('id',$request->userId)->update([
@@ -8769,6 +8778,7 @@ public function LocationCheck(Request $request){
                 'cityname'      =>  $cityName,
                 'trial_ends_at' => $trial_ends_at,
                 'ends_at'       => $trial_ends_at,
+                'platform'       => $request->platform,
         ]);
 
             User::where('id',$user_id)->update([
@@ -23358,6 +23368,7 @@ public function TV_login(Request $request)
                 'PaymentGateway' =>  'CinetPay',
                 'trial_ends_at'  =>  $ends_at,
                 'ends_at'        =>  $ends_at,
+                'platform'       => $request->platform,
             ]);
 
             User::where('id',$request->user_id)->update([
@@ -23454,6 +23465,7 @@ public function TV_login(Request $request)
                 'PaymentGateway' =>  'PayPal',
                 'trial_ends_at'  =>  $ends_at,
                 'ends_at'        =>  $ends_at,
+                'platform'       => $request->platform,
             ]);
 
             User::where('id',$request->user_id)->update([

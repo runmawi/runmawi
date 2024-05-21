@@ -98,7 +98,7 @@ body {font-family: Arial;}
                                             <th>Transaction.no</th>
                                             <th>Type</th>
                                             <th>Plan</th>
-                                            <!-- <th>Content</th> -->
+                                            <th>Platform</th>
                                             <th>Price</th>
                                             <th>Country</th>
                                             <th>TimeStamp</th>
@@ -117,6 +117,7 @@ body {font-family: Arial;}
                                         <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
                                         <td>{{ $user->role  }}</td>                                      
                                         <td>@if(!empty($plans_name))  {{ $plans_name }} @else Subscriber @endif</td>
+                                        <td> {{ $user->platform }}  </td>
                                         <!-- <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif -->
                                         <td>{{ $user->total_amount  }}</td>   
                                         <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
