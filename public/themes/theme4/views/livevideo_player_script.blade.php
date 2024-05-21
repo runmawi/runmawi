@@ -9,31 +9,49 @@
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            liveui: true,
 
-            controlBar: {
+            // controlBar: {
 
-                volumePanel: {
-                    inline: false
+            //     volumePanel: {
+            //         inline: false
+            //     },
+
+            //     children: {
+            //         'playToggle': {},
+            //         'currentTimeDisplay': {},
+            //         'timeDivider': {},
+            //         'durationDisplay': {},
+            //         'liveDisplay': {},
+
+            //         'flexibleWidthSpacer': {},
+            //         'progressControl': {},
+
+            //         'settingsMenuButton': {
+            //             entries: [
+            //                 'subtitlesButton',
+            //                 'playbackRateMenuButton'
+            //             ]
+            //         },
+            //         'fullscreenToggle': {}
+            //     }
+            // }
+
+            controlBar:
+            {
+                volumePanel:
+                {
+                    inline: false,
+                    vertical: true
                 },
-
-                children: {
-                    'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
-                    'liveDisplay': {},
-
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                subtitlesButton: false,
+                remainingTimeDisplay: true,
+                currentTimeDisplay:true,
+                flexibleWidthSpacer:true,
+                fullscreenToggle:false,
+                liveDisplay:false,
+                pictureInPictureToggle: true,
+                enableSmoothSeeking:false,
             }
         });
 
@@ -83,14 +101,6 @@
                 }
             }
         });
-
-        
-        player.controlBar.el().appendChild(Back_button);
-
-        Back_button.addEventListener('click', function() {
-            history.back();
-        });
-
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,

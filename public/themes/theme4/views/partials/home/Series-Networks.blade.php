@@ -33,17 +33,17 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $series_networks)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $series_networks->image_url }}" class="img-fluid lazy w-100" alt="network" width="300" height="200">
                                         </div>
                                     </a>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $series_networks )

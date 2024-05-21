@@ -3741,6 +3741,27 @@ class ChannelController extends Controller
                         break;
                     }
 
+                    switch ($livestream->recurring_program) {
+                        case 'custom':
+                            $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                            break;
+                        case 'daily':
+                            $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'weekly':
+                            $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'monthly':
+                            $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;  
+                            
+                        default:
+                            $recurring_program_live_animation = false;
+                        break;
+                    }
+
+                    $livestream->recurring_program_live_animation = $recurring_program_live_animation ;
+
                     return $recurring_program_Status;
                 }
 
