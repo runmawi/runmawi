@@ -65,7 +65,7 @@
 @endphp
 
 
-@if(isset($setting) && $setting->video_clip_enable == 1 )
+@if(isset($setting) && $setting->video_clip_enable == 1 && count($videoURl) > 0)
     @php include public_path('themes/default/views/video-js-Player/video/Concat_Player_Script.blade.php'); @endphp
 @else
     @php include public_path('themes/default/views/video-js-Player/video/player_script.blade.php'); @endphp
