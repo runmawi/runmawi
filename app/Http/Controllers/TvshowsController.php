@@ -1183,6 +1183,7 @@ class TvshowsController extends Controller
                 return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
         } catch (\Throwable $th) {
+            return $th->getMessage();
             return abort(404);
         }
     }
