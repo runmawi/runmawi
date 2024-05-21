@@ -323,7 +323,7 @@
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                                 </button>
-                                <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                                <video id="live-stream-player" class="vjs-theme-city my-video-dimensions video-js vjs-play-control customVideoPlaye" controls
                                     preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                                     <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                                 </video>
@@ -361,7 +361,7 @@
 
                         <?php else: ?>
 
-                            <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                            <video id="live-stream-player" class="vjs-theme-city my-video-dimensions video-js vjs-play-control customVideoPlaye" controls
                                 preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                                 <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                             </video>
@@ -409,7 +409,7 @@
 
                     <?php else: ?>
 
-                        <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                        <video id="live-stream-player" class="vjs-theme-city my-video-dimensions video-js vjs-play-control customVideoPlaye" controls
                             preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                         </video>
@@ -432,7 +432,7 @@
 
                     <?php else: ?>
 
-                        <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                        <video id="live-stream-player" class="vjs-theme-city my-video-dimensions video-js vjs-play-control customVideoPlaye" controls
                             preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                         </video>

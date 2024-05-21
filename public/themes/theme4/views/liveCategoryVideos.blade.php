@@ -17,9 +17,13 @@
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
                                         <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                        
                                         @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                        @elseif( $livestream_videos->recurring_program_live_animation  == true )
+                                            <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                         @endif
+                                        
                                         <div class="controls">        
                                             <a href="{{ URL::to('live/'.$livestream_videos->slug) }}">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -136,31 +140,28 @@
                             @endforeach
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
         </div>
-
-       
     </section>
 @endif
 
 
 <style>
 
-div#trending-slider-nav{display: flex;
-    flex-wrap: wrap;}
-    .network-image{flex: 0 0 16.666%;max-width: 16.666%;}
-    /* .network-image img{width: 100%; height:auto;} */
-    .movie-sdivck{padding:2px;}
-    #trending-slider-nav div.slick-slide{padding:2px;}
-    div#trending-slider-nav .slick-slide.slick-current .movie-sdivck.position-relative{border:2px solid red}
-    .sub_dropdown_image .network-image:hover .controls {
-    opacity: 1;
-    background-image: linear-gradient(0deg, black, transparent);
-    border: 2px solid #2578c0 !important;
-}
+    div#trending-slider-nav{display: flex;
+        flex-wrap: wrap;}
+        .network-image{flex: 0 0 16.666%;max-width: 16.666%;}
+        /* .network-image img{width: 100%; height:auto;} */
+        .movie-sdivck{padding:2px;}
+        #trending-slider-nav div.slick-slide{padding:2px;}
+        div#trending-slider-nav .slick-slide.slick-current .movie-sdivck.position-relative{border:2px solid red}
+        .sub_dropdown_image .network-image:hover .controls {
+        opacity: 1;
+        background-image: linear-gradient(0deg, black, transparent);
+        border: 2px solid #2578c0 !important;
+    }
+
     .controls {
         position: absolute;
         padding: 4px;
@@ -219,10 +220,4 @@ div#trending-slider-nav{display: flex;
     }
 </style>
 
-
-
-
-
-@php
-    include public_path('themes/theme4/views/footer.blade.php');
-@endphp
+@php include public_path('themes/theme4/views/footer.blade.php'); @endphp
