@@ -26,6 +26,7 @@ use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 use View;
 use Validator;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
@@ -43,7 +44,6 @@ use App\Artist;
 use App\Seriesartist;
 use GifCreator\GifCreator;
 use FFMpeg\Coordinate\TimeCode;
-use File;
 use App\SeriesCategory as SeriesCategory;
 use App\SeriesLanguage as SeriesLanguage;
 use GuzzleHttp\Client;
@@ -841,7 +841,9 @@ class AdminSeriesController extends Controller
                     $files = glob($directory . $pattern);
 
                     foreach ($files as $file) {
-                        File::delete($file);
+                        if (File::exists($file) && File::isFile($file)) {
+                            File::delete($file);
+                        }
                     }
                 
                     SeriesSeason::destroy($id);
@@ -1606,7 +1608,9 @@ class AdminSeriesController extends Controller
                 $files = glob($directory . '/' . $pattern);
             
                 foreach ($files as $file) {
-                    unlink($file);
+                    if ( File::isFile($file) && File::exists($file)) {
+                        unlink($file);
+                    } 
                 }
 
                 Episode::destroy($episode_id);
@@ -2297,13 +2301,18 @@ class AdminSeriesController extends Controller
             }
 
             foreach ($files as $file) {
-                unlink($file);
+                if ( File::isFile($file) && File::exists($file)) {
+                    unlink($file);
+                } 
             }
 
             Episode::destroy($id);
 
             return Redirect::to('admin/season/edit' . '/' . $series_id.'/'.$season_id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        
         } catch (\Throwable $th) {
+
+            // return $th->getMessage();
             return abort(404);
         }
     }
