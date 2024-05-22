@@ -156,7 +156,7 @@
             arrows: true,
             nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -188,6 +188,10 @@
             $('.suggest-videos-slider').show();
         });
 
+        $('body').on('click', '.slick-arrow', function() {
+            $('.suggest-videos-slider').hide();
+        });
+        
         $('body').on('click', '.drp-close', function() {
             $('.suggest-videos-slider').hide();
         });

@@ -192,7 +192,7 @@
             arrows: true,
             nextArrow: '<a href="#" aria-label="Previous" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" aria-label="next" class="slick-arrow slick-prev"></a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -244,12 +244,12 @@
             $('.series-networks-slider').fadeIn();
         });
 
-        $('body').on('click', '.drp-close', function() {
+        $('body').on('click', '.slick-arrow', function() {
             $('.series-networks-slider').hide();
         });
-        $('.slick-next, .slick-prev').on('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
+
+        $('body').on('click', '.drp-close', function() {
+            $('.series-networks-slider').hide();
         });
     });
 </script>
