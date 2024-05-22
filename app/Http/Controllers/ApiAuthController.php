@@ -23853,7 +23853,16 @@ public function TV_login(Request $request)
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
             $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
-            $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+            // $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+  
+            $scheduled_videos = ChannelVideoScheduler::where('channe_id', $item->id)->where('choosed_date', $choosed_date)->get();
+            // Add next video title to each scheduled video
+            $scheduled_videos->each(function ($video, $index) use ($scheduled_videos) {
+            $nextVideo = $index + 1 < $scheduled_videos->count() ? $scheduled_videos[$index + 1]->socure_title : 0;
+              $video->up_next = $nextVideo;
+            });
+
+            $item['scheduled_videos'] = $scheduled_videos;
           return $item;
         });
 
