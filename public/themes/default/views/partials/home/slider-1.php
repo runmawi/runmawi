@@ -288,7 +288,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-8 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        <h1 class="slider-text title text-uppercase" data-animation-in="fadeInLeft"
                             data-delay-in="0.6">
                             <?php
                             
