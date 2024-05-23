@@ -202,7 +202,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -266,6 +266,10 @@
         $('.videos-category-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.videos-category-slider').fadeIn();
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.videos-category-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

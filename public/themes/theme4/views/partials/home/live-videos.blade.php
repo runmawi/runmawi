@@ -20,7 +20,9 @@
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="livestream_videos" width="100%"></div>
+                                        <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                    @elseif( $livestream_videos->recurring_program_live_animation  == true )
+                                        <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                     @endif
                                 </div>
                             @endforeach
@@ -229,7 +231,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -259,6 +261,9 @@
         $('.livestream-videos-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.livestream-videos-slider').show();
+        });
+        $('body').on('click', '.slick-arrow', function() {
+            $('.livestream-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

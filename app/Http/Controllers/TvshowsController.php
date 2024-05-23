@@ -1114,7 +1114,6 @@ class TvshowsController extends Controller
             endif;
             
             $episode = Episode::where('slug', '=', $episode_name)->first();
-
             $id = $episode->id;
 
             $season = SeriesSeason::where('series_id', '=', $episode->series_id)

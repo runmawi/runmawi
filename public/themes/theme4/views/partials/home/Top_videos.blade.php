@@ -154,9 +154,9 @@
             asNavFor: '.suggest-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
+            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -188,6 +188,10 @@
             $('.suggest-videos-slider').show();
         });
 
+        $('body').on('click', '.slick-arrow', function() {
+            $('.suggest-videos-slider').hide();
+        });
+        
         $('body').on('click', '.drp-close', function() {
             $('.suggest-videos-slider').hide();
         });

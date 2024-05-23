@@ -188,7 +188,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -232,6 +232,10 @@
                 prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
                 nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             });
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.series-networks-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

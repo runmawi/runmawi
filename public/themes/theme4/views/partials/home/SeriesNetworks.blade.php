@@ -268,7 +268,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel" style="height: 250px;">
+            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel" style="height: 60vh;">
                     <div class="caption">
                         <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
@@ -404,7 +404,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -442,6 +442,10 @@
                 slidesToShow: 6,
                 slidesToScroll: 4,
             });
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.series-category-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

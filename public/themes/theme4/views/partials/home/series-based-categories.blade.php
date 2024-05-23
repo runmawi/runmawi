@@ -185,7 +185,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -227,6 +227,10 @@
                 slidesToShow: 6,
                 slidesToScroll: 4,
             });
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.series-genre-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {
