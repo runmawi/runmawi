@@ -1,6 +1,9 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
+// function skipDuration(duration){
+//         alert();
+//     }
+let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -9,6 +12,7 @@
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            // hlsQualitySelector:{},
 
             controlBar: {
 
@@ -19,23 +23,25 @@
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
                     'liveDisplay': {},
 
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+
+                    'fullscreenToggle': {},
+                    
+                },
+                pictureInPictureToggle: true,
+
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -242,6 +248,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            console.log("!#");
+        })
     });
 
 </script>

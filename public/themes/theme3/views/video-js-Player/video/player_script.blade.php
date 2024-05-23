@@ -26,12 +26,15 @@
                     'flexibleWidthSpacer':{},
                     'progressControl':{},
 
-                    'settingsMenuButton': {
-                        entries : [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+
+                    // 'settingsMenuButton': {
+                    //     entries : [
+                    //         'subtitlesButton',
+                    //         'playbackRateMenuButton'
+                    //     ]
+                    // },
                     'fullscreenToggle':{}
                 }
 		    }
