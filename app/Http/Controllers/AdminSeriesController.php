@@ -2625,6 +2625,8 @@ class AdminSeriesController extends Controller
         }
         if($episode->type == 'm3u8'){
             $type = 'm3u8';
+        }else if($episode->type == 'bunny_cdn'){
+            $type = 'bunny_cdn';
         }else{
             $type = $data['type'];
         }
