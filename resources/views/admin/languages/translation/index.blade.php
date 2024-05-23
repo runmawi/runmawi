@@ -74,6 +74,17 @@
                                                     </label>
                                                 <div class="ml-2">ON</div>
                                         </div>
+
+                                        <label for="name">Set As Default Language</label>
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                    <label class="switch mt-2">
+                                                        <input  type="checkbox"  name="website_default_language">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                <div class="ml-2">ON</div>
+                                        </div>
+
                                     </form>
                                 </div>
 
@@ -150,7 +161,7 @@
                                         @forelse($TranslationLanguage as $key => $language)
                                             <td>{{ $key + 1 }}</td>
 
-                                            <td>{{ $language->name ? $language->name : 'No Language Name Found' }}</td>
+                                            <td>{{ $language->name ? $language->name : 'No Language Name Found'  }}   {{ @$settings->website_default_language == @$language->code ? '(Default)' : '' }}</td>
 
                                             <td class="">
                                                 <div class=" align-items-center list-user-action">
