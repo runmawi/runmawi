@@ -28,7 +28,7 @@
 
     label#devices\[\]-error {
         width: 370px;
-        margin-top: 18px;
+        margin-top: 30px;
     }
 </style>
 
