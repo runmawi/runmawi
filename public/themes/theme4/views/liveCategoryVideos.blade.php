@@ -9,10 +9,10 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"> {{ _("Today's Livestreams") }} </a></h4>
-                        <button class="btn-primary btn" tabindex="0" data-bs-toggle="modal" data-bs-target="#live-lists-{{ $key }}">View schedule</button>
+                        <button class="btn-primary btn" tabindex="0" data-bs-toggle="modal" data-bs-target="#live-lists">View schedule</button>
                     </div>
 
-                        <div class="modal fade info_model" id="live-lists-{{ $key }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade info_model" id="live-lists" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                                 <div class="container">
                                     <div class="modal-content" style="border:none; background:transparent;">
