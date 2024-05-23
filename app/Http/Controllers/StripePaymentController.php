@@ -444,6 +444,7 @@ class StripePaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
  
                 LivePurchase::create([
@@ -457,6 +458,7 @@ class StripePaymentController extends Controller
                     'status' => 1,
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
                 $respond = array(
@@ -643,6 +645,7 @@ class StripePaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
 
@@ -826,6 +829,7 @@ class StripePaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
                 $respond = array(
