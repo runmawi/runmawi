@@ -81,20 +81,30 @@
                             <p> Enter The Language Code :</p>
                             <input type="text" id="code" name="code" class="form-control" value="{{ $TranslationLanguage->code }}" placeholder="Language Name">
                          </div>
-                    </div>
 
-                    <div class="row mt-3 p-3 align-items-center">
-                    <label for="name">Active</label>
-
-                        <div class="col-sm-12 mt-3" data-collapsed="0">
-                            <div class="mr-2">OFF</div>
-                                    <label class="switch mt-2">
-                                        <input  type="checkbox"  name="status" @if ($TranslationLanguage->status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
-                                        <span class="slider round"></span>
-                                    </label>
+                         <div class="col-sm-12 " data-collapsed="0">
+                            <label class="m-0"> Active </label>
+                             <div class="mr-2">OFF</div>
+                                <label class="switch mt-2">
+                                    <input  type="checkbox"  name="status" @if ($TranslationLanguage->status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                    <span class="slider round"></span>
+                                </label>
                                 <div class="ml-2">ON</div>
-                        </div>
+                         </div>
+
+
+                         <div class="col-sm-12 " data-collapsed="0">
+                            <label class="m-0"> Set As Default Language </label>
+                             <div class="mr-2">OFF</div>
+                                <label class="switch mt-2">
+                                    <input  type="checkbox"  name="website_default_language" @if ($settings->website_default_language == $TranslationLanguage->code) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                    <span class="slider round"></span>
+                                </label>
+                                <div class="ml-2">ON</div>
+                         </div>
+
                     </div>
+
                     
                     <input type="hidden" name="language_id" value="{{ $TranslationLanguage->id }}"  />
 

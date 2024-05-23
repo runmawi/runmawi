@@ -9,6 +9,8 @@
 
     @$translate_language = App\Setting::pluck('translate_language')->first();
 
+    $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : $website_default_language;
+
     if(Auth::guest()){
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();
@@ -17,7 +19,7 @@
         if(!empty($UserTranslation)){
             $translate_language = GetWebsiteName().$UserTranslation->translate_language;
         }else{
-            $translate_language = GetWebsiteName().'en';
+            $translate_language = GetWebsiteName().$website_default_language;
         }
     }else if(!Auth::guest()){
 
@@ -27,21 +29,21 @@
             if(!empty($Subuserranslation)){
                 $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
             }else{
-                $translate_language = GetWebsiteName().'en';
+                $translate_language = GetWebsiteName().$website_default_language;
             }
         }else if(Auth::user()->id != ''){
             $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
             if(!empty($UserTranslation)){
                 $translate_language = GetWebsiteName().$UserTranslation->translate_language;
             }else{
-                $translate_language = GetWebsiteName().'en';
+                $translate_language = GetWebsiteName().$website_default_language;
             }
         }else{
-            $translate_language = GetWebsiteName().'en';
+            $translate_language = GetWebsiteName().$website_default_language;
         }
 
     }else{
-        $translate_language = GetWebsiteName().'en';
+        $translate_language = GetWebsiteName().$website_default_language;
     }
 
 

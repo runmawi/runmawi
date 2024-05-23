@@ -25,10 +25,10 @@
 
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'subtitlesButton': {}, 
 
                     'settingsMenuButton': {
                         entries: [
-                            'subtitlesButton',
                             'playbackRateMenuButton'
                         ]
                     },
