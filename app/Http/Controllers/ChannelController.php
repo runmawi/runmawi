@@ -4389,7 +4389,7 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug )
     {
-        // try {
+        try {
             
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
@@ -4503,11 +4503,11 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos', $data);
 
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             
-        //     // return $th->getMessage();
-        //     return abort(404);
-        // }
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_watchlater(Request $request)
