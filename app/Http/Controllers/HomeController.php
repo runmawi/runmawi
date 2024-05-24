@@ -5110,4 +5110,50 @@ public function uploadExcel(Request $request)
     
         return Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livestreams , 'livestreams_data' => $livestreams ]) )->render();
     }
+
+
+    public function MyLoggedDevices()
+    {
+        try {
+
+            if (Auth::guest())
+            {
+                return redirect('/login');            
+            }
+            
+            $alldevices_register = LoggedDevice::where('user_id', Auth::User()->id)
+                                        ->get();
+            $data = array(
+                'alldevices_register' => $alldevices_register,
+            );
+
+            return Theme::view('MyLoggedDevices',['MyLoggedDevices'=>$data]);
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    
+    public function MyLoggedDevicesDelete($id)
+    {
+        try {
+
+            if (Auth::guest())
+            {
+                return redirect('/login');            
+            }
+    
+            LoggedDevice::where('id',$id)->delete();
+
+            return Redirect::back()->with(array('message' => 'Successfully Deleted Device','note_type' => 'success'));
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
