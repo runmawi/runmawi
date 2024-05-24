@@ -23998,6 +23998,7 @@ public function TV_login(Request $request)
             $user_id = $request->user_id;
             $subuser_id = $request->subuser_id;
             $mobile_address = $request->mobile_address;
+            $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
 
             if(!empty($mobile_address)){
 
@@ -24007,8 +24008,8 @@ public function TV_login(Request $request)
                   $translate_language = GetWebsiteName().$UserTranslation->translate_language;
                   $language_code = $UserTranslation->translate_language;
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
 
@@ -24021,13 +24022,13 @@ public function TV_login(Request $request)
                       $language_code = $Subuserranslation->translate_language;
 
                   }else{
-                      $translate_language = GetWebsiteName().'en';
-                      $language_code = 'en';
+                      $translate_language = GetWebsiteName().$website_default_language;
+                      $language_code = $website_default_language;
   
                     }
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
      
@@ -24040,17 +24041,17 @@ public function TV_login(Request $request)
                     $language_code = $UserTranslation->translate_language;
 
                 }else{
-                    $translate_language = GetWebsiteName().'en';
-                    $language_code = 'en';
+                    $translate_language = GetWebsiteName().$website_default_language;
+                    $language_code = $website_default_language;
               }
             }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
             }
    
           }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
           }
           $translationFilePath = URL::to('resources/lang/' . $translate_language . '.json');
           $context = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);

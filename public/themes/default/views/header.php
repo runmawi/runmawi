@@ -11,6 +11,7 @@
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
 
+      $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
 
 
       if(Auth::guest()){
@@ -21,7 +22,7 @@
          if(!empty($UserTranslation)){
              $translate_language = GetWebsiteName().$UserTranslation->translate_language;
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = GetWebsiteName().@$website_default_language;
          }
      }else if(!Auth::guest()){
 
@@ -31,21 +32,21 @@
              if(!empty($Subuserranslation)){
                  $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = GetWebsiteName().@$website_default_language;
              }
          }else if(Auth::user()->id != ''){
              $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
              if(!empty($UserTranslation)){
                  $translate_language = GetWebsiteName().$UserTranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = GetWebsiteName().@$website_default_language;
              }
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = GetWebsiteName().@$website_default_language;
          }
 
      }else{
-         $translate_language = GetWebsiteName().'en';
+         $translate_language = GetWebsiteName().@$website_default_language;
      }
 
       \App::setLocale(@$translate_language);
