@@ -167,11 +167,28 @@ endif; ?>
                         </h1>
                         <?php } ?>
 
-                        <p class="desc"
-                            style="overflow: hidden !important;text-overflow: ellipsis !important; color:#fff;display: -webkit-box;
-                                -webkit-line-clamp: 3;  -webkit-box-orient: vertical;     overflow: hidden;">
-                            <?php echo __($videos->description); ?>
-                        </p>
+                        <!-- <p class="desc">
+                            <?php //echo __( strip_tags(html_entity_decode($videos->description))); ?>
+                        </p> -->
+
+                        <div class="descp" style="overflow-y: scroll;max-height: 250px;scrollbar-width: none; color:#fff !important;">
+
+                            <?php
+                            $description = __(strip_tags(html_entity_decode($videos->description)));
+                            ?>
+
+                            <div class="video-banner">
+                                <p class="desc" id="description-<?php echo $key; ?>" style="max-height: 100px; overflow: hidden;">
+                                    <?php echo $description; ?>
+                                </p>
+
+                                <?php if (strlen($description) > 300): ?>
+                                    <button class="des-more-less-btns p-0" id="read-more-btn-<?php echo $key; ?>" onclick="toggleReadMore(<?php echo $key; ?>)">Read More</button>
+                                    <button class="des-more-less-btns p-0" id="read-less-btn-<?php echo $key; ?>" onclick="toggleReadMore(<?php echo $key; ?>)" style="display: none;">Read Less</button>
+                                <?php endif; ?>
+                            </div>
+
+                        </div>
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                             <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd">
@@ -541,3 +558,5 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
             playVideoAfterDelay();
         });
     </script> -->
+
+    
