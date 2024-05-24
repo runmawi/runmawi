@@ -1,8 +1,5 @@
 <script>
 
-// function skipDuration(duration){
-//         alert();
-//     }
 let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -12,14 +9,9 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-            // hlsQualitySelector:{},
 
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
@@ -27,16 +19,12 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                     // 'timeDivider': {},
                     // 'durationDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-                    'subtitlesButton': {}, 
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-
-                    'fullscreenToggle': {},
-                    
+                    'fullscreenToggle': {}                     
                 },
                 pictureInPictureToggle: true,
 

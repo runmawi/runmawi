@@ -4,45 +4,17 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('live-stream-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
             liveui: true,
 
-            // controlBar: {
+            controlBar: {
 
-            //     volumePanel: {
-            //         inline: false
-            //     },
-
-            //     children: {
-            //         'playToggle': {},
-            //         'currentTimeDisplay': {},
-            //         'timeDivider': {},
-            //         'durationDisplay': {},
-            //         'liveDisplay': {},
-
-            //         'flexibleWidthSpacer': {},
-            //         'progressControl': {},
-
-            //         'settingsMenuButton': {
-            //             entries: [
-            //                 'subtitlesButton',
-            //                 'playbackRateMenuButton'
-            //             ]
-            //         },
-            //         'fullscreenToggle': {}
-            //     }
-            // }
-
-            controlBar:
-            {
-                volumePanel:
-                {
-                    inline: false,
-                    vertical: true
+                volumePanel: {
+                    inline: false
                 },
 
                 children: {
@@ -58,19 +30,14 @@
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
+
+                    'fullscreenToggle': {},
                     
-                    // 'settingsMenuButton': {
-                    //     entries: [
-                    //         'subtitlesButton',
-                    //         'playbackRateMenuButton'
-                    //     ]
-                    // },
-                    'fullscreenToggle': {}                    
                 },
                 pictureInPictureToggle: true,
-                
 
             }
+
         });
 
         // Ads Marker

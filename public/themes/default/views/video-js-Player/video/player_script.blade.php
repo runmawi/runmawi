@@ -30,17 +30,6 @@
             }
         });
 
-        function skipDuration(){
-            console.log("p");
-            // player.children.currentTimeDisplay += skipDuration;
-        }
-
-        
-
-
-        // player.on(player, ['enterpictureinpicture', 'leavepictureinpicture'], (e) => this.handlePictureInPictureChange(e));
-        // player.on(player, ['disablepictureinpicturechanged', 'loadedmetadata'], (e) => this.handlePictureInPictureEnabledChange(e));
-
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {

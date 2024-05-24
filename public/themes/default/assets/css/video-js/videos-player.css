@@ -367,6 +367,10 @@
   display: block;
 }
 
+.my-video.video-js .vjs-remaining-time {
+  display: block;
+  }
+
 .my-video.video-js .vjs-modal-dialog {
   background: #454545;
   overflow: visible;
@@ -596,7 +600,7 @@
   color: white;
   display: inline-block;
   font-size: 15px;
-  line-height: inherit;
+  line-height: 3em;
   text-transform: capitalize;
   text-decoration: none;
   transition: none;

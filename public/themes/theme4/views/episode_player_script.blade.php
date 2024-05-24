@@ -4,7 +4,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('episode-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
@@ -30,10 +30,10 @@
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
 
-                    'fullscreenToggle': {}                    
+                    'fullscreenToggle': {},
+                    
                 },
                 pictureInPictureToggle: true,
-                
 
             }
         });
@@ -41,6 +41,7 @@
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
+            console.log("p",player);
 
             const player_duration_Seconds        =  player.duration();
             const video_skip_intro_seconds       = '<?= $episode_details->video_skip_intro_seconds ?>' ;
