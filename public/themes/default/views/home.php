@@ -896,7 +896,7 @@ function toggleReadMore(key) {
 }
 .des-more-less-btns{border: none;
     background: transparent;
-    color:var(--iq-primary)!important;
+    color: #ff0000;
     cursor: pointer;
     margin-bottom: 10px;}
 </style>
