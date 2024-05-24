@@ -3686,7 +3686,7 @@ class ChannelController extends Controller
         }
     }
 
-    public function liveList()
+    public function liveList(Request $request )
     {
         try {
 
@@ -3794,11 +3794,17 @@ class ChannelController extends Controller
                 'livestreams_data' => $livestreams_data ,
             ];
 
+            
+            if( $request->ajax() ){
+
+                return Theme::load('public/themes/theme4/partials/Live_list_section', ['livestreams_data' => $livestreams_data])->render();
+            }   
+
             return Theme::view('Live_list', $data);
                 
         } catch (\Throwable $th) {
 
-            // return $th->getMessage();
+            return $th->getMessage();
 
             return abort(404);
         }
