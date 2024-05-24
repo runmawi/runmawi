@@ -158,7 +158,7 @@ endif; ?>
                         <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
                         <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>">
                             <img src="<?= URL::to('public/uploads/images/' . $videos->video_title_image) ?>"
-                                class="c-logo" alt="<?= $videos->title ?>">
+                                class="video_title_images" alt="<?= $videos->title ?>">
                         </a>
                         <!-- Video Title  -->
                         <?php }else{ ?>
@@ -249,7 +249,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                         <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
                         <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>">
                             <img src="<?= URL::to('public/uploads/images/' . $videos->video_title_image) ?>"
-                                class="c-logo" alt="<?= $videos->title ?>">
+                                class="video_title_images" alt="<?= $videos->title ?>">
                         </a>
                         <!-- Video Title  -->
                         <?php }else{ ?>
