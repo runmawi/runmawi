@@ -320,7 +320,7 @@
 
                             <?php else: ?>
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                 </button>
                                 <button class="custom-skip-forward-button" onclick="skipDuration(this)">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 512 512">
