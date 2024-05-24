@@ -868,6 +868,39 @@
    });
    
 </script>
+
+
+<script>
+function toggleReadMore(key) {
+    const description = document.getElementById('description-' + key);
+    const readMoreBtn = document.getElementById('read-more-btn-' + key);
+    const readLessBtn = document.getElementById('read-less-btn-' + key);
+
+    if (readMoreBtn.style.display === 'none') {
+        readMoreBtn.style.display = 'inline';
+        readLessBtn.style.display = 'none';
+        description.style.maxHeight = '100px'; // Collapse description, adjust as needed
+    } else {
+        readMoreBtn.style.display = 'none';
+        readLessBtn.style.display = 'inline';
+        description.style.maxHeight = 'none'; // Expand description
+    }
+}
+</script>
+
+<style>
+.desc {
+    overflow: hidden;
+    max-height: 100px; /* Initial max height, adjust as needed */
+    transition: max-height 0.5s ease;
+}
+.des-more-less-btns{border: none;
+    background: transparent;
+    color:var(--iq-primary)!important;
+    cursor: pointer;
+    margin-bottom: 10px;}
+</style>
+
 <!-- Trailer -->
 <?php
    include(public_path('themes/default/views/partials/home/Trailer-script.php'));
