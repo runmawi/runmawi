@@ -629,6 +629,15 @@
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       color: <?php echo $GetDarkText; ?>!important;
    }
+   body.dark-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.dark-theme .navbar-light .navbar-nav .nav-link:focus, body.dark-theme .navbar-light .navbar-nav .nav-link:hover{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.light-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetLightText; ?>!important;
+   }
    body.light-theme #translator-table_filter input[type="search"]{
       color: <?php echo $GetLightText; ?>;
    }
@@ -899,17 +908,17 @@ header#main-header.menu-sticky{
    }
 }
 @media (max-width:768px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:100%;
       left:59px;
-   }
+   } */
    header .navbar ul.navbar-nav{display: none;}
 }
 @media (min-width:770px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:70%;
       left:41px;
-   }
+   } */
 }
 @media (max-width:1024px){
    ul.submenu.dropdown-menu{
@@ -2503,6 +2512,13 @@ window.onload = function () {
       navbarList.classList.toggle('navbar-list-flex');
       }
 </script>
+
+<script>
+    document.getElementById('down-video').addEventListener('click', function(event) {
+        window.location.href = this.href;
+    });
+</script>
+
 <style>
    .navbar-list-flex {
       display: flex !important;
