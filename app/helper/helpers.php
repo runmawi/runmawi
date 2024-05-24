@@ -1838,3 +1838,9 @@ function send_video_push_notifications($title,$message,$video_name,$video_id,$us
     }
     return true;
 }
+
+function Logged_Monetization()
+{
+    $Logged_Monetization = App\SiteTheme::pluck('enable_logged_device')->first();
+    return  $Logged_Monetization; 
+}

@@ -34,6 +34,9 @@ Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
 
 Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
+Route::get('/my-logged-devices', 'HomeController@MyLoggedDevices');
+Route::get('/my-logged-devices-delete/{id}', 'HomeController@MyLoggedDevicesDelete');
+
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
 Route::group(['middleware' => 'auth'], function(){
