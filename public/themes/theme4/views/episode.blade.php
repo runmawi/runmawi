@@ -80,7 +80,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
 
                         <button class="custom-skip-forward-button" onclick="skipDuration(this)">
