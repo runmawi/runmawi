@@ -13,17 +13,18 @@
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-                    'subtitlesButton': {}, 
-                    'settingsMenuButton': {
-                        entries: ['playbackRateMenuButton']
-                    },
-                    'fullscreenToggle': {}
-                }
+
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},
+                },
+                pictureInPictureToggle: true,                
             }
         });
 

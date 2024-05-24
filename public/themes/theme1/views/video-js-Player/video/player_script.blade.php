@@ -4,36 +4,28 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('my-video', {
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},
+                },
+                pictureInPictureToggle: true,                
             }
         });
 

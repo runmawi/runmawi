@@ -19,27 +19,29 @@
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
                     'liveDisplay': {},
 
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+
+                    'fullscreenToggle': {},
+                    
+                },
+                pictureInPictureToggle: true,
+
             }
         });
 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
+            console.log("p",player);
 
             const player_duration_Seconds        =  player.duration();
             const video_skip_intro_seconds       = '<?= $episode_details->video_skip_intro_seconds ?>' ;
