@@ -23853,10 +23853,19 @@ public function TV_login(Request $request)
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
             $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
-            $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+            // $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+  
+            $scheduled_videos = ChannelVideoScheduler::where('channe_id', $item->id)->where('choosed_date', $choosed_date)->get();
+            $scheduled_videos->each(function ($video, $index) use ($scheduled_videos, $item) {
+                $nextVideoTitle = $index + 1 < $scheduled_videos->count() ? $scheduled_videos[$index + 1]->socure_title : null;
+                $video->channel_name = $nextVideoTitle ? $item->name : $item->name;
+                $video->up_next = $nextVideoTitle ? $nextVideoTitle : 0;
+              });
+
+            $item['scheduled_videos'] = $scheduled_videos;
           return $item;
         });
-
+       
         $response = array(
           "status"  => 'true' ,
           "Channel_videos" => $Channel_videos ,
@@ -23989,6 +23998,7 @@ public function TV_login(Request $request)
             $user_id = $request->user_id;
             $subuser_id = $request->subuser_id;
             $mobile_address = $request->mobile_address;
+            $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
 
             if(!empty($mobile_address)){
 
@@ -23998,8 +24008,8 @@ public function TV_login(Request $request)
                   $translate_language = GetWebsiteName().$UserTranslation->translate_language;
                   $language_code = $UserTranslation->translate_language;
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
 
@@ -24012,13 +24022,13 @@ public function TV_login(Request $request)
                       $language_code = $Subuserranslation->translate_language;
 
                   }else{
-                      $translate_language = GetWebsiteName().'en';
-                      $language_code = 'en';
+                      $translate_language = GetWebsiteName().$website_default_language;
+                      $language_code = $website_default_language;
   
                     }
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
      
@@ -24031,17 +24041,17 @@ public function TV_login(Request $request)
                     $language_code = $UserTranslation->translate_language;
 
                 }else{
-                    $translate_language = GetWebsiteName().'en';
-                    $language_code = 'en';
+                    $translate_language = GetWebsiteName().$website_default_language;
+                    $language_code = $website_default_language;
               }
             }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
             }
    
           }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
           }
           $translationFilePath = URL::to('resources/lang/' . $translate_language . '.json');
           $context = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);

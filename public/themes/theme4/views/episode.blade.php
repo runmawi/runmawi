@@ -397,21 +397,18 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                     </span>
                                 @endif
                             </li>
-
                             <li>
                                 @if ($episode_Wishlist == null)
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
-                                        data-list="{{ $episode->id }}" data-myval="10"
-                                        data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
+                                        <i class="far fa-heart" aria-hidden="true"></i>
                                     </span>
                                 @else
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
-                                        data-list="{{ $episode->id }}" data-myval="10"
-                                        data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="fa  fa-heart" aria-hidden="true"></i>
+                                        data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
                                     </span>
                                 @endif
                             </li>
@@ -1180,7 +1177,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1192,7 +1189,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1232,7 +1229,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1244,7 +1241,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1284,7 +1281,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1296,7 +1293,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1337,7 +1334,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1350,7 +1347,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             'fri-thumb-down-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1367,7 +1364,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
             );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');
@@ -1379,7 +1376,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
             );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');
@@ -1472,6 +1469,13 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 console.log(data);
             });
         }
+
+        window.onload = function () {
+            setTimeout(function () {
+                $(".header_top_position_img").fadeOut('fast');
+            }, 4000);
+        };
+
     </script>
 
      

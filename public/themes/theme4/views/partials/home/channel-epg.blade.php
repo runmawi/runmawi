@@ -154,9 +154,9 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $epg_channel_data)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             @if ( $multiple_compress_image == 1)
@@ -173,9 +173,9 @@
                                             @endif 
                                         </div>
                                     </a>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $epg_channel_data )
@@ -219,7 +219,7 @@
                                                                         <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                     @endif
 
-                                                                    <a class="btn btn-hover button-groups mr-2" data-choosed-date={{ $epg_channel_data->ChannelVideoScheduler_top_date->pluck('choosed_date')->first() }} data-channel-id={{ $epg_channel_data->id }}  onclick="EPG_date_filter(this)" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" data-choosed-date={{ $epg_channel_data->ChannelVideoScheduler_top_date->pluck('choosed_date')->first() }} data-channel-id={{ $epg_channel_data->id }}  onclick="EPG_date_filter(this)" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
                                                                 @endif
 
                                                                 <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
@@ -318,19 +318,19 @@
                                             </div>
 
                                             <div class="panel panel-default">
-                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
-                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
-                                                    
-                                                    <ul class="nav nav-tabs m-0">
-                                                        @foreach ( $epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
-                                                            <li role="presentation" class="active" data-choosed-date={{ $item->choosed_date }} data-channel-id={{ $item->channe_id }}  onclick="EPG_date_filter(this)">
-                                                                <a href="#" aria-controls="one" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
+                                            <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                
+                                                <ul class="nav nav-tabs m-0" role="tablist">
+                                                    @foreach ($epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
+                                                        <li role="presentation" data-choosed-date="{{ $item->choosed_date }}" data-channel-id="{{ $item->channe_id }}" onclick="EPG_date_filter(this)">
+                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
 
-                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right "><i class="fa fa-chevron-right"></i></button>
-                                                </div>
+                                                <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
 
                                                 {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data ])->content() !!}
 
@@ -373,7 +373,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -403,6 +403,10 @@
         $('.epg-channel-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.epg-channel-slider').show();
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.epg-channel-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

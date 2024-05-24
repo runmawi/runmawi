@@ -156,14 +156,13 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 4,
+			slidesToShow: 6,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 
+			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
 			
-			nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
-
 			responsive: [
 			{
 				breakpoint: 1200,

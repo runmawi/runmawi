@@ -11,6 +11,7 @@
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
 
+      $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
 
 
       if(Auth::guest()){
@@ -21,7 +22,7 @@
          if(!empty($UserTranslation)){
              $translate_language = GetWebsiteName().$UserTranslation->translate_language;
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = GetWebsiteName().@$website_default_language;
          }
      }else if(!Auth::guest()){
 
@@ -31,21 +32,21 @@
              if(!empty($Subuserranslation)){
                  $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = GetWebsiteName().@$website_default_language;
              }
          }else if(Auth::user()->id != ''){
              $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
              if(!empty($UserTranslation)){
                  $translate_language = GetWebsiteName().$UserTranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = GetWebsiteName().@$website_default_language;
              }
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = GetWebsiteName().@$website_default_language;
          }
 
      }else{
-         $translate_language = GetWebsiteName().'en';
+         $translate_language = GetWebsiteName().@$website_default_language;
      }
 
       \App::setLocale(@$translate_language);
@@ -253,6 +254,9 @@
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+
+   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
+   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

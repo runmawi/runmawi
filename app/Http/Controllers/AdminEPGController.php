@@ -173,7 +173,9 @@ class AdminEPGController extends Controller
 
             // XML 
 
-            $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><tv></tv>');
+            $xmlString = '<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE tv [ <!ENTITY nbsp "&#160;"> ]> <tv></tv>';
+            
+            $xml = new \SimpleXMLElement($xmlString);
 
             $channel = $xml->addChild('channel');
             $channel->addAttribute('id', $unique_channel_id);

@@ -33,17 +33,17 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $series_networks)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $series_networks->image_url }}" class="img-fluid lazy w-100" alt="network" width="300" height="200">
                                         </div>
                                     </a>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider series-networks-slider" class="list-inline p-0 m-0 align-items-center series-networks-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $series_networks )
@@ -192,7 +192,7 @@
             arrows: true,
             nextArrow: '<a href="#" aria-label="Previous" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" aria-label="next" class="slick-arrow slick-prev"></a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -244,12 +244,12 @@
             $('.series-networks-slider').fadeIn();
         });
 
-        $('body').on('click', '.drp-close', function() {
+        $('body').on('click', '.slick-arrow', function() {
             $('.series-networks-slider').hide();
         });
-        $('.slick-next, .slick-prev').on('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
+
+        $('body').on('click', '.drp-close', function() {
+            $('.series-networks-slider').hide();
         });
     });
 </script>

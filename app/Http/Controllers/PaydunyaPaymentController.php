@@ -257,7 +257,8 @@ class PaydunyaPaymentController extends Controller
                         'days'           =>  $SubscriptionPlan->days,
                         'trial_ends_at'  =>  $trial_ends_at,
                         'ends_at'        =>  $trial_ends_at,
-                        'stripe_plan'    =>  $SubscriptionPlan->plan_id
+                        'stripe_plan'    =>  $SubscriptionPlan->plan_id,
+                        'platform'       => 'WebSite',
                     ]);
 
                     User::where('id',$user_id)->update([
@@ -519,6 +520,7 @@ class PaydunyaPaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Paydunya',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
  
                 LivePurchase::create([
@@ -532,6 +534,7 @@ class PaydunyaPaymentController extends Controller
                     'status' => 1,
                     'payment_gateway'  => 'Paydunya',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
                 $respond = array(
@@ -716,6 +719,7 @@ class PaydunyaPaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Paydunya',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
 
@@ -902,6 +906,7 @@ class PaydunyaPaymentController extends Controller
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Paydunya',
                     'payment_in'       => 'website',
+                    'platform'       => 'website',
                 ]);
 
 

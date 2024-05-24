@@ -57,6 +57,9 @@
             <video id="my-video" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-hls-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
 
+
+               
+
                 
                 @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
         @if(isset($subtitles) && count($subtitles) > 0)
@@ -77,14 +80,17 @@
 
 
 @php 
-
     include public_path('themes/default/views/video-js-Player/video/videos_script_file.blade.php');
     include public_path('themes/default/views/video-js-Player/video/videos_ads.blade.php');
-    include public_path('themes/default/views/video-js-Player/video/player_script.blade.php');
     include public_path('themes/default/views/footer.blade.php'); 
-
-
 @endphp
+
+
+@if(isset($setting) && $setting->video_clip_enable == 1 && count($videoURl) > 0)
+    @php include public_path('themes/default/views/video-js-Player/video/Concat_Player_Script.blade.php'); @endphp
+@else
+    @php include public_path('themes/default/views/video-js-Player/video/player_script.blade.php'); @endphp
+@endif
 
 
 <style>

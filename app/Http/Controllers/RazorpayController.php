@@ -201,6 +201,7 @@ class RazorpayController extends Controller
             'PaymentGateway' =>  'Razorpay',
             'trial_ends_at'  =>  $trial_ends_at,
             'ends_at'        =>  $trial_ends_at,
+            'platform'       => 'WebSite',
         ]);
 
         User::where('id',$request->userId)->update([
@@ -404,6 +405,7 @@ class RazorpayController extends Controller
             $purchase->status = 'active';
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
             $purchase->save();
 
             $respond=array(
@@ -516,6 +518,7 @@ class RazorpayController extends Controller
             $purchase->status = 'active';
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
             $purchase->save();
 
 
@@ -526,6 +529,7 @@ class RazorpayController extends Controller
             $livepurchase->expired_date = $to_time;
             $livepurchase->amount = $request->get('amount')/100 ;
             $livepurchase->status = 1;
+            $livepurchase->platform = 'website';
             $livepurchase->save();
 
             $respond=array(

@@ -22,30 +22,30 @@ $settings = App\Setting::first();
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
+                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.webp')?>" alt="ios" /></a>
+                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.webp')?>" src="<?php echo  URL::to('/assets/img/ios.webp')?>" alt="ios" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>" aria-label="Download the Androidtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" alt="android-tv" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" alt="android-tv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Firetv_url)){ ?>
                   <a href="<?= $app_settings->Firetv_url ?>" aria-label="Download the firetv app">
-                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" alt="firetv" /></a>
+                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" alt="firetv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->samsungtv_url)){ ?>
                   <a href="<?= $app_settings->samsungtv_url ?>" aria-label="Download the samsung app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.webp')?>" alt="samsng" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.webp')?>" src="<?php echo  URL::to('/assets/img/samsng.webp')?>" alt="samsng" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Lgtv_url)){ ?>
                   <a href="<?= $app_settings->Lgtv_url ?>" aria-label="Download the lgtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.webp')?>" alt="lg" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.webp')?>" src="<?php echo  URL::to('/assets/img/lg.webp')?>" alt="lg" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Rokutv_url)){ ?>
                   <a href="<?= $app_settings->Rokutv_url ?>" aria-label="Download the rokutv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" alt="roku" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" alt="roku" /></a>
               <?php } ?>
               </div>
               

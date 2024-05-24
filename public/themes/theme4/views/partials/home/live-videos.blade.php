@@ -11,9 +11,9 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $livestream_videos)
-                                <li class="slick-slide">
+                                <div class="slick-slide">
                                     <a href="javascript:;">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid lazy w-100" alt="livestream_videos" width="300" height="200">
@@ -21,10 +21,12 @@
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                         <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                    @elseif( $livestream_videos->recurring_program_live_animation  == true )
+                                        <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                     @endif
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
 
                         <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $livestream_videos )
@@ -229,7 +231,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -259,6 +261,9 @@
         $('.livestream-videos-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.livestream-videos-slider').show();
+        });
+        $('body').on('click', '.slick-arrow', function() {
+            $('.livestream-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

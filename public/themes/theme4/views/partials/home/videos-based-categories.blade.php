@@ -242,7 +242,7 @@
             arrows: true,
             prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
             nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -276,6 +276,10 @@
              let category_key_id = $(this).attr("data-key-id");
              $('.category-videos-slider').hide();
              $('.category-videos-' + category_key_id).show();
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.category-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

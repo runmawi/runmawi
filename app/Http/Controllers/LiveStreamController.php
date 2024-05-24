@@ -86,48 +86,70 @@ class LiveStreamController extends Controller
                                        ->latest()
                                         ->get();
 
+          
           $livestreams_data = $livestreams_data->filter(function ($livestream) use ($current_timezone) {
 
-              if ($livestream->publish_type === 'recurring_program') {
+            if ($livestream->publish_type === 'recurring_program') {
 
-                  $Current_time = Carbon::now($current_timezone);
-                  $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                  $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                  $midnight = $convert_time->copy()->startOfDay();
+                $Current_time = Carbon::now($current_timezone);
+                $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                $midnight = $convert_time->copy()->startOfDay();
 
-                  switch ($livestream->recurring_program) {
-                      case 'custom':
-                          $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                      break;
+                switch ($livestream->recurring_program) {
+                    case 'custom':
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                    break;
 
-                      case 'daily':
-                          $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                      break;
-                      case 'weekly':
-                          $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                      break;
+                    case 'daily':
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                    break;
+                    case 'weekly':
+                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                    break;
 
-                      case 'monthly':
-                          $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                      break;
+                    case 'monthly':
+                        $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                    break;
 
-                      default:
-                          $recurring_program_Status = false;
-                      break;
-                  }
+                    default:
+                        $recurring_program_Status = false;
+                    break;
+                }
 
-                  return $recurring_program_Status;
-              }
+                switch ($livestream->recurring_program) {
+                    case 'custom':
+                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                        break;
+                    case 'daily':
+                        $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    case 'weekly':
+                        $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    case 'monthly':
+                        $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;  
+                        
+                    default:
+                        $recurring_program_live_animation = false;
+                    break;
+                }
 
-              if( $livestream->publish_type === 'publish_later' ){
+                $livestream->recurring_program_live_animation = $recurring_program_live_animation ;
 
-                  $Current_time = Carbon::now($current_timezone);
-                          
-                  $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+                return $recurring_program_Status;
+            }
 
-                  return $publish_later_Status;
-              }
-              return true;
+            if( $livestream->publish_type === 'publish_later' ){
+
+                $Current_time = Carbon::now($current_timezone);
+                        
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+                return $publish_later_Status;
+            }
+            return true;
           });
 
           $data = array(

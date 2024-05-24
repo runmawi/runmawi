@@ -30,6 +30,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
 
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'subtitlesButton': {}, 
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
@@ -142,6 +143,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
 
         player.hlsQualitySelector({ 
             displayCurrentQuality: true,
+            vjsIconClass: 'vjs-icon-cog',
         });
 
         // Advertisement

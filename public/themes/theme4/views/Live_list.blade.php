@@ -1,5 +1,6 @@
 <?php include(public_path('themes/theme4/views/header.php')); ?>
 
+
 @if (!empty($livestreams_data) && $livestreams_data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0" id="home-live-videos-container">
@@ -17,22 +18,26 @@
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
                                         <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                        
                                         @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                        @elseif( $livestream_videos->recurring_program_live_animation  == true )
+                                            <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                         @endif
+                                        
                                         <div class="controls">        
                                             <a href="{{ URL::to('live/'.$livestream_videos->slug) }}">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
                                             <nav>
-                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#network-series-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#live-list-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                             </nav>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Modal -->
-                                <div class="modal fade info_model" id="network-series-{{ $loop->index }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal fade info_model" id="live-list-{{ $key }}" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                                         <div class="container">
                                             <div class="modal-content" style="border:none; background:transparent;">
@@ -136,31 +141,59 @@
                             @endforeach
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
-        </div>
 
-       
+            <div class="col-md-12 d-flex mt-3 justify-content-end" >
+                {{ $livestreams_data->links() }}
+            </div>
+        </div>
     </section>
 @endif
 
+<script>
+    
+    // function reloadLiveVideos() {
+    //     const container = document.getElementById('home-live-videos-container');
+
+    //     const requestData = {
+    //         request_from: 'live_list',  
+    //     };
+
+    //     fetch('{{ route('home.livestream.section.autorefresh') }}', {
+    //         method: 'POST', 
+    //         headers: {
+    //             'Content-Type': 'application/json',  
+    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
+    //         },
+    //         body: JSON.stringify(requestData)  // Convert the data to JSON format
+    //     })
+    //     .then(response => response.text())
+    //     .then(data => {
+    //         container.innerHTML = data;
+    //     })
+    //     .catch(error => console.error('Error fetching live videos:', error));
+    // }
+
+    // setInterval(reloadLiveVideos, 90000);
+    // reloadLiveVideos();
+</script>
 
 <style>
 
-div#trending-slider-nav{display: flex;
-    flex-wrap: wrap;}
-    .network-image{flex: 0 0 16.666%;max-width: 16.666%;}
-    /* .network-image img{width: 100%; height:auto;} */
-    .movie-sdivck{padding:2px;}
-    #trending-slider-nav div.slick-slide{padding:2px;}
-    div#trending-slider-nav .slick-slide.slick-current .movie-sdivck.position-relative{border:2px solid red}
-    .sub_dropdown_image .network-image:hover .controls {
-    opacity: 1;
-    background-image: linear-gradient(0deg, black, transparent);
-    border: 2px solid #2578c0 !important;
-}
+    div#trending-slider-nav{display: flex;
+        flex-wrap: wrap;}
+        .network-image{flex: 0 0 16.666%;max-width: 16.666%;}
+        /* .network-image img{width: 100%; height:auto;} */
+        .movie-sdivck{padding:2px;}
+        #trending-slider-nav div.slick-slide{padding:2px;}
+        div#trending-slider-nav .slick-slide.slick-current .movie-sdivck.position-relative{border:2px solid red}
+        .sub_dropdown_image .network-image:hover .controls {
+        opacity: 1;
+        background-image: linear-gradient(0deg, black, transparent);
+        border: 2px solid #2578c0 !important;
+    }
+
     .controls {
         position: absolute;
         padding: 4px;
@@ -219,10 +252,4 @@ div#trending-slider-nav{display: flex;
     }
 </style>
 
-
-
-
-
-@php
-    include public_path('themes/theme4/views/footer.blade.php');
-@endphp
+@php include public_path('themes/theme4/views/footer.blade.php'); @endphp

@@ -311,7 +311,7 @@ endif; ?>
                                 <span class="fa fa-star"></span>
                             </div>
 
-                            <div  style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                            <div class="slider-desc" style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff !important;display: -webkit-box;
                                 -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
                                 <?php echo __($videos->description); ?>
                             </div>

@@ -301,6 +301,26 @@ class HomeController extends Controller
                             $recurring_program_Status = false;
                             break;
                     }
+
+                    switch ($livestream->recurring_program) {
+                        case 'custom':
+                            $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                            break;
+                        case 'daily':
+                            $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'weekly':
+                            $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        case 'monthly':
+                            $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                            break;
+                        default:
+                            $recurring_program_live_animation = false;
+                            break;
+                    }
+
+                    $livestream->recurring_program_live_animation = $recurring_program_live_animation;
             
                     return $recurring_program_Status;
                 }
@@ -373,7 +393,7 @@ class HomeController extends Controller
                 'currency' => $currency,
                 'videos' => $latest_videos ,
                 'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')->where('active', '=', '1')
+                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')->where('active', '=', '1')
                                     ->where('draft', '1')
                                     ->where('status', '1')
                                     ->where('banner', '1')
@@ -1009,7 +1029,27 @@ class HomeController extends Controller
                                     $recurring_program_Status = false;
                                     break;
                             }
-                    
+
+                            switch ($livestream->recurring_program) {
+                                case 'custom':
+                                    $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                    break;
+                                case 'daily':
+                                    $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                case 'weekly':
+                                    $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                case 'monthly':
+                                    $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                    break;
+                                default:
+                                    $recurring_program_live_animation = false;
+                                    break;
+                            }
+
+                            $livestream->recurring_program_live_animation = $recurring_program_live_animation;
+
                             return $recurring_program_Status;
                         }
                         return true;
@@ -1084,7 +1124,7 @@ class HomeController extends Controller
                         'currency' => $currency,
                         'videos' => $latest_videos ,
                        
-                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type')
+                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')
                                             ->where('active', '1')->where('draft', '1')
                                             ->where('status', '1')->where('banner', '1')
                                             ->latest()->limit(15)->get() ,
@@ -1797,6 +1837,26 @@ class HomeController extends Controller
                                 $recurring_program_Status = false;
                                 break;
                         }
+
+                        switch ($livestream->recurring_program) {
+                            case 'custom':
+                                $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                break;
+                            case 'daily':
+                                $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'weekly':
+                                $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'monthly':
+                                $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            default:
+                                $recurring_program_live_animation = false;
+                                break;
+                        }
+
+                        $livestream->recurring_program_live_animation = $recurring_program_live_animation;
                 
                         return $recurring_program_Status;
                     }
@@ -1883,7 +1943,7 @@ class HomeController extends Controller
                                     ->limit(15)->get() ,
 
                     'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')
                                         ->where('active', '1')
                                         ->where('draft', '1')->where('status', '1')->where('banner', '1')
                                         ->latest()->limit(15)->get() ,
@@ -2925,7 +2985,7 @@ class HomeController extends Controller
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
             $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image', 'trailer','trailer_type')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image', 'trailer','trailer_type','video_title_image','enable_video_title_image')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
                                         ->where('banner', '1')->latest()
                                         ->get() ;
@@ -5022,6 +5082,26 @@ public function uploadExcel(Request $request)
                         $recurring_program_Status = false;
                         break;
                 }
+
+                switch ($livestream->recurring_program) {
+                    case 'custom':
+                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                        break;
+                    case 'daily':
+                        $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    case 'weekly':
+                        $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    case 'monthly':
+                        $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                    default:
+                        $recurring_program_live_animation = false;
+                        break;
+                }
+
+                $livestream->recurring_program_live_animation = $recurring_program_live_animation;
         
                 return $recurring_program_Status;
             }

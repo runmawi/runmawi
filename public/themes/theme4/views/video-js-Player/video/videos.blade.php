@@ -55,6 +55,16 @@
                     muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
+
+            @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                @if(isset($subtitles) && count($subtitles) > 0)
+                    @foreach($subtitles as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}"
+                            srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif>
+                    @endforeach
+                @endif
+            @endif
         @endif
     </div>
 @php 

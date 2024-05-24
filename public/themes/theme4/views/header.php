@@ -264,7 +264,7 @@
     <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <script src="public\themes\theme4\assets\js\jquery-3.5.1.min.js" async></script>
+    <script src="<?= URL::to('/') . '/assets/js/jquery-3.5.1.min.js' ?>" async></script>
     
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
@@ -741,7 +741,7 @@
    }
    #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo $button_bg_color;?> !important; }
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo $button_bg_color; ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo $GetDarkText; ?>!important;}
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo $GetDarkText; ?>;}
    .light-theme header .navbar ul li.menu-item a {color: <?php echo $GetLightText; ?> !important;}
    .dark-theme ul.f-link li a {color: <?php echo $GetDarkText; ?>;}
    .light-theme ul.f-link li a {color: <?php echo $GetLightText; ?> !important;}
