@@ -22,11 +22,9 @@
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {}                    
+                    'fullscreenToggle': {},
                 },
-                pictureInPictureToggle: true,
-                
-
+                pictureInPictureToggle: true,                
             }
         });
 
