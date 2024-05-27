@@ -1536,6 +1536,31 @@ function SchedulerSocureData($socure_type,$socure_id)
                 'URL' => URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8'  ,          
                 'socure_data' => $socure_data  ,
             );
+        }else if(!empty($socure_data) && $socure_data->type == 'bunny_cdn'){
+            $m3u8_url =  $socure_data->url ;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            //  // Initialize variables
+            // $duration = null;
+            // $seconds = null;
+            // $error = null;
+
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+    
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,      
+                'type' => 'm3u8'  ,            
+                'URL' => $socure_data->url  ,          
+                'socure_data' => $socure_data  ,
+            );
         }
     }else if($socure_type == "LiveStream"){ 
         $socure_data = App\LiveStream::where('id',$socure_id)->first();
@@ -1812,4 +1837,10 @@ function send_video_push_notifications($title,$message,$video_name,$video_id,$us
         DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message,'socure_type' => 'Video', 'socure_id' => $video_id ]);
     }
     return true;
+}
+
+function Logged_Monetization()
+{
+    $Logged_Monetization = App\SiteTheme::pluck('enable_logged_device')->first();
+    return  $Logged_Monetization; 
 }

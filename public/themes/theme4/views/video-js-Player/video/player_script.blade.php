@@ -1,6 +1,6 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
+let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -11,31 +11,26 @@
             fluid: true,
 
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {}                     
+                },
+                pictureInPictureToggle: true,
+
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -136,6 +131,7 @@
 
         player.hlsQualitySelector({ 
             displayCurrentQuality: true,
+            vjsIconClass: 'vjs-icon-cog',
         });
 
         // Advertisement
@@ -242,6 +238,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            console.log("!#");
+        })
     });
 
 </script>

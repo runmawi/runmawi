@@ -627,6 +627,21 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">On</div>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Logged User Monetization')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_logged_device"  type="checkbox" @if( $settings->enable_logged_device == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
                     </div>
                     </div>
 

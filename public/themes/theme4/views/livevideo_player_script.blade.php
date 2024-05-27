@@ -11,48 +11,33 @@
             fluid: true,
             liveui: true,
 
-            // controlBar: {
+            controlBar: {
 
-            //     volumePanel: {
-            //         inline: false
-            //     },
-
-            //     children: {
-            //         'playToggle': {},
-            //         'currentTimeDisplay': {},
-            //         'timeDivider': {},
-            //         'durationDisplay': {},
-            //         'liveDisplay': {},
-
-            //         'flexibleWidthSpacer': {},
-            //         'progressControl': {},
-
-            //         'settingsMenuButton': {
-            //             entries: [
-            //                 'subtitlesButton',
-            //                 'playbackRateMenuButton'
-            //             ]
-            //         },
-            //         'fullscreenToggle': {}
-            //     }
-            // }
-
-            controlBar:
-            {
-                volumePanel:
-                {
-                    inline: false,
-                    vertical: true
+                volumePanel: {
+                    inline: false
                 },
-                subtitlesButton: false,
-                remainingTimeDisplay: true,
-                currentTimeDisplay:true,
-                flexibleWidthSpacer:true,
-                fullscreenToggle:false,
-                liveDisplay:false,
+
+                children: {
+                    'playToggle': {},
+                    'currentTimeDisplay': {},
+                    'remainingTime': {},
+                    // 'timeDivider': {},
+                    // 'durationDisplay': {},
+                    'liveDisplay': {},
+
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+
+                    'fullscreenToggle': {},
+                    
+                },
                 pictureInPictureToggle: true,
-                enableSmoothSeeking:false,
+
             }
+
         });
 
         // Ads Marker

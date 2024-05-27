@@ -31,7 +31,7 @@ input#subuser_name {
     float: left;
 }
 /* toggle switch */
-.switch {
+.sign-in-page-data .switch {
   position: relative;
   display: inline-block;
   width: 57px;
