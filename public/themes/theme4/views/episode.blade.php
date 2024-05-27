@@ -53,9 +53,11 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .vjs-icon-hd:before{
         display:none;
     }
-    #my-video_ima-ad-container div{ overflow:hidden;}
-    #my-video { position: relative; }
-    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
+    #episode-player_ima-ad-container div{ overflow:hidden;}
+    #episode-player { position: relative; }
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 10%; left:1%; color: white; border: none; cursor: pointer; font-size: 30px; }
+    header#main-header{position: absolute !important;}
+
 </style>
 
 @if (Session::has('message'))
@@ -93,6 +95,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                 <path fill="#ffffff" d="M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/>
                             </svg> 
                         </button>
+
                         <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
                             muted="muted" preload="yes" autoplay="autoplay"
