@@ -95,7 +95,12 @@
 </style>
    
 @php    
-    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url) {
+
+    $carbon_now = Carbon\Carbon::now( current_timezone()); 
+    $carbon_current_time =  $carbon_now->format('H:i:s');
+    $carbon_today =  $carbon_now->format('n-j-Y');
+
+    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_current_time , $carbon_today) {
                 
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
                 
@@ -103,9 +108,8 @@
                 
                 $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
-                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->limit(15)->get()->map(function ($item) {
-
-                                                        $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
+                $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , $carbon_today )->orderBy('start_time')->limit(15)
+                                                    ->get()->map(function ($item) {
 
                                                         $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
                                                         $item['converted_end_time']   = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
@@ -116,17 +120,15 @@
                                                     });
 
                                                     
-                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y') )->orderBy('start_time')->groupBy('choosed_date')->limit(15)->get()->map(function ($item) {
+                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,$carbon_today )->orderBy('start_time')->groupBy('choosed_date')->limit(15)->get()->map(function ($item) {
                                                                 $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                                 return $item;
                                                             });
                                                     
-                $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::today()->format('n-j-Y') )
-                                                                    ->limit(15)->get()->map(function ($item) {
+                $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                            ->limit(15)->get()->map(function ($item) use ($carbon_current_time) {
 
-                                                                                $Carbon_current_time =  Carbon\Carbon::now()->format('H:i:s');
-                                                                                    
-                                                                                if(( $item->start_time >= $Carbon_current_time ) && ( $Carbon_current_time <=  $item->end_time ) ){
+                                                                                if(( $item->start_time >= $carbon_current_time ) && ( $carbon_current_time <=  $item->end_time ) ){
                                                                                     $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
                                                                                     $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
                                                                                     $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
