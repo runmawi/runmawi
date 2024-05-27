@@ -9,16 +9,15 @@
   width: 3em;
   display: block;
   position: absolute;
-  top: 535px;
+  top: 50%;
   left: 50%;
-  padding: 0;
-  margin-top: -0.81666em;
-  margin-left: -1.5em;
   cursor: pointer;
   opacity: 1;
   border: none;
   background-color: transparent;
   transition: auto;
+
+  
 }
 
 .my-video.vjs-theme-city.vjs-big-play-button:focus, 
@@ -31,13 +30,6 @@
   padding-top: 0 !important;
   height: 100vh !important;
 }
-
-/* .my-video.vjs_video_3-dimensions.vjs-fluid:not(
-  .vjs-audio-only-mode
-) { */
-/* padding-top: 56.25%; */
-/* padding-top: 0;
-} */
 
 .my-video.video-js .vjs-tech {
   object-fit: cover;
@@ -371,19 +363,18 @@ z-index: 1;
 display: block;
 }
 
-.my-video.video-js .vjs-modal-dialog {
+/* .my-video.video-js .vjs-modal-dialog {
 background: #454545;
 overflow: visible;
 box-shadow: 5px 5px 10px gray;
 border-radius: 2px;
-}
+} */
 
-.vjs-modal-dialog .vjs-modal-dialog-content {
+/* .vjs-modal-dialog .vjs-modal-dialog-content {
 padding: 20px 24px;
 z-index: 1;
 display: flex;
-position: fixed;
-}
+} */
 
 .speech-bubble {
 background: #454545;
