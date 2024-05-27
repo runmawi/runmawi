@@ -100,6 +100,8 @@
     $carbon_current_time =  $carbon_now->format('H:i:s');
     $carbon_today =  $carbon_now->format('n-j-Y');
 
+    // dd($carbon_current_time );
+
     $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_current_time , $carbon_today) {
                 
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
@@ -221,7 +223,7 @@
                                                                         <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                     @endif
 
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" data-choosed-date={{ $epg_channel_data->ChannelVideoScheduler_top_date->pluck('choosed_date')->first() }} data-channel-id={{ $epg_channel_data->id }}  onclick="EPG_date_filter(this)" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
                                                                 @endif
 
                                                                 <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
@@ -329,12 +331,13 @@
                                                             <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
                                                         </li>
                                                     @endforeach
+                                                    
                                                 </ul>
 
                                                 <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
                                             </div>
 
-                                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data ])->content() !!}
+                                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data , 'EPG_date_filter_status' => 0 ])->content() !!}
 
                                             </div>
                                         </div>
@@ -433,6 +436,10 @@
             success: function(data) {
                 $(".data").html(data);
             },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+
         });
 
     }
