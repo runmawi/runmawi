@@ -238,6 +238,12 @@ content: "\f108";
 line-height: 2.1em;
 }
 
+/* .vjs-fullscreen-control::before ~ .custom-skip-backward-button, .custom-skip-forward-button{
+  visibility: visible;
+  opacity: 1;
+  transition: 3s;
+} */
+
 .my-video.video-js .vjs-mute-control {
   cursor: pointer;
   flex: none;
@@ -251,8 +257,8 @@ line-height: 2.1em;
 .vjs-fullscreen-control
 .vjs-icon-placeholder:before {
   content: "\f108";
-  font-size: 25px;
-  margin-top: 10px;
+  font-size: 30px;
+  margin-top: 7px;
 }
 
 .responsive-iframe {
@@ -344,7 +350,7 @@ display: block !important;
 padding-top: 0.666em;
 padding-left: 51px;
 font-size: 24px;
-font-family: "Poppins";
+font-family: Roboto;
 font-weight: 200;
 }
 
@@ -451,11 +457,11 @@ display: block !important;
 padding-top: 0.666em;
 padding-left: 51px;
 font-size: 24px;
-font-family: "Poppins";
+font-family: Roboto;
 font-weight: 200;
 }
 
-.my-video.video-js .vjs-control.kk {
+/* .my-video.video-js .vjs-control.kk {
 position: relative;
 text-align: center;
 margin: 0;
@@ -472,7 +478,7 @@ left: 227%;
 margin-top: -35px;
 margin-left: -35px;
 color: #ffffff;
-}
+} */
 
 .ad-information-card {
 position: absolute;
@@ -579,22 +585,21 @@ display: block !important;
 
 .my-video.video-js button {
   background: transparent;
-    border: none;
-    color: white;
-    display: inline-block;
-    font-size: 15px;
-    line-height: 3em;
-    text-transform: capitalize;
-    text-decoration: none;
-    transition: none;
-    appearance: none;
-    /* font-family: "Poppins"; */
-    font-weight: 500;
+  border: none;
+  color: white;
+  display: inline-block;
+  font-size: 15px;
+  text-transform: capitalize;
+  text-decoration: none;
+  transition: none;
+  appearance: none;
+  /* font-family: "Poppins"; */
+  font-weight: 500;
 }
 
 .vjs-button>.vjs-icon-placeholder {
   display: block;
-  line-height: 3em;
+  line-height: 2.8em;
 }
 
 
@@ -643,7 +648,7 @@ content: "\f103";
 .my-video.video-js
 .vjs-big-play-button
 .vjs-icon-placeholder::before {
-font-family: VideoJS;
+font-family: VideoJs;
 font-weight: normal;
 font-style: normal;
 font-size: 36px;
@@ -790,7 +795,7 @@ align-items: center;
 
 line-height: 3em;
 padding: 10px;
-font-family: "Poppins";
+font-family: Roboto;
 font-weight: 600;
 font-size: 18px;
 }
@@ -832,8 +837,10 @@ margin: 0;
 padding: 0.6em 0;
 line-height: 1.4em;
 font-size: 1.2em;
+font-family: Roboto;
 text-align: center;
 text-transform: lowercase;
+
 }
 
 .vjs-menu li.vjs-selected,
@@ -850,6 +857,7 @@ background-color: #095ae5;
 /* background-color: #73859f; */
 background-color: #095ae5;
 }
+
 
 .my-video.video-js .vjs-play-progress:before {
 font-size: 0.8em;

@@ -55,7 +55,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     }
     #episode-player_ima-ad-container div{ overflow:hidden;}
     #episode-player { position: relative; }
-    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 10%; left:1%; color: white; border: none; cursor: pointer; font-size: 30px; }
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 1%; left:1%; color: white; border: none; cursor: pointer; font-size: 30px; }
     header#main-header{position: absolute !important;}
 
 </style>
