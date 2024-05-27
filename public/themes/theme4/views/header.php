@@ -2514,9 +2514,14 @@ window.onload = function () {
 </script>
 
 <script>
-    document.getElementById('down-video').addEventListener('click', function(event) {
-        window.location.href = this.href;
-    });
+   const ids = ['down-video', 'down-live', 'down-network', 'down-series', 'down-audio'];
+
+      ids.forEach(id => {
+         document.getElementById(id).addEventListener('click', function(event) {
+            window.location.href = this.href;
+         });
+      });
+
 </script>
 
 <style>
