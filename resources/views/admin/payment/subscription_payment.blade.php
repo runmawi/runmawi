@@ -49,6 +49,7 @@
                                     <th>Subscription Title</th>
                                     <th>Payment ID</th>
                                     <th>Payment Mode</th>
+                                    <th>Payment Platform</th>
                                     <th>Paid Amount</th>
                                     <th>Expiry Date</th>
                                     <th>Status</th>
@@ -65,6 +66,7 @@
                                  <td> <p class="mb-0">{{ @$payment->subscription_plans_name }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->stripe_id ? ($payment->stripe_id) : "Cus_ Not Available" }}</p></td>
                                  <td> <p class="mb-0">{{ $payment->subscription_plans_type }}</p></td>
+                                 <td> <p class="mb-0">{{ $payment->platform }}</p></td>
 
                                     <td>
                                        <div class="media align-items-center">

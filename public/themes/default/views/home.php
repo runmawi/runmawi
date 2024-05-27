@@ -899,6 +899,7 @@ function toggleReadMore(key) {
     color: #ff0000;
     cursor: pointer;
     margin-bottom: 10px;}
+    .video_title_images{width: 50%;}
 </style>
 
 <!-- Trailer -->

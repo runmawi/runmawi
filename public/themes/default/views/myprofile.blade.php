@@ -226,6 +226,11 @@ $settings = App\Setting::first();
                         @if(Tv_Logged_User_List()== 1)
                         <li><a class="showSingle" target="9">{{ (__('Tv Logged User List')) }}</a></li>
                         @endif
+
+                        @if(Logged_Monetization()== 1)
+                           <li><a href="{{ URL::to('my-logged-devices') }}" >{{ (__('Logged User Monetization')) }}</a></li>
+                        @endif
+
                     </ul>
                 </div>
             </div>
