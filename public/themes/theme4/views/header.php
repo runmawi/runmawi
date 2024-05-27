@@ -2514,15 +2514,22 @@ window.onload = function () {
 </script>
 
 <script>
-   const ids = ['down-video', 'down-live', 'down-network', 'down-series', 'down-audio'];
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ids = ['down-video', 'down-live', 'down-network', 'down-series', 'down-audio'];
 
-      ids.forEach(id => {
-         document.getElementById(id).addEventListener('click', function(event) {
-            window.location.href = this.href;
-         });
-      });
-
-</script>
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default action if needed
+                        window.location.href = this.href;
+                    });
+                } else {
+                    console.error(`Element with ID '${id}' not found.`);
+                }
+            });
+        });
+    </script>
 
 <style>
    .navbar-list-flex {
