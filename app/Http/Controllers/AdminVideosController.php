@@ -2326,11 +2326,37 @@ class AdminVideosController extends Controller
             $video->embed_code = "";
         }
 
-        if (!empty($data["global_ppv"])) {
-            $video->global_ppv = $data["global_ppv"];
-        } else {
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else if(empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
+        // if (!empty($data["global_ppv"])) {
+        //     $video->global_ppv = $data["global_ppv"];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
 
         if (!empty($data["enable"])) {
             $enable = $data["enable"];
@@ -2636,7 +2662,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : null ;
+        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : !empty($data["ppv_price"]) ? $data["ppv_price"] : null ;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];
@@ -3227,11 +3253,37 @@ class AdminVideosController extends Controller
 
         $settings = Setting::where('ppv_status', '=', 1)->first();
 
-        if (!empty($data['global_ppv'])) {
-            $data['ppv_price'] = $settings->ppv_price;
-            $video->global_ppv = $data['global_ppv'];
-        } else {
+        // if (!empty($data['global_ppv'])) {
+        //     $data['ppv_price'] = $settings->ppv_price;
+        //     $video->global_ppv = $data['global_ppv'];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else if(empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
 
         if ($request->slug == '') {
@@ -4021,6 +4073,8 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
+
+
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
         }
