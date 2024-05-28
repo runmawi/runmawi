@@ -4792,13 +4792,15 @@ public function uploadExcel(Request $request)
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  
 
-        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $request) {
+        $current_timezone = current_timezone();
+        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_horizontal_image_url = default_horizontal_image_url();
 
-            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request , $current_timezone) {
 
-            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
-
-            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
             $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
                                                 
@@ -4806,13 +4808,16 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->orderBy('start_time')->limit(15)->get()->map(function ($item) {
+                                                ->latest('start_time')->limit(15)->get()->map(function ($item) use ($current_timezone) {
 
-                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
-                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
-                                                    $item['TimeZone']           = TimeZone::where('id',$item->time_zone)->first();
+                                                    $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 
-                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
+
+                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
+
                                                     return $item;
                                                 });
             return $item;
@@ -4825,6 +4830,7 @@ public function uploadExcel(Request $request)
             'order_settings' => $order_settings ,
             'epg_channel_data' => $epg_channel_data ,
             'EPG_date_filter_status' => 1 ,
+            'current_timezone'       => $current_timezone,
         ];
 
         return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
