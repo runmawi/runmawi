@@ -116,10 +116,10 @@
                                                         $item['TimeZone']           = App\TimeZone::where('id',$item->time_zone)->first();
 
                                                         $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-                                                                                                        ->setTimezone( current_timezone() )->format('h:i A');
-
+                                                                                                         ->copy()->tz(current_timezone())->format('h:i A');
+                                               
                                                         $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-                                                                                                        ->setTimezone( current_timezone() )->format('h:i A');
+                                                                                                        ->copy()->tz(current_timezone())->format('h:i A');
                                                                                                         
                                                         $item['video_image_url']    = URL::to('public/uploads/images/'.$item->image ) ;
                                                                                 
