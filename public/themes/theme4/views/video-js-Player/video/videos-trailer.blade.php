@@ -26,9 +26,8 @@
         <div class="modal-content">
             <div class="modal-body video-js-trailer-modal-body">
 
-                <button type="button" class="close video-js-trailer-modal-close" >
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <button type="button" class="close video-js-trailer-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
 
                 <div class="embed-responsive embed-responsive-16by9">
 

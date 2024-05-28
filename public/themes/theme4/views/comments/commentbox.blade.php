@@ -52,8 +52,8 @@
                 <div class="row align-items-end">
                     <div class="col-lg-6">
                         <div class="form-group">
-                    <label for="message" class="text-white"><?= ( __('Add a comment')) ?>:</label>
-                    <textarea class="form-control"  name="message" rows="2" required></textarea>
+                    <label for="message" class="add-a-comment"><?= ( __('Add a comment')) ?>:</label>
+                    <textarea class="form-control text-white"  name="message" rows="2" required></textarea>
                 </div>
 
                     </div>
