@@ -111,21 +111,27 @@
                 $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
                 $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' , $carbon_today )->orderBy('start_time')->limit(15)
-                                                    ->get()->map(function ($item) {
+                                                    ->get()->map(function ($item) use ($carbon_today) {
 
-                                                        $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
-                                                        $item['converted_end_time']   = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
-                                                        $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
-                                                        $item['video_image_url']    = URL::to('public/uploads/images/'.$item->image ) ;
                                                         $item['TimeZone']           = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                        $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                        ->setTimezone( current_timezone() )->format('h:i A');
+
+                                                        $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                        ->setTimezone( current_timezone() )->format('h:i A');
+                                                                                                        
+                                                        $item['video_image_url']    = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                
+                                                        $item['ChannelVideoScheduler_top_date']  =  $item->where('channe_id',$item->id)->groupBy('choosed_date')
+                                                                                                    ->limit(7)->get()->map(function ($item) {
+                                                                                                        $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                                                        return $item;
+                                                                                                    });
+
                                                         return $item;
                                                     });
 
-                                                    
-                $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,$carbon_today )->orderBy('start_time')->groupBy('choosed_date')->limit(15)->get()->map(function ($item) {
-                                                                $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
-                                                                return $item;
-                                                            });
                                                     
                 $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
                                                                             ->limit(15)->get()->map(function ($item) use ($carbon_current_time) {
@@ -326,12 +332,13 @@
                                                 <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
                                                 
                                                 <ul class="nav nav-tabs m-0" role="tablist">
-                                                    @foreach ($epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
-                                                        <li role="presentation" data-choosed-date="{{ $item->choosed_date }}" data-channel-id="{{ $item->channe_id }}" onclick="EPG_date_filter(this)">
-                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
-                                                        </li>
+                                                    @foreach ($epg_channel_data->ChannelVideoScheduler as $item)
+                                                        @foreach ($item->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
+                                                            <li role="presentation" data-choosed-date="{{ $item->choosed_date }}" data-channel-id="{{ $item->channe_id }}" onclick="EPG_date_filter(this)">
+                                                                <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
+                                                            </li>
+                                                        @endforeach
                                                     @endforeach
-                                                    
                                                 </ul>
 
                                                 <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>

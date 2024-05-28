@@ -7,7 +7,7 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <td  class="time"> {{ $item->converted_start_time }}  -  {{ $item->converted_end_time }}  <small> {{ $item->TimeZone->time_zone }}</small> </td>
+                                    <td  class="time"> {{ $item->converted_start_time }}  -  {{ $item->converted_end_time }}  <small> {{ $current_timezone }}</small> </td>
                                     <td><h6>{{ ucwords($item->socure_title) }}</h6></td>
                                 </tr>
                             </tbody>
@@ -34,7 +34,7 @@
             <table class="table table-striped">
                 <tbody>
                     <tr>
-                        <td><h6>{{ ucwords('events loading .....') }}</h6></td>
+                        <td><h6>{{ ucwords('Pls Click on date') }}</h6></td>
                     </tr>
                 </tbody>
             </table>
