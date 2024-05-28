@@ -4818,7 +4818,6 @@ public function uploadExcel(Request $request)
                                                     $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
                                                                                                     ->copy()->tz( $current_timezone )->format('h:i A');
 
-                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                     return $item;
                                                 });
             return $item;
