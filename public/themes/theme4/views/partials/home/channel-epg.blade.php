@@ -217,7 +217,7 @@
                                                                     <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                 @endif
 
-                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}" data-choosed-date="{{ $carbon_now->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}"  onclick="EPG_date_filter(this)"><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> Event </a>
 
                                                                 <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
@@ -318,12 +318,15 @@
                                             <div class="panel-heading panel-heading-nav d-flex position-relative">
                                                 <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
                                                 
+                                                    {{-- ChannelVideoScheduler_top_date --}}
+
                                                 <ul class="nav nav-tabs m-0" role="tablist">
-                                                    @foreach ($epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
-                                                        <li role="presentation" data-choosed-date="{{ $item->choosed_date }}" data-channel-id="{{ $item->channe_id }}" onclick="EPG_date_filter(this)">
-                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}</a>
+                                                    @for ($i = 0; $i < 7; $i++) 
+                                                        @php $epg_top_date = $carbon_now->copy()->addDays($i); @endphp
+                                                        <li role="presentation" data-choosed-date="{{ $epg_top_date->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}" onclick="EPG_date_filter(this)">
+                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $epg_top_date->format('d-m-y') }}</a>
                                                         </li>
-                                                    @endforeach
+                                                    @endfor
                                                 </ul>
 
                                                 <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
@@ -417,6 +420,8 @@
         const channel_id = $(ele).attr('data-channel-id');
         const date       = $(ele).attr('data-choosed-date');
 
+        $(".data").html('<table class="table table-striped"><tr><td><h6>Loading....</h6></td></tr></table>');
+
         $.ajax({
             type: "get",
             url: "{{ route('front-end.EPG_date_filter') }}",
@@ -429,10 +434,9 @@
                 $(".data").html(data);
             },
             error: function(xhr, status, error) {
-                console.error('Error:', error);
+                $(".data").html('<p>Error loading data. Please try again.</p>');
             }
 
         });
-
     }
 </script>

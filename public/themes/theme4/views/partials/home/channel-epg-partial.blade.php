@@ -28,16 +28,11 @@
                 @endforelse
             </div>
         </div>
-    @else
-
-        <div role="tabpanel" class="tab-pane fade in active" >
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <td><h6>{{ ucwords('Pls Click on date') }}</h6></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     @endif
 </div>
+
+    
+        
+           
+                
+            
