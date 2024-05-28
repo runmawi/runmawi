@@ -4808,7 +4808,7 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->latest('start_time')->limit(15)->get()->map(function ($item) use ($current_timezone) {
+                                                ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
 
                                                     $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 
