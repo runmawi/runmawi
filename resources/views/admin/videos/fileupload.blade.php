@@ -1032,6 +1032,19 @@ border-radius: 0px 4px 4px 0px;
                                  </div>
                                  <?php } ?>
                               </div>
+
+                              <div id="ppv_options" style="display: none;">
+                                 <input type="radio" name="ppv_option" id="ppv_gobal_price" value="1">
+                                 <label for="ppv_gobal_price">Set Global Price</label><br>
+                                 <input type="radio" name="ppv_option" id="global_ppv_price" value="2">
+                                 <label for="global_ppv_price">Get Settings Global Price</label>
+                              </div>
+
+                              <div id="price_input_container" class="col-sm-6 form-group mt-3" style="display: none;">
+                                 <label for="ppv_price">Enter Global Price:</label>
+                                 <input type="text" class="form-control" name="set_gobal_ppv_price" id="set_gobal_ppv_price" placeholder="Enter price">
+                              </div>
+
                                <div class="col-sm-6 mt-3">
                                  <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
@@ -1448,6 +1461,41 @@ border-radius: 0px 4px 4px 0px;
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        var globalPpvCheckbox = document.getElementById('global_ppv');
+        var ppvOptionsDiv = document.getElementById('ppv_options');
+        var priceInputContainer = document.getElementById('price_input_container');
+        var ppvGlobalPriceRadio = document.getElementById('ppv_gobal_price');
+
+        // Show/hide the radio buttons based on the initial state of the checkbox
+        ppvOptionsDiv.style.display = globalPpvCheckbox.checked ? 'block' : 'none';
+
+        // Add an event listener to the checkbox to show/hide the radio buttons
+        globalPpvCheckbox.addEventListener('change', function () {
+            ppvOptionsDiv.style.display = this.checked ? 'block' : 'none';
+            // Hide the price input when checkbox is unchecked
+            if (!this.checked) {
+                priceInputContainer.style.display = 'none';
+            }
+        });
+
+        // Add an event listener to the "Set Global Price" radio button
+        ppvGlobalPriceRadio.addEventListener('change', function () {
+            priceInputContainer.style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Hide the price input container if "Add Global Price" is selected
+        var globalPpvPriceRadio = document.getElementById('global_ppv_price');
+        globalPpvPriceRadio.addEventListener('change', function () {
+            if (this.checked) {
+                priceInputContainer.style.display = 'none';
+            }
+        });
+    });
+
+    
    $(document).ready(function(){
    
    var current_fs, next_fs, previous_fs; //fieldsets
