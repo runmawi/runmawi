@@ -672,5 +672,6 @@ Route::group(
             Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
             Route::post('Verify-OTP', 'ApiAuthController@Verify_OTP'); 
             Route::post('send-video-push-notifications', 'ApiAuthController@SendVideoPushNotification'); 
+            Route::post('time-zone', 'ApiAuthController@TimeZone'); 
 
         });
