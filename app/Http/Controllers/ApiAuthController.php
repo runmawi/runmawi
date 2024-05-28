@@ -145,6 +145,7 @@ use App\AdminOTPCredentials ;
 use App\Document ;
 use App\DocumentGenre ;
 use App\AdminVideoAds;
+use App\TimeZone;
 
 
 class ApiAuthController extends Controller
@@ -23855,11 +23856,12 @@ public function TV_login(Request $request)
             $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
             // $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
   
-            $scheduled_videos = ChannelVideoScheduler::where('channe_id', $item->id)->where('choosed_date', $choosed_date)->get();
-            $scheduled_videos->each(function ($video, $index) use ($scheduled_videos, $item) {
+            $scheduled_videos = ChannelVideoScheduler::where('channe_id', $item->id)->where('time_zone', $request->time_zone)->where('choosed_date', $choosed_date)->get();
+            $scheduled_videos->each(function ($video, $index) use ($scheduled_videos, $item,$request) {
                 $nextVideoTitle = $index + 1 < $scheduled_videos->count() ? $scheduled_videos[$index + 1]->socure_title : null;
                 $video->channel_name = $nextVideoTitle ? $item->name : $item->name;
                 $video->up_next = $nextVideoTitle ? $nextVideoTitle : 0;
+                $item['time_zone_name'] = TimeZone::where('id', $request->time_zone)->pluck('time_zone')->first();
               });
 
             $item['scheduled_videos'] = $scheduled_videos;
@@ -23998,7 +24000,7 @@ public function TV_login(Request $request)
             $user_id = $request->user_id;
             $subuser_id = $request->subuser_id;
             $mobile_address = $request->mobile_address;
-            $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
+            $website_default_language = Setting::pluck('website_default_language')->first() ? Setting::pluck('website_default_language')->first() : 'en';
 
             if(!empty($mobile_address)){
 
@@ -24374,4 +24376,29 @@ public function SendVideoPushNotification(Request $request)
       }
     return response()->json($response, 200);
   }
+
+
+  public function TimeZone( Request $request ){
+
+    try {
+
+        
+      $response = array(
+        "status"  => 'true' ,
+        "TimeZone_ID" => TimeZone::where('time_zone', $request->time_zone)->pluck('id')->first() ,
+        "TimeZone" => TimeZone::where('time_zone', $request->time_zone)->first() ,
+        "message" => "Retrieved Channels Videos Successfully" ,
+      );
+      
+    } catch (\Throwable $th) {
+        $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+      );
+    }
+      return response()->json($response, 200);
+
+  }
+  
+
 }

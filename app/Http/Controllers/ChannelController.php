@@ -4236,7 +4236,7 @@ class ChannelController extends Controller
                                                 })->first();
 
                                                 
-                $item['watchlater_exist'] = Watchlater::where('video_id', $video_id)->where('type', 'channel')
+                $item['wishlist_exist'] = Wishlist::where('video_id', $video_id)->where('type', 'channel')
                                                 ->where(function ($query) use ($geoip) {
                                                     if (!Auth::guest()) {
                                                         $query->where('user_id', Auth::user()->id);
@@ -4389,7 +4389,7 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug )
     {
-        // try {
+        try {
             
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
@@ -4503,11 +4503,11 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos', $data);
 
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             
-        //     // return $th->getMessage();
-        //     return abort(404);
-        // }
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_watchlater(Request $request)

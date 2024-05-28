@@ -1444,7 +1444,7 @@ function SchedulerSocureData($socure_type,$socure_id)
         if(!empty($socure_data) && $socure_data->type == ''){
         // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
             $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
-            $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
+            // $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
             // try {

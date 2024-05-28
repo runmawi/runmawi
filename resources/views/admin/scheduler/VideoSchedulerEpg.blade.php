@@ -201,7 +201,13 @@
     body.dark table.dataTable.no-footer{border-bottom: 1px solid <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     div#ui-datepicker-div {
         display: none;
+        width: 310px;
+        background:#eee;
     }
+    table.ui-datepicker-calendar{width:100%;}
+    a.ui-datepicker-prev.ui-corner-all{background-color: #006AFF;color: white;border-radius: 5px;padding: 0 11px;cursor: pointer;}
+    a.ui-datepicker-next.ui-corner-all {position: absolute;right: 5px;background-color: #006AFF;color: white;border-radius: 5px;padding: 0 11px;cursor: pointer;}
+    .ui-datepicker-title {position: absolute;left: 26%;top: 0;}
 </style>
 
     @section('content')
