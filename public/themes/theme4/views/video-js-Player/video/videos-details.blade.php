@@ -63,9 +63,9 @@
                 </div>
 
                 <div class="right">
-                    <div class="title">    {{--  Title & Year--}}
+                    <h3 class="title">    {{--  Title & Year--}}
                         {{ optional($videodetail)->title }} 
-                    </div>
+                    </h3>
 
                     <div class="utilities d-flex align-items-center">  
                         {{ optional($videodetail)->year }} 
@@ -106,6 +106,7 @@
                             <div class="col-sm-6 col-md-6 col-xs-12">
                                 <ul class="list-inline p-0 share-icons music-play-lists">
                                             <!-- Watchlater -->
+
                                     <li class="share">
                                         <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
                                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
@@ -120,7 +121,7 @@
                                             <!-- Wishlist -->
                                     <li class="share">
                                         <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
-                                            <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
+                                            <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
@@ -246,10 +247,10 @@
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
                         <div class="overview">
-                            <div class="heading">{{ __('Description') }}</div>
-                            <div class="description">
-                                {!! strlen($videodetail->description) > 200 ?  html_entity_decode(substr($videodetail->description, 0, 200 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($videodetail->description)  !!}
-                            </div>
+                            <h5 class="heading">{{ __('Description') }}</h5>
+                            <h6 class="description">
+                                {!! strlen($videodetail->description) > 200 ?  html_entity_decode(substr($videodetail->description, 0, 200 )) . "..." . " <span class='text-primary' style='cursor: pointer;' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($videodetail->description)  !!}
+                            </h6>
                         </div>
                     @endif
 
@@ -277,7 +278,7 @@
     
             @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
                 <div class="sectionArtists">   
-                    <div class="artistHeading">{{ __('Top Cast') }}</div>
+                    <h6 class="artistHeading">{{ __('Top Cast') }}</h6>
                     <div class="listItems">
                         @foreach ( $videodetail->artists as $item )
                             <a href="{{ route('artist',[ $item->artist_slug ])}}">
@@ -299,9 +300,9 @@
             <!-- Broadcast  -->
 
             <div class="sectionArtists broadcast">   
-                <div class="artistHeading">
+                <h6 class="artistHeading">
                     {{ ucwords(__('Promos & Resources')) }}
-                </div>
+                </h6>
                         
 
                     <div class="listItems">
@@ -348,7 +349,7 @@
 
             @if( $CommentSection != null && $CommentSection->videos == 1 )
                 <div class="sectionArtists">   
-                    <div class="artistHeading"> {{ __('Comments') }} </div>
+                    <h6 class="artistHeading"> {{ __('Comments') }} </h6>
                         <div class="overflow-hidden">
                             @php include public_path('themes/theme4/views/comments/index.blade.php') @endphp
                         </div>
@@ -360,10 +361,11 @@
             @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
                 <div class=" container-fluid video-list  overflow-hidden p-0">
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title">{{ ucwords( __('recommended videos')) }}</h4> 
+                    </div>
 
-                    <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
-
-                    <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                    <div class="slider" data-slick='{"slidesToShow": 6, "slidesToScroll": 4, "autoplay": false}'>
 
                         <div class="favorites-contens sub_dropdown_image">
 
@@ -448,6 +450,12 @@
         </div>
     </div>
 
+
+<style>
+     body.light-theme .vpageBanner .content .right .utilities {color: <?php echo $GetLightText; ?>;}
+     body.light-theme .add-a-comment {color: <?php echo $GetLightText; ?>;}
+     body.light-theme ul.breadcrumb.p-0 a, body.light-theme ul.breadcrumb.p-0 li{color: <?php echo $GetLightText; ?>;}
+</style>
 @php 
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');

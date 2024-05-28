@@ -4236,7 +4236,7 @@ class ChannelController extends Controller
                                                 })->first();
 
                                                 
-                $item['watchlater_exist'] = Watchlater::where('video_id', $video_id)->where('type', 'channel')
+                $item['wishlist_exist'] = Wishlist::where('video_id', $video_id)->where('type', 'channel')
                                                 ->where(function ($query) use ($geoip) {
                                                     if (!Auth::guest()) {
                                                         $query->where('user_id', Auth::user()->id);
