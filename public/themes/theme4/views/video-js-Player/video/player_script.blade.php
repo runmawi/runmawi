@@ -178,6 +178,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
+            console.console.log('currentTime',currentTime);
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 

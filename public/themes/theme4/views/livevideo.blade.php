@@ -190,17 +190,9 @@
       width: 100%;
    }
 
-   /* .modal {
-      position: fixed;
-      top: 0;
-      right: auto;
-      bottom: 0;
-      left: 0;
-      z-index: 1050;
-      display: none;
-      overflow: hidden;
-      outline: 0;
-   } */
+   .custom-skip-forward-button, .custom-skip-backward-button{
+    top: 23% !important;
+   }
 
    /* <!-- BREADCRUMBS  */
 
