@@ -4192,24 +4192,32 @@ class ChannelController extends Controller
             $setting = Setting::first();
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $getfeching = Geofencing::first();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency)  {
+            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
 
                     // PPV , Register , Subscriber access Checking
 
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_status_button']  = 'Watch now' ;
-                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]) ;
+                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                $item['users_video_visibility_Rent_button']    = false ;
+                $item['users_video_visibility_becomesubscriber'] = false ;
+                $item['users_video_visibility_register_button']  = false ;
+
 
                 if( Auth::guest() == true ){
         
                     if(  $item->access != "guest" ) {
         
                         $item['users_video_visibility_status'] = false ;
-                        $item['users_video_visibility_status_button'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
+                        $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                         $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                        $item['users_video_visibility_Rent_button']      = false ;
+                        $item['users_video_visibility_becomesubscriber'] = false ;
+                        $item['users_video_visibility_register_button']  = true ;
                     }
                 }
         
@@ -4229,8 +4237,11 @@ class ChannelController extends Controller
                     if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
         
                         $item['users_video_visibility_status'] = false ;
-                        $item['users_video_visibility_status_button'] =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
-                       
+                        $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
+                        $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
+                        $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                        $item['users_video_visibility_register_button']  = false ;
+
                         if ($item->access == "ppv") {
 
                             $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
@@ -4240,6 +4251,36 @@ class ChannelController extends Controller
                             $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                         }
                     }
+                }
+
+                    // Block Countries
+
+                if( Auth::user()->role != 'admin' && $getfeching !=null && $getfeching->geofencing == 'ON'){
+
+                    $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
+
+                    if ($block_videos_exists) {
+
+                        $item['users_video_visibility_status'] = false;
+                        $item['users_video_visibility_status_button'] = 'Not available in your country';
+                        $item['users_video_visibility_Rent_button']    = false ;
+                        $item['users_video_visibility_becomesubscriber_button'] = false ;
+                        $item['users_video_visibility_register_button']  = false ;
+                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked'); 
+
+                    }
+                }
+
+                    // Available Country
+
+                if (Auth::user()->role != 'admin' && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+
+                    $item['users_video_visibility_status'] = false;
+                    $item['users_video_visibility_status_button'] = 'Not available in your country';
+                    $item['users_video_visibility_Rent_button']    = false ;
+                    $item['users_video_visibility_becomesubscriber_button'] = false ;
+                    $item['users_video_visibility_register_button']  = false ;
+                    $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
                 }
 
                     // video details
@@ -4431,6 +4472,10 @@ class ChannelController extends Controller
                 'currency'         => $currency,
                 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
                 'publishable_key'    => $publishable_key ,
+                'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                    </svg>',
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
