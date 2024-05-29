@@ -658,20 +658,23 @@
                 </form>
             </div>
             <div class="clear"></div>
-            <!-- Manage Season -->
-            <div class="float-right">
-                    <input type="text" id="searchInput" placeholder="Search...">
+            <!-- Manage Episode Order -->
+                <div class="float-right">
+                    <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
+                    <input type="text"  id="searchInput" placeholder="Search...">
                 </div>
+
             <div class="p-4">
 
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
   
                 <div class="admin-section-title">
-                    <div class="row"  id="orderepisode">
+                    <div class="row ml-0"  id="orderepisode">
 
                         <table class="table table-bordered iq-card text-center" id="categorytbl">
                             <tr class="table-header r1">
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
                                 <th><label>Episode Duration</label></th>
@@ -683,7 +686,9 @@
                             @foreach($episodes as $key => $episode)
                                 <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
                                 <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
-                                <tr id="{{ $episode->id }}">
+                                <!-- <tr id="{{ $episode->id }}"> -->
+                                    <tr id="episode-{{ $episode->id }}">
+                                    <td><input type="checkbox" class="episode-checkbox" value="{{ $episode->id }}"></td>
                                     <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
                                     <td valign="bottom"><p>{{ $episode->title }}</p></td>
                                     <td valign="bottom"><p>@if(!empty($episode->duration)){{ gmdate('H:i:s', $episode->duration) }}@endif</p></td>
@@ -733,6 +738,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
    
    <script>
+
+
+document.getElementById('select-all').addEventListener('change', function() {
+        let checkboxes = document.querySelectorAll('.episode-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    document.getElementById('delete-selected').addEventListener('click', function() {
+        let selected = [];
+        document.querySelectorAll('.episode-checkbox:checked').forEach(checkbox => {
+            selected.push(checkbox.value);
+        });
+
+        if(selected.length > 0) {
+            if(confirm('Are you sure you want to delete the selected episodes?')) {
+                fetch("{{ route('admin.episodes.deleteSelected') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ids: selected})
+                }).then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        selected.forEach(id => {
+                            document.getElementById('episode-' + id).remove();
+                        });
+                    } else {
+                        alert('An error occurred while deleting episodes.');
+                    }
+                });
+            }
+        } else {
+            alert('No episodes selected.');
+        }
+    });
 
             $(document).ready(function(){
                 $("#searchInput").on("keyup", function() {
