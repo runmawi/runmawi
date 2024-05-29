@@ -1,32 +1,36 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
+let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', {
+
+        var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+
             controlBar: {
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
-                    // 'timeDivider': {},
-                    // 'durationDisplay': {},
+                    'timeDivider': {},
+                    'durationDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},
+                    'fullscreenToggle': {}                     
                 },
-                pictureInPictureToggle: true,                
+                pictureInPictureToggle: true,
+
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -122,19 +126,6 @@
                 }
             }
         });
-
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
 
         // Hls Quality Selector - M3U8 
 
@@ -246,6 +237,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            // console.log("!#");
+        })
     });
 
 </script>
