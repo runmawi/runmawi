@@ -4198,89 +4198,92 @@ class ChannelController extends Controller
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
 
-                    // PPV , Register , Subscriber access Checking
-
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
-                $item['users_video_visibility_Rent_button']    = false ;
-                $item['users_video_visibility_becomesubscriber'] = false ;
-                $item['users_video_visibility_register_button']  = false ;
 
+                    // Check for guest user
 
-                if( Auth::guest() == true ){
+                if( Auth::guest() && $item->access != "guest" ){
         
-                    if(  $item->access != "guest" ) {
-        
-                        $item['users_video_visibility_status'] = false ;
-                        $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
-                        $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
-                        $item['users_video_visibility_Rent_button']      = false ;
-                        $item['users_video_visibility_becomesubscriber'] = false ;
-                        $item['users_video_visibility_register_button']  = true ;
-                    }
+                    $item['users_video_visibility_status'] = false ;
+                    $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
+                    $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                    $item['users_video_visibility_Rent_button']      = false ;
+                    $item['users_video_visibility_becomesubscriber'] = false ;
+                    $item['users_video_visibility_register_button']  = true ;
                 }
-        
-                if( !Auth::guest() && Auth::user()->role != 'admin' ){
 
-                    $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+                    // Check for Login user - Register , Subscriber ,PPV
 
-                    $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-        
-                            // free PPV access for subscriber status Condition
-        
-                    if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
-        
-                        $PPV_exists = true ;
-                    }
-                    
-                    if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
-        
-                        $item['users_video_visibility_status'] = false ;
-                        $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
-                        $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                        $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
-                        $item['users_video_visibility_register_button']  = false ;
+                if (Auth::user()->role != 'admin') {
+                
+                    if( !Auth::guest()  ){
 
-                        if ($item->access == "ppv") {
+                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
-                            $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+            
+                                // free PPV access for subscriber status Condition
+            
+                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+            
+                            $PPV_exists = true ;
+                        }
+                        
+                        if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+            
+                            $item['users_video_visibility_status'] = false ;
+                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
+                            $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_register_button']  = false ;
 
-                        } elseif( Auth::user()->role == 'registered') {
+                            if ($item->access == "ppv") {
 
-                            $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
+                                $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+
+                            } elseif( Auth::user()->role == 'registered') {
+
+                                $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
+                            }
                         }
                     }
-                }
 
-                    // Block Countries
+                        // Free duration
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_status_button']  = 'Watch now' ;
+                        $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                    }
 
-                if( Auth::user()->role != 'admin' && $getfeching !=null && $getfeching->geofencing == 'ON'){
+                        // Block Countries
+                    if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
 
-                    $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
+                        $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
 
-                    if ($block_videos_exists) {
+                        if ($block_videos_exists) {
+
+                            $item['users_video_visibility_status'] = false;
+                            $item['users_video_visibility_status_button'] = 'Not available in your country';
+                            $item['users_video_visibility_Rent_button']    = false ;
+                            $item['users_video_visibility_becomesubscriber_button'] = false ;
+                            $item['users_video_visibility_register_button']  = false ;
+                            $item['users_video_visibility_redirect_url'] = URL::to('/blocked'); 
+
+                        }
+                    }
+
+                        // Available Country
+                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button'] = 'Not available in your country';
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
-                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked'); 
-
+                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
                     }
-                }
-
-                    // Available Country
-
-                if (Auth::user()->role != 'admin' && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
-
-                    $item['users_video_visibility_status'] = false;
-                    $item['users_video_visibility_status_button'] = 'Not available in your country';
-                    $item['users_video_visibility_Rent_button']    = false ;
-                    $item['users_video_visibility_becomesubscriber_button'] = false ;
-                    $item['users_video_visibility_register_button']  = false ;
-                    $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
                 }
 
                     // video details
@@ -4500,29 +4503,26 @@ class ChannelController extends Controller
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
 
-                    // PPV , Register , Subscriber access Checking
+                $item['users_video_visibility_status']         = true ;
+                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
 
-                    $item['users_video_visibility_status']         = true ;
-                    $item['users_video_visibility_status_message']  = null ;
-                    $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
-                    $item['users_video_visibility_Rent_button']    = false ;
+                    // Check for guest user
+
+                if( Auth::guest()  && $item->access != "guest"  ){
+        
+                    $item['users_video_visibility_status'] = false ;
+                    $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
+                    $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                    $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
-                    $item['users_video_visibility_register_button']  = false ;
-    
-                    if( Auth::guest() == true ){
-            
-                        if(  $item->access != "guest" ) {
-            
-                            $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
-                            $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
-                            $item['users_video_visibility_Rent_button']      = false ;
-                            $item['users_video_visibility_becomesubscriber'] = false ;
-                            $item['users_video_visibility_register_button']  = true ;
-                        }
-                    }
-            
-                    if( !Auth::guest() && Auth::user()->role != 'admin' ){
+                    $item['users_video_visibility_register_button']  = true ;
+                }
+
+                    // Check for Login user - Register , Subscriber ,PPV
+
+                if (Auth::user()->role != 'admin') {
+                    
+                    if( !Auth::guest() ){
     
                         $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
     
@@ -4553,10 +4553,15 @@ class ChannelController extends Controller
                             }
                         }
                     }
-    
+                        // Free duration
+
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                    }
+
                         // Block Countries
-    
-                    if( Auth::user()->role != 'admin' && $getfeching !=null && $getfeching->geofencing == 'ON'){
+
+                    if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
     
                         $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
     
@@ -4571,10 +4576,10 @@ class ChannelController extends Controller
     
                         }
                     }
-    
+
                         // Available Country
-    
-                    if (Auth::user()->role != 'admin' && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+
+                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
     
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
@@ -4583,6 +4588,7 @@ class ChannelController extends Controller
                         $item['users_video_visibility_register_button']  = false ;
                         $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
                     }
+                }
 
                 $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
