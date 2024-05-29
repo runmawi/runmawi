@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddOrderSeasonsToSeriesSeasons extends Migration
+class AddPpvOptionToVideos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddOrderSeasonsToSeriesSeasons extends Migration
      */
     public function up()
     {
-        Schema::table('series_seasons', function (Blueprint $table) {
-            $table->integer('order')->nullable()->after('id');
+        Schema::table('videos', function (Blueprint $table) {
+            $table->string('ppv_option')->nullable()->after('global_ppv ');
         });
     }
 
@@ -25,8 +25,8 @@ class AddOrderSeasonsToSeriesSeasons extends Migration
      */
     public function down()
     {
-        Schema::table('series_seasons', function (Blueprint $table) {
-            Schema::dropIfExists('order');
+        Schema::table('videos', function (Blueprint $table) {
+            Schema::dropIfExists('ppv_option');
         });
     }
 }
