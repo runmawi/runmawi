@@ -4184,7 +4184,6 @@ class ChannelController extends Controller
         exit;
     }
 
-
     private function videos_details_jsplayer( $slug )
     {
         try {
@@ -4196,7 +4195,8 @@ class ChannelController extends Controller
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
+            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
+                                    ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
 
                     // PPV , Register , Subscriber access Checking
 
@@ -4490,9 +4490,99 @@ class ChannelController extends Controller
     {
         try {
             
+            $setting = Setting::first();
+            $currency = CurrencySetting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $getfeching = Geofencing::first();
+
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
+                                    ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
+
+                    // PPV , Register , Subscriber access Checking
+
+                    $item['users_video_visibility_status']         = true ;
+                    $item['users_video_visibility_status_message']  = null ;
+                    $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                    $item['users_video_visibility_Rent_button']    = false ;
+                    $item['users_video_visibility_becomesubscriber'] = false ;
+                    $item['users_video_visibility_register_button']  = false ;
+    
+                    if( Auth::guest() == true ){
+            
+                        if(  $item->access != "guest" ) {
+            
+                            $item['users_video_visibility_status'] = false ;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
+                            $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                            $item['users_video_visibility_Rent_button']      = false ;
+                            $item['users_video_visibility_becomesubscriber'] = false ;
+                            $item['users_video_visibility_register_button']  = true ;
+                        }
+                    }
+            
+                    if( !Auth::guest() && Auth::user()->role != 'admin' ){
+    
+                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+    
+                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+            
+                                // free PPV access for subscriber status Condition
+            
+                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+            
+                            $PPV_exists = true ;
+                        }
+                        
+                        if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+            
+                            $item['users_video_visibility_status'] = false ;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                            $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_register_button']  = false ;
+    
+                            if ($item->access == "ppv") {
+    
+                                $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+    
+                            } elseif( Auth::user()->role == 'registered') {
+    
+                                $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
+                            }
+                        }
+                    }
+    
+                        // Block Countries
+    
+                    if( Auth::user()->role != 'admin' && $getfeching !=null && $getfeching->geofencing == 'ON'){
+    
+                        $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
+    
+                        if ($block_videos_exists) {
+    
+                            $item['users_video_visibility_status'] = false;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
+                            $item['users_video_visibility_Rent_button']    = false ;
+                            $item['users_video_visibility_becomesubscriber_button'] = false ;
+                            $item['users_video_visibility_register_button']  = false ;
+                            $item['users_video_visibility_redirect_url'] = URL::to('/blocked'); 
+    
+                        }
+                    }
+    
+                        // Available Country
+    
+                    if (Auth::user()->role != 'admin' && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+    
+                        $item['users_video_visibility_status'] = false;
+                        $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
+                        $item['users_video_visibility_Rent_button']    = false ;
+                        $item['users_video_visibility_becomesubscriber_button'] = false ;
+                        $item['users_video_visibility_register_button']  = false ;
+                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                    }
 
                 $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
@@ -4509,76 +4599,79 @@ class ChannelController extends Controller
                 
                 // Videos URL 
 
-                switch (true) {
+                if ($item['users_video_visibility_status'] == true ) {
 
-                    case $item['type'] == "mp4_url":
-                    $item['videos_url'] =  $item->mp4_url ;
-                    $item['video_player_type'] =  'video/mp4' ;
-                    break;
+                    switch (true) {
 
-                    case $item['type'] == "m3u8_url":
-                    $item['videos_url'] =  $item->m3u8_url ;
-                    $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
+                        case $item['type'] == "mp4_url":
+                        $item['videos_url'] =  $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                        break;
 
-                    case $item['type'] == "embed":
-                    $item['videos_url'] =  $item->embed_code ;
-                    break;
-                    
-                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
-                    $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
-                    
-                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
-                    $item['videos_url']   = $item->mp4_url ;
-                    $item['video_player_type'] =  'video/mp4' ;
-                    break;
+                        case $item['type'] == "m3u8_url":
+                        $item['videos_url'] =  $item->m3u8_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
 
-                    case $item['type'] == " " && !is_null($item->transcoded_url) :
-                    $item['videos_url']   = $item->transcoded_url ;
-                    $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
-                    
-                    case $item['type'] == null :
-                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-                    $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
+                        case $item['type'] == "embed":
+                        $item['videos_url'] =  $item->embed_code ;
+                        break;
+                        
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+                        
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+                        $item['videos_url']   = $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                        break;
 
-                    default:
+                        case $item['type'] == " " && !is_null($item->transcoded_url) :
+                        $item['videos_url']   = $item->transcoded_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+                        
+                        case $item['type'] == null :
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
+                        default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type'] = null ;
+                        break;
+                    }
+                } else {
                     $item['videos_url']    = null ;
                     $item['video_player_type'] = null ;
-                    break;
                 }
 
                 return $item;
             })->first();
 
-            $setting =  Setting::first();
             $videoURl = [];
 
             if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
+
                 $videoClip = Setting::get()->map(function ($item)  {
                         $item['videos_url']    =   URL::to('/storage/app/public/'.$item->video_clip);
                         $item['video_player_type']   =  'application/x-mpegURL' ;
 
                     return $item;
                 })->first();
+
                 $videodetailCollection = collect([$videodetail->toArray()]);
                 
-                // Convert $videoClip object to collection of object format if it's set
-                if (isset($videoClip)) {
-                    $videoClipCollection = collect([$videoClip->toArray()]);
-                } else {
-                    $videoClipCollection = collect([]);
-                }
+                $videoClipCollection = isset($videoClip) ?  collect([$videoClip->toArray()]) : collect([]);
+                
                 $videoURl = $videoClipCollection->merge($videodetailCollection);
             }           
 
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
-            ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-            ->where('movies_subtitles.movie_id', $video_id)
-            ->get();
+                                                ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+                                                ->where('movies_subtitles.movie_id', $video_id)
+                                                ->get();
 
             if (count($subtitles_name) > 0) {
                 foreach ($subtitles_name as $value) {
