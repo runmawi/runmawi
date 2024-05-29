@@ -361,11 +361,17 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select class="form-control js-example-basic-single" name="time_zone_id" id="time_zone_id">
-                                @foreach($TimeZone as $key => $time_zone)
-                                    <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
-                                @endforeach
-                            </select>
+                            @if ($enable_default_timezone == 0)
+                                <select class="form-control js-example-basic-single" name="time_zone_id" id="time_zone_id">
+                                    @foreach($TimeZone as $key => $time_zone)
+                                        <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
+                                    @endforeach
+                                </select>
+                            @else 
+                                <input type="text" class="form-control" value="{{ $default_time_zone }}{{ '( UTC'.@$utc_difference.')' }}" readonly>
+                                <input type="hidden" name="time_zone_id" class="form-control" value="{{ @$time_zoneid }}" >
+                            @endif
+
                         </div>
                         <div class="col-md-4">
                             <input type="text" class="date form-control" value="{{ date('m-d-Y') }}">

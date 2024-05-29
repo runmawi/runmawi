@@ -63,6 +63,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\ChannelVideoScheduler as ChannelVideoScheduler;
+use App\SiteTheme;
 
 class AdminChannelVideoController extends Controller
 {
@@ -73,9 +74,17 @@ class AdminChannelVideoController extends Controller
            
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
 
-            $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+            // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+            $TimeZone = TimeZone::get();
 
             $default_time_zone = Setting::pluck('default_time_zone')->first();
+            
+            $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+            
+            $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
+            
+            $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
+           
             $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Video';
                 return $item;
@@ -109,7 +118,10 @@ class AdminChannelVideoController extends Controller
                 'Channels' => $Channels  ,
                 'TimeZone' => $TimeZone  ,
                 'default_time_zone' => $default_time_zone  ,
+                'enable_default_timezone' => $enable_default_timezone  ,
+                'utc_difference' => $utc_difference  ,
                 // 'VideoCollection' => $paginator  ,
+                'time_zoneid' => $time_zoneid  ,
                 'VideoCollection' => $mergedCollection  ,
             );
 
