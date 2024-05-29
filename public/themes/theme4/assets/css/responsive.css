@@ -133,7 +133,7 @@
   .shows-img .movie-time { display: none !important; }
   .genres-box { top: 10px; }
   .shows-content { bottom: 14px; }
-  .main-content { padding-top: 25px; }
+  /* .main-content { padding-top: 25px; } */
   #home-slider p { width: 100%; }
   .slick-bg:before { background: linear-gradient(-360deg, rgba(0, 0, 0, 1) 0%, rgba(20, 20, 20, 1) 40%, rgba(83, 100, 141, 0) 100%); }
   .m-profile { padding-top: 40px; padding-bottom: 50px; }
@@ -155,6 +155,7 @@
   #trending-slider-nav .slick-arrow:hover{background: none;}
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
+  .navbar-right .iq-sub-dropdown{right:-11px;}
 }
 @media (min-width:576px) {
   .iq-search-bar a.search-toggle { display: none; }
