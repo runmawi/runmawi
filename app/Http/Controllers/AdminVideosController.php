@@ -2683,6 +2683,7 @@ class AdminVideosController extends Controller
         $video->responsive_image = $responsive_image;
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
 
         $video->save();
 
@@ -4054,6 +4055,7 @@ class AdminVideosController extends Controller
         $video->responsive_image = $responsive_image;
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
