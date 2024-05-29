@@ -1353,7 +1353,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php  } 
                                           } ?>
-                                          <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
+                                          <!-- <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
                                              <?php if( Auth::guest() ) : ?>
                                                 <li class="nav-item nav-icon btn">
                                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -1439,7 +1439,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php endif; ?>
 
 
-                                          </ul>
+                                          </ul> -->
                                     </ul>
 
                                  <?php endif;
@@ -2019,7 +2019,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signin">
                                                             <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
@@ -2030,7 +2030,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </a>
                                                          </li>
                                                          
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signup">
                                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
