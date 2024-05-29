@@ -4252,8 +4252,9 @@ class ChannelController extends Controller
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+
                         $item['users_video_visibility_status'] = true ;
-                        $item['users_video_visibility_status_button']  = 'Watch now' ;
+                        $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
                         $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                     }
 
@@ -4505,6 +4506,7 @@ class ChannelController extends Controller
 
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                $item['users_video_visibility_free_duration_status']  = 0 ; 
 
                     // Check for guest user
 
@@ -4557,6 +4559,7 @@ class ChannelController extends Controller
 
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                         $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_free_duration_status']  = 1; 
                     }
 
                         // Block Countries
