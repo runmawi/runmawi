@@ -185,20 +185,25 @@
                     </div>
 
                     <div class="row">
-                        
-                        <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
-                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                </svg>
-                                @if ( $videodetail->users_video_visibility_status == true)
-                                    <span class="text pr-2"> {{ __($videodetail->users_video_visibility_status_button) }} </span>
-                                @else
-                                    <span class="text pr-2"> {{ __($videodetail->users_video_visibility_status_button) }} </span>
-                                @endif
-                            </div>
-                        </a>
+
+                        @if ( $videodetail->users_video_visibility_status == false )
+                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
+                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                    </div>
+                                </a>
+                            @endif
+                        @else
+                            <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                </div>
+                            </a>
+                        @endif
+
                             
                         @php include public_path('themes/default/views/partials/social-share.php'); @endphp 
                         

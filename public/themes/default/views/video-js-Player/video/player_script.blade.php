@@ -1,6 +1,8 @@
 <script>
 
-let video_url = "<?php echo $videodetail->videos_url; ?>";
+    let video_url = "<?php echo $videodetail->videos_url; ?>";
+    let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
+    let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -235,6 +237,15 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
 
                 requestMidrollAd(vastTagMidroll);
             }
+
+            // Free Duration
+
+            if ( currentTime != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+                player.pause();
+                player.dispose();
+                player.off('timeupdate');  
+            }
+            
         });
 
         player.on("ended", function() {
