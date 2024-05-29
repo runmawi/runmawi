@@ -66,7 +66,7 @@ header .navbar ul li:last-child{margin-right:0}
 .slick-track{margin:unset!important}
 .vod-info{padding:0;list-style:none;margin:15px 0;color:var(--text-color-opacity)}
 .vod-info li span{background-color:red;display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
-.main-content{padding-top:40px}
+/* .main-content{padding-top:40px} */
 .block-space{padding:40px 0}
 #iq-trending,#iq-favorites{margin-top:40px}
 .iq-main-header{margin-bottom:20px}
