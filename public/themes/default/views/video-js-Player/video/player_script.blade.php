@@ -14,21 +14,35 @@
 
             controlBar: {
                 volumePanel: { inline: false },
+                skipButtons: {
+                    enabled: true,
+                    forward: 10,
+                },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
+<<<<<<< HEAD
+=======
                     'timeDivider': {},
                     'durationDisplay': {},
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
+<<<<<<< HEAD
+                    'fullscreenToggle': {},
+
+                },
+                pictureInPictureToggle: true,                
+=======
                     'fullscreenToggle': {}                     
                 },
                 pictureInPictureToggle: true,
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
 
             }
         });
@@ -81,6 +95,36 @@
                 });
             }
         });
+
+        player.on('userinactive', () => {
+          // Hide the skip forward and backward buttons when the user becomes inactive
+          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+          if (skipForwardButton && skipBackwardButton) {
+            skipForwardButton.style.display = 'none';
+            skipBackwardButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          // Show the skip forward and backward buttons when the user becomes active
+          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+          if (skipForwardButton && skipBackwardButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+          }
+        });
+
+        const skipForward = (duration) => {
+    const playerTime = player.current;
+    playerTime.currentTime(playerTime.currentTime() + duration);
+    console.log("player",playerTime)
+  };
+  const skipBackward = (duration) => {
+    const pplayerTime = player.current;
+    playerTime.currentTime(playerTime.currentTime() - duration);
+  };
 
         // Ads Marker
 

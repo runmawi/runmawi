@@ -33,6 +33,7 @@
 .vjs-icon-share{font-family:VideoJS;font-weight:400;font-style:normal}
 .vjs-icon-share:before{content:"\f10f"}
 .vjs-icon-cog{font-family:VideoJS;font-weight:400;font-style:normal}
+.video-js.vjs-fullscreen .vjs-fullscreen-control .vjs-icon-placeholder:before, .vjs-icon-fullscreen-exit:before ~ .custom-skip-forward-button, .custom-skip-backward-button { display: block; visibility: visible;}
 .vjs-icon-cog:before{content:"\f110"}
 .video-js .vjs-play-progress,.video-js .vjs-volume-level,.vjs-icon-circle,.vjs-seek-to-live-control .vjs-icon-placeholder{font-family:VideoJS;font-weight:400;font-style:normal}
 .video-js .vjs-play-progress:before,.video-js .vjs-volume-level:before,.vjs-icon-circle:before,.vjs-seek-to-live-control .vjs-icon-placeholder:before{content:"\f111"}
