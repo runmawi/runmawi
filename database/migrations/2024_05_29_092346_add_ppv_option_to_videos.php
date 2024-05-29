@@ -14,7 +14,7 @@ class AddPpvOptionToVideos extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->string('ppv_option')->nullable()->after('global_ppv ');
+            $table->string('ppv_option')->nullable()->after('global_ppv');
         });
     }
 
