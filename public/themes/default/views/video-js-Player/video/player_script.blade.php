@@ -1,13 +1,15 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
+let video_url = "<?php echo $videodetail->videos_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', {
+
+        var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+
             controlBar: {
                 volumePanel: { inline: false },
                 skipButtons: {
@@ -18,19 +20,31 @@
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
+<<<<<<< HEAD
+=======
+                    'timeDivider': {},
+                    'durationDisplay': {},
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
+<<<<<<< HEAD
                     'fullscreenToggle': {},
 
                 },
                 pictureInPictureToggle: true,                
+=======
+                    'fullscreenToggle': {}                     
+                },
+                pictureInPictureToggle: true,
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
 
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -157,19 +171,6 @@
             }
         });
 
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
-
         // Hls Quality Selector - M3U8 
 
         player.hlsQualitySelector({ 
@@ -280,6 +281,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            // console.log("!#");
+        })
     });
 
 </script>

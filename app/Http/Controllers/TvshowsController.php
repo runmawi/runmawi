@@ -219,6 +219,8 @@ class TvshowsController extends Controller
                 ->where('banner', '1')
                 ->orderBy('id', 'DESC')
                 ->simplePaginate(120000),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+
         ];
 
 

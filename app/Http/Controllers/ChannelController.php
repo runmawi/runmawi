@@ -5,6 +5,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -4188,18 +4189,67 @@ class ChannelController extends Controller
     {
         try {
 
+            $setting = Setting::first();
+            $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip)  {
+            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency)  {
 
-                $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
-                $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
-                $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
-                $item['Reels_Thumbnail'] =   $item->reels_thumbnail != null ? URL::to('public/uploads/images/'.$item->reels_thumbnail) : default_vertical_image_url();     
-                $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
-                $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+                    // PPV , Register , Subscriber access Checking
+
+                $item['users_video_visibility_status']         = true ;
+                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]) ;
+
+                if( Auth::guest() == true ){
+        
+                    if(  $item->access != "guest" ) {
+        
+                        $item['users_video_visibility_status'] = false ;
+                        $item['users_video_visibility_status_button'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
+                        $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                    }
+                }
+        
+                if( !Auth::guest() && Auth::user()->role != 'admin' ){
+
+                    $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+
+                    $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+        
+                            // free PPV access for subscriber status Condition
+        
+                    if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+        
+                        $PPV_exists = true ;
+                    }
+                    
+                    if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+        
+                        $item['users_video_visibility_status'] = false ;
+                        $item['users_video_visibility_status_button'] =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
+                       
+                        if ($item->access == "ppv") {
+
+                            $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+
+                        } elseif( Auth::user()->role == 'registered') {
+
+                            $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
+                        }
+                    }
+                }
+
+                    // video details
+      
+                $item['image_url']        = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
+                $item['player_image_url'] = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                $item['Title_Thumbnail']  = $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
+                $item['Reels_Thumbnail']  = $item->reels_thumbnail != null ? URL::to('public/uploads/images/'.$item->reels_thumbnail) : default_vertical_image_url();     
+                $item['pdf_files_url']    = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+                $item['transcoded_url']   = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
                 $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Released": ($item->publish_type == "publish_later" ? 'Coming Soon On '. Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
 
@@ -4265,16 +4315,14 @@ class ChannelController extends Controller
 
                     // Reels Videos
 
-                $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
-                                                ->where('videos.id', $video_id)->get();
+                $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')->where('videos.id', $video_id)->get();
 
                 $item['view_increment'] = $this->handleViewCount_movies($video_id);
 
                 // Rent Video Exits
 
                 if($item['access'] == 'ppv' && !Auth::guest()){
-                    $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])
-                                            ->where('user_id', Auth::user()->id)->count();
+                    $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->count();
                 }else{
                     $item['PPV_Exits'] = 0 ;
                 }
@@ -4282,32 +4330,38 @@ class ChannelController extends Controller
 
                     //  Video URL
 
-                switch (true) {
+                if ($item['users_video_visibility_status'] == true ) {
 
-                    case $item['type'] == "mp4_url":
-                        $item['videos_url']  =  $item->mp4_url ;
-                        $item['video_player_type'] =  'video/mp4' ;
-                    break;
+                    switch (true) {
 
-                    case $item['type'] == "m3u8_url":
-                        $item['videos_url']  =  $item->m3u8_url ;
-                        $item['video_player_type'] =  'application/x-mpegURL' ;
-                    break;
+                        case $item['type'] == "mp4_url":
+                            $item['videos_url']  =  $item->mp4_url ;
+                            $item['video_player_type'] =  'video/mp4' ;
+                        break;
 
-                    case $item['type'] == "embed":
-                        $item['videos_url']  =  $item->embed_code ;
-                        $item['video_player_type'] =  'video/webm' ;
-                    break;
-                    
-                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
-                        $item['video_player_type']   =  'application/x-mpegURL' ;
-                    break;
+                        case $item['type'] == "m3u8_url":
+                            $item['videos_url']  =  $item->m3u8_url ;
+                            $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
 
-                    default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
-                    break;
+                        case $item['type'] == "embed":
+                            $item['videos_url']  =  $item->embed_code ;
+                            $item['video_player_type'] =  'video/webm' ;
+                        break;
+                        
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                            $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                            $item['video_player_type']   =  'application/x-mpegURL' ;
+                        break;
+
+                        default:
+                            $item['videos_url']    = null ;
+                            $item['video_player_type']   =  null ;
+                        break;
+                    }
+                }else {
+                    $item['videos_url'] = null;
+                    $item['video_player_type'] = null;
                 }
 
                     //  Video Trailer URL
@@ -4343,26 +4397,27 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
-
             // Payment Gateway Stripe 
 
             $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->first();
 
             $mode = $Stripepayment->live_mode;
 
-            if ($mode == 0) {
+            switch ($mode) {
+                case 0:
+                    $secret_key = $Stripepayment->test_secret_key;
+                    $publishable_key = $Stripepayment->test_publishable_key;
+                    break;
 
-                $secret_key = $Stripepayment->test_secret_key;
-                $publishable_key = $Stripepayment->test_publishable_key;
-
-            } elseif ($mode == 1) {
-
-                $secret_key = $Stripepayment->live_secret_key;
-                $publishable_key = $Stripepayment->live_publishable_key;
+                case 1:
+                    $secret_key = $Stripepayment->live_secret_key;
+                    $publishable_key = $Stripepayment->live_publishable_key;
+                    break;
                 
-            } else {
-                $secret_key = null;
-                $publishable_key = null;
+                default:
+                    $secret_key = null;
+                    $publishable_key = null;
+                    break;
             }
 
             $data = array(
@@ -4373,7 +4428,7 @@ class ChannelController extends Controller
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
                 'ThumbnailSetting' => ThumbnailSetting::first() ,
-                'currency'         => CurrencySetting::first(),
+                'currency'         => $currency,
                 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
                 'publishable_key'    => $publishable_key ,
             );
@@ -4381,8 +4436,7 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -4475,7 +4529,7 @@ class ChannelController extends Controller
                 }
                 $videoURl = $videoClipCollection->merge($videodetailCollection);
             }           
-            // dd($videoURl);
+
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
             ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
             ->where('movies_subtitles.movie_id', $video_id)
