@@ -67,6 +67,8 @@
                     @endif
                 </video>
             @endif
+
+            <p id="visibilityMessage" style="color: white; display: none;">{{ $videodetail->users_video_visibility_status_message}}</p>
             
         @else
             <p style="color: white"> {{ $videodetail->users_video_visibility_status_message}}</p>

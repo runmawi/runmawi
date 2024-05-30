@@ -238,6 +238,8 @@
                 player.pause();
                 player.dispose();
                 player.off('timeupdate');  
+
+                document.getElementById("visibilityMessage").style.display = "block";
             }
 
             // Free Duration - Live
@@ -256,9 +258,10 @@
                     player.pause();
                     player.dispose();
                     player.off('timeupdate');  
+
+                    document.getElementById("visibilityMessage").style.display = "block";
                 }
             }
-            
         });
 
         player.on("ended", function() {
