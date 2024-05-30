@@ -2,6 +2,10 @@
 
 let video_url = "<?php echo $videodetail->videos_url; ?>";
 
+
+
+
+
     document.addEventListener("DOMContentLoaded", function() {
 
         var player = videojs('my-video', { // Video Js Player 
@@ -29,6 +33,16 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                 pictureInPictureToggle: true,
 
             }
+        });
+
+        $('.custom-skip-forward-button').click(function(){
+            // console.log("player",player.currentTime());
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        $('.custom-skip-backward-button').click(function(){
+            // console.log("player",player.currentTime());
+            player.currentTime(player.currentTime() - 10);
         });
 
 

@@ -20,22 +20,25 @@
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
-                    // 'timeDivider': {},
-                    // 'durationDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-
-                    'fullscreenToggle': {},
-                    
+                    'fullscreenToggle': {},  
                 },
                 pictureInPictureToggle: true,
-
             }
+        });
+
+        $('.custom-skip-forward-button').click(function(){
+            // console.log("player",player.currentTime());
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        $('.custom-skip-backward-button').click(function(){
+            // console.log("player",player.currentTime());
+            player.currentTime(player.currentTime() - 10);
         });
 
         // Skip Intro & Skip Recap 

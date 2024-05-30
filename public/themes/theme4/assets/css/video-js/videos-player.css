@@ -30,14 +30,14 @@
   .video-js.video-js:lang(en-IE) .vjs-subs-caps-button .vjs-icon-placeholder::before, 
   .video-js.video-js:lang(en-NZ) .vjs-subs-caps-button .vjs-icon-placeholder::before, 
   .vjs-icon-subtitles::before{
-    content: "";
-    background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
-    width: 66%;
-    height: 72%;
-    top: 36%;
-    left: 38%;
-    background-size: 25px;
-  }
+  content: "";
+  background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
+  width: 66%;
+  height: 72%;
+  top: 36%;
+  left: 38%;
+  background-size: 25px;
+}
 
 .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before, 
 .vjs-icon-volume-mute::before {
