@@ -22,27 +22,15 @@
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
-<<<<<<< HEAD
-=======
-                    'timeDivider': {},
-                    'durationDisplay': {},
->>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-<<<<<<< HEAD
                     'fullscreenToggle': {},
 
                 },
                 pictureInPictureToggle: true,                
-=======
-                    'fullscreenToggle': {}                     
-                },
-                pictureInPictureToggle: true,
->>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
 
             }
         });
@@ -220,9 +208,15 @@
             player.ima.requestAds();
         }
 
+        var initial_current_time = 0;
+        var timeupdate_counter = 0; 
+
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
+            var Player_duration = player.duration() ;
+
+            // Mid ads 
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 
@@ -240,12 +234,34 @@
 
             // Free Duration
 
-            if ( currentTime != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+            if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
                 player.pause();
                 player.dispose();
                 player.off('timeupdate');  
+
+                document.getElementById("visibilityMessage").style.display = "block";
             }
-            
+
+            // Free Duration - Live
+
+            if ( Player_duration == "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime  ) {
+    
+                if (timeupdate_counter <= 2) {
+                    initial_current_time = player.currentTime();
+                    timeupdate_counter++;
+                }
+
+                let time_diff = currentTime - initial_current_time;
+                let round_off_time  = parseInt(time_diff);
+
+                if( round_off_time >=  free_duration_seconds ){
+                    player.pause();
+                    player.dispose();
+                    player.off('timeupdate');  
+
+                    document.getElementById("visibilityMessage").style.display = "block";
+                }
+            }
         });
 
         player.on("ended", function() {
