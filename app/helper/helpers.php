@@ -1844,3 +1844,116 @@ function Logged_Monetization()
     $Logged_Monetization = App\SiteTheme::pluck('enable_logged_device')->first();
     return  $Logged_Monetization; 
 }
+
+
+
+function SiteVideoScheduler($channe_id,$time)
+{
+
+    $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id',$channe_id)
+                                ->where('choosed_date',$time)
+                                ->orderBy('created_at', 'DESC')->first();
+
+    return  $SiteVideoScheduler; 
+        
+}
+
+
+function SiteVideoSchedulerWithTimeZone($channe_id,$time,$time_zone)
+{
+
+    $SiteVideoSchedulerWithTimeZone = App\SiteVideoScheduler::where('channe_id',$channe_id)
+                                            ->where('choosed_date',$time)
+                                            ->where('time_zone',$time_zone)
+                                            ->orderBy('created_at', 'DESC')->first();
+
+    return  $SiteVideoSchedulerWithTimeZone; 
+        
+}
+
+
+
+function existingSiteVideoSchedulerEntry($time,$channe_id,$start_time)
+{
+
+        $existingVideoSchedulerEntry = App\SiteVideoScheduler::where('choosed_date', chosen_datetime($time))
+                ->where('channe_id', $channe_id)
+                ->first();
+
+        $current_time = strtotime($start_time);
+
+            if(!empty($existingVideoSchedulerEntry) ){
+                return 0;
+            }else{
+                return 1;
+            }
+
+}
+
+
+
+function SiteVideoScheduledData($time,$channe_id,$time_zone){
+    
+    $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
+    $time = $carbonDate->format('n-j-Y');
+    $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id', $channe_id)
+                            ->where('time_zone', $time_zone)
+                            ->where('choosed_date', $time)
+                            ->orderBy('socure_order', 'ASC')
+                            ->join('video_schedules', 'video_schedules.id', '=', 'site_videos_scheduler.channe_id')
+                            ->select('site_videos_scheduler.*', 'video_schedules.name')
+                            ->get();
+            $image_URL = URL::to("");
+            $edit_svg = URL::to('assets/img/icon/edit.svg');
+            $delete_svg = URL::to('assets/img/icon/delete.svg');
+            $calender_svg = URL::to('assets/img/icon/cal-event.svg');
+            $output = "";
+            $i = 1;
+            if (count($SiteVideoScheduler) > 0) {
+                $total_row = $SiteVideoScheduler->count();
+                if (!empty($SiteVideoScheduler)) {
+    
+                    foreach ($SiteVideoScheduler as $key => $row) {
+                        $output .=
+                            '<tr>
+                            <td class="border-lft">' . $row->socure_title.
+                                            '</td>
+                                 
+                                <td>' . $row->start_time . '</td>       
+                                <td>' . $row->end_time . '</td>    
+                                <td>' . $row->duration . '</td>  
+                                <td class="border-rigt">
+                                    <div class="action-icons">
+
+                                        <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$calender_svg.'" width="19px" height="19px">
+                                        </button>
+                                        
+                                        <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$delete_svg.'">                                         
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>';
+                }
+            } else {
+
+                $output = '
+                    <tr>
+                        <td align="center" colspan="5">No Data Found</td>
+                    </tr>
+                    ';
+            }
+        }else{
+            $total_row = 0;
+            $SiteVideoScheduler = [];
+        }
+
+        $value["success"] = 1;
+        $value["message"] = "Uploaded Successfully!";
+        $value["table_data"] = $output;
+        $value["total_data"] = $total_row;
+        $value["total_content"] = $SiteVideoScheduler;
+
+    return $value;
+}
