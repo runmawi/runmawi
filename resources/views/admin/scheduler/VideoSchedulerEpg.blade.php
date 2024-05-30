@@ -369,7 +369,7 @@
                                 </select>
                             @else 
                                 <input type="text" class="form-control" value="{{ $default_time_zone }}{{ '( UTC'.@$utc_difference.')' }}" readonly>
-                                <input type="hidden" name="time_zone_id" class="form-control" value="{{ @$time_zoneid }}" >
+                                <input type="hidden" name="time_zone_id" id='time_zone_id' class="form-control" value="{{ @$time_zoneid }}" >
                             @endif
 
                         </div>
