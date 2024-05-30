@@ -4507,6 +4507,10 @@ class ChannelController extends Controller
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                 $item['users_video_visibility_free_duration_status']  = 0 ; 
+                            
+                    // Free duration
+                $item['users_video_visibility_status'] = false ;
+                $item['users_video_visibility_free_duration_status'] = 0; 
 
                     // Check for guest user
 
@@ -4519,6 +4523,12 @@ class ChannelController extends Controller
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
+                        
+                        // Free duration
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_free_duration_status']  = 1; 
+                    }
                 }
 
                     // Check for Login user - Register , Subscriber ,PPV
@@ -4555,14 +4565,14 @@ class ChannelController extends Controller
     
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                             }
+                            
+                                // Free duration
+
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1; 
+                            }
                         }
-                    }
-
-                        // Free duration
-
-                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-                        $item['users_video_visibility_status'] = true ;
-                        $item['users_video_visibility_free_duration_status']  = 1; 
                     }
 
                         // Block Countries
