@@ -1114,6 +1114,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
+        /*  Default Scheduler Videos Setting  */
+
+        Route::get('/default-video-scheduler', 'AdminSiteVideoSchedulerController@SiteVideoScheduler')->name('VideoScheduler');
+        Route::get('/default-filter-scheduler', 'AdminSiteVideoSchedulerController@FilterVideoScheduler')->name('FilterScheduler');
+        Route::post('/default-drag-drop-Scheduler-videos', 'AdminSiteVideoSchedulerController@DragDropSchedulerVideos');
+        Route::get('/default-Scheduled-videos', 'AdminSiteVideoSchedulerController@ScheduledVideos');
+        Route::get('/default-get-channel-details/{videoId}', 'AdminSiteVideoSchedulerController@GetChannelDetail');
+        Route::post('/default-Scheduler-UpdateTime', 'AdminSiteVideoSchedulerController@SchedulerUpdateTime');
+        Route::post('/default-Scheduler-ReSchedule', 'AdminSiteVideoSchedulerController@SchedulerReSchedule');
+        Route::post('/default-get-all-channel-details', 'AdminSiteVideoSchedulerController@GetAllChannelDetails');
+        Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
+
     /*  Channel Videos Setting  */
 
     Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');

@@ -389,14 +389,14 @@
                             <div class="search-container" style="flex-basis:70%; padding: 0 5px 0 0;">
                                     <input type="text" class="form-control" id="searchInput" placeholder="Search...">
                             </div>
-                            <div class="filter-container">
+                            <!-- <div class="filter-container">
                                     <select id="filterDropdown" class="form-control">
                                         <option value="all">All</option>
                                         <option value="Video">Video</option>
                                         <option value="LiveStream">LiveStream</option>
                                         <option value="Episode">Episode</option>
                                     </select>
-                                </div>
+                                </div> -->
                             <!-- <div class="filterButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                                     <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
@@ -575,9 +575,9 @@
   overflow-y: auto;
 }
 
-/* .active {
+.active {
   outline: 1px solid red;
-} */
+}
 
 .hover {
   outline: 1px solid blue;
@@ -692,7 +692,7 @@ $("#dropzone").droppable({
                }
             });
             $.ajax({
-                url: "{{ URL::to('admin/remove-scheduler/') }}",
+                url: "{{ URL::to('admin/default-remove-scheduler/') }}",
                 type: "post",
                 data: {
                         _token: '{{ csrf_token() }}',
@@ -726,7 +726,7 @@ $("#dropzone").droppable({
                }
             });
             $.ajax({
-                url: "{{ URL::to('admin/get-all-channel-details/') }}",
+                url: "{{ URL::to('admin/default-get-all-channel-details/') }}",
                 type: "post",
                 data: {
                         _token: '{{ csrf_token() }}',
@@ -781,7 +781,7 @@ $("#dropzone").droppable({
 
         function getVideoDetails(channelId) {
             $.ajax({
-                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                url: "{{ URL::to('admin/default-get-channel-details/') }}" + "/" + channelId,
                 type: "get",
                 dataType: 'json',
                 success: function (data) {
@@ -822,7 +822,7 @@ $("#dropzone").droppable({
                         }
                     });
                     $.ajax({
-                        url: "{{ URL::to('admin/Scheduler-UpdateTime/')  }}",
+                        url: "{{ URL::to('admin/default-Scheduler-UpdateTime/')  }}",
                         type: "post", // Use "get" instead of "post"
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -860,7 +860,7 @@ $("#dropzone").droppable({
         function getChannelDetail(channelId) {
 
             $.ajax({
-                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                url: "{{ URL::to('admin/default-get-channel-details/') }}" + "/" + channelId,
                 type: "get",
                 dataType: 'json',
                 success: function (data) {
@@ -889,7 +889,7 @@ $("#dropzone").droppable({
                     }
                     });
                     $.ajax({
-                        url: "{{ URL::to('admin/Scheduler-ReSchedule/')  }}",
+                        url: "{{ URL::to('admin/default-Scheduler-ReSchedule/')  }}",
                         type: "post", // Use "get" instead of "post"
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -925,7 +925,7 @@ $("#dropzone").droppable({
         });
 
         $.ajax({
-            url: "{{ URL::to('admin/Scheduled-videos/')  }}",
+            url: "{{ URL::to('admin/default-Scheduled-videos/')  }}",
             type: "get", // Use "get" instead of "post"
             data: {
                 _token: '{{ csrf_token() }}',
@@ -953,7 +953,7 @@ $("#dropzone").droppable({
 //         function filterItems(filterValue) {
 
 //             $.ajax({
-//                 url:"{{ URL::to('admin/filter-scheduler') }}",
+//                 url:"{{ URL::to('admin/default-filter-scheduler') }}",
 //                 type: 'GET',
 //                 data: { filter: filterValue },
 //                 dataType: 'json',
@@ -1035,27 +1035,35 @@ $("#dropzone").droppable({
         //     format: 'm-dd-yyyy'
         // });  
 
-        $('.re-schedule-date').datepicker({
-            format: 'm-dd-yyyy',
-            startDate: '+1d', // Set the minimum date to tomorrow
-            autoclose: true
+        $('.re-schedule-date').datepicker({  
+            dateFormat: 'mm-dd-yy'  // jQuery UI datepicker format
         });
 
         var currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
-        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
-    
-        $('.re-schedule-date').datepicker('setDate', formattedDate); // Set the selected date
+
+        var formattedDate = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
+
+        $('.re-schedule-date').datepicker('setDate', formattedDate);
 
         $('.date').datepicker({  
-            format: 'm-dd-yyyy'
-        });  
+            dateFormat: 'mm-dd-yy'  // jQuery UI datepicker uses a different format string
+        });
 
-
+        // Set the current date with the desired format
         var currentDate = new Date();
-        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
-        // alert(formattedDate);
+        var formattedDate = ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
         $('.date').val(formattedDate);
+
+        // $('.date').datepicker({  
+        //     format: 'm-dd-yyyy'
+        // });  
+
+
+        // var currentDate = new Date();
+        // var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
+        // // alert(formattedDate);
+        // $('.date').val(formattedDate);
         // $('.re-schedule-date').val(formattedDate);
         $('.js-example-basic-single').select2();
 
@@ -1223,7 +1231,7 @@ $("#dropzone").droppable({
         });
 
 
-            var url = "{{ URL::to('admin/drag-drop-Scheduler-videos/')  }}";
+            var url = "{{ URL::to('admin/default-drag-drop-Scheduler-videos/')  }}";
             var time = $('.date').val();
             let time_zone = $('#time_zone_id').val();
             let channe_id = $('#channe_id').val();
