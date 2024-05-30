@@ -4216,7 +4216,7 @@ class ChannelController extends Controller
 
                     // Check for Login user - Register , Subscriber ,PPV
 
-                if (Auth::user()->role != 'admin') {
+                if (Auth::guest() || Auth::user()->role != 'admin') {
                 
                     if( !Auth::guest()  ){
 
@@ -4522,7 +4522,7 @@ class ChannelController extends Controller
 
                     // Check for Login user - Register , Subscriber ,PPV
 
-                if (Auth::user()->role != 'admin') {
+                if ( Auth::guest() || Auth::user()->role != 'admin') {
                     
                     if( !Auth::guest() ){
     
@@ -4555,6 +4555,7 @@ class ChannelController extends Controller
                             }
                         }
                     }
+
                         // Free duration
 
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4706,7 +4707,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
             
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
