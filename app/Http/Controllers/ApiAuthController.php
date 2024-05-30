@@ -24428,11 +24428,17 @@ public function SendVideoPushNotification(Request $request)
 
                                                       $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 
-                                                      $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-                                                                                                      ->copy()->tz( $request->current_timezone )->format('h:i A');
+                                                      $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
 
-                                                      $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-                                                                                                      ->copy()->tz( $request->current_timezone )->format('h:i A');
+                                                      $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
+
+                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+
+                                                      $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                      $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
 
                                                       $item['channel_name'] = AdminEPGChannel::where('id',$item->channe_id)->pluck('name')->first();
                                                       return $item;
