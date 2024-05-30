@@ -24412,7 +24412,7 @@ public function SendVideoPushNotification(Request $request)
           $default_horizontal_image_url = default_horizontal_image_url();
           $current_timezone = $request->current_timezone;
 
-          $epg_channel_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
+          $epg_channel_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->each(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
 
               $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
               $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
@@ -24435,9 +24435,18 @@ public function SendVideoPushNotification(Request $request)
                                                                                                       ->copy()->tz( $request->current_timezone )->format('h:i A');
 
                                                       $item['channel_name'] = AdminEPGChannel::where('id',$item->channe_id)->pluck('name')->first();
-
                                                       return $item;
                                                   });
+
+                                                  $item['ChannelVideoScheduler']->each(function ($scheduleItem, $key) use ($item) {
+
+                                                      if ($key < $item['ChannelVideoScheduler']->count() - 1) {
+                                                          $scheduleItem['up_next']  = $item['ChannelVideoScheduler'][$key + 1]->socure_title;
+                                                      }else{
+                                                          $scheduleItem['up_next'] = null;
+                                                      }
+                                                  });
+
               return $item;
           });
 
