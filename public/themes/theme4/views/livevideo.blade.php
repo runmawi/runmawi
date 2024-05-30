@@ -224,12 +224,23 @@
         display:none;
     }
     .row{margin-right:0 !important}
+    li.slick-slide{padding:3px;}
+    .favorites-slider .slick-list {overflow: hidden;}
 
    body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
    body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
 
     div#video\ sda{position:relative;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
+    @media (max-width: 500px) {
+        .category-name {
+            display: inline-block;
+            max-width: 5ch; /* Adjust to fit exactly 10 characters */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
@@ -536,19 +547,19 @@
                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
 
-                            <?php foreach ($category_name as $key => $video_category_name) { ?>
-                            <?php $category_name_length = count($category_name); ?>
-                            <li class="breadcrumb-item">
-                                <a class="black-text" href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                    <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
-                                </a>
-                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                            </li>
-                            <?php } ?>
+                            @foreach ($category_name as $key => $video_category_name)
+                                @php $category_name_length = count($category_name); @endphp
+                                <li class="breadcrumb-item">
+                                    <a class="black-text category-name" href="{{ route('LiveCategory', [$video_category_name->categories_slug]) }}">
+                                        {{ ucwords($video_category_name->categories_name) }}{{ $key != $category_name_length - 1 ? ' - ' : '' }}
+                                    </a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                </li>
+                            @endforeach
 
                             
 
-                            <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                            <li class="breadcrumb-item"><a class="black-text">{{ __($video->title)}}</a></li>
                         </ol>
                     </div>
                 </div>
@@ -659,21 +670,35 @@
 
         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
             <div class="">
-                <div class=" mar-left video-list you-may-like overflow-hidden">
-                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                <div class=" mar-left video-list you-may-like overflow-hidden mt-3">
+                    <h4 class="" style="color:#fffff;">{{ __('Comments') }}</h4>
                     <?php include(public_path('themes/theme4/views/comments/index.blade.php')) ; ?>                   
                 </div>
             </div>
         <?php endif; ?>
 
-        <div class="">
-            <div class=" mar-left video-list you-may-like overflow-hidden">
-                <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
-                <div class="slider">   
-                    <?php include(public_path('themes/theme4/views/partials/live_related_video.blade.php')) ; ?>                   
+            <div class="mar-left video-list you-may-like overflow-hidden">
+                <h4 class="" style="color:#fffff;">{{ __('Related Videos') }}</h4>
+                <div class="favorites-contens sub_dropdown_image">  
+                    <ul class="favorites-slider list-inline row mb-0">
+                        @foreach ($Related_videos as $related_video)
+                            <li class="slick-slide">
+                                <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
+                                    <div class="position-relative">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
+                                            <div class="controls">
+                                                <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+                                            </div>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                    
                 </div>
             </div>
-        </div>
     </div>
 
     
