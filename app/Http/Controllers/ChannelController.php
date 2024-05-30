@@ -4514,6 +4514,7 @@ class ChannelController extends Controller
         
                     $item['users_video_visibility_status'] = false ;
                     $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
+                    $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
@@ -4540,6 +4541,7 @@ class ChannelController extends Controller
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
             
                             $item['users_video_visibility_status'] = false ;
+                            $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                             $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
@@ -4594,8 +4596,8 @@ class ChannelController extends Controller
                     }
                 }
 
-                $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
-                $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
+                $item['image_url']        = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
+                $item['player_image_url'] = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                 $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
@@ -4700,6 +4702,10 @@ class ChannelController extends Controller
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
                 'setting'   => $setting,
+                'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                    </svg>',
             );
 
 
