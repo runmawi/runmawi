@@ -27,7 +27,7 @@
 
     <div class="container-fluid p-0">
 
-        @if ( $videodetail->users_video_visibility_status)
+        @if ( $videodetail->users_video_visibility_status === false)
 
             @if ( $videodetail->type == "embed" )
 
@@ -71,9 +71,25 @@
             <p id="visibilityMessage" style="color: white; display: none;">{{ $videodetail->users_video_visibility_status_message}}</p>
             
         @else
-            <p style="color: white"> {{ $videodetail->users_video_visibility_status_message}}</p>
-        @endif
 
+            <div class="video" style="background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{ URL::to('/public/uploads/images/' . $videodetail->player_image) }}');background-size: cover; height:100vh;">
+                <div class="row container" style="padding-top:4em;">
+                    <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
+                    </button>
+                    <div class="col-2"></div>
+                    <div class="col-lg-3 col-6 mt-5">
+                        <img class="posterImg w-100"  src="{{ URL::to('/public/uploads/images/' . $videodetail->image) }}" >
+                    </div>
+                    <div class="col-lg-3 col-6 mt-5">
+                        <h2 class="title">{{ optional($videodetail)->title }} </h2>
+                        <p style="color: white"> {{ $videodetail->users_video_visibility_status_message}}</p>
+                        <a type="button" class="btn bd" href="{{ $videodetail->users_video_visibility_redirect_url }}">{{ "Watch Now" }}</a>
+                    </div>
+                </div>
+            </div>
+
+        @endif
     </div>
 
 @php 

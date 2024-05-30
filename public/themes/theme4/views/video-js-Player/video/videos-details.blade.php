@@ -25,11 +25,11 @@
     <div class="vpageBanner">
         <div class="backdrop-img">    {{-- Background image --}}
             <span class=" lazy-load-image-background blur lazy-load-image-loaded"  style="color: transparent; display: inline-block;">
-                <img src="{{ optional($videodetail)->player_image_url }}">
+                <!-- <img src="{{ optional($videodetail)->player_image_url }}"> -->
             </span>
         </div>
 
-        <div class="opacity-layer"></div>
+        <!-- <div class="opacity-layer"></div> -->
 
                 {{-- Message Note --}}
         <div id="message-note" ></div>
@@ -255,8 +255,8 @@
                     @endif
 
                     <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
-                            <span classname="text bold">{{ __('Status') }}: </span>
+                        <div class="infoItem">
+                            <span class="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
                     </div>
@@ -264,7 +264,7 @@
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                         <div class="info">      
-                            <span classname="text bold"> {{ __('Languages') }}:&nbsp;</span> 
+                            <span class="text bold"> {{ __('Languages') }}:&nbsp;</span> 
                             @foreach( $videodetail->Language as $item )
                                 <span class="text">
                                     <span><a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }} "> {{ $item->name }} </a>   </span>
@@ -454,6 +454,8 @@
 <style>
      body.light-theme .vpageBanner .content .right .utilities {color: <?php echo $GetLightText; ?>;}
      body.light-theme .add-a-comment {color: <?php echo $GetLightText; ?>;}
+     body.light-theme .infoItem span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
+     body.light-theme .info span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
      body.light-theme ul.breadcrumb.p-0 a, body.light-theme ul.breadcrumb.p-0 li{color: <?php echo $GetLightText; ?>;}
 </style>
 @php 
