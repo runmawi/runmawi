@@ -77,15 +77,15 @@
                         <?php } ?>
                     </div>
                     
-                    <div class="d-flex">
+                    <div class="d-flex col-6">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="apps1"  alt="apps1" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="apps1 w-100"  alt="apps1" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="apps1"  alt="apps" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="apps1 w-100"  alt="apps" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="apps1"  alt="and" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="apps1 w-100"  alt="and" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>

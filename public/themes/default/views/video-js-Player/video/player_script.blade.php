@@ -1,32 +1,52 @@
 <script>
 
     let video_url = "<?php echo $videodetail->videos_url; ?>";
+    let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
+    let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', {
+
+        var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+
             controlBar: {
                 volumePanel: { inline: false },
+                skipButtons: {
+                    enabled: true,
+                    forward: 10,
+                },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
-                    // 'timeDivider': {},
-                    // 'durationDisplay': {},
+<<<<<<< HEAD
+=======
+                    'timeDivider': {},
+                    'durationDisplay': {},
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
 
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
+<<<<<<< HEAD
                     'fullscreenToggle': {},
+
                 },
                 pictureInPictureToggle: true,                
+=======
+                    'fullscreenToggle': {}                     
+                },
+                pictureInPictureToggle: true,
+>>>>>>> 9c3e7e636d10822a6b24cde5cac59adbe9a48398
+
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -76,6 +96,36 @@
             }
         });
 
+        player.on('userinactive', () => {
+          // Hide the skip forward and backward buttons when the user becomes inactive
+          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+          if (skipForwardButton && skipBackwardButton) {
+            skipForwardButton.style.display = 'none';
+            skipBackwardButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          // Show the skip forward and backward buttons when the user becomes active
+          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+          if (skipForwardButton && skipBackwardButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+          }
+        });
+
+        const skipForward = (duration) => {
+    const playerTime = player.current;
+    playerTime.currentTime(playerTime.currentTime() + duration);
+    console.log("player",playerTime)
+  };
+  const skipBackward = (duration) => {
+    const pplayerTime = player.current;
+    playerTime.currentTime(playerTime.currentTime() - duration);
+  };
+
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -122,19 +172,6 @@
                 }
             }
         });
-
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
 
         // Hls Quality Selector - M3U8 
 
@@ -200,6 +237,15 @@
 
                 requestMidrollAd(vastTagMidroll);
             }
+
+            // Free Duration
+
+            if ( currentTime != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+                player.pause();
+                player.dispose();
+                player.off('timeupdate');  
+            }
+            
         });
 
         player.on("ended", function() {
@@ -246,6 +292,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            // console.log("!#");
+        })
     });
 
 </script>
