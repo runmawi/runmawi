@@ -575,9 +575,9 @@
   overflow-y: auto;
 }
 
-.active {
+/* .active {
   outline: 1px solid red;
-}
+} */
 
 .hover {
   outline: 1px solid blue;

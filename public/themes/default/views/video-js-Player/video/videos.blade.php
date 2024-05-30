@@ -67,11 +67,54 @@
                     @endif
                 </video>
             @endif
-            
-        @else
-            <p style="color: white"> {{ $videodetail->users_video_visibility_status_message}}</p>
-        @endif
 
+            <div class="video" id="visibilityMessage" style="background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
+                <div class="row container" style="padding-top:4em;">
+                    <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
+                    </button>
+                    <div class="col-2"></div>
+                    <div class="col-lg-3 col-6 mt-5">
+                        <img class="posterImg w-100"  src="{{ $videodetail->image_url }}" >
+                    </div>
+                    <div class="col-lg-6 col-6 mt-5">
+                        <h2 class="title">{{ optional($videodetail)->title }} </h2><br>
+                        <h5 class="title"> {{ $videodetail->users_video_visibility_status_message }}</h5><br>
+                        <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                            <div class="playbtn" style="gap:5px">
+                                {!! $play_btn_svg !!}
+                                <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        @else
+
+            <div class="video" style="background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
+                <div class="row container" style="padding-top:4em;">
+                    <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
+                    </button>
+                    <div class="col-2"></div>
+                    <div class="col-lg-3 col-6 mt-5">
+                        <img class="posterImg w-100"  src="{{ $videodetail->image_url }}" >
+                    </div>
+                    <div class="col-lg-6 col-6 mt-5">
+                        <h2 class="title">{{ optional($videodetail)->title }} </h2><br>
+                        <h5 class="title"> {{ $videodetail->users_video_visibility_status_message }}</h5><br>
+                        <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                            <div class="playbtn" style="gap:5px">
+                                {!! $play_btn_svg !!}
+                                <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        @endif
     </div>
 
 @php 
