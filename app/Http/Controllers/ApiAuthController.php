@@ -146,6 +146,7 @@ use App\Document ;
 use App\DocumentGenre ;
 use App\AdminVideoAds;
 use App\TimeZone;
+use App\StorageSetting;
 
 
 class ApiAuthController extends Controller
@@ -24473,4 +24474,27 @@ public function SendVideoPushNotification(Request $request)
     return response()->json($response, 200);
 
   }
+
+
+  public function StorageSetting(Request $request)
+  {
+    try {
+    
+      $response = array(
+        "status"  => 'true' ,
+        "message" => "Retrieved Storage Setting Successfully" ,
+        "StorageSetting" => StorageSetting::first(),
+      );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+        );
+    }
+
+      return response()->json($response, 200);
+
+    }
 }
