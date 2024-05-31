@@ -23,7 +23,7 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ asset('public/themes/theme4/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
-    <!-- <script src="{{ asset('public/themes/image/Video-Player-icon/Mute-icon.png') }}"></script> -->
+
 
     <div class="container-fluid p-0">
 
@@ -59,33 +59,13 @@
                 <path d="M35.9159 29.2804C35.9159 33.4604 34.2759 36.0904 31.1759 36.0904C28.1759 36.0904 26.5659 33.3704 26.5459 29.4004C26.5459 25.3604 28.2659 22.6304 31.3059 22.6304C34.4559 22.6404 35.9159 25.4404 35.9159 29.2804ZM29.0359 29.4004C29.0159 32.5604 29.8959 34.2004 31.2559 34.2004C32.6959 34.2004 33.4559 32.4404 33.4559 29.3204C33.4559 26.3004 32.7359 24.5204 31.2559 24.5204C29.9359 24.5204 29.0159 26.1404 29.0359 29.4004Z" fill="white"/>
             </svg>
             </button> 
-
-
-            <video id="my-video" class="vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+            
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
                     preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
                     muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
-            </video>
-
-            <!-- <button class="vjs-theme-city my-video video-js button vjs-subtitles-button" controls>
-                <svg width="29" height="27" viewBox="0 0 29 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_2076_20)">
-                    <path d="M27.47 19.81H23.04L22.87 25.77L17.09 19.81H1V1H27.47V19.81Z" stroke="#F0F0F0" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33984 7.16992H13.4298" stroke="#F0F0F0" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18.1104 7.16992H22.8304" stroke="#F0F0F0" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M5.33984 13.8899H13.4298" stroke="#F0F0F0" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18.1104 13.8901H22.8304" stroke="#F0F0F0" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_2076_20">
-                    <rect width="28.47" height="26.77" fill="white"/>
-                    </clipPath>
-                    </defs>
-                </svg>
-
-            </button> -->
-
-
+            
+            
             @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
                 @if(isset($subtitles) && count($subtitles) > 0)
                     @foreach($subtitles as $subtitles_file)
@@ -95,6 +75,7 @@
                     @endforeach
                 @endif
             @endif
+            </video>
         @endif
     </div>
 @php 
