@@ -455,6 +455,7 @@
      body.light-theme .vpageBanner .content .right .utilities {color: <?php echo $GetLightText; ?>;}
      body.light-theme .add-a-comment {color: <?php echo $GetLightText; ?>;}
      body.light-theme .infoItem span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
+     body.light-theme .info span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
      body.light-theme ul.breadcrumb.p-0 a, body.light-theme ul.breadcrumb.p-0 li{color: <?php echo $GetLightText; ?>;}
 </style>
 @php 

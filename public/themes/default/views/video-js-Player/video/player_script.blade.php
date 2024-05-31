@@ -167,6 +167,9 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             player.ima.requestAds();
         }
 
+        var initial_current_time = 0;
+        var timeupdate_counter = 0; 
+
         player.on("timeupdate", function() {
             var currentTime = player.currentTime();
             // console.console.log('currentTime',currentTime);

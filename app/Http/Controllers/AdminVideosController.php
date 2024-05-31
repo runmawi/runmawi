@@ -94,6 +94,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
 use App\AdminVideoAds;
+use App\AdminEPGChannel;
+use App\Episode;
+use App\LiveStream;
 
 class AdminVideosController extends Controller
 {
@@ -6001,19 +6004,90 @@ class AdminVideosController extends Controller
 
     public function ManageSchedule($id)
     {
-        $VideoSchedules = VideoSchedules::get();
-        $settings = Setting::first();
 
-        $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
-        $TimeZone = TimeZone::get();
+        $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
 
-        $data = [
-            "schedule" => $VideoSchedules,
-            "settings" => $settings,
-            "TimeZone" => $TimeZone,
-        ];
-        //    dd($VideoSchedules);
-        return view("admin.schedule.manage_schedule", $data);
+            if($enable_default_timezone == 1){
+
+                
+                $Channels =  VideoSchedules::Select('id','name','slug')->get();
+
+                // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+                $TimeZone = TimeZone::get();
+
+                $default_time_zone = Setting::pluck('default_time_zone')->first();
+                
+                $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+                
+                $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
+                
+                $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
+            
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+
+                $mergedCollection = $videos
+                ->concat($episodes)
+                ->concat($livestreams)
+                ->values();
+                //   dd($mergedCollection);
+                
+                $perPage = 3; // Adjust the number based on your requirement
+                $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
+                $paginator = new LengthAwarePaginator(
+                    $mergedCollection->forPage($currentPage, $perPage),
+                    $mergedCollection->count(),
+                    $perPage,
+                    $currentPage
+                );
+                
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+    
+                $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+
+                $data = array(
+                
+                    'Channels' => $Channels  ,
+                    'TimeZone' => $TimeZone  ,
+                    'default_time_zone' => $default_time_zone  ,
+                    'enable_default_timezone' => $enable_default_timezone  ,
+                    'utc_difference' => $utc_difference  ,
+                    // 'VideoCollection' => $paginator  ,
+                    'time_zoneid' => $time_zoneid  ,
+                    'VideoCollection' => $mergedCollection  ,
+                    'VideoSchedules' => $VideoSchedules  ,
+                );            
+
+            return view("admin.schedule.VideoSchedulerEpg", $data);
+
+        }else{
+
+            $VideoSchedules = VideoSchedules::get();
+            $settings = Setting::first();
+
+            $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+            $TimeZone = TimeZone::get();
+
+            $data = [
+                "schedule" => $VideoSchedules,
+                "settings" => $settings,
+                "TimeZone" => $TimeZone,
+            ];
+            //    dd($VideoSchedules);
+            return view("admin.schedule.manage_schedule", $data);
+        }
+
     }
 
     public function CalendarSchedule(Request $request)

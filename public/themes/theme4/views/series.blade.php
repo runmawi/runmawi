@@ -125,7 +125,7 @@
         background: #121111!important;
         color: #ffffff!important;
     }
-   
+    .favorites-slider .slick-prev, #trending-slider-nav .slick-prev, .favorites-slider .slick-next, #trending-slider-nav .slick-next{top:40%;}
 </style>
 
 <?php
@@ -311,16 +311,16 @@
 
         
 
-        <div class=" ">
+        <div class="mar-left video-list you-may-like overflow-hidden">
             <div class="col-md-12 mt-4 p-0">
                 <nav class="nav-justified p-0 m-0 w-100">
                     <div class="nav" id="nav-tab" role="tablist">
-                        <h4 class="ml-3"> {{ 'Episode' }} </h4>
+                        <h4 class=""> {{ 'Episode' }} </h4>
                     </div>
                 </nav>
             </div>
 
-            <div class="container-fluid pl-3">
+            <div class="">
                 <div class="favorites-contens">
                     <div class="col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">
@@ -331,8 +331,8 @@
                         </select>
                     </div>
 
-                    <div class="trending-contens sub_dropdown_image mt-3">
-                        <ul id="trending-slider-nav" class= " list-inline m-0 row align-items-center" >
+                    <div class="trending-contens sub_dropdown_image mt-3 mar-left">
+                        <ul id="trending-slider-nav" class= "episode-slider list-inline row mb-0" >
                             @foreach ($season as $key => $seasons)
                                 @forelse ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
@@ -554,7 +554,7 @@
             <div class="col-md-12 mt-4 p-0">
                 <nav class="nav-justified p-0 m-0 w-100">
                     <div class="nav" id="nav-tab" role="tablist">
-                        <h4 class="ml-3"> {{ 'Episode' }} </h4>
+                        <h4 class=""> {{ 'Episode' }} </h4>
                     </div>
                 </nav>
             </div>
@@ -1076,31 +1076,14 @@
 
 <script>
     
-    $( window ).on("load", function() {
-        $('.cnt-videos-slider').hide();
-    });
-
-    $(document).ready(function() {
-
-        $('.cnt-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.cnt-videos-slider-nav',
-        });
-
-        $('.cnt-videos-slider-nav').slick({
+    $('.episode-slider').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
-            asNavFor: '.cnt-videos-slider',
+            slidesToScroll: 6,
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+			infinite: true,
             responsive: [
                 {
                     breakpoint: 1200,
@@ -1125,14 +1108,4 @@
                 },
             ],
         });
-
-        $('.cnt-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.cnt-videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.cnt-videos-slider').hide();
-        });
-    });
 </script>

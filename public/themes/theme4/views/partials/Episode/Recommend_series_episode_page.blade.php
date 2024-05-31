@@ -2,10 +2,10 @@
     <h4 class="main-title"> <?= __('Series') ?> </h4>
 </div>
 
-        <div class="col-sm-12 overflow-hidden pl-0">
+        <div class="col-sm-12 overflow-hidden pl-0 mb-5">
             <div class="favorites-contens ml-2">
-                <div class="trending-contens sub_dropdown_image mt-3">
-                    <ul class="favorites-slider list-inline row mb-0">
+                <div class="trending-contens sub_dropdown_image">
+                    <ul class="recommend-series-slider list-inline row mb-0">
                         <?php  
                             $ThumbnailSetting = App\ThumbnailSetting::first();
 
@@ -13,7 +13,7 @@
 
                             foreach($series_lists as $key => $series_list):
                         ?>
-                        <li class="slide-item">
+                        <li class="slick-slide">
                             <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                 <div class="position-relative">
                                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="w-100">
@@ -21,10 +21,6 @@
                                         <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                         </a>
-
-                                        <!-- <nav>
-                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target= <?= "#Recommend_series-episode-videos-Modal-".$key ?> ><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                        </nav> -->
 
                                     </div>
                                     

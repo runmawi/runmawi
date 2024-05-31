@@ -57,6 +57,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     #episode-player { position: relative; }
     #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 10%; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
     header#main-header{position: absolute !important;}
+    .slick-arrow{z-index: 99;}
+    .slick-next{right:0;}
+    .slick-prev{left:10px;}
 
 </style>
 
@@ -603,6 +606,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
             <!-- Remaing Episodes -->
             <!-- Recommend Series Based on Category -->
+            
 
             <?php
                 include public_path('themes/theme4/views/partials/Episode/Other_episodes_list.blade.php');

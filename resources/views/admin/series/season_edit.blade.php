@@ -727,7 +727,7 @@
     </div>
 
     @section('javascript')
-
+    
     <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
@@ -812,7 +812,7 @@ document.getElementById('select-all').addEventListener('change', function() {
         //     format: "hh:mm ",
         // });
     </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
