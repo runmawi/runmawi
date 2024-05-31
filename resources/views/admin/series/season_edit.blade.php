@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}" />
 
 <!-- JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+<script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 <style type="text/css">
 
 
@@ -1456,25 +1456,6 @@ document.getElementById('select-all').addEventListener('change', function() {
 	}
 </script>
 
-<script>
-    function updateProgress() {
-      let progress = 0;
-      const progressBar = document.querySelector('.dz-upload');
-      
-      const interval = setInterval(() => {
-        if (progress <= 100) {
-          progressBar.style.width = progress + '%';
-          progressBar.textContent = progress + '%';
-          progress++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 100); // Adjust the interval time (in milliseconds) as needed
-    }
-
-    // Start the progress bar update
-    updateProgress();
-  </script>
 
 @include('admin.series.search_tag'); 
 

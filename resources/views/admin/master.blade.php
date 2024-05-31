@@ -335,7 +335,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
 .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark{top: 0;left: 0;margin-left: 0; margin-top: 0;width: 20px;}
 .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg{width: 30px;height: 30px;}
 .dz-error-mark g{fill:#FF0000;}
-.dz-success-mark g{fill:#008000;}
+.dz-success-mark path{fill:#008000;}
 </style>
 
 </head>
