@@ -3,12 +3,12 @@
   --vjs-theme-city--secondary: #fff;
 }
 
-.my-video.video-js .vjs-big-play-button {
+.my-video.video-js .vjs-big-play-button{
   font-size: 3em;
   line-height: 1.5em;
   height: 1.63332em;
   width: 3em;
-  display: block;
+  display: inline-block;
   position: absolute;
   top: 52%;
   left: 49.5%;
@@ -20,8 +20,32 @@
   border: none;
   background-color: transparent;
   border-radius: none;
-  transition: all 0.4s;
+  transition: 3s;
+  color: black;
 }
+
+.my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before {
+  height: 50px;
+    width: 50px;
+    left: 27%;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: grid;
+    place-content: center;
+    /* animation: grow 1s infinite; */
+    /* animation-name: fadeInOut, moveLeft300px, bounce;
+animation-duration: 2.5s, 5s, 1s;
+animation-iteration-count: 2, 1, 5; */
+}
+
+/* @keyframes grow{
+  from {
+    box-shadow: 0px 0px 1em #000;
+  }
+  to {
+    box-shadow: 0px 0px 3em #000;
+  }
+} */
 
   .video-js .vjs-subs-caps-button .vjs-icon-placeholder::before, 
   .video-js .vjs-subtitles-button .vjs-icon-placeholder::before, 
@@ -58,6 +82,10 @@
     top: 16%;
     left: 12px;
     background-size: 37px;
+}
+
+.my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before{
+  background-image: url(../../../../../images/VideoPlayer-icon/pip.svg);
 }
 
 .my-video.vjs-fluid {
@@ -470,6 +498,8 @@ right: 35%;
 top: 48%;
 background: transparent;
 z-index: 1;
+transition: 3s;
+display: inline-block;
 }
 .custom-skip-backward-button {
 pointer-events: auto;
@@ -481,6 +511,7 @@ background: transparent;
 z-index: 1;
 border: none;
 transition: 3s;
+display: inline-block;
 }
 .titlebutton {
 pointer-events: auto;
@@ -790,37 +821,37 @@ animation-delay: 0.44s;
 }
 
 @keyframes vjs-spinner-showw {
-to {
-  visibility: visible;
-}
+  to {
+    visibility: visible;
+  }
 }
 
 @keyframes vjs-spinner-spinn {
-100% {
-  transform: rotate(360deg);
-}
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes vjs-spinner-fadee {
-0% {
-  border-top-color: #095ae5;
-}
+  0% {
+    border-top-color: #095ae5;
+  }
 
-20% {
-  border-top-color: #095ae5;
-}
+  20% {
+    border-top-color: #095ae5;
+  }
 
-35% {
-  border-top-color: deepskyblue;
-}
+  35% {
+    border-top-color: deepskyblue;
+  }
 
-60% {
-  border-top-color: #095ae5;
-}
+  60% {
+    border-top-color: #095ae5;
+  }
 
-100% {
-  border-top-color: #095ae5;
-}
+  100% {
+    border-top-color: #095ae5;
+  }
 }
 
 .my-video.vjs-live .vjs-progress-control {
