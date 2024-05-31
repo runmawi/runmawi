@@ -4414,7 +4414,7 @@ class AdminSeriesController extends Controller
 
             $value["success"] = 1;
             $value["message"] = "Uploaded Successfully!";
-            $value["Episode_id"] = $Episode_id;
+            $value["episode_id"] = $Episode_id;
 
             return $value;
         }
@@ -4573,7 +4573,7 @@ class AdminSeriesController extends Controller
 
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
-                $value["Episode_id"] = $Episode_id;
+                $value["episode_id"] = $Episode_id;
         
     
                 return $value ;
