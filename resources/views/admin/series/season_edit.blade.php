@@ -7,8 +7,13 @@
 <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}" />
 
 <!-- JS -->
-<script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 <style type="text/css">
+
+
+    .dz-error-mark {
+        
+    }
     .has-switch .switch-on label {
         background-color: #fff;
         color: #000;
@@ -77,6 +82,27 @@
         height: 500px; /* Set a fixed height for your container */
         overflow-y: auto; /* Enable vertical scrolling */
     }
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
+    }
+    .dz-progress {
+      width: 100%;
+      background-color: #f3f3f3;
+      border: 1px solid #ccc;
+    }
+    .dz-upload {
+      display: block;
+      height: 20px;
+      background-color: #4caf50;
+      text-align: center;
+      color: white;
+      line-height: 20px; /* Vertically center the text */
+    }
 </style>
 
 @section('css')
@@ -86,6 +112,30 @@
 
 
 <div id="content-page" class="content-page">
+
+    <!-- BREADCRUMBS -->
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="breadcrumb-item">{{ __("Manage Episodes") }}</li>
+               
+                </ol>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -1405,6 +1455,26 @@ document.getElementById('select-all').addEventListener('change', function() {
 	}
 	}
 </script>
+
+<script>
+    function updateProgress() {
+      let progress = 0;
+      const progressBar = document.querySelector('.dz-upload');
+      
+      const interval = setInterval(() => {
+        if (progress <= 100) {
+          progressBar.style.width = progress + '%';
+          progressBar.textContent = progress + '%';
+          progress++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 100); // Adjust the interval time (in milliseconds) as needed
+    }
+
+    // Start the progress bar update
+    updateProgress();
+  </script>
 
 @include('admin.series.search_tag'); 
 

@@ -261,6 +261,8 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .form-group{color: <?php echo GetAdminLightText(); ?>;}
     body.light p{color: <?php echo GetAdminLightText(); ?>!important;}
    body.light h1, body.light .support a {color: <?php echo GetAdminLightText(); ?>;}
+   body.light ol.breadcrumb a{color: <?php echo GetAdminLightText(); ?>;font-weight:500;}
+   body.light ol.breadcrumb li{color: <?php echo GetAdminLightText(); ?>;}
 
 
 
@@ -328,6 +330,12 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     color: red !important;
     font-size : 14px !important;
 }
+
+/* dropzone */
+.dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark{top: 0;left: 0;margin-left: 0; margin-top: 0;width: 20px;}
+.dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg{width: 30px;height: 30px;}
+.dz-error-mark g{fill:#FF0000;}
+.dz-success-mark g{fill:#008000;}
 </style>
 
 </head>
