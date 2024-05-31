@@ -76,6 +76,9 @@
         display: inline-block;
         cursor: pointer;
     }
+    .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
+    .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
+
 </style>
 <style>
     .admin-section-title {
@@ -1454,6 +1457,20 @@ document.getElementById('select-all').addEventListener('change', function() {
 
 	}
 	}
+</script>
+
+<script>
+    Dropzone.options.myDropzone = {
+  init: function() {
+    this.on("uploadprogress", function(file, progress) {
+      var progressElement = file.previewElement.querySelector(".dz-upload-percentage");
+      if (progressElement) {
+        progressElement.textContent = progress.toFixed(0) + "%";
+      }
+    });
+  }
+};
+
 </script>
 
 
