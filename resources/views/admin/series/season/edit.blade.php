@@ -2,6 +2,32 @@
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
+
+    <!-- BREADCRUMBS -->
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="breadcrumb-item">{{ optional($season)->series_seasons_name }}</li>
+               
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container-fluid">
         <div class="iq-card">
             <div class="modal-body">
