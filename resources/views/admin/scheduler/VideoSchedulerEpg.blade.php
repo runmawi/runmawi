@@ -616,10 +616,9 @@ details{
 }
 </style>
 
-
-
-
 <script>
+    var date = $('.date').datepicker({ dateFormat: 'mm-dd-yy' }).val();
+
   $(".drag").draggable({
     appendTo: "body",
     helper: "clone"
