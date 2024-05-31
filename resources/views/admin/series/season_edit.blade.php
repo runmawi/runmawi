@@ -9,6 +9,11 @@
 <!-- JS -->
 <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 <style type="text/css">
+
+
+    .dz-error-mark {
+        
+    }
     .has-switch .switch-on label {
         background-color: #fff;
         color: #000;
@@ -71,11 +76,22 @@
         display: inline-block;
         cursor: pointer;
     }
+    .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
+    .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
+
 </style>
 <style>
     .admin-section-title {
         height: 500px; /* Set a fixed height for your container */
         overflow-y: auto; /* Enable vertical scrolling */
+    }
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
     }
 </style>
 
@@ -86,6 +102,30 @@
 
 
 <div id="content-page" class="content-page">
+
+    <!-- BREADCRUMBS -->
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="breadcrumb-item">{{ __("Manage Episodes") }}</li>
+               
+                </ol>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -119,7 +159,7 @@
                 <div class="content file UploadEnable">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
-                    <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
+                    <form action="{{ $post_dropzone_url }}" method="post" class="dropzone" id="my-dropzone"></form>
                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>
@@ -1155,156 +1195,165 @@ document.getElementById('select-all').addEventListener('change', function() {
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-        // alert('test');
-        $("#buttonNext").hide();
-        $("#episode_video_data").hide();
-        $("#submit").hide();
-        var series_id = '<?= $series->id ?>' ;
-        var season_id = '<?= $season_id ?>' ;
+    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    // alert('test');
+    $("#buttonNext").hide();
+    $("#episode_video_data").hide();
+    $("#submit").hide();
+    var series_id = '<?= $series->id ?>';
+    var season_id = '<?= $season_id ?>';
 
-        Dropzone.autoDiscover = false;
-        var myDropzone = new Dropzone(".dropzone", {
-            //   maxFilesize: 900,  // 3 mb
-            parallelUploads: 10,
-            maxFilesize: 15000,
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
-        });
-        myDropzone.on("sending", function (file, xhr, formData) {
-            formData.append('series_id',series_id);
-            formData.append('season_id',season_id);
-            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-            formData.append("_token", CSRF_TOKEN);
-            // console.log(value)
-            this.on("success", function (file, value) {
-                if(value.error == 3){
-                    console.log(value.error);
-                    alert("File not uploaded Choose Library!");   
-                    location.reload();
-                }
-                // console.log(value);
-                $("#buttonNext").show();
-                $("#episode_id").val(value.episode_id);
-                $("#title").val(value.episode_title);
-                $("#duration").val(value.episode_duration);
-            });
-        });
-        $("#buttonNext").click(function () {
-         	$('#bunnycdnvideo').hide();
-            $("#episode_uploads").hide();
-            $('#optionradio').hide();
-            $("#Next").hide();
-            $("#episode_video_data").show();
-            $("#submit").show();
-            
-                $.ajax({
-                        url: '{{ URL::to('admin/episode/extractedimage') }}',
-                        type: "post",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            episode_id: $('#episode_id').val()
-                        },
-                        success: function(value) {
-                            // console.log(value.ExtractedImage.length);
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone(".dropzone", {
+        //   maxFilesize: 900,  // 3 mb
+        parallelUploads: 10,
+        maxFilesize: 15000,
+        acceptedFiles: "video/mp4,video/x-m4v,video/*",
+    });
 
-                            if (value && value.ExtractedImage.length > 0) {
-                                $('#ajaxImagesContainer').empty();
-                                $('#ImagesContainer').empty();
-                                var ExtractedImage = value.ExtractedImage;
-                                var ExtractedImage = value.ExtractedImage;
+    myDropzone.on("sending", function (file, xhr, formData) {
+        formData.append('series_id', series_id);
+        formData.append('season_id', season_id);
+        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+        formData.append("_token", CSRF_TOKEN);
+        // console.log(value)
+    });
 
-                                var previouslySelectedElement = null;
-                                var previouslySelectedVideoImag = null;
-                                var previouslySelectedTVImage = null;
-                                
-                                ExtractedImage.forEach(function(Image,index ) {
-                                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
-                                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
-                                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+    // Add the event listener for upload progress
+    myDropzone.on("uploadprogress", function(file, progress) {
+        var progressElement = document.getElementById('upload-percentage');
+        progressElement.textContent = Math.round(progress) + '%';
+    });
 
-                                    imgElement.click(function() {
-                                        $('.ajax-image').css('border', 'none');
-                                        if (previouslySelectedElement) {
-                                            previouslySelectedElement.css('border', 'none');
-                                        }
-                                        imgElement.css('border', '2px solid red');
-                                        var clickedImageUrl = Image.image_path;
+    myDropzone.on("success", function (file, value) {
+        if (value.error == 3) {
+            console.log(value.error);
+            alert("File not uploaded Choose Library!");
+            location.reload();
+        }
+        // console.log(value);
+        $("#buttonNext").show();
+        $("#episode_id").val(value.episode_id);
+        $("#title").val(value.episode_title);
+        $("#duration").val(value.episode_duration);
+    });
 
-                                        var SelectedImageUrl = Image.image_original_name;
-                                        console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
-                                        previouslySelectedElement = $(this);
+    $("#buttonNext").click(function () {
+        $('#bunnycdnvideo').hide();
+        $("#episode_uploads").hide();
+        $('#optionradio').hide();
+        $("#Next").hide();
+        $("#episode_video_data").show();
+        $("#submit").show();
 
-                                        $('#selectedImageUrlInput').val(SelectedImageUrl);
-                                    });
+        $.ajax({
+            url: '{{ URL::to('admin/episode/extractedimage') }}',
+            type: "post",
+            data: {
+                _token: '{{ csrf_token() }}',
+                episode_id: $('#episode_id').val()
+            },
+            success: function(value) {
+                // console.log(value.ExtractedImage.length);
 
-                                    if (index === 0) {
-                                        imgElement.click();
-                                    }
-                                    $('#ajaxImagesContainer').append(imgElement);
+                if (value && value.ExtractedImage.length > 0) {
+                    $('#ajaxImagesContainer').empty();
+                    $('#ImagesContainer').empty();
+                    var ExtractedImage = value.ExtractedImage;
+                    var ExtractedImage = value.ExtractedImage;
 
-                                    ImagesContainer.click(function() {
-                                        $('.video-image').css('border', 'none');
-                                        if (previouslySelectedVideoImag) {
-                                            previouslySelectedVideoImag.css('border', 'none');
-                                        }
-                                        ImagesContainer.css('border', '2px solid red');
-                                        
-                                        var clickedImageUrl = Image.image_path;
+                    var previouslySelectedElement = null;
+                    var previouslySelectedVideoImag = null;
+                    var previouslySelectedTVImage = null;
 
-                                        var VideoImageUrl = Image.image_original_name;
-                                        console.log('VideoImageUrl Image URL:', VideoImageUrl);
-                                        previouslySelectedVideoImag = $(this);
+                    ExtractedImage.forEach(function(Image, index) {
+                        var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                        var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                        var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
 
-                                        $('#videoImageUrlInput').val(VideoImageUrl);
-                                    });
-                                    if (index === 0) {
-                                        ImagesContainer.click();
-                                        }
-                                    $('#ImagesContainer').append(ImagesContainer);
-
-                                    TVImagesContainer.click(function() {
-                                        $('.tv-video-image').css('border', 'none');
-                                        if (previouslySelectedTVImage) {
-                                            previouslySelectedTVImage.css('border', 'none');
-                                        }
-                                        TVImagesContainer.css('border', '2px solid red');
-                                        
-                                        var clickedImageUrl = Image.image_path;
-
-                                        var TVImageUrl = Image.image_original_name;
-                                        previouslySelectedTVImage = $(this);
-
-                                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
-                                    });
-                                    
-                                    if (index === 0) {
-                                        TVImagesContainer.click();
-                                    }
-                                    $('#TVImagesContainer').append(TVImagesContainer);
-
-                                });
-                            } else {
-                                    var SelectedImageUrl = '';
-
-                                    $('#selectedImageUrlInput').val(SelectedImageUrl);
-                                    $('#videoImageUrlInput').val(SelectedImageUrl);
-                                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-                            //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                        imgElement.click(function() {
+                            $('.ajax-image').css('border', 'none');
+                            if (previouslySelectedElement) {
+                                previouslySelectedElement.css('border', 'none');
                             }
-                        },
-                        error: function(error) {
+                            imgElement.css('border', '2px solid red');
+                            var clickedImageUrl = Image.image_path;
 
-                            var SelectedImageUrl = '';
+                            var SelectedImageUrl = Image.image_original_name;
+                            console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                            previouslySelectedElement = $(this);
 
                             $('#selectedImageUrlInput').val(SelectedImageUrl);
-                            $('#videoImageUrlInput').val(SelectedImageUrl);
-                            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-                            console.error(error);
+                        });
+
+                        if (index === 0) {
+                            imgElement.click();
                         }
+                        $('#ajaxImagesContainer').append(imgElement);
+
+                        ImagesContainer.click(function() {
+                            $('.video-image').css('border', 'none');
+                            if (previouslySelectedVideoImag) {
+                                previouslySelectedVideoImag.css('border', 'none');
+                            }
+                            ImagesContainer.css('border', '2px solid red');
+
+                            var clickedImageUrl = Image.image_path;
+
+                            var VideoImageUrl = Image.image_original_name;
+                            console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                            previouslySelectedVideoImag = $(this);
+
+                            $('#videoImageUrlInput').val(VideoImageUrl);
+                        });
+                        if (index === 0) {
+                            ImagesContainer.click();
+                        }
+                        $('#ImagesContainer').append(ImagesContainer);
+
+                        TVImagesContainer.click(function() {
+                            $('.tv-video-image').css('border', 'none');
+                            if (previouslySelectedTVImage) {
+                                previouslySelectedTVImage.css('border', 'none');
+                            }
+                            TVImagesContainer.css('border', '2px solid red');
+
+                            var clickedImageUrl = Image.image_path;
+
+                            var TVImageUrl = Image.image_original_name;
+                            previouslySelectedTVImage = $(this);
+
+                            $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                        });
+
+                        if (index === 0) {
+                            TVImagesContainer.click();
+                        }
+                        $('#TVImagesContainer').append(TVImagesContainer);
+
                     });
-                
+                } else {
+                    var SelectedImageUrl = '';
+
+                    $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                    //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                }
+            },
+            error: function(error) {
+
+                var SelectedImageUrl = '';
+
+                $('#selectedImageUrlInput').val(SelectedImageUrl);
+                $('#videoImageUrlInput').val(SelectedImageUrl);
+                $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                console.error(error);
+            }
         });
-    </script>
+
+    });
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		
@@ -1405,6 +1454,19 @@ document.getElementById('select-all').addEventListener('change', function() {
 	}
 	}
 </script>
+
+<script>
+    Dropzone.options.myDropzone = {
+      init: function() {
+        this.on("uploadprogress", function(file, progress) {
+          var progressElement = document.getElementById('upload-percentage');
+          progressElement.textContent = Math.round(progress) + '%';
+        });
+      }
+    };
+
+  </script>
+
 
 @include('admin.series.search_tag'); 
 

@@ -190,8 +190,8 @@
             asNavFor: '.series-genre-videos-slider',
             dots: false,
             arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev down-arrow" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next up-arrow" aria-label="Next" type="button">Next</a>',
             infinite: true,
             focusOnSelect: true,
             responsive: [
@@ -212,7 +212,7 @@
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 1,
                         slidesToScroll: 1,
                     },
                 },
@@ -233,12 +233,33 @@
                 speed: 300,
                 slidesToShow: 6,
                 slidesToScroll: 4,
+                responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
             });
         });
 
-        $('body').on('click', '.slick-arrow', function() {
-            $('.series-genre-videos-slider').hide();
-        });
+        
 
         $('body').on('click', '.drp-close', function() {
             $('.series-genre-videos-slider').hide();

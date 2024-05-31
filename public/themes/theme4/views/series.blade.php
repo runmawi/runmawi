@@ -165,7 +165,7 @@
                 </ol>
             </div>
         </div>
-     </div>
+    </div>
 
     <div class="container-fluid pl-0">
         <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
