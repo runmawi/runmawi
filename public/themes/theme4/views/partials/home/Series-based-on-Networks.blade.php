@@ -193,8 +193,8 @@
             asNavFor: '.series-networks-videos-slider',
             dots: false,
             arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev up-arrow" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next down-arrow" aria-label="Next" type="button">Next</a>',
             infinite: true,
             focusOnSelect: true,
             responsive: [
@@ -236,6 +236,7 @@
                 speed: 300,
                 slidesToShow: 6,
                 slidesToScroll: 6,
+                infinite: true,
                 prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
                 nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
                 responsive: [
@@ -264,7 +265,10 @@
             });
         });
 
-        $('body').on('click', '.slick-arrow', function() {
+        $('body').on('click', '.up-arrow', function() {
+            $('.series-networks-videos-slider').hide();
+        });
+        $('body').on('click', '.down-arrow', function() {
             $('.series-networks-videos-slider').hide();
         });
 
