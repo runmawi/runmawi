@@ -4184,9 +4184,9 @@ class ChannelController extends Controller
         exit;
     }
 
-    private function videos_details_jsplayer( $slug )
+    public function videos_details_jsplayer( $slug )
     {
-        try {
+        // try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4202,6 +4202,9 @@ class ChannelController extends Controller
                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
 
+                    // Free duration
+                $item['users_video_visibility_status'] = false ;
+
                     // Check for guest user
 
                 if( Auth::guest() && $item->access != "guest" ){
@@ -4212,6 +4215,13 @@ class ChannelController extends Controller
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
+
+                        // Free duration
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                        $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);                 
+                    }
                 }
 
                     // Check for Login user - Register , Subscriber ,PPV
@@ -4247,15 +4257,24 @@ class ChannelController extends Controller
 
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                             }
+
+                                 // Free duration
+
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
                         }
                     }
 
                         // Free duration
-                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-
-                        $item['users_video_visibility_status'] = true ;
-                        $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
-                        $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                    if ( $setting->enable_ppv_rent == 0 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
+                        if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                            $item['users_video_visibility_status'] = true ;
+                            $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                            $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                        }
                     }
 
                         // Block Countries
@@ -4484,10 +4503,10 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        } catch (\Throwable $th) {
-            // return $th->getMessage();
-            return abort(404);
-        }
+        // } catch (\Throwable $th) {
+        //     return $th->getMessage();
+        //     return abort(404);
+        // }
     }
 
     public function video_js_fullplayer( Request $request, $slug )
@@ -4507,6 +4526,10 @@ class ChannelController extends Controller
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                 $item['users_video_visibility_free_duration_status']  = 0 ; 
+                            
+                    // Free duration
+                $item['users_video_visibility_status'] = false ;
+                $item['users_video_visibility_free_duration_status'] = 0; 
 
                     // Check for guest user
 
@@ -4519,6 +4542,12 @@ class ChannelController extends Controller
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
+                        
+                        // Free duration
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_free_duration_status']  = 1; 
+                    }
                 }
 
                     // Check for Login user - Register , Subscriber ,PPV
@@ -4555,14 +4584,21 @@ class ChannelController extends Controller
     
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                             }
+                            
+                                // Free duration
+
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1; 
+                            }
                         }
-                    }
 
-                        // Free duration
-
-                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-                        $item['users_video_visibility_status'] = true ;
-                        $item['users_video_visibility_free_duration_status']  = 1; 
+                        if ( $setting->enable_ppv_rent == 0 && $item->access == "ppv" && !Auth::guest() && Auth::user()->role == 'subscriber' ) {
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1; 
+                            }
+                        }
                     }
 
                         // Block Countries

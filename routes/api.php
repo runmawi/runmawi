@@ -676,4 +676,6 @@ Route::group(
             Route::post('time-zone', 'ApiAuthController@TimeZone'); 
             Route::post('channel-epg', 'ApiAuthController@channel_epg'); 
 
+            Route::get('storage-setting', 'ApiAuthController@StorageSetting'); 
+
         });
