@@ -10,7 +10,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
-                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                        <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
                     </li>
                     
                     <li class="breadcrumb-item">
@@ -18,7 +18,7 @@
                             href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
                         </a>
                         
-                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
                     </li>
                     <li class="breadcrumb-item">{{ optional($season)->series_seasons_name }}</li>
                
@@ -200,6 +200,7 @@
     .form_video-upload input{
         position:relative;
     }
+    .breadcrumb-item+.breadcrumb-item::before{display:none;}
 </style>
 
 @stop @stop
