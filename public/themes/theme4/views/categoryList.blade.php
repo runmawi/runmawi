@@ -38,7 +38,7 @@
                                                     <div class="col-lg-12">
                                                         <div class="row">
                                                             <div class="col-lg-6">
-                                                                <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                                                <img src="{{ $category_lists->image ?  URL::to('public/uploads/videocategory/'.$category_lists->banner_image) : default_vertical_image_url() }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="row">
