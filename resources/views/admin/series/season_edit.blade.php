@@ -156,12 +156,25 @@
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
                      @endif 
                     <br>
-                <div class="content file UploadEnable">
-                    <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
-                    <!-- Dropzone -->
-                    <form action="{{ $post_dropzone_url }}" method="post" class="dropzone" id="my-dropzone"></form>
-                    <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
-                </div>
+                    <div class="content file UploadEnable">
+                            <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
+                            <!-- Dropzone -->
+                            <form action="{{ $post_dropzone_url }}" method="post" class="dropzone" id="my-dropzone"></form>
+                            <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                        </div>
+
+                        <!-- Dropzone template -->
+                        <div id="template" style="display: none;">
+                            <div class="dz-preview dz-file-preview">
+                                <div class="dz-details">
+                                    <div class="dz-filename"><span data-dz-name></span></div>
+                                    <div class="dz-size" data-dz-size></div>
+                                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                                </div>
+                                <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                                <button class="dz-cancel" type="button">Cancel</button>
+                            </div>
+                        </div>
             </div>
 
             
@@ -765,7 +778,22 @@
             </div>
         </div>
     </div>
-
+    <style>
+       
+       .dz-cancel {
+           position: absolute;
+           cursor: pointer;
+           color: red;
+           background: none;
+           border: none;
+           padding: 5px;
+           margin-top: 10px;
+           display: inline-block;
+       }
+       .dz-cancel:hover {
+           text-decoration: underline;
+       }
+   </style>
     @section('javascript')
     
     <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
@@ -1202,58 +1230,66 @@ document.getElementById('select-all').addEventListener('change', function() {
     $("#submit").hide();
     var series_id = '<?= $series->id ?>';
     var season_id = '<?= $season_id ?>';
-
     Dropzone.autoDiscover = false;
-    var MAX_RETRIES = 3;
+        var MAX_RETRIES = 3;
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-    var myDropzone = new Dropzone(".dropzone", {
-        parallelUploads: 10,
-        maxFilesize: 15000000000000000, 
-        acceptedFiles: "video/mp4,video/x-m4v,video/*",
-    });
+        var myDropzone = new Dropzone(".dropzone", { 
+            parallelUploads: 10,
+            maxFilesize: 15000000000000000, // 15000MB
+            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            previewTemplate: document.getElementById('template').innerHTML,
+            init: function() {
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append('series_id', series_id);
+                    formData.append('season_id', season_id);
+                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("_token", CSRF_TOKEN);
+                    // Initialize retry counter if it doesn't exist
+                    if (!file.retryCount) {
+                        file.retryCount = 0;
+                    }
+                    
+                    // Add cancel button event listener
+                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                        console.log("Cancel button clicked for file: " + file.name); // Log for debugging
+                        xhr.abort();
+                        myDropzone.removeFile(file);
+                        alert("Upload canceled for file: " + file.name);
+                    });
+                });
 
-    myDropzone.on("sending", function (file, xhr, formData) {
-        formData.append('series_id', series_id);
-        formData.append('season_id', season_id);
-        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-        formData.append("_token", CSRF_TOKEN);
+                this.on("uploadprogress", function(file, progress) {
+                    var progressElement = document.getElementById('upload-percentage');
+                    progressElement.textContent = Math.round(progress) + '%';
+                });
 
-        // Initialize retry counter if it doesn't exist
-        if (!file.retryCount) {
-            file.retryCount = 0;
-        }
-    });
+                this.on("success", function (file, value) {
+                    if (value.error == 3) {
+                        console.log(value.error);
+                        alert("File not uploaded. Choose Library!");
+                        location.reload();
+                    } else {
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.episode_id);
+                        $("#title").val(value.episode_title);
+                        $("#duration").val(value.episode_duration);
+                    }
+                });
 
-    myDropzone.on("uploadprogress", function(file, progress) {
-        var progressElement = document.getElementById('upload-percentage');
-        progressElement.textContent = Math.round(progress) + '%';
-    });
-
-    myDropzone.on("success", function (file, value) {
-        if (value.error == 3) {
-            console.log(value.error);
-            alert("File not uploaded. Choose Library!");
-            location.reload();
-        } else {
-            $("#buttonNext").show();
-            $("#episode_id").val(value.episode_id);
-            $("#title").val(value.episode_title);
-            $("#duration").val(value.episode_duration);
-        }
-    });
-
-    myDropzone.on("error", function(file, response) {
-        if (file.retryCount < MAX_RETRIES) {
-            file.retryCount++;
-            // alert("An error occurred during the upload. Retrying... (Attempt " + file.retryCount + " of " + MAX_RETRIES + ")");
-            setTimeout(function() {
-                myDropzone.removeFile(file);  // Remove the failed file from Dropzone
-                myDropzone.addFile(file);     // Requeue the file for upload
-            }, 1000); // Optional delay before retrying (1 second in this case)
-        } else {
-            // alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
-        }
-    });
+                this.on("error", function(file, response) {
+                    if (file.retryCount < MAX_RETRIES) {
+                        file.retryCount++;
+                        setTimeout(function() {
+                            myDropzone.removeFile(file);  // Remove the failed file from Dropzone
+                            myDropzone.addFile(file);     // Requeue the file for upload
+                        }, 1000); // Optional delay before retrying (1 second in this case)
+                    } else {
+                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                    }
+                });
+            }
+        });
 
     // Dropzone.autoDiscover = false;
     // var myDropzone = new Dropzone(".dropzone", {

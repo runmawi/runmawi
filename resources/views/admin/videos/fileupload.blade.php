@@ -270,14 +270,29 @@
                      @else
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
                      @endif
-                     <div class='content file UploadEnable'>
-                        <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
-                        <!-- Dropzone -->
-                        <form action="{{ $post_dropzone_url }}" method= "post" class='dropzone' ></form>
-                        <div class="row justify-content-center">
-                           <div class="col-md-9 text-center">
-                           <p class="c1" >Trailers Can Be Uploaded From Video Edit Screen</p>
+                     <div class="content file UploadEnable">
+                           <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h3>
+                           <!-- Dropzone -->
+                           <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
+                           <div class="row justify-content-center">
+                                 <div class="col-md-9 text-center">
+                                    <p class="c1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                                 </div>
                            </div>
+                        </div>
+
+                        <!-- Dropzone template -->
+                        <div id="template" style="display: none;">
+                           <div class="dz-preview dz-file-preview">
+                                 <div class="dz-details">
+                                    <div class="dz-filename"><span data-dz-name></span></div>
+                                    <div class="dz-size" data-dz-size></div>
+                                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                                 </div>
+                                 <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                                 <button class="dz-cancel" style="" type="button">Cancel</button>
+                           </div>
+                        </div>
                            <!-- <div class="col-md-3" style="display: flex;" >
                            <p id="speed">speed: 0kbs</p>&nbsp;&nbsp;&nbsp;
                            <p id="average">average: 0kbs</p>
@@ -310,7 +325,22 @@
          </div>
           
       </div>
-
+      <style>
+       
+        .dz-cancel {
+            position: absolute;
+            cursor: pointer;
+            color: red;
+            background: none;
+            border: none;
+            padding: 5px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .dz-cancel:hover {
+            text-decoration: underline;
+        }
+    </style>
       <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -2012,53 +2042,67 @@ $(document).ready(function($){
    //   $('#optionradio').hide();
    //   $('.content_videopage').hide();
    //   $('#content_videopage').hide();
-   
    Dropzone.autoDiscover = false;
-      var myDropzone = new Dropzone(".dropzone", { 
-         parallelUploads: 10,
-         maxFilesize: 150000000, // 150MB
-         acceptedFiles: "video/mp4,video/x-m4v,video/*",
-      });
+        var MAX_RETRIES = 3;
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-      // Set the maximum number of retries
-      var MAX_RETRIES = 3;
+        var myDropzone = new Dropzone(".dropzone", { 
+            parallelUploads: 10,
+            maxFilesize: 150000000, // 150MB
+            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            previewTemplate: document.getElementById('template').innerHTML,
+            init: function() {
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("_token", CSRF_TOKEN);
+                    // Initialize retry counter
+                    if (!file.retryCount) {
+                        file.retryCount = 0;
+                    }
+                    
+                    // Add cancel button event listener
+                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                        console.log("Cancel button clicked for file: " + file.name); // Log for debugging
+                        xhr.abort();
+                        myDropzone.removeFile(file);
+                        alert("Upload canceled for file: " + file.name);
+                    });
+                });
 
-      myDropzone.on("sending", function(file, xhr, formData) {
-         formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-         formData.append("_token", CSRF_TOKEN);
-         // Initialize retry counter
-         if (!file.retryCount) {
-            file.retryCount = 0;
-         }
-      });
+                this.on("uploadprogress", function(file, progress) {
+                    var progressElement = file.previewElement.querySelector('.dz-upload');
+                    progressElement.style.width = Math.round(progress) + '%';
+                    progressElement.textContent = Math.round(progress) + '%';
+                });
 
-      myDropzone.on("success", function(file, response) {
-         console.log(file);
-         console.log(response);
-         if (response.success == 2) {
-            swal("File not uploaded!");   
-         } else if (response.error == 3) {
-            console.log(response.error);
-            alert("File not uploaded. Choose Library!");   
-         } else {
-            $('#Next').show();
-            $('#video_id').val(response.video_id);
-            $('#title').val(response.video_title);
-         }
-      });
+                this.on("success", function(file, response) {
+                    console.log(file);
+                    console.log(response);
+                    if (response.success == 2) {
+                        swal("File not uploaded!");   
+                    } else if (response.error == 3) {
+                        console.log(response.error);
+                        alert("File not uploaded. Choose Library!");   
+                    } else {
+                        $('#Next').show();
+                        $('#video_id').val(response.video_id);
+                        $('#title').val(response.video_title);
+                    }
+                });
 
-      myDropzone.on("error", function(file, response) {
-         if (file.retryCount < MAX_RETRIES) {
-            file.retryCount++;
-            // alert("An error occurred during the upload. Retrying... (Attempt " + file.retryCount + " of " + MAX_RETRIES + ")");
-            setTimeout(function() {
-                  myDropzone.removeFile(file);  
-                  myDropzone.addFile(file);     
-            }, 1000); 
-         } else {
-            // alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
-         }
-      });
+                this.on("error", function(file, response) {
+                    if (file.retryCount < MAX_RETRIES) {
+                        file.retryCount++;
+                        setTimeout(function() {
+                            myDropzone.removeFile(file);  
+                            myDropzone.addFile(file);     
+                        }, 1000); 
+                    } else {
+                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                    }
+                });
+            }
+        });
          
    //   Dropzone.autoDiscover = false;
    //   var myDropzone = new Dropzone(".dropzone",{ 
