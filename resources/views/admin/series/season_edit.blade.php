@@ -1204,11 +1204,10 @@ document.getElementById('select-all').addEventListener('change', function() {
     var season_id = '<?= $season_id ?>';
 
     Dropzone.autoDiscover = false;
-    var MAX_RETRIES = 3;
-
     var myDropzone = new Dropzone(".dropzone", {
+        //   maxFilesize: 900,  // 3 mb
         parallelUploads: 10,
-        maxFilesize: 15000000000000000, 
+        maxFilesize: 15000,
         acceptedFiles: "video/mp4,video/x-m4v,video/*",
     });
 
@@ -1217,78 +1216,21 @@ document.getElementById('select-all').addEventListener('change', function() {
         formData.append('season_id', season_id);
         formData.append("UploadlibraryID", $('#UploadlibraryID').val());
         formData.append("_token", CSRF_TOKEN);
-
-        // Initialize retry counter if it doesn't exist
-        if (!file.retryCount) {
-            file.retryCount = 0;
-        }
-    });
-
-    myDropzone.on("uploadprogress", function(file, progress) {
-        var progressElement = document.getElementById('upload-percentage');
-        progressElement.textContent = Math.round(progress) + '%';
+        // console.log(value)
     });
 
     myDropzone.on("success", function (file, value) {
         if (value.error == 3) {
             console.log(value.error);
-            alert("File not uploaded. Choose Library!");
+            alert("File not uploaded Choose Library!");
             location.reload();
-        } else {
-            $("#buttonNext").show();
-            $("#episode_id").val(value.episode_id);
-            $("#title").val(value.episode_title);
-            $("#duration").val(value.episode_duration);
         }
+        // console.log(value);
+        $("#buttonNext").show();
+        $("#episode_id").val(value.episode_id);
+        $("#title").val(value.episode_title);
+        $("#duration").val(value.episode_duration);
     });
-
-    myDropzone.on("error", function(file, response) {
-        if (file.retryCount < MAX_RETRIES) {
-            file.retryCount++;
-            // alert("An error occurred during the upload. Retrying... (Attempt " + file.retryCount + " of " + MAX_RETRIES + ")");
-            setTimeout(function() {
-                myDropzone.removeFile(file);  // Remove the failed file from Dropzone
-                myDropzone.addFile(file);     // Requeue the file for upload
-            }, 1000); // Optional delay before retrying (1 second in this case)
-        } else {
-            // alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
-        }
-    });
-
-    // Dropzone.autoDiscover = false;
-    // var myDropzone = new Dropzone(".dropzone", {
-    //     //   maxFilesize: 900,  // 3 mb
-    //     parallelUploads: 10,
-    //     maxFilesize: 15000,
-    //     acceptedFiles: "video/mp4,video/x-m4v,video/*",
-    // });
-
-    // myDropzone.on("sending", function (file, xhr, formData) {
-    //     formData.append('series_id', series_id);
-    //     formData.append('season_id', season_id);
-    //     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-    //     formData.append("_token", CSRF_TOKEN);
-    //     // console.log(value)
-    // });
-
-    // // Add the event listener for upload progress
-    // myDropzone.on("uploadprogress", function(file, progress) {
-    //     var progressElement = document.getElementById('upload-percentage');
-    //     progressElement.textContent = Math.round(progress) + '%';
-    // });
-
-    // myDropzone.on("success", function (file, value) {
-    //     if (value.error == 3) {
-    //         console.log(value.error);
-    //         alert("File not uploaded Choose Library!");
-    //         location.reload();
-    //     }
-    //     // console.log(value);
-    //     $("#buttonNext").show();
-    //     $("#episode_id").val(value.episode_id);
-    //     $("#title").val(value.episode_title);
-    //     $("#duration").val(value.episode_duration);
-    // });
 
     $("#buttonNext").click(function () {
         $('#bunnycdnvideo').hide();
