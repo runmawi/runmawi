@@ -323,7 +323,7 @@
                                                             </div>
 
                                                             <div class="trending-contens sub_dropdown_image mt-3">
-                                                                <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider' }}" >
+                                                                <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0 overflow-hidden series-depends-episode-slider' }}" >
                                                                     @foreach ($Series_Genre->Series_depends_episodes as $episode )
                                                                         <li>
                                                                             <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
@@ -442,6 +442,29 @@
                 speed: 300,
                 slidesToShow: 6,
                 slidesToScroll: 4,
+                responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
             });
         });
 
