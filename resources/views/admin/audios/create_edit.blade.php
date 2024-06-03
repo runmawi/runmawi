@@ -290,7 +290,7 @@ data: {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="https://malsup.github.com/jquery.form.js"></script>
 
 <div id="content-page" class="content-page" style="padding:0px 15px 0px;margin-top:-40px;">
 	<div class="container-fluid p-0">
