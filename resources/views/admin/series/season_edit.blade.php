@@ -1261,14 +1261,18 @@ document.getElementById('select-all').addEventListener('change', function() {
                     formData.append('season_id', season_id);
                     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
                     formData.append("_token", CSRF_TOKEN);
-                    // Initialize retry counter if it doesn't exist
+
+                    // Initialize retry counter and canceled flag if they don't exist
                     if (!file.retryCount) {
                         file.retryCount = 0;
                     }
-                    
-                    // Add cancel button event listener
+                    if (!file.userCanceled) {
+                        file.userCanceled = false;
+                    }
+
                     file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
-                        console.log("Cancel button clicked for file: " + file.name); // Log for debugging
+                        console.log("Cancel button clicked for file: " + file.name);
+                        file.userCanceled = true; 
                         xhr.abort();
                         myDropzone.removeFile(file);
                         alert("Upload canceled for file: " + file.name);
@@ -1294,12 +1298,14 @@ document.getElementById('select-all').addEventListener('change', function() {
                 });
 
                 this.on("error", function(file, response) {
-                    if (file.retryCount < MAX_RETRIES) {
+                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
                         file.retryCount++;
                         setTimeout(function() {
                             myDropzone.removeFile(file);  // Remove the failed file from Dropzone
                             myDropzone.addFile(file);     // Requeue the file for upload
-                        }, 1000); // Optional delay before retrying (1 second in this case)
+                        }, 1000); 
+                    } else if (file.userCanceled) {
+                        console.log("File upload canceled by user: " + file.name);
                     } else {
                         alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
                     }
