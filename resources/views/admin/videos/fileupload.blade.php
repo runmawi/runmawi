@@ -2013,40 +2013,85 @@ $(document).ready(function($){
    //   $('.content_videopage').hide();
    //   $('#content_videopage').hide();
    
-   
-   
-     Dropzone.autoDiscover = false;
-     var myDropzone = new Dropzone(".dropzone",{ 
-       //   maxFilesize: 900,  // 3 mb
+   Dropzone.autoDiscover = false;
+      var myDropzone = new Dropzone(".dropzone", { 
          parallelUploads: 10,
-         maxFilesize: 150000000,
+         maxFilesize: 150000000, // 150MB
          acceptedFiles: "video/mp4,video/x-m4v,video/*",
-     });
-     myDropzone.on("sending", function(file, xhr, formData) {
-        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-        formData.append("_token", CSRF_TOKEN);
-   //      checkUploadSpeed( 10, function ( speed, average ) {
-   //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
-   //      document.getElementById( 'average' ).textContent = 'average: ' + average + 'kbs';
-   //  } );
-       // console.log(value)
-       this.on("success", function(file, value) {
-         console.log(value.video_title);
-         if(value.success == 2){
-            swal("File not uploaded !");   
-            location.reload();
-         }if(value.error == 3){
-         console.log(value.error);
-            alert("File not uploaded Choose Library!");   
-            location.reload();
-         }else{
-            $('#Next').show();
-            $('#video_id').val(value.video_id);
-            $('#title').val(value.video_title);
+      });
+
+      // Set the maximum number of retries
+      var MAX_RETRIES = 3;
+
+      myDropzone.on("sending", function(file, xhr, formData) {
+         formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+         formData.append("_token", CSRF_TOKEN);
+         // Initialize retry counter
+         if (!file.retryCount) {
+            file.retryCount = 0;
          }
-         });
+      });
+
+      myDropzone.on("success", function(file, response) {
+         console.log(file);
+         console.log(response);
+         if (response.success == 2) {
+            swal("File not uploaded!");   
+         } else if (response.error == 3) {
+            console.log(response.error);
+            alert("File not uploaded. Choose Library!");   
+         } else {
+            $('#Next').show();
+            $('#video_id').val(response.video_id);
+            $('#title').val(response.video_title);
+         }
+      });
+
+      myDropzone.on("error", function(file, response) {
+         if (file.retryCount < MAX_RETRIES) {
+            file.retryCount++;
+            // alert("An error occurred during the upload. Retrying... (Attempt " + file.retryCount + " of " + MAX_RETRIES + ")");
+            setTimeout(function() {
+                  myDropzone.removeFile(file);  
+                  myDropzone.addFile(file);     
+            }, 1000); 
+         } else {
+            // alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+         }
+      });
+         
+   //   Dropzone.autoDiscover = false;
+   //   var myDropzone = new Dropzone(".dropzone",{ 
+   //     //   maxFilesize: 900,  // 3 mb
+   //       parallelUploads: 10,
+   //       maxFilesize: 150000000,
+   //       acceptedFiles: "video/mp4,video/x-m4v,video/*",
+   //   });
+   //   myDropzone.on("sending", function(file, xhr, formData) {
+   //      formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+   //      formData.append("_token", CSRF_TOKEN);
+   // //      checkUploadSpeed( 10, function ( speed, average ) {
+   // //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
+   // //      document.getElementById( 'average' ).textContent = 'average: ' + average + 'kbs';
+   // //  } );
+   //     // console.log(value)
+   //     this.on("success", function(file, value) {
+   //       console.log(value.video_title);
+   //       if(value.success == 2){
+   //          swal("File not uploaded !");   
+   //          location.reload();
+   //       }if(value.error == 3){
+   //       console.log(value.error);
+   //          alert("File not uploaded Choose Library!");   
+   //          location.reload();
+   //       }else{
+   //          $('#Next').show();
+   //          $('#video_id').val(value.video_id);
+   //          $('#title').val(value.video_title);
+   //       }
+   //       });
    
-     }); 
+   //   }); 
    //   function checkUploadSpeed( iterations, update ) {
    //      var average = 0,
    //          index = 0,
