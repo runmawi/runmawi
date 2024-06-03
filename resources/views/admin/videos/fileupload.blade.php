@@ -2055,14 +2055,19 @@ $(document).ready(function($){
                 this.on("sending", function(file, xhr, formData) {
                     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
                     formData.append("_token", CSRF_TOKEN);
-                    // Initialize retry counter
+
+                    // Initialize retry counter and canceled flag if they don't exist
                     if (!file.retryCount) {
                         file.retryCount = 0;
                     }
-                    
+                    if (!file.userCanceled) {
+                        file.userCanceled = false;
+                    }
+
                     // Add cancel button event listener
                     file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
                         console.log("Cancel button clicked for file: " + file.name); // Log for debugging
+                        file.userCanceled = true; // Mark the file as user-canceled
                         xhr.abort();
                         myDropzone.removeFile(file);
                         alert("Upload canceled for file: " + file.name);
@@ -2091,12 +2096,14 @@ $(document).ready(function($){
                 });
 
                 this.on("error", function(file, response) {
-                    if (file.retryCount < MAX_RETRIES) {
+                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
                         file.retryCount++;
                         setTimeout(function() {
                             myDropzone.removeFile(file);  
                             myDropzone.addFile(file);     
                         }, 1000); 
+                    } else if (file.userCanceled) {
+                        console.log("File upload canceled by user: " + file.name);
                     } else {
                         alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
                     }
