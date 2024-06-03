@@ -93,6 +93,9 @@
         background-color: transparent !important;
         font-size: revert;
     }
+    .dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
 </style>
 
 @section('css')
@@ -166,12 +169,12 @@
                         <!-- Dropzone template -->
                         <div id="template" style="display: none;">
                             <div class="dz-preview dz-file-preview">
-                            <div class="dz-image"><img data-dz-thumbnail/></div>
+                                <div class="dz-image"><img data-dz-thumbnail/></div>
                                 <div class="dz-details">
                                     <button class="dz-cancel" type="button">Cancel</button>
                                     <div class="dz-filename"><span data-dz-name></span></div>
                                     <div class="dz-size" data-dz-size></div>
-                                    <div class="dz-progress"> <span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
+                                    <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress></span><span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
                                     <div class="dz-error-message"><span data-dz-errormessage></span></div>
                                     <div class="dz-success-mark">
                                          <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -1278,12 +1281,11 @@ document.getElementById('select-all').addEventListener('change', function() {
                         alert("Upload canceled for file: " + file.name);
                     });
                 });
-
                 this.on("uploadprogress", function(file, progress) {
-                    var progressElement = document.getElementById('upload-percentage');
+                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
                     progressElement.textContent = Math.round(progress) + '%';
                 });
-
+                
                 this.on("success", function (file, value) {
                     if (value.error == 3) {
                         console.log(value.error);
@@ -1564,18 +1566,6 @@ document.getElementById('select-all').addEventListener('change', function() {
 	}
 	}
 </script>
-
-<script>
-    Dropzone.options.myDropzone = {
-      init: function() {
-        this.on("uploadprogress", function(file, progress) {
-          var progressElement = document.getElementById('upload-percentage');
-          progressElement.textContent = Math.round(progress) + '%';
-        });
-      }
-    };
-
-  </script>
 
 
 @include('admin.series.search_tag'); 
