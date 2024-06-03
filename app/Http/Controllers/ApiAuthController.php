@@ -147,6 +147,7 @@ use App\DocumentGenre ;
 use App\AdminVideoAds;
 use App\TimeZone;
 use App\StorageSetting;
+use App\SeriesNetwork;
 
 
 class ApiAuthController extends Controller
@@ -14144,8 +14145,35 @@ public function QRCodeMobileLogout(Request $request)
           $header_name = $OrderHomeSetting['header_name'] ;
           $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "Document_Category" ;
-
         }
+
+        if($OrderHomeSetting['video_name'] == "Series_based_on_Networks"){      // Series based on Networks
+          
+          $data = $this->All_Homepage_Series_based_on_Networks();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "series" ;
+        }
+
+        if($OrderHomeSetting['video_name'] == "Series_Networks"){      // Series Networks
+          
+          $data = $this->All_Homepage_Series_Networks();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series_Networks" ;
+        }
+
+        if($OrderHomeSetting['video_name'] == "SeriesGenre_videos"){      // Series Networks
+
+          $data = $this->All_Homepage_Series_based_on_genre();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series" ;
+        }
+
 
         $result[] = array(
           "source"      => $source,
@@ -14270,26 +14298,34 @@ public function QRCodeMobileLogout(Request $request)
 
     if($Homesetting->my_playlist == 1 && $this->All_Homepage_my_playlist( $user_id )->isNotEmpty() ){
       array_push($input,'my_play_list');
-   }
+    }
 
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
-    array_push($input,'video_play_list');
- }
+      array_push($input,'video_play_list');
+    }
 
-  if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
-    array_push($input,'Document');
-  }
-  if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
-    array_push($input,'Document_Category');
-  }
-    // if($Homesetting->artist == 1){
-    //   array_push($input,'artist');
+    if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
+      array_push($input,'Document');
+    }
+
+    if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
+      array_push($input,'Document_Category');
+    }
+
+    if($Homesetting->Series_Networks == 1 && $this->All_Homepage_Series_Networks()->isNotEmpty() ){
+      array_push($input,'Series_Networks');
+    }
+
+    if($Homesetting->Series_based_on_Networks == 1 && $this->All_Homepage_Series_based_on_Networks()->isNotEmpty() ){
+      array_push($input,'Series_based_on_Networks');
+    }
+
+    // if($Homesetting->SeriesGenre_videos == 1 && $this->All_Homepage_Series_based_on_genre()->isNotEmpty() ){
+    //   array_push($input,'Series_Genre_videos');
     // }
 
     return $input;
-
   }
-
 
   private static function All_Homepage_latestvideos(){
 
@@ -14746,7 +14782,7 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
-  
+
   private static function All_Homepage_my_playlist( $user_id ){
 
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
@@ -14792,7 +14828,7 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
-  
+
   private static function All_Homepage_Documents(){
 
     $Document_status = MobileHomeSetting::pluck('Document')->first();
@@ -15130,6 +15166,133 @@ public function QRCodeMobileLogout(Request $request)
               return $category;
         });
       endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_Networks(){
+
+    $Homepage_Series_Networks_status = MobileHomeSetting::pluck('Series_Networks')->first();
+
+    if( $Homepage_Series_Networks_status == null || $Homepage_Series_Networks_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Series Networks status) is turned off in the admin panel
+    else:
+      
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+          $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+
+          $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+                                                                                              'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+                                                                                              ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+                                                                                              ->latest()->limit(15)->get()->map(function ($item) {
+                                                                                                      $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                                                                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                                                                                      $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+                                                                                                      $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+                                                                                                      $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+                                                                                                      return $item;
+                                                                                                  });  
+
+          return $item;
+        });
+
+    endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_based_on_Networks(){
+
+    $Homepage_Series_based_on_Networks_status = MobileHomeSetting::pluck('Series_based_on_Networks')->first();
+
+    if( $Homepage_Series_based_on_Networks_status == null || $Homepage_Series_based_on_Networks_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Series based on Networks status) is turned off in the admin panel
+    else:
+      
+      $data = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+        $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                    ->whereJsonContains('network_id', [(string)$item->id])
+    
+                    ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+            
+            $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+            $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+    
+            $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+    
+            $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+    
+            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                    ->map(function ($item) {
+                                                    $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                    return $item;
+                                                });
+    
+            $item['source'] = 'Series';
+            return $item;
+                                                                
+        });
+        return $item;
+      });
+
+    endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_based_on_genre(){
+
+
+    $Homepage_Series_based_on_genre_status = MobileHomeSetting::pluck('SeriesGenre_videos')->first();
+
+    if( $Homepage_Series_based_on_genre_status == null || $Homepage_Series_based_on_genre_status == 0 ){
+
+        $data = array();   
+
+    }else{
+      
+      $data = array(); 
+
+      // $data = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+      //               // ->with([
+      //               //     'category_series' => function ($series) {
+      //               //         $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+      //               //     },
+      //               // ])
+      //               ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+      //               ->orderBy('series_genre.order')
+      //               ->limit(15)
+      //               ->get();
+  
+      // $data->each(function ($category) {
+      //     $category->category_series->transform(function ($item) {
+  
+      //         $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+      //         $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+  
+      //         $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+      //         $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+      //         $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+      //                                                 ->map(function ($item) {
+      //                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+      //                                                     return $item;
+      //                                             });
+  
+      //         $item['source'] = 'Series';
+      //         return $item;
+      //     });
+      //     return $category;
+      // });
+    }
 
     return $data;
   }
