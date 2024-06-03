@@ -2358,6 +2358,8 @@ Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Pag
 
 Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
 
+Route::get('/channel-video-scheduler-List', 'ChannelVideoSchedulerController@page_list')->name('Front-End.Channel-video-scheduler.page_list');
+
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
 
 Route::get('activationcode', 'AdminUsersController@myprofile');
