@@ -120,6 +120,15 @@ div#trending-slider-nav{display: flex;
         -ms-flex-direction: column;
         flex-direction: column;
     }
+    @media (max-width:1024px){
+        .modal-body{padding:0 !important;}
+    }
+    @media (max-width:768px){
+        .network-image{flex: 0 0 33.333%;max-width:33.333%;}
+    }
+    @media (max-width:500px){
+        .network-image{flex: 0 0 50%;max-width:50%;}
+    }
 </style>
 
 @php
