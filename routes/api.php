@@ -677,5 +677,6 @@ Route::group(
             Route::post('channel-epg', 'ApiAuthController@channel_epg'); 
 
             Route::get('storage-setting', 'ApiAuthController@StorageSetting'); 
+            Route::get('GeoIPLocation', 'ApiAuthController@GeoIPLocation'); 
 
         });
