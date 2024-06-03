@@ -24497,4 +24497,29 @@ public function SendVideoPushNotification(Request $request)
       return response()->json($response, 200);
 
     }
+
+
+
+    public function GeoIPLocation( Request $request ){
+
+      try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            $response = array(
+              "status"  => 'true' ,
+              "message" => "GeoIP Location" ,
+              'userIp'  => $userIp ,
+            );
+
+          }catch (\Throwable $th) {
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $th->getMessage(),
+          );
+        }
+          return response()->json($response, 200);
+    }
+
 }
