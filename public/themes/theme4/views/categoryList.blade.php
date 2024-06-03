@@ -3,11 +3,11 @@
 @endphp
     
 <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid pl-0">
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between mt-4">
-                    <h4 class="vid-title text-center">{{ __("List of Categories") }}</h4>                     
+                    <h4 class="vid-title mar-left">{{ __("List of Categories") }}</h4>                     
                 </div>
 
                 <div class="trending-contens sub_dropdown_image mt-3">
