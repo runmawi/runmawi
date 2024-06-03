@@ -236,6 +236,7 @@
         white-space: nowrap;
         display: inline-block;
     }
+    .favorites-slider .slick-prev, #trending-slider-nav .slick-prev,#trending-slider-nav .slick-next{top:30%;}
    
 </style>
 
@@ -243,7 +244,7 @@
 <div class="main-content p-0">
     <section id="iq-favorites ">
         <div class="container-fluid p-0">
-            <div class=" mar-left">
+            <div class="">
                  <!-- BREADCRUMBS -->
                  <div class="position-absu p-0">
                     <div class="container-fluid nav-div m-0 p-0" id="nav-tab" role="tablist">
@@ -285,7 +286,7 @@
                     <div class="favorites-contens">
                         @if (isset($series_data->Series_depends_Networks))
 
-                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline mar-left m-0 row align-items-center">
+                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($series_data->Series_depends_Networks as $Series_Genre)
                                     <li class="slick-slide">
                                         <a href="javascript:;">
@@ -402,8 +403,8 @@
             asNavFor: '.series-category-slider',
             dots: false,
             arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev up-arrow" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next down-arrow" aria-label="Next" type="button">Next</a>',
             infinite: true,
             focusOnSelect: true,
             responsive: [
@@ -444,7 +445,10 @@
             });
         });
 
-        $('body').on('click', '.slick-arrow', function() {
+        $('body').on('click', '.up-arrow', function() {
+            $('.series-category-slider').hide();
+        });
+        $('body').on('click', '.down-arrow', function() {
             $('.series-category-slider').hide();
         });
 
