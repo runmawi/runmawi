@@ -15429,6 +15429,21 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Document_Category_Pagelist($request->category_id);
                 $Page_List_Name = 'Document_Category_Pagelist';
                 break;  
+                
+              case 'Series_Network':
+                $data = $this->SeriesNetwork_Pagelist();
+                $Page_List_Name = 'Series_Network_Pagelist';
+                break;  
+                
+              case 'Series_based_on_Networks':
+                $data = $this->Series_based_on_Networks_Pagelist();
+                $Page_List_Name = 'Series_based_on_Networks_Pagelist';
+                break;  
+
+              case 'Series_based_on_genre':
+                $data = $this->Series_based_on_genre_Pagelist();
+                $Page_List_Name = 'Series_based_on_genre_Pagelist';
+                break;  
           }
       }
 
@@ -15557,6 +15572,104 @@ public function QRCodeMobileLogout(Request $request)
   
     return $data;
     
+  }
+
+  private static function SeriesNetwork_Pagelist(){
+    
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+          $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+
+          $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+                                                                                              'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+                                                                                              ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+                                                                                              ->latest()->limit(15)->get()->map(function ($item) {
+                                                                                                      $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                                                                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                                                                                      $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+                                                                                                      $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+                                                                                                      $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+                                                                                                      return $item;
+                                                                                                  });  
+
+          return $item;
+        });
+
+      return $data ;
+  }
+  
+  private static function Series_based_on_Networks_Pagelist( ){
+    
+    $query = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+      $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                  ->whereJsonContains('network_id', [(string)$item->id])
+  
+                  ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+          
+          $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+          $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+  
+          $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+          $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+          $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                  ->map(function ($item) {
+                                                  $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                  return $item;
+                                              });
+  
+          $item['source'] = 'Series';
+          return $item;
+                                                              
+      });
+      return $item;
+    });
+
+    return $query;
+    
+  }
+
+  private static function Series_based_on_genre_Pagelist(){
+
+      $data = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->limit(15)
+                    ->get();
+  
+      $data->each(function ($category) {
+          $category->category_series->transform(function ($item) {
+  
+              $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+              $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+  
+              $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+              $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+              $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                      ->map(function ($item) {
+                                                          $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                          return $item;
+                                                  });
+  
+              $item['source'] = 'Series';
+              return $item;
+          });
+          return $category;
+      });
+
+    return $data ;
   }
 
   private static function Document_Pagelist(){
