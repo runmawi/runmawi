@@ -76,7 +76,7 @@
         display: inline-block;
         cursor: pointer;
     }
-    .dropzone .dz-preview .dz-progress{overflow:visible;top:87%;border:none;}
+    .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
     .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
 
 </style>
@@ -96,7 +96,6 @@
     .dropzone .dz-preview .dz-progress{height:14px !important;}
     span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
     .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
-    .dropzone .dz-preview .dz-details{padding: 1em 1em;}
 </style>
 
 @section('css')
@@ -173,7 +172,7 @@
                                 <div class="dz-image"><img data-dz-thumbnail/></div>
                                 <div class="dz-details">
                                     <button class="dz-cancel" type="button">Cancel</button>
-                                    <div class="dz-filename mt-"><span data-dz-name></span></div>
+                                    <div class="dz-filename"><span data-dz-name></span></div>
                                     <div class="dz-size" data-dz-size></div>
                                     <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress></span><span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
                                     <div class="dz-error-message"><span data-dz-errormessage></span></div>
@@ -1254,6 +1253,19 @@ document.getElementById('select-all').addEventListener('change', function() {
         var MAX_RETRIES = 3;
         var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
+        function handleError(e, t) {
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
+            }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
+            });
+        }
+    }
+
         var myDropzone = new Dropzone(".dropzone", { 
             parallelUploads: 10,
             maxFilesize: 15000000000000000, // 15000MB
@@ -1278,8 +1290,9 @@ document.getElementById('select-all').addEventListener('change', function() {
                         console.log("Cancel button clicked for file: " + file.name);
                         file.userCanceled = true; 
                         xhr.abort();
-                        myDropzone.removeFile(file);
+                        $(".dz-cancel").html(" ");
                         alert("Upload canceled for file: " + file.name);
+                        handleError(file, "Upload canceled by user.");
                     });
                 });
                 this.on("uploadprogress", function(file, progress) {
@@ -1297,7 +1310,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         $("#episode_id").val(value.episode_id);
                         $("#title").val(value.episode_title);
                         $("#duration").val(value.episode_duration);
-                        $(".dz-cancel").html(" ");
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
                     }
                 });
 
