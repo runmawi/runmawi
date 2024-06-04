@@ -173,7 +173,7 @@
                                 <div class="dz-image"><img data-dz-thumbnail/></div>
                                 <div class="dz-details">
                                     <button class="dz-cancel" type="button">Cancel</button>
-                                    <div class="dz-filename"><span data-dz-name></span></div>
+                                    <div class="dz-filename mt-"><span data-dz-name></span></div>
                                     <div class="dz-size" data-dz-size></div>
                                     <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress></span><span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
                                     <div class="dz-error-message"><span data-dz-errormessage></span></div>
@@ -1297,7 +1297,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         $("#episode_id").val(value.episode_id);
                         $("#title").val(value.episode_title);
                         $("#duration").val(value.episode_duration);
-                        $(".dz-cancel").hide();
+                        $(".dz-cancel").html(" ");
                     }
                 });
 
