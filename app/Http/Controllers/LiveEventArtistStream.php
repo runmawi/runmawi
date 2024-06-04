@@ -50,23 +50,26 @@ class LiveEventArtistStream extends Controller
 
     public function index()
     {
+        try {
+            
+            $artist_live_event = LiveEventArtist::where("active",1)->where('status',1)->latest()->get();
 
-        $artist_live_event = LiveEventArtist::where("active","=","1")
-                ->orderBy('created_at', 'DESC')
-                ->get();
+            $PPV_settings = Setting::where('ppv_status', 1)->first();
 
-        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price :  null ;
+            
+            $data = array(
+                'artist_live_event' => $artist_live_event,
+                'ppv_gobal_price' => $ppv_gobal_price,
+                'currency' =>CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
 
-        $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price :  null ;
-        
-        $data = array(
-            'artist_live_event' => $artist_live_event,
-            'ppv_gobal_price' => $ppv_gobal_price,
-            'currency' =>CurrencySetting::first(),
-            'ThumbnailSetting' => ThumbnailSetting::first(),
-        );
+            return Theme::view('live_artist_event.index',['artist_live_event'=>$data]);
 
-        return Theme::view('live_artist_event.index',['artist_live_event'=>$data]);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function live_event_play(Request $request,$slug)
