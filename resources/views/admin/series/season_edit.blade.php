@@ -76,7 +76,7 @@
         display: inline-block;
         cursor: pointer;
     }
-    .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
+    .dropzone .dz-preview .dz-progress{overflow:visible;top:87%;border:none;}
     .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
 
 </style>
@@ -96,6 +96,7 @@
     .dropzone .dz-preview .dz-progress{height:14px !important;}
     span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
     .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-details{padding: 1em 1em;}
 </style>
 
 @section('css')
@@ -1296,6 +1297,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         $("#episode_id").val(value.episode_id);
                         $("#title").val(value.episode_title);
                         $("#duration").val(value.episode_duration);
+                        $(".dz-cancel").hide();
                     }
                 });
 
