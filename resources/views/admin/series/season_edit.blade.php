@@ -78,7 +78,7 @@
     }
     .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
     .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
-
+    p#cancel-message {padding: .75rem 1.25rem;margin-bottom: 1rem;border: 1px solid transparent; border-radius: .25rem;color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; position: absolute;right: 0;}
 </style>
 <style>
     .admin-section-title {
@@ -129,6 +129,8 @@
             </div>
         </div>
     </div>
+
+    <p id="cancel-message" class="alert alert-danger" style="display:none;"></p>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -1291,8 +1293,15 @@ document.getElementById('select-all').addEventListener('change', function() {
                         file.userCanceled = true; 
                         xhr.abort();
                         file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                        alert("Upload canceled for file: " + file.name);
+                        // alert("Upload canceled for file: " + file.name);
                         handleError(file, "Upload canceled by user.");
+                        var cancelMessage = "Upload canceled for file: " + file.name;
+                        var messageElement = document.getElementById('cancel-message');
+                        messageElement.innerHTML = cancelMessage;
+                        messageElement.style.display = 'block'; 
+                        setTimeout(function() {
+                            messageElement.style.display = 'none'; 
+                        }, 5000);
                     });
                 });
                 this.on("uploadprogress", function(file, progress) {
