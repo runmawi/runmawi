@@ -205,6 +205,13 @@ class AdminSiteVideoSchedulerController extends Controller
             $today_date_time = new \DateTime("now");
             $today_date = $today_date_time->format("n-j-Y");
 
+            // print_r($today_date);
+            // echo "<pre>";
+            $choosed_date = $request->time;
+            $choosed_date_time = new \DateTime($choosed_date);
+            $choosed_date = $choosed_date_time->format("j-n-Y");
+            // print_r($choosed_date);exit;
+
             $TimeZone = TimeZone::where('id',$request->time_zone)->first();
             $TimeZone_NowTime = TimeZoneScheduler($request->time_zone);
             $SocureData       = SchedulerSocureData($request->socure_type,$request->socure_id);
@@ -212,31 +219,48 @@ class AdminSiteVideoSchedulerController extends Controller
             $time = $request->time;
             $time_zone = $request->time_zone;
             $socure_type = $request->socure_type;
-            $choosed_date = $request->time;
+            // $choosed_date = $request->time;
             $socure_id = $request->socure_id;
-            print_r($choosed_date);
-            $choosed_date = $choosed_date->format("n-j-Y");
-            print_r($choosed_date);exit;
+            // print_r($choosed_date);
+            // $choosed_date = $choosed_date->format("n-j-Y");
+            // print_r($choosed_date);exit;
             // Video Scheduler Logic 
             
             if($today_date < $choosed_date){
 
                 if(  $this->SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone) !== null ){
+
                     $SiteVideoScheduler = $this->SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
 
-                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date) !== null ){
                     
-                    return SiteVideoScheduledData($time,$channe_id,$time_zone);
-
+                    $result = $this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date);
+         
+                    if ($result !== null) {
+                        if ($result == 5) {
+                            return 5;
+                        } else {
+                            return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                        }
                     }else{
-
                         return SiteVideoScheduledData($time,$channe_id,$time_zone);
-                        
+
                     }
+
+                    
+                    // if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date) !== null ){
+                    
+                    // return SiteVideoScheduledData($time,$channe_id,$time_zone);
+
+                    // }else{
+
+                    //     return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                        
+                    // }
 
                 }else if($this->SiteVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->SiteVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
                 }else{
+
                     if($this->VideoSchedulerDifferentDay($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
                         
                         return SiteVideoScheduledData($time,$channe_id,$time_zone) ;
@@ -255,17 +279,35 @@ class AdminSiteVideoSchedulerController extends Controller
                     
                     $SiteVideoScheduler = $this->SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
 
-                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date) !== null ){
-                    
-                        // print_r($this->SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone));
+                    // if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date) !== null  ){
+                    //     if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date) == 5 ){
+                    //         return 5;
+                    //     }else{
+                    //         return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                    //     }
+                    //     // print_r($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date));
 
-                    return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                    // }
 
-                    }else{
+                    // else{
 
-                        return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                    //     return SiteVideoScheduledData($time,$channe_id,$time_zone);
                         
+                    // }
+
+                    $result = $this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$SiteVideoScheduler,$choosed_date);
+         
+                    if ($result !== null) {
+                        if ($result == 5) {
+                            return 5;
+                        } else {
+                            return SiteVideoScheduledData($time,$channe_id,$time_zone);
+                        }
+                    }else{
+                        return SiteVideoScheduledData($time,$channe_id,$time_zone);
+
                     }
+
 
                 }
                 // else if($this->SiteVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->SiteVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
@@ -298,6 +340,9 @@ class AdminSiteVideoSchedulerController extends Controller
 
     private static function SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone){
     
+        $SchedulerDate_time = new \DateTime($time);
+        $time = $SchedulerDate_time->format("j-n-Y");
+
         try {
             $data = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$time)
             ->where('time_zone',$time_zone)->orderBy('created_at', 'DESC')->first();
@@ -313,6 +358,9 @@ class AdminSiteVideoSchedulerController extends Controller
     private static function SiteVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone){
     
         try {
+
+            $SchedulerDate_time = new \DateTime($time);
+            $time = $SchedulerDate_time->format("j-n-Y");
 
             $data = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$time)
             ->where('time_zone','!=',$time_zone)->orderBy('created_at', 'DESC')->first();
@@ -341,7 +389,9 @@ class AdminSiteVideoSchedulerController extends Controller
 
             $duration = gmdate('H:i:s', $SocureData['seconds']);
             
-
+            $choosed_date = $time;
+            $choosed_date_time = new \DateTime($choosed_date);
+            $choosed_date = $choosed_date_time->format("j-n-Y");
             // Store the Scheduler
 
                 $VideoScheduler = new SiteVideoScheduler;
@@ -352,7 +402,7 @@ class AdminSiteVideoSchedulerController extends Controller
                 $VideoScheduler->content_id     = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
                 $VideoScheduler->socure_order   = 1;
                 $VideoScheduler->time_zone      = $time_zone;
-                $VideoScheduler->choosed_date   = $time;
+                $VideoScheduler->choosed_date   = $choosed_date;
                 $VideoScheduler->current_time   = $current_time;
                 $VideoScheduler->start_time     = $starttime;
                 $VideoScheduler->end_time       = $endtime;
@@ -441,7 +491,7 @@ class AdminSiteVideoSchedulerController extends Controller
 
                     $chosen_datetime = $choosed_date;
                 }
-                    // print_r($endtime);exit;
+                    // print_r($chosen_datetime);exit;
                     // Store the Scheduler
 
                     $VideoScheduler = new SiteVideoScheduler;
@@ -450,7 +500,7 @@ class AdminSiteVideoSchedulerController extends Controller
                     $VideoScheduler->socure_type    = $socure_type;
                     $VideoScheduler->channe_id      = $channe_id;
                     $VideoScheduler->content_id     = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
-                    $VideoScheduler->socure_order   = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$time)->max('socure_order') + 1;
+                    $VideoScheduler->socure_order   = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$chosen_datetime)->max('socure_order') + 1;
                     $VideoScheduler->time_zone      = $time_zone;
                     $VideoScheduler->choosed_date   = $chosen_datetime;
                     $VideoScheduler->current_time   = $current_time;
@@ -535,6 +585,9 @@ class AdminSiteVideoSchedulerController extends Controller
                 $socure_order = null;
             }
 
+            $SchedulerDate_time = new \DateTime($SchedulerDate);
+            $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
+
             $CurrentScheduler = SiteVideoScheduler::where('id',$Scheduler_id)->where('channe_id',$channelId)
                                 ->where('choosed_date',$SchedulerDate)->first();
 
@@ -549,6 +602,9 @@ class AdminSiteVideoSchedulerController extends Controller
                     $CurrentScheduler->save();
                 }
            
+                $SchedulerDate_time = new \DateTime($SchedulerDate);
+                $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
+
                 $AfterScheduler = SiteVideoScheduler::where('channe_id',$channelId)
                             ->where('choosed_date',$SchedulerDate)
                             ->where('id', '>', $Scheduler_id)
@@ -655,6 +711,9 @@ class AdminSiteVideoSchedulerController extends Controller
             $Scheduler_id   = $request->Scheduler_id;
             $channelId      = $request->channe_id;
             $SchedulerDate  = $request->SchedulerDate;
+            // $SchedulerDate  = $request->SchedulerDate;
+            $SchedulerDate_time = new \DateTime($SchedulerDate);
+            $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
 
             $CheckSameDateScheduler = SiteVideoScheduler::where('id',$Scheduler_id)
             ->where('channe_id',$channelId)
@@ -720,6 +779,8 @@ class AdminSiteVideoSchedulerController extends Controller
 
             $duration = gmdate('H:i:s', $SocureData['seconds']);
             
+            $SchedulerDate_time = new \DateTime($time);
+            $time = $SchedulerDate_time->format("j-n-Y");
 
             // Store the Scheduler
 
