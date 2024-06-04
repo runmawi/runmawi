@@ -2092,7 +2092,7 @@ $(document).ready(function($){
                         console.log("Cancel button clicked for file: " + file.name); // Log for debugging
                         file.userCanceled = true; // Mark the file as user-canceled
                         xhr.abort();
-                        $(".dz-cancel").html(" ");
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
                         // myDropzone.removeFile(file);
                         alert("Upload canceled for file: " + file.name);
                         handleError(file, "Upload canceled by user.");

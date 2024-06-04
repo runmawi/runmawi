@@ -1290,7 +1290,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         console.log("Cancel button clicked for file: " + file.name);
                         file.userCanceled = true; 
                         xhr.abort();
-                        $(".dz-cancel").html(" ");
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
                         alert("Upload canceled for file: " + file.name);
                         handleError(file, "Upload canceled by user.");
                     });
