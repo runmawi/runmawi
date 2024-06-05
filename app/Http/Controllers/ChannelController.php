@@ -69,6 +69,7 @@ use Hash;
 use Session;
 use Theme;
 use DateTime;
+use App\SiteVideoScheduler;
 
 class ChannelController extends Controller
 {
@@ -3981,6 +3982,42 @@ class ChannelController extends Controller
     public function EmbedScheduledVideos($slug)
     {
         $settings = Setting::first();
+
+
+        
+        $current_timezone = current_timezone();
+        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_horizontal_image_url = default_horizontal_image_url();
+        $request =  VideoSchedules::where('slug',$slug)->first();
+
+        $today_date_time = new \DateTime("now");
+        $today_date = $today_date_time->format("n-j-Y");
+        // dd(Country_name());
+        // $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
+
+        //     $item['ChannelVideoScheduler']  =  SiteVideoScheduler::where('channe_id',$request->id)
+                                                
+        //                                         ->when( !is_null($today_date), function ($query) use ($request,$today_date ) {
+        //                                             return $query->Where('choosed_date', $today_date);
+        //                                         })
+
+        //                                         ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
+
+        //                                             $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+
+        //                                             $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+
+        //                                             $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+
+        //                                             return $item;
+        //                                         });
+        //     return $item;
+        // })->first();
+
+        // dd($epg_channel_data);
+        
         // try
         // {
 
