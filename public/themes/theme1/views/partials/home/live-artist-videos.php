@@ -80,11 +80,11 @@
                               ?>
           <!-- .@$video->categories->name. -->
           <li class="slide-item">
-              <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+              <a href="<?= URL::to('/') ?><?= '/live-artist-event'.'/' . $video->slug ?>">
                   <!-- block-images -->
                   <div class="block-images position-relative">
                       <div class="img-box">
-                          <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                          <a href="<?= URL::to('/') ?><?= '/live-artist-event'.'/' . $video->slug ?>">
                               <img loading="lazy"
                                   data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>"
                                   class="img-fluid w-100" alt="" />
@@ -93,7 +93,7 @@
                           <div class="block-description">
                               <div class="hover-buttons">
                                   <a class="text-white d-flex justify-content-center align-items-center"
-                                      href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                      href="<?= URL::to('/') ?><?= '/live-artist-event'.'/' . $video->slug ?>">
                                       <img class="ply mr-2"
                                           src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                       <!-- Live Now-->
@@ -120,7 +120,7 @@
                   </div>
 
                   <?php if($ThumbnailSetting->title == 1) { ?>
-                  <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                  <a href="<?= URL::to('/') ?><?= '/live-artist-event'.'/' . $video->slug ?>">
                       <span
                           class="text-white"><?= (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
                   </a>
