@@ -63,115 +63,109 @@
                                       }
                                   }
                           ?>
-        <li class="slide-item">
-            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                <!-- block-images -->
-                <div class="block-images position-relative">
-                    <div class="img-box">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
-                           <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
-                                <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
-                            </video>-->
-                        </a>
-                    </div>
-                    <div class="block-description">
-                        <div class="hover-buttons">
-                            <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                        </div>
-                    </div>
+                            <li class="slide-item">
+                                <a href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug; ?>">
+                                    <!-- block-images -->
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <a href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug; ?>">
+                                                <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->image; ?>" class="img-fluid w-100" alt="">
+                                                <!-- 
+                                                <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/') . '/public/uploads/images/' . $watchlater_video->image; ?>" data-play="hover">
+                                                    <source src="<?php echo $watchlater_video->trailer; ?>" type="video/mp4" />
+                                                </video>
+                                                -->
+                                            </a>
+                                        </div>
+                                        <div class="block-description">
+                                            <div class="hover-buttons">
+                                                <a class="" href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug; ?>">
+                                                    <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" />
+                                                </a>
+                                            </div>
+                                        </div>
 
-                        <!-- PPV price -->
-                      
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <?php  if($watchlater_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif(!empty($watchlater_video->ppv_price)){?>
-                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
-                                    <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
-                                    <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
-                                    <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo __("Free"); ?></p>
-                                    <?php } ?>
-                                    <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
-                                        <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                        <!-- PPV price -->
+                                        <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                            <?php if ($watchlater_video->access == 'subscriber') { ?>
+                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                            <?php } elseif (!empty($watchlater_video->ppv_price)) { ?>
+                                                <p class="p-tag1"><?php echo $currency->symbol . ' ' . $watchlater_video->ppv_price; ?></p>
+                                            <?php } elseif (!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null) { ?>
+                                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv . ' ' . $currency->symbol; ?></p>
+                                            <?php } elseif ($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null) { ?>
+                                                <p class="p-tag"><?php echo __("Free"); ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        <?php if ($ThumbnailSetting->published_on == 1) { ?>
+                                            <p class="published_on1"><?php echo $publish_time; ?></p>
+                                        <?php } ?>
+                                    </div>
 
-                   
-                </div>
-                
-                <div class="p-0">
-                <div class="mt-2 d-flex justify-content-between p-0">
-                    <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
-                    <?php } ?>
+                                    <div class="p-0">
+                                        <div class="mt-2 d-flex justify-content-between p-0">
+                                            <?php if ($ThumbnailSetting->title == 1) { ?>
+                                                <h6><?php echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title, 0, 18) . '...' : $watchlater_video->title; ?></h6>
+                                            <?php } ?>
+                                            <?php if ($ThumbnailSetting->age == 1) { ?>
+                                                <div class="badge badge-secondary"><?php echo $watchlater_video->age_restrict . ' +'; ?></div>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="movie-time my-2">
+                                            <!-- Duration -->
+                                            <?php if ($ThumbnailSetting->duration == 1) { ?>
+                                                <span class="text-white">
+                                                    <i class="fa fa-clock-o"></i>
+                                                    <?php echo gmdate('H:i:s', $watchlater_video->duration); ?>
+                                                </span>
+                                            <?php } ?>
+                                            <!-- Rating -->
+                                            <?php if ($ThumbnailSetting->rating == 1 && $watchlater_video->rating != null) { ?>
+                                                <span class="text-white">
+                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                    <?php echo __($watchlater_video->rating); ?>
+                                                </span>
+                                            <?php } ?>
+                                            <?php if ($ThumbnailSetting->featured == 1 && $watchlater_video->featured == 1) { ?>
+                                                <!-- Featured -->
+                                                <span class="text-white">
+                                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                                </span>
+                                            <?php } ?>
+                                        </div>
 
-                    <?php if($ThumbnailSetting->age == 1) { ?>
-                    <div class="badge badge-secondary"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                    <?php } ?>
-                </div>
-                <div class="movie-time my-2">
-                  
-                    <!-- Duration -->
+                                        <div class="movie-time my-2">
+                                            <!-- Published Year -->
+                                            <?php if ($ThumbnailSetting->published_year == 1 && $watchlater_video->year != null) { ?>
+                                                <span class="text-white">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                    <?php echo __($watchlater_video->year); ?>
+                                                </span>
+                                            <?php } ?>
+                                        </div>
 
-                    <?php if($ThumbnailSetting->duration == 1) { ?>
-                    <span class="text-white">
-                        <i class="fa fa-clock-o"></i>
-                        <?= gmdate('H:i:s', $watchlater_video->duration); ?>
-                    </span>
-                    <?php } ?>
+                                        <div class="movie-time my-2">
+                                            <!-- Category Thumbnail Setting -->
+                                            <?php
+                                            $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                ->where('categoryvideos.video_id', $watchlater_video->id)
+                                                ->pluck('video_categories.name');
+                                            ?>
+                                            <?php if ($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0) { ?>
+                                                <span class="text-white">
+                                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                    <?php
+                                                    foreach ($CategoryThumbnail_setting as $CategoryThumbnail) {
+                                                        echo __($CategoryThumbnail) . ' ';
+                                                    }
+                                                    ?>
+                                                </span>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
 
-                    <!-- Rating -->
-
-                    <?php if($ThumbnailSetting->rating == 1 && $watchlater_video->rating != null) { ?>
-                    <span class="text-white">
-                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                        <?php echo __($watchlater_video->rating); ?>
-                    </span>
-                    <?php } ?>
-
-                    <?php if($ThumbnailSetting->featured == 1 && $watchlater_video->featured == 1) { ?>
-                        <!-- Featured -->
-                        <span class="text-white">
-                            <i class="fa fa-flag" aria-hidden="true"></i>
-                        </span>
-                    <?php }?>
-                </div>
-
-                <div class="movie-time my-2">
-                    <!-- published_year -->
-                    <?php  if ( ($ThumbnailSetting->published_year == 1) && ( $watchlater_video->year != null ) ) { ?>
-                    <span class="text-white">
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                        <?php echo __($watchlater_video->year); ?>
-                    </span>
-                    <?php } ?>
-                </div>
-
-                <div class="movie-time my-2">
-                        <!-- Category Thumbnail  setting -->
-                        <?php
-                        $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                    ->where('categoryvideos.video_id',$watchlater_video->id)
-                                    ->pluck('video_categories.name');        
-                        ?>
-                        <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                        <span class="text-white">
-                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                            <?php
-                                $Category_Thumbnail = array();
-                                    foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                    echo (__($CategoryThumbnail).' ');
-                                    }
-                                // echo implode(','.' ', $Category_Thumbnail);
-                            ?>
-                        </span>
-                        <?php } ?>
-                </div>
-            </a>
-        </li>
         <?php                     
                         endforeach; 
                                    endif; ?>

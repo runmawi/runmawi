@@ -21,9 +21,34 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .lkn{
         cursor: pointer;
     }
-    .tab-pane{padding:0;height:100%;}
-    .channel_home{height:60%;}
+    .tab-pane{padding:0;overflow: hidden;height: 100%;}
+    /* .channel_home{height:60%;} */
     .tab-pane .nav-link{z-index: 9; position: relative;}
+    .Video_Categorynav{display:flex !important}
+    .video-category-container {
+    display: flex;
+    align-items: center;
+}
+
+.video-category-wrapper {
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+}
+
+.video-category {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.video-category > div {min-width: 150px; margin: 0 5px;}
+
+.prev-btn, .next-btn {background-color: var(--iq-primary);color:#fff;border: none;cursor: pointer;padding: 10px;border-radius: 3px;}
+.channel_nav .nav-link.active{background-color: var(--iq-primary) !important;}
+.tab-pane .nav-link:hover{background-color: var(--iq-primary) !important;}
+.prev-btn:disabled, .next-btn:disabled {cursor: not-allowed;opacity: 0.5;}
+.block-images .hover-buttons{width:50%;}
+
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -107,70 +132,84 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </section>
 <section class="channel_nav">
     <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
-  </li>
-  <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
-  </li>
-        <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
-  </li>
-  <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
-  </li>
-         <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
-      
-      <div class=" Video_Categorynav ">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item Allnav">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
+            </li>
+            <li class="nav-item videonav">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
+            </li>
+            <li class="nav-item livenav">
+                <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
+            </li>
+            <li class="nav-item seriesnav">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
+            </li>
+            <li class="nav-item audionav">
+                <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <hr >
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <hr>
+                
+                <div class="video-category-container">
+                    <button class="prev-btn" onclick="scrollCategory(-1)">&#10094;</button>
+                    <div class="video-category-wrapper">
+                        <div class="video-category">
                             @foreach ($VideoCategory as $key => $videos_category)
                                 <div>
-                                <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
-                                    data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
+                                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }} onclick="Videos_Category(this)"
                                     href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                    aria-selected="false"><?php echo $videos_category->name; ?></a>
-</div>
-                                    @endforeach 
-                        </div></div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($SeriesGenre as $key => $series_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
-                            <?php }  ?>
-      
-                        </div></div>
-  <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
-     
-      <div class="Audio_Categorynav d-flex">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
-                                href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div></div>
-    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
-     
-      <div class="Live_Categorynav">
-                            <?php foreach ($LiveCategory as $key => $live_category) { ?>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?></a>
-
-                            <?php }  ?>
+                                    aria-selected="false">{{ $videos_category->name }}
+                                    </a>
+                                </div>
+                            @endforeach 
                         </div>
-</div></div>
-</div>
+                    </div>
+                    <button class="next-btn" onclick="scrollCategory(1)">&#10095;</button>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <hr>
+                <div class="Series_Categorynav ">
+                    <?php foreach ($SeriesGenre as $key => $series_category) { ?>
+                        <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                            data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
+                            role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?>
+                        </a>
+                    <?php }  ?>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab">
+                <hr>
+                <div class="Audio_Categorynav d-flex">
+                    <?php foreach ($AudioCategory as $key => $audios_category) { ?>
+                        <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                            data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
+                            href="#pills-kids" role="tab" aria-controls="pills-kids"
+                            aria-selected="false"><?php echo $audios_category->name; ?>
+                        </a>
+                    <?php }  ?>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab">
+                <hr>
+                <div class="Live_Categorynav">
+                    <?php foreach ($LiveCategory as $key => $live_category) { ?>
+                        <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
+                        role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?>
+                        </a>
+                    <?php }  ?>
+                </div>
+            </div>
+        </div>
+    </div>
    
 </section>
 <!--<section class="">
@@ -447,6 +486,36 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             },
         });
         }
+
+        let scrollPosition = 0;
+const itemWidth = 150; // Adjust this width as per your item size
+const visibleItemsCount = 6; // Number of visible items
+
+function scrollCategory(direction) {
+    const container = document.querySelector('.video-category');
+    const totalItems = container.children.length;
+    const maxScrollPosition = itemWidth * (totalItems - visibleItemsCount);
+    
+    scrollPosition += direction * itemWidth * visibleItemsCount;
+
+    if (scrollPosition < 0) {
+        scrollPosition = 0;
+    }
+    
+    if (scrollPosition > maxScrollPosition) {
+        scrollPosition = maxScrollPosition;
+    }
+
+    container.style.transform = `translateX(-${scrollPosition}px)`;
+    
+    document.querySelector('.prev-btn').disabled = scrollPosition === 0;
+    document.querySelector('.next-btn').disabled = scrollPosition === maxScrollPosition;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    scrollCategory(0); // Initialize the buttons' disabled state
+});
+
 </script>
 
 
