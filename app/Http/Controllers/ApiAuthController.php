@@ -15582,6 +15582,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['source'] = 'Series_Networks';
 
           $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                                                                               'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
