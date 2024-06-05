@@ -4223,7 +4223,7 @@ class ChannelController extends Controller
 
     public function videos_details_jsplayer( $slug )
     {
-        // try {
+        try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4239,20 +4239,20 @@ class ChannelController extends Controller
                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
 
-                    // Free duration
-                $item['users_video_visibility_status'] = false ;
 
                     // Check for guest user
 
                 if( Auth::guest() && $item->access != "guest" ){
         
                     $item['users_video_visibility_status'] = false ;
-                    $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
-
+    
+                    $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
+                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                    
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                         $item['users_video_visibility_status'] = true ;
@@ -4275,9 +4275,9 @@ class ChannelController extends Controller
             
                         if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
             
-                            $PPV_exists = true ;
+                            $PPV_exists = false ;
                         }
-                        
+
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
             
                             $item['users_video_visibility_status'] = false ;
@@ -4306,10 +4306,10 @@ class ChannelController extends Controller
                     }
 
                         // Free duration
-                    if ( $setting->enable_ppv_rent == 0 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
+                    if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                         if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                             $item['users_video_visibility_status'] = true ;
-                            $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                            $item['users_video_visibility_status_button']  = 'Watch Now' ;
                             $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                         }
                     }
@@ -4538,12 +4538,13 @@ class ChannelController extends Controller
                                     </svg>',
             );
 
+
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_fullplayer( Request $request, $slug )
@@ -4563,10 +4564,6 @@ class ChannelController extends Controller
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                 $item['users_video_visibility_free_duration_status']  = 0 ; 
-                            
-                    // Free duration
-                $item['users_video_visibility_status'] = false ;
-                $item['users_video_visibility_free_duration_status'] = 0; 
 
                     // Check for guest user
 
@@ -4574,11 +4571,13 @@ class ChannelController extends Controller
         
                     $item['users_video_visibility_status'] = false ;
                     $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. $item->access  .' users' ) ;
-                    $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
+
+                    $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
+                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
                         
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4601,18 +4600,20 @@ class ChannelController extends Controller
             
                         if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
             
-                            $PPV_exists = true ;
+                            $PPV_exists = false ;
                         }
                         
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
             
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_button'] =  $item->access == "ppv" ? "Purchase Now" : $item->access  .' Now'  ;
                             $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
     
+                            $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
+                            $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                            
                             if ($item->access == "ppv") {
     
                                 $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
@@ -4630,10 +4631,10 @@ class ChannelController extends Controller
                             }
                         }
 
-                        if ( $setting->enable_ppv_rent == 0 && $item->access == "ppv" && !Auth::guest() && Auth::user()->role == 'subscriber' ) {
+                        if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                             if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                                 $item['users_video_visibility_status'] = true ;
-                                $item['users_video_visibility_free_duration_status']  = 1; 
+                                $item['users_video_visibility_free_duration_status']  = 0; 
                             }
                         }
                     }
