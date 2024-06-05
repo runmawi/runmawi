@@ -3,41 +3,40 @@
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-
-        var player = videojs('live-stream-player', { // Video Js Player 
+        var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-            liveui: true,
-
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
                     'remainingTime': {},
-                    // 'timeDivider': {},
-                    // 'durationDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-
-                    'fullscreenToggle': {},
-                    
+                    'fullscreenToggle': {}                     
                 },
                 pictureInPictureToggle: true,
-
             }
+        });
 
+        player.on('userinactive', () => {
+          const playPauseButton = document.querySelector('.vjs-big-play-button');
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          const playPauseButton = document.querySelector('.vjs-big-play-button');
+          if (skipForwardButton && skipBackwardButton && playPauseButton) {
+            playPauseButton.style.display = 'block';
+          }
         });
 
         // Ads Marker

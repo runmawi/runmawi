@@ -78,7 +78,7 @@
     }
     .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
     .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
-
+    p#cancel-message {padding: .75rem 1.25rem;margin-bottom: 1rem;border: 1px solid transparent; border-radius: .25rem;color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; position: absolute;right: 0;}
 </style>
 <style>
     .admin-section-title {
@@ -129,6 +129,8 @@
             </div>
         </div>
     </div>
+
+    <p id="cancel-message" class="alert alert-danger" style="display:none;"></p>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -1253,6 +1255,19 @@ document.getElementById('select-all').addEventListener('change', function() {
         var MAX_RETRIES = 3;
         var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
+        function handleError(e, t) {
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
+            }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
+            });
+        }
+    }
+
         var myDropzone = new Dropzone(".dropzone", { 
             parallelUploads: 10,
             maxFilesize: 15000000000000000, // 15000MB
@@ -1277,8 +1292,16 @@ document.getElementById('select-all').addEventListener('change', function() {
                         console.log("Cancel button clicked for file: " + file.name);
                         file.userCanceled = true; 
                         xhr.abort();
-                        myDropzone.removeFile(file);
-                        alert("Upload canceled for file: " + file.name);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                        // alert("Upload canceled for file: " + file.name);
+                        handleError(file, "Upload canceled by user.");
+                        var cancelMessage = "Upload canceled for file: " + file.name;
+                        var messageElement = document.getElementById('cancel-message');
+                        messageElement.innerHTML = cancelMessage;
+                        messageElement.style.display = 'block'; 
+                        setTimeout(function() {
+                            messageElement.style.display = 'none'; 
+                        }, 5000);
                     });
                 });
                 this.on("uploadprogress", function(file, progress) {
@@ -1296,6 +1319,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         $("#episode_id").val(value.episode_id);
                         $("#title").val(value.episode_title);
                         $("#duration").val(value.episode_duration);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
                     }
                 });
 

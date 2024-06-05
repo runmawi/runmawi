@@ -85,6 +85,7 @@ use App\LiveCategory;
 use App\AudioCategory;
 use App\SeriesNetwork;
 use App\SeriesGenre;
+use App\LiveEventArtist;
 use Theme;
 
 class HomeController extends Controller
@@ -460,6 +461,7 @@ class HomeController extends Controller
                 'latest_episode'  => $latest_episode ,
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
+                'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -1191,6 +1193,7 @@ class HomeController extends Controller
                         'latest_episode'  => $latest_episode ,
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -2011,8 +2014,9 @@ class HomeController extends Controller
                     'latest_episode'  => $latest_episode , 
                     'default_vertical_image_url' => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                 );
-                
+
                 if ($this->HomeSetting->theme_choosen == "theme4") {
                     if($request->ajax()) {
                         return $data = [

@@ -2056,6 +2056,19 @@ $(document).ready(function($){
         var MAX_RETRIES = 3;
         var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
+        function handleError(e, t) {
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
+            }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
+            });
+        }
+    }
+
         var myDropzone = new Dropzone(".dropzone", { 
             parallelUploads: 10,
             maxFilesize: 150000000, // 150MB
@@ -2079,8 +2092,10 @@ $(document).ready(function($){
                         console.log("Cancel button clicked for file: " + file.name); // Log for debugging
                         file.userCanceled = true; // Mark the file as user-canceled
                         xhr.abort();
-                        myDropzone.removeFile(file);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                        // myDropzone.removeFile(file);
                         alert("Upload canceled for file: " + file.name);
+                        handleError(file, "Upload canceled by user.");
                     });
                 });
 
@@ -2101,6 +2116,7 @@ $(document).ready(function($){
                         $('#Next').show();
                         $('#video_id').val(response.video_id);
                         $('#title').val(response.video_title);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
                     }
                 });
 
