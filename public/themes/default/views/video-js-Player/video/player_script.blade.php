@@ -33,22 +33,27 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         });
 
         player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
+          // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
           const skipForwardButton = document.querySelector('.custom-skip-forward-button');
           const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          if (skipForwardButton && skipBackwardButton) {
+          const playPauseButton = document.querySelector('.vjs-big-play-button');
+
+          if (skipForwardButton && skipBackwardButton && playPauseButton) {
             skipForwardButton.style.display = 'none';
             skipBackwardButton.style.display = 'none';
+            playPauseButton.style.display = 'none';
           }
         });
 
         player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
+          // Show the Play pause, skip forward and backward buttons when the user becomes active
           const skipForwardButton = document.querySelector('.custom-skip-forward-button');
           const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          if (skipForwardButton && skipBackwardButton) {
+          const playPauseButton = document.querySelector('.vjs-big-play-button');
+          if (skipForwardButton && skipBackwardButton && playPauseButton) {
             skipForwardButton.style.display = 'block';
             skipBackwardButton.style.display = 'block';
+            playPauseButton.style.display = 'block';
           }
         });
 
