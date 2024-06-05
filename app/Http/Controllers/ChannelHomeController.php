@@ -171,6 +171,7 @@ class ChannelHomeController extends Controller
 
         $data = array( 'SeriesCategory' => $Series_Category );
 
+        return Theme::view('partials.channel.channel_category_series', $data);
         $theme = Theme::uses($this->Theme);
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
@@ -185,6 +186,7 @@ class ChannelHomeController extends Controller
 
         $data = array( 'LiveCategory' => $Live_Category );
 
+        return Theme::view('partials.channel.channel_category_live', $data);
         $theme = Theme::uses($this->Theme);
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_live', $data)->render();
@@ -199,6 +201,7 @@ class ChannelHomeController extends Controller
 
         $data = array( 'AudioCategory' => $Audio_Category );
 
+        return Theme::view('partials.channel.channel_category_audios', $data);
         $theme = Theme::uses($this->Theme);
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_audios', $data)->render();

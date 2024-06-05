@@ -146,7 +146,7 @@
                                                     <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode_details)->episode_description) !!}</div>
                                                 @endif
 
-                                                <a href="{{ URL::to('play_series/'.$episode_details->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
 
                                             </div>
                                         </div>
