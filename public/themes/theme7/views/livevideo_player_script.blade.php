@@ -9,32 +9,34 @@
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {}                     
+                },
+                pictureInPictureToggle: true,
             }
+        });
+
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        player.on('userinactive', () => { 
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          if (skipForwardButton && skipBackwardButton && playPauseButton) {
+            playPauseButton.style.display = 'block';
+          }
         });
 
         // Ads Marker
