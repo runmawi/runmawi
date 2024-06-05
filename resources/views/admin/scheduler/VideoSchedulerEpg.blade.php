@@ -623,7 +623,7 @@ details{
 </style>
 
 <script>
-    var date = $('.date').datepicker({ dateFormat: 'mm-dd-yy' }).val();
+    var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
 
   $(".drag").draggable({
     appendTo: "body",
