@@ -1125,6 +1125,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
         Route::post('/default-Scheduler-ReSchedule', 'AdminSiteVideoSchedulerController@SchedulerReSchedule');
         Route::post('/default-get-all-channel-details', 'AdminSiteVideoSchedulerController@GetAllChannelDetails');
         Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
+        Route::get('/generate-scheduler-xml', 'AdminSiteVideoSchedulerController@generateSchedulerXml');
 
     /*  Channel Videos Setting  */
 
