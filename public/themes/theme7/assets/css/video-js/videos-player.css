@@ -859,10 +859,15 @@ animation-delay: 0.44s;
 display: flex;
 }
 
+.live_dot{
+  color: red;
+  font-size: 60px;
+}
+
 .my-video.video-js .vjs-live-control {
 display: contents;
 align-items: center;
-line-height: 3.7em;
+line-height: 2em;
 padding: 10px;
 font-family: Roboto;
 font-weight: 600;

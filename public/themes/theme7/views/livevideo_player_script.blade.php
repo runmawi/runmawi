@@ -39,6 +39,12 @@
           }
         });
 
+        const liveControl = document.querySelector('.vjs-live-display');
+        const span = document.createElement('span');
+        span.className = "live_dot";
+        span.textContent = ".";
+        liveControl.insertBefore(span, liveControl.firstChild);
+
         // Ads Marker
 
         player.on("loadedmetadata", function() {
