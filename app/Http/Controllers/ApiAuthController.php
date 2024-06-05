@@ -15427,7 +15427,7 @@ public function QRCodeMobileLogout(Request $request)
                 $Page_List_Name = 'Document_Category_Pagelist';
                 break;  
                 
-              case 'Series_Network':
+              case 'Series_Networks':
                 $data = $this->SeriesNetwork_Pagelist();
                 $Page_List_Name = 'Series_Network_Pagelist';
                 break;  
