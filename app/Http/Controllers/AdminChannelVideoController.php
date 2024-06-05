@@ -226,15 +226,30 @@ class AdminChannelVideoController extends Controller
                 if(  $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone) !== null ){
                     $ChannelVideoScheduler = $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
 
-                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
                     
-                    return VideoScheduledData($time,$channe_id,$time_zone);
-
+                    $result = $this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date);
+         
+                    if ($result !== null) {
+                        if ($result == 5) {
+                            return 5;
+                        } else {
+                            return VideoScheduledData($time,$channe_id,$time_zone);
+                        }
                     }else{
-
                         return VideoScheduledData($time,$channe_id,$time_zone);
-                        
+
                     }
+
+
+                    // if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
+                    
+                    // return VideoScheduledData($time,$channe_id,$time_zone);
+
+                    // }else{
+
+                    //     return VideoScheduledData($time,$channe_id,$time_zone);
+                        
+                    // }
 
                 }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
@@ -257,17 +272,31 @@ class AdminChannelVideoController extends Controller
                     
                     $ChannelVideoScheduler = $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
 
-                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
-                    
-                        // print_r($this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone));
 
-                    return VideoScheduledData($time,$channe_id,$time_zone);
-
+                    $result = $this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date);
+         
+                    if ($result !== null) {
+                        if ($result == 5) {
+                            return 5;
+                        } else {
+                            return VideoScheduledData($time,$channe_id,$time_zone);
+                        }
                     }else{
-
                         return VideoScheduledData($time,$channe_id,$time_zone);
-                        
+
                     }
+
+                    // if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
+                    
+                    //     // print_r($this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone));
+
+                    // return VideoScheduledData($time,$channe_id,$time_zone);
+
+                    // }else{
+
+                    //     return VideoScheduledData($time,$channe_id,$time_zone);
+                        
+                    // }
 
                 }
                 // else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){

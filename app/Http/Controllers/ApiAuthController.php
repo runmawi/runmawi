@@ -2505,6 +2505,8 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
+      $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+
       $response = array(
         'status' => 'true',
         'shareurl' => URL::to('live').'/'.$liveid,
@@ -2514,6 +2516,7 @@ public function verifyandupdatepassword(Request $request)
         'ppv_video_status' => $ppv_video_status,
         'languages' => $languages,
         'categories' => $categories,
+        'RentURL' => URL::to('live').'/'.$livestreamSlug,
       );
 
       

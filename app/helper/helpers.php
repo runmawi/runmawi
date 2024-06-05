@@ -1875,7 +1875,7 @@ function SiteVideoSchedulerWithTimeZone($channe_id,$time,$time_zone)
 
 function existingSiteVideoSchedulerEntry($time,$channe_id,$start_time)
 {
-
+    
         $existingVideoSchedulerEntry = App\SiteVideoScheduler::where('choosed_date', chosen_datetime($time))
                 ->where('channe_id', $channe_id)
                 ->first();
@@ -1896,10 +1896,11 @@ function SiteVideoScheduledData($time,$channe_id,$time_zone){
     
     $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
     $time = $carbonDate->format('n-j-Y');
+    // print_r($time);exit;
     $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
-                            ->orderBy('socure_order', 'ASC')
+                            // ->orderBy('socure_order', 'ASC')
                             ->join('video_schedules', 'video_schedules.id', '=', 'site_videos_scheduler.channe_id')
                             ->select('site_videos_scheduler.*', 'video_schedules.name')
                             ->get();
