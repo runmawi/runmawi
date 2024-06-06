@@ -209,6 +209,11 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
+   <!-- CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+   <!-- JavaScript -->
+   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image">
 
