@@ -346,9 +346,12 @@
                 <div class="iq-header-title">
                     <h4 class="card-title">Scheduler :</h4>
                 </div>
+                <div class="float-right" style="position: relative;margin-top: -25px;"> 
+                    <button id="GenerateXmlJson" class="form-control btn btn-primary">Generate XML & Json</button>
+                </div>
             </div>
              
-
+               
                 <div class="clear"></div>
                 <br>
                 <h4 class="card-title container-fluid"> </h4>
@@ -1270,6 +1273,46 @@ $("#dropzone").droppable({
 
     }
 
+
+// GenerateXmlJson
+
+        $("#GenerateXmlJson").click(function(){
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+            });
+
+
+            var url = "{{ URL::to('admin/default-generate-scheduler-xml/')  }}";
+            var time = $('.date').val();
+            let time_zone = $('#time_zone_id').val();
+            let channe_id = $('#channe_id').val();
+            $.ajaxSetup({
+            headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+            $.ajax({
+            url: url,
+            type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                        time: time,
+                        time_zone: time_zone,
+                        channe_id: channe_id,
+                },        
+                success: function(value){
+
+                    if(value == 1){
+                        Swal.fire({
+                                title: "XML & Json Files Generated..",
+                        })
+                    }
+
+                }
+            });
+        });
 
 
     </script>
