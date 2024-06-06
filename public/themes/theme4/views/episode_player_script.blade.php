@@ -14,11 +14,11 @@
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'remainingTime': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
                     'fullscreenToggle': {},  
@@ -157,6 +157,15 @@
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });
+
+        player.on('loadedmetadata', () => {
+    const qualityLevels = player.qualityLevels();
+
+    for (let i = 0; i < qualityLevels.length; i++) {
+      // Customize label to show height in pixels or any desired format
+      qualityLevels[i].label = `${qualityLevels[i].height}p`;
+    }
+  });
 
         var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
         var vastTagPostroll = '<?= $post_advertisement ?>';

@@ -12,14 +12,14 @@
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'remainingTime': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {}                     
+                    'fullscreenToggle': {},                      
                 },
                 pictureInPictureToggle: true,
             }
@@ -38,6 +38,12 @@
             playPauseButton.style.display = 'block';
           }
         });
+
+        const liveControl = document.querySelector('.vjs-live-display');
+        const span = document.createElement('span');
+        span.className = "live_dot";
+        span.textContent = ".";
+        liveControl.insertBefore(span, liveControl.firstChild);
 
         // Ads Marker
 

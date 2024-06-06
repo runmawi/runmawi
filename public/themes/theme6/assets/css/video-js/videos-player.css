@@ -119,6 +119,7 @@ animation-iteration-count: 2, 1, 5; */
   );
   transition: opacity .4s ease-in-out,transform .4s ease-in-out;
   z-index: 3;
+  bottom: 2%;
 }
 
 .my-video.vjs-theme-city 
@@ -495,7 +496,7 @@ pointer-events: auto;
 position: absolute;
 color: white;
 right: 35%;
-top: 48%;
+top: 46%;
 background: transparent;
 z-index: 1;
 transition: 3s;
@@ -506,7 +507,7 @@ display: inline-block;
 pointer-events: auto;
 position: absolute;
 color: white;
-top: 48%;
+top: 46%;
 left: 35%;
 background: transparent;
 z-index: 1;
