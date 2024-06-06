@@ -560,7 +560,7 @@ img{max-width:100%;height: auto;}
 .theme4-slider .slick-list{overflow: visible;}
 
 /* flickity slider */
-.flickity-enabled.is-draggable .flickity-viewport{min-height: 170px; max-height: 400px;}
+.flickity-viewport{min-height: 170px; max-height: 400px;}
 @media screen and (min-width: 601px) {
   #videoInfo .vib .thumbnail {
       width: 74%;
