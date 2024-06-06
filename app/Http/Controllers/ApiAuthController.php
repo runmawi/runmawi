@@ -15605,30 +15605,34 @@ public function QRCodeMobileLogout(Request $request)
 
   public function Network_depends_series(Request $request)
   {
+
     try {
       
-        $this->validate($request, [
-          'series_id'  => 'required|integer' ,
-        ]);
+        $this->validate($request, [ 'network_id'  => 'required|integer' ]);
 
-        $Series_depends_episodes = Series::find($request->series_id)->Series_depends_episodes
-                                        ->map(function ($item) {
-                                        $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                        return $item;
-                                    });
+        $Networks_depends_series = Series::where('series.active', 1)->whereJsonContains('network_id', [(string)$request->network_id])
+                                      ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+                        
+                                          $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                          $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+                                          $item['upload_on']        = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                                          $item['duration_format']  =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                                          $item['source'] = 'Series';
+                                          return $item;
+                                      });
 
           $response = array(
             'status'  => 'true',
             'Message' => 'Retrieved Network depends sereis Successfully',
-            'Series_depends_episodes'    => $Series_depends_episodes,
+            'Series_depends_Networks'  => $Networks_depends_series,
           );
 
     } catch (\Throwable $th) {
 
-            $response = array(
-              'status'  => 'false',
-              'Message' => $th->getMessage(),
-            );
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
     }
 
     return response()->json($response, 200);
