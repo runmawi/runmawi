@@ -26,15 +26,13 @@
         }
     });
 
-    $('.custom-skip-forward-button').click(function(){
-        // console.log("player",player.currentTime());
-        player.currentTime(player.currentTime() + 10);
-    });
+    document.querySelector('.custom-skip-forward-button').addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
 
-    $('.custom-skip-backward-button').click(function(){
-        // console.log("player",player.currentTime());
-        player.currentTime(player.currentTime() - 10);
-    });
+        document.querySelector('.custom-skip-backward-button').addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
 
         player.on('userinactive', () => {
           // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
