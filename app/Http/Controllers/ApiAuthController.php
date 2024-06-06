@@ -15602,6 +15602,37 @@ public function QRCodeMobileLogout(Request $request)
 
       return $data ;
   }
+
+  public function Network_depends_series(Request $request)
+  {
+    try {
+      
+        $this->validate($request, [
+          'series_id'  => 'required|integer' ,
+        ]);
+
+        $Series_depends_episodes = Series::find($request->series_id)->Series_depends_episodes
+                                        ->map(function ($item) {
+                                        $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                        return $item;
+                                    });
+
+          $response = array(
+            'status'  => 'true',
+            'Message' => 'Retrieved Network depends sereis Successfully',
+            'Series_depends_episodes'    => $Series_depends_episodes,
+          );
+
+    } catch (\Throwable $th) {
+
+            $response = array(
+              'status'  => 'false',
+              'Message' => $th->getMessage(),
+            );
+    }
+
+    return response()->json($response, 200);
+  }
   
   private static function Series_based_on_Networks_Pagelist( ){
     
@@ -15619,11 +15650,7 @@ public function QRCodeMobileLogout(Request $request)
   
           $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
   
-          $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                  ->map(function ($item) {
-                                                  $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                  return $item;
-                                              });
+
   
           $item['source'] = 'Series';
           return $item;

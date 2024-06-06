@@ -331,7 +331,9 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <div class="col-sm-6 col-md-6 col-xs-12">
                          <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                               <!-- Social Share, Like Dislike -->
-                                 <?php include('partials/social-share.php'); ?>                     
+                                 <?php 
+                                //    include(public_path('themes/theme1/views/partials/live-social-share.php')); 
+                                   ?>
                           </ul>
                     </div>
 
@@ -447,7 +449,6 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
 -->
 
                 <div id="social_share">
-                <!--            <php include('partials/social-share.php'); ?>-->
                 </div>
                 <script>
                     //$(".share a").hide();
