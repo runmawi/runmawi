@@ -1,36 +1,40 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('channel-video-scheduler-player', { // Video Js Player 
-            aspectRatio: '16:9',
-            fill: true,
-            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
-            fluid: true,
+    var player = videojs('channel-video-scheduler-player', { // Video Js Player 
+        aspectRatio: '16:9',
+        fill: true,
+        playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+        fluid: true,
+        controlBar: {
+            volumePanel: { inline: false },
+            children: {
+                'playToggle': {},
+                'currentTimeDisplay': {},
+                'remainingTime': {},
+                // 'liveDisplay': {},
+                'flexibleWidthSpacer': {},
+                'progressControl': {},
+                'subtitlesButton': {},
+                'playbackRateMenuButton': {},
+                'fullscreenToggle': {}                     
+            },
+            pictureInPictureToggle: true,
+        }
+    });
 
-            controlBar: {
+    const playPauseButton = document.querySelector('.vjs-big-play-button');
+    player.on('userinactive', () => { 
+    if (playPauseButton) {
+        playPauseButton.style.display = 'none';
+    }
+    });
 
-                volumePanel: {
-                    inline: false
-                },
-
-                children: {
-                    'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
-                    'liveDisplay': {},
-
-                    'flexibleWidthSpacer': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {},
-                }
-            }
-        });
+    player.on('useractive', () => {
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        playPauseButton.style.display = 'block';
+    }
+    });
         // Hls Quality Selector - M3U8 
 
         player.hlsQualitySelector({

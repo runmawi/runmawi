@@ -2505,6 +2505,8 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
+      $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+
       $response = array(
         'status' => 'true',
         'shareurl' => URL::to('live').'/'.$liveid,
@@ -2514,6 +2516,7 @@ public function verifyandupdatepassword(Request $request)
         'ppv_video_status' => $ppv_video_status,
         'languages' => $languages,
         'categories' => $categories,
+        'RentURL' => URL::to('live').'/'.$livestreamSlug,
       );
 
       
@@ -15195,6 +15198,7 @@ public function QRCodeMobileLogout(Request $request)
                                                                                                       $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
                                                                                                       $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
                                                                                                       $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+                                                                                                      $item['source']   = "series";
                                                                                                       return $item;
                                                                                                   });  
 
@@ -15579,6 +15583,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['source'] = 'Series_Networks';
 
           $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                                                                               'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
@@ -15597,6 +15602,37 @@ public function QRCodeMobileLogout(Request $request)
 
       return $data ;
   }
+
+  public function Network_depends_series(Request $request)
+  {
+    try {
+      
+        $this->validate($request, [
+          'series_id'  => 'required|integer' ,
+        ]);
+
+        $Series_depends_episodes = Series::find($request->series_id)->Series_depends_episodes
+                                        ->map(function ($item) {
+                                        $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                        return $item;
+                                    });
+
+          $response = array(
+            'status'  => 'true',
+            'Message' => 'Retrieved Network depends sereis Successfully',
+            'Series_depends_episodes'    => $Series_depends_episodes,
+          );
+
+    } catch (\Throwable $th) {
+
+            $response = array(
+              'status'  => 'false',
+              'Message' => $th->getMessage(),
+            );
+    }
+
+    return response()->json($response, 200);
+  }
   
   private static function Series_based_on_Networks_Pagelist( ){
     
@@ -15614,11 +15650,7 @@ public function QRCodeMobileLogout(Request $request)
   
           $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
   
-          $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                  ->map(function ($item) {
-                                                  $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                  return $item;
-                                              });
+
   
           $item['source'] = 'Series';
           return $item;

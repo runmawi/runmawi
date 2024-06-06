@@ -3,7 +3,7 @@
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('live-stream-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
