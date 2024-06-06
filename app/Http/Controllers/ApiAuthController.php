@@ -15195,6 +15195,7 @@ public function QRCodeMobileLogout(Request $request)
                                                                                                       $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
                                                                                                       $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
                                                                                                       $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+                                                                                                      $item['source']   = "series";
                                                                                                       return $item;
                                                                                                   });  
 
