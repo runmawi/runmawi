@@ -64,6 +64,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteVideoScheduler as SiteVideoScheduler;
 use App\SiteTheme;
+use App\VideoSchedules;
 
 class AdminSiteVideoSchedulerController extends Controller
 {
@@ -910,83 +911,268 @@ class AdminSiteVideoSchedulerController extends Controller
     }
     
 
+    public function DefaultgenerateSchedulerXml(Request $request)
+    {
+        try {
+            
+            $SchedulerDate_time = new \DateTime($request->time);
+            $time = $SchedulerDate_time->format("j-n-Y");
+            $channe_id = $request->channe_id;
+            $time_zone = $request->time_zone;
+
+            $choosen_date_time = new \DateTime($request->time);
+            $choosen_date = $choosen_date_time->format("n-j-Y");
+            $file_choosed_date = $choosen_date_time->format('n_j_Y');
+
+            $slug =  VideoSchedules::where('id',$channe_id)->pluck('slug')->first();
+            
+
+            $default_timezone = TimeZone::where('id',$time_zone)->pluck('time_zone')->first();
+
+            $schedulers = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$choosen_date)->orderBy('current_time')->get();
+
+
+            $originalTimezone = $default_timezone;
+           
+            $targetTimezones = TimeZone::get();
+
+            foreach ($targetTimezones as $target_Timezone) {
+
+                $targetTimezone = $target_Timezone->time_zone;
+
+                $xmlFileName = $slug . '_' . str_replace('/', '_', $targetTimezone) . '_' . $file_choosed_date . '.xml';
+                $xmlFilePath = 'schedulers/' . $xmlFileName;
+
+                $jsonFileName = $slug . '_' . str_replace('/', '_', $targetTimezone) . '_' . $file_choosed_date . '.json';
+                $jsonFilePath = 'schedulers/' . $jsonFileName;
+
+                $schedulerData = [];
+                $currentDate = null;
+                $totalSecondsInDay = 24 * 3600;
+                $elapsedSeconds = 0;
+                $previousAmPmTime = null;
+
+                foreach ($schedulers as $key => $scheduler) {
+                    $choosedDate = Carbon::createFromFormat('m-d-Y', $scheduler->choosed_date, $originalTimezone);
+
+                    $startTime = Carbon::createFromFormat('H:i:s', $scheduler->start_time, $originalTimezone)
+                        ->setTimezone($targetTimezone);
+
+                    $endTime = Carbon::createFromFormat('H:i:s', $scheduler->end_time, $originalTimezone)
+                        ->setTimezone($targetTimezone);
+
+                    $currentTime = Carbon::createFromTimestamp($scheduler->current_time, $originalTimezone)
+                        ->setTimezone($targetTimezone);
+                    $currentTimeFormatted = $currentTime->format('h:i:s A');
+                    $currentTimeFormatted = $currentTime->format('A');
+
+                    $amPmTime = $startTime->format('A');
+
+                    if (is_null($currentDate)) {
+                        $currentDate = $choosedDate;
+                    } else {
+                        if ($previousAmPmTime === 'PM' && $amPmTime === 'AM') {
+                            $currentDate = $currentDate->copy()->addDay();
+                        }
+                    }
+
+                    $previousAmPmTime = $amPmTime;
+
+                    $startSeconds = $startTime->secondsSinceMidnight();
+                    $endSeconds = $endTime->secondsSinceMidnight();
+
+                    if ($endSeconds < $startSeconds) {
+                        $elapsedSeconds += ($totalSecondsInDay - $startSeconds) + $endSeconds;
+                    } else {
+                        $elapsedSeconds += ($endSeconds - $startSeconds);
+                    }
+
+                    if ($elapsedSeconds >= $totalSecondsInDay) {
+                        $currentDate = $currentDate->copy()->addDay();
+                    }
+
+                    $startTimeFormatted = $startTime->format('H:i:s');
+                    $endTimeFormatted = $endTime->format('H:i:s');
+                    $choosedDateFormatted = $currentDate->format('m-d-Y');
+
+                    $schedulerData[] = [
+                        'id' => $scheduler->id,
+                        'user_id' => $scheduler->user_id,
+                        'socure_id' => $scheduler->socure_id,
+                        'socure_type' => $scheduler->socure_type,
+                        'channe_id' => $scheduler->channe_id,
+                        'content_id' => $scheduler->content_id,
+                        'socure_order' => $scheduler->socure_order,
+                        'time_zone' => $targetTimezone,
+                        'choosed_date' => $choosedDateFormatted,
+                        'current_time' => $currentTimeFormatted,
+                        'start_time' => $startTimeFormatted,
+                        'end_time' => $endTimeFormatted,
+                        'AM_PM_Time' => $scheduler->AM_PM_Time,
+                        'socure_title' => $scheduler->socure_title,
+                        'duration' => $scheduler->duration,
+                        'type' => $scheduler->type,
+                        'url' => $scheduler->url,
+                        'image' => $scheduler->image,
+                        'description' => $scheduler->description,
+                        'created_at' => $scheduler->created_at,
+                        'updated_at' => $scheduler->updated_at
+                    ];
+                }
+
+                $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><schedulers></schedulers>');
+
+                foreach ($schedulerData as $data) {
+                    $scheduler = $xml->addChild('scheduler');
+                    foreach ($data as $key => $value) {
+                        $scheduler->addChild($key, htmlspecialchars($value));
+                    }
+                }
+
+                $xmlContent = $xml->asXML();
+
+                Storage::disk('local')->put($xmlFilePath, $xmlContent);
+
+                $jsonContent = json_encode($schedulerData, JSON_PRETTY_PRINT);
+
+                Storage::disk('local')->put($jsonFilePath, $jsonContent);
+            }
+            
+            return 1;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    
+    // Test generateSchedulerXml 
+
+
     public function generateSchedulerXml()
     {
- // Fetch scheduler data
- $schedulers = DB::table('site_videos_scheduler')->get();
-    
- // Define the timezones
- $originalTimezone = 'America/Tijuana';
- $targetTimezone = 'Asia/Kolkata';
 
- $schedulerData = [];
- 
- foreach ($schedulers as $scheduler) {
-     // Convert the date to target timezone
-     $choosedDate = Carbon::createFromFormat('m-d-Y', $scheduler->choosed_date, $originalTimezone)
-                          ->setTimezone($targetTimezone);
+        $slug = 'Test_Demo';
+        $VideoSchedules =  VideoSchedules::where('slug',$slug)->first();
 
-     // Convert start time to target timezone
-     $startTime = Carbon::createFromFormat('H:i:s', $scheduler->start_time, $originalTimezone)
-                       ->setTimezone($targetTimezone)
-                       ->format('H:i:s');
+        $today_date_time = new \DateTime("now");
+        $today_date = $today_date_time->format("n-j-Y");
+        $file_choosed_date = $today_date_time->format('n_j_Y');
+        // dd($choosed_date);
 
-     // Convert end time to target timezone
-     $endTime = Carbon::createFromFormat('H:i:s', $scheduler->end_time, $originalTimezone)
-                     ->setTimezone($targetTimezone)
-                     ->format('H:i:s');
-     
-     // Check if end time is before start time, indicating it passed midnight
-     if (strtotime($endTime) < strtotime($startTime)) {
-         // Increment the choosedDate by one day
-         $choosedDate->addDay();
-     }
+        $schedulers = DB::table('site_videos_scheduler')->where('channe_id',$VideoSchedules->id)->where('choosed_date',$today_date)->orderBy('current_time')->get();
+        // dd($schedulers);
+        // Define the timezones
+        $originalTimezone = 'America/Tijuana';
+        $targetTimezone = 'Europe/Paris';
+        
+        $schedulerData = [];
+        $currentDate = null;
+        $totalSecondsInDay = 24 * 3600; 
+        $elapsedSeconds = 0;
+        $previousAmPmTime = null;
+        
+        foreach ($schedulers as $key => $scheduler) {
 
-     // Format the date back to string
-     $choosedDateFormatted = $choosedDate->format('m-d-Y');
+            $choosedDate = Carbon::createFromFormat('m-d-Y', $scheduler->choosed_date, $originalTimezone);
+        
+            $startTime = Carbon::createFromFormat('H:i:s', $scheduler->start_time, $originalTimezone)
+                              ->setTimezone($targetTimezone);
+        
+            $endTime = Carbon::createFromFormat('H:i:s', $scheduler->end_time, $originalTimezone)
+                            ->setTimezone($targetTimezone);
+        
+            $currentTime = Carbon::createFromTimestamp($scheduler->current_time, $originalTimezone)
+                                 ->setTimezone($targetTimezone);
+            $currentTimeFormatted = $currentTime->format('h:i:s A');
+            $currentTimeFormatted = $currentTime->format('A');
+        
+            $amPmTime = $startTime->format('A');
+        
+            if (is_null($currentDate)) {
+                $currentDate = $choosedDate;
+            } else {
+                if ($previousAmPmTime === 'PM' && $amPmTime === 'AM') {
+                    $currentDate = $currentDate->copy()->addDay();
+                }
+            }
+        
+            $previousAmPmTime = $amPmTime;
+        
+            $startSeconds = $startTime->secondsSinceMidnight();
+            $endSeconds = $endTime->secondsSinceMidnight();
+        
+            if ($endSeconds < $startSeconds) {
+                $elapsedSeconds += ($totalSecondsInDay - $startSeconds) + $endSeconds;
+            } else {
+                $elapsedSeconds += ($endSeconds - $startSeconds);
+            }
+        
+            if ($elapsedSeconds >= $totalSecondsInDay) {
+                $currentDate = $currentDate->copy()->addDay();
+            }
+        
+            $startTimeFormatted = $startTime->format('H:i:s');
+            $endTimeFormatted = $endTime->format('H:i:s');
+            $choosedDateFormatted = $currentDate->format('m-d-Y');
+        
+            $schedulerData[] = [
+                'id' => $scheduler->id,
+                'user_id' => $scheduler->user_id,
+                'socure_id' => $scheduler->socure_id,
+                'socure_type' => $scheduler->socure_type,
+                'channe_id' => $scheduler->channe_id,
+                'content_id' => $scheduler->content_id,
+                'socure_order' => $scheduler->socure_order,
+                'time_zone' => $targetTimezone,
+                'choosed_date' => $choosedDateFormatted,
+                'current_time' => $currentTimeFormatted,
+                'start_time' => $startTimeFormatted,
+                'end_time' => $endTimeFormatted,
+                'AM_PM_Time' => $scheduler->AM_PM_Time,
+                'socure_title' => $scheduler->socure_title,
+                'duration' => $scheduler->duration,
+                'type' => $scheduler->type,
+                'url' => $scheduler->url,
+                'image' => $scheduler->image,
+                'description' => $scheduler->description,
+                'created_at' => $scheduler->created_at,
+                'updated_at' => $scheduler->updated_at
+            ];
+        }
+        
+        // Generate XML file
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><schedulers></schedulers>');
+        
+        foreach ($schedulerData as $data) {
+            $scheduler = $xml->addChild('scheduler');
+            foreach ($data as $key => $value) {
+                $scheduler->addChild($key, htmlspecialchars($value));
+            }
+        }
+        
+        $xmlContent = $xml->asXML();
 
-     $schedulerData[] = [
-         'id' => $scheduler->id,
-         'user_id' => $scheduler->user_id,
-         'socure_id' => $scheduler->socure_id,
-         'socure_type' => $scheduler->socure_type,
-         'channe_id' => $scheduler->channe_id,
-         'content_id' => $scheduler->content_id,
-         'socure_order' => $scheduler->socure_order,
-         'time_zone' => $targetTimezone,
-         'choosed_date' => $choosedDateFormatted,
-         'current_time' => $scheduler->current_time,
-         'start_time' => $startTime,
-         'end_time' => $endTime,
-         'AM_PM_Time' => $scheduler->AM_PM_Time,
-         'socure_title' => $scheduler->socure_title,
-         'duration' => $scheduler->duration,
-         'type' => $scheduler->type,
-         'url' => $scheduler->url,
-         'image' => $scheduler->image,
-         'description' => $scheduler->description,
-         'created_at' => $scheduler->created_at,
-         'updated_at' => $scheduler->updated_at
-     ];
- }
+        $target_Timezone = str_replace('/', '_', $targetTimezone);
+        // Define the file name and path for XML
+        $xmlFileName = $slug.'_'.$target_Timezone .'_' . now()->format('Y_m_d') . '.xml';
+        $xmlFilePath = 'schedulers/' . $xmlFileName;
+        
+        // Store XML in the storage path
+        Storage::disk('local')->put($xmlFilePath, $xmlContent);
 
- $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><schedulers></schedulers>');
+        // Generate JSON file
+        $jsonContent = json_encode($schedulerData, JSON_PRETTY_PRINT);
 
- foreach ($schedulerData as $data) {
-     $scheduler = $xml->addChild('scheduler');
-     foreach ($data as $key => $value) {
-         $scheduler->addChild($key, htmlspecialchars($value));
-     }
- }
 
- $xmlContent = $xml->asXML();
- 
- // Define the file name and path
- $fileName = 'schedulers_' . now()->format('Y_m_d_H_i_s') . '.xml';
- $filePath = 'schedulers/' . $fileName;
+        // Define the file name and path for JSON
+        $jsonFileName = $slug.'_'.$target_Timezone .'_' . now()->format('Y_m_d') . '.json';
+        $jsonFilePath = 'schedulers/' . $jsonFileName;
+        
+        // Store JSON in the storage path
+        Storage::disk('local')->put($jsonFilePath, $jsonContent);
 
- // Store XML in the storage path
- Storage::disk('local')->put($filePath, $xmlContent);
+        
         return response($xml->asXML(), 200)
         ->header('Content-Type', 'application/xml');
         return response()->json(['message' => 'XML generated and stored successfully.', 'file' => $filePath]);

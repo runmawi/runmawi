@@ -558,3 +558,181 @@ img{max-width:100%;height: auto;}
 .responsive-toggle-btn{display:none;}
 .video-js {width: 100%; height: 100%;}
 .theme4-slider .slick-list{overflow: visible;}
+
+/* flickity slider */
+.flickity-enabled.is-draggable .flickity-viewport{min-height: 170px; max-height: 400px;}
+@media screen and (min-width: 601px) {
+  #videoInfo .vib .thumbnail {
+      width: 74%;
+      mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+      mask-image: linear-gradient(to right, transparent 0%, black 50%);
+      -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 50%);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  #videoInfo {
+      max-height: 500px;
+      height: 32vw;
+  }
+}
+
+@media screen and (max-width: 4440px) {
+  .channels-list .channel-row .video-list .item {
+      width: 14.3%;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  #videoInfo .vib .caption {
+      padding-right: 30px;
+      max-width: 630px;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .channels-list .channel-row .flickity-viewport {
+      min-height: calc(100vw / 5.8);
+  }
+  .channels-list .channel-row .video-list .item {
+      width: 33.33333%;
+  }
+  #videoInfo {
+      max-height: 500px;
+      height: 32vw;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .channels-list .channel-row .video-list .item {
+      width: 50%;
+  }
+}
+
+@media screen and (max-width: 1399px) and (min-width: 1100px) {
+  .channels-list .channel-row .flickity-viewport {
+      min-height: calc(100vw / 9.5);
+  }
+  .channels-list .channel-row .video-list .item {
+      width: 16.666%;
+  }
+}
+
+  .channels-list .channel-row .video-list {
+      padding: 10px 0 1% 1%;
+      list-style: none;
+      margin: 0;
+      position: relative;
+      z-index: 12;
+  }
+.channels-list .channel-row .video-list .item {
+  padding: 2px;
+  position: relative;
+}
+.channels-list .channel-row .video-list .item:before {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: #555;
+  background-image: url(https://watch.e360tv.com/img/placeholder.jpg);
+  background-size: cover;
+  background-position: center;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  z-index: 0;
+}
+.channels-list .channel-row .video-list .item > div {
+  display: block;
+  position: relative;
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  opacity: 0.8;
+  cursor: pointer;
+}
+.channels-list .channel-row .video-list .item > div:before {
+  content: '';
+  display: block;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.channels-list .channel-row .video-list .item img {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0;
+  -webkit-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.flickity-lazyloaded, .flickity-lazyerror {
+  opacity: 1 !important;
+}
+.channels-list .channel-row .video-list .item.current img{border:2px solid var(--iq-primary)}
+.channels-list .channel-row .video-list .item.current img:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  width: 0;
+  height: 0;
+  bottom: calc(-1px - 1vw);
+  border-style: solid;
+  border-width: calc(7px + 1vw) calc(13px + 1vw) 0 calc(13px + 1vw);
+  border-color: var(--iq-primary) transparent transparent transparent;
+}
+/* dropdown */
+
+#videoInfo .vib {
+  padding: 18px 4% 12px;
+  width: 100%;
+  position: relative;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+#videoInfo .vib .caption {
+  position: relative;
+  z-index: 2;
+  color: var(--text-color);
+  width: 100%;
+}
+#videoInfo .vib .thumbnail {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+}
+#videoInfo .vib .thumbnail img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+#videoInfo {
+  background-color: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  position: relative;
+}
+
+/* arrow */
+.flickity-button{background:transparent;color:#fff;}
+.flickity-button:hover{background:transparent;}

@@ -25,6 +25,8 @@ Route::group(
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
+        Route::get('Network_depends_series', 'ApiAuthController@Network_depends_series');
+
         Route::get('Interest-Genre-list', 'ApiAuthController@Interest_Genre_list');
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');

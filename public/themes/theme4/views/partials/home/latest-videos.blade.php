@@ -1,3 +1,4 @@
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -10,81 +11,61 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ "view all" }}</a></h4>
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $latest_video)
-                                <li class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            @if ( $multiple_compress_image == 1)
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list latest-video">
+                                @foreach ($data as $key => $latest_video)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            @if ($multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}"  width="300" height="200">
                                             @else
-                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="latest_series"  width="300" height="200">
+                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
                                             @endif
 
                                             @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                             @endif 
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $latest_video )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                                        <button class="drp-close">×</button>
+                        <div id="videoInfo" class="latest-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $latest_video )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
+                                            <ul class="vod-info">
+                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                            </ul>
+                                        @endif
 
-                                                    <div class="caption pl-4">
+                                        @if (optional($latest_video)->description)
+                                            <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
+                                        @endif
 
-                                                        <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
-
-                                                        @if ($videos_expiry_date_status == 1 && optional($latest_video)->expiry_date)
-                                                            <ul class="vod-info">
-                                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
-                                                            </ul>
-                                                        @endif
-
-                                                        @if (optional($latest_video)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
-                                                        @endif
-
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : $default_horizontal_image_url }}"
-                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_player_image.' 860w') }},
-                                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_player_image.' 640w') }},
-                                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_player_image.' 420w') }}" >
-                                                            @else
-                                                                <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : $default_horizontal_image_url }}" alt="latest_series">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>   
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -141,69 +122,59 @@
     </section>
 @endif
 
+
 <script>
     
-    $( window ).on("load", function() {
-        $('.latest-videos-slider').hide();
+    var elem = document.querySelector('.latest-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        adaptiveHeight: true,
+        pageDots: false
     });
 
-    $(document).ready(function() {
+    document.querySelectorAll('.latest-dropdown .caption').forEach(function(caption) {
+        caption.style.display = 'none';
+    });
+    document.querySelectorAll('.latest-dropdown .thumbnail').forEach(function(thumbnail) {
+        thumbnail.style.display = 'none';
+    });
 
-        $('.latest-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.latest-videos-slider-nav',
-        });
 
-        $('.latest-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.latest-videos-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: true,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
+    document.querySelectorAll('.latest-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.latest-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
 
-        $('.latest-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.latest-videos-slider').show();
-        });
+            item.classList.add('current');
 
-        $('body').on('click', '.slick-arrow', function() {
-            $('.latest-videos-slider').hide();
-        });
+            var index = item.getAttribute('data-index');
 
-        $('body').on('click', '.drp-close', function() {
-            $('.latest-videos-slider').hide();
+            document.querySelectorAll('.latest-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.latest-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.latest-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.latest-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('latest-dropdown')[0].style.display = 'flex';
         });
     });
+
+
+    $('body').on('click', '.drp-close', function() {
+        $('.latest-dropdown').hide();
+    });
+
+
 </script>
+
