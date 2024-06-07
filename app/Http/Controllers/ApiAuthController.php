@@ -15189,18 +15189,18 @@ public function QRCodeMobileLogout(Request $request)
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
-          $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
-                                                                                              'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
-                                                                                              ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
-                                                                                              ->latest()->limit(15)->get()->map(function ($item) {
-                                                                                                      $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                                                                                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                                                                                      $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
-                                                                                                      $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
-                                                                                                      $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
-                                                                                                      $item['source']   = "series";
-                                                                                                      return $item;
-                                                                                                  });  
+          // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+          //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+          //                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+          //                                                                                     ->latest()->limit(15)->get()->map(function ($item) {
+          //                                                                                             $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+          //                                                                                             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+          //                                                                                             $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+          //                                                                                             $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+          //                                                                                             $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+          //                                                                                             $item['source']   = "series";
+          //                                                                                             return $item;
+          //                                                                                         });  
 
           return $item;
         });
