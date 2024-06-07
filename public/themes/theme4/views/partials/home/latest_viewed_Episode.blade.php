@@ -30,24 +30,24 @@ if (Auth::guest() != true) {
                     </div>
 
                     <div class="channels-list">
-                            <div class="channel-row">
-                                <div id="trending-slider-nav" class="video-list latest-viewed-episode">
-                                    @foreach ($data as $key => $latest_view_episode)
-                                        <div class="item" data-index="{{ $key }}">
-                                            <div>
-                                                @if ( $multiple_compress_image == 1)
-                                                    <img class="img-fluid position-relative" alt="{{ $latest_view_episode->title }}" src="{{ $latest_view_episode->image ?  URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}"
-                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_episode->responsive_image.' 860w') }},
-                                                        {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_image.' 640w') }},
-                                                        {{ URL::to('public/uploads/mobileimages/'.$latest_view_episode->responsive_image.' 420w') }}" >
-                                                @else
-                                                    <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_view_episode">
-                                                @endif 
-                                            </div>
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list latest-viewed-episode-video">
+                                @foreach ($data as $key => $latest_view_episode)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            @if ( $multiple_compress_image == 1)
+                                                <img class="flickity-lazyloaded" alt="{{ $latest_view_episode->title }}" src="{{ $latest_view_episode->image ?  URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_episode->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_view_episode->responsive_image.' 420w') }}" >
+                                            @else
+                                                <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_view_episode">
+                                            @endif 
                                         </div>
-                                    @endforeach
-                                </div>
+                                    </div>
+                                @endforeach
                             </div>
+                        </div>
 
                             <div id="videoInfo" class="viewed-episode-dropdown" style="display:none;">
                                 <button class="drp-close">×</button>
@@ -130,10 +130,10 @@ if (Auth::guest() != true) {
     </section>
 @endif
 
+
 <script>
     
-    window.addEventListener('load', function() {
-    var elem = document.querySelector('.latest-viewed-episode');
+    var elem = document.querySelector('.latest-viewed-episode-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
@@ -141,20 +141,9 @@ if (Auth::guest() != true) {
         adaptiveHeight: true,
         pageDots: false
     });
-});
-
-
-    document.querySelectorAll('.viewed-episode-dropdown .caption').forEach(function(caption) {
-        caption.style.display = 'none';
-    });
-    document.querySelectorAll('.viewed-episode-dropdown .thumbnail').forEach(function(thumbnail) {
-        thumbnail.style.display = 'none';
-    });
-
-
-    document.querySelectorAll('.latest-viewed-episode .item').forEach(function(item) {
+    document.querySelectorAll('.latest-viewed-episode-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
-            document.querySelectorAll('.latest-viewed-episode .item').forEach(function(item) {
+            document.querySelectorAll('.latest-viewed-episode-video .item').forEach(function(item) {
                 item.classList.remove('current');
             });
 
@@ -181,16 +170,7 @@ if (Auth::guest() != true) {
     });
 
 
-    document.querySelector('.drp-close').addEventListener('click', function() {
-        document.getElementsByClassName('latest-dropdown')[0].style.display = 'none';
-        document.querySelectorAll('.latest-video .item').forEach(function(item) {
-            item.classList.remove('current');
-        });
+    $('body').on('click', '.drp-close', function() {
+        $('.viewed-episode-dropdown').hide();
     });
-        $('body').on('click', '.drp-close', function() {
-            $('.viewed-episode-dropdown').hide();
-        });
-
-
 </script>
-
