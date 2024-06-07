@@ -18,7 +18,7 @@
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
                                             @if ($multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}"
+                                                <img class="flickity-lazyloaded" alt="{{ $latest_video->title }}" src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$latest_video->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$latest_video->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$latest_video->responsive_image.' 420w') }}"  width="300" height="200">
@@ -133,15 +133,6 @@
         adaptiveHeight: true,
         pageDots: false
     });
-
-    document.querySelectorAll('.latest-dropdown .caption').forEach(function(caption) {
-        caption.style.display = 'none';
-    });
-    document.querySelectorAll('.latest-dropdown .thumbnail').forEach(function(thumbnail) {
-        thumbnail.style.display = 'none';
-    });
-
-
     document.querySelectorAll('.latest-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
             document.querySelectorAll('.latest-video .item').forEach(function(item) {
@@ -174,7 +165,5 @@
     $('body').on('click', '.drp-close', function() {
         $('.latest-dropdown').hide();
     });
-
-
 </script>
 
