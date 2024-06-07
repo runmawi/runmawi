@@ -15605,7 +15605,6 @@ public function QRCodeMobileLogout(Request $request)
 
   public function Network_depends_series(Request $request)
   {
-
     try {
       
         $this->validate($request, [ 'network_id'  => 'required|integer' ]);
