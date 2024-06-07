@@ -254,7 +254,7 @@
                 <div class="artistHeading">
                     {{ ucwords(__('Promos & Resources')) }}
                 </div>
-                        
+                            
 
                     <div class="listItems">
 
