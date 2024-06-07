@@ -14,10 +14,10 @@
 
             controlBar: {
                 volumePanel: { inline: false },
-                skipButtons: {
-                    enabled: true,
-                    forward: 10,
-                },
+                // skipButtons: {
+                //     enabled: true,
+                //     forward: 10,
+                // },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
