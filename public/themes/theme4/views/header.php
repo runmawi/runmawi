@@ -71,6 +71,7 @@
       ?>
     </title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
 
     <meta name="description" content="<?php 
@@ -210,7 +211,7 @@
 
   
    <!-- CSS -->
-   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
    <!-- JavaScript -->
    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
