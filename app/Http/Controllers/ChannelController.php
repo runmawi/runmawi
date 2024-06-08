@@ -70,6 +70,7 @@ use Session;
 use Theme;
 use DateTime;
 use App\SiteVideoScheduler;
+use App\DefaultSchedulerData;
 
 class ChannelController extends Controller
 {
@@ -3992,29 +3993,67 @@ class ChannelController extends Controller
 
         $today_date_time = new \DateTime("now");
         $today_date = $today_date_time->format("n-j-Y");
-        // dd(Country_name());
-        // $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
+        $today_date = $today_date_time->format("m-d-Y");
+        $current_time = $today_date_time->format("H:i:s");
+        $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+        $current_timezone = 'Asia/Kolkata';
 
-        //     $item['ChannelVideoScheduler']  =  SiteVideoScheduler::where('channe_id',$request->id)
+        $currentTime = \Carbon\Carbon::now('UTC')->setTimezone($current_timezone)->format('H:i:s');
+
+        // dd($currentTime);
+        $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
+
+            $item['default_scheduler_datas']  =  DefaultSchedulerData::where('channe_id',$request->id)->where('time_zone',$current_timezone)
                                                 
-        //                                         ->when( !is_null($today_date), function ($query) use ($request,$today_date ) {
-        //                                             return $query->Where('choosed_date', $today_date);
-        //                                         })
+                                                ->when( !is_null($today_date), function ($query) use ($request,$today_date ) {
+                                                    return $query->Where('choosed_date', $today_date);
+                                                })
 
-        //                                         ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
+                                                ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
 
-        //                                             $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+                                                    $item['TimeZone']   = TimeZone::where('time_zone',$item->time_zone)->first();
 
-        //                                             $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+                                                    $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
 
-        //                                             $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+                                                    $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
 
-        //                                             return $item;
-        //                                         });
-        //     return $item;
-        // })->first();
+                                                                                                    
+                                                        switch (true) {
+
+                                                            case $item['type'] == "mp4":
+                                                                $item['videos_url']  =  $item->url ;
+                                                                $item['video_player_type'] =  'video/mp4' ;
+                                                            break;
+
+                                                            case $item['type'] == "m3u8":
+                                                                $item['videos_url']  =  $item->url ;
+                                                                $item['video_player_type'] =  'application/x-mpegURL' ;
+                                                            break;
+
+                                                            default:
+                                                                $item['videos_url']    = null ;
+                                                                $item['video_player_type']   =  null ;
+                                                            break;
+                                                        }
+                                                    return $item;
+                                                });
+            return $item;
+        })->first();
+        // dd($epg_channel_data['default_scheduler_datas']);
+
+        $data = [
+            'current_timezone' => $current_timezone,
+            'currentTime' => $currentTime,
+            'epg_channel_data' => $epg_channel_data,
+            'default_scheduler_datas' => $epg_channel_data['default_scheduler_datas'], 
+        ];
+        return Theme::view('DefaultVideoScheduler.videos', $data);
+
+        // return view('admin.schedule.DefaultSchedulerPlayer', $data);
+
+        // dd($epg_channel_data);
 
         // dd($epg_channel_data);
         

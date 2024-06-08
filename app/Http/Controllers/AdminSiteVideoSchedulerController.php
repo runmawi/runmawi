@@ -930,6 +930,7 @@ class AdminSiteVideoSchedulerController extends Controller
             $originalTimezone = $default_timezone;
             $targetTimezones = TimeZone::get();
             $targetTimezones = TimeZone::whereIn('id',[1,2])->get();
+            $targetTimezones = TimeZone::get();
     
             foreach ($targetTimezones as $target_Timezone) {
                 $targetTimezone = $target_Timezone->time_zone;

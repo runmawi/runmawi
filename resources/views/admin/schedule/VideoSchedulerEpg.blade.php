@@ -1265,6 +1265,7 @@ $("#dropzone").droppable({
                                 title: "Today's Slot is Full Please Choose Next date to Continue...",
                         })
                     }
+                    location.reload();
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
                     
