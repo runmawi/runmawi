@@ -52,7 +52,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
       }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video { position: relative; }
-    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 28%; left:1%; color: white; border: none; cursor: pointer; }
+    /* header#main-header{position: absolute !important;} */
+    #series_container { position: relative;}
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer; font-size: 25px;}
 </style>
 @if (Session::has('message'))
     <div id="successMessage" class="alert alert-info col-md-4"

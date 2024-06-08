@@ -517,6 +517,11 @@ display: inline-block;
 cursor: pointer;
 }
 
+.custom-skip-backward-button:hover, 
+.custom-skip-forward-button:hover{
+  transform: scale(1.5); 
+}
+
 .titlebutton {
 pointer-events: auto;
 position: absolute;
