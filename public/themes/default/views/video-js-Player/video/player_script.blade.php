@@ -14,10 +14,10 @@
 
             controlBar: {
                 volumePanel: { inline: false },
-                skipButtons: {
-                    enabled: true,
-                    forward: 10,
-                },
+                // skipButtons: {
+                //     enabled: true,
+                //     forward: 10,
+                // },
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
@@ -33,7 +33,37 @@
                 pictureInPictureToggle: true,                
 
             }
-        });
+    });
+
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    const playPauseButton = document.querySelector('.vjs-big-play-button');
+
+    skipForwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() + 10);
+    });
+
+    skipBackwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() - 10);
+    });
+
+    player.on('userinactive', () => {
+    // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'none';
+        skipBackwardButton.style.display = 'none';
+        playPauseButton.style.display = 'none';
+    }
+    });
+
+    player.on('useractive', () => {
+    // Show the Play pause, skip forward and backward buttons when the user becomes active
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'block';
+        skipBackwardButton.style.display = 'block';
+        playPauseButton.style.display = 'block';
+    }
+    });
 
 
         // Skip Intro & Skip Recap 
@@ -84,36 +114,36 @@
             }
         });
 
-        player.on('userinactive', () => {
+        // player.on('userinactive', () => {
           // Hide the skip forward and backward buttons when the user becomes inactive
-            const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-            const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-            if (skipForwardButton && skipBackwardButton) {
-                skipForwardButton.style.display = 'none';
-                skipBackwardButton.style.display = 'none';
-            }
-        });
+        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        //     if (skipForwardButton && skipBackwardButton) {
+        //         skipForwardButton.style.display = 'none';
+        //         skipBackwardButton.style.display = 'none';
+        //     }
+        // });
 
-        player.on('useractive', () => {
+        // player.on('useractive', () => {
           // Show the skip forward and backward buttons when the user becomes active
-          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          if (skipForwardButton && skipBackwardButton) {
-            skipForwardButton.style.display = 'block';
-            skipBackwardButton.style.display = 'block';
-          }
-        });
+        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        //   if (skipForwardButton && skipBackwardButton) {
+        //     skipForwardButton.style.display = 'block';
+        //     skipBackwardButton.style.display = 'block';
+        //   }
+        // });
 
-        const skipForward = (duration) => {
-            const playerTime = player.current;
-            playerTime.currentTime(playerTime.currentTime() + duration);
-            console.log("player",playerTime)
-        };
+        // const skipForward = (duration) => {
+        //     const playerTime = player.current;
+        //     playerTime.currentTime(playerTime.currentTime() + duration);
+        //     console.log("player",playerTime)
+        // };
 
-        const skipBackward = (duration) => {
-            const pplayerTime = player.current;
-            playerTime.currentTime(playerTime.currentTime() - duration);
-        };
+        // const skipBackward = (duration) => {
+        //     const pplayerTime = player.current;
+        //     playerTime.currentTime(playerTime.currentTime() - duration);
+        // };
 
         // Ads Marker
 

@@ -145,96 +145,81 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[33]->url ? URL::to($order_settings_list[33]->url) : null }} ">{{ "view all" }}</a></h4>
                     </div>
 
-                    <div class="trending-contens">
-                        <div id="trending-slider-nav" class="epg-channel-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $epg_channel_data)
-                                <div class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative w-100" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : $default_vertical_image_url }}"
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list channel-epg-video">
+                                @foreach ($data as $key => $epg_channel_data)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            @if ($multiple_compress_image == 1)
+                                            <img class="flickity-lazyloaded" alt="{{ $epg_channel_data->title }}" src="{{ $epg_channel_data->image ?  URL::to('public/uploads/images/'.$epg_channel_data->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $epg_channel_data->image_url }}" class="img-fluid position-relative w-100" alt="epg_channel_data" width="300" height="200">
-                                            @endif 
+                                                <img src="{{ $epg_channel_data->image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
+                                            @endif
 
                                             @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
-                                            @endif 
+                                            @endif
                                         </div>
-                                    </a>
-                                </div>
-                            @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
-                        <ul id="trending-slider epg-channel-slider" class="list-inline p-0 m-0 align-items-center epg-channel-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $epg_channel_data )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                                        <button class="drp-close">×</button>
+                        <div id="videoInfo" class="channel-epg-video-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $epg_channel_data )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2><br>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @if (optional($epg_channel_data)->description)
+                                            <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div><br>
+                                        @endif
 
-                                                    <div class="caption pl-4">
+                                        @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
+                                            <div class="d-flex align-items-center p-0">
+                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="epg_channel_data" style="height: 30%; width:30%"><br>
+                                                
+                                                <ul>
+                                                    <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
+                                                    <p> {{ $current_timezone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
+                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
+                                                </ul>
 
-                                                        <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2><br>
+                                            </div>
+                                        @endif
 
-                                                        @if (optional($epg_channel_data)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div><br>
-                                                        @endif
+                                        <div class="p-btns">
 
-                                                        @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="epg_channel_data" style="height: 30%; width:30%"><br>
-                                                                
-                                                                <ul>
-                                                                    <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
-                                                                    <p> {{ $current_timezone ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
-                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="epg_channel_data" width="70px" style="position: static !important ; margin:0% !important"></p>
-                                                                </ul>
+                                            <div class="d-flex align-items-center p-0">
 
-                                                            </div>
-                                                        @endif
+                                                @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
+                                                    <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                @endif
 
-                                                        <div class="p-btns">
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}" data-choosed-date="{{ $carbon_now->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}"  onclick="EPG_date_filter(this)"><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> Event </a>
 
-                                                            <div class="d-flex align-items-center p-0">
-
-                                                                @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
-                                                                    <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                @endif
-
-                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}" data-choosed-date="{{ $carbon_now->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}"  onclick="EPG_date_filter(this)"><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> Event </a>
-
-                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-
-
-                                                        <div class="dropdown_thumbnail">
-                                                            @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$epg_channel_data->player_image ?  URL::to('public/uploads/images/'.$epg_channel_data->player_image) : $default_horizontal_image_url }}"
-                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_player_image.' 860w') }},
-                                                                    {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_player_image.' 640w') }},
-                                                                    {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_player_image.' 420w') }}" >
-                                                            @else
-                                                                <img  src="{{ $epg_channel_data->Player_image_url }}" alt="epg_channel_data">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>   
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        @if ( $multiple_compress_image == 1)
+                                            <img  alt="latest_series" src="{{$epg_channel_data->player_image ?  URL::to('public/uploads/images/'.$epg_channel_data->player_image) : $default_horizontal_image_url }}"
+                                                srcset="{{ URL::to('public/uploads/PCimages/'.$epg_channel_data->responsive_player_image.' 860w') }},
+                                                {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_player_image.' 640w') }},
+                                                {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_player_image.' 420w') }}" >
+                                        @else
+                                            <img  src="{{ $epg_channel_data->Player_image_url }}" alt="epg_channel_data">
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -341,72 +326,47 @@
 @endif
 
 <script>
-    
-    $( window ).on("load", function() {
-        $('.epg-channel-slider').hide();
+
+var elem = document.querySelector('.channel-epg-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        adaptiveHeight: true,
     });
+    document.querySelectorAll('.channel-epg-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.channel-epg-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
 
-    $(document).ready(function() {
+            item.classList.add('current');
 
-        $('.epg-channel-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.epg-channel-slider-nav',
-        });
+            var index = item.getAttribute('data-index');
 
-        $('.epg-channel-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.epg-channel-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: true,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
+            document.querySelectorAll('.channel-epg-video-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.channel-epg-video-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
 
-        $('.epg-channel-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.epg-channel-slider').show();
-        });
+            var selectedCaption = document.querySelector('.channel-epg-video-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.channel-epg-video-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
 
-        $('body').on('click', '.slick-arrow', function() {
-            $('.epg-channel-slider').hide();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.epg-channel-slider').hide();
+            document.getElementsByClassName('channel-epg-video-dropdown')[0].style.display = 'flex';
         });
     });
 
 
+    $('body').on('click', '.drp-close', function() {
+        $('.channel-epg-video-dropdown').hide();
+    });
     function EPG_date_filter(ele) {
 
         const channel_id = $(ele).attr('data-channel-id');

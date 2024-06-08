@@ -12,32 +12,37 @@
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'remainingTime': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {}                     
+                    'fullscreenToggle': {},                    
                 },
                 pictureInPictureToggle: true,
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
         player.on('userinactive', () => {
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
           if (playPauseButton) {
             playPauseButton.style.display = 'none';
           }
         });
 
         player.on('useractive', () => {
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
-          if (skipForwardButton && skipBackwardButton && playPauseButton) {
+          if (playPauseButton) {
             playPauseButton.style.display = 'block';
           }
         });
+
+        const liveControl = document.querySelector('.vjs-live-display');
+        const span = document.createElement('span');
+        span.className = "live_dot";
+        span.textContent = ".";
+        liveControl.insertBefore(span, liveControl.firstChild);
 
         // Ads Marker
 
