@@ -13,7 +13,7 @@
                             <h4 class="main-title"><a href="{{ route('Specific_Series_Networks', [$series_networks->slug]) }}">{{ "view all" }}</a></h4>
                         </div>
 
-                        <div class="channels-list">
+                        <div id="based-networks" class="channels-list">
                             <div class="channel-row">
                                 <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video" data-flickity>
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
@@ -28,7 +28,7 @@
 
                             <div id="videoInfo-{{ $section_key }}" class="series-based-network-dropdown" style="display:none;">
                                 <button class="drp-close">×</button>
-                                <div class="vib" style="display:flex;">
+                                <div class="vib" style="display:block;">
                                     @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
                                         <div class="w-100">
                                             <div class="caption" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
@@ -226,3 +226,22 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     });
 });
 </script>
+
+<style>
+    @media screen and (max-width: 4200px) and (min-width: 1400px) {
+        div#based-networks .flickity-viewport {
+            min-height: calc(100vw / 4)
+        }
+    }
+    @media screen and (max-width: 1399px) and (min-width: 1100px) {
+        div#based-networks .flickity-viewport {
+            min-height: calc(100vw / 3.2)
+        }
+    }
+    @media screen and (max-width: 600px) and (min-width: 1px) {
+        div#based-networks .flickity-viewport {
+            min-height: calc(100vw / 1)
+        }
+    }
+    
+</style>
