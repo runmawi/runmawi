@@ -1211,6 +1211,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
     Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
 
+    Route::get('ads/variables', 'AdminAdvertiserController@ads_variable')->name('admin.ads_variable');
+    Route::post('ads/variable-store', 'AdminAdvertiserController@ads_variables_store')->name('admin.ads_variable_store');
+    Route::get('ads/variable-edit/{id}', 'AdminAdvertiserController@ads_variables_edit')->name('admin.ads_variables_edit');
+    Route::post('ads/variable-update/{id}', 'AdminAdvertiserController@ads_variables_update')->name('admin.ads_variables_update');
+    Route::get('ads/variable-delete/{id}', 'AdminAdvertiserController@ads_variables_delete')->name('admin.ads_variables_delete');
 
     // Admin Series Genre
         Route::get('/document/genre', 'AdminDocumentGenreController@index');

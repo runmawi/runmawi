@@ -49,7 +49,7 @@
                                         @endif
 
                                         @if (optional($latest_video)->description)
-                                            <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
+                                            <div class="trending-dec">{{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode(optional($latest_video)->description)), 500) }}</div>
                                         @endif
 
                                         <div class="p-btns">
@@ -124,14 +124,17 @@
 
 
 <script>
-    
-    var elem = document.querySelector('.latest-video');
+
+  var elem = document.querySelector('.latest-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
         groupCells: true,
-        adaptiveHeight: true,
-        pageDots: false
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.latest-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
