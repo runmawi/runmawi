@@ -32,7 +32,7 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[30]->url ? URL::to($order_settings_list[30]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
-                    <div class="channels-list">
+                    <div id="tv-networks" class="channels-list">
                         <div class="channel-row">
                             <div id="trending-slider-nav" class="video-list series-network-video" data-flickity>
                                 @foreach ($data as $key => $series_networks)
@@ -47,7 +47,7 @@
 
                         <div id="videoInfo" class="series-network-dropdown" style="display:none;">
                             <button class="drp-close">×</button>
-                            <div class="vib" style="display:flex;">
+                            <div class="vib" style="display:block;">
                                 @foreach ($data as $key => $series_networks )
                                     <div class="w-100">
                                         <div class="caption" data-index="{{ $key }}">
@@ -220,3 +220,22 @@ $('body').on('click', '.drp-close', function() {
     $('.series-network-dropdown').hide();
 });
 </script>
+
+<style>
+    @media screen and (max-width: 4200px) and (min-width: 1400px) {
+        div#tv-networks .flickity-viewport {
+            min-height: calc(100vw / 4)
+        }
+    }
+    @media screen and (max-width: 1399px) and (min-width: 1100px) {
+        div#tv-networks .flickity-viewport {
+            min-height: calc(100vw / 3.2)
+        }
+    }
+    @media screen and (max-width: 600px) and (min-width: 1px) {
+        div#tv-networks .flickity-viewport {
+            min-height: calc(100vw / 1)
+        }
+    }
+    
+</style>

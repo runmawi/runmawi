@@ -560,7 +560,7 @@ img{max-width:100%;height: auto;}
 .theme4-slider .slick-list{overflow: visible;}
 
 /* flickity slider */
-.flickity-viewport{min-height: 170px; max-height: 400px;}
+.flickity-viewport{min-height: 200px; max-height: 400px;}
 @media screen and (min-width: 601px) {
    .vib .thumbnail {
       width: 74%;
@@ -596,7 +596,7 @@ img{max-width:100%;height: auto;}
 
 @media screen and (max-width: 799px) {
   .channels-list .channel-row .flickity-viewport {
-      min-height: calc(100vw / 5.8);
+      min-height: calc(100vw / 3);
   }
   .channels-list .channel-row .video-list .item {
       width: 33.33333%;
@@ -643,6 +643,7 @@ img{max-width:100%;height: auto;}
       margin: 0;
       position: relative;
       z-index: 12;
+      display: block;
   }
 .channels-list .channel-row .video-list .item {
   padding: 2px;
