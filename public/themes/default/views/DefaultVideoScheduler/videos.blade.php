@@ -2,7 +2,7 @@
 {{-- video-js Style --}}
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-    <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
     <!-- <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
@@ -26,7 +26,8 @@
 
     <div class="container-fluid p-0">
             <div id="video-container">
-                <video id="video-player" class="vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-hls-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls preload="auto" width="auto" height="auto" controls preload="auto" width="640" height="360"></video>
+                <video id="video-player" class="vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-hls-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls preload="auto" width="auto" height="auto" controls preload="auto" width="640" height="360">
+                </video>
                 <div id="no-video-message">No video available for now</div>
             </div>
     </div>
