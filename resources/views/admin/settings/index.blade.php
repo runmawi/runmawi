@@ -1520,23 +1520,6 @@ border-radius: 0px 4px 4px 0px;
                 </div>
           
                 <div class="row">
-                    <div class="col-md-6">
-                        <label for="">Ads Play 24/7 :</label>
-                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                            
-                            <div style="color:red;">Disable</div>
-
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input type="checkbox"  @if ($settings->ads_play_unlimited_period == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="ads_play_unlimited_period" id="ads_play_unlimited_period">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-
-                            <div style="color:green;">Enable</div>
-                        </div>
-                        <div class="make-switch" data-on="success" data-off="warning"></div>
-                    </div>
 
                     <div class="col-md-6">
                         <label for="">Default Ads Status :</label>
@@ -1547,6 +1530,24 @@ border-radius: 0px 4px 4px 0px;
                             <div class="mt-1">
                                 <label class="switch">
                                     <input type="checkbox"  {{ $settings->default_ads_status == 1 ? 'checked' : null }} name="default_ads_status" id="default_ads_status">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div style="color:green;">Enable</div>
+                        </div>
+                        <div class="make-switch" data-on="success" data-off="warning"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="">Ads Play 24/7 :</label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            
+                            <div style="color:red;">Disable</div>
+
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox"  @if ($settings->ads_play_unlimited_period == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="ads_play_unlimited_period" id="ads_play_unlimited_period">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -1572,16 +1573,17 @@ border-radius: 0px 4px 4px 0px;
                                 placeholder="Featured Ad Pre Roll"
                                 value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
                             </div>
+
                             <div class="form-group add-profile-pic">
                                 <label>Featured Ad Mid Roll:</label>
                                 <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
                                 placeholder="Featured Ad Mid Roll"
                                 value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
                             </div>
+
                             <div class="form-group add-profile-pic">
                                 <label>Featured Ad Post Roll:</label>
-                                <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control"
-                                placeholder="Featured Ad Post Roll"
+                                <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control" placeholder="Featured Ad Post Roll"
                                 value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
                             </div></div> <div class="col-md-6">
                             <div class="form-group add-profile-pic">
