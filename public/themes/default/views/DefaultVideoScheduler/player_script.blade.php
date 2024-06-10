@@ -7,14 +7,19 @@
 
         const player = videojs('video-player', {
             controlBar: {
-                playToggle: false, // Hide the play button
-                progressControl: false, // Hide the progress bar
-                remainingTimeDisplay: false, // Hide the remaining time display
-                currentTimeDisplay: false // Hide the current time display
+                volumePanel: { inline: false },
+                children: {
+                    // 'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'fullscreenToggle': {},
+                },
+                pictureInPictureToggle: true,
             }
         });
 
 
+        // console.log('pause',player.paused());
         function timeToSeconds(time) {
             const parts = time.split(':');
             return (+parts[0]) * 3600 + (+parts[1]) * 60 + (+parts[2]);
@@ -84,5 +89,9 @@
         top: -5%;
         z-index: 30;
         margin-left: -3px;
+    }
+
+    .vjs-progress-control{
+        pointer-events: none;
     }
 </style>
