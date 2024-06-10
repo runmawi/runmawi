@@ -3996,10 +3996,10 @@ class ChannelController extends Controller
         $today_date = $today_date_time->format("m-d-Y");
         $current_time = $today_date_time->format("H:i:s");
         $currentTime = \Carbon\Carbon::now()->format('H:i:s');
-        $current_timezone = 'Asia/Kolkata';
+        // $current_timezone = 'Asia/Kolkata';
 
         $currentTime = \Carbon\Carbon::now('UTC')->setTimezone($current_timezone)->format('H:i:s');
-        $currentTime = "12:12:21";
+        // $currentTime = "12:12:21";
 
         // dd($current_timezone);
         $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
@@ -4043,17 +4043,22 @@ class ChannelController extends Controller
             return $item;
         })->first();
 
-        // if(count($epg_channel_data['default_scheduler_datas']) > 0 ){
-        //    $start_time =  $epg_channel_data['default_scheduler_datas']->pluck('start_time')->first();
+        if(count($epg_channel_data['default_scheduler_datas']) > 0 ){
+           $start_time =  $epg_channel_data['default_scheduler_datas']->pluck('start_time')->first();
+           $AM_PM =  $epg_channel_data['default_scheduler_datas']->pluck('current_time')->first();
 
-        //    if($start_time > $currentTime){
-        //         return Redirect::to('/home')->with(array(
-        //             'message' => 'Scheduler Not Started For Timezone',
-        //             'note_type' => 'success'
-        //         ));
-        //    }
+           if($start_time > $currentTime){
+        
+            Session::put('scheduler_content', 1);
+            Session::put('scheduler_time', $start_time.' '.$AM_PM);
 
-        // }
+                return Redirect::to('/home')->with(array(
+                    'message' => 'Scheduler Not Started For Timezone',
+                    'note_type' => 'success'
+                ));
+           }
+
+        }
 
         $data = [
             'current_timezone' => $current_timezone,
