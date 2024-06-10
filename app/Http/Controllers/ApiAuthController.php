@@ -15867,17 +15867,13 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Livestream_Pagelist(){
 
-      $query = LiveStream::query()
-        ->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
-        ->where('active',1)->where('status', 1);
-
-      $data = $query->latest()->get();
-
-      $data->transform(function ($item) {
-            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-            $item['source']    = "Livestream";
-          return $item;
+      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
+                        ->where('active',1)->where('status', 1)->latest()->get()
+                        ->map(function ($item) {
+                            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                            $item['source']    = "Livestream";
+                        return $item;
       });
           
       return $data;
