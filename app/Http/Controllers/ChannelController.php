@@ -3999,8 +3999,9 @@ class ChannelController extends Controller
         $current_timezone = 'Asia/Kolkata';
 
         $currentTime = \Carbon\Carbon::now('UTC')->setTimezone($current_timezone)->format('H:i:s');
+        $currentTime = "12:12:21";
 
-        // dd($currentTime);
+        // dd($current_timezone);
         $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
 
             $item['default_scheduler_datas']  =  DefaultSchedulerData::where('channe_id',$request->id)->where('time_zone',$current_timezone)
@@ -4041,7 +4042,18 @@ class ChannelController extends Controller
                                                 });
             return $item;
         })->first();
-        // dd($epg_channel_data['default_scheduler_datas']);
+
+        // if(count($epg_channel_data['default_scheduler_datas']) > 0 ){
+        //    $start_time =  $epg_channel_data['default_scheduler_datas']->pluck('start_time')->first();
+
+        //    if($start_time > $currentTime){
+        //         return Redirect::to('/home')->with(array(
+        //             'message' => 'Scheduler Not Started For Timezone',
+        //             'note_type' => 'success'
+        //         ));
+        //    }
+
+        // }
 
         $data = [
             'current_timezone' => $current_timezone,
