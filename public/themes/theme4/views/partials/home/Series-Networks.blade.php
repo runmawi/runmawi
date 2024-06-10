@@ -164,8 +164,11 @@ var elem = document.querySelector('.series-network-video');
         cellAlign: 'left',
         contain: true,
         groupCells: true,
-        adaptiveHeight: true,
         pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.series-network-video .item').forEach(function(item) {
     item.addEventListener('click', function() {
@@ -221,21 +224,3 @@ $('body').on('click', '.drp-close', function() {
 });
 </script>
 
-<style>
-    @media screen and (max-width: 4200px) and (min-width: 1400px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 4)
-        }
-    }
-    @media screen and (max-width: 1399px) and (min-width: 1100px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 3.2)
-        }
-    }
-    @media screen and (max-width: 600px) and (min-width: 1px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 1)
-        }
-    }
-    
-</style>
