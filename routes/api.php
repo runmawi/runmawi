@@ -681,4 +681,6 @@ Route::group(
             Route::get('storage-setting', 'ApiAuthController@StorageSetting'); 
             Route::get('GeoIPLocation', 'ApiAuthController@GeoIPLocation'); 
 
+            Route::get('Ads-variables', 'ApiAuthController@Ads_variables'); 
+
         });

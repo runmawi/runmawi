@@ -21,6 +21,7 @@ use GuzzleHttp\Message\Response;
 use Carbon\Carbon;
 use App\AdsTimeSlot;
 use App\EmailTemplate;
+use App\Adsvariables;
 use App\AdminAdvertistmentBanners;
 use Intervention\Image\Facades\Image;
 use Auth;
@@ -38,7 +39,7 @@ class AdminAdvertiserController extends Controller
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
+        }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -1135,5 +1136,163 @@ class AdminAdvertiserController extends Controller
 
             return abort(404);
         }
+    }
+
+    public function ads_variable(){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
+        $user = User::where('id', 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = 'https://flicknexs.com/userapi/allplans';
+            $params = [
+                'userid' => 0,
+            ];
+
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify' => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            ];
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        } else {
+            try {
+
+                $data = [
+                    'ads_variables' => Adsvariables::paginate(15),
+                ];
+    
+                return view('admin.ads_management.Ads_variables',$data);
+
+            } catch (\Throwable $th) {
+                return $th->getMessage();
+                return abort(404);
+            }
+        }
+    }
+
+    public function ads_variables_store(Request $request){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
+        $user = User::where('id', 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = 'https://flicknexs.com/userapi/allplans';
+            $params = [
+                'userid' => 0,
+            ];
+
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify' => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            ];
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        } else {
+            try {
+
+                $data = array(
+                    "name" => $request->name,
+                    "website" => $request->website,
+                    "andriod" => $request->andriod,
+                    "ios" => $request->ios,
+                    "tv" => $request->tv,
+                    "roku" => $request->roku,
+                    "Lg" => $request->Lg,
+                    "samsung" => $request->samsung,
+                );
+
+                Adsvariables::create($data);
+
+                return response()->json(['success' => true]);
+
+            } catch (\Throwable $th) {
+                return abort(404);
+            }
+        }
+    }
+
+    public function ads_variables_edit($id)
+    {
+        $Adsvariables = Adsvariables::find($id);
+
+        return response()->json([
+            'data' => $Adsvariables,
+        ]);
+    }
+
+    public function ads_variables_update(Request $request,$id)
+    {
+
+        $data = array(
+            "name" => $request->name,
+            "website" => $request->website,
+            "andriod" => $request->andriod,
+            "ios" => $request->ios,
+            "tv" => $request->tv,
+            "roku" => $request->roku,
+            "Lg" => $request->Lg,
+            "samsung" => $request->samsung,
+        );
+
+        $Adsvariables = Adsvariables::find($id)->update($data);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function ads_variables_delete($id)
+    {
+        Adsvariables::destroy($id);
+
+        return redirect()->route('admin.ads_variable');
+
     }
 }

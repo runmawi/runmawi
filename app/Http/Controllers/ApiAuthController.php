@@ -148,6 +148,7 @@ use App\AdminVideoAds;
 use App\TimeZone;
 use App\StorageSetting;
 use App\SeriesNetwork;
+use App\Adsvariables;
 
 
 class ApiAuthController extends Controller
@@ -15189,18 +15190,18 @@ public function QRCodeMobileLogout(Request $request)
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
-          $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
-                                                                                              'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
-                                                                                              ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
-                                                                                              ->latest()->limit(15)->get()->map(function ($item) {
-                                                                                                      $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                                                                                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                                                                                      $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
-                                                                                                      $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
-                                                                                                      $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
-                                                                                                      $item['source']   = "series";
-                                                                                                      return $item;
-                                                                                                  });  
+          // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+          //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+          //                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+          //                                                                                     ->latest()->limit(15)->get()->map(function ($item) {
+          //                                                                                             $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+          //                                                                                             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+          //                                                                                             $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+          //                                                                                             $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+          //                                                                                             $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+          //                                                                                             $item['source']   = "series";
+          //                                                                                             return $item;
+          //                                                                                         });  
 
           return $item;
         });
@@ -24807,7 +24808,6 @@ public function SendVideoPushNotification(Request $request)
     }
 
 
-
     public function GeoIPLocation( Request $request ){
 
       try {
@@ -24830,4 +24830,24 @@ public function SendVideoPushNotification(Request $request)
           return response()->json($response, 200);
     }
 
+    public function Ads_variables( ){
+
+      try {
+
+        $response = array(
+          "status"  => 'true' ,
+          "message" => "Retrieved Ads Variables" ,
+          'ads_variables'  => Adsvariables::all() ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+
+      return response()->json($response, 200);
+    }
 }
