@@ -148,6 +148,7 @@ use App\AdminVideoAds;
 use App\TimeZone;
 use App\StorageSetting;
 use App\SeriesNetwork;
+use App\Adsvariables;
 
 
 class ApiAuthController extends Controller
@@ -24807,7 +24808,6 @@ public function SendVideoPushNotification(Request $request)
     }
 
 
-
     public function GeoIPLocation( Request $request ){
 
       try {
@@ -24830,4 +24830,24 @@ public function SendVideoPushNotification(Request $request)
           return response()->json($response, 200);
     }
 
+    public function Ads_variables( ){
+
+      try {
+
+        $response = array(
+          "status"  => 'true' ,
+          "message" => "Retrieved Ads Variables" ,
+          'ads_variables'  => Adsvariables::all() ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+
+      return response()->json($response, 200);
+    }
 }
