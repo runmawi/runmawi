@@ -13,6 +13,11 @@
 <link href="<?= asset('public/themes/theme4/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme4/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
 
+
+<!-- Style -->
+<link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
+
+
 <!-- video-js Script  -->
 
 <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -677,26 +682,25 @@
             </div>
         <?php endif; ?>
 
-            <div class="mar-left video-list you-may-like overflow-hidden">
-                <h4 class="" style="color:#fffff;">{{ __('Related Videos') }}</h4>
-                <div class="favorites-contens sub_dropdown_image">  
-                    <ul class="favorites-slider list-inline row mb-0">
+            <div class="channels-list video-list you-may-like overflow-hidden">
+                <h4 class="mar-left" style="color:#fffff;">{{ __('Related Live Streams') }}</h4>
+                <div class="channel-row favorites-contens sub_dropdown_image">  
+                    <div class="video-list live-videos">
                         @foreach ($Related_videos as $related_video)
-                            <li class="slick-slide">
+                            <div class="item">
                                 <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
                                     <div class="position-relative">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
-                                            <div class="controls">
-                                                <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
-                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                </a>
-                                            </div>
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="flickity-lazyloaded" alt="{{ $related_video->title }}">
+                                        <div class="controls">
+                                            <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
+                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                            </a>
+                                        </div>
                                     </div>
                                 </a>
-                            </li>
+                            </div>
                         @endforeach
-                    </ul>
-                    
+                    </div>
                 </div>
             </div>
     </div>
@@ -946,8 +950,20 @@ settings: "unslick" // destroys slick
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
+<script>
+    var elem = document.querySelector('.live-videos');
+    var flkty = new Flickity( elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
 <script type="text/javascript">
-
     var livepayment = $('#purchase_url').val();
     var publishable_key = $('#publishable_key').val();
 

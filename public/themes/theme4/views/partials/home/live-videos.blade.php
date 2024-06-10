@@ -180,8 +180,11 @@
         cellAlign: 'left',
         contain: true,
         groupCells: true,
-        adaptiveHeight: true,
-        pageDots: false
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
