@@ -47,13 +47,12 @@
 
                 if (response.data.status == true) {
 
-                    const messageClass = response.data.watchlater_status == "Add" ? 'alert-success' : 'alert-danger';
+                    const messageClass = response.data.wishlist_status == "Add" ? 'alert-success' : 'alert-danger';
 
-                    const iconClass = response.data.watchlater_status == "Add" ? 'fa fa-heart' : 'fa fa-heart-o';
-
+                    const iconClass = response.data.wishlist_status === "Add" ? 'ri-heart-fill' : 'ri-heart-line';
                     const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
                         
-                    $('.video-wishlist').removeClass('fa fa-heart fa fa-heart-o').addClass(iconClass);
+                    $('.video-wishlist').removeClass('ri-heart-line ri-heart-fill').addClass(iconClass);
 
                     $('#message-note').html(message_note).slideDown('fast');
 

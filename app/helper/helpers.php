@@ -1444,7 +1444,7 @@ function SchedulerSocureData($socure_type,$socure_id)
         if(!empty($socure_data) && $socure_data->type == ''){
         // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
             $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
-            $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
+            // $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
             // try {
@@ -1534,6 +1534,31 @@ function SchedulerSocureData($socure_type,$socure_id)
                 'seconds' => $seconds  ,      
                 'type' => 'm3u8'  ,            
                 'URL' => URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8'  ,          
+                'socure_data' => $socure_data  ,
+            );
+        }else if(!empty($socure_data) && $socure_data->type == 'bunny_cdn'){
+            $m3u8_url =  $socure_data->url ;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            //  // Initialize variables
+            // $duration = null;
+            // $seconds = null;
+            // $error = null;
+
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+    
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,      
+                'type' => 'm3u8'  ,            
+                'URL' => $socure_data->url  ,          
                 'socure_data' => $socure_data  ,
             );
         }
@@ -1812,4 +1837,124 @@ function send_video_push_notifications($title,$message,$video_name,$video_id,$us
         DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message,'socure_type' => 'Video', 'socure_id' => $video_id ]);
     }
     return true;
+}
+
+function Logged_Monetization()
+{
+    $Logged_Monetization = App\SiteTheme::pluck('enable_logged_device')->first();
+    return  $Logged_Monetization; 
+}
+
+
+
+function SiteVideoScheduler($channe_id,$time)
+{
+
+    $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id',$channe_id)
+                                ->where('choosed_date',$time)
+                                ->orderBy('created_at', 'DESC')->first();
+
+    return  $SiteVideoScheduler; 
+        
+}
+
+
+function SiteVideoSchedulerWithTimeZone($channe_id,$time,$time_zone)
+{
+
+    $SiteVideoSchedulerWithTimeZone = App\SiteVideoScheduler::where('channe_id',$channe_id)
+                                            ->where('choosed_date',$time)
+                                            ->where('time_zone',$time_zone)
+                                            ->orderBy('created_at', 'DESC')->first();
+
+    return  $SiteVideoSchedulerWithTimeZone; 
+        
+}
+
+
+
+function existingSiteVideoSchedulerEntry($time,$channe_id,$start_time)
+{
+    
+        $existingVideoSchedulerEntry = App\SiteVideoScheduler::where('choosed_date', chosen_datetime($time))
+                ->where('channe_id', $channe_id)
+                ->first();
+
+        $current_time = strtotime($start_time);
+
+            if(!empty($existingVideoSchedulerEntry) ){
+                return 0;
+            }else{
+                return 1;
+            }
+
+}
+
+
+
+function SiteVideoScheduledData($time,$channe_id,$time_zone){
+    
+    $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
+    $time = $carbonDate->format('n-j-Y');
+    // print_r($time);exit;
+    $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id', $channe_id)
+                            ->where('time_zone', $time_zone)
+                            ->where('choosed_date', $time)
+                            // ->orderBy('socure_order', 'ASC')
+                            ->join('video_schedules', 'video_schedules.id', '=', 'site_videos_scheduler.channe_id')
+                            ->select('site_videos_scheduler.*', 'video_schedules.name')
+                            ->get();
+            $image_URL = URL::to("");
+            $edit_svg = URL::to('assets/img/icon/edit.svg');
+            $delete_svg = URL::to('assets/img/icon/delete.svg');
+            $calender_svg = URL::to('assets/img/icon/cal-event.svg');
+            $output = "";
+            $i = 1;
+            if (count($SiteVideoScheduler) > 0) {
+                $total_row = $SiteVideoScheduler->count();
+                if (!empty($SiteVideoScheduler)) {
+    
+                    foreach ($SiteVideoScheduler as $key => $row) {
+                        $output .=
+                            '<tr>
+                            <td class="border-lft">' . $row->socure_title.
+                                            '</td>
+                                 
+                                <td>' . $row->start_time . '</td>       
+                                <td>' . $row->end_time . '</td>    
+                                <td>' . $row->duration . '</td>  
+                                <td class="border-rigt">
+                                    <div class="action-icons">
+
+                                        <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$calender_svg.'" width="19px" height="19px">
+                                        </button>
+                                        
+                                        <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$delete_svg.'">                                         
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>';
+                }
+            } else {
+
+                $output = '
+                    <tr>
+                        <td align="center" colspan="5">No Data Found</td>
+                    </tr>
+                    ';
+            }
+        }else{
+            $total_row = 0;
+            $SiteVideoScheduler = [];
+        }
+
+        $value["success"] = 1;
+        $value["message"] = "Uploaded Successfully!";
+        $value["table_data"] = $output;
+        $value["total_data"] = $total_row;
+        $value["total_content"] = $SiteVideoScheduler;
+
+    return $value;
 }

@@ -1,6 +1,8 @@
 <script>
 
     let video_url = "<?php echo $videodetail->videos_url; ?>";
+    let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
+    let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -11,31 +13,28 @@
             fluid: true,
 
             controlBar: {
-
-                volumePanel: {
-                    inline: false
+                volumePanel: { inline: false },
+                skipButtons: {
+                    enabled: true,
+                    forward: 10,
                 },
-
                 children: {
                     'playToggle': {},
                     'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    'remainingTime': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                },
+                pictureInPictureToggle: true,                
+
             }
         });
+
 
         // Skip Intro & Skip Recap 
 
@@ -85,6 +84,37 @@
             }
         });
 
+        player.on('userinactive', () => {
+          // Hide the skip forward and backward buttons when the user becomes inactive
+            const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+            const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+            if (skipForwardButton && skipBackwardButton) {
+                skipForwardButton.style.display = 'none';
+                skipBackwardButton.style.display = 'none';
+            }
+        });
+
+        player.on('useractive', () => {
+          // Show the skip forward and backward buttons when the user becomes active
+          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+          if (skipForwardButton && skipBackwardButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+          }
+        });
+
+        const skipForward = (duration) => {
+            const playerTime = player.current;
+            playerTime.currentTime(playerTime.currentTime() + duration);
+            console.log("player",playerTime)
+        };
+
+        const skipBackward = (duration) => {
+            const pplayerTime = player.current;
+            playerTime.currentTime(playerTime.currentTime() - duration);
+        };
+
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -131,19 +161,6 @@
                 }
             }
         });
-
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
-        // });
 
         // Hls Quality Selector - M3U8 
 
@@ -192,9 +209,15 @@
             player.ima.requestAds();
         }
 
+        var initial_current_time = 0;
+        var timeupdate_counter = 0; 
+
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
+            var Player_duration = player.duration() ;
+
+            // Mid ads 
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 
@@ -208,6 +231,37 @@
                 const vastTagMidroll = vastTagMidrollArray[random_array_index];
 
                 requestMidrollAd(vastTagMidroll);
+            }
+
+            // Free Duration
+
+            if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+                player.pause();
+                player.dispose();
+                player.off('timeupdate');  
+                $('#visibilityMessage').show();
+                $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
+            }
+
+            // Free Duration - Live
+
+            if ( Player_duration == "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime  ) {
+    
+                if (timeupdate_counter <= 2) {
+                    initial_current_time = player.currentTime();
+                    timeupdate_counter++;
+                }
+
+                let time_diff = currentTime - initial_current_time;
+                let round_off_time  = parseInt(time_diff);
+
+                if( round_off_time >=  free_duration_seconds ){
+                    player.pause();
+                    player.dispose();
+                    player.off('timeupdate');  
+                    $('#visibilityMessage').show();
+                    $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
+                }
             }
         });
 
@@ -255,6 +309,10 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            // console.log("!#");
+        })
     });
 
 </script>

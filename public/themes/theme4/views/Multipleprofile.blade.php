@@ -34,7 +34,7 @@
                             <div class="member ">
                                 <a href="{{ route('home') }}">
                                     <img src="{{ URL::asset('public/multiprofile/chooseimage.jpg') }}" alt="user"
-                                        class="multiuser_img" style="width:120px">
+                                        class="multiuser_img">
                                 </a>
                                 <div class="name text-center">{{ $subcriber_user ? $subcriber_user->username : '' }}</div>
                             </div>
@@ -43,7 +43,7 @@
                                 <div class="member">
                                     <a href="{{ route('subuser', $profile->id) }}">
                                         <img src="{{ URL::asset('public/multiprofile/') . '/' . $profile->Profile_Image }}"
-                                            alt="user" class="multiuser_img" style="width:120px">
+                                            alt="user" class="multiuser_img">
                                     </a>
 
                                     <div class="dk">
@@ -99,6 +99,7 @@
         padding: 5px;
         transition: 0.3s;
         border-radius: 20px;
+        width:120px;
 
     }
 
@@ -180,5 +181,13 @@
         .row-data {
             flex-wrap: wrap !important;
         }
+        .row1 {
+            padding: 10px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .member{padding:0;}
+        .multiuser_img {width:100px;}
+        .row1 h1{font-size:25px;}
     }
 </style>

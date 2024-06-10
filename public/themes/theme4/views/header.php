@@ -71,6 +71,9 @@
       ?>
     </title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
+
     <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
@@ -207,6 +210,11 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
+   <!-- CSS -->
+   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
+   <!-- JavaScript -->
+   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1712942742.webp" as="image">
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image">
 
@@ -464,7 +472,7 @@
    }
 
    body.light-theme h4, body.light-theme p {
-      color: <?php echo $GetDarkText; ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.light-theme header#main-header{
@@ -626,6 +634,15 @@
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.dark-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.dark-theme .navbar-light .navbar-nav .nav-link:focus, body.dark-theme .navbar-light .navbar-nav .nav-link:hover{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.light-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetLightText; ?>!important;
    }
    body.light-theme #translator-table_filter input[type="search"]{
       color: <?php echo $GetLightText; ?>;
@@ -897,17 +914,17 @@ header#main-header.menu-sticky{
    }
 }
 @media (max-width:768px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:100%;
       left:59px;
-   }
+   } */
    header .navbar ul.navbar-nav{display: none;}
 }
 @media (min-width:770px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:70%;
       left:41px;
-   }
+   } */
 }
 @media (max-width:1024px){
    ul.submenu.dropdown-menu{
@@ -1019,7 +1036,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Header Side Position  -->
                               <?php if($theme->header_side_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <?php if($theme->header_top_position == 1): ?>
@@ -1342,7 +1359,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php  } 
                                           } ?>
-                                          <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
+                                          <!-- <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
                                              <?php if( Auth::guest() ) : ?>
                                                 <li class="nav-item nav-icon btn">
                                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -1428,7 +1445,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php endif; ?>
 
 
-                                          </ul>
+                                          </ul> -->
                                     </ul>
 
                                  <?php endif;
@@ -1918,7 +1935,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                     <ul class="d-flex align-items-center list-inline m-0">
 
                                        <li class="nav-item nav-icon">
-                                             <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
+                                             <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" aria-label="searchResult">
                                                 <i class="ri-search-line"></i>
                                              </a>
 
@@ -2008,7 +2025,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signin">
                                                             <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
@@ -2019,7 +2036,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </a>
                                                          </li>
                                                          
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signup">
                                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
@@ -2501,6 +2518,25 @@ window.onload = function () {
       navbarList.classList.toggle('navbar-list-flex');
       }
 </script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ids = ['down-video', 'down-live', 'down-network', 'down-series', 'down-audio'];
+
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default action if needed
+                        window.location.href = this.href;
+                    });
+                } else {
+                    console.error(`Element with ID '${id}' not found.`);
+                }
+            });
+        });
+    </script>
+
 <style>
    .navbar-list-flex {
       display: flex !important;

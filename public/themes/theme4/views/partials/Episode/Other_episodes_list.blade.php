@@ -3,19 +3,19 @@
 ?>
 
 <div class="iq-main-header ">
-    <h4 class="main-title"><?= __('Episode') ?>  </h4>
+    <h4 class="main-title"><?= __('Episode') ?></h4>
 </div>
 
-<div class="col-sm-12 overflow-hidden pl-0">
+<div class="col-sm-12 overflow-hidden pl-0 mb-5">
     <div class="favorites-contens ml-2">
-        <div class="trending-contens sub_dropdown_image mt-3">
-            <ul class="favorites-slider list-inline row mb-0">
+        <div class="favorites-contens sub_dropdown_image">
+            <ul class="other-episode-slider list-inline row mb-0">
                 <?php  
                 foreach($season as $key => $seasons):
                     $season_episode =  !empty($seasons->episodes) ? $seasons->episodes->slice(0,15) : $seasons->episodes ;
                     foreach( $season_episode as $episode_key => $episodes):
                         if($episodes->id != $episode->id): ?>
-                            <li class="slide-item">
+                            <li class="slick-slide">
                                 <a href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                                     <div class="position-relative">
                                         <img src="<?= URL::to('public/uploads/images/'.$episodes->image) ?>" class="w-100">
@@ -23,11 +23,6 @@
                                             <a href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
-
-                                            <!-- <nav>
-                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target=<?= "#Other-episode-videos-Modal-".$episode_key ?> ><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                            </nav> -->
-
                                         </div>
                                     </div>
                                 </a>
@@ -86,3 +81,10 @@ foreach($season as $key => $seasons):
         <?php endif; ?>
     <?php endforeach; ?>
 <?php endforeach; ?>
+
+<style>
+    li.slick-slide {
+    padding: 3px;
+    display: block;
+}
+</style>

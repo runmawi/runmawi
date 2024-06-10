@@ -258,6 +258,7 @@ class AdminSettingsController extends Controller
         $settings->ppv_status = $request['ppv_status'];
         $settings->system_address = $request['system_address'];
         $settings->system_phone_number = $request['system_phone_number'];
+        $settings->default_ads_status = $request['default_ads_status'];
 
         $path = storage_path('app/public/');
 

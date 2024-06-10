@@ -10,6 +10,7 @@
 
     $Slider_array_data = [
         'Episode_sliders' => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
+        'multiple_compress_image' => $multiple_compress_image,
     ];
 
 @endphp
@@ -54,6 +55,7 @@
                         {!! Theme::uses('theme4')->load("public/themes/theme4/views/partials/home/{$section['view']}", [
                                 'data' => $section['data'],
                                 'order_settings_list' => $order_settings_list,
+                                'multiple_compress_image' => $multiple_compress_image,
                             ])->content() !!}
                     </div>
                 </div>

@@ -513,7 +513,7 @@ class AdminSeriesController extends Controller
             $settings  = Setting::first();
 
             //$episode = Episode::all();
-            $seasons = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
+            $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
                     // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
         $data = array(
@@ -2379,6 +2379,8 @@ class AdminSeriesController extends Controller
         }
         if($episode->type == 'm3u8'){
             $type = 'm3u8';
+        }else if($episode->type == 'bunny_cdn'){
+            $type = 'bunny_cdn';
         }else{
             $type = $data['type'];
         }
@@ -4163,7 +4165,7 @@ class AdminSeriesController extends Controller
 
             $value["success"] = 1;
             $value["message"] = "Uploaded Successfully!";
-            $value["Episode_id"] = $Episode_id;
+            $value["episode_id"] = $Episode_id;
 
             return $value;
         }
@@ -4322,7 +4324,7 @@ class AdminSeriesController extends Controller
 
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
-                $value["Episode_id"] = $Episode_id;
+                $value["episode_id"] = $Episode_id;
         
     
                 return $value ;
@@ -4331,5 +4333,32 @@ class AdminSeriesController extends Controller
                 return $value ;
             }
         }
-    
+        public function deleteSelected(Request $request)
+        {
+            $ids = $request->input('ids');
+
+            try {
+                Episode::whereIn('id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            }
+        }
+
+        
+    public function Series_Season_order(Request $request){
+
+        $input = $request->all();
+        $position = $_POST['position'];
+
+        $i=1;
+        foreach($position as $k=>$v){
+          $SeriesSeason = SeriesSeason::find($v);
+          $SeriesSeason->order = $i;
+          $SeriesSeason->save();
+          $i++;
+        }
+        return 1;
+    }
+
 }

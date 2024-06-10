@@ -796,6 +796,18 @@ cursor: pointer;
                               </span>
                            </form>
 
+                           {{-- Logged User Device --}}
+                           <hr style="border:0.5px solid #fff;">
+                           <a href="{{ URL::to('my-logged-devices') }}"  type="button" class="text-white font-size-13" >
+                           <div class="row align-items-center">
+                              <div class="col-md-8">
+                                 <span class="text-light font-size-13">{{ __('Manage Logged Device') }}</span>
+                              </div>
+                              <div class="col-md-4 text-right">
+                                    <!-- <a href="{{ URL::to('my-logged-devices') }}"  type="button" class="text-white font-size-13" >{{ __('Logged Device') }}</a> -->
+                              </div>
+                           </div></a>
+
                            {{-- DOB --}}
                            <hr style="border:0.5px solid #fff;">
 

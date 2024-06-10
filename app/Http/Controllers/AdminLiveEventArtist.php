@@ -225,46 +225,38 @@ class AdminLiveEventArtist extends Controller
                     $PC_image     =  'live_'.$filename ;
                     Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image );
                 }
-         }else{
-            $image = "Defualt.jpg";
-         } 
-
+         }
                                 //  Player Image
          $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
 
          $path = public_path().'/uploads/livecategory/';
          $image_path = public_path().'/uploads/images/';
            
-          if($player_image != '') {   
-               if($player_image != ''  && $player_image != null){
-                    $file_old = $image_path.$player_image;
-                   if (file_exists($file_old)){
-                    unlink($file_old);
-                   }
-               }
-               
-                $player_image = $player_image;
-
-                if(compress_image_enable() == 1){   //upload new file
-
-                    $player_filename  = time().'.'.compress_image_format();
-                    $player_PC_image     =  'live_'.$player_filename ;
-
-                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
-                }else{
-
-                    $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
-                    $player_PC_image     =  'live_'.$player_filename ;
-                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image );
+        if($player_image != '') {   
+            if($player_image != ''  && $player_image != null){
+                $file_old = $image_path.$player_image;
+                if (file_exists($file_old)){
+                unlink($file_old);
                 }
+            }
+            
+            $player_image = $player_image;
 
-            } else{
-                $player_image = "default_horizontal_image.jpg";
+            if(compress_image_enable() == 1){   //upload new file
+
+                $player_filename  = time().'.'.compress_image_format();
+                $player_PC_image     =  'live_'.$player_filename ;
+
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
+            }else{
+
+                $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                $player_PC_image     =  'live_'.$player_filename ;
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image );
             }
 
+        }
 
-         
-            
         $data['user_id'] = Auth::user()->id;
         
         if(empty($data['active'])){
@@ -296,6 +288,7 @@ class AdminLiveEventArtist extends Controller
         } else{
             $status = 1;
         } 
+
         if(empty($data['banner'])){
             $data['banner'] = 0;
         }  
@@ -457,7 +450,6 @@ class AdminLiveEventArtist extends Controller
         $movie->publish_time =$data['publish_time'];
         $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
-        $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = $active ;
         $movie->search_tags = $searchtags;
@@ -467,6 +459,7 @@ class AdminLiveEventArtist extends Controller
         $movie->donations_label =$request->donations_label;
         $movie->tips = !empty($request->tips) ?  1 : 0 ;
         $movie->chats = !empty($request->chats) ? 1 : 0 ;
+        $movie->status = 1 ;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -643,10 +636,6 @@ class AdminLiveEventArtist extends Controller
             $data['featured'] = 0;
         }  
         
-         if(empty($data['status'])){
-            $data['status'] = 0;
-        }  
-        
         if(empty($data['type'])){
             $data['type'] = '';
         }
@@ -802,6 +791,7 @@ class AdminLiveEventArtist extends Controller
         $video->ios_ppv_price = $request->ios_ppv_price;
         $video->tips = !empty($request->tips) ?  1 : 0 ;
         $video->chats = !empty($request->chats) ? 1 : 0 ;
+        $video->status = 1 ;
         $video->save();
 
         if(!empty($data['video_category_id'])){

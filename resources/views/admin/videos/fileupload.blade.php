@@ -167,7 +167,13 @@
 .gridItem{
    padding:5px;
 }
-
+   .dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+    .dz-cancel {color: #FF0000;background: none;border: none;padding: 5px;}
+   .dz-cancel:hover {text-decoration: underline;}
+   .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
 
 </style>
 <div id=" content_videopage" class="content-page">
@@ -270,14 +276,49 @@
                      @else
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
                      @endif
-                     <div class='content file UploadEnable'>
-                        <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
-                        <!-- Dropzone -->
-                        <form action="{{ $post_dropzone_url }}" method= "post" class='dropzone' ></form>
-                        <div class="row justify-content-center">
-                           <div class="col-md-9 text-center">
-                           <p class="c1" >Trailers Can Be Uploaded From Video Edit Screen</p>
+                     <div class="content file UploadEnable">
+                           <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h3>
+                           <!-- Dropzone -->
+                           <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
+                           <div class="row justify-content-center">
+                                 <div class="col-md-9 text-center">
+                                    <p class="c1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                                 </div>
                            </div>
+                        </div>
+
+                       <!-- Dropzone template -->
+                     <div id="template" style="display: none;">
+                        <div class="dz-preview dz-file-preview">
+                           <div class="dz-image"><img data-dz-thumbnail/></div>
+                           <div class="dz-details">
+                              <button class="dz-cancel" type="button">Cancel</button>
+                              <div class="dz-filename"><span data-dz-name></span></div>
+                              <div class="dz-size" data-dz-size></div>
+                              <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress></span><span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
+                              <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                              <div class="dz-success-mark">
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                       <title>Check</title> 
+                                       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> 
+                                          <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path> 
+                                       </g> 
+                                    </svg>
+                              </div>
+                              <div class="dz-error-mark"> 
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+                                       <title>Error</title> 
+                                       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> 
+                                          <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475"> <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path> 
+                                          </g> 
+                                       </g> 
+                                    </svg> 
+                              </div>
+                                
+                           </div>
+                               
+                        </div>
+                     </div>
                            <!-- <div class="col-md-3" style="display: flex;" >
                            <p id="speed">speed: 0kbs</p>&nbsp;&nbsp;&nbsp;
                            <p id="average">average: 0kbs</p>
@@ -310,7 +351,6 @@
          </div>
           
       </div>
-
       <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -1033,6 +1073,19 @@ border-radius: 0px 4px 4px 0px;
                                  </div>
                                  <?php } ?>
                               </div>
+
+                              <div id="ppv_options" style="display: none;">
+                                 <input type="radio" name="ppv_option" id="ppv_gobal_price" value="1">
+                                 <label for="ppv_gobal_price">Set Global Price</label><br>
+                                 <input type="radio" name="ppv_option" id="global_ppv_price" value="2">
+                                 <label for="global_ppv_price">Get Settings Global Price</label>
+                              </div>
+
+                              <div id="price_input_container" class="col-sm-6 form-group mt-3" style="display: none;">
+                                 <label for="ppv_price">Enter Global Price:</label>
+                                 <input type="text" class="form-control" name="set_gobal_ppv_price" id="set_gobal_ppv_price" placeholder="Enter price">
+                              </div>
+
                                <div class="col-sm-6 mt-3">
                                  <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
@@ -1449,6 +1502,41 @@ border-radius: 0px 4px 4px 0px;
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        var globalPpvCheckbox = document.getElementById('global_ppv');
+        var ppvOptionsDiv = document.getElementById('ppv_options');
+        var priceInputContainer = document.getElementById('price_input_container');
+        var ppvGlobalPriceRadio = document.getElementById('ppv_gobal_price');
+
+        // Show/hide the radio buttons based on the initial state of the checkbox
+        ppvOptionsDiv.style.display = globalPpvCheckbox.checked ? 'block' : 'none';
+
+        // Add an event listener to the checkbox to show/hide the radio buttons
+        globalPpvCheckbox.addEventListener('change', function () {
+            ppvOptionsDiv.style.display = this.checked ? 'block' : 'none';
+            // Hide the price input when checkbox is unchecked
+            if (!this.checked) {
+                priceInputContainer.style.display = 'none';
+            }
+        });
+
+        // Add an event listener to the "Set Global Price" radio button
+        ppvGlobalPriceRadio.addEventListener('change', function () {
+            priceInputContainer.style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Hide the price input container if "Add Global Price" is selected
+        var globalPpvPriceRadio = document.getElementById('global_ppv_price');
+        globalPpvPriceRadio.addEventListener('change', function () {
+            if (this.checked) {
+                priceInputContainer.style.display = 'none';
+            }
+        });
+    });
+
+    
    $(document).ready(function(){
    
    var current_fs, next_fs, previous_fs; //fieldsets
@@ -1965,41 +2053,122 @@ $(document).ready(function($){
    //   $('#optionradio').hide();
    //   $('.content_videopage').hide();
    //   $('#content_videopage').hide();
+   Dropzone.autoDiscover = false;
+        var MAX_RETRIES = 3;
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+        function handleError(e, t) {
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
+            }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
+            });
+        }
+    }
+
+        var myDropzone = new Dropzone(".dropzone", { 
+            parallelUploads: 10,
+            maxFilesize: 150000000, // 150MB
+            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            previewTemplate: document.getElementById('template').innerHTML,
+            init: function() {
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("_token", CSRF_TOKEN);
+
+                    // Initialize retry counter and canceled flag if they don't exist
+                    if (!file.retryCount) {
+                        file.retryCount = 0;
+                    }
+                    if (!file.userCanceled) {
+                        file.userCanceled = false;
+                    }
+
+                    // Add cancel button event listener
+                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                        console.log("Cancel button clicked for file: " + file.name); // Log for debugging
+                        file.userCanceled = true; // Mark the file as user-canceled
+                        xhr.abort();
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                        // myDropzone.removeFile(file);
+                        alert("Upload canceled for file: " + file.name);
+                        handleError(file, "Upload canceled by user.");
+                    });
+                });
+
+                this.on("uploadprogress", function(file, progress) {
+                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+                    progressElement.textContent = Math.round(progress) + '%';
+                });
+
+                this.on("success", function(file, response) {
+                    console.log(file);
+                    console.log(response);
+                    if (response.success == 2) {
+                        swal("File not uploaded!");   
+                    } else if (response.error == 3) {
+                        console.log(response.error);
+                        alert("File not uploaded. Choose Library!");   
+                    } else {
+                        $('#Next').show();
+                        $('#video_id').val(response.video_id);
+                        $('#title').val(response.video_title);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                    }
+                });
+
+                this.on("error", function(file, response) {
+                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
+                        file.retryCount++;
+                        setTimeout(function() {
+                            myDropzone.removeFile(file);  
+                            myDropzone.addFile(file);     
+                        }, 1000); 
+                    } else if (file.userCanceled) {
+                        console.log("File upload canceled by user: " + file.name);
+                    } else {
+                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                    }
+                });
+            }
+        });
+         
+   //   Dropzone.autoDiscover = false;
+   //   var myDropzone = new Dropzone(".dropzone",{ 
+   //     //   maxFilesize: 900,  // 3 mb
+   //       parallelUploads: 10,
+   //       maxFilesize: 150000000,
+   //       acceptedFiles: "video/mp4,video/x-m4v,video/*",
+   //   });
+   //   myDropzone.on("sending", function(file, xhr, formData) {
+   //      formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+   //      formData.append("_token", CSRF_TOKEN);
+   // //      checkUploadSpeed( 10, function ( speed, average ) {
+   // //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
+   // //      document.getElementById( 'average' ).textContent = 'average: ' + average + 'kbs';
+   // //  } );
+   //     // console.log(value)
+   //     this.on("success", function(file, value) {
+   //       console.log(value.video_title);
+   //       if(value.success == 2){
+   //          swal("File not uploaded !");   
+   //          location.reload();
+   //       }if(value.error == 3){
+   //       console.log(value.error);
+   //          alert("File not uploaded Choose Library!");   
+   //          location.reload();
+   //       }else{
+   //          $('#Next').show();
+   //          $('#video_id').val(value.video_id);
+   //          $('#title').val(value.video_title);
+   //       }
+   //       });
    
-   
-   
-     Dropzone.autoDiscover = false;
-     var myDropzone = new Dropzone(".dropzone",{ 
-       //   maxFilesize: 900,  // 3 mb
-         parallelUploads: 10,
-         maxFilesize: 150000000,
-         acceptedFiles: "video/mp4,video/x-m4v,video/*",
-     });
-     myDropzone.on("sending", function(file, xhr, formData) {
-        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-        formData.append("_token", CSRF_TOKEN);
-   //      checkUploadSpeed( 10, function ( speed, average ) {
-   //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
-   //      document.getElementById( 'average' ).textContent = 'average: ' + average + 'kbs';
-   //  } );
-       // console.log(value)
-       this.on("success", function(file, value) {
-         console.log(value.video_title);
-         if(value.success == 2){
-            swal("File not uploaded !");   
-            location.reload();
-         }if(value.error == 3){
-         console.log(value.error);
-            alert("File not uploaded Choose Library!");   
-            location.reload();
-         }else{
-            $('#Next').show();
-            $('#video_id').val(value.video_id);
-            $('#title').val(value.video_title);
-         }
-         });
-   
-     }); 
+   //   }); 
    //   function checkUploadSpeed( iterations, update ) {
    //      var average = 0,
    //          index = 0,

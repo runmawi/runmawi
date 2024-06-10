@@ -85,6 +85,7 @@ use App\LiveCategory;
 use App\AudioCategory;
 use App\SeriesNetwork;
 use App\SeriesGenre;
+use App\LiveEventArtist;
 use Theme;
 
 class HomeController extends Controller
@@ -460,6 +461,7 @@ class HomeController extends Controller
                 'latest_episode'  => $latest_episode ,
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
+                'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4") {
@@ -1191,6 +1193,7 @@ class HomeController extends Controller
                         'latest_episode'  => $latest_episode ,
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4") {
@@ -2011,8 +2014,9 @@ class HomeController extends Controller
                     'latest_episode'  => $latest_episode , 
                     'default_vertical_image_url' => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                 );
-                
+
                 if ($this->HomeSetting->theme_choosen == "theme4") {
                     if($request->ajax()) {
                         return $data = [
@@ -2563,7 +2567,7 @@ class HomeController extends Controller
                         foreach ($videos as $row)
                         {
                             $output .= '<li class="list-group-item">
-                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <img width="35px" height="35px" alt="videos" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
                         }
 
                     }else{
@@ -2578,7 +2582,7 @@ class HomeController extends Controller
                         foreach ($livestream as $row)
                         {
                             $livestreams .= '<li class="list-group-item">
-                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <img width="35px" height="35px" alt="livestream" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
                         }
                     }
                     else{
@@ -2593,7 +2597,7 @@ class HomeController extends Controller
                         foreach ($audio as $row)
                         {
                             $audios .= '<li class="list-group-item">
-                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <img width="35px" height="35px" alt="audio" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
                         }
                     }
                     else{
@@ -2613,7 +2617,7 @@ class HomeController extends Controller
                                                 'duration','rating','image','featured','tv_image','player_image','details','description')
                                                 ->where('id',$row->series_id)->pluck('slug')->first();
                                 $Episodes .= '<li class="list-group-item">
-                                <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                                <img width="35px" height="35px" alt="Episode" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
                             }
                         }
                     }
@@ -2630,7 +2634,7 @@ class HomeController extends Controller
                     foreach ($Series as $row)
                     {
                         $Series_search .= '<li class="list-group-item">
-                        <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        <img width="35px" height="35px" alt="Series" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
                     }
                 }
                 else{
@@ -2646,7 +2650,7 @@ class HomeController extends Controller
                     foreach ($station_audio as $row)
                     {
                         $station_search .= '<li class="list-group-item">
-                        <img width="35px" height="35px" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
+                        <img width="35px" height="35px" alt="station_audio" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
                     }
                 }
                 else{
@@ -4792,13 +4796,15 @@ public function uploadExcel(Request $request)
         $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
         $order_settings_list = OrderHomeSetting::get();  
 
-        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $request) {
+        $current_timezone = current_timezone();
+        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_horizontal_image_url = default_horizontal_image_url();
 
-            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request , $current_timezone) {
 
-            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
-
-            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
             $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
                                                 
@@ -4806,13 +4812,16 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->orderBy('start_time')->limit(15)->get()->map(function ($item) {
+                                                ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
 
-                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A');
-                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A');
-                                                    $item['TimeZone']           = TimeZone::where('id',$item->time_zone)->first();
+                                                    $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 
-                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
+
+                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
+
                                                     return $item;
                                                 });
             return $item;
@@ -4825,6 +4834,7 @@ public function uploadExcel(Request $request)
             'order_settings' => $order_settings ,
             'epg_channel_data' => $epg_channel_data ,
             'EPG_date_filter_status' => 1 ,
+            'current_timezone'       => $current_timezone,
         ];
 
         return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
@@ -5110,4 +5120,50 @@ public function uploadExcel(Request $request)
     
         return Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livestreams , 'livestreams_data' => $livestreams ]) )->render();
     }
+
+
+    public function MyLoggedDevices()
+    {
+        try {
+
+            if (Auth::guest())
+            {
+                return redirect('/login');            
+            }
+            
+            $alldevices_register = LoggedDevice::where('user_id', Auth::User()->id)
+                                        ->get();
+            $data = array(
+                'alldevices_register' => $alldevices_register,
+            );
+
+            return Theme::view('MyLoggedDevices',['MyLoggedDevices'=>$data]);
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    
+    public function MyLoggedDevicesDelete($id)
+    {
+        try {
+
+            if (Auth::guest())
+            {
+                return redirect('/login');            
+            }
+    
+            LoggedDevice::where('id',$id)->delete();
+
+            return Redirect::back()->with(array('message' => 'Successfully Deleted Device','note_type' => 'success'));
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }

@@ -34,6 +34,9 @@ Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
 
 Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
+Route::get('/my-logged-devices', 'HomeController@MyLoggedDevices');
+Route::get('/my-logged-devices-delete/{id}', 'HomeController@MyLoggedDevicesDelete');
+
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
 Route::group(['middleware' => 'auth'], function(){
@@ -521,6 +524,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
+    Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
 
     // Channel Schedule
     Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
@@ -1068,7 +1072,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/season/edit/{season_id}', 'AdminSeriesController@Edit_season');
     Route::post('/season/update', 'AdminSeriesController@Update_season');
     Route::get('/season/delete/{id}', 'AdminSeriesController@destroy_season');
-
+    Route::post('/bunnycdn_episodelibrary', 'AdminSeriesController@BunnycdnEpisodelibrary');
+    Route::post('/stream_bunny_cdn_episode', 'AdminSeriesController@StreamBunnyCdnEpisode');
+    Route::Post('/Series_Season_order', 'AdminSeriesController@Series_Season_order');
+    
     Route::post('/episode/create', 'AdminSeriesController@create_episode');
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
@@ -1106,6 +1113,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/inapp-purchase_delete/{id}', 'AdminInappPurchaseController@delete')->name('inapp_purchase_delete');
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
+
+        /*  Default Scheduler Videos Setting  */
+
+        Route::get('/default-video-scheduler', 'AdminSiteVideoSchedulerController@SiteVideoScheduler')->name('VideoScheduler');
+        Route::get('/default-filter-scheduler', 'AdminSiteVideoSchedulerController@FilterVideoScheduler')->name('FilterScheduler');
+        Route::post('/default-drag-drop-Scheduler-videos', 'AdminSiteVideoSchedulerController@DragDropSchedulerVideos');
+        Route::get('/default-Scheduled-videos', 'AdminSiteVideoSchedulerController@ScheduledVideos');
+        Route::get('/default-get-channel-details/{videoId}', 'AdminSiteVideoSchedulerController@GetChannelDetail');
+        Route::post('/default-Scheduler-UpdateTime', 'AdminSiteVideoSchedulerController@SchedulerUpdateTime');
+        Route::post('/default-Scheduler-ReSchedule', 'AdminSiteVideoSchedulerController@SchedulerReSchedule');
+        Route::post('/default-get-all-channel-details', 'AdminSiteVideoSchedulerController@GetAllChannelDetails');
+        Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
+        Route::get('/generate-scheduler-xml', 'AdminSiteVideoSchedulerController@generateSchedulerXml');
+        Route::post('/default-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@DefaultgenerateSchedulerXml');
 
     /*  Channel Videos Setting  */
 
@@ -1190,6 +1211,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
     Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
 
+    Route::get('ads/variables', 'AdminAdvertiserController@ads_variable')->name('admin.ads_variable');
+    Route::post('ads/variable-store', 'AdminAdvertiserController@ads_variables_store')->name('admin.ads_variable_store');
+    Route::get('ads/variable-edit/{id}', 'AdminAdvertiserController@ads_variables_edit')->name('admin.ads_variables_edit');
+    Route::post('ads/variable-update/{id}', 'AdminAdvertiserController@ads_variables_update')->name('admin.ads_variables_update');
+    Route::get('ads/variable-delete/{id}', 'AdminAdvertiserController@ads_variables_delete')->name('admin.ads_variables_delete');
 
     // Admin Series Genre
         Route::get('/document/genre', 'AdminDocumentGenreController@index');
@@ -2338,6 +2364,8 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
 Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
+
+Route::get('/channel-video-scheduler-List', 'ChannelVideoSchedulerController@page_list')->name('Front-End.Channel-video-scheduler.page_list');
 
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
 

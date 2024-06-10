@@ -200,7 +200,7 @@ class AdminLiveStreamController extends Controller
                 'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
                 'ads_category' => Adscategory::all(),
                 "countries" => CountryCode::all(),
-                "Timezone"  => TimeZone::all(),
+                "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -731,6 +731,7 @@ class AdminLiveStreamController extends Controller
         $hls_url  = Session::get('hls_url');
         $Rtmp_url = Session::get('Rtmp_url');
         $title = Session::get('title');
+        $settings = Setting::first();
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -742,7 +743,7 @@ class AdminLiveStreamController extends Controller
             'languages' => Language::all(),
             'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
-            'settings' => Setting::first(),
+            'settings' => $settings,
             'liveStreamVideo_error' => '0',
             'Rtmp_urls' => RTMP::all(),
             'Stream_key' => $Stream_key,
@@ -758,8 +759,8 @@ class AdminLiveStreamController extends Controller
             'ads_category' => Adscategory::all(),
             "countries" => CountryCode::all(),
             "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
-            "Timezone"  => TimeZone::all(),
-            );
+            "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
+        );
 
         return View::make('admin.livestream.edit', $data); 
     }

@@ -778,7 +778,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
 
                 <div class="col-sm-3 recurring_timezone" style="{{  !empty($video->recurring_timezone)  ? '' : 'display: none' }}">
-                    <label class="m-0">{{ _('Recurring Time Zone')}} </label>
+                    <label class="m-0">{{ __('Recurring Time Zone')}} </label>
                     <select class="form-control" name="recurring_timezone"  >
                         @foreach ($Timezone as $item)
                             <option value={{ $item->id }} {{ $item->id == $video->recurring_timezone ? "selected" : null }}>{{ $item->time_zone  }} </option>
@@ -787,7 +787,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-3" id="recurring_program" style="{{  $video->publish_type == 'recurring_program' ? '' : 'display: none' }}">
-                    <label class="m-0">{{ _('Recurring Program')}} </label>
+                    <label class="m-0">{{ __('Recurring Program')}} </label>
                     <select class="form-control" name="recurring_program"  id="recurring_program_dropdown">
                         <option value=" ">Select the Recurring Period </option>
                         <option value="daily" {{ !empty(($video->recurring_program=="daily"))? "selected" : "" }} >  Daily </option>
@@ -798,7 +798,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-2 recurring_program_week_day" style="{{ !is_null($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
-                    <label class="m-0">{{ _('Week Days ')}} </label>
+                    <label class="m-0">{{ __('Week Days ')}} </label>
                     <select class="form-control" name="recurring_program_week_day" >
                         <option value="0"  {{ !is_null(($video->recurring_program_week_day=="0"))? "selected" : "" }}  > Sunday </option>
                         <option value="1"  {{ !empty(($video->recurring_program_week_day=="1"))? "selected" : "" }}  >  Monday </option>
@@ -811,7 +811,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-2 recurring_program_month_day"  style="{{ !empty($video->recurring_program_month_day)  ? '' : 'display: none' }}">
-                    <label class="m-0">{{ _('Month Days ')}} </label>
+                    <label class="m-0">{{ __('Month Days ')}} </label>
                     <select class="form-control" name="recurring_program_month_day" >
                         @for ($i = 1; $i <= 31 ; $i++)
                             <option value="{{ $i }}" {{ !empty(($video->recurring_program_month_day == $i ))? "selected" : "" }} > {{ $i }} </option>

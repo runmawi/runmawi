@@ -11,35 +11,56 @@
             fluid: true,
 
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},  
+                },
+                pictureInPictureToggle: true,
             }
-        });
+    });
+
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    const playPauseButton = document.querySelector('.vjs-big-play-button');
+
+    skipForwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() + 10);
+    });
+
+    skipBackwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() - 10);
+    });
+
+    player.on('userinactive', () => {
+    // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'none';
+        skipBackwardButton.style.display = 'none';
+        playPauseButton.style.display = 'none';
+    }
+    });
+
+    player.on('useractive', () => {
+    // Show the Play pause, skip forward and backward buttons when the user becomes active
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'block';
+        skipBackwardButton.style.display = 'block';
+        playPauseButton.style.display = 'block';
+    }
+    });
 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
+            console.log("p",player);
 
             const player_duration_Seconds        =  player.duration();
             const video_skip_intro_seconds       = '<?= $episode_details->video_skip_intro_seconds ?>' ;
@@ -136,6 +157,15 @@
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });
+
+        player.on('loadedmetadata', () => {
+    const qualityLevels = player.qualityLevels();
+
+    for (let i = 0; i < qualityLevels.length; i++) {
+      // Customize label to show height in pixels or any desired format
+      qualityLevels[i].label = `${qualityLevels[i].height}p`;
+    }
+  });
 
         var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
         var vastTagPostroll = '<?= $post_advertisement ?>';

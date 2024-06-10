@@ -219,6 +219,8 @@ class TvshowsController extends Controller
                 ->where('banner', '1')
                 ->orderBy('id', 'DESC')
                 ->simplePaginate(120000),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+
         ];
 
 
@@ -914,167 +916,171 @@ class TvshowsController extends Controller
 
     public function play_series($name)
     {
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
-        $theme = Theme::uses($Theme);
+        try {
+            
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+            $theme = Theme::uses($Theme);
 
-        $currency = CurrencySetting::first();
+            $currency = CurrencySetting::first();
 
-        $settings = Setting::first();
-       
-        if (Auth::guest() && $settings->access_free == 0):
-            return Redirect::to('/login');
-        endif;
+            $settings = Setting::first();
+        
+            if (Auth::guest() && $settings->access_free == 0):
+                return Redirect::to('/login');
+            endif;
 
-        $series = Series::where('slug', '=', $name)->first();
+            $series = Series::where('slug', '=', $name)->first();
 
-        if (@$series->uploaded_by == 'Channel') {
-            $user_id = $series->user_id;
+            if (@$series->uploaded_by == 'Channel') {
+                $user_id = $series->user_id;
 
-            $user = Channel::where('channels.id', '=', $user_id)
-                ->join('users', 'channels.email', '=', 'users.email')
-                ->select('users.id as user_id')
-                ->first();
+                $user = Channel::where('channels.id', '=', $user_id)
+                    ->join('users', 'channels.email', '=', 'users.email')
+                    ->select('users.id as user_id')
+                    ->first();
 
-            if (!Auth::guest() && $user_id == Auth::user()->id) {
-                $video_access = 'free';
-            } else {
+                if (!Auth::guest() && $user_id == Auth::user()->id) {
+                    $video_access = 'free';
+                } else {
+                    $video_access = 'pay';
+                }
+                
+            } elseif (@$series->uploaded_by == 'CPP') {
+                $user_id = $series->user_id;
+
+                $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
+                    ->join('users', 'moderators_users.email', '=', 'users.email')
+                    ->select('users.id as user_id')
+                    ->first();
+
+            }
+            $series = Series::where('slug', '=', $name)->first();
+
+
+            if((Auth::guest() && @$series->access == 'ppv') || (Auth::guest() && @$series->access == 'subscriber') || (Auth::guest() && @$series->access == 'registered') ){
                 $video_access = 'pay';
+            }else if ((!Auth::guest() && @$series->access == 'ppv') || (@$series->access == 'subscriber' && Auth::user()->role != 'admin')) {
+                $video_access = 'pay';
+            }  else {
+                $video_access = 'free';
             }
-            
-        } elseif (@$series->uploaded_by == 'CPP') {
-            $user_id = $series->user_id;
 
-            $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
-                ->join('users', 'moderators_users.email', '=', 'users.email')
-                ->select('users.id as user_id')
+            $id = $series->id;
+
+            if (!Auth::guest() && $series->ppv_status == 1) {
+                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                    ->where('series_id', '=', $id)
+                    ->count();
+            } else {
+                $ppv_exits = 0;
+            }
+        
+            $season = SeriesSeason::where('series_id', '=', $id)
+                ->with('episodes')
+                ->get();
+
+            $season_trailer = SeriesSeason::where('series_id', '=', $id)->get();
+
+            $episodefirst = Episode::where('series_id', '=', $id)
+                ->orderBy('id', 'ASC')
                 ->first();
 
-        }
-        $series = Series::where('slug', '=', $name)->first();
-
-
-        if((Auth::guest() && @$series->access == 'ppv') || (Auth::guest() && @$series->access == 'subscriber') || (Auth::guest() && @$series->access == 'registered') ){
-            $video_access = 'pay';
-        }else if ((!Auth::guest() && @$series->access == 'ppv') || (@$series->access == 'subscriber' && Auth::user()->role != 'admin')) {
-            $video_access = 'pay';
-        }  else {
-            $video_access = 'free';
-        }
-
-        $id = $series->id;
-
-        if (!Auth::guest() && $series->ppv_status == 1) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('series_id', '=', $id)
-                ->count();
-        } else {
-            $ppv_exits = 0;
-        }
-      
-        $season = SeriesSeason::where('series_id', '=', $id)
-            ->with('episodes')
-            ->get();
-
-        $season_trailer = SeriesSeason::where('series_id', '=', $id)->get();
-
-        $episodefirst = Episode::where('series_id', '=', $id)
-            ->orderBy('id', 'ASC')
-            ->first();
-
-          
-        $category_name = SeriesGenre::select('series_genre.name as categories_name','series_genre.slug as categories_slug')
-            ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
-            ->where('series_categories.series_id', $series->id)
-            ->get();
             
+            $category_name = SeriesGenre::select('series_genre.name as categories_name','series_genre.slug as categories_slug')
+                ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
+                ->where('series_categories.series_id', $series->id)
+                ->get();
+                
 
-        //Make sure series is active
-        if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active || $ppv_exits > 0) {
-            $view_increment = 5;
-            $payment_settings = PaymentSetting::first();
-            $mode = $payment_settings->live_mode;
-            if ($mode == 0) {
-                $secret_key = $payment_settings->test_secret_key;
-                $publishable_key = $payment_settings->test_publishable_key;
-            } elseif ($mode == 1) {
-                $secret_key = $payment_settings->live_secret_key;
-                $publishable_key = $payment_settings->live_publishable_key;
-            } else {
-                $secret_key = null;
-                $publishable_key = null;
-            }
+            //Make sure series is active
+            if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active || $ppv_exits > 0) {
+                $view_increment = 5;
+                $payment_settings = PaymentSetting::first();
+                $mode = $payment_settings->live_mode;
+                if ($mode == 0) {
+                    $secret_key = $payment_settings->test_secret_key;
+                    $publishable_key = $payment_settings->test_publishable_key;
+                } elseif ($mode == 1) {
+                    $secret_key = $payment_settings->live_secret_key;
+                    $publishable_key = $payment_settings->live_publishable_key;
+                } else {
+                    $secret_key = null;
+                    $publishable_key = null;
+                }
 
-            $series = Series::where('slug', $name)->first();
+                $series = Series::where('slug', $name)->first();
 
-            // for theme5 , theme4, theme3
+                // for theme5 , theme4, theme3
 
-            $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
+                $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
 
 
-            $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
-                                            ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
+                $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                                                ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
 
-            $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
-                                             ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
-           
-            $data = [
-                'series_data' => $series,
-                'currency' => $currency,
-                'video_access' => $video_access,
-                'ppv_exits' => $ppv_exits,
-                'season' => $season,
-                'season_trailer' => $season_trailer,
-                'publishable_key' => $publishable_key,
-                'settings' => $settings,
-                'episodenext' => $episodefirst,
-                'url' => 'episodes',
-                'menu' => Menu::orderBy('order', 'ASC')->get(),
-                'view_increment' => $view_increment,
-                'series_categories' => SeriesGenre::all(),
-                'category_name'     => $category_name ,
-                'pages' => Page::where('active', '=', 1)->get(),
-                'season_depends_episode' => $season_depends_episode ,
-                'featured_season_depends_episode' => $featured_season_depends_episode ,
-            ];
-
-            // return Theme::view('series', $data);
-
-            return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
-
-        } else {
+                $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                                                ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
-            $payment_settings = PaymentSetting::first();
+                $data = [
+                    'series_data' => $series,
+                    'currency' => $currency,
+                    'video_access' => $video_access,
+                    'ppv_exits' => $ppv_exits,
+                    'season' => $season,
+                    'season_trailer' => $season_trailer,
+                    'publishable_key' => $publishable_key,
+                    'settings' => $settings,
+                    'episodenext' => $episodefirst,
+                    'url' => 'episodes',
+                    'menu' => Menu::orderBy('order', 'ASC')->get(),
+                    'view_increment' => $view_increment,
+                    'series_categories' => SeriesGenre::all(),
+                    'category_name'     => $category_name ,
+                    'pages' => Page::where('active', '=', 1)->get(),
+                    'season_depends_episode' => $season_depends_episode ,
+                    'featured_season_depends_episode' => $featured_season_depends_episode ,
+                ];
 
-            $mode = $payment_settings->live_mode;
-            if ($mode == 0) {
-                $secret_key = $payment_settings->test_secret_key;
-                $publishable_key = $payment_settings->test_publishable_key;
-            } elseif ($mode == 1) {
-                $secret_key = $payment_settings->live_secret_key;
-                $publishable_key = $payment_settings->live_publishable_key;
+                return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
+
             } else {
-                $secret_key = null;
-                $publishable_key = null;
-            }
+                
+                $payment_settings = PaymentSetting::first();
 
-            $data = [
-                'series_data' => $series,
-                'currency' => $currency,
-                'video_access' => $video_access,
-                'ppv_exits' => $ppv_exits,
-                'season' => $season,
-                'season_trailer' => $season_trailer,
-                'publishable_key' => $publishable_key,
-                'settings' => $settings,
-                'episodenext' => $episodefirst,
-                'url' => 'episodes',
-                'menu' => Menu::orderBy('order', 'ASC')->get(),
-                'view_increment' => 5 ,
-                'series_categories' => SeriesGenre::all(),
-                'category_name'     => $category_name ,
-                'pages' => Page::where('active', '=', 1)->get(),
-            ];
-            return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
+                $mode = $payment_settings->live_mode;
+                if ($mode == 0) {
+                    $secret_key = $payment_settings->test_secret_key;
+                    $publishable_key = $payment_settings->test_publishable_key;
+                } elseif ($mode == 1) {
+                    $secret_key = $payment_settings->live_secret_key;
+                    $publishable_key = $payment_settings->live_publishable_key;
+                } else {
+                    $secret_key = null;
+                    $publishable_key = null;
+                }
+
+                $data = [
+                    'series_data' => $series,
+                    'currency' => $currency,
+                    'video_access' => $video_access,
+                    'ppv_exits' => $ppv_exits,
+                    'season' => $season,
+                    'season_trailer' => $season_trailer,
+                    'publishable_key' => $publishable_key,
+                    'settings' => $settings,
+                    'episodenext' => $episodefirst,
+                    'url' => 'episodes',
+                    'menu' => Menu::orderBy('order', 'ASC')->get(),
+                    'view_increment' => 5 ,
+                    'series_categories' => SeriesGenre::all(),
+                    'category_name'     => $category_name ,
+                    'pages' => Page::where('active', '=', 1)->get(),
+                ];
+                return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
+            }
+        
+        } catch (\Throwable $th) {
+            return abort(404);
         }
     }
 

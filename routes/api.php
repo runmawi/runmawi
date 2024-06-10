@@ -25,6 +25,8 @@ Route::group(
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
+        Route::post('Network_depends_series', 'ApiAuthController@Network_depends_series');
+
         Route::get('Interest-Genre-list', 'ApiAuthController@Interest_Genre_list');
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');
@@ -672,5 +674,13 @@ Route::group(
             Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
             Route::post('Verify-OTP', 'ApiAuthController@Verify_OTP'); 
             Route::post('send-video-push-notifications', 'ApiAuthController@SendVideoPushNotification'); 
+
+            Route::post('time-zone', 'ApiAuthController@TimeZone'); 
+            Route::post('channel-epg', 'ApiAuthController@channel_epg'); 
+
+            Route::get('storage-setting', 'ApiAuthController@StorageSetting'); 
+            Route::get('GeoIPLocation', 'ApiAuthController@GeoIPLocation'); 
+
+            Route::get('Ads-variables', 'ApiAuthController@Ads_variables'); 
 
         });

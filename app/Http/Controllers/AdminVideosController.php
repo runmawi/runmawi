@@ -94,6 +94,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
 use App\AdminVideoAds;
+use App\AdminEPGChannel;
+use App\Episode;
+use App\LiveStream;
 
 class AdminVideosController extends Controller
 {
@@ -2247,11 +2250,37 @@ class AdminVideosController extends Controller
             $video->embed_code = "";
         }
 
-        if (!empty($data["global_ppv"])) {
-            $video->global_ppv = $data["global_ppv"];
-        } else {
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else if(empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
+        // if (!empty($data["global_ppv"])) {
+        //     $video->global_ppv = $data["global_ppv"];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
 
         if (!empty($data["enable"])) {
             $enable = $data["enable"];
@@ -2557,7 +2586,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : null ;
+        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : !empty($data["ppv_price"]) ? $data["ppv_price"] : null ;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];
@@ -2575,6 +2604,11 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $tiny_video_image;
         $video->tiny_player_image = $tiny_player_image;
         $video->tiny_video_title_image = $tiny_video_title_image;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
+
         $video->save();
 
         if (
@@ -3144,11 +3178,37 @@ class AdminVideosController extends Controller
 
         $settings = Setting::where('ppv_status', '=', 1)->first();
 
-        if (!empty($data['global_ppv'])) {
-            $data['ppv_price'] = $settings->ppv_price;
-            $video->global_ppv = $data['global_ppv'];
-        } else {
+        // if (!empty($data['global_ppv'])) {
+        //     $data['ppv_price'] = $settings->ppv_price;
+        //     $video->global_ppv = $data['global_ppv'];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else if(empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
 
         if ($request->slug == '') {
@@ -3841,6 +3901,10 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $data["tiny_video_image"] ;
         $video->tiny_player_image = $data["tiny_player_image"] ;
         $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -3860,6 +3924,8 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
+
+
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
         }
@@ -5784,19 +5850,90 @@ class AdminVideosController extends Controller
 
     public function ManageSchedule($id)
     {
-        $VideoSchedules = VideoSchedules::get();
-        $settings = Setting::first();
 
-        $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
-        $TimeZone = TimeZone::get();
+        $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
 
-        $data = [
-            "schedule" => $VideoSchedules,
-            "settings" => $settings,
-            "TimeZone" => $TimeZone,
-        ];
-        //    dd($VideoSchedules);
-        return view("admin.schedule.manage_schedule", $data);
+            if($enable_default_timezone == 1){
+
+                
+                $Channels =  VideoSchedules::Select('id','name','slug')->get();
+
+                // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+                $TimeZone = TimeZone::get();
+
+                $default_time_zone = Setting::pluck('default_time_zone')->first();
+                
+                $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+                
+                $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
+                
+                $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
+            
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+
+                $mergedCollection = $videos
+                ->concat($episodes)
+                ->concat($livestreams)
+                ->values();
+                //   dd($mergedCollection);
+                
+                $perPage = 3; // Adjust the number based on your requirement
+                $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
+                $paginator = new LengthAwarePaginator(
+                    $mergedCollection->forPage($currentPage, $perPage),
+                    $mergedCollection->count(),
+                    $perPage,
+                    $currentPage
+                );
+                
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+    
+                $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+
+                $data = array(
+                
+                    'Channels' => $Channels  ,
+                    'TimeZone' => $TimeZone  ,
+                    'default_time_zone' => $default_time_zone  ,
+                    'enable_default_timezone' => $enable_default_timezone  ,
+                    'utc_difference' => $utc_difference  ,
+                    // 'VideoCollection' => $paginator  ,
+                    'time_zoneid' => $time_zoneid  ,
+                    'VideoCollection' => $mergedCollection  ,
+                    'VideoSchedules' => $VideoSchedules  ,
+                );            
+
+            return view("admin.schedule.VideoSchedulerEpg", $data);
+
+        }else{
+
+            $VideoSchedules = VideoSchedules::get();
+            $settings = Setting::first();
+
+            $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+            $TimeZone = TimeZone::get();
+
+            $data = [
+                "schedule" => $VideoSchedules,
+                "settings" => $settings,
+                "TimeZone" => $TimeZone,
+            ];
+            //    dd($VideoSchedules);
+            return view("admin.schedule.manage_schedule", $data);
+        }
+
     }
 
     public function CalendarSchedule(Request $request)

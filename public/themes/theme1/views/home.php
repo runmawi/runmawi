@@ -187,6 +187,22 @@ if($home_settings->live_videos == 1){ ?>
 <?php } }?>
 
 
+<!-- Live artist -->
+<?php
+   if($value->video_name == 'live_artist'){
+      if($home_settings->live_artist == 1){  ?>
+         <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <?php include('partials/home/live-artist-videos.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+      <?php }
+   }?>
+
 <?php 
        if($value->video_name == 'audios'){
 if($home_settings->audios == 1){ ?>

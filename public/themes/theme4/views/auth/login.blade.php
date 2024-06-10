@@ -91,8 +91,14 @@ text-align: left;
         background: url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;
         background-size: cover;
     }
-</style>
 
+    @media (max-width:1024px){
+        .km{font-size:25px;}
+    }
+    @media (max-width:600px){
+        .km{font-size:20px;}
+    }
+</style>
         <link rel="preload" href="<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>" as="image">
     </head>
 
