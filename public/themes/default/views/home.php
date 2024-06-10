@@ -916,3 +916,21 @@ function toggleReadMore(key) {
       overflow-y:scroll;
    }
 </style>
+
+<script>
+   var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
+
+   if(scheduler_content == 1){
+
+      $("body").append(
+         "<div class='remove_watch' style='z-index: 100; position: fixed; top: 15%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;'>LiveStream Start's Form <?= Session::get('scheduler_time'); ?></div>"
+      );
+      setTimeout(function() {
+            $('.remove_watch').slideUp('fast');
+      }, 3000);
+
+      var scheduler_content = '<?= Session::forget('scheduler_content'); ?>';
+      var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
+      
+   }
+</script>
