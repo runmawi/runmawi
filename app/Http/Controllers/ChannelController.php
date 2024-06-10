@@ -4359,6 +4359,35 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
                             }
                         }
+
+                        // Subscriber / PPV  
+
+                        if( $item->access == "subscriber" && !is_null($item->ppv_price) ){
+
+                            if (Auth::user()->role == "subscriber") {
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif( $PPV_exists == true ){
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            else{
+                                $item['users_video_visibility_status'] = false ;
+                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_Rent_button']      =   true  ;
+                                $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                                $item['users_video_visibility_register_button']  = false ;
+                                $item['users_video_visibility_redirect_url']     =  URL::to('/becomesubscriber') ;
+                            }
+                        }
                     }
 
                         // Free duration
@@ -4687,6 +4716,34 @@ class ChannelController extends Controller
                             }
                         }
 
+                         // Subscriber / PPV  
+
+                         if( $item->access == "subscriber" && !is_null($item->ppv_price) ){
+
+                            if (Auth::user()->role == "subscriber") {
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif( $PPV_exists == true ){
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1; 
+                            }
+                            else{
+                                $item['users_video_visibility_status'] = false ;
+                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_Rent_button']      =   true  ;
+                                $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                                $item['users_video_visibility_register_button']  = false ;
+                                $item['users_video_visibility_redirect_url']     =  URL::to('/becomesubscriber') ;
+                            }
+                        }
+
                         if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                             if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                                 $item['users_video_visibility_status'] = true ;
@@ -4836,6 +4893,8 @@ class ChannelController extends Controller
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
+                'currency'         => $currency,
+                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
             );
 
 
