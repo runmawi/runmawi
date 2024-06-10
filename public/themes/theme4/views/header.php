@@ -270,7 +270,7 @@
     <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <script src="<?= URL::to('/') . '/assets/js/jquery-3.5.1.min.js' ?>" async></script>
+    <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
     
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
@@ -2521,7 +2521,7 @@ window.onload = function () {
 
 <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const ids = ['down-video', 'down-live', 'down-network', 'down-series', 'down-audio'];
+            const ids = [ 'down-live', 'down-network', 'down-series'];
 
             ids.forEach(id => {
                 const element = document.getElementById(id);
