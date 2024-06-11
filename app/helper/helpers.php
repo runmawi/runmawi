@@ -1896,7 +1896,7 @@ function SiteVideoScheduledData($time,$channe_id,$time_zone){
     
     $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
     $time = $carbonDate->format('n-j-Y');
-    // print_r($time);exit;
+    // print_r($time_zone);exit;
     $SiteVideoScheduler = App\SiteVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
