@@ -316,7 +316,7 @@ $settings = App\Setting::first();
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" />
                     <span style="color:red" id="Error_image">Image is Requried*</span>
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
