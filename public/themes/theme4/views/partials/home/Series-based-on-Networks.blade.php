@@ -166,8 +166,11 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
         cellAlign: 'left',
         contain: true,
         groupCells: true,
-        adaptiveHeight: true,
         pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
 
     elem.querySelectorAll('.item').forEach(function(item) {
@@ -202,8 +205,11 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                     cellAlign: 'left',
                     contain: true,
                     groupCells: true,
-                    adaptiveHeight: true,
                     pageDots: false,
+                    draggable: true,
+                    freeScroll: true,
+                    imagesLoaded: true,
+                    lazyload:true,
                 });
             }
 
@@ -227,21 +233,3 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 });
 </script>
 
-<style>
-    @media screen and (max-width: 4200px) and (min-width: 1400px) {
-        div#based-networks .flickity-viewport {
-            min-height: calc(100vw / 4)
-        }
-    }
-    @media screen and (max-width: 1399px) and (min-width: 1100px) {
-        div#based-networks .flickity-viewport {
-            min-height: calc(100vw / 3.2)
-        }
-    }
-    @media screen and (max-width: 600px) and (min-width: 1px) {
-        div#based-networks .flickity-viewport {
-            min-height: calc(100vw / 1)
-        }
-    }
-    
-</style>
