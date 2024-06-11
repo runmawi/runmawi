@@ -3,9 +3,9 @@
 </div>
 
         <div class="col-sm-12 overflow-hidden pl-0 mb-5">
-            <div class="favorites-contens ml-2">
-                <div class="trending-contens sub_dropdown_image">
-                    <ul class="recommend-series-slider list-inline row mb-0">
+            <div class="channels-list favorites-contens">
+                <div class="channel-row favorites-contens sub_dropdown_image">
+                    <div class="video-list recommend-series-videos pl-0">
                         <?php  
                             $ThumbnailSetting = App\ThumbnailSetting::first();
 
@@ -13,22 +13,22 @@
 
                             foreach($series_lists as $key => $series_list):
                         ?>
-                        <li class="slick-slide">
-                            <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
-                                <div class="position-relative">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="w-100">
-                                    <div class="controls">
-                                        <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
-                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                        </a>
+                            <div class="item depends-row">
+                                <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+                                    <div class="position-relative">
+                                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="flickity-lazyloaded">
+                                        <div class="controls">
+                                            <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
+                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                            </a>
 
+                                        </div>
+                                        
                                     </div>
-                                    
-                                </div>
-                            </a>
-                        </li>
+                                </a>
+                            </div>
                         <?php endforeach; ?>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,3 +72,17 @@
                 </div>
             </div>
         <?php endforeach; ?>
+
+        <script>
+    var elem = document.querySelector('.recommend-series-videos');
+    var flkty = new Flickity( elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
