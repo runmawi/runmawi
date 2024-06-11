@@ -25,16 +25,15 @@
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
         player.on('userinactive', () => {
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
           if (playPauseButton) {
             playPauseButton.style.display = 'none';
           }
         });
 
         player.on('useractive', () => {
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
-          if (skipForwardButton && skipBackwardButton && playPauseButton) {
+          if (playPauseButton) {
             playPauseButton.style.display = 'block';
           }
         });

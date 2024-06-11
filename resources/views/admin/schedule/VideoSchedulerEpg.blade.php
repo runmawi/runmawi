@@ -343,12 +343,36 @@
         <div class="iq-card">
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
+
+                @if (Session::has('message'))
+                    <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                @endif
+                
+
+                @if(count($errors) > 0)
+                @foreach( $errors->all() as $message )
+                <div class="alert alert-danger display-hide" id="successMessage" >
+                <button id="successMessage" class="close" data-close="alert"></button>
+                <span>{{ $message }}</span>
+                </div>
+                @endforeach
+                @endif
+
                 <div class="iq-header-title">
                     <h4 class="card-title">Scheduler :</h4>
                 </div>
-                <div class="float-right" style="position: relative;margin-top: -25px;"> 
+                <form id="schedulerForm" action="{{ URL::to('admin/default-generate-scheduler-xml/')  }}" method="post"> 
+                    <div class="float-right" style="position: relative; margin-top: -25px;">
+                        <input type="hidden" id="default_channel_id" name="default_channel_id" value="">
+                        <input type="hidden" id="default_time_zone" name="default_time_zone" value="">
+                        <input type="hidden" id="default_date_choose" name="default_date_choose" value="">
+				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="submit" id="GenerateXmlJson" class="form-control btn btn-primary" value="Generate XML & Json">
+                    </div>
+                </form>
+                <!-- <div class="float-right" style="position: relative;margin-top: -25px;"> 
                     <button id="GenerateXmlJson" class="form-control btn btn-primary">Generate XML & Json</button>
-                </div>
+                </div> -->
             </div>
              
                
@@ -629,6 +653,15 @@ details{
 
 
 <script>
+
+
+    $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 5000);
+    })
+
   $(".drag").draggable({
     appendTo: "body",
     helper: "clone"
@@ -1265,6 +1298,7 @@ $("#dropzone").droppable({
                                 title: "Today's Slot is Full Please Choose Next date to Continue...",
                         })
                     }
+                    location.reload();
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
                     
@@ -1311,6 +1345,19 @@ $("#dropzone").droppable({
                     }
 
                 }
+            });
+        });
+
+        $(document).ready(function() {
+            $('#schedulerForm').on('submit', function(event) {
+
+                $('#default_channel_id').val($('#channe_id').val());  
+                $('#default_time_zone').val($('#time_zone_id').val());    
+                $('#default_date_choose').val($('.date').val());      
+                
+                console.log('Channel ID:', $('#default_channel_id').val());
+                console.log('Time Zone:', $('#default_time_zone').val());
+                console.log('Date:', $('#default_date_choose').val());
             });
         });
 

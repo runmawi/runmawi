@@ -13,6 +13,11 @@ include(public_path('themes/theme4/views/header.php'));
 <link href="<?= asset('public/themes/theme4/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme4/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
 
+
+<!-- Style -->
+<link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
+
+
 <!-- video-js Script  -->
 
 <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -946,6 +951,19 @@ settings: "unslick" // destroys slick
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
+<script>
+    var elem = document.querySelector('.live-videos');
+    var flkty = new Flickity( elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
 <script type="text/javascript">
 
 var livepayment = $('#purchase_url').val();

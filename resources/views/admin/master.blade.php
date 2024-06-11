@@ -562,33 +562,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                      </ul>
                   </li>
-                  <!-- Ads Menu starts -->
-                  <!-- @if($settings->ads_on_videos == 1)
-                  <div class="men">
-                    <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
-                </div>
-                <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads Categories</span></a></li>
+               
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Ads List</span></a></li>
-
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Plans</span></a></li>
-
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span> Ads Revenue</span></a></li> -->
-
-         <!-- {{-- Geo Fencing --}} -->
-               <!-- <li><p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Geo Fencing</p></li>
-
-               <li><a href="{{ URL::to('admin/Geofencing') }}" class="iq-waves-effect"><i class="la la-sliders"></i><span></span></a></li>
-
-               <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li> -->
-
-                <!-- @endif -->
                   <!-- Ads Menu ends -->
                   <?php }elseif($package == "Pro" && auth()->user()->role == "subscriber" || $package == "Pro" && auth()->user()->role == "registered" ){   ?>
       <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
@@ -841,35 +816,35 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            @endif
                      </ul>
                   </li>
+
                   <!-- Ads Menu starts -->
-                  @if($settings->ads_on_videos == 1)
                   <div class="men">
                     <p class="lnk" >Ads Management</p>
-                </div>
-                <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
-                    </ul>
-                </li>
+                  </div>
 
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
+                  <li>
+                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                     </ul>
+                  </li>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
-                
-                <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Time Slot</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
 
-                <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Banners</span></a></li>
+                  <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
+                  
+                  <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Time Slot</span></a></li>
 
-                <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad variable</span></a></li>
+                  <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Banners</span></a></li>
 
-                @endif
+                  <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad variable</span></a></li>
+
 
 
                     {{-- Geo Fencing --}}
@@ -1224,36 +1199,37 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                         </ul>
                     </li>
+
                     <!-- Ads Menu starts -->
-                  @if($settings->ads_on_videos == 1)
+
                   <div class="men">
                     <p class="lnk" >{{ (__('Ads Management')) }}</p>
-                </div>
-                <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/manage-avd.svg')?>"><span>{{ (__('Manage Advertiser')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/advertisers') }}">{{ (__('Advertisers')) }}</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-cate.svg')?>"><span>{{ (__('Ads Categories')) }}</span></a></li>
+                  </div>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-list.svg')?>"><span>{{ (__('Ads List')) }}</span></a></li>
+                  <li>
+                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/manage-avd.svg')?>"><span>{{ (__('Manage Advertiser')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{ URL::to('admin/advertisers') }}">{{ (__('Advertisers')) }}</a></li>
+                     </ul>
+                  </li>
+                  
+                  <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-cate.svg')?>"><span>{{ (__('Ads Categories')) }}</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-list.svg')?>"><span>{{ (__('Ads List')) }}</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span>{{ (__('Ads Revenue')) }} </span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span>{{ (__('Calendar Events')) }} </span></a></li>
-                
-                {{-- <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>{{ (__('Ad Campaigns')) }} </span></a></li> --}}
+                  <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span>{{ (__('Ads Revenue')) }} </span></a></li>
 
-                <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>{{ (__('Ad Time Slot')) }} </span></a></li>
+                  <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span>{{ (__('Calendar Events')) }} </span></a></li>
+                  
+                  {{-- <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>{{ (__('Ad Campaigns')) }} </span></a></li> --}}
 
-                <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> {{ (__('Ad Banners')) }} </span></a></li>
+                  <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>{{ (__('Ad Time Slot')) }} </span></a></li>
 
-                <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
+                  <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> {{ (__('Ad Banners')) }} </span></a></li>
 
-                @endif
+                  <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
 
                 
                     {{-- Geo Fencing --}}
@@ -1549,36 +1525,37 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                               @endif
                            </ul>
                     </li>
-                    <!-- Ads Menu starts class="iq-waves-effect"-->
-                  @if($settings->ads_on_videos == 1)
+
+                    <!-- Ads Menu starts -->
                   <div>
                     <p class="lnk" >Ads Management</p>
-                </div>
-                <li>
-                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
+                  </div>
 
-                <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
+                  <li>
+                     <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
+                     </ul>
+                  </li>
+                     
+                  <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
 
-                <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
+                  <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad3.svg')?>"><span> Ads Plans</span></a></li>
 
-                <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
-                
-                {{-- <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Campaigns</span></a></li> --}}
+                  <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span> Ads Revenue</span></a></li>
 
-                <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Time Slot</span></a></li>
+                  <li><a href="{{ URL::to('admin/calendar-event') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/calender.svg')?>"><span> Calendar Events</span></a></li>
+                  
+                  {{-- <li><a href="{{ URL::to('admin/ad_campaign') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Campaigns</span></a></li> --}}
 
-                <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Banners</span></a></li>
+                  <li><a href="{{ URL::to('admin/Ads-TimeSlot') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Time Slot</span></a></li>
 
-                <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
+                  <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad Banners</span></a></li>
 
-                @endif
+                  <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
+
 
                        {{-- Geo Fencing --}}
                <li><p class="lnk" >Geo Fencing</p></li>

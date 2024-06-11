@@ -70,6 +70,7 @@ use Session;
 use Theme;
 use DateTime;
 use App\SiteVideoScheduler;
+use App\DefaultSchedulerData;
 
 class ChannelController extends Controller
 {
@@ -3992,29 +3993,84 @@ class ChannelController extends Controller
 
         $today_date_time = new \DateTime("now");
         $today_date = $today_date_time->format("n-j-Y");
-        // dd(Country_name());
-        // $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
+        $today_date = $today_date_time->format("m-d-Y");
+        $current_time = $today_date_time->format("H:i:s");
+        $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+        // $current_timezone = 'Asia/Kolkata';
 
-        //     $item['ChannelVideoScheduler']  =  SiteVideoScheduler::where('channe_id',$request->id)
+        $currentTime = \Carbon\Carbon::now('UTC')->setTimezone($current_timezone)->format('H:i:s');
+        // $currentTime = "12:12:21";
+
+        // dd($current_timezone);
+        $epg_channel_data =  VideoSchedules::where('slug',$slug)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ,$today_date , $current_timezone) {
+
+            $item['default_scheduler_datas']  =  DefaultSchedulerData::where('channe_id',$request->id)->where('time_zone',$current_timezone)
                                                 
-        //                                         ->when( !is_null($today_date), function ($query) use ($request,$today_date ) {
-        //                                             return $query->Where('choosed_date', $today_date);
-        //                                         })
+                                                ->when( !is_null($today_date), function ($query) use ($request,$today_date ) {
+                                                    return $query->Where('choosed_date', $today_date);
+                                                })
 
-        //                                         ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
+                                                ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
 
-        //                                             $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+                                                    $item['TimeZone']   = TimeZone::where('time_zone',$item->time_zone)->first();
 
-        //                                             $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+                                                    $item['converted_start_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
 
-        //                                             $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-        //                                                                                             ->copy()->tz( $current_timezone )->format('h:i A');
+                                                    $item['converted_end_time'] = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
 
-        //                                             return $item;
-        //                                         });
-        //     return $item;
-        // })->first();
+                                                                                                    
+                                                        switch (true) {
+
+                                                            case $item['type'] == "mp4":
+                                                                $item['videos_url']  =  $item->url ;
+                                                                $item['video_player_type'] =  'video/mp4' ;
+                                                            break;
+
+                                                            case $item['type'] == "m3u8":
+                                                                $item['videos_url']  =  $item->url ;
+                                                                $item['video_player_type'] =  'application/x-mpegURL' ;
+                                                            break;
+
+                                                            default:
+                                                                $item['videos_url']    = null ;
+                                                                $item['video_player_type']   =  null ;
+                                                            break;
+                                                        }
+                                                    return $item;
+                                                });
+            return $item;
+        })->first();
+
+        if(count($epg_channel_data['default_scheduler_datas']) > 0 ){
+           $start_time =  $epg_channel_data['default_scheduler_datas']->pluck('start_time')->first();
+           $AM_PM =  $epg_channel_data['default_scheduler_datas']->pluck('current_time')->first();
+
+           if($start_time > $currentTime){
+        
+            Session::put('scheduler_content', 1);
+            Session::put('scheduler_time', $start_time.' '.$AM_PM);
+
+                return Redirect::to('/home')->with(array(
+                    'message' => 'Scheduler Not Started For Timezone',
+                    'note_type' => 'success'
+                ));
+           }
+
+        }
+
+        $data = [
+            'current_timezone' => $current_timezone,
+            'currentTime' => $currentTime,
+            'epg_channel_data' => $epg_channel_data,
+            'default_scheduler_datas' => $epg_channel_data['default_scheduler_datas'], 
+        ];
+        return Theme::view('DefaultVideoScheduler.videos', $data);
+
+        // return view('admin.schedule.DefaultSchedulerPlayer', $data);
+
+        // dd($epg_channel_data);
 
         // dd($epg_channel_data);
         
@@ -4301,6 +4357,35 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_status'] = true ;
                                 $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                        }
+
+                        // Subscriber / PPV  
+
+                        if( $item->access == "subscriber" && !is_null($item->ppv_price) ){
+
+                            if (Auth::user()->role == "subscriber") {
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif( $PPV_exists == true ){
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_status_button']  = 'Free for start '.$item->free_duration .' sec' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            else{
+                                $item['users_video_visibility_status'] = false ;
+                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_Rent_button']      =   true  ;
+                                $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                                $item['users_video_visibility_register_button']  = false ;
+                                $item['users_video_visibility_redirect_url']     =  URL::to('/becomesubscriber') ;
                             }
                         }
                     }
@@ -4631,6 +4716,34 @@ class ChannelController extends Controller
                             }
                         }
 
+                         // Subscriber / PPV  
+
+                         if( $item->access == "subscriber" && !is_null($item->ppv_price) ){
+
+                            if (Auth::user()->role == "subscriber") {
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif( $PPV_exists == true ){
+                                $item['users_video_visibility_status']         = true ;
+                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
+                            }
+                            elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1; 
+                            }
+                            else{
+                                $item['users_video_visibility_status'] = false ;
+                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_Rent_button']      =   true  ;
+                                $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                                $item['users_video_visibility_register_button']  = false ;
+                                $item['users_video_visibility_redirect_url']     =  URL::to('/becomesubscriber') ;
+                            }
+                        }
+
                         if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                             if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                                 $item['users_video_visibility_status'] = true ;
@@ -4780,6 +4893,8 @@ class ChannelController extends Controller
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
+                'currency'         => $currency,
+                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
             );
 
 

@@ -56,7 +56,7 @@ animation-iteration-count: 2, 1, 5; */
   .vjs-icon-subtitles::before{
   content: "";
   background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
-  width: 66%;
+  width: 60%;
   height: 72%;
   top: 36%;
   left: 38%;
@@ -119,7 +119,6 @@ animation-iteration-count: 2, 1, 5; */
   );
   transition: opacity .4s ease-in-out,transform .4s ease-in-out;
   z-index: 3;
-  bottom: 2%;
 }
 
 .my-video.vjs-theme-city 
@@ -149,8 +148,8 @@ width: 3.8em;
 .my-video.vjs-theme-city 
 .vjs-play-control:hover 
 .vjs-icon-placeholder:before {
-  border: 0px solid var(--vjs-theme-fantasy--secondary);
-  background: var(--vjs-theme-fantasy--primary);
+  border: 0px solid var(--vjs-theme-city--secondary);
+  background: var(--vjs-theme-city--primary);
 }
 
 .my-video.vjs-theme-city .vjs-volume-panel {order: 1;}
@@ -496,25 +495,33 @@ pointer-events: auto;
 position: absolute;
 color: white;
 right: 35%;
-top: 46%;
+top: 48%;
 background: transparent;
 z-index: 1;
 transition: 3s;
 display: inline-block;
-/* cursor: pointer; */
+cursor: pointer;
 }
+
 .custom-skip-backward-button {
 pointer-events: auto;
 position: absolute;
 color: white;
-top: 46%;
+top: 48%;
 left: 35%;
 background: transparent;
 z-index: 1;
 border: none;
 transition: 3s;
 display: inline-block;
+cursor: pointer;
 }
+
+.custom-skip-backward-button:hover, 
+.custom-skip-forward-button:hover{
+  transform: scale(1.5); 
+}
+
 .titlebutton {
 pointer-events: auto;
 position: absolute;
@@ -863,7 +870,7 @@ display: flex;
 .my-video.video-js .vjs-live-control {
 display: contents;
 align-items: center;
-line-height: 3.7em;
+line-height: 2em;
 padding: 10px;
 font-family: Roboto;
 font-weight: 600;
@@ -872,6 +879,11 @@ font-size: 18px;
 
 .my-video.video-js .vjs-live-control .vjs-hidden{
   display: contents !important;
+}
+
+.live_dot{
+  color: red;
+  font-size: 60px;
 }
 
 .vjs-menu-button-popup .vjs-menu {
