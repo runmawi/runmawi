@@ -56,7 +56,7 @@ animation-iteration-count: 2, 1, 5; */
   .vjs-icon-subtitles::before{
   content: "";
   background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
-  width: 66%;
+  width: 60%;
   height: 72%;
   top: 36%;
   left: 38%;
@@ -500,7 +500,9 @@ background: transparent;
 z-index: 1;
 transition: 3s;
 display: inline-block;
+cursor: pointer;
 }
+
 .custom-skip-backward-button {
 pointer-events: auto;
 position: absolute;
@@ -512,7 +514,14 @@ z-index: 1;
 border: none;
 transition: 3s;
 display: inline-block;
+cursor: pointer;
 }
+
+.custom-skip-backward-button:hover, 
+.custom-skip-forward-button:hover{
+  transform: scale(1.5); 
+}
+
 .titlebutton {
 pointer-events: auto;
 position: absolute;
@@ -861,7 +870,7 @@ display: flex;
 .my-video.video-js .vjs-live-control {
 display: contents;
 align-items: center;
-line-height: 3.7em;
+line-height: 2em;
 padding: 10px;
 font-family: Roboto;
 font-weight: 600;
@@ -870,6 +879,11 @@ font-size: 18px;
 
 .my-video.video-js .vjs-live-control .vjs-hidden{
   display: contents !important;
+}
+
+.live_dot{
+  color: red;
+  font-size: 60px;
 }
 
 .vjs-menu-button-popup .vjs-menu {
