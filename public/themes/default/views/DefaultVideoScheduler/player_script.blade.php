@@ -7,10 +7,38 @@
 
         const player = videojs('video-player', {
             controlBar: {
-                playToggle: false, // Hide the play button
-                progressControl: false, // Hide the progress bar
-                remainingTimeDisplay: false, // Hide the remaining time display
-                currentTimeDisplay: false // Hide the current time display
+                volumePanel: { inline: false },
+                children: {
+                    // 'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'subtitlesButton': {},
+                    'fullscreenToggle': {},
+                },
+                pictureInPictureToggle: true,
+            }
+        });
+
+        // Function to reload the video player when paused for 10sec & more.
+        var pauseStartTime = null;
+        var totalPausedTime = 0;
+        player.on('pause', function() {
+            pauseStartTime = new Date();
+        });
+
+        player.on('play', function() {
+            if (pauseStartTime !== null) {
+                var pauseEndTime = new Date();
+                var pauseDuration = (pauseEndTime - pauseStartTime) / 1000;
+
+                totalPausedTime += pauseDuration;
+                pauseStartTime = null;
+
+                // console.log("Total paused time: " + Math.floor(totalPausedTime));
+                if(Math.floor(totalPausedTime) >= 10){
+                    player.pause();
+                    window.location.reload();
+                }
+                totalPausedTime = 0;
             }
         });
 
@@ -84,5 +112,9 @@
         top: -5%;
         z-index: 30;
         margin-left: -3px;
+    }
+
+    .vjs-progress-control{
+        pointer-events: none;
     }
 </style>

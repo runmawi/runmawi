@@ -213,8 +213,8 @@
    <!-- CSS -->
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style">
    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
-   <!-- JavaScript -->
-   <script src="public/themes/theme4/assets/js/flickity.pkgd.min.js"></script>
+<!-- JavaScript -->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
    <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
@@ -224,8 +224,8 @@
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-    <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
+    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
 
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -266,9 +266,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       
    <!-- Ply.io -->
-
-    <link rel="preload" href="public/themes/theme4/assets/css/plyr-3.6.9.css" as="style"/>
-    <link rel="stylesheet" href="public/themes/theme4/assets/css/plyr-3.6.9.css" />
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" as="style"/>
+    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" />
 
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style">
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/remixicon.css') ?>" as="style">
@@ -2349,11 +2348,11 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    </script>
 
      <!-- search validation -->
-   <script src="public/themes/theme4/assets/js/jquery.validate.min.js"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>"></script>
 
 
-   <script src="public/themes/theme4/assets/js/popper-2.9.2.min.js"></script>
-   <script src="public/themes/theme4/assets/js/bootstrap-5.0.2.min.js"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>"></script>
 
    <script>
       $("#searchResult").validate({

@@ -68,7 +68,7 @@ header .navbar ul li:last-child{margin-right:0}
 .vod-info li span{background-color:red;display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
 /* .main-content{padding-top:40px} */
 .block-space{padding:40px 0}
-#iq-trending,#iq-favorites{margin-top:40px}
+#iq-trending,#iq-favorites,.s-margin{margin-top:40px}
 .iq-main-header{margin-bottom:20px}
 .main-title{font-size:1.2em}
 .main-title a:hover,.main-title a:focus{color:var(--iq-primary)!important}
@@ -560,7 +560,7 @@ img{max-width:100%;height: auto;}
 .theme4-slider .slick-list{overflow: visible;}
 
 /* flickity slider */
-.flickity-viewport{min-height: 200px; max-height: 400px;}
+/* .flickity-viewport{min-height: 200px; max-height: 400px;} */
 @media screen and (min-width: 601px) {
    .vib .thumbnail {
       width: 74%;
@@ -680,7 +680,7 @@ img{max-width:100%;height: auto;}
 .channels-list .channel-row .video-list .item img {
   width: 100%;
   height: auto;
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0;
   -o-object-fit: cover;

@@ -28,10 +28,8 @@
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
                     'fullscreenToggle': {},
-
                 },
                 pictureInPictureToggle: true,                
-
             }
     });
 

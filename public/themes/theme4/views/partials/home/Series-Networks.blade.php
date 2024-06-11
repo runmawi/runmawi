@@ -117,7 +117,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                    <img class="lazy" src="{{ $series_networks->banner_image_url  }}" alt="series">
+                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -164,8 +164,11 @@ var elem = document.querySelector('.series-network-video');
         cellAlign: 'left',
         contain: true,
         groupCells: true,
-        adaptiveHeight: true,
         pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.series-network-video .item').forEach(function(item) {
     item.addEventListener('click', function() {
@@ -221,21 +224,3 @@ $('body').on('click', '.drp-close', function() {
 });
 </script>
 
-<style>
-    @media screen and (max-width: 4200px) and (min-width: 1400px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 4)
-        }
-    }
-    @media screen and (max-width: 1399px) and (min-width: 1100px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 3.2)
-        }
-    }
-    @media screen and (max-width: 600px) and (min-width: 1px) {
-        div#tv-networks .flickity-viewport {
-            min-height: calc(100vw / 1)
-        }
-    }
-    
-</style>
