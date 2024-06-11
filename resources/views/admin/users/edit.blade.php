@@ -62,7 +62,7 @@
 									@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'profile.png'; ?>@endif
 									<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 									<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
-									<input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" />
+									<input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" />
 								</div>
 
 								<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
