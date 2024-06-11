@@ -1,9 +1,9 @@
 <script>
     let videos = <?php echo json_encode($default_scheduler_datas); ?>;
 
-    // const currentTime = '<?php echo $currentTime; ?>';
+    const currentTime = '<?php echo $currentTime; ?>';
 
-        const currentTime = "15:12:21";
+        // const currentTime = "15:12:21";
 
         const player = videojs('video-player', {
             controlBar: {
