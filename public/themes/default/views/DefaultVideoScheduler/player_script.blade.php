@@ -1,9 +1,9 @@
 <script>
     let videos = <?php echo json_encode($default_scheduler_datas); ?>;
 
-    const currentTime = '<?php echo $currentTime; ?>';
+    // const currentTime = '<?php echo $currentTime; ?>';
 
-        // const currentTime = "15:12:21";
+        const currentTime = "15:12:21";
 
         const player = videojs('video-player', {
             controlBar: {
@@ -40,6 +40,21 @@
                 }
                 totalPausedTime = 0;
             }
+        });
+
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        player.on('userinactive', () => {
+          // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          // Show the Play pause, skip forward and backward buttons when the user becomes active
+          if (playPauseButton) {
+            playPauseButton.style.display = 'block';
+          }
         });
 
 

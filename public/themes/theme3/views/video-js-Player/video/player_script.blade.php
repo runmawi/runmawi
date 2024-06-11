@@ -12,33 +12,33 @@
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'remainingTime': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {}                     
+                    'fullscreenToggle': {},                     
                 },
                 pictureInPictureToggle: true,
             }
         });
 
-        document.querySelector('.custom-skip-forward-button').addEventListener('click', function() {
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+
+        skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
         });
 
-        document.querySelector('.custom-skip-backward-button').addEventListener('click', function() {
+        skipBackwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() - 10);
         });
 
         player.on('userinactive', () => {
           // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
-
           if (skipForwardButton && skipBackwardButton && playPauseButton) {
             skipForwardButton.style.display = 'none';
             skipBackwardButton.style.display = 'none';
@@ -48,9 +48,6 @@
 
         player.on('useractive', () => {
           // Show the Play pause, skip forward and backward buttons when the user becomes active
-          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          const playPauseButton = document.querySelector('.vjs-big-play-button');
           if (skipForwardButton && skipBackwardButton && playPauseButton) {
             skipForwardButton.style.display = 'block';
             skipBackwardButton.style.display = 'block';

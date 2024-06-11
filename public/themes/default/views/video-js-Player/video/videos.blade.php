@@ -61,7 +61,8 @@
                     </svg>
                 </button>  
 
-                <video id="my-video" class="vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-hls-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
+                <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls  
+                    preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
                     <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
                     @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
                         @if(isset($subtitles) && count($subtitles) > 0)
