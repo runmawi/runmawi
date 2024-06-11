@@ -913,13 +913,20 @@ class AdminSiteVideoSchedulerController extends Controller
     
     public function DefaultgenerateSchedulerXml(Request $request)
     {
+
+        // dd($request->all());
         try {
-            $SchedulerDate_time = new \DateTime($request->time);
+            // $SchedulerDate_time = new \DateTime($request->time);
+            $SchedulerDate_time = new \DateTime($request->default_date_choose);
             $time = $SchedulerDate_time->format("j-n-Y");
-            $channe_id = $request->channe_id;
-            $time_zone = $request->time_zone;
-    
-            $choosen_date_time = new \DateTime($request->time);
+            // $channe_id = $request->channe_id;
+            // $time_zone = $request->time_zone;
+            
+            $channe_id = $request->default_channel_id;
+            $time_zone = $request->default_time_zone;
+
+            // $choosen_date_time = new \DateTime($request->time);
+            $choosen_date_time = new \DateTime($request->default_date_choose);
             $choosen_date = $choosen_date_time->format("j-n-Y");
             $file_choosed_date = $choosen_date_time->format('j_n_Y');
     
@@ -1034,8 +1041,12 @@ class AdminSiteVideoSchedulerController extends Controller
                 $jsonContent = json_encode($schedulerData, JSON_PRETTY_PRINT);
                 Storage::disk('local')->put($jsonFilePath, $jsonContent);
             }
-    
-            return 1;
+            
+            return Redirect::back()->with([
+                'note' => 'XML & Json Files Generated..',
+                'note_type' => 'success',
+            ]);
+            // return 1;
         } catch (\Throwable $th) {
             throw $th;
         }
