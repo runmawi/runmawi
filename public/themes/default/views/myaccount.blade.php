@@ -755,7 +755,7 @@ cursor: pointer;
                               <span id="user_img" class="collapse">
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
+                                                <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" required/>
                                           </div>
                                        <div class="col-md-4">
                                              <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
