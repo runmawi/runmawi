@@ -11,15 +11,38 @@
                 children: {
                     // 'flexibleWidthSpacer': {},
                     'progressControl': {},
-                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
                     'fullscreenToggle': {},
                 },
                 pictureInPictureToggle: true,
             }
         });
 
+        // Function to reload the video player when paused for 10sec & more.
+        var pauseStartTime = null;
+        var totalPausedTime = 0;
+        player.on('pause', function() {
+            pauseStartTime = new Date();
+        });
 
-        // console.log('pause',player.paused());
+        player.on('play', function() {
+            if (pauseStartTime !== null) {
+                var pauseEndTime = new Date();
+                var pauseDuration = (pauseEndTime - pauseStartTime) / 1000;
+
+                totalPausedTime += pauseDuration;
+                pauseStartTime = null;
+
+                // console.log("Total paused time: " + Math.floor(totalPausedTime));
+                if(Math.floor(totalPausedTime) >= 10){
+                    player.pause();
+                    window.location.reload();
+                }
+                totalPausedTime = 0;
+            }
+        });
+
+
         function timeToSeconds(time) {
             const parts = time.split(':');
             return (+parts[0]) * 3600 + (+parts[1]) * 60 + (+parts[2]);
