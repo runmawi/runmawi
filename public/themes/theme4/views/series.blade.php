@@ -549,15 +549,15 @@
         <div class=" ">
             <div class="col-md-12 mt-4 p-0">
                 <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav" id="nav-tab" role="tablist">
+                    <div class="nav mar-left" id="nav-tab" role="tablist">
                         <h4 class=""> {{ 'Episode' }} </h4>
                     </div>
                 </nav>
             </div>
 
-            <div class="container-fluid pl-3">
+            <div class="container-fluid p-0">
                 <div class="channels-list favorites-contens">
-                    <div class="col-md-3 p-0 mt-4">
+                    <div class="mar-left col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">
                             @foreach ($season as $key => $seasons)
                                 <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
