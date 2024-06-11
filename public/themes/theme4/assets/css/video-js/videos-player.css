@@ -56,7 +56,7 @@ animation-iteration-count: 2, 1, 5; */
   .vjs-icon-subtitles::before{
   content: "";
   background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
-  width: 66%;
+  width: 60%;
   height: 72%;
   top: 36%;
   left: 38%;
@@ -148,8 +148,8 @@ width: 3.8em;
 .my-video.vjs-theme-city 
 .vjs-play-control:hover 
 .vjs-icon-placeholder:before {
-  border: 0px solid var(--vjs-theme-fantasy--secondary);
-  background: var(--vjs-theme-fantasy--primary);
+  border: 0px solid var(--vjs-theme-city--secondary);
+  background: var(--vjs-theme-city--primary);
 }
 
 .my-video.vjs-theme-city .vjs-volume-panel {order: 1;}

@@ -34,7 +34,7 @@
         });
 
         player.on('useractive', () => {
-          if (skipForwardButton && skipBackwardButton && playPauseButton) {
+          if (playPauseButton) {
             playPauseButton.style.display = 'block';
           }
         });
