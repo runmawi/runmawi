@@ -687,7 +687,7 @@
                 <div class="channel-row favorites-contens sub_dropdown_image">  
                     <div class="video-list live-videos">
                         @foreach ($Related_videos as $related_video)
-                            <div class="item">
+                            <div class="item depends-row">
                                 <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
                                     <div class="position-relative">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="flickity-lazyloaded" alt="{{ $related_video->title }}">

@@ -311,18 +311,18 @@
 
         
 
-        <div class="mar-left video-list you-may-like overflow-hidden">
+        <div class="video-list you-may-like overflow-hidden">
             <div class="col-md-12 mt-4 p-0">
                 <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav" id="nav-tab" role="tablist">
+                    <div class="nav mar-left" id="nav-tab" role="tablist">
                         <h4 class=""> {{ 'Episode' }} </h4>
                     </div>
                 </nav>
             </div>
 
             <div class="">
-                <div class="favorites-contens">
-                    <div class="col-md-3 p-0 mt-4">
+                <div class="channels-list favorites-contens">
+                    <div class="mar-left col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">
                             @foreach ($season as $key => $seasons)
                                 <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
@@ -331,20 +331,19 @@
                         </select>
                     </div>
 
-                    <div class="trending-contens sub_dropdown_image mt-3 mar-left">
-                        <ul id="trending-slider-nav" class= "episode-slider list-inline row mb-0" >
+                    <div class="channel-row trending-contens sub_dropdown_image mt-3">
+                        <div class="video-list episodes-videos" >
                             @foreach ($season as $key => $seasons)
                                 @forelse ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                        <div class="item depends-row">
                                             <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                 <div class=" position-relative">
-                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="flickity-lazyloaded" alt="{{ $episodes->title}}">
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                         </a>
-
                                                         <!-- <nav>
                                                         <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                         </nav> -->
@@ -355,21 +354,18 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
+                                        </div>
                                     @else
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                        <div class="item depends-row">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                                 <div class=" position-relative">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
+                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="flickity-lazyloaded" >
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                         </a>
-
                                                         <!-- <nav>
-                                                        
                                                             <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
-                                                    
                                                         </nav> -->
                                                                                                         
                                                         <p class="trending-dec" >
@@ -378,7 +374,7 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
+                                        </div>
                                     @endif
                                 @empty
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
@@ -390,7 +386,7 @@
                                     </li>
                                 @endforelse
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -560,7 +556,7 @@
             </div>
 
             <div class="container-fluid pl-3">
-                <div class="favorites-contens">
+                <div class="channels-list favorites-contens">
                     <div class="col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">
                             @foreach ($season as $key => $seasons)
@@ -570,20 +566,19 @@
                         </select>
                     </div>
 
-                    <div class="trending-contens sub_dropdown_image mt-3">
-                        <ul id="trending-slider-nav" class= " list-inline m-0 row align-items-center" >
+                    <div class="channel-row trending-contens sub_dropdown_image mt-3">
+                        <div class="video-list episodes-videos" >
                             @foreach ($season as $key => $seasons)
                                 @forelse ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                        <div class="item depends-row">
                                             <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                 <div class=" position-relative">
-                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="flickity-lazyloaded" alt="{{ $episodes->title}}">
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                         </a>
-
                                                         <!-- <nav>
                                                         <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                         </nav> -->
@@ -594,21 +589,18 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
+                                        </div>
                                     @else
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                        <div class="item depends-row">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                                 <div class=" position-relative">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
+                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="flickity-lazyloaded" >
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                         </a>
-
                                                         <!-- <nav>
-                                                        
                                                             <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
-                                                    
                                                         </nav> -->
                                                                                                         
                                                         <p class="trending-dec" >
@@ -617,7 +609,7 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
+                                        </div>
                                     @endif
                                 @empty
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
@@ -629,7 +621,7 @@
                                     </li>
                                 @endforelse
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -746,6 +738,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
+<script>
+    var elem = document.querySelector('.episodes-videos');
+    var flkty = new Flickity( elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
 
 <script type="text/javascript">
     var purchase_series = $('#purchase_url').val();
