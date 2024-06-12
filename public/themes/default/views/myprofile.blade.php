@@ -316,7 +316,8 @@ $settings = App\Setting::first();
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" />
+                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp"  onchange="validateFileType(this)"/>
+                    <span id="file-type-validation-msg" style="color:red;"></span>
                     <span style="color:red" id="Error_image">Image is Requried*</span>
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
@@ -725,6 +726,21 @@ border-radius: 4px;
   
   <?php $settings = App\Setting::first(); ?>
 
+  <script>
+		function validateFileType(input) {
+		const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+		for (let i = 0; i < input.files.length; i++) {
+			const file = input.files[i];
+			if (!allowedExtensions.exec(file.name)) {
+			document.getElementById('file-type-validation-msg').textContent = '*Incorrect format. Please upload png,jpg,webp or gif.';
+			input.value = ''; // Reset the input value to allow the user to upload again
+			return false;
+			}
+		}
+		document.getElementById('file-type-validation-msg').textContent = ''; // Clear the message if all files are valid
+		return true;
+		}
+	</script>
   
    <script>
 $(document).ready(function () {
