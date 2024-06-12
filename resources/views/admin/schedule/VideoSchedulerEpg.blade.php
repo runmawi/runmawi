@@ -1293,12 +1293,13 @@ $("#dropzone").droppable({
                         Swal.fire({
                                 title: "Can't Set Scheduled Before Current date",
                         })
+                        location.reload();
                     }else if(value == 5){
                         Swal.fire({
                                 title: "Today's Slot is Full Please Choose Next date to Continue...",
                         })
+                        location.reload();
                     }
-                    location.reload();
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
                     
