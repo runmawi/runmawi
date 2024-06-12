@@ -1465,28 +1465,56 @@ function SchedulerSocureData($socure_type,$socure_id)
             );
 
         }else if(!empty($socure_data) && $socure_data->type == 'm3u8_url'){
-        $m3u8_url = $socure_data->m3u8_url;
-            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $m3u8_url = $socure_data->m3u8_url;
+            $command = [
+                'ffprobe', 
+                '-v', 'error', 
+                '-show_entries', 'format=duration', 
+                '-of', 'default=noprint_wrappers=1:nokey=1', 
+                $m3u8_url
+            ];
+            
             $process = new Process($command);
-            // try {
+            
+            try {
                 // Run the process
                 $process->mustRun();
                 $duration = trim($process->getOutput());
                 $seconds = round($duration);
-            // } catch (ProcessFailedException $exception) {
-            //     $error = $exception->getMessage();
-            // }
-            if($duration == 'N/A'){
-                $duration = 3600;
-                $seconds  = 3600;
+            
+                // Check if duration is not available
+                if ($duration == 'N/A') {
+                    $duration = 3600; // default duration
+                    $seconds = 3600;
+                }
+            
+                $data = [
+                    'duration' => $duration,
+                    'seconds' => $seconds,
+                    'type' => 'm3u8',
+                    'URL' => $m3u8_url,
+                    'socure_data' => $socure_data,
+                ];
+            
+            } catch (ProcessFailedException $exception) {
+                // Handle process failure
+                $error = $exception->getMessage();
+                error_log('FFprobe command failed: ' . $error);
+            
+                // Provide default values on failure
+                $duration = 3600; // default duration
+                $seconds = 3600;
+            
+                $data = [
+                    'duration' => $duration,
+                    'seconds' => $seconds,
+                    'type' => 'm3u8',
+                    'URL' => $m3u8_url,
+                    'socure_data' => $socure_data,
+                    'error' => 'FFprobe command failed',
+                ];
+                exit;
             }
-            $data = array(
-                'duration' => $duration  ,
-                'seconds' => $seconds  ,      
-                'type' => 'm3u8'  ,            
-                'URL' => $socure_data->m3u8_url  ,      
-                'socure_data' => $socure_data  ,
-            );
         }else if(!empty($socure_data) && $socure_data->type == 'mp4_url'){
         // echo"<pre>"; print_r($socure_data);exit;
         $mp4_url = $socure_data->mp4_url;
