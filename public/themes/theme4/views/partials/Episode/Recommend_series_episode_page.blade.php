@@ -16,7 +16,7 @@
                             <div class="item depends-row">
                                 <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                     <div class="position-relative">
-                                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="flickity-lazyloaded">
+                                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="flickity-lazyloaded" alt="<?= $series_list->title ?>">
                                         <div class="controls">
                                             <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
