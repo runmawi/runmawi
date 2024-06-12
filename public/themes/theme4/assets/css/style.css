@@ -572,10 +572,10 @@ img{max-width:100%;height: auto;}
 }
 
 @media screen and (min-width: 1400px) {
-  #videoInfo, .series-based-network-dropdown {
+  /* #videoInfo, .series-based-network-dropdown {
       max-height: 500px;
       height: 32vw;
-  }
+  } */
   .vib .content-list .depends-row{
     width: 14.3%;
 }
@@ -614,11 +614,11 @@ img{max-width:100%;height: auto;}
 }
 
 @media screen and (min-width: 992px) and (max-width: 1399px) {
-  #videoInfo, .series-based-network-dropdown  {
+  /* #videoInfo, .series-based-network-dropdown  {
       height: auto;
       max-height: 550px;
       min-height: 460px;
-  }
+  } */
 }
 
 @media screen and (max-width: 1399px) and (min-width: 1100px) {
@@ -631,10 +631,10 @@ img{max-width:100%;height: auto;}
   .vib .content-list .depends-row {
       width: 16.666%;
   }
-  #videoInfo, .series-based-network-dropdown {
-    max-height: 500px;
-    height: 25vw;
-}
+  /* #videoInfo, .series-based-network-dropdown {
+      max-height: 500px;
+      height: 25vw;
+  } */
 }
 
   .channels-list .channel-row .video-list {
