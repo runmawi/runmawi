@@ -331,8 +331,6 @@ line-height: 2.1em;
   height: 100%;
 }
 
-/* Extras */
-
 .my-video.vjs-theme-city .vjs-progress-control .vjs-progress-holder,
 .my-video.vjs-theme-city
 .vjs-progress-control:hover
@@ -996,4 +994,63 @@ margin: 1.35em auto;
 }
 }
 
-/* Extras over */
+/* For screens up to 600px */
+@media only screen and (max-width: 600px) {
+  .custom-skip-backward-button {
+      left: 20%;
+      top: 49%;
+  }
+  .custom-skip-forward-button {
+    right: 20%;
+    top: 49%;
+}
+}
+
+/* For screens between 600px and 767px */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  .custom-skip-backward-button {
+      left: 25%;
+      top: 49%;
+  }
+  .custom-skip-forward-button {
+    right: 25%;
+    top: 49%;
+}  
+}
+
+/* For screens between 768px and 991px */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .custom-skip-backward-button {
+      left: 30%;
+      top: 49%;
+  }
+  .custom-skip-forward-button {
+    right: 30%;
+    top: 49%;
+}
+  
+}
+
+/* For screens between 992px and 1199px */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .custom-skip-backward-button {
+      left: 32%;
+      top: 49%;
+  }
+  .custom-skip-forward-button {
+    right: 32%;
+    top: 49%;
+}
+}
+
+/* For screens 1200px and larger */
+@media only screen and (min-width: 1200px) {
+  .custom-skip-backward-button {
+      left: 35%;
+      top: 49%;
+  }
+  .custom-skip-forward-button {
+    right: 35%;
+    top: 49%;
+}
+}
