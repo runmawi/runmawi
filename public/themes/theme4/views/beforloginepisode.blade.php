@@ -68,7 +68,7 @@ ol.breadcrumb {
 
     <input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
 
-    <div id="series_bg">
+      <div id="series_bg">
         <div class="">
             <?php
                 if (Auth::guest()) {
@@ -171,7 +171,7 @@ ol.breadcrumb {
                                 
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title; ?></h4>
-                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;><?php echo $episode->episode_description; ?></p>
+                                    <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                                     <h4 class="">
                                         <?php if ($series->access == 'subscriber'): ?>
                                             <?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?>
@@ -183,15 +183,15 @@ ol.breadcrumb {
 
                                 <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
                                     
-                                    <div class=" mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
-                                            <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
+                                            <button class="btn btn-primary" id="button">{{ __('Purchase Now') }}</button>
                                         </form>
                                     </div>
 
                                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
 
-                                    <div class=" mt-3">
+                                    <div class="container mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
                                             <button class="btn btn-primary"
                                                 id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
@@ -200,7 +200,7 @@ ol.breadcrumb {
 
                                 <?php else: ?>
 
-                                    <div class=" mt-3">
+                                    <div class="container mt-3">
                                         <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                                             <button id="button" class="btn bd"><?php echo __('Signup Now'); ?>
                                                 <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
@@ -337,14 +337,14 @@ ol.breadcrumb {
                                     class="episode_add_wishlist_" aria-hidden="true"
                                     data-list="<?php echo $episode->id; ?>" data-myval="10"
                                     data-video-id="<?php echo $episode->id; ?>" onclick="episodewishlist(this)"><i
-                                        class="fa fa-heart-o" aria-hidden="true"></i>
+                                        class="ri-heart-line" aria-hidden="true"></i>
                                 </span>
                                 <?php }else{?>
                                 <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>"
                                     class="episode_add_wishlist_" aria-hidden="true"
                                     data-list="<?php echo $episode->id; ?>" data-myval="10"
                                     data-video-id="<?php echo $episode->id; ?>" onclick="episodewishlist(this)"> <i
-                                        class="fa  fa-heart" aria-hidden="true"></i></span>
+                                        class="ri-heart-fill" aria-hidden="true"></i></span>
                                 <?php } ?>
                             </li>
 
@@ -966,7 +966,7 @@ ol.breadcrumb {
 
                     $(id).data('myval');
                     $(id).data('myval', 'remove');
-                    $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+                    $(id).find($(".ri-heart-line")).removeClass('ri-heart-line').addClass('ri-heart-fill');
 
                     $("body").append(
                         '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
@@ -978,7 +978,7 @@ ol.breadcrumb {
                 } else if (data.message == "Add the Watch list") {
                     $(id).data('myval');
                     $(id).data('myval', 'add');
-                    $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+                    $(id).find($(".ri-heart-fill")).removeClass('ri-heart-fill').addClass('ri-heart-line');
 
                     $("body").append(
                         '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'

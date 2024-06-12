@@ -18,7 +18,7 @@
                             <div class="item depends-row">
                                 <a  href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">	
                                     <div class="position-relative">
-                                        <img src="<?= URL::to('public/uploads/images/'.$episodes->image) ?>" class="flickity-lazyloaded" alt="{{ $related_video->title }}">
+                                        <img src="<?= URL::to('public/uploads/images/'.$episodes->image) ?>" class="flickity-lazyloaded" alt="<?= $episodes->title ?>">
                                         <div class="controls">
                                             <a href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>

@@ -601,10 +601,10 @@ img{max-width:100%;height: auto;}
   .channels-list .channel-row .video-list .item {
       width: 33.33333%;
   }
-  #videoInfo, .series-based-network-dropdown {
+  /* #videoInfo, .series-based-network-dropdown {
       max-height: 500px;
       height: 32vw;
-  }
+  } */
 }
 
 @media screen and (max-width: 512px) {
