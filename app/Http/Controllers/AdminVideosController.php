@@ -6010,7 +6010,7 @@ class AdminVideosController extends Controller
             if($enable_default_timezone == 1){
 
                 
-                $Channels =  VideoSchedules::Select('id','name','slug')->get();
+                $Channels =  VideoSchedules::where('id',$id)->Select('id','name','slug')->get();
 
                 // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
                 $TimeZone = TimeZone::get();
