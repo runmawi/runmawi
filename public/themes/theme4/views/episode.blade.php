@@ -123,8 +123,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
@@ -177,36 +176,32 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                            
                             <div class="clear"></div>
                        
                             <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4> -->
                             <div class="clear"></div>
+
+                            @if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber')
+                                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                                    {{ __('Purchase Now') }}
+                                </button>
+                            @elseif( !Auth::guest() && $series->access == 'subscriber')
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
+                                </form>
+                            @else
+                                <div class=" mt-3">
+                                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
-                        <?php if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
-                        <div class=" mt-3">
-                          
-                            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                            <?php echo __('Purchase Now'); ?> 
-                        </button>
-                        </div>
-                        <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                        <div class="container-fluid mt-3">
-                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
-                            </form>
-                        </div>
-                        <?php else: ?>
-                        <div class=" mt-3">
-                            <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                                <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
-                                    <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
-                            </form>
-                        </div>
-                        <?php endif; ?>
+                        
 
                         </div>
                        
@@ -219,8 +214,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
