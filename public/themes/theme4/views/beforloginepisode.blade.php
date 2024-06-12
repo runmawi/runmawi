@@ -171,7 +171,7 @@ ol.breadcrumb {
                                 
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title; ?></h4>
-                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;><?php echo $episode->episode_description; ?></p>
+                                    <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                                     <h4 class="">
                                         <?php if ($series->access == 'subscriber'): ?>
                                             <?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?>
@@ -183,15 +183,15 @@ ol.breadcrumb {
 
                                 <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
                                     
-                                    <div class=" mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
-                                            <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
+                                            <button class="btn btn-primary" id="button">{{ __('Purchase Now') }}</button>
                                         </form>
                                     </div>
 
                                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
 
-                                    <div class=" mt-3">
+                                    <div class="container mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
                                             <button class="btn btn-primary"
                                                 id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
@@ -200,7 +200,7 @@ ol.breadcrumb {
 
                                 <?php else: ?>
 
-                                    <div class=" mt-3">
+                                    <div class="container mt-3">
                                         <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                                             <button id="button" class="btn bd"><?php echo __('Signup Now'); ?>
                                                 <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
