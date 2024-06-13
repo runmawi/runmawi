@@ -123,8 +123,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
@@ -177,36 +176,32 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                            
                             <div class="clear"></div>
                        
                             <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4> -->
                             <div class="clear"></div>
+
+                            @if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber')
+                                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                                    {{ __('Purchase Now') }}
+                                </button>
+                            @elseif( !Auth::guest() && $series->access == 'subscriber')
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
+                                </form>
+                            @else
+                                <div class=" mt-3">
+                                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
-                        <?php if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
-                        <div class=" mt-3">
-                          
-                            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                            <?php echo __('Purchase Now'); ?> 
-                        </button>
-                        </div>
-                        <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                        <div class="container-fluid mt-3">
-                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
-                            </form>
-                        </div>
-                        <?php else: ?>
-                        <div class=" mt-3">
-                            <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                                <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
-                                    <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
-                            </form>
-                        </div>
-                        <?php endif; ?>
+                        
 
                         </div>
                        
@@ -219,8 +214,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
@@ -419,13 +413,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
                                         data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="far fa-heart" aria-hidden="true"></i>
+                                        <i class="ri-heart-line" aria-hidden="true"></i>
                                     </span>
                                 @else
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
                                         data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                        <i class="ri-heart-fill" aria-hidden="true"></i>
                                     </span>
                                 @endif
                             </li>
@@ -1244,7 +1238,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
                         $(id).data('myval');
                         $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+                        $(id).find($(".ri-heart-line")).removeClass('ri-heart-line').addClass('ri-heart-fill');
 
                         $("body").append(
                             '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
@@ -1256,7 +1250,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     } else if (data.message == "Add the Watch list") {
                         $(id).data('myval');
                         $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+                        $(id).find($(".ri-heart-fill")).removeClass('ri-heart-fill').addClass('ri-heart-line');
 
                         $("body").append(
                             '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'

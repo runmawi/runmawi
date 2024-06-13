@@ -312,10 +312,50 @@ if ( $video->publish_type == "recurring_program" ) {
 
 if(empty($new_date)){
 
-    if(!Auth::guest()){
-        if(!empty($password_hash)){ ?>
-            <?php if ($ppv_exist > 0 ||  ( Auth::user()->role == "subscriber" && $video->access != "ppv" ) ||  ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 )  || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-                <div id="video_bg"> 
+        if(!Auth::guest()){
+            if(!empty($password_hash)){ ?>
+                <?php if ($ppv_exist > 0 ||  ( Auth::user()->role == "subscriber" && $video->access != "ppv" ) ||  ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 )  || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+                    <div id="video_bg"> 
+                        <div class="">
+                            <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+                            <?php if ( $Livestream_details->url_type == "embed" ) : ?>
+
+                                <iframe class="responsive-iframe" src="<?= $Livestream_details->livestream_URL ?>" poster="<?= $Livestream_details->Player_thumbnail ?>"
+                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+
+                            <?php else: ?>
+                                <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <video id="live-stream-player" class="vjs-theme-city my-video video-js vjs-play-control vjs-live-control vjs-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                                    preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                                    <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
+                                </video>
+
+                            <?php endif; ?>  
+
+                            <div class="playertextbox hide">
+                                <p> <?php if (isset($videonext)) { ?>
+                                    <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
+                                    <?php } elseif (isset($videoprev)) { ?>
+                                    <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
+                                    <?php } ?>
+
+                                    <?php if (isset($videos_category_next)) { ?>
+                                    <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
+                                    <?php } elseif (isset($videos_category_prev)) { ?>
+                                    <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
+                                    <?php } ?>
+                                </p>
+                            </div>
+                    </div>
+
+                    <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
+
+                    <div id="video_bg"> 
                     <div class="">
                         <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -682,15 +722,16 @@ if(empty($new_date)){
         </div>
     <?php endif; ?>
 
-        <div class="mar-left video-list you-may-like overflow-hidden">
-            <h4 class="" style="color:#fffff;">{{ __('Related Videos') }}</h4>
-            <div class="favorites-contens sub_dropdown_image">  
-                <ul class="favorites-slider list-inline row mb-0">
-                    @foreach ($Related_videos as $related_video)
-                        <li class="slick-slide">
-                            <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
-                                <div class="position-relative">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
+        @if ( count($Related_videos) > 0 )
+            <div class="channels-list video-list you-may-like overflow-hidden">
+                <h4 class="mar-left" style="color:#fffff;">{{ __('Related Live Streams') }}</h4>
+                <div class="channel-row favorites-contens sub_dropdown_image">  
+                    <div class="video-list live-videos">
+                        @foreach ($Related_videos as $related_video)
+                            <div class="item depends-row">
+                                <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
+                                    <div class="position-relative">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="flickity-lazyloaded" alt="{{ $related_video->title }}">
                                         <div class="controls">
                                             <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -726,17 +767,68 @@ if(empty($new_date)){
                 <div class="col-sm-4 p-0" style="">
                     <img class="img__img w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" >
                 </div>
-                
-                    <div class="col-sm-8">
-                    <h4 class=" text-black movie mb-3"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
-                    <span class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict).' '.'+';?></span>
-                    <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
-                
-                    <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;"><?php echo __('Amount'); ?>:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
-                    <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?> : </h5></label>
-                
-                                <!-- Stripe Button -->
-                            <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
+            </div>
+        @endif
+            
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black"><?php echo __('Rent Now'); ?></h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="row justify-content-between">
+                    <div class="col-sm-4 p-0" style="">
+                        <img class="img__img w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" >
+                    </div>
+                    
+                        <div class="col-sm-8">
+                        <h4 class=" text-black movie mb-3"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
+                        <span class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+                        <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
+                    
+                        <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;"><?php echo __('Amount'); ?>:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                        <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?> : </h5></label>
+                    
+                                    <!-- Stripe Button -->
+                                <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
+                                        <?php  echo $stripe_payment_setting->payment_type ;  ?>
+                                    </label>      
+                                <?php } ?>
+
+                            
+                                    <!-- Razorpay Button -->
+                                <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $Razorpay_payment_setting->payment_type ?>"  data-value="Razorpay" >
+                                        <?php  echo $Razorpay_payment_setting->payment_type ;  ?>
+                                    </label>
+                                <?php } ?>
+
+                                    <!-- Paystack Button -->
+                                <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $Paystack_payment_setting->payment_type ?>"  data-value="Paystack" >
+                                        <?php  echo $Paystack_payment_setting->payment_type ;  ?>
+                                    </label>
+                                <?php } ?>
+
+                                
+                                <!-- CinetPay Button -->
+                                <?php if( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == "CinetPay" && $CinetPay_payment_settings->status == 1 ){?>
                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                     <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
                                     <?php  echo $stripe_payment_setting->payment_type ;  ?>
@@ -1244,32 +1336,24 @@ window.onload = function(){
                             amount: ppv_price,
                             live_id: video_id,
 
-                        },
-                        success: function(value) {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
+            window.onload = function () {
+                setTimeout(function () {
+                    $(".header_top_position_img").fadeOut('fast');
+                }, 4000);
+            };
+        </script>
 
-                        },
-                        error: (error) => {
-                            swal('error');
-                        }
-                    });
-
+        <script>
+            $(document).ready(function () {  
+                let recurring_program_check_exist = <?php echo json_encode($recurring_program_Status); ?>;
+            
+                if(recurring_program_check_exist){
+                    setInterval(function() {
+                        location.reload();
+                    }, 60000);
                 }
             });
-            CinetPay.onError(function(data) {
-                console.log(data);
-            });
-        }
-
-        window.onload = function () {
-            setTimeout(function () {
-                $(".header_top_position_img").fadeOut('fast');
-            }, 4000);
-        };
-    </script>
+        </script>
 @php
 include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

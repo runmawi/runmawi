@@ -197,20 +197,23 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                 slider.style.display = 'none';
             });
 
+            
             // Show the slider for the selected series
             var selectedSlider = document.querySelector('#videoInfo-' + sectionIndex + ' .network-based-depends-slider[data-index="' + index + '"]');
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
-                new Flickity(selectedSlider, {
-                    cellAlign: 'left',
-                    contain: true,
-                    groupCells: true,
-                    pageDots: false,
-                    draggable: true,
-                    freeScroll: true,
-                    imagesLoaded: true,
-                    lazyload:true,
-                });
+                setTimeout(function() {
+                    new Flickity(selectedSlider, {
+                        cellAlign: 'left',
+                        contain: true,
+                        groupCells: true,
+                        pageDots: false,
+                        draggable: true,
+                        freeScroll: true,
+                        imagesLoaded: true,
+                        lazyload:true,
+                    });
+                },0);
             }
 
             var selectedCaption = document.querySelector('#videoInfo-' + sectionIndex + ' .caption[data-index="' + index + '"]');
