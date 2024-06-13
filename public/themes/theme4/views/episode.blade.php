@@ -61,6 +61,12 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .slick-arrow{z-index: 99;}
     .slick-next{right:0;}
     .slick-prev{left:10px;}
+    @media only screen and (max-width: 600px) {
+    .custom-skip-forward-button, .custom-skip-backward-button {
+        /* right: 20%; */
+        top: 46% !important;
+    }
+}
 
 </style>
 
