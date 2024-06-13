@@ -724,8 +724,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
-                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
-                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
+                        <!-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> -->
                      </ul>
                   </li>
                   <li>
@@ -1094,7 +1094,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">{{ (__('Channel Partners For Approval')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">{{ (__('Commission')) }} </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">{{ (__('Channel Partners Payout')) }}</a></li>
-                        <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li>
+                        <!-- <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li> -->
                         <li><a href="{{ URL::to('admin/channel/role') }}">{{ (__('Channel Partners Add Roles')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/role/view') }}">{{ (__('Channel Partners Roles')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel-subscription-plans') }}">{{ (__('Channel Subscription Plans')) }}</a></li>
@@ -1436,7 +1436,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
-                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
+                        <!-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> -->
                      </ul>
                   </li>
                   <li>
