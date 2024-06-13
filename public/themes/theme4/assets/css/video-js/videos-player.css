@@ -998,12 +998,30 @@ margin: 1.35em auto;
 @media only screen and (max-width: 600px) {
   .custom-skip-backward-button {
       left: 20%;
-      top: 49%;
+      top: 12%;
   }
   .custom-skip-forward-button {
     right: 20%;
-    top: 49%;
-}
+    top: 12%;
+  }
+  .my-video.vjs-fluid {
+    padding-top: 0 !important;
+    height: 26vh !important;
+  }
+  .live_dot {
+    color: red;
+    font-size: 60px;
+    right: 62%;
+    position: relative;
+    top: 11%;
+  }
+  .my-video.video-js .vjs-live-control {
+    line-height: 0.6em;
+  }
+  .staticback-btn{
+    top: 7% !important;
+    font-size: 15px !important;
+  }
 }
 
 /* For screens between 600px and 767px */
