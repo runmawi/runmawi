@@ -682,6 +682,7 @@
             </div>
         <?php endif; ?>
 
+        @if ( count($Related_videos) > 0 )
             <div class="channels-list video-list you-may-like overflow-hidden">
                 <h4 class="mar-left" style="color:#fffff;">{{ __('Related Live Streams') }}</h4>
                 <div class="channel-row favorites-contens sub_dropdown_image">  
@@ -703,6 +704,8 @@
                     </div>
                 </div>
             </div>
+        @endif
+            
     </div>
 
     
@@ -1267,6 +1270,18 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                     $(".header_top_position_img").fadeOut('fast');
                 }, 4000);
             };
+        </script>
+
+        <script>
+            $(document).ready(function () {  
+                let recurring_program_check_exist = <?php echo json_encode($recurring_program_Status); ?>;
+            
+                if(recurring_program_check_exist){
+                    setInterval(function() {
+                        location.reload();
+                    }, 60000);
+                }
+            });
         </script>
 @php
     include(public_path('themes/theme4/views/footer.blade.php'));
