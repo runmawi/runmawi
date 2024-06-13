@@ -42,6 +42,21 @@
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        player.on('userinactive', () => {
+          // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          // Show the Play pause, skip forward and backward buttons when the user becomes active
+          if (playPauseButton) {
+            playPauseButton.style.display = 'block';
+          }
+        });
+
 
         function timeToSeconds(time) {
             const parts = time.split(':');

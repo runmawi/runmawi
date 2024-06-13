@@ -313,7 +313,7 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                     height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>

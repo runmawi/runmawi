@@ -286,198 +286,205 @@
                     <div class="favorites-contens">
                         @if (isset($series_data->Series_depends_Networks))
 
-                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline p-0 mar-left row align-items-center">
-                                @foreach ($series_data->Series_depends_Networks as $Series_Genre)
-                                    <li class="slick-slide">
-                                        <a href="javascript:;">
-                                            <div class="movie-slick position-relative">
-                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos" >
+                            <div id="tv-networks" class="channels-list">
+                                <!-- top slider -->
+                                <div class="channel-row">
+                                    <div id="trending-slider-nav" class="video-list series-networkpage-video" data-flickity>
+                                        @foreach ($series_data->Series_depends_Networks as $key => $Series_Genre)
+                                            <div class="item" data-index="{{ $key }}">
+                                                <div>
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
+                                                </div>
                                             </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        @endforeach
+                                    </div>
+                                </div>
 
-                            <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider theme4-slider">
-                                @foreach ($series_data->Series_depends_Networks as $Series_Genre)
-                                    <li class="slick-slide">
-                                        <div class="tranding-block position-relative trending-thumbnail-image">
-                                            <button class="drp-close">×</button>
+                                <!-- dropdown content -->
+                                <div id="videoInfo" class="series-networkpage-dropdown" style="display:none;">
+                                    <button class="drp-close">×</button>
+                                    <div class="vib" style="display:block;">
+                                        @foreach ($series_data->Series_depends_Networks as $key => $Series_Genre)
+                                            <div class="w-100">
+                                                <div class="caption" data-index="{{ $key }}">
+                                                    <h2 class="caption-h2">{{ strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title }}</h2>
+                                                    @if (optional($Series_Genre)->description)
+                                                        <div class="trending-dec">{!! html_entity_decode(strip_tags( optional($Series_Genre)->description)) !!}</div>
+                                                    @endif
 
-                                            <div class="trending-custom-tab">
-                                                <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
-                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                            <div class="caption pl-4">
-                                                            <h2 class="caption-h2">{{ strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title }}</h2>
-                                                                @if (optional($Series_Genre)->description)
-                                                                    <div class="trending-dec">{!! html_entity_decode( optional($Series_Genre)->description) !!}</div>
-                                                                @endif
-
-                                                                <div class="p-btns">
-                                                                    <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ route('network.play_series',$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="{{ route('network.play_series',$Series_Genre->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="trending-contens sub_dropdown_image mt-3">
-                                                                <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0 overflow-hidden series-depends-episode-slider' }}" >
-                                                                    @foreach ($Series_Genre->Series_depends_episodes as $episode )
-                                                                        <li>
-                                                                            <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
-                                                                                <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
-                                                                                    <div class="controls">
-                                                                                        <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
-                                                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                                                        </a>
-
-                                                                                        <nav>
-                                                                                            <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                                                        </nav>
-                                                                                        
-                                                                                        @php
-                                                                                            $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
-                                                                                        @endphp
-                                                                                        
-                                                                                        <p class="trending-dec" >
-
-                                                                                            @if ( !is_null($series_seasons_name) )
-                                                                                                {{ "Season - ". $series_seasons_name  }}  <br>
-                                                                                            @endif
-
-                                                                                            {{ "Episode - " . optional($episode)->title  }} <br>
-
-                                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
-                                                                                        </p>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-
-                                                            <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
-                                                            </div>
+                                                    <div class="p-btns">
+                                                        <div class="d-flex align-items-center p-0">
+                                                            <a href="{{ route('network.play_series',$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                            <a href="{{ route('network.play_series',$Series_Genre->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="thumbnail" data-index="{{ $key }}">
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                                </div>
+
+                                                <!-- depend slider -->
+                                                <div id="{{ 'trending-slider-nav' }}" class="{{ 'network-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
+                                                    @foreach ($Series_Genre->Series_depends_episodes as $episode_key => $episode ) 
+                                                        <div class="depends-row">
+                                                            <div class="depend-items">
+                                                                <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                    <div class=" position-relative">
+                                                                        <img src="{{ $episode->image_url }}" class="img-fluid" alt="Videos">
+                                                                        <div class="controls">
+                                                                            <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                            </a>
+
+                                                                            <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+
+                                                                            @php
+                                                                                $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
+                                                                            @endphp
+                                                                            
+                                                                            <p class="trending-dec" >
+
+                                                                                @if ( !is_null($series_seasons_name) )
+                                                                                    {{ "Season - ". $series_seasons_name  }}  <br>
+                                                                                @endif
+
+                                                                                {{ "Episode - " . optional($episode)->title  }} <br>
+
+                                                                                {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
                                             </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                            </div>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
+
+        @foreach ($series_data->Series_depends_Networks as $key => $Series_Genre)
+            @foreach ($Series_Genre->Series_depends_episodes as $episode_key => $episode )
+                <div class="modal fade info_model" id="{{ 'Home-SeriesNetwork-series-Modal-'.$key.'-'.$episode_key  }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none; background:transparent;">
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$episode->player_image) }}" alt="{{ $episode->title }}">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <p class="trending-dec mt-3" >
+                                                    @if ( !is_null($series_seasons_name) )
+                                                        {{ "Season - ". $series_seasons_name  }}  <br>
+                                                    @endif
+                                                </p>
+                                                <p class="trending-dec mt-3" >
+                                                    {!! (strip_tags(optional($episode)->episode_description)) !!}
+                                                </p>
+
+                                                <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
     </section>
 </div>
 
+
 <script>
-    
-    $( window ).on("load", function() {
-        $('.series-category-slider').hide();
+    var elem = document.querySelector('.series-networkpage-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload: true,
     });
 
-    $(document).ready(function() {
-
-        $('.series-category-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.series-category-slider-nav',
-        });
-
-        $('.series-category-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.series-category-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev up-arrow" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next down-arrow" aria-label="Next" type="button">Next</a>',
-            infinite: true,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.series-category-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.series-category-slider').show();
-
-            $('.series-depends-episode-slider').slick({
-                dots: false,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 6,
-                slidesToScroll: 4,
-                responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
+    document.querySelectorAll('.series-networkpage-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.series-networkpage-video .item').forEach(function(item) {
+                item.classList.remove('current');
             });
-        });
 
-        $('body').on('click', '.up-arrow', function() {
-            $('.series-category-slider').hide();
-        });
-        $('body').on('click', '.down-arrow', function() {
-            $('.series-category-slider').hide();
-        });
+            this.classList.add('current');
 
-        $('body').on('click', '.drp-close', function() {
-            $('.series-category-slider').hide();
+            var index = this.getAttribute('data-index');
+
+            document.querySelectorAll('.series-networkpage-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.series-networkpage-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            document.querySelectorAll('.series-networkpage-dropdown .network-depends-slider').forEach(function(slider) {
+                slider.style.display = 'none';
+            });
+
+            var selectedSlider = document.querySelector('.series-networkpage-dropdown .network-depends-slider[data-index="' + index + '"]');
+            if (selectedSlider) {
+                selectedSlider.style.display = 'block';
+                setTimeout(function() { // Ensure the element is visible before initializing Flickity
+                    var flkty = new Flickity(selectedSlider, {
+                        cellAlign: 'left',
+                        contain: true,
+                        groupCells: true,
+                        adaptiveHeight: true,
+                        pageDots: false,
+                    });
+                }, 0);
+            }
+
+            var selectedCaption = document.querySelector('.series-networkpage-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.series-networkpage-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('series-networkpage-dropdown')[0].style.display = 'flex';
         });
+    });
+
+    $('body').on('click', '.drp-close', function() {
+        $('.series-networkpage-dropdown').hide();
     });
 </script>
 

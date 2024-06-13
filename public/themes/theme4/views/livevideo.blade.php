@@ -330,7 +330,7 @@
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                 </button>
-                                <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control vjs-live-control vjs-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                                <video id="live-stream-player" class="vjs-theme-city my-video video-js vjs-play-control vjs-live-control vjs-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
                                     preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                                     <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                                 </video>

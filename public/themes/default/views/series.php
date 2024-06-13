@@ -196,7 +196,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 						                <!-- <p class="desc" style="color:#fff;"><?php echo $series->description;?></p> -->
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="ply"/> </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
                                     <div></div><ul>

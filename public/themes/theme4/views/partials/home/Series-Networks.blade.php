@@ -192,21 +192,20 @@ var elem = document.querySelector('.series-network-video');
             slider.style.display = 'none';
         });
 
-        // Show the slider for the selected network
+                
         var selectedSlider = document.querySelector('.series-network-dropdown .network-depends-slider[data-index="' + index + '"]');
-        if (selectedSlider) {
-            selectedSlider.style.display = 'block';
-        }
-        
-
-        // Initialize Flickity for the selected slider
-        var flkty = new Flickity(selectedSlider, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: true,
-            adaptiveHeight: true,
-            pageDots: false,
-        });
+            if (selectedSlider) {
+                selectedSlider.style.display = 'block';
+                setTimeout(function() { // Ensure the element is visible before initializing Flickity
+                    var flkty = new Flickity(selectedSlider, {
+                        cellAlign: 'left',
+                        contain: true,
+                        groupCells: true,
+                        adaptiveHeight: true,
+                        pageDots: false,
+                    });
+                }, 0);
+            }
 
         var selectedCaption = document.querySelector('.series-network-dropdown .caption[data-index="' + index + '"]');
         var selectedThumbnail = document.querySelector('.series-network-dropdown .thumbnail[data-index="' + index + '"]');
