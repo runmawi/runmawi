@@ -16,11 +16,11 @@ $settings = App\Setting::first();
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <p class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></p>
+              <h5 class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></h5>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1"> 
+             <div class="map1 ml-3"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
                 <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
@@ -55,29 +55,29 @@ $settings = App\Setting::first();
       </div>
       
       
-      <div class="row  justify-content-center ">
+      <div class="row  justify-content-center mb-3">
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
-                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-1">
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-1">
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
-                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-1">
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" />
                       </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->skype_page_id)){?>
-                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" aria-label="skype" target="_blank" class="ml-1">
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" aria-label="skype" target="_blank" class="ml-2">
                           <i class="fa fa-skype"></i>
                       </a>
                       <?php } ?>
@@ -87,7 +87,7 @@ $settings = App\Setting::first();
                    
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
-                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-1">
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" />
                       </a>
                       <?php } ?>
@@ -99,7 +99,7 @@ $settings = App\Setting::first();
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
-                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-1">
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" />
                       </a>
                       <?php } ?>
@@ -111,7 +111,7 @@ $settings = App\Setting::first();
                       <?php } ?>
 
                       <?php if(!empty($settings->tiktok_page_id)){?>
-                        <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-1">
+                        <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" />
                         </a>
                         <?php } ?>

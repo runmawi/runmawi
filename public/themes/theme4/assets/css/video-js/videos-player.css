@@ -1022,6 +1022,9 @@ margin: 1.35em auto;
     top: 7% !important;
     font-size: 15px !important;
   }
+  .my-video.video-js button{
+    font-size: 9px;
+  }
 }
 
 /* For screens between 600px and 767px */
