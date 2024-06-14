@@ -9,6 +9,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             fluid: true,
             controlBar: {
                 volumePanel: { inline: false },
+                descriptionsButton: true,
                 children: {
                     'playToggle': {},
                     // 'currentTimeDisplay': {},
@@ -16,12 +17,26 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
-                    'subtitlesButton': {},
-                    'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},                     
+                    "subtitlesButton": {},
+                    "playbackRateMenuButton": {},
+                    
+                    'settingsMenuButton':{
+                        entries:[
+                            'subtitlesButton',
+                            'playbackRateMenuButton',
+                        ]                    
+                    },
+                    'fullscreenToggle': {},
+
+
+                                         
                 },
                 pictureInPictureToggle: true,
             }
+        });
+
+        player.on('descriptionchange', function() {
+            console.log('Descriptions track changed');
         });
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
