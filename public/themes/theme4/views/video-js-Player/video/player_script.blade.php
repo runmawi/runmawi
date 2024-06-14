@@ -9,7 +9,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             fluid: true,
             controlBar: {
                 volumePanel: { inline: false },
-                descriptionsButton: true,
+                // descriptionsButton: true,
                 children: {
                     'playToggle': {},
                     // 'currentTimeDisplay': {},
