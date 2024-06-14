@@ -562,9 +562,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                      </ul>
                   </li>
-               
-
-                  <!-- Ads Menu ends -->
                   <?php }elseif($package == "Pro" && auth()->user()->role == "subscriber" || $package == "Pro" && auth()->user()->role == "registered" ){   ?>
       <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
  
@@ -724,8 +721,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
-                        <!-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
-                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> -->
+                        {{-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> --}}
                      </ul>
                   </li>
                   <li>
@@ -816,12 +813,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            @endif
                      </ul>
                   </li>
-
                   <!-- Ads Menu starts -->
+               @if($settings->ads_on_videos == 1)
                   <div class="men">
-                    <p class="lnk" >Ads Management</p>
+                  <p class="lnk" >Ads Management</p>
                   </div>
-
                   <li>
                      <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -845,6 +841,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                   <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> Ad variable</span></a></li>
 
+               @endif
 
 
                     {{-- Geo Fencing --}}
@@ -1094,7 +1091,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">{{ (__('Channel Partners For Approval')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">{{ (__('Commission')) }} </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">{{ (__('Channel Partners Payout')) }}</a></li>
-                        <!-- <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li> -->
+                        {{-- <li><a href="{{ route('channel_package_index') }}">{{ (__('Channel Package')) }}</a></li> --}}
                         <li><a href="{{ URL::to('admin/channel/role') }}">{{ (__('Channel Partners Add Roles')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel/role/view') }}">{{ (__('Channel Partners Roles')) }}</a></li>
                         <li><a href="{{ URL::to('admin/channel-subscription-plans') }}">{{ (__('Channel Subscription Plans')) }}</a></li>
@@ -1199,20 +1196,17 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                         </ul>
                     </li>
-
                     <!-- Ads Menu starts -->
-
+               @if($settings->ads_on_videos == 1)
                   <div class="men">
                     <p class="lnk" >{{ (__('Ads Management')) }}</p>
                   </div>
-
                   <li>
                      <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/manage-avd.svg')?>"><span>{{ (__('Manage Advertiser')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                            <li><a href="{{ URL::to('admin/advertisers') }}">{{ (__('Advertisers')) }}</a></li>
                      </ul>
                   </li>
-                  
                   <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-cate.svg')?>"><span>{{ (__('Ads Categories')) }}</span></a></li>
 
                   <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-list.svg')?>"><span>{{ (__('Ads List')) }}</span></a></li>
@@ -1230,6 +1224,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><a href="{{ route('admin.ads_banners') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span> {{ (__('Ad Banners')) }} </span></a></li>
 
                   <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
+
+               @endif
 
                 
                     {{-- Geo Fencing --}}
@@ -1436,7 +1432,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
-                        <!-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> -->
+                        {{-- <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li> --}}
                      </ul>
                   </li>
                   <li>
@@ -1525,19 +1521,17 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                               @endif
                            </ul>
                     </li>
-
-                    <!-- Ads Menu starts -->
+                    <!-- Ads Menu starts class="iq-waves-effect"-->
+               @if($settings->ads_on_videos == 1)
                   <div>
                     <p class="lnk" >Ads Management</p>
                   </div>
-
                   <li>
                      <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Manage Advertiser </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                            <li><a href="{{ URL::to('admin/advertisers') }}"><i class="las la-user-plus"></i>Advertisers</a></li>
                      </ul>
                   </li>
-                     
                   <li><a href="{{ URL::to('admin/ads_categories') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad.svg')?>"><span>Ads Categories</span></a></li>
 
                   <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/ad2.svg')?>"><span>Ads List</span></a></li>
@@ -1556,6 +1550,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                   <li><a href="{{ route('admin.ads_variable') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/campin.svg')?>"><span>  {{ (__('Ad variable')) }}</span></a></li>
 
+               @endif
 
                        {{-- Geo Fencing --}}
                <li><p class="lnk" >Geo Fencing</p></li>
