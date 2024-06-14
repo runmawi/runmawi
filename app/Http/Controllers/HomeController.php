@@ -2017,7 +2017,7 @@ class HomeController extends Controller
                     'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                 );
 
-                if ($this->HomeSetting->theme_choosen == "theme4") {
+                if ($this->HomeSetting->theme_choosen == "theme4" ) {
                     if($request->ajax()) {
                         return $data = [
                             "view" => Theme::watchPartial('home_sections', $data ),
