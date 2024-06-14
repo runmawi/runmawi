@@ -61,6 +61,12 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .slick-arrow{z-index: 99;}
     .slick-next{right:0;}
     .slick-prev{left:10px;}
+    @media only screen and (max-width: 600px) {
+    .custom-skip-forward-button, .custom-skip-backward-button {
+        /* right: 20%; */
+        top: 46% !important;
+    }
+}
 
 </style>
 
@@ -115,6 +121,17 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                             poster="<?= $episode_details->Player_thumbnail ?>">
                             <source src="<?= $episode_details->Episode_url ?>"
                                 type="<?= $episode_details->Episode_player_type ?>">
+
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                                    @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
+                                        @foreach ($episodesubtitles as $episodesubtitles_file)
+                                            <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
+                                                srclang="{{ $episodesubtitles_file->sub_language }}"
+                                                label="{{ $episodesubtitles_file->shortcode }}" default>
+                                        @endforeach
+                                    @endif
+                                @endif
+
                         </video>
                     </div>
                 @else
