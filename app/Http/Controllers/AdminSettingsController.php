@@ -106,6 +106,7 @@ class AdminSettingsController extends Controller
 
     public function save_settings(Request $request)
     {
+
         $input = $request->all();
 
         $video_clip = (isset($input['video_clip'])) ? $input['video_clip'] : '';
@@ -184,14 +185,12 @@ class AdminSettingsController extends Controller
         $settings->ppv_price = $request['ppv_price'];
         $settings->website_description = $request['website_description'];
         $settings->website_name = $request['website_name'];
-        $settings->ads_play_unlimited_period = $request['ads_play_unlimited_period'];
         $settings->login_text = $request['login_text'];
         $settings->signature = $request['signature'];
         $settings->system_email = $request['system_email'];
         $settings->enable_https = $request['enable_https'];
         $settings->free_registration = $request['free_registration'];
         $settings->activation_email = $activation_email;
-        $settings->ads_on_videos = $request['ads_on_videos'];
         $settings->featured_pre_ad = $request['featured_pre_ad'];
         $settings->featured_mid_ad = $request['featured_mid_ad'];
         $settings->featured_post_ad = $request['featured_post_ad'];
@@ -258,7 +257,9 @@ class AdminSettingsController extends Controller
         $settings->ppv_status = $request['ppv_status'];
         $settings->system_address = $request['system_address'];
         $settings->system_phone_number = $request['system_phone_number'];
-        $settings->default_ads_status = $request['default_ads_status'];
+        $settings->default_ads_status = !empty($request['default_ads_status']) ? 1 : 0 ;
+        $settings->ads_on_videos = !empty($request['ads_on_videos']) ? 1 : 0 ;
+        $settings->ads_play_unlimited_period = !empty($request['ads_play_unlimited_period']) ? 1 : 0 ;
 
         $path = storage_path('app/public/');
 
@@ -444,9 +445,6 @@ class AdminSettingsController extends Controller
             $settings->notification_icon = '';
         }
 
-        if (empty($settings->ads_on_videos)) {
-            $settings->ads_on_videos = 0;
-        }
 
         //		if(empty($activation_email) || $settings->activation_email = 0){
         //			$settings->activation_email= 0;
