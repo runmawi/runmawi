@@ -101,7 +101,7 @@ text-align: left;
                       <div class="row justify-content-center">
                           <div class="col-md-12">
 
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                          <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
@@ -219,7 +219,7 @@ text-align: left;
                                 <?php if(@$system_settings != null && @$system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
                                         </a>
                                     </div>
                                 <?php  } ?>
