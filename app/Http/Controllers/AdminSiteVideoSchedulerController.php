@@ -210,8 +210,11 @@ class AdminSiteVideoSchedulerController extends Controller
             // print_r($today_date);
             // echo "<pre>";
             $choosed_date = $request->time;
-            $choosed_date_time = new \DateTime($choosed_date);
-            $choosed_date = $choosed_date_time->format("j-n-Y");
+            // $choosed_date_time = new \DateTime($choosed_date);
+            $choosed_date_time = \DateTime::createFromFormat('m-d-Y', $choosed_date);
+
+            $choosed_date = $choosed_date_time->format("n-j-Y");
+            // print_r($choosed_date);
             // print_r($choosed_date);exit;
 
             $TimeZone = TimeZone::where('id',$request->time_zone)->first();
@@ -342,8 +345,8 @@ class AdminSiteVideoSchedulerController extends Controller
 
     private static function SiteVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone){
     
-        $SchedulerDate_time = new \DateTime($time);
-        $time = $SchedulerDate_time->format("j-n-Y");
+        $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $time);
+        $time = $SchedulerDate_time->format("n-j-Y");
 
         try {
             $data = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$time)
@@ -361,8 +364,8 @@ class AdminSiteVideoSchedulerController extends Controller
     
         try {
 
-            $SchedulerDate_time = new \DateTime($time);
-            $time = $SchedulerDate_time->format("j-n-Y");
+            $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $time);
+            $time = $SchedulerDate_time->format("n-j-Y");
 
             $data = SiteVideoScheduler::where('channe_id',$channe_id)->where('choosed_date',$time)
             ->where('time_zone','!=',$time_zone)->orderBy('created_at', 'DESC')->first();
@@ -392,8 +395,10 @@ class AdminSiteVideoSchedulerController extends Controller
             $duration = gmdate('H:i:s', $SocureData['seconds']);
             
             $choosed_date = $time;
-            $choosed_date_time = new \DateTime($choosed_date);
-            $choosed_date = $choosed_date_time->format("j-n-Y");
+
+            $choosed_date_time = \DateTime::createFromFormat('m-d-Y', $choosed_date);
+            $choosed_date = $choosed_date_time->format("n-j-Y");
+
             // Store the Scheduler
 
                 $VideoScheduler = new SiteVideoScheduler;
@@ -586,9 +591,9 @@ class AdminSiteVideoSchedulerController extends Controller
             }else{
                 $socure_order = null;
             }
-
-            $SchedulerDate_time = new \DateTime($SchedulerDate);
-            $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
+            
+            $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $SchedulerDate);
+            $SchedulerDate = $SchedulerDate_time->format("n-j-Y");
 
             $CurrentScheduler = SiteVideoScheduler::where('id',$Scheduler_id)->where('channe_id',$channelId)
                                 ->where('choosed_date',$SchedulerDate)->first();
@@ -603,9 +608,10 @@ class AdminSiteVideoSchedulerController extends Controller
                     }
                     $CurrentScheduler->save();
                 }
-           
-                $SchedulerDate_time = new \DateTime($SchedulerDate);
-                $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
+
+
+                $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $SchedulerDate);
+                $SchedulerDate = $SchedulerDate_time->format("n-j-Y");
 
                 $AfterScheduler = SiteVideoScheduler::where('channe_id',$channelId)
                             ->where('choosed_date',$SchedulerDate)
@@ -714,8 +720,8 @@ class AdminSiteVideoSchedulerController extends Controller
             $channelId      = $request->channe_id;
             $SchedulerDate  = $request->SchedulerDate;
             // $SchedulerDate  = $request->SchedulerDate;
-            $SchedulerDate_time = new \DateTime($SchedulerDate);
-            $SchedulerDate = $SchedulerDate_time->format("j-n-Y");
+            $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $SchedulerDate);
+            $SchedulerDate = $SchedulerDate_time->format("n-j-Y");
 
             $CheckSameDateScheduler = SiteVideoScheduler::where('id',$Scheduler_id)
             ->where('channe_id',$channelId)
@@ -781,8 +787,9 @@ class AdminSiteVideoSchedulerController extends Controller
 
             $duration = gmdate('H:i:s', $SocureData['seconds']);
             
-            $SchedulerDate_time = new \DateTime($time);
-            $time = $SchedulerDate_time->format("j-n-Y");
+
+            $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $time);
+            $time = $SchedulerDate_time->format("n-j-Y");
 
             // Store the Scheduler
 
@@ -917,8 +924,10 @@ class AdminSiteVideoSchedulerController extends Controller
         // dd($request->all());
         try {
             // $SchedulerDate_time = new \DateTime($request->time);
-            $SchedulerDate_time = new \DateTime($request->default_date_choose);
-            $time = $SchedulerDate_time->format("j-n-Y");
+
+            $SchedulerDate_time = \DateTime::createFromFormat('m-d-Y', $request->default_date_choose);
+            $time = $SchedulerDate_time->format("n-j-Y");
+
             // $channe_id = $request->channe_id;
             // $time_zone = $request->time_zone;
             
@@ -926,9 +935,11 @@ class AdminSiteVideoSchedulerController extends Controller
             $time_zone = $request->default_time_zone;
 
             // $choosen_date_time = new \DateTime($request->time);
-            $choosen_date_time = new \DateTime($request->default_date_choose);
-            $choosen_date = $choosen_date_time->format("j-n-Y");
-            $file_choosed_date = $choosen_date_time->format('j_n_Y');
+
+            $choosen_date_time = \DateTime::createFromFormat('m-d-Y', $request->default_date_choose);
+            $choosen_date = $choosen_date_time->format("n-j-Y");
+
+            $file_choosed_date = $choosen_date_time->format('n_j_Y');
     
             $slug =  VideoSchedules::where('id', $channe_id)->pluck('slug')->first();
             $default_timezone = TimeZone::where('id', $time_zone)->pluck('time_zone')->first();
