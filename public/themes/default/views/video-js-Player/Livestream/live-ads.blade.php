@@ -13,111 +13,46 @@
 
             // Pre-advertisement 
 
-        $pre_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
-                                        ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
-                                        ->where('advertisements.status', 1)
+        $pre_advertisement = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id');
+                            if($advertisement_plays_24hrs == 0){
+                                $pre_advertisement =  $pre_advertisement->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+                            }
 
-                                        ->when( $Livestream_details->pre_ads == 'random_ads', function ($query) {
-
-                                            return $query->inRandomOrder();
-
-                                        }, function ($query) use ($Livestream_details) {
-
-                                            return $query->where('advertisements.id', $Livestream_details->pre_ads );
-
-                                        })
-
-                                        ->when( $advertisement_plays_24hrs == 0, function ($query) use ($current_time) {
-
-                                            return $query->where('ads_events.status', 1)
-                                                ->whereTime('ads_events.start', '<=', $current_time)
-                                                ->whereTime('ads_events.end', '>=', $current_time);
-                                        })
-
-                                        ->groupBy('advertisements.id')
-                                        ->pluck('ads_path')
-                                        ->first();
+                            $pre_advertisement =  $pre_advertisement->where('ads_events.status',1)
+                                                    ->where('advertisements.status',1)
+                                                    ->where('advertisements.id',$Livestream_details->live_ads)
+                                                    ->where('advertisements.ads_position','pre')
+                                                    ->pluck('ads_path')
+                                                    ->first();
 
 
             // Mid-advertisement 
 
-        $mid_advertisement = App\Advertisement::select('advertisements.*', 'ads_events.ads_id', 'ads_events.status', 'ads_events.end', 'ads_events.start')
-                                    ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
-                                    ->where('advertisements.status', 1)
-                                    ->groupBy('advertisements.id')
+        $mid_advertisement = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id');
+                                if($advertisement_plays_24hrs == 0){
+                                    $mid_advertisement =  $mid_advertisement->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+                                }
 
-                                    ->when( $Livestream_details->mid_ads == 'random_category', function ($query) {
-
-                                            return $query ;
-
-                                        }, function ($query) use ($Livestream_details) {
-
-                                            return $query->where('advertisements.ads_category', $Livestream_details->mid_ads);
-
-                                        })
-
-                                        ->when( $advertisement_plays_24hrs == 0 , function ($query) use ($current_time) {
-
-                                            return $query->where('ads_events.status', 1)
-                                                ->whereTime('ads_events.start', '<=', $current_time)
-                                                ->whereTime('ads_events.end', '>=', $current_time);
-                                            })
-                                    
-                                    ->pluck('ads_path');
+                                $mid_advertisement =  $mid_advertisement->where('ads_events.status',1)
+                                                                        ->where('advertisements.status',1)
+                                                                        ->groupBy('advertisements.id')
+                                                                        ->where('advertisements.id',$Livestream_details->live_ads)
+                                                                        ->where('advertisements.ads_position','mid')
+                                                                        ->pluck('ads_path');
 
             // Post-advertisement 
 
-        $post_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
-                                        ->join('ads_events','ads_events.ads_id','=','advertisements.id')
-                                        ->where('advertisements.status', 1 )
+        $post_advertisement =  App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id');
 
-                                        ->when( $Livestream_details->post_ads == 'random_ads', function ($query) {
+                                if($advertisement_plays_24hrs == 0){
+                                    $post_advertisement =  $post_advertisement->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+                                }
 
-                                            return $query->inRandomOrder();
-
-                                            }, function ($query) use ($Livestream_details) {
-
-                                            return $query->where('advertisements.id', $Livestream_details->post_ads);
-
-                                            })
-
-                                        ->when( $advertisement_plays_24hrs == 0, function ($query) use ($current_time) {
-
-                                            return $query->where('ads_events.status', 1)
-                                                ->whereTime('ads_events.start', '<=', $current_time)
-                                                ->whereTime('ads_events.end', '>=', $current_time);
-                                            })
-
-                                        ->groupBy('advertisements.id')
-                                        ->pluck('ads_path')
-                                        ->first();
-
-
+                                $post_advertisement =  $post_advertisement->where('ads_events.status',1)
+                                                                        ->where('advertisements.status',1)
+                                                                        ->where('advertisements.id',$Livestream_details->live_ads)
+                                                                        ->where('advertisements.ads_position','post')
+                                                                        ->pluck('ads_path')
+                                                                        ->first();
     }
-
-?>
-
-<?php 
-
-$current_time = Carbon\Carbon::now()->format('H:i:s');
-$adveristment_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
-
-if(  plans_ads_enable() == 1 ){
-  
-    $live_ads = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id');
-        if($adveristment_plays_24hrs == 0){
-            $live_ads =  $live_ads->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
-        }
-
-        $live_ads =  $live_ads->where('ads_events.status',1)
-        ->where('advertisements.status',1)
-        ->where('advertisements.id',$video->live_ads)
-        ->where('advertisements.ads_position',$video->ads_position)
-        ->pluck('ads_path')->first();
-  }
-  else
-  {
-        $live_ads = null ;
-  }
-
 ?>

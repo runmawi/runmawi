@@ -51,7 +51,7 @@
 
 @endphp
 
-@if( $recurring_program_Status == false && $publish_later_status = false )
+@if( $recurring_program_Status == false && $live_publish_later_status ==  false )
 
     @if ( $Livestream_details->users_video_visibility_status)
 
