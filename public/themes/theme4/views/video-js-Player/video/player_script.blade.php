@@ -17,27 +17,39 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
-                    "subtitlesButton": {},
-                    "playbackRateMenuButton": {},
-                    
-                    'settingsMenuButton':{
-                        entries:[
-                            'subtitlesButton',
-                            'playbackRateMenuButton',
-                        ]                    
-                    },
                     'fullscreenToggle': {},
-
-
-                                         
+                    // 'audioTrackButton': {},
                 },
                 pictureInPictureToggle: true,
+            },
+        }); 
+
+        player.on('loadedmetadata', function(){
+            var isMobile = window.innerWidth <= 768;
+            var controlBar = player.controlBar;
+            // console.log("controlbar",controlBar);
+            if(!isMobile){
+                controlBar.addChild('subtitlesButton');
+                controlBar.addChild('playbackRateMenuButton');
+            }
+            else{
+                controlBar.addChild('settingsMenuButton', {
+                    entries: [
+                        'subtitlesButton',
+                        'playbackRateMenuButton',
+                    ]
+                });
             }
         });
 
-        player.on('descriptionchange', function() {
-            console.log('Descriptions track changed');
-        });
+        // var watermark = document.createElement('div');
+        // watermark.className = 'watermark';
+        // watermark.innerHTML = '<img src="{{ URL::to('public/uploads/settings/Loading_1.webm') }}" alt="Watermark">';
+        
+        // var videoContainer = player.el();
+        // videoContainer.appendChild(watermark);
+
+        // player.watermark();
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
@@ -252,4 +264,16 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         z-index: 30;
         margin-left: -3px;
     }
+    /* .watermark {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .watermark img {
+        max-width: 100px;
+        opacity: 0.5;
+    } */
 </style>
