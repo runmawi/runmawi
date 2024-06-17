@@ -1,5 +1,5 @@
 .vjs-theme-city {
-  --vjs-theme-city--primary: #00b3ff;
+  --vjs-theme-city--primary: #00b3ff00;
   --vjs-theme-city--secondary: #fff;
 }
 
@@ -674,7 +674,7 @@ content: "" !important;
 }
 
 .my-video .vjs-audio-button {
-  display: none !important;
+  display: block !important;
 }
 
 /* .my-video .vjs-subtitles-button {
@@ -901,12 +901,14 @@ display: block !important;
   list-style: none;
   margin: 0;
   padding: 0.6em 0;
-  line-height: 1.4em;
+  line-height: 1.2em;
   font-size: 1.2em;
   font-family: Roboto;
   text-align: center;
-  text-transform: lowercase;
-
+  text-transform: capitalize;
+}
+.vjs-menu-item{
+  line-height: 5em;
 }
 
 .vjs-menu li.vjs-selected,
@@ -970,10 +972,6 @@ display: block !important;
   margin: 1.35em auto;
 }
 
-[aria-label="Settings Menu"] {
-  display: none;
-}
-
 /* For screens up to 600px */
 @media only screen and (max-width: 600px) {
   .custom-skip-backward-button {
@@ -1010,15 +1008,8 @@ display: block !important;
   .my-video.video-js .vjs-tech {
     object-fit: contain;
   }
-  [aria-label="Settings Menu"] {
-    display: block;
-  }
   [title*="Picture-in-Picture"]{
     display: none !important;
-  }
-  .vjs-playback-rate,
-  .vjs-subtitles-button{
-    display: none;
   }
   .video-js .vjs-mute-control .vjs-icon-placeholder:before,
   .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before,
@@ -1098,15 +1089,8 @@ display: block !important;
   .my-video.video-js .vjs-tech {
     object-fit: contain;
   }
-  [aria-label="Settings Menu"] {
-    display: block;
-  }
   [title*="Picture-in-Picture"]{
     display: none !important;
-  }
-  .vjs-playback-rate,
-  .vjs-subtitles-button{
-    display: none;
   }
   .video-js .vjs-mute-control .vjs-icon-placeholder:before,
   .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before,
@@ -1114,7 +1098,7 @@ display: block !important;
   .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before {
     content: "" !important;
     display: none !important;
-  }
+  } 
   .vjs-icon-cog:before {
     line-height: 4.5em;
     font-size: 10px;
