@@ -409,7 +409,8 @@
                                                                                 </nav> -->
                                                                                                                                 
                                                                                 <p class="trending-dec" >
-                                                                                    {{ $episodes->description}}
+                                                                                    {{ " S".$episodes->season_id ." E".$episodes->episode_order  }} 
+                                                                                    {!! (strip_tags(substr(optional($episodes)->episode_description, 0, 150))) !!}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -429,7 +430,8 @@
                                                                                 </nav> -->
                                                                                                                                 
                                                                                 <p class="trending-dec" >
-                                                                                    {{ $episodes->description}}
+                                                                                    {{ " S".$episodes->season_id ." E".$episodes->episode_order  }} 
+                                                                                    {!! (strip_tags(substr(optional($episodes)->episode_description, 0, 150))) !!}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
