@@ -394,7 +394,7 @@ class LiveStreamController extends Controller
           
                               // free PPV access for subscriber status Condition
           
-                      if( $setting->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
+                      if( $settings->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
           
                           $PPV_exists = false ;
                       }
@@ -412,7 +412,7 @@ class LiveStreamController extends Controller
                           
                           if ($item->access == "ppv") {
   
-                              $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+                              $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
   
                           } elseif( Auth::user()->role == 'registered') {
   
