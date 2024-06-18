@@ -140,502 +140,323 @@
     </div> -->
     <!-- BREADCRUMBS -->
 
-    <div class="row mr-2">
-        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
-            <div class="bc-icons-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Channels')) ?></a>
+        <div class="row mr-2">
+            <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+                <div class="bc-icons-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="black-text"
+                                href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Channels')) ?></a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
+
+                        <?php foreach ($category_name as $key => $series_category_name) { ?>
+                        <?php $category_name_length = count($category_name); ?>
+                        <li class="breadcrumb-item">
+                            <a class="black-text"
+                                href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                                <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            </a>
+                            
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
+                        </li>
+                        <?php } ?>
 
-                    <?php foreach ($category_name as $key => $series_category_name) { ?>
-                    <?php $category_name_length = count($category_name); ?>
-                    <li class="breadcrumb-item">
-                        <a class="black-text"
-                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
-                        </a>
-                        
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
-                    <?php } ?>
-
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
-                </ol>
+                        <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                    </ol>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid pl-0">
-        <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
+        <div class="container-fluid pl-0">
+            <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
 
-        <div class="container-fluid pl-3">
-            @if( $ppv_exits > 0 || $video_access == 'free' ||
-                ($series->access == 'guest' && $series->ppv_status != 1) ||
-                (($series->access == 'subscriber' || $series->access == 'registered') &&
-                    !Auth::guest() &&
-                    Auth::user()->subscribed() &&
-                    $series->ppv_status != 1) ||
-                (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
-                ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
-                (!Auth::guest() && $series->access == 'registered' &&
-                    $settings->free_registration && $series->ppv_status != 1))
+                <div class="container-fluid pl-3">
+                    @if( $ppv_exits > 0 || $video_access == 'free' ||
+                        ($series->access == 'guest' && $series->ppv_status != 1) ||
+                        (($series->access == 'subscriber' || $series->access == 'registered') &&
+                            !Auth::guest() &&
+                            Auth::user()->subscribed() &&
+                            $series->ppv_status != 1) ||
+                        (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
+                        ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
+                        (!Auth::guest() && $series->access == 'registered' &&
+                            $settings->free_registration && $series->ppv_status != 1))
 
-            <div class="col-md-7 pl-0">
-                <div id="series_title">
-                    <div class="container-fluid pl-0">
-                        <h3> {{ $series->title }} </h3>
+                        <div class="col-md-7 pl-0">
+                            <div id="series_title">
+                                <div class="container-fluid pl-0">
+                                    <h3> {{ $series->title }} </h3>
 
-                        <div class="row text-white">
+                                    <div class="row text-white">
 
-                            <div class="col-lg-8 col-md-8 pl-3">
+                                        <div class="col-lg-8 col-md-8 pl-3">
 
-                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
-                                - <?php echo __('U/A English'); ?>
+                                            <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
+                                            - <?php echo __('U/A English'); ?>
 
-                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
-                                
-                                    <!-- Model for banner discription -->
-                                        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                                                <div class="container">
-                                                    <div class="modal-content" style="border:none;">
-                                                        <div class="modal-body">
-                                                            <div class="col-lg-12">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6">
-                                                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
-                                                                    </div>
-                                                                    <div class="col-lg-6">
-                                                                        <div class="row">
-                                                                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                                <h2 class="caption-h2">{{ $series->title }}</h2>
+                                            <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                            
+                                                <!-- Model for banner discription -->
+                                                    <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                                            <div class="container">
+                                                                <div class="modal-content" style="border:none;">
+                                                                    <div class="modal-body">
+                                                                        <div class="col-lg-12">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-6">
+                                                                                    <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                                            <h2 class="caption-h2">{{ $series->title }}</h2>
 
-                                                                            </div>
-                                                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                                                </button>
+                                                                                        </div>
+                                                                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                                            <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
+
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+                                            <div class="row p-0 mt-3 align-items-center">
+
+                                                <div class="col-md-2">
+                                                    <a data-video="{{ $series->trailer }}" data-toggle="modal" data-target="#videoModal">
+                                                        <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}" />
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-md-1 pls  d-flex text-center mt-2">
+                                                    <div></div>
+                                                    <ul>
+                                                        <li class="share">
+                                                            <span><i class="ri-share-fill"></i></span>
+                                                            <div class="share-box">
+                                                                <div class="d-flex align-items-center">
+                                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+                                                                        class="share-ico"><i class="ri-facebook-fill"></i>
+                                                                    </a>
+
+                                                                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+                                                                        class="share-ico"><i class="ri-twitter-fill"></i>
+                                                                    </a>
+
+                                                                    <a href="#" onclick="Copy();" class="share-ico"><i
+                                                                            class="ri-links-fill"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>Share
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        </div>
 
+                                            <div class="modal fade modal-xl" id="videoModal" data-keyboard="false"
+                                                data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                                aria-hidden="true">
 
-                                <div class="row p-0 mt-3 align-items-center">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
 
-                                    <div class="col-md-2">
-                                        <a data-video="{{ $series->trailer }}" data-toggle="modal" data-target="#videoModal">
-                                            <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}" />
-                                        </a>
-                                    </div>
+                                                        <button type="button" class="close videoModalClose" data-dismiss="modal"
+                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                        </button>
 
-                                    <div class="col-md-1 pls  d-flex text-center mt-2">
-                                        <div></div>
-                                        <ul>
-                                            <li class="share">
-                                                <span><i class="ri-share-fill"></i></span>
-                                                <div class="share-box">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-facebook-fill"></i>
-                                                        </a>
+                                                        <div class="modal-body">
 
-                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-twitter-fill"></i>
-                                                        </a>
+                                                            <video id="videoPlayer1" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
+                                                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="" type="video/mp4">
+                                                            </video>
 
-                                                        <a href="#" onclick="Copy();" class="share-ico"><i
-                                                                class="ri-links-fill"></i>
-                                                        </a>
+                                                            <video id="videos" class="" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
+                                                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
+                                                                type="application/x-mpegURL">
+                                                                <source id="m3u8urlsource" type="application/x-mpegURL" src="">
+                                                            </video>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </li>Share
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade modal-xl" id="videoModal" data-keyboard="false"
-                                    data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                    aria-hidden="true">
-
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <button type="button" class="close videoModalClose" data-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-
-                                            <div class="modal-body">
-
-                                                <video id="videoPlayer1" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="" type="video/mp4">
-                                                </video>
-
-                                                <video id="videos" class="" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source id="m3u8urlsource" type="application/x-mpegURL" src="">
-                                                </video>
                                             </div>
+
+                                            <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
+                                            <script>
+                                                const player = new Plyr('#videoPlayer1');
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
 
-                                <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-
-                                <script>
-                                    const player = new Plyr('#videoPlayer1');
-                                </script>
                             </div>
                         </div>
-                    </div>
+                    @else(Auth::guest() && $series->access == 'subscriber' || Auth::guest() && $series->access == 'registered')
+                        <div class="col-md-7 pl-0">
+                                <div id="series_title">
+                                    <div class="container-fluid pl-0">
+                                        <h3> {{ $series->title }} </h3>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                                        <div class="row text-white">
 
-<section id="tabs" class="project-tab">
-    <div class="container-fluid p-0">
+                                            <div class="col-lg-8 col-md-8 pl-3">
 
-        
+                                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
+                                                - <?php echo __('U/A English'); ?>
 
-        <div class="video-list you-may-like overflow-hidden">
-            <div class="col-md-12 mt-4 p-0">
-                <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav mar-left" id="nav-tab" role="tablist">
-                        <h4 class=""> {{ 'Episode' }} </h4>
-                    </div>
-                </nav>
-            </div>
+                                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                                
+                                                <div class="row p-0 mt-3 align-items-center">
+                                                    <div class="col-md-1 pls  d-flex text-center mt-2">
+                                                        <ul class="p-0">
+                                                            <li class="share">
+                                                                <span><i class="ri-share-fill"></i></span>
+                                                                <div class="share-box">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+                                                                            class="share-ico"><i class="ri-facebook-fill"></i>
+                                                                        </a>
 
-            <div class="">
-                <div class="channels-list favorites-contens">
-                    <div class="mar-left col-md-3 p-0 mt-4">
-                        <select class="form-control" id="season_id" name="season_id">
-                            @foreach ($season as $key => $seasons)
-                                <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
-                                    {{ $seasons->series_seasons_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+                                                                            class="share-ico"><i class="ri-twitter-fill"></i>
+                                                                        </a>
 
-                    <div class="channel-row trending-contens sub_dropdown_image mt-3">
-                        <div class="video-list episodes-videos" >
-                            @foreach ($season as $key => $seasons)
-                                @forelse ($seasons->episodes as $key => $episodes)
-                                    @if ($seasons->ppv_interval > $key)
-                                        <div class="item depends-row">
-                                            <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                <div class=" position-relative">
-                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="flickity-lazyloaded" alt="{{ $episodes->title}}">
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-                                                        <!-- <nav>
-                                                        <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                        </nav> -->
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
+                                                                        <a href="#" onclick="Copy();" class="share-ico"><i
+                                                                                class="ri-links-fill"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </li>Share
+                                                        </ul>
                                                     </div>
+
                                                 </div>
-                                            </a>
-                                        </div>
-                                    @else
-                                        <div class="item depends-row">
-                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
-                                                <div class=" position-relative">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="flickity-lazyloaded" >
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-                                                        <!-- <nav>
-                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
-                                                        </nav> -->
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endif
-                                @empty
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
-                                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                            <div class="block-image position-relative">
-                                                <img src="{{ URL::to('assets\images\episodes\No-data-amico.svg')}}" class="img-fluid transimga img-zoom" alt="">
+
                                             </div>
                                         </div>
-                                    </li>
-                                @endforelse
-                            @endforeach
+                                    </div>
+
+                                </div>
                         </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        @elseif(Auth::guest() && $series->access == 'subscriber' || Auth::guest() && $series->access == 'registered')
-
-        <!-- <div class="col-sm-12">
-            <div id="ppv">
-                <h2 class="text-center" style="margin-top:80px;">{{ __('Purchase to Watch the Series') }}
-                    @if ($series->access == 'subscriber') 
-                        {{ __('Subscribers') }}
-                    @elseif($series->access == 'registered')
-                        {{ __('Registered Users') }} @endif
-                </h2>
-                <div class="clear"></div>
-            </div>
-
-            <div class="col-md-2 text-center text-white">
-                <div class="col-md-4">
-                    @if ($series->ppv_status == 1 && !Auth::guest() && Auth::User()->role != 'admin')
-                        <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)">
-                            {{ 'Purchase For'.$currency->symbol ." ".$settings->ppv_price }}
-                        </button>
+                
                     @endif
-                    <br>
                 </div>
-            </div>
-        </div> -->
-        <div class="col-md-7 pl-0">
-                <div id="series_title">
-                    <div class="container-fluid pl-0">
-                        <h3> {{ $series->title }} </h3>
-
-                        <div class="row text-white">
-
-                            <div class="col-lg-8 col-md-8 pl-3">
-
-                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
-                                - <?php echo __('U/A English'); ?>
-
-                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
-                                
-                                    <!-- Model for banner discription -->
-                                        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                                                <div class="container">
-                                                    <div class="modal-content" style="border:none;">
-                                                        <div class="modal-body">
-                                                            <div class="col-lg-12">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6">
-                                                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
-                                                                    </div>
-                                                                    <div class="col-lg-6">
-                                                                        <div class="row">
-                                                                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                                <h2 class="caption-h2">{{ $series->title }}</h2>
-
-                                                                            </div>
-                                                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                <div class="row p-0 mt-3 align-items-center">
-
-                                    <div class="col-md-2">
-                                        <a data-video="{{ $series->trailer }}" data-toggle="modal" data-target="#videoModal">
-                                            <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}" />
-                                        </a>
-                                    </div>
-
-                                    <div class="col-md-1 pls  d-flex text-center mt-2">
-                                        <div></div>
-                                        <ul>
-                                            <li class="share">
-                                                <span><i class="ri-share-fill"></i></span>
-                                                <div class="share-box">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-facebook-fill"></i>
-                                                        </a>
-
-                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-twitter-fill"></i>
-                                                        </a>
-
-                                                        <a href="#" onclick="Copy();" class="share-ico"><i
-                                                                class="ri-links-fill"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>Share
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade modal-xl" id="videoModal" data-keyboard="false"
-                                    data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                    aria-hidden="true">
-
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <button type="button" class="close videoModalClose" data-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-
-                                            <div class="modal-body">
-
-                                                <video id="videoPlayer1" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="" type="video/mp4">
-                                                </video>
-
-                                                <video id="videos" class="" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source id="m3u8urlsource" type="application/x-mpegURL" src="">
-                                                </video>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-
-                                <script>
-                                    const player = new Plyr('#videoPlayer1');
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
-            </div>
         </div>
-    </div>
 </div>
 
-<section id="tabs" class="project-tab">
-    <div class="container-fluid p-0">
+                    @if( $ppv_exits > 0 || $video_access == 'free' ||
+                        ($series->access == 'guest' && $series->ppv_status != 1) ||
+                        (($series->access == 'subscriber' || $series->access == 'registered') &&
+                            !Auth::guest() &&
+                            Auth::user()->subscribed() &&
+                            $series->ppv_status != 1) ||
+                        (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
+                        ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
+                        (!Auth::guest() && $series->access == 'registered' &&
+                            $settings->free_registration && $series->ppv_status != 1))
+                        <section id="tabs" class="project-tab">
+                            <div class="container-fluid p-0">
 
-        
+                                
 
-        <div class=" ">
-            <div class="col-md-12 mt-4 p-0">
-                <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav mar-left" id="nav-tab" role="tablist">
-                        <h4 class=""> {{ 'Episode' }} </h4>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="container-fluid p-0">
-                <div class="channels-list favorites-contens">
-                    <div class="mar-left col-md-3 p-0 mt-4">
-                        <select class="form-control" id="season_id" name="season_id">
-                            @foreach ($season as $key => $seasons)
-                                <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
-                                    {{ $seasons->series_seasons_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="channel-row trending-contens sub_dropdown_image mt-3">
-                        <div class="video-list episodes-videos" >
-                            @foreach ($season as $key => $seasons)
-                                @forelse ($seasons->episodes as $key => $episodes)
-                                    @if ($seasons->ppv_interval > $key)
-                                        <div class="item depends-row">
-                                            <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                <div class=" position-relative">
-                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="flickity-lazyloaded" alt="{{ $episodes->title}}">
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-                                                        <!-- <nav>
-                                                        <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                        </nav> -->
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @else
-                                        <div class="item depends-row">
-                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
-                                                <div class=" position-relative">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="flickity-lazyloaded" >
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-                                                        <!-- <nav>
-                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
-                                                        </nav> -->
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endif
-                                @empty
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
-                                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                            <div class="block-image position-relative">
-                                                <img src="{{ URL::to('assets\images\episodes\No-data-amico.svg')}}" class="img-fluid transimga img-zoom" alt="">
+                                <div class="video-list you-may-like overflow-hidden">
+                                    <div class="col-md-12 mt-4 p-0">
+                                        <nav class="nav-justified p-0 m-0 w-100">
+                                            <div class="nav mar-left" id="nav-tab" role="tablist">
+                                                <h4 class=""> {{ 'Episode' }} </h4>
                                             </div>
+                                        </nav>
+                                    </div>
+
+                                    <div class="">
+                                        <div class="channels-list favorites-contens">
+                                            <div class="mar-left col-md-3 p-0 mt-4">
+                                                <select class="form-control" id="season_id" name="season_id">
+                                                    @foreach ($season as $key => $seasons)
+                                                        <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
+                                                            {{ $seasons->series_seasons_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="channel-row trending-contens sub_dropdown_image mt-3">
+                                                <div class="video-list episodes-videos" id="episodes-container">
+                                                    @foreach ($season as $key => $seasons)
+                                                        @forelse ($seasons->episodes as $key => $episodes)
+                                                            @if ($seasons->ppv_interval > $key)
+                                                                <div class="item depends-row season_{{ $seasons->id }}">
+                                                                    <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                                                        <div class=" position-relative">
+                                                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="flickity-lazyloaded" alt="{{ $episodes->title}}">
+                                                                            <div class="controls">
+                                                                                <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                </a>
+                                                                                <!-- <nav>
+                                                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                                </nav> -->
+                                                                                                                                
+                                                                                <p class="trending-dec" >
+                                                                                    {{ " S".$episodes->season_id ." E".$episodes->episode_order  }} 
+                                                                                    {!! (strip_tags(substr(optional($episodes)->episode_description, 0, 150))) !!}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            @else
+                                                                <div class="item depends-row season_{{ $seasons->id }}"">
+                                                                    <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                                                        <div class=" position-relative">
+                                                                            <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="flickity-lazyloaded" >
+                                                                            <div class="controls">
+                                                                                <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                </a>
+                                                                                <!-- <nav>
+                                                                                    <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
+                                                                                </nav> -->
+                                                                                                                                
+                                                                                <p class="trending-dec" >
+                                                                                    {{ " S".$episodes->season_id ." E".$episodes->episode_order  }} 
+                                                                                    {!! (strip_tags(substr(optional($episodes)->episode_description, 0, 150))) !!}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @empty
+                                                            <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                                                <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                                                    <div class="block-image position-relative">
+                                                                        <img src="{{ URL::to('assets\images\episodes\No-data-amico.svg')}}" class="img-fluid transimga img-zoom" alt="">
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        @endforelse
+                                                    @endforeach
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </li>
-                                @endforelse
-                            @endforeach
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    
-                </div>
-            </div>
-    </div>
-   
-
-
-
-@endif
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    @endif
 
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
@@ -724,6 +545,41 @@
     </div>
 </div>
 
+
+        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                <div class="container">
+                    <div class="modal-content" style="border:none;">
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <h2 class="caption-h2">{{ $series->title }}</h2>
+
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
 <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
 
@@ -740,19 +596,55 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
 <script>
-    var elem = document.querySelector('.episodes-videos');
-    var flkty = new Flickity( elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    $(document).ready(function() {
+        var flkty;
+        
+        // Initialize Flickity
+        function initializeFlickity() {
+            if (flkty) {
+                flkty.destroy(); // Destroy existing instance
+            }
+            flkty = new Flickity('.episodes-videos', {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyload: true,
+            });
+        }
+
+        // Function to show episodes of selected season
+        function showEpisodes() {
+            var selectedSeason = $('#season_id').val();
+
+            // Hide all episodes
+            $('.item.depends-row').hide();
+
+            // Show only the selected season's episodes
+            $('.' + selectedSeason).show();
+
+            // Reinitialize Flickity slider
+            initializeFlickity();
+        }
+
+        // Event listener for dropdown change
+        $('#season_id').change(function() {
+            showEpisodes();
+        });
+
+        // Initial setup on page load
+        showEpisodes();
     });
 </script>
+
+
 
 <script type="text/javascript">
     var purchase_series = $('#purchase_url').val();
