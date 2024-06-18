@@ -8,7 +8,6 @@
          
         if (typeof google === 'undefined') {
             console.error('Google IMA SDK is not loaded. Please include the IMA SDK script.');
-            return;
         }
 
         var player = videojs('my-video', { // Video Js Player 
