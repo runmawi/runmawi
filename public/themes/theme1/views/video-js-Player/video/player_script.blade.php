@@ -5,6 +5,11 @@
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
+         
+        if (typeof google === 'undefined') {
+            console.error('Google IMA SDK is not loaded. Please include the IMA SDK script.');
+            return;
+        }
 
         var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
