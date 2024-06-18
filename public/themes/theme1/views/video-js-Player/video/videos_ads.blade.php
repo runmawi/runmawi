@@ -91,7 +91,7 @@
                                         ->pluck('ads_path')
                                         ->first();
 
-                // Default ads 
+                                               // Default ads 
                 
         if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url) && is_null($pre_advertisement) ){
             $pre_advertisement  = $setting->default_ads_url;
@@ -105,5 +105,6 @@
         if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && is_null($post_advertisement) ){
             $post_advertisement = $setting->default_ads_url;
         }
+
     }
 ?>

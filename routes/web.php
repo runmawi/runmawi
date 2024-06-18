@@ -481,7 +481,6 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/channels', 'ChannelController@index');
     Route::get('/ppvVideos', 'ChannelController@ppvVideos');
     Route::get('/live', 'LiveStreamController@Index');
-    // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 
     Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
     Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
@@ -956,12 +955,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/live-event-destroy/{id}', 'AdminLiveEventArtist@destroy')->name('live_event_destroy');
 
     // Admin Channel Package
-    Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
-    Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
-    Route::post('/channel-package-store', 'AdminChannelPackageController@store')->name('channel_package_store');
-    Route::get('/channel-package-edit/{id}', 'AdminChannelPackageController@edit')->name('channel_package_edit');
-    Route::post('/channel-package-update/{id}', 'AdminChannelPackageController@update')->name('channel_package_update');
-    Route::get('/channel-package-delete/{id}', 'AdminChannelPackageController@delete')->name('channel_package_delete');
+ 
+        // Note - Don't remove this 
+        
+        // Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
+        // Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
+        // Route::post('/channel-package-store', 'AdminChannelPackageController@store')->name('channel_package_store');
+        // Route::get('/channel-package-edit/{id}', 'AdminChannelPackageController@edit')->name('channel_package_edit');
+        // Route::post('/channel-package-update/{id}', 'AdminChannelPackageController@update')->name('channel_package_update');
+        // Route::get('/channel-package-delete/{id}', 'AdminChannelPackageController@delete')->name('channel_package_delete');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
