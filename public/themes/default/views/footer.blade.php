@@ -319,7 +319,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     try {
 
       if( Route::currentRouteName() == "LiveStream_play" ){
-        include('livevideo_player_script.blade.php');
+        // include(public_path('themes/default/views/video-js-Player/Livestream/live-player.blade.php'));
       }
       elseif ( Route::currentRouteName() == "play_episode"){
         include('episode_player_script.blade.php');
