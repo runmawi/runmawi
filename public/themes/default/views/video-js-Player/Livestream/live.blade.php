@@ -440,7 +440,7 @@
                                     {{ $stripe_payment_setting->payment_type }}
                                 </label>
                             @endif
-
+{{-- 
                             <!-- Razorpay Button -->
                             @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
@@ -463,7 +463,7 @@
                                     <input type="radio" class="payment_btn" name="payment_method" value="{{ $CinetPay_payment_settings->payment_type }}" data-value="CinetPay">
                                     {{ $CinetPay_payment_settings->payment_type }}
                                 </label>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -475,13 +475,13 @@
                             {{ __('Continue') }}
                         </button>
                     </div>
-
+{{-- 
                     <div class="Razorpay_button"> <!-- Razorpay Button -->
                         @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                            {{-- <button class="btn2  btn-outline-primary "
+                            <button class="btn2  btn-outline-primary "
                                 onclick="location.href ='{{ route('RazorpayLiveRent', ['id' => $video->id, 'amount' => $video->ppv_price]) }}' ;">
                                 {{ __('Continue') }}
-                            </button> --}}
+                            </button>
                         @endif
                     </div>
 
@@ -503,7 +503,7 @@
                                     class="btn2  btn-outline-primary">{{ __('Continue') }}</button>
                             @endif
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>
