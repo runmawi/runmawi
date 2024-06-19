@@ -179,17 +179,17 @@ class LiveStreamController extends Controller
 
         $Adsvariables = Adsvariables::get();
         
-        // if ( empty($request->query())) {
+        if ( empty($request->query())) {
             
-        //     $currentUrl = $request->fullUrl();
-        //     $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&Macro={Macro}&App Name={App Name}&location={location}&time={time}&device={device}&operating system={operating system}';
+            $currentUrl = $request->fullUrl();
+            $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&Macro={Macro}&App Name={App Name}&location={location}&time={time}&device={device}&operating system={operating system}';
 
-        //     foreach ($Adsvariables as $value) {
-        //         $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
-        //     }
+            foreach ($Adsvariables as $value) {
+                $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
+            }
 
-        //     return redirect($Adsvariables_url);
-        // }
+            return redirect($Adsvariables_url);
+        }
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
