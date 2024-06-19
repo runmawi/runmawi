@@ -66,7 +66,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         /* right: 20%; */
         top: 46% !important;
     }
-}
+    }
 
 </style>
 
@@ -88,7 +88,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     <div class="">
         @if (!Auth::guest())
             @if ( $free_episode > 0)
-                    @if ( $free_episode > 0)
+                @if ( $free_episode > 0)
                         
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">

@@ -103,7 +103,7 @@
         var prerollTriggered = false;
         var postrollTriggered = false;
 
-        const vastTagMidroll_array = '<?php echo $mid_advertisement; ?>';
+        const vastTagMidroll_array = '<?php echo json_encode($mid_advertisement); ?>';
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;
@@ -231,10 +231,7 @@
                 prerollTriggered = true;
             }
             player.play();
-
         });
-
-
     });
 
 </script>
