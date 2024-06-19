@@ -97,6 +97,8 @@ use App\AdminVideoAds;
 use App\AdminEPGChannel;
 use App\Episode;
 use App\LiveStream;
+use App\SiteVideoScheduler;
+use App\DefaultSchedulerData;
 
 class AdminVideosController extends Controller
 {
@@ -5925,6 +5927,9 @@ class AdminVideosController extends Controller
 
     public function ScheduleDelete($id)
     {
+
+        SiteVideoScheduler::where('channe_id', $id)->delete();
+        DefaultSchedulerData::where('channe_id', $id)->delete();
         VideoSchedules::where("id", $id)->delete();
 
         return Redirect::back()->with([

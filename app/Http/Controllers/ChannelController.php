@@ -61,6 +61,8 @@ use App\LiveStream;
 use App\TimeZone;
 use App\Channel;
 use App\Series;
+use App\Adsvariables;
+use App\Advertisement;
 use Carbon\Carbon;
 use URL;
 use Auth;
@@ -4889,6 +4891,7 @@ class ChannelController extends Controller
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
                 'setting'   => $setting,
+                'adsvariable' =>  Adsvariables::get(),
                 'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>

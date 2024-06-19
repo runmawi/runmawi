@@ -72,7 +72,6 @@
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
 
     <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
@@ -94,15 +93,6 @@
       elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_name .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
-
-    <meta itemprop="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
-      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
-      elseif(!empty($livestream)){ echo $livestream->description  ;}
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>">
 
     <meta itemprop="image"
         content="<?php 

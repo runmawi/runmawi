@@ -5,6 +5,10 @@
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
+         
+        if (typeof google === 'undefined') {
+            console.error('Google IMA SDK is not loaded. Please include the IMA SDK script.');
+        }
 
         var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
@@ -107,36 +111,6 @@
             }
         });
 
-        player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
-            const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-            const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-            if (skipForwardButton && skipBackwardButton) {
-                skipForwardButton.style.display = 'none';
-                skipBackwardButton.style.display = 'none';
-            }
-        });
-
-        player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
-          const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-          const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-          if (skipForwardButton && skipBackwardButton) {
-            skipForwardButton.style.display = 'block';
-            skipBackwardButton.style.display = 'block';
-          }
-        });
-
-        const skipForward = (duration) => {
-            const playerTime = player.current;
-            playerTime.currentTime(playerTime.currentTime() + duration);
-            console.log("player",playerTime)
-        };
-
-        const skipBackward = (duration) => {
-            const pplayerTime = player.current;
-            playerTime.currentTime(playerTime.currentTime() - duration);
-        };
 
         // Ads Marker
 

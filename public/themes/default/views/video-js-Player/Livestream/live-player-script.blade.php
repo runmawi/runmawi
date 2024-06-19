@@ -1,12 +1,11 @@
 <script>
 
-    let video_url = "<?php echo $videodetail->videos_url; ?>";
-    let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
-    let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
+    let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
+    let users_video_visibility_free_duration_status = "<?php echo $Livestream_details->users_video_visibility_free_duration_status; ?>";
+    let free_duration_seconds   = "<?php echo $Livestream_details->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('live-stream-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
@@ -22,121 +21,30 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},                     
+                    'fullscreenToggle': {},                      
                 },
                 pictureInPictureToggle: true,
             }
         });
 
-    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-    const playPauseButton = document.querySelector('.vjs-big-play-button');
-
-    skipForwardButton.addEventListener('click', function() {
-        player.currentTime(player.currentTime() + 10);
-    });
-
-    skipBackwardButton.addEventListener('click', function() {
-        player.currentTime(player.currentTime() - 10);
-    });
-
-    player.on('userinactive', () => {
-    // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-    if (skipForwardButton && skipBackwardButton && playPauseButton) {
-        skipForwardButton.style.display = 'none';
-        skipBackwardButton.style.display = 'none';
-        playPauseButton.style.display = 'none';
-    }
-    });
-
-    player.on('useractive', () => {
-    // Show the Play pause, skip forward and backward buttons when the user becomes active
-    if (skipForwardButton && skipBackwardButton && playPauseButton) {
-        skipForwardButton.style.display = 'block';
-        skipBackwardButton.style.display = 'block';
-        playPauseButton.style.display = 'block';
-    }
-    });
-
-
-        // Skip Intro & Skip Recap 
-
-        player.on("loadedmetadata", function() {
-
-            const player_duration_Seconds        =  player.duration();
-            const video_skip_intro_seconds       = '<?= $videodetail->video_skip_intro_seconds ?>' ;
-            const video_intro_start_time_seconds = '<?= $videodetail->video_intro_start_time_seconds ?>' ;
-            const video_intro_end_time_seconds   = '<?= $videodetail->video_intro_end_time_seconds ?>' ;
-
-            const video_skip_recap_seconds       = '<?= $videodetail->video_skip_recap_seconds ?>' ;
-            const video_recap_start_time_seconds = '<?= $videodetail->video_recap_start_time_seconds ?>'  ;
-            const video_recap_end_time_seconds   = '<?= $videodetail->video_recap_end_time_seconds ?>'  ;
-
-            if( player_duration_Seconds != "Infinity" && !!video_skip_intro_seconds && !!video_intro_start_time_seconds && !!video_intro_end_time_seconds ){
-                player.skipButton({
-                    text: "Skip Intro",
-                    from: video_intro_start_time_seconds,
-                    to: video_skip_intro_seconds,
-                    position: "bottom-right",
-                    offsetH: 46,
-                    offsetV: 96
-                });
-
-                player.on("timeupdate", function() {
-                    if(video_intro_end_time_seconds <= player.currentTime() ){
-                        $(".vjs-fg-skip-button").removeAttr("style").hide();
-                    }
-                });
-            }
-
-            if(  player_duration_Seconds != "Infinity" &&  !!video_skip_recap_seconds && !!video_recap_start_time_seconds && !!video_recap_end_time_seconds ){
-                player.skipButton({
-                    text: "Skip Recap",
-                    from: video_recap_start_time_seconds,
-                    to: video_skip_recap_seconds,
-                    position: "bottom-right",
-                    offsetH: 46,
-                    offsetV: 96
-                });
-
-                player.on("timeupdate", function() {
-                    if(video_recap_end_time_seconds <= player.currentTime() ){
-                        $(".vjs-fg-skip-button").removeAttr("style").hide();
-                    }
-                });
-            }
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        player.on('userinactive', () => {
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+          }
         });
 
-        // player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
-        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //     if (skipForwardButton && skipBackwardButton) {
-        //         skipForwardButton.style.display = 'none';
-        //         skipBackwardButton.style.display = 'none';
-        //     }
-        // });
+        player.on('useractive', () => {
+          if (playPauseButton) {
+            playPauseButton.style.display = 'block';
+          }
+        });
 
-        // player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
-        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //   if (skipForwardButton && skipBackwardButton) {
-        //     skipForwardButton.style.display = 'block';
-        //     skipBackwardButton.style.display = 'block';
-        //   }
-        // });
-
-        // const skipForward = (duration) => {
-        //     const playerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() + duration);
-        //     console.log("player",playerTime)
-        // };
-
-        // const skipBackward = (duration) => {
-        //     const pplayerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() - duration);
-        // };
+        const liveControl = document.querySelector('.vjs-live-display');
+        const span = document.createElement('span');
+        span.className = "live_dot";
+        span.textContent = ".";
+        liveControl.insertBefore(span, liveControl.firstChild);
 
         // Ads Marker
 
@@ -185,15 +93,11 @@
             }
         });
 
-        // Hls Quality Selector - M3U8 
-
-        player.hlsQualitySelector({ 
+        player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });
 
-        // Advertisement
-
-        var vastTagPreroll  = '<?= $pre_advertisement ?>'; 
+        var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
         var vastTagPostroll = '<?= $post_advertisement ?>';
 
         var prerollTriggered = false;
@@ -232,9 +136,6 @@
             player.ima.requestAds();
         }
 
-        var initial_current_time = 0;
-        var timeupdate_counter = 0; 
-
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
@@ -256,9 +157,9 @@
                 requestMidrollAd(vastTagMidroll);
             }
 
-            // Free Duration
+             // Free Duration
 
-            if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+             if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
                 player.pause();
                 player.dispose();
                 player.off('timeupdate');  
@@ -330,12 +231,7 @@
                 prerollTriggered = true;
             }
             player.play();
-
         });
-
-        player.on("skipDuration", function(duration){
-            // console.log("!#");
-        })
     });
 
 </script>
