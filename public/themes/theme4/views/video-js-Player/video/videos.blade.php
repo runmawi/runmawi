@@ -65,6 +65,8 @@
                     muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             
+                <!-- <track kind="descriptions" src="descriptions.vtt" srclang="en" label="English" default>
+                <track kind="descriptions" src="descriptions.vtt" srclang="tn" label="Tamil">    -->
             
             @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
                 @if(isset($subtitles) && count($subtitles) > 0)
