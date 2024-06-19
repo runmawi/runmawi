@@ -10,6 +10,7 @@
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
     <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+    <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" />
 
 {{-- video-js Script --}}
 
