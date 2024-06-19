@@ -21,7 +21,7 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
     @endif
 
     @if(  $item->video_name == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
-        {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos',  array_merge($homepage_array_data) )->content() !!}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/artist-videos',  array_merge($homepage_array_data) )->content() !!}
     @endif
 
     @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
@@ -65,6 +65,87 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
         {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Audios-based-categories',  ($homepage_array_data) )->content() !!}
     @endif
 
+    @if(  $item->video_name == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/livestreams-based-categories', ($homepage_array_data) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}} 
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/liveCategories', array_merge($homepage_array_data, ['data' => $LiveCategory]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'series' && $home_settings->series == 1 )        {{-- series  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
+     
+        <?php $channels = App\Channel::where('status',1)->limit(15)->get(); ?>
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/ChannelPartners', array_merge($homepage_array_data, ['data' => $channels]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'latest_viewed_Videos' && $home_settings->latest_viewed_Videos == 1 ) {{-- Latest Viewed Videos --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest_viewed_Videos', ($homepage_array_data) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'latest_viewed_Audios' && $home_settings->latest_viewed_Audios == 1 ) {{-- Latest Viewed Audios    --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest_viewed_Audios', ($homepage_array_data) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/SeriesGenre', array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audio Genre  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/AudioGenre', array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
+    @endif
+
+    @if( !Auth::guest() &&  $item->video_name == 'my_play_list' && $home_settings->my_playlist == 1 ) {{-- MY PlayList --}}
+        @php $MyPlaylist = !Auth::guest() ? App\MyPlaylist::where('user_id',Auth::user()->id)->limit(15)->get() : []; @endphp
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/my-playlist', array_merge($homepage_array_data , ['data' => $MyPlaylist ]))->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
+        <?php $video_details = App\Video::latest()->first(); ?>
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Today-Top-videos', array_merge($homepage_array_data , ['data' => $video_details ]))->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'watchlater_videos' && $home_settings->watchlater_videos == 1 )        {{-- watchlater_videos  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/watchlater_videos', array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'wishlist_videos' && $home_settings->wishlist_videos == 1 )        {{-- wishlist_videos  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/wishlist_videos', array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
+    @endif
+
+    @if( $Series_Networks_Status == 1 &&  $item->video_name == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
+    @endif
+
+    @if(   $item->video_name == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Going-to-expiry-videos', $homepage_array_data )->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'series_episode_overview' && $home_settings->series_episode_overview == 1 )    {{--  series_episode_overview  --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/series_episode_overview', array_merge($homepage_array_data , ['data' => $latest_video ]))->content() !!}
+    @endif
+
+    @if(  $Series_Networks_Status == 1 &&   $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data , ['data' => $Series_based_on_Networks ]) )->content() !!}
+    @endif
+
+    @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )     
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/channel-epg', $homepage_array_data)->content() !!}
+    @endif
+
+    @if(  $item->video_name == 'Recommendation')  {{-- Recommendation --}}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/Top_videos', array_merge($homepage_array_data , ['data' => $top_most_watched ]))->content() !!}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/most_watched_country', array_merge($homepage_array_data , ['data' => $Most_watched_country ]))->content() !!}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/most_watched_user', array_merge($homepage_array_data , ['data' => $most_watch_user ]))->content() !!}
+    @endif
 @empty
 
 @endforelse

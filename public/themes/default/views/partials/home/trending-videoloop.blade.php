@@ -55,9 +55,9 @@
                                                       @if($watchlater_video->access == 'subscriber')
                                                           <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
                                                       @elseif(!empty($watchlater_video->ppv_price))
-                                                          <p class="p-tag1">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
+                                                          <p class="p-tag">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
                                                       @elseif(!empty($watchlater_video->global_ppv) || (!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null))
-                                                          <p class="p-tag1">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                          <p class="p-tag">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
                                                       @elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
                                                           <p class="p-tag">{{ __('Free') }}</p>
                                                       @endif

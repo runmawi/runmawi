@@ -1,8 +1,53 @@
 
+@php
+    $play_button_svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1" />
+        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+    </svg>';
+
+    $front_end_logo = front_end_logo();
+
+@endphp
 
 
 
-<!-- Sliders -->
+            {{-- Admin Slider  --}}
+            @if (!empty($sliders) && $sliders->isNotEmpty())
+                @foreach ($sliders as $item)
+                    <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
+                        <div class="container-fluid position-relative h-100 pl-4">
+                            <div class="slider-inner h-100">
+                                <div class="row align-items-center  h-100">
+                                    <div class="col-xl-6 col-lg-12 col-md-12">
+
+                                        <a href="#">
+                                            <div class="channel-logo" data-animation-in="fadeInLeft">
+                                                <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
+                                            </div>
+                                        </a>
+
+                                        <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
+
+                                        <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
+                                            <a href="{{ $item->link }}" class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Trailer --}}
+                                @if ( optional($item)->trailer_link)
+                                    <div class="trailor-video">
+                                        <a href="{{ $item->trailer_link }}" class="playbtn">
+                                            {!! html_entity_decode( $play_button_svg ) !!}
+                                            <span class="w-trailor">Watch Trailer</span>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
 
 <?php if(isset($sliders)) :
     foreach($sliders as $key => $slider_video): ?>
@@ -540,23 +585,5 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
 </div>
 <?php endforeach;  endif; ?>
 
-<!-- <script>
-        $(document).ready(function () {
-            const imageContainer = document.getElementById("image-container");
-            const video = document.querySelector(".myvideos");
-            video.style.opacity = 0;
-
-            // Function to play the video after 5 seconds
-            function playVideoAfterDelay() {
-                setTimeout(function () {
-                    video.play();
-                    video.style.opacity = 1;
-                }, 5000); // 5000 milliseconds (5 seconds)
-            }
-
-            // Call the function to play the video after a delay
-            playVideoAfterDelay();
-        });
-    </script> -->
 
     

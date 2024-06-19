@@ -59,19 +59,27 @@
                                                         <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->image) : $default_vertical_image_url }}" alt="cate">
                                                     </a>
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                        <p class="p-tag1">
-                                                            @if($series_video->access == 'subscriber')
-                                                                <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
-                                                            @elseif($series_video->access == 'registered')
+                                                        @switch(true)
+                                                            @case($series_video->access == 'subscriber')
+                                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            @break
+
+                                                            @case($series_video->access == 'registered')
                                                                 <p class="p-tag">{{ __('Register Now') }}</p>
-                                                            @elseif(!empty($series_video->ppv_price))
-                                                                {{ $currency->symbol . ' ' . $series_video->ppv_price }}
-                                                            @elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                                {{ $currency->symbol . ' ' . $series_video->global_ppv }}
-                                                            @elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                                {{ 'Free' }}
-                                                            @endif
-                                                        </p>
+                                                            @break
+
+                                                            @case(!empty($series_video->ppv_price))
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $series_video->ppv_price }}</p>
+                                                            @break
+
+                                                            @case(!empty($series_video->global_ppv) || (!empty($series_video->global_ppv) && $series_video->ppv_price == null))
+                                                                <p class="p-tag">{{ $series_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                            @break
+
+                                                            @case($series_video->global_ppv == null && $series_video->ppv_price == null)
+                                                                <p class="p-tag">{{ __('Free') }}</p>
+                                                            @break
+                                                        @endswitch
                                                     @endif
                                                 </div>
                                             </div>
@@ -80,36 +88,29 @@
                                                 <a class="playTrailer" href="{{ url('play_series/' . $series_video->slug) }}">
                                                     <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->player_image) : $default_vertical_image_url }}" alt="cate">
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                        <p class="p-tag1">
-                                                            @if($series_video->access == 'subscriber')
-                                                                <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
-                                                            @elseif($series_video->access == 'registered')
+                                                        @switch(true)
+                                                            @case($series_video->access == 'subscriber')
+                                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            @break
+
+                                                            @case($series_video->access == 'registered')
                                                                 <p class="p-tag">{{ __('Register Now') }}</p>
-                                                            @elseif(!empty($series_video->ppv_price))
-                                                                {{ $currency->symbol . ' ' . $series_video->ppv_price }}
-                                                            @elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                                {{ $currency->symbol . ' ' . $series_video->global_ppv }}
-                                                            @elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                                {{ 'Free' }}
-                                                            @endif
-                                                        </p>
+                                                            @break
+
+                                                            @case(!empty($series_video->ppv_price))
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $series_video->ppv_price }}</p>
+                                                            @break
+
+                                                            @case(!empty($series_video->global_ppv) || (!empty($series_video->global_ppv) && $series_video->ppv_price == null))
+                                                                <p class="p-tag">{{ $series_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                            @break
+
+                                                            @case($series_video->global_ppv == null && $series_video->ppv_price == null)
+                                                                <p class="p-tag">{{ __('Free') }}</p>
+                                                            @break
+                                                        @endswitch
                                                     @endif
                                                 </a>
-                                                @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                    <p class="p-tag1">
-                                                        @if($series_video->access == 'subscriber')
-                                                            <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
-                                                        @elseif($series_video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @elseif(!empty($series_video->ppv_price))
-                                                            {{ $currency->symbol . ' ' . $series_video->ppv_price }}
-                                                        @elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                            {{ $currency->symbol . ' ' . $series_video->global_ppv }}
-                                                        @elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null)
-                                                            {{ 'Free' }}
-                                                        @endif
-                                                    </p>
-                                                @endif
 
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ url('play_series/' . $series_video->slug) }}">

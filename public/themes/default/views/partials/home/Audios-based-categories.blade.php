@@ -102,16 +102,48 @@
                                                 </a>
                                                 
                                                 <div class="hover-buttons text-white">
-                                                    @if($ThumbnailSetting->title == 1)
-                                                        <a href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
+                                                    <a href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
+                                                        @if($ThumbnailSetting->title == 1)
+                                                            <!-- Title -->
                                                             <p class="epi-name text-left m-0">
                                                                 {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
                                                             </p>
-                                                        </a>
-                                                    @endif
+                                                        @endif
+                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                            @if($ThumbnailSetting->duration == 1 && !is_null($audios_details->duration))
+                                                                <!-- Duration -->
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    {{ gmdate('H:i:s', $audios_details->duration) }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
+                                                            <div class="movie-time d-flex align-items-center pt-1">
+                                                                @if($ThumbnailSetting->rating == 1)
+                                                                    <!-- Rating -->
+                                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                                        <span class="text-white">
+                                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                            {{ __($audios_details->rating) }}
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
 
-                                                    <a class="epi-name mt-5 mb-0 btn" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" alt="ply" /> Watch Now
+                                                                @if($ThumbnailSetting->featured == 1 && $audios_details->featured == 1)
+                                                                    <!-- Featured -->
+                                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                                        <span class="text-white">
+                                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    </a>
+
+                                                    <a class="epi-name mt-3 mb-0 btn" type="button" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
