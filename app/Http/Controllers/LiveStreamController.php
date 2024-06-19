@@ -173,9 +173,23 @@ class LiveStreamController extends Controller
       }
     }
     
-    public function Play($vid)
+    public function Play(Request $request,$vid)
     {
       // try {
+
+        $Adsvariables = Adsvariables::get();
+        
+        // if ( empty($request->query())) {
+            
+        //     $currentUrl = $request->fullUrl();
+        //     $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&Macro={Macro}&App Name={App Name}&location={location}&time={time}&device={device}&operating system={operating system}';
+
+        //     foreach ($Adsvariables as $value) {
+        //         $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
+        //     }
+
+        //     return redirect($Adsvariables_url);
+        // }
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
@@ -546,7 +560,7 @@ class LiveStreamController extends Controller
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
                  'Livestream_details'      => $Livestream_details ,
-                 'adsvariable'             =>  Adsvariables::get(),
+                 'adsvariable'             =>  $Adsvariables    ,
                  'setting'                => $settings,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
