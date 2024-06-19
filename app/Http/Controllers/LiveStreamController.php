@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
+use Jenssegers\Agent\Agent;
 use Carbon\Carbon;
 use URL;
 use Auth;
@@ -177,19 +178,22 @@ class LiveStreamController extends Controller
     {
       // try {
 
-        $Adsvariables = Adsvariables::get();
-        
-        // if ( empty($request->query())) {
-            
-        //     $currentUrl = $request->fullUrl();
-        //     $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&Macro={Macro}&App Name={App Name}&location={location}&time={time}&device={device}&operating system={operating system}';
+      // $agent        = new Agent();
+      // $Adsvariables = Adsvariables::get();
+      // $current_timezone = current_timezone() ;
+      // $current_time = Carbon::now($current_timezone)->format('H:i:s');
 
-        //     foreach ($Adsvariables as $value) {
-        //         $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
-        //     }
+      // if ( empty($request->query())) {
+          
+      //   $currentUrl = $request->fullUrl();
+      //   $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&App Name={App Name}&location='.$current_timezone.'&time='.$current_time.'&device=desktop&operating system='.$agent->platform();
 
-        //     return redirect($Adsvariables_url);
-        // }
+      //   foreach ($Adsvariables as $value) {
+      //       $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
+      //   }
+
+      //   return redirect($Adsvariables_url);
+      // }
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
