@@ -66,7 +66,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         /* right: 20%; */
         top: 46% !important;
     }
-}
+    }
 
 </style>
 
@@ -88,7 +88,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     <div class="">
         @if (!Auth::guest())
             @if ( $free_episode > 0)
-                    @if ( $free_episode > 0)
+                @if ( $free_episode > 0)
                         
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -135,9 +135,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         </video>
                     </div>
                 @else
-                    <div id="subscribers_only"
-                        style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-
+                    <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
                             <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
@@ -318,7 +316,6 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         </div>
     </div>
     <div>
-
         <div class="mar-left series-details">
             <div id="series_title">
                 <div class="">
@@ -653,7 +650,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     ?>
 
     <!-- Modal
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -724,13 +721,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                 </div>
             </div>
         </div>
-    </div> -->
+</div> -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-<div class="modal-content">
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
 
     <div class="modal-header">
         <h4 class="modal-title text-center" id="exampleModalLongTitle"

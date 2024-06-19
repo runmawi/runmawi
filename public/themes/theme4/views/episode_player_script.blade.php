@@ -25,40 +25,40 @@
                 },
                 pictureInPictureToggle: true,
             }
-    });
+        });
 
-    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-    const playPauseButton = document.querySelector('.vjs-big-play-button');
-    const backButton = document.querySelector('.staticback-btn');
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
 
-    skipForwardButton.addEventListener('click', function() {
-        player.currentTime(player.currentTime() + 10);
-    });
+        skipForwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
 
-    skipBackwardButton.addEventListener('click', function() {
-        player.currentTime(player.currentTime() - 10);
-    });
+        skipBackwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
 
-    player.on('userinactive', () => {
-    // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-    if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-        skipForwardButton.style.display = 'none';
-        skipBackwardButton.style.display = 'none';
-        playPauseButton.style.display = 'none';
-        backButton.style.display = 'none';
-    }
-    });
+        player.on('userinactive', () => {
+        // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+        if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            skipForwardButton.style.display = 'none';
+            skipBackwardButton.style.display = 'none';
+            playPauseButton.style.display = 'none';
+            backButton.style.display = 'none';
+        }
+        });
 
-    player.on('useractive', () => {
-    // Show the Play pause, skip forward and backward buttons when the user becomes active
-    if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-        skipForwardButton.style.display = 'block';
-        skipBackwardButton.style.display = 'block';
-        playPauseButton.style.display = 'block';
-        backButton.style.display = 'block';
-    }
-    });
+        player.on('useractive', () => {
+        // Show the Play pause, skip forward and backward buttons when the user becomes active
+        if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+            playPauseButton.style.display = 'block';
+            backButton.style.display = 'block';
+        }
+        });
 
         // Skip Intro & Skip Recap 
 
@@ -162,13 +162,13 @@
         });
 
         player.on('loadedmetadata', () => {
-    const qualityLevels = player.qualityLevels();
+            const qualityLevels = player.qualityLevels();
 
-    for (let i = 0; i < qualityLevels.length; i++) {
-      // Customize label to show height in pixels or any desired format
-      qualityLevels[i].label = `${qualityLevels[i].height}p`;
-    }
-  });
+            for (let i = 0; i < qualityLevels.length; i++) {
+            // Customize label to show height in pixels or any desired format
+            qualityLevels[i].label = `${qualityLevels[i].height}p`;
+            }
+        });
 
         var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
         var vastTagPostroll = '<?= $post_advertisement ?>';
