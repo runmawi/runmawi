@@ -976,8 +976,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/livestream/create') }}">{{ (__('Add New Live Stream')) }}</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">{{ (__('Live Stream For Approval')) }}</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}">{{ (__('Manage Live Stream Categories')) }}</a></li>
+
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
                          <li><a  href="{{ URL::to('admin/livestream/radiostationindex') }}" >{{ (__('All Radio Station')) }}</a></li>
+                       
                          <li><a  href="{{ URL::to('admin/livestream/createradiostation') }}" >{{ (__('Add New Radio Station')) }}</a></li>
+                        @endif 
+
+
                          <li><a href="{{ route('live_event_artist') }}">{{ (__('Live Event Artist')) }}  </a></li>
                      </ul>
                   </li>

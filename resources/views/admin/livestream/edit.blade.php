@@ -73,8 +73,10 @@ border-radius: 0px 4px 4px 0px;
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
                         <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a>
                         <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
                         <a class="black" href="{{ URL::to('admin/livestream/radiostationindex') }}">All Radio Station</a>
                         <a class="black" href="{{ URL::to('admin/livestream/createradiostation') }}" >Add New Radio Station</a>
+                        @endif
                         {{-- <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></div> --}}
      </div>
          <div class="container-fluid p-0">
