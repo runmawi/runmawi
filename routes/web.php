@@ -713,6 +713,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/livestream/create', 'AdminLiveStreamController@create');
     Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store']);
 
+    // Admin Radio Station
+    Route::get('/livestream/radiostationindex', 'AdminLiveStreamController@radiostationindex');
+    Route::get('/livestream/createradiostation', 'AdminLiveStreamController@createradiostation');
+    Route::get('/livestream/editradiostation/{id}', 'AdminLiveStreamController@editradiostation');
+
     // Restream - live
 
     Route::get('/youtube_start_restream_test', 'AdminLiveStreamController@youtube_start_restream_test')->name('youtube_start_restream_test');
