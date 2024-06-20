@@ -90,7 +90,7 @@
                                  icon: 'error',
                                  title: 'Oops...',
                                  }).then(function() {
-                                    location.href = '{{ URL::to('admin/Env_AppDebug') }}';
+                                    location.href = '{{ URL::to('admin/debug') }}';
                                  });
                               }
                            },
