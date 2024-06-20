@@ -69,14 +69,16 @@ border-radius: 0px 4px 4px 0px;
 
 @section('content')
 <div id="content-page" class="content-page">
-     <div class=" d-flex">
-                        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a>
-                        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/radiostationindex') }}">All Radio Station</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/createradiostation') }}" >Add New Radio Station</a>
-                        {{-- <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></div> --}}
-     </div>
+    
+    <div class=" d-flex">
+        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
+        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a>
+        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
+        <a class="black" href="{{ URL::to('admin/livestream/radiostationindex') }}">All Radio Station</a>
+        <a class="black" href="{{ URL::to('admin/livestream/createradiostation') }}">Add New Radio Station</a>
+        {{-- <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></div> --}}
+    </div>
+
          <div class="container-fluid p-0">
              <div class="iq-card">
 <div id="admin-container" style="padding: 15px;">
@@ -127,7 +129,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-3">
                             <label for=""><h5 class="fs-title m-0">Embed Link:</h5></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
-                            </div>
+                        </div>
 
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="liveEdit_video">
@@ -258,6 +260,7 @@ border-radius: 0px 4px 4px 0px;
                             @endif
                         </select>
 
+                        <input type="hidden" name="stream_upload_via" id="stream_upload_via" value="radio_station" />
 				        <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
                         <input type="hidden" name="hls_url" id="hls_url" value="" />
 
