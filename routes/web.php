@@ -478,7 +478,6 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/channels', 'ChannelController@index');
     Route::get('/ppvVideos', 'ChannelController@ppvVideos');
     Route::get('/live', 'LiveStreamController@Index');
-    // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 
     Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
     Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');

@@ -62,7 +62,8 @@
                                                 ->whereTime('ads_events.end', '>=', $current_time);
                                             })
                                     
-                                    ->pluck('ads_path');
+                                    ->pluck('ads_path')->toArray();
+
 
             // Post-advertisement 
 
@@ -106,5 +107,27 @@
             $post_advertisement = $setting->default_ads_url;
         }
 
+        //             //Pre  Ads Variable
+        // if (!is_null($pre_advertisement)) {
+        //     foreach ($adsvariable as $value) {
+        //         $pre_advertisement = str_replace('${' . $value->name . '}', $value->website, $pre_advertisement);
+        //     }
+        // }
+
+        //             // Mid Ads Variable
+        // if (count($mid_advertisement) > 0 ) {
+        //     foreach ($mid_advertisement as &$url) {
+        //         foreach ($adsvariable as $value) {
+        //             $url = str_replace('${' . $value->name . '}', $value->website, $url);
+        //         }
+        //     }
+        // }
+
+        //             // Post Ads Variable
+        // if (!is_null($post_advertisement)) {
+        //     foreach ($adsvariable as $value) {
+        //         $post_advertisement = str_replace('${' . $value->name . '}', $value->website, $post_advertisement);
+        //     }
+        // }
     }
 ?>

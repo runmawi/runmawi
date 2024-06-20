@@ -464,7 +464,7 @@ class HomeController extends Controller
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
             );
 
-            if ( $this->HomeSetting->theme_choosen == "theme4") {
+            if ( $this->HomeSetting->theme_choosen == "theme4" || "default") {
                 if($request->ajax()) {
                     return $data = [
                         "view" => Theme::watchPartial('home_sections', $data ),
@@ -1196,7 +1196,7 @@ class HomeController extends Controller
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                     );
 
-                    if ($this->HomeSetting->theme_choosen == "theme4") {
+                    if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
                         if($request->ajax()) {
                             return $data = [
                                 "view" => Theme::watchPartial('home_sections', $data ),
@@ -2017,7 +2017,7 @@ class HomeController extends Controller
                     'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                 );
 
-                if ($this->HomeSetting->theme_choosen == "theme4") {
+                if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
                     if($request->ajax()) {
                         return $data = [
                             "view" => Theme::watchPartial('home_sections', $data ),
@@ -4837,7 +4837,8 @@ public function uploadExcel(Request $request)
             'current_timezone'       => $current_timezone,
         ];
 
-        return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
+        return Theme::view('partials.home.channel-epg-partial', $data);
+        // return $theme->load('public/themes/theme1/views/partials/home/channel-epg-partial', $data)->render();
     }
 
     public function Homepage_watchlater(Request $request)
