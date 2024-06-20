@@ -1,4 +1,4 @@
-@if (!empty($data) && $data->isNotEmpty())
+@if (!is_null($data))
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
