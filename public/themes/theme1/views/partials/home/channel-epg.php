@@ -44,8 +44,8 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
         width: 28%;
         font-size: 18px;
         height: 100%;
-        background-color: rgba(129, 128, 128, 0.1);
-
+        background-color: rgba(50, 50, 50, 0.8);
+        color:#fff;
     }
     table.table tr {
         border-bottom: 1px solid rgba(255,255,255,0.5);
@@ -164,8 +164,10 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
     .modal-dialog-centered .modal-content {
         background: transparent;
     }
+    .info_model.show {background: rgb(1, 1, 1, 0.7);}
     .events-click{color:#fff;cursor: pointer;text-decoration:underline;}
-    .tab-pane{height:100%;}
+    .tab-pane{height:100%;padding:0;}
+    .table{margin-bottom:0;}
     body.light-theme a, body.light-theme h6{color: <?php echo $GetLightText; ?> !important;cursor: pointer;}
 
     @media (max-width:720px){
@@ -224,7 +226,8 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
                                             </a>
                                         </div>
                                         <div class="block-description">
-                                            <div class="hover-buttons">
+                                            <div class="hover-buttons controls">
+                                                <nav ><button class="moreBTN" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)"><i class="fas fa-info-circle"></i><span><?= __("View Events") ?></span></button></nav>
                                                 <a class="" href="<?= route('Front-End.Channel-video-scheduler',$epg_channel_data->slug ) ?>">
                                                     <img class="ply" src="<?= URL::to('/assets/img/default_play_buttons.svg'); ?>" />
                                                 </a>
@@ -236,10 +239,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
                                             <?php if($ThumbnailSetting->title == 1): ?>
                                                 <h6><?php echo (strlen($epg_channel_data->name) > 17) ? substr($epg_channel_data->name, 0, 18) . '...' : $epg_channel_data->name; ?></h6>
                                             <?php endif ?>
-                                            <!-- Event modal -->
-                                            <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
-                                                <?= __('Click Events') ?>
-                                            </a>
+                                            
                                             <!-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="<?= '#Home-epg-events-Modal-'.$key ?>" ><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> <?= __('Event') ?> </a> -->
                                         </div>
                                     </div>
@@ -255,7 +255,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
             <?php foreach($data as $key => $epg_channel_data ) : ?>
                 <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                        <div class="container">
+                        <div class="container m-0">
                             <div class="modal-content" style="border:none;">
                                 <div class="modal-body" style="padding: 0 14rem;">
                                     <div class="col-lg-12">
@@ -268,7 +268,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
                                                     </div>
 
                                                     <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
-                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;">
+                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;margin-top:0 !important; margin-right:0 !important;">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
