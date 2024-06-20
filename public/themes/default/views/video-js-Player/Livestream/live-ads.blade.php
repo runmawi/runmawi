@@ -38,7 +38,7 @@
                                                                         ->groupBy('advertisements.id')
                                                                         ->where('advertisements.id',$Livestream_details->live_ads)
                                                                         ->where('advertisements.ads_position','mid')
-                                                                        ->pluck('ads_path')->toArray();
+                                                                        ->pluck('ads_path');
 
             // Post-advertisement 
 
