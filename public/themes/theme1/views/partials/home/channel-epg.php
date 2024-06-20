@@ -164,7 +164,40 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
     .modal-dialog-centered .modal-content {
         background: transparent;
     }
+    .events-click{color:#fff;cursor: pointer;text-decoration:underline;}
     .tab-pane{height:100%;}
+    body.light-theme a, body.light-theme h6{color: <?php echo $GetLightText; ?> !important;cursor: pointer;}
+
+    @media (max-width:720px){
+        .modal-body{padding:0 !important;}
+        button.tabs__scroller.tabs__scroller--left.js-action--scroll-left{height:49px;}
+        .panel-heading-nav {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: hidden; /* Changed from auto to hidden */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth; /* Add smooth scrolling */
+        }
+
+        .nav-tabs li {
+            flex: 0 0 auto;
+        }
+
+        .tabs__scroller {
+            font-size: 0.2em;
+        }
+
+        .tabs__scroller--left {
+            order: -1;
+        }
+    }
 </style>
 
 
@@ -204,9 +237,9 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
                                                 <h6><?php echo (strlen($epg_channel_data->name) > 17) ? substr($epg_channel_data->name, 0, 18) . '...' : $epg_channel_data->name; ?></h6>
                                             <?php endif ?>
                                             <!-- Event modal -->
-                                            <button type="button" class="btn btn-hover button-groups" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
-                                                <i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> <?= __('Event') ?>
-                                            </button>
+                                            <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
+                                                <?= __('Click Events') ?>
+                                            </a>
                                             <!-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="<?= '#Home-epg-events-Modal-'.$key ?>" ><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> <?= __('Event') ?> </a> -->
                                         </div>
                                     </div>
@@ -219,55 +252,55 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
             </ul>
 
             <!-- Events Modal -->
-            <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                    <div class="container">
-                        <div class="modal-content" style="border:none;">
-                            <div class="modal-body" style="padding: 0 14rem;">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="container m-0">
+            <?php foreach($data as $key => $epg_channel_data ) : ?>
+                <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none;">
+                                <div class="modal-body" style="padding: 0 14rem;">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="container m-0">
 
-                                            <div class="row" style="margin-bottom:4%;">
-                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2"><?= optional($epg_channel_data)->name ?></h2>
+                                                <div class="row" style="margin-bottom:4%;">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2"><?= optional($epg_channel_data)->name ?></h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
+                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
-                                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                                <div class="panel panel-default">
+                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    
+                                                    <ul class="nav nav-tabs m-0" role="tablist">
+                                                        <?php for ($i = 0; $i < 7; $i++): ?>
+                                                            <?php $epg_top_date = $carbon_now->copy()->addDays($i); ?>
+                                                            <li role="presentation" data-choosed-date="<?= $epg_top_date->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>" onclick="EPG_date_filter(this)">
+                                                                <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab"><?= $epg_top_date->format('d-m-y') ?></a>
+                                                            </li>
+                                                        <?php endfor; ?>
+                                                    </ul>
 
-                                            <div class="panel panel-default">
-                                            <div class="panel-heading panel-heading-nav d-flex position-relative">
-                                                <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+
+                                            
+                                                <?php
+                                                    echo Theme::uses('theme1')
+                                                        ->load('public/themes/theme1/views/partials/home/channel-epg-partial', [
+                                                            'order_settings_list' => $order_settings_list,
+                                                            'epg_channel_data' => $epg_channel_data,
+                                                            'EPG_date_filter_status' => 0
+                                                        ])->content();
+                                                ?>
                                                 
-                                                  <!-- ChannelVideoScheduler_top_date  -->
-
-                                                <ul class="nav nav-tabs m-0" role="tablist">
-                                                    <?php for ($i = 0; $i < 7; $i++): ?>
-                                                        <?php $epg_top_date = $carbon_now->copy()->addDays($i); ?>
-                                                        <li role="presentation" data-choosed-date="<?= $epg_top_date->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>" onclick="EPG_date_filter(this)">
-                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab"><?= $epg_top_date->format('d-m-y') ?></a>
-                                                        </li>
-                                                    <?php endfor; ?>
-                                                </ul>
-
-                                                <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
-                                            </div>
-
-                                           
-                                            <?php
-                                                echo Theme::uses('theme1')
-                                                    ->load('public/themes/theme1/views/partials/home/channel-epg-partial', [
-                                                        'order_settings_list' => $order_settings_list,
-                                                        'epg_channel_data' => $epg_channel_data,
-                                                        'EPG_date_filter_status' => 0
-                                                    ])->content();
-                                            ?>
-                                               
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -276,7 +309,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
 
              
             
@@ -308,4 +341,24 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
 
         });
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollerLeft = document.querySelector('.js-action--scroll-left');
+            const scrollerRight = document.querySelector('.js-action--scroll-right');
+            const navTabs = document.querySelector('.nav-tabs');
+
+            scrollerLeft.addEventListener('click', function() {
+                navTabs.scrollBy({
+                    left: -200, // Adjust scrolling distance as needed
+                    behavior: 'smooth'
+                });
+            });
+
+            scrollerRight.addEventListener('click', function() {
+                navTabs.scrollBy({
+                    left: 200, // Adjust scrolling distance as needed
+                    behavior: 'smooth'
+                });
+            });
+        });
 </script>
