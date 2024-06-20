@@ -72,7 +72,7 @@
             skipForwardButton.style.display = 'none';
             skipBackwardButton.style.display = 'none';
             playPauseButton.style.display = 'none';
-            // backButton.style.display = 'none';
+            backButton.style.display = 'none';
         }
         });
 
@@ -82,7 +82,7 @@
             skipForwardButton.style.display = 'block';
             skipBackwardButton.style.display = 'block';
             playPauseButton.style.display = 'block';
-            // backButton.style.display = 'block';
+            backButton.style.display = 'block';
         }
         });
 
