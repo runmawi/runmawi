@@ -1295,4 +1295,22 @@ class AdminAdvertiserController extends Controller
         return redirect()->route('admin.ads_variable');
 
     }
+
+    public function ads_change_url(){
+    
+        $adsvariables = Adsvariables::get();
+
+        $baseUrl = 'https://7529ea7ef7344952b6acc12ff243ed43.mediatailor.us-west-2.amazonaws.com/v1/master/2d2d0d97b0e548f025b2598a69b55bf30337aa0e/npp_795/07VF419BOTBBVEGLG5ZA/hls3/now,-1m/m.m3u8?ads.app_bundle=[appBundle]&ads.app_name=[appName]&ads.app_platform=[OPERATING_SYSTEM]&ads.app_store_url=[AppStoreUrl]&ads.app_ver=[OPERATING_SYSTEM_VERSION]&ads.channel_name=FiredUp+Network&ads.content_cat=IAB17&ads.content';
+
+        foreach ($adsvariables as $adsvariable) {
+        $name = $adsvariable->name;
+        $website = $adsvariable->website;
+
+        $baseUrl = str_replace("[$name]", $website, $baseUrl);
+        }
+
+        return $baseUrl;
+
+    }
+
 }
