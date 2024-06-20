@@ -28,15 +28,19 @@
         });
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+
         player.on('userinactive', () => {
-          if (playPauseButton) {
+          if (playPauseButton && backButton) {
             playPauseButton.style.display = 'none';
+            backButton.style.display = 'none';
           }
         });
 
         player.on('useractive', () => {
-          if (playPauseButton) {
+          if (playPauseButton && backButton) {
             playPauseButton.style.display = 'block';
+            backButton.style.display = 'block';
           }
         });
 
@@ -103,7 +107,7 @@
         var prerollTriggered = false;
         var postrollTriggered = false;
 
-        const vastTagMidroll_array = '<?php echo json_encode($mid_advertisement); ?>';
+        const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;

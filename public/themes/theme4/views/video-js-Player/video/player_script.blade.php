@@ -43,32 +43,32 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         });
         
         //audio switcher
-        player.ready(function() {
-        var player = this;
-        player.on("loadedmetadata", function() {
-            var browser_language, track_language, audioTracks;
+        // player.ready(function() {
+        // var player = this;
+        // player.on("loadedmetadata", function() {
+        //     var browser_language, track_language, audioTracks;
             // +++ Get the browser language +++
-            browser_language = navigator.language || navigator.userLanguage; // IE <= 10
-            browser_language = browser_language.substr(0, 2);
+            // browser_language = navigator.language || navigator.userLanguage; // IE <= 10
+            // browser_language = browser_language.substr(0, 2);
 
             // +++ Get the audio tracks +++
-            audioTracks = player.audioTracks();
+            // audioTracks = player.audioTracks();
 
             // +++ Loop through audio tracks +++
-            for (var i = 0; i < audioTracks.length; i++) {
-            track_language = audioTracks[i].language.substr(0, 2);
+            // for (var i = 0; i < audioTracks.length; i++) {
+            // track_language = audioTracks[i].language.substr(0, 2);
 
             // +++ Set the enabled audio track language +++
-            if (track_language) {
+            // if (track_language) {
                 // When the track language matches the browser language, then enable that audio track
-                if (track_language === browser_language) {
+                // if (track_language === browser_language) {
                 // When one audio track is enabled, others are automatically disabled
-                audioTracks[i].enabled = true;
-                }
-            }
-            }
-        });
-        });
+        //         audioTracks[i].enabled = true;
+        //         }
+        //     }
+        //     }
+        // });
+        // });
 
         // var watermark = document.createElement('div');
         // watermark.className = 'watermark';
@@ -83,6 +83,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        var hovered = false;
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -93,13 +94,31 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         });
 
         player.on('userinactive', () => {
-          // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-          if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-            skipForwardButton.style.display = 'none';
-            skipBackwardButton.style.display = 'none';
-            playPauseButton.style.display = 'none';
-            backButton.style.display = 'none';
-          }
+            skipForwardButton.addEventListener('mouseenter',handleHover);
+            skipBackwardButton.addEventListener('mouseenter',handleHover);
+            skipForwardButton.addEventListener('mouseleave',handleHover);
+            skipBackwardButton.addEventListener('mouseleave',handleHover);
+
+            function handleHover(event) {
+                const element = event.target;
+                if (event.type === 'mouseenter') {
+                    // console.log("hovered");
+                    hovered = true;
+                } else if (event.type === 'mouseleave') {
+                    // console.log("not hovered");
+                    hovered = false;
+                }
+            }
+
+            // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                if(hovered == false){
+                    skipForwardButton.style.display = 'none';
+                    skipBackwardButton.style.display = 'none';
+                    playPauseButton.style.display = 'none';
+                    backButton.style.display = 'none';
+                }
+            }
         });
 
         player.on('useractive', () => {

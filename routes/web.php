@@ -44,6 +44,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
 
+  Route::get('admin/episode/csv-episodeslug', 'AdminSeriesController@csvepisodeslug');
+  Route::post('admin/episode/upload-csv-episodeslug', 'AdminSeriesController@uploadcsvepisodeslug');
+
   Route::get('/Document-List', 'HomeController@DocumentList');    
   Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');    
 
@@ -709,6 +712,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy']);
     Route::get('/livestream/create', 'AdminLiveStreamController@create');
     Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store']);
+
+    // Admin Radio Station
+    Route::get('/livestream/radiostationindex', 'AdminLiveStreamController@radiostationindex');
+    Route::get('/livestream/createradiostation', 'AdminLiveStreamController@createradiostation');
+    Route::get('/livestream/editradiostation/{id}', 'AdminLiveStreamController@editradiostation');
 
     // Restream - live
 
