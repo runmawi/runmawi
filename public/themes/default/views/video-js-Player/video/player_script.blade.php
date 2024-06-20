@@ -46,6 +46,7 @@
 
         skipForwardButton.addEventListener('mouseenter',handleHover);
         skipBackwardButton.addEventListener('mouseenter',handleHover);
+        
         skipForwardButton.addEventListener('mouseleave',handleHover);
         skipBackwardButton.addEventListener('mouseleave',handleHover);
 
@@ -66,8 +67,8 @@
                 skipForwardButton.style.display = 'none';
                 skipBackwardButton.style.display = 'none';
                 playPauseButton.style.display = 'none';
-                backButton.style.display = 'none';
             }
+            backButton.style.display = 'none';
         }
     });
 
