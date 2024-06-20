@@ -2635,6 +2635,12 @@ class AdminVideosController extends Controller
         }
 
         $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+
+        if ($data['access'] == "ppv") {
+            $video->ppv_price = $data["ppv_price"];
+        } else {
+            $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
+        }
         
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
@@ -2667,7 +2673,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : !empty($data["ppv_price"]) ? $data["ppv_price"] : null ;
+        $video->ppv_price = ($data['access'] == "ppv" || !empty($data["ppv_price"])) ? $data["ppv_price"] : null;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];

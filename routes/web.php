@@ -44,6 +44,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
 
+  Route::get('admin/episode/csv-episodeslug', 'AdminSeriesController@csvepisodeslug');
+  Route::post('admin/episode/upload-csv-episodeslug', 'AdminSeriesController@uploadcsvepisodeslug');
+
   Route::get('/Document-List', 'HomeController@DocumentList');    
   Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');    
 
