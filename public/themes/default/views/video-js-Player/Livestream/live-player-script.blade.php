@@ -28,15 +28,19 @@
         });
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+
         player.on('userinactive', () => {
-          if (playPauseButton) {
+          if (playPauseButton && backButton) {
             playPauseButton.style.display = 'none';
+            backButton.style.display = 'none';
           }
         });
 
         player.on('useractive', () => {
-          if (playPauseButton) {
+          if (playPauseButton && backButton) {
             playPauseButton.style.display = 'block';
+            backButton.style.display = 'block';
           }
         });
 
