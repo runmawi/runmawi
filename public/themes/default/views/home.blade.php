@@ -8,25 +8,74 @@
 <!-- Header End -->
 
 <!-- Slider Start -->
+
+   @php
+
+         $check_Kidmode = 0;
+
+         $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
+
+            if ($getfeching != null && $getfeching->geofencing == 'ON') {
+               $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
+            }
+
+            if ($check_Kidmode == 1) {
+               $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
+            }
+
+            if ($videos_expiry_date_status == 1) {
+               $video_banner = $video_banner->where(function ($query) {
+                  $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+               });
+            }
+
+         $video_banner = $video_banner->latest()->limit(15)->get();
+
+                  // Video Category Banner
+
+         $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
+
+         $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                    ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
+                                    ->where('videos.draft', 1)->where('videos.banner', 0);   
+
+                                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                                    $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
+                                 }
+
+                                 if ($check_Kidmode == 1) {
+                                    $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
+                                 }
+
+                                 if ($videos_expiry_date_status == 1) {
+                                    $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
+                                       $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+                                    });
+                                 }
+
+         $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
+
+         $Slider_array_data = array(
+            'sliders'            => $sliders, 
+            'live_banner'        => $live_banner , 
+            'video_banners'      => $video_banner ,
+            'series_sliders'     => $series_sliders ,
+            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
+            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
+            'VideoCategory_banner' => $VideoCategory_banner ,
+         );    
+
+   @endphp
+
    <section id="home" class="iq-main-slider m-0 p-0">
 
       <div id="home-slider" class="slider m-0 p-0">
          @if($slider_choosen == 2)
-            @php
-               include(public_path('themes/default/views/partials/home/slider-2.php'))
-            @endphp
+            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-2', $Slider_array_data )->content() !!}
          @else
-            @php
-               include(public_path('themes/default/views/partials/home/slider-1.php'))
-            @endphp
+            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-1', $Slider_array_data )->content() !!}
          @endif
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-         <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
-            fill="none" stroke="currentColor">
-            <circle r="20" cy="22" cx="22" id="test"></circle>
-         </symbol>
-      </svg>
 
    </section>
 <!-- Slider End -->

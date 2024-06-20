@@ -1,4 +1,4 @@
-      
+   
 <style>
     .time{
         width: 28%;
@@ -7,11 +7,15 @@
         background-color: rgba(129, 128, 128, 0.1);
 
     }
-    table.table tr{
+    table.table tr {
         border-bottom: 1px solid rgba(255,255,255,0.5);
         border-left: 1px solid rgba(255,255,255,0.5);
         border-right: 1px solid rgba(255,255,255,0.5);
 
+    }
+    .panel-heading.panel-heading-nav.d-flex {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
     }
     .table td, .table th{
         border-top:none;
@@ -20,11 +24,12 @@
         border-right: 1px solid;
         border-top: 1px solid;
         border-left: 1px solid;
+        border-bottom: 1px solid;
     }
     ul.nav.nav-tabs li{
         white-space: nowrap;
         background-color: rgba(0, 0, 0, 0.75);
-        border: 1px solid rgba(255,255,255,0.5);
+        border-right: 1px solid rgba(255,255,255,0.5);
         padding: 8px 12px;
         color: #fff;
         outline: none;
@@ -86,11 +91,71 @@
         right: 0;
         height: 100%;
     }
-    .panel-heading.panel-heading-nav.d-flex {
-        border: 1px solid;
-    }
     .fade:not(.show){
         opacity:1;
+    }
+    .info_model {
+        display: none;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: var(--background-opacity);
+        padding: 0 4%;
+    }
+    .info_model .container {
+        position: relative;
+        margin-top: 7vmin;
+        max-width: 100%;
+    }
+    .info_model .container {
+        position: relative;
+        margin-top: 7vmin;
+        max-width: 100%;
+    }
+    .modal-dialog-centered .modal-content {
+        background: transparent;
+    }
+    .events-click{color:#fff;cursor: pointer;text-decoration:underline;}
+    .tab-pane{height:100%;}
+
+    @media (max-width:720px){
+        .modal-body{padding:0 !important;}
+        button.tabs__scroller.tabs__scroller--left.js-action--scroll-left{height:49px;}
+        .panel-heading-nav {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: hidden; /* Changed from auto to hidden */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth; /* Add smooth scrolling */
+        }
+
+        .nav-tabs li {
+            flex: 0 0 auto;
+        }
+
+        .tabs__scroller {
+            font-size: 0.2em;
+        }
+
+        .tabs__scroller--left {
+            order: -1;
+        }
     }
 </style>
    
@@ -177,7 +242,9 @@
                                                   <p class="epi-name text-left m-0">{{ __($epg_channel_data->name) }}</p>
                                               </a>
 
-                                              <!-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="#epg-e" data-choosed-date="{{ $carbon_now->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}"  onclick="EPG_date_filter(this)"><i class="fa fa-list-alt mr-2" aria-hidden="true" ></i> Event </a> -->
+                                                <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
+                                                    <?= __('Click Events') ?>
+                                                </a>
 
                                               <a class="epi-name mt-1 mb-0 btn" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -196,48 +263,56 @@
 
         {{-- Events Modal --}}
 
-        @foreach ($data as $key => $epg_channel_data)
-            <div class="modal fade info_model" id="{{ 'Home-epg-events-Modal-' .$key }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                    <div class="container">
-                        <div class="modal-content" style="border:none;">
-                            <div class="modal-body" style="padding: 0 14rem;">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="container m-0">
+       <!-- Events Modal -->
+        <?php foreach ($data as $key => $epg_channel_data) : ?>
+                <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none;">
+                                <div class="modal-body" style="padding: 0 14rem;">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="container m-0">
 
-                                            <div class="row" style="margin-bottom:4%;">
-                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
+                                                <div class="row" style="margin-bottom:4%;">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2"><?= optional($epg_channel_data)->name ?></h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
+                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
-                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                                <div class="panel panel-default">
+                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    
+                                                    <ul class="nav nav-tabs m-0" role="tablist">
+                                                        <?php for ($i = 0; $i < 7; $i++): ?>
+                                                            <?php $epg_top_date = $carbon_now->copy()->addDays($i); ?>
+                                                            <li role="presentation" data-choosed-date="<?= $epg_top_date->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>" onclick="EPG_date_filter(this)">
+                                                                <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab"><?= $epg_top_date->format('d-m-y') ?></a>
+                                                            </li>
+                                                        <?php endfor; ?>
+                                                    </ul>
 
-                                            <div class="panel panel-default">
-                                            <div class="panel-heading panel-heading-nav d-flex position-relative">
-                                                <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+
+                                            
+                                                <?php
+                                                    echo Theme::uses('theme1')
+                                                        ->load('public/themes/theme1/views/partials/home/channel-epg-partial', [
+                                                            'order_settings_list' => $order_settings_list,
+                                                            'epg_channel_data' => $epg_channel_data,
+                                                            'EPG_date_filter_status' => 0
+                                                        ])->content();
+                                                ?>
                                                 
-                                                    {{-- ChannelVideoScheduler_top_date --}}
-
-                                                <ul class="nav nav-tabs m-0" role="tablist">
-                                                    @for ($i = 0; $i < 7; $i++) 
-                                                        @php $epg_top_date = $carbon_now->copy()->addDays($i); @endphp
-                                                        <li role="presentation" data-choosed-date="{{ $epg_top_date->format('n-j-Y') }}" data-channel-id="{{ $epg_channel_data->id }}" onclick="EPG_date_filter(this)">
-                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab">{{ $epg_top_date->format('d-m-y') }}</a>
-                                                        </li>
-                                                    @endfor
-                                                </ul>
-
-                                                <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
-                                            </div>
-
-                                                {!! Theme::uses('default')->load('public/themes/default/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data , 'EPG_date_filter_status' => 0 ])->content() !!}
-
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -246,8 +321,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            <?php endforeach; ?>
 
     </section>
 @endif
@@ -262,9 +336,9 @@
 
         $.ajax({
             type: "get",
-            url: "{{ route('front-end.EPG_date_filter') }}",
+            url: "<?php echo route('front-end.EPG_date_filter') ?>",
             data: {
-                _token: "{{ csrf_token() }}",
+                _token: "<?php echo csrf_token() ?>",
                 channel_id: channel_id,
                 date: date,
             },
@@ -272,9 +346,30 @@
                 $(".data").html(data);
             },
             error: function(xhr, status, error) {
-                $(".data").html('<p>Error loading data. Please try again.</p>');
+                console.log(error);
+                $(".data").html('<table class="table table-striped"><tr><td><h6>Error loading data. Please try again.</h6></td></tr></table>');
             }
 
         });
-    }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollerLeft = document.querySelector('.js-action--scroll-left');
+            const scrollerRight = document.querySelector('.js-action--scroll-right');
+            const navTabs = document.querySelector('.nav-tabs');
+
+            scrollerLeft.addEventListener('click', function() {
+                navTabs.scrollBy({
+                    left: -200, // Adjust scrolling distance as needed
+                    behavior: 'smooth'
+                });
+            });
+
+            scrollerRight.addEventListener('click', function() {
+                navTabs.scrollBy({
+                    left: 200, // Adjust scrolling distance as needed
+                    behavior: 'smooth'
+                });
+            });
+        });
 </script>
