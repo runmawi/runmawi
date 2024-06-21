@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use App\Setting as Setting;
 use App\Episode as Episode;
 use Carbon\Carbon;
+use App\Jobs\Convert4kEpisodeVideo;
 use App\Jobs\ConvertEpisodeVideo;
 use App\Playerui as Playerui;
 
@@ -91,7 +92,11 @@ class ConvertEpisodeVideoWatermark implements ShouldQueue
         ]);
         $video->save($format, $output_path); 
         $video = $this->video;   
-        ConvertEpisodeVideo::dispatch($video,$storepath);
+        if(Enable_4k_Conversion() == 1){
+            Convert4kEpisodeVideo::dispatch($video,$storepath);
+        }else{
+            ConvertEpisodeVideo::dispatch($video,$storepath);
+        }
 
     }
     
