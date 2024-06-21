@@ -239,12 +239,9 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Radio Station Source</label>
 
                     <div class="panel-body">
-                        <select class="form-control url_type" id="url_type" name="url_type">
+                        <select class="form-control url_type" id="url_type" name="u rl_type">
                             <option value="">Choose URL Format</option>
-                            <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif > MP4/M3U8 URL </option>
-                            <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
-                            <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Radio Station Video</option>
-                            <option value="m3u_url" @if(!empty($video->url_type) && $video->url_type == 'm3u_url'){{ 'selected' }}@endif> M3U URL </option>
+                        
                             <option value="acc_audio_file" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_file'){{ 'selected' }}@endif > Mp3/AAC Audio File </option>
                             <option value="acc_audio_url" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_url'){{ 'selected' }}@endif > Mp3/AAC Audio URL </option>
 
