@@ -2446,3 +2446,59 @@ ul.favorites-slider.list-inline.row.p-0.mb-0.slick-initialized.slick-slider {
     overflow: hidden;
 }
 .slider-desc p{color: #fff !important;}
+
+
+/* Epg */
+.controls nav {
+    position: absolute;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    right: 1px;
+    top: 1px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.moreBTN {
+    color: #fff;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: rgba(51, 51, 51, 0.4);
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-size: calc(12px + 0.25vmin);
+    font-weight: 700;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    cursor: pointer;
+    outline: none;
+    line-height: 14px;
+}
+.moreBTN span {
+    width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+}
+.moreBTN:hover {
+    background-color: #fff;
+    color: #000;
+}
+.moreBTN:hover span {
+    width: auto;
+    margin-left: 4px;
+}
