@@ -62,6 +62,9 @@ use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
 use App\Adscategory;
 use App\VideoExtractedImages;
+use App\SiteTheme;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 
 
 class AdminSeriesController extends Controller
@@ -4359,6 +4362,84 @@ class AdminSeriesController extends Controller
           $i++;
         }
         return 1;
+    }
+
+    
+    public function csvepisodeslug(Request $request){
+
+        $count = Episode::where('slug',null)->orwhere('slug','')->count();
+        dd($count);
+        return View::make('admin.series.csvuploadblukslug.csvuploadblukslug');
+
+    }
+
+
+    public function uploadcsvepisodeslug(Request $request){
+
+        // Validate the uploaded file
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        // Store the uploaded file
+        $path = $request->file('csv_file')->store('uploads');
+        // Read the CSV file
+         // Load the CSV file
+         $csvData = Excel::toArray([], storage_path('app/' . $path));
+         $csvData = $csvData[0]; // Since toArray returns a multidimensional array
+
+        // dd($csvData);
+         $updatedData = [];
+         $notUpdatedData = [];
+ 
+         // Process each row
+         foreach ($csvData as $index => $row) {
+             if ($index === 0) {
+                 // Save the header row for later use
+                 $header = $row;
+                 continue;
+             }
+ 
+             $affectedRows = Episode::where('series_id', $row[1])
+                 ->where('season_id', $row[2])
+                //  ->where('status', $row[6])
+                 ->update(['slug' => $row[5]]);
+ 
+             if ($affectedRows > 0) {
+                 $updatedData[] = $row;
+             } else {
+                 $notUpdatedData[] = $row;
+             }
+         }
+ 
+         // Create CSV files
+         $updatedFilePath = 'uploads/updated_data.csv';
+         $notUpdatedFilePath = 'uploads/not_updated_data.csv';
+ 
+         $this->createCsvFile($header, $updatedData, $updatedFilePath);
+         $this->createCsvFile($header, $notUpdatedData, $notUpdatedFilePath);
+ 
+         return response()->json([
+             'message' => 'Episodes updated successfully',
+             'updated_file' => Storage::url($updatedFilePath),
+             'not_updated_file' => Storage::url($notUpdatedFilePath),
+             'updated_count' => count($updatedData),
+             'not_updated_count' => count($notUpdatedData)
+         ]);
+    }
+
+
+
+    private function createCsvFile($header, $data, $filePath)
+    {
+        $handle = fopen(storage_path('app/' . $filePath), 'w');
+        fputcsv($handle, $header);
+
+        foreach ($data as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
     }
 
 }

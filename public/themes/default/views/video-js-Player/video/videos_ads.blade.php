@@ -62,7 +62,7 @@
                                                 ->whereTime('ads_events.end', '>=', $current_time);
                                             })
                                     
-                                    ->pluck('ads_path')->toArray();
+                                    ->pluck('ads_path');
 
 
             // Post-advertisement 

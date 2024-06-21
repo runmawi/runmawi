@@ -177,7 +177,7 @@ class LiveStreamController extends Controller
     public function Play(Request $request,$vid)
     {
       // try {
-
+        
       $agent        = new Agent();
       $Adsvariables = Adsvariables::get();
       $current_timezone = current_timezone() ;
