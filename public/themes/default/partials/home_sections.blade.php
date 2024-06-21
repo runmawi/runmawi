@@ -10,8 +10,7 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
                               'default_vertical_image_url' => $default_vertical_image_url,
                               'default_horizontal_image_url' => $default_horizontal_image_url,
                          ];
-    $order_settings = App\OrderHomeSetting::select('id','order_id','url','video_name','header_name')->orderBy('order_id', 'asc')->get();  
-    $order_settings_list = App\OrderHomeSetting::get();
+
 @endphp
 
 @forelse ($order_settings as $key => $item)

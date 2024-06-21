@@ -81,8 +81,8 @@
 <!-- Slider End -->
 
 <!-- MainContent -->
-      <div class="main-content">
-            {{-- continue watching videos --}}
+<div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
+   {{-- continue watching videos --}}
 
             @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
                {!! Theme::uses('default')->load('public/themes/default/views/partials/home/continue-watching', [
@@ -93,15 +93,8 @@
                   ])->content() !!}
             @endif
 
-
-            
-
             @partial('home_sections')
       </div>
-
-<!-- MainContent End -->
-
-
 
 <script>
    document.addEventListener("DOMContentLoaded", function() {
