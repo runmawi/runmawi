@@ -1958,3 +1958,10 @@ function SiteVideoScheduledData($time,$channe_id,$time_zone){
 
     return $value;
 }
+
+
+function Enable_4k_Conversion()
+{
+    $enable_4k_conversion = App\SiteTheme::pluck('enable_4k_conversion')->first();
+    return $enable_4k_conversion ;
+}

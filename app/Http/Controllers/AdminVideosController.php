@@ -34,6 +34,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\Convert4kVideoForStreaming;
 use App\Jobs\TranscodeVideo;
 use App\Jobs\VideoSchedule;
 use App\Jobs\VideoClip;
@@ -669,7 +670,11 @@ class AdminVideosController extends Controller
                 //     VideoClip::dispatch($video);
                 // }
                 else{
-                    ConvertVideoForStreaming::dispatch($video);
+                    if(Enable_4k_Conversion() == 1){
+                        Convert4kVideoForStreaming::dispatch($video);
+                    }else{
+                        ConvertVideoForStreaming::dispatch($video);
+                    }
                 }           
                 $video_id = $video->id;
                 $video_title = Video::find($video_id);
@@ -1292,7 +1297,11 @@ class AdminVideosController extends Controller
             //     VideoClip::dispatch($video);
             // }
             else{
-                ConvertVideoForStreaming::dispatch($video);
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }             
         } else {
             $video = Video::create($data);
@@ -2320,7 +2329,11 @@ class AdminVideosController extends Controller
             //     VideoClip::dispatch($video);
             // }
             else{
-                ConvertVideoForStreaming::dispatch($video);
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }           
              // ConvertVideoForStreaming::dispatch($video);
         }
@@ -4985,7 +4998,11 @@ class AdminVideosController extends Controller
             //     VideoClip::dispatch($video);
             // }
             else{
-                ConvertVideoForStreaming::dispatch($video);
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }          
             $video_id = $video->id;
             $video_title = Video::find($video_id);
