@@ -230,14 +230,21 @@
 @endif
 
 <script>
-    
     $(document).ready(function () {  
-        let recurring_program_check_exist = "{{ json_encode($recurring_program_Status) }}";
-        let live_publish_later_check_exist  = "{{ json_encode($live_publish_later_status) }}";
 
-        if(recurring_program_check_exist){
-            setInterval(function() {
-                location.reload();
+        let recurring_program_check_exist = "{{ json_encode($recurring_program_Status) }}";
+
+        if (recurring_program_check_exist == "true") {
+            
+            let reloadInterval = setInterval(function() {
+
+                recurring_program_check_exist = "{{ json_encode($recurring_program_Status) }}";
+
+                if (recurring_program_check_exist == "true") {
+                    location.reload();
+                } else {
+                    clearInterval(reloadInterval);
+                }
             }, 60000);
         }
     });

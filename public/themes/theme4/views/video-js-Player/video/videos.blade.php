@@ -10,6 +10,7 @@
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
     <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/videojs-watermark@2.0.0/dist/videojs-watermark.min.css" rel="stylesheet">
 
 {{-- video-js Script --}}
 
@@ -24,6 +25,9 @@
     <script src="{{ asset('public/themes/theme4/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
     <!-- <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/videojs-watermark@0.2.2/dist/videojs-watermark.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-watermark@2.0.0/dist/videojs-watermark.min.js"></script>
+
 
 
     <div class="container-fluid p-0">
@@ -54,18 +58,18 @@
                     muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             
-                <track kind="descriptions" src="descriptions.vtt" srclang="en" label="English" default>
-                <track kind="descriptions" src="descriptions.vtt" srclang="tn" label="Tamil">   
+                <!-- <track kind="descriptions" src="descriptions.vtt" srclang="en" label="English" default>
+                <track kind="descriptions" src="descriptions.vtt" srclang="tn" label="Tamil">    -->
             
-            @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
-                @if(isset($subtitles) && count($subtitles) > 0)
-                    @foreach($subtitles as $subtitles_file)
-                        <track kind="subtitles" src="{{ $subtitles_file->url }}"
-                            srclang="{{ $subtitles_file->sub_language }}"
-                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif>
-                    @endforeach
+                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                    @if(isset($subtitles) && count($subtitles) > 0)
+                        @foreach($subtitles as $subtitles_file)
+                            <track kind="subtitles" src="{{ $subtitles_file->url }}"
+                                srclang="{{ $subtitles_file->sub_language }}"
+                                label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif>
+                        @endforeach
+                    @endif
                 @endif
-            @endif
             </video>
         @endif
     </div>
@@ -82,4 +86,13 @@
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
+    /* .vjs-watermark {
+      width: 100px;
+      height: auto;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 1000;
+      opacity: 0.5;
+    } */
 </style> 
