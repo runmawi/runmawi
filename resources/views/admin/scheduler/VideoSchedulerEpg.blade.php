@@ -336,6 +336,8 @@
 .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
     border-top-left-radius: 4px;
 }
+body.dark input{color: <?php echo GetAdminDarkText(); ?>!important;}
+body.light input{color: <?php echo GetAdminLightText(); ?>;}
 </style>
 
     @section('content')
@@ -624,6 +626,7 @@ details{
 
 <script>
     var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
+    var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
 
   $(".drag").draggable({
     appendTo: "body",
@@ -1030,21 +1033,16 @@ $("#dropzone").droppable({
     });
 
 
-        // $('.re-schedule-date').datepicker({  
-        //     format: 'm-dd-yyyy'
-        // });  
-
-        $('.re-schedule-date').datepicker({
-            format: 'm-dd-yyyy',
-            startDate: '+1d', // Set the minimum date to tomorrow
-            autoclose: true
-        });
-
+        // Calculate the date for one day ahead
         var currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
-        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
-    
-        $('.re-schedule-date').datepicker('setDate', formattedDate); // Set the selected date
+            currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
+
+            // Initialize the datepicker with the formatted date
+            $('.re-schedule-date').datepicker({
+                format: 'm-dd-yyyy',
+                autoclose: true
+            }).datepicker('setDate', currentDate);
+
 
         $('.date').datepicker({  
             format: 'm-dd-yyyy'
