@@ -19,6 +19,7 @@ use App\Setting as Setting;
 use App\Video as Video;
 use Carbon\Carbon;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\Convert4kVideoForStreaming;
 use App\Playerui as Playerui;
 use FFMpeg\Coordinate\AspectRatio;
 
@@ -72,7 +73,11 @@ class VideoClip implements ShouldQueue
 
         $video = $this->video;   
 
-        ConvertVideoForStreaming::dispatch($video);
+        if(Enable_4k_Conversion() == 1){
+            Convert4kVideoForStreaming::dispatch($video);
+        }else{
+            ConvertVideoForStreaming::dispatch($video);
+        }
 
     }
     

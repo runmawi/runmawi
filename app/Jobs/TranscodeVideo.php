@@ -19,6 +19,7 @@ use App\Setting as Setting;
 use App\Video as Video;
 use Carbon\Carbon;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\Convert4kVideoForStreaming;
 use App\Playerui as Playerui;
 
 class TranscodeVideo implements ShouldQueue
@@ -96,7 +97,11 @@ class TranscodeVideo implements ShouldQueue
         if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
             VideoClip::dispatch($video);
         }else{
-            ConvertVideoForStreaming::dispatch($video);
+            if(Enable_4k_Conversion() == 1){
+                Convert4kVideoForStreaming::dispatch($video);
+            }else{
+                ConvertVideoForStreaming::dispatch($video);
+            }
         }    
         
     }
