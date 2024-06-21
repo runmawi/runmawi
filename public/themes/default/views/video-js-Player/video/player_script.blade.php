@@ -22,7 +22,8 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},                     
+                    'fullscreenToggle': {},    
+                    // 'audioTrackButton': {}
                 },
                 pictureInPictureToggle: true,
             }

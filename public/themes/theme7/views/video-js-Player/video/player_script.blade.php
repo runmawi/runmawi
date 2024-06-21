@@ -19,7 +19,8 @@
                     'progressControl': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {}                     
+                    'fullscreenToggle': {},
+                    // 'audioTrackButton': {}
                 },
                 pictureInPictureToggle: true,
             }
@@ -217,3 +218,9 @@
     // }
 
 </script>
+<style>
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
+    }
+</style>

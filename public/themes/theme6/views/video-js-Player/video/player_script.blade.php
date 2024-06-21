@@ -232,3 +232,9 @@
     // }
 
 </script>
+<style>
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
+    }
+</style>
