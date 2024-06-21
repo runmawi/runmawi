@@ -10,7 +10,6 @@
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/theme4/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
     <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
-    <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" />
 
 {{-- video-js Script --}}
 
@@ -24,6 +23,7 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ asset('public/themes/theme4/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+    <!-- <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script> -->
 
 
     <div class="container-fluid p-0">
@@ -54,8 +54,8 @@
                     muted="muted" preload="yes" autoplay="autoplay"  >
                 <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             
-                <!-- <track kind="descriptions" src="descriptions.vtt" srclang="en" label="English" default>
-                <track kind="descriptions" src="descriptions.vtt" srclang="tn" label="Tamil">    -->
+                <track kind="descriptions" src="descriptions.vtt" srclang="en" label="English" default>
+                <track kind="descriptions" src="descriptions.vtt" srclang="tn" label="Tamil">   
             
             @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
                 @if(isset($subtitles) && count($subtitles) > 0)

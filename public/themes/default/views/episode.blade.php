@@ -165,7 +165,7 @@
                         <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                             <div class="container-fluid">
                                 <h4>{{ $episode->title }}</h4>
-                                <p class="text-white col-lg-8" style="margin:0 auto;">{{ $episode->episode_description }}</p>
+                                <p class="text-white col-lg-8" style="margin:0 auto;">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                                 <h4>
                                     @if ($SeriesSeason->access == 'subscriber')
                                         {{ __('Subscribe to view more') }}
@@ -243,7 +243,7 @@
                         <div class="container-fluid">
                             <div class="col-12 col-md-6 col-sm-6 p-0">
                                 <h4>{{ $episode->title }}</h4>
-                                <p class="text-white col-lg-8">{{ $episode->episode_description }}</p>
+                                <p class="text-white col-lg-8">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             </div>
                             <div class="col-6"></div>
                             <div class="clear"></div>
@@ -369,7 +369,7 @@
                     @endif
                     @endif -->
             </div>
-            <div class="col-md-12">
+            <div class="container-fluid">
                 <span class="text-white" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
                 <p class="mb-0" style="font-size: 80%;color: white;">
                     <?php
@@ -399,10 +399,10 @@
                 <p class="" style="font-size: 100%;color: white;font-weight: 700;">
                     {{ $episode->title }}
                 </p>
-                <p class="desc">{{ $episode->episode_description }}</p>
+                <p class="desc">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
             </div>
 
-            <div class="col-md-12">
+            <div class="container-fluid">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     <li>
                         @if(is_null($episode_watchlater))

@@ -18,11 +18,62 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                     'progressControl': {},
                     'remainingTimeDisplay': {},
                     'fullscreenToggle': {},
-                    'audioTrackButton': {},
+                    // 'audioTrackButton': {},
                 },
                 pictureInPictureToggle: true,
             },
         }); 
+
+        // player.ready(function() {
+        //     const audioTracks = [
+        //         {
+        //             id: 'hindi',
+        //             kind: 'main',
+        //             label: 'Hindi',
+        //             language: 'hi',
+        //             src: '../../../../../../public/uploads/audios/JAWAN_\ Chaleya\ \(Hindi\).mp3'
+        //         },
+        //         {
+        //             id: 'arabic',
+        //             kind: 'alternative',
+        //             label: 'Arabic',
+        //             language: 'ar',
+        //             src: '../../../../../../public/uploads/audios/JAWAN_\ Chaleya\ \(Arabic\)_\ Shah\ Rukh\ Khan\ _Nayanthara\ _Atlee\ _Anirudh\ _Grini\,\ Jamila\ El\ B_Mohamed\ El\ M.mp3'
+        //         }
+        //     ];
+
+        //     // Add audio tracks to the player
+        //     audioTracks.forEach(function(track) {
+        //         player.addRemoteTextTrack({
+        //         kind: 'metadata',
+        //         label: track.label,
+        //         srclang: track.language,
+        //         src: track.src
+        //         }, false);
+        //     });
+
+        //     // Enable audio track button
+        //     // player.controlBar.addChild('AudioTrackButton', {});
+
+        //     // Handle track changes
+        //     player.on('loadedmetadata', function() {
+        //         const videoTracks = player.remoteTextTracks();
+        //         for (let i = 0; i < videoTracks.length; i++) {
+        //             (function(index) {
+        //                 videoTracks[index].oncuechange = function() {
+        //                 if (this.activeCues.length > 0) {
+        //                     const cue = this.activeCues[0];
+        //                     const audioSrc = cue.text;
+        //                     player.src([
+        //                     { src: audioSrc, type: 'audio/mp3' }
+        //                     ]);
+        //                     player.play();
+        //                 }
+        //                 };
+        //             })(i);
+        //         }
+        //     });
+        // });
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
@@ -44,30 +95,31 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         
         //audio switcher
         // player.ready(function() {
-        // var player = this;
-        // player.on("loadedmetadata", function() {
-        //     var browser_language, track_language, audioTracks;
-            // +++ Get the browser language +++
-            // browser_language = navigator.language || navigator.userLanguage; // IE <= 10
-            // browser_language = browser_language.substr(0, 2);
+        //     var player = this;
+            // player.on("loadedmetadata", function() {
+                // var browser_language, track_language, audioTracks;
+                //Get the browser language
+                // browser_language = navigator.language || navigator.userLanguage; // IE <= 10
+                // browser_language = browser_language.substr(0, 2);
+                // console.log('browser_language',browser_language);
 
-            // +++ Get the audio tracks +++
-            // audioTracks = player.audioTracks();
+                //Get the audio tracks
+                // audioTracks = player.audioTracks();
+                // console.log('audioTracks',player.audioTracks());
 
-            // +++ Loop through audio tracks +++
-            // for (var i = 0; i < audioTracks.length; i++) {
-            // track_language = audioTracks[i].language.substr(0, 2);
+                //Loop through audio tracks
+                // for (var i = 0; i < audioTracks.length; i++) {
+                //     track_language = audioTracks[i].language.substr(0, 2);
+                //     console.log("track_language",track_language);
 
-            // +++ Set the enabled audio track language +++
-            // if (track_language) {
-                // When the track language matches the browser language, then enable that audio track
-                // if (track_language === browser_language) {
-                // When one audio track is enabled, others are automatically disabled
-        //         audioTracks[i].enabled = true;
-        //         }
-        //     }
-        //     }
-        // });
+                // +++ Set the enabled audio track language +++
+                    // if (track_language) {
+                    //         if (track_language === browser_language) {
+                    //         audioTracks[i].enabled = true;
+                    //         }
+                    // }
+                // }
+            // });
         // });
 
         // var watermark = document.createElement('div');
@@ -116,8 +168,8 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                     skipForwardButton.style.display = 'none';
                     skipBackwardButton.style.display = 'none';
                     playPauseButton.style.display = 'none';
-                    backButton.style.display = 'none';
                 }
+                backButton.style.display = 'none';
             }
         });
 

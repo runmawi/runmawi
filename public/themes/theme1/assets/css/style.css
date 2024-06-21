@@ -2454,8 +2454,8 @@ ul.favorites-slider.list-inline.row.p-0.mb-0.slick-initialized.slick-slider {
     -webkit-box-align: end;
     -ms-flex-align: end;
     align-items: flex-end;
-    right: 0;
-    top: 4px;
+    right: 1px;
+    top: 1px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
