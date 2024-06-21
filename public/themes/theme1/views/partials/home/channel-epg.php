@@ -169,7 +169,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
     .tab-pane{height:100%;padding:0;}
     .table{margin-bottom:0;}
     body.light-theme a, body.light-theme h6{color: <?php echo $GetLightText; ?> !important;cursor: pointer;}
-
+    #epg-data li.slide-item:hover .block-images {transform: none;}
     @media (max-width:720px){
         .modal-body{padding:0 !important;}
         button.tabs__scroller.tabs__scroller--left.js-action--scroll-left{height:49px;}
@@ -212,7 +212,7 @@ $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function 
         </div>
 
 
-        <div class="favorites-contens">
+        <div id="epg-data" class="favorites-contens">
             <ul class="favorites-slider list-inline row p-0 mb-0">
                 <?php 
                     if(isset($data)):
