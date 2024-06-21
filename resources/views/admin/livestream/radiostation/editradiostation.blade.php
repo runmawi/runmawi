@@ -101,7 +101,7 @@ border-radius: 0px 4px 4px 0px;
 	@if(!empty($video->id))
         <div class="d-flex justify-content-between">
             <div>
-		<h4>Edit Livestream Video</h4> </div>
+		<h4>Edit Radio Station Video</h4> </div>
             <div>
 		<a href="{{ URL::to('/live/').'/'.$video->slug }}" target="_blank" class="btn btn-primary">
 			<i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
@@ -137,7 +137,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Title</label>
-                    <p class="p1">Add the Live Stream title in the textbox below:</p>
+                    <p class="p1">Add the Radio Station title in the textbox below:</p>
 
                     <div class="panel-body">
                         <input type="text" class="form-control" name="title" id="title" placeholder="Video Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
@@ -147,7 +147,7 @@ border-radius: 0px 4px 4px 0px;
                 @if(!empty($video->created_at))
                 <div class="col-sm-6">
                     <label class="m-0">Published Date</label>
-                    <p class="p1">Live Stream Published on Date/Time Below</p>
+                    <p class="p1">Radio Station Published on Date/Time Below</p>
                     <div class="panel-body">
                         <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($video->created_at)){{ $video->created_at }}@endif" />
                     </div>
@@ -156,7 +156,7 @@ border-radius: 0px 4px 4px 0px;
 
                 <div class="col-sm-6">
                     <label class="m-0">Slug</label>
-                    <p class="p1">Add the Live Stream slug in the textbox below:</p>
+                    <p class="p1">Add the Radio Station slug in the textbox below:</p>
                     <div class="panel-body">
                         <input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
                     </div>
@@ -166,8 +166,8 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-md-6">
                 <div class="mt-3">
                             <div class="">
-                                <label class="m-0">Live Stream Image Cover</label>
-                                <p class="p1">Select the Live Stream image (9:16 Ratio or 1080 X 1920px):</p>
+                                <label class="m-0">Radio Station Image Cover</label>
+                                <p class="p1">Select the Radio Station image (9:16 Ratio or 1080 X 1920px):</p>
 
                                 <div class="panel-body">
                                 <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/*"/>
@@ -187,7 +187,7 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row mt-3">
                             <div class="">
                                 <label class="m-0">Player Image Cover</label>
-                                <p class="p1">Select the Live Stream image (1920X1080px or 16:9 ratio):</p>
+                                <p class="p1">Select the Radio Station image (1920X1080px or 16:9 ratio):</p>
 
                                 <div class="panel-body">
                                 <input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/*" />
@@ -210,7 +210,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="">
                         <label class="m-0">TV Image Cover</label>
-                        <p class="p1"> Select the Live Stream image (1920 X 1080  Or 16:9 Ratio)  :</p>
+                        <p class="p1"> Select the Radio Station image (1920 X 1080  Or 16:9 Ratio)  :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image accept="image/*" />
                         </div>
@@ -236,14 +236,14 @@ border-radius: 0px 4px 4px 0px;
 
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label class="m-0">Live Stream Source</label>
+                    <label class="m-0">Radio Station Source</label>
 
                     <div class="panel-body">
                         <select class="form-control url_type" id="url_type" name="url_type">
                             <option value="">Choose URL Format</option>
                             <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif > MP4/M3U8 URL </option>
                             <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
-                            <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
+                            <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Radio Station Video</option>
                             <option value="m3u_url" @if(!empty($video->url_type) && $video->url_type == 'm3u_url'){{ 'selected' }}@endif> M3U URL </option>
                             <option value="acc_audio_file" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_file'){{ 'selected' }}@endif > Mp3/AAC Audio File </option>
                             <option value="acc_audio_url" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_url'){{ 'selected' }}@endif > Mp3/AAC Audio URL </option>
@@ -265,7 +265,7 @@ border-radius: 0px 4px 4px 0px;
                         <input type="hidden" name="hls_url" id="hls_url" value="" />
 
                             <div class="new-video-upload mt-2" id="mp4_code">
-                                <label for="embed_code"><label>Live Stream URL</label></label>
+                                <label for="embed_code"><label>Radio Station URL</label></label>
                                 <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
                             </div>
 
@@ -280,7 +280,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
                             <div class="new-video-upload mt-2" id="live_stream_video">
-                                <label for="live_stream_video"><label>Live Stream Video</label></label>
+                                <label for="live_stream_video"><label>Radio Station Video</label></label>
                                 <input type="file" multiple="true" accept="video/mp4,video/x-m4v,video/*" class="form-group" name="live_stream_video" id="" />                        
                             </div>
 
@@ -445,7 +445,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-12">
                     <label class="m-0">Short Description</label>
-                    <p class="p1">Add a short description of the Livestream below:</p>
+                    <p class="p1">Add a short description of the Radio Station below:</p>
                     <div class="panel-body">
                         <textarea class="form-control" name="description" id="description">@if(!empty($video->description)){{ htmlspecialchars($video->description) }}@endif</textarea>
                     </div>
@@ -454,7 +454,7 @@ border-radius: 0px 4px 4px 0px;
 
             <div class="row mt-3">
                 <div class="col-sm-12">
-                    <label class="m-0">Live Stream Details, Links, and Info</label>
+                    <label class="m-0">Radio Station Details, Links, and Info</label>
 
                     <div class="panel-body">
                         <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
@@ -467,7 +467,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Category</label>
-                    <p class="p1">Select a Live Stream Category Below:</p>
+                    <p class="p1">Select a Radio Station Category Below:</p>
 
                     <div class="panel-body">
                         <select name="video_category_id[]" id="video_category_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
@@ -483,7 +483,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
                 <div class="col-sm-6">
                     <label class="m-0">Language</label>
-                    <p class="p1">Select a Live Stream Language Below:</p>
+                    <p class="p1">Select a Radio Station Language Below:</p>
 
                     <div class="panel-body">
                         <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
@@ -500,8 +500,8 @@ border-radius: 0px 4px 4px 0px;
             </div>
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label class="m-0">Live Stream Ratings</label>
-                    <p class="p1">Livestream Ratings 10 out of 10</p>
+                    <label class="m-0">Radio Station Ratings</label>
+                    <p class="p1">Radio Station Ratings 10 out of 10</p>
 
                     <div class="panel-body">
                         <select  class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
@@ -520,8 +520,8 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-6">
-                    <label class="m-0">Live Stream Year</label>
-                    <p class="p1">Live Stream Released Year</p>
+                    <label class="m-0">Radio Station Year</label>
+                    <p class="p1">Radio Station Released Year</p>
 
                     <div class="panel-body">
 					   <input class="form-control" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
@@ -662,7 +662,7 @@ border-radius: 0px 4px 4px 0px;
 
                 <div class="col-sm-6">
                     <label class="m-0">Free Duration</label>
-                    <p class="p1">Enter the Live Stream Free duration in (HH : MM : SS)</p>
+                    <p class="p1">Enter the Radio Station Free duration in (HH : MM : SS)</p>
                     <div class="panel-body">
                         <input class="form-control" name="free_duration" id="free_duration" value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
                     </div>
@@ -673,7 +673,7 @@ border-radius: 0px 4px 4px 0px;
 
                 <div class="col-sm-6">
                     <label class="m-0">Duration</label>
-                    <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
+                    <p class="p1">Enter the Radio Station duration in (HH : MM : SS)</p>
                     <div class="panel-body">
                         <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
@@ -681,7 +681,7 @@ border-radius: 0px 4px 4px 0px;
                 
                 <div class="col-sm-6">
                     <label class="m-0">Block Country</label>
-                    <p class="p1">( Choose the countries for block the Live Stream )</p>
+                    <p class="p1">( Choose the countries for block the Radio Station )</p>
                     <div class="panel-body">
                         <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                 @foreach($countries as $country)
@@ -758,17 +758,17 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Status Settings</label>
                     <div class="panel-body">
                         <div>
-                            <label for="featured" >Is this Live Stream Featured:</label>
+                            <label for="featured" >Is this Radio Station Featured:</label>
                             <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                         </div>
                         <div class="clear"></div>
                         <div>
-                            <label for="active" >Is this Live Stream Active:</label>
+                            <label for="active" >Is this Radio Station Active:</label>
                             <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                         </div>
                         <div class="clear"></div>
                         <div>
-                            <label for="banner" >Is this Live Stream display in Banner:</label>
+                            <label for="banner" >Is this Radio Station display in Banner:</label>
                             <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                         </div>
                         <div>
@@ -1801,7 +1801,7 @@ $(document).ready(function(){
 	@stop
 @stop
 
-{{-- Video Encoder Live Stream Modal --}}
+{{-- Video Encoder Radio Station Modal --}}
 <div class="modal fade" id="Stream_video" tabindex="-1" role="dialog" aria-labelledby="Stream_video" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -1815,7 +1815,7 @@ $(document).ready(function(){
 </div>
 
 
-{{-- Live Stream Video Upload Modal --}}
+{{-- Radio Station Video Upload Modal --}}
 
 <div class="modal fade" id="Livevideo_upload" tabindex="-1" role="dialog" aria-labelledby="Livevideo_upload" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
