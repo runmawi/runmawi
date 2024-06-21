@@ -260,6 +260,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->enable_default_timezone       = !empty($data['enable_default_timezone']) ? '1' : '0';
         
+        $theme_settings->enable_4k_conversion       = !empty($data['enable_4k_conversion']) ? '1' : '0';
+        
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

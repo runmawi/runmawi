@@ -36,6 +36,7 @@ use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
 use App\Jobs\ConvertEpisodeVideo;
+use App\Jobs\Convert4kEpisodeVideo;
 use App\Jobs\ConvertEpisodeVideoWatermark;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -2853,7 +2854,11 @@ class AdminSeriesController extends Controller
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     ConvertEpisodeVideoWatermark::dispatch($video,$storepath);
                 }else{
-                    ConvertEpisodeVideo::dispatch($video,$storepath);
+                    if(Enable_4k_Conversion() == 1){
+                        Convert4kEpisodeVideo::dispatch($video,$storepath);
+                    }else{
+                        ConvertEpisodeVideo::dispatch($video,$storepath);
+                    }
                 } 
 
 
@@ -3577,7 +3582,11 @@ class AdminSeriesController extends Controller
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 ConvertEpisodeVideoWatermark::dispatch($video,$storepath);
             }else{
-                ConvertEpisodeVideo::dispatch($video,$storepath);
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kEpisodeVideo::dispatch($video,$storepath);
+                }else{
+                    ConvertEpisodeVideo::dispatch($video,$storepath);
+                }
             } 
             
         $episode_id = $video->id;
