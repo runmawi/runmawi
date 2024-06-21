@@ -245,7 +245,7 @@
                 } else {
                     clearInterval(reloadInterval);
                 }
-            }, 20000);
+            }, 60000);
         }
     });
 </script>
