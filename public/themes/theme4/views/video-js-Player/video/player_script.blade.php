@@ -7,6 +7,7 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            // watermark: true,
             controlBar: {
                 volumePanel: { inline: false },
                 // descriptionsButton: true,
@@ -25,54 +26,14 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         }); 
 
         // player.ready(function() {
-        //     const audioTracks = [
-        //         {
-        //             id: 'hindi',
-        //             kind: 'main',
-        //             label: 'Hindi',
-        //             language: 'hi',
-        //             src: '../../../../../../public/uploads/audios/JAWAN_\ Chaleya\ \(Hindi\).mp3'
-        //         },
-        //         {
-        //             id: 'arabic',
-        //             kind: 'alternative',
-        //             label: 'Arabic',
-        //             language: 'ar',
-        //             src: '../../../../../../public/uploads/audios/JAWAN_\ Chaleya\ \(Arabic\)_\ Shah\ Rukh\ Khan\ _Nayanthara\ _Atlee\ _Anirudh\ _Grini\,\ Jamila\ El\ B_Mohamed\ El\ M.mp3'
-        //         }
-        //     ];
-
-        //     // Add audio tracks to the player
-        //     audioTracks.forEach(function(track) {
-        //         player.addRemoteTextTrack({
-        //         kind: 'metadata',
-        //         label: track.label,
-        //         srclang: track.language,
-        //         src: track.src
-        //         }, false);
-        //     });
-
-        //     // Enable audio track button
-        //     // player.controlBar.addChild('AudioTrackButton', {});
-
-        //     // Handle track changes
-        //     player.on('loadedmetadata', function() {
-        //         const videoTracks = player.remoteTextTracks();
-        //         for (let i = 0; i < videoTracks.length; i++) {
-        //             (function(index) {
-        //                 videoTracks[index].oncuechange = function() {
-        //                 if (this.activeCues.length > 0) {
-        //                     const cue = this.activeCues[0];
-        //                     const audioSrc = cue.text;
-        //                     player.src([
-        //                     { src: audioSrc, type: 'audio/mp3' }
-        //                     ]);
-        //                     player.play();
-        //                 }
-        //                 };
-        //             })(i);
-        //         }
-        //     });
+            // player.watermark({
+                // file: 'https://www.dropbox.com/scl/fi/m5owk95leqp0njcdhwiaf/D20PRO-Logo-03.png?rlkey=oupnk8xh39mjzmg4ajt3s9psx&e=1' ,
+                // xpos: 100,
+                // ypos: 100,
+                // xrepeat: 0,
+                // opacity: 0.5,
+                // className: 'vjs-watermark'
+            // });
         // });
 
         player.on('loadedmetadata', function(){
@@ -92,44 +53,6 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                 });
             }
         });
-        
-        //audio switcher
-        // player.ready(function() {
-        //     var player = this;
-            // player.on("loadedmetadata", function() {
-                // var browser_language, track_language, audioTracks;
-                //Get the browser language
-                // browser_language = navigator.language || navigator.userLanguage; // IE <= 10
-                // browser_language = browser_language.substr(0, 2);
-                // console.log('browser_language',browser_language);
-
-                //Get the audio tracks
-                // audioTracks = player.audioTracks();
-                // console.log('audioTracks',player.audioTracks());
-
-                //Loop through audio tracks
-                // for (var i = 0; i < audioTracks.length; i++) {
-                //     track_language = audioTracks[i].language.substr(0, 2);
-                //     console.log("track_language",track_language);
-
-                // +++ Set the enabled audio track language +++
-                    // if (track_language) {
-                    //         if (track_language === browser_language) {
-                    //         audioTracks[i].enabled = true;
-                    //         }
-                    // }
-                // }
-            // });
-        // });
-
-        // var watermark = document.createElement('div');
-        // watermark.className = 'watermark';
-        // watermark.innerHTML = '<img src="{{ URL::to('public/uploads/settings/Loading_1.webm') }}" alt="Watermark">';
-        
-        // var videoContainer = player.el();
-        // videoContainer.appendChild(watermark);
-
-        // player.watermark();
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
@@ -363,16 +286,8 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         z-index: 30;
         margin-left: -3px;
     }
-    /* .watermark {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-        pointer-events: none;
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
     }
-
-    .watermark img {
-        max-width: 100px;
-        opacity: 0.5;
-    } */
 </style>
