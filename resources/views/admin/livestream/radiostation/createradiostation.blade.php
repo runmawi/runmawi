@@ -133,7 +133,7 @@
                             <p class="p1">Add the Radio Station title in the textbox below:</p>
 
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="title" id="title" placeholder="Radio Stream Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
+                                <input type="text" class="form-control" name="title" id="title" placeholder="Radio Station Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
                             </div>
                         </div>
 
