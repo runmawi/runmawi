@@ -37,6 +37,11 @@
         color: rgba(66, 149, 210, 1);
 
     }
+
+	body.dark input{color: <?php echo GetAdminDarkText(); ?>;}
+	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>;}
+	body.light input{color: <?php echo GetAdminLightText(); ?>;}
+
 </style>
 
 @section('css')
