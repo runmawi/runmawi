@@ -62,8 +62,7 @@
     </span>
 </li>
 
-@if( $Livestream_details->access != 'ppv' || Auth::user()->role == "admin" ) 
-
+@if( $Livestream_details->access != 'ppv' || ( !Auth::guest() && Auth::user()->role == "admin") ) 
     <!-- Copy Link  -->
     <li><a href="#" onclick="EmbedCopy();"  title="Embed Copy Link"><span><i class="ri-links-line mt-1"></i></span></a></li>
 
