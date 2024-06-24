@@ -263,9 +263,12 @@
     </div>
 @endif
 
+               {{-- Message Note --}}
+<div id="message-note" ></div>
+
 <div id="video_bg">
                         {{-- Player --}}
-    {!! Theme::uses('default')->load('public/themes/default/views/video-js-Player.Livestream.live-player', [ 'Livestream_details' => $Livestream_details , 'play_btn_svg' => $play_btn_svg])->content() !!}
+    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
 
     <div class="container-fluid video-details">
         <div class="row">
@@ -330,7 +333,7 @@
         <div class="row">
             <div class="col-sm-6 col-md-6 col-xs-12">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    <?php include public_path('themes/default/views/partials/live-social-share.php'); ?>
+                    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-socail-share", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
                 </ul>
             </div>
         </div>
