@@ -81,8 +81,8 @@
 <!-- Slider End -->
 
 <!-- MainContent -->
-<div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
-   {{-- continue watching videos --}}
+      <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
+         {{-- continue watching videos --}}
 
             @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
                {!! Theme::uses('default')->load('public/themes/default/views/partials/home/continue-watching', [
@@ -238,6 +238,39 @@ function toggleReadMore(key) {
       include(public_path('themes/default/views/footer.blade.php'))
    @endphp
 <!-- End Of MainContent -->
+
+<script>
+   var isFetching = false; 
+   var scrollFetch; 
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         console.log("scrolled");
+
+         if (page_url != null && !isFetching) {
+               isFetching = true; 
+               $.ajax({
+                  url: page_url,
+                  // beforeSend: function () {
+                  //    $('.auto-load').show();
+                  // },
+                  success: function (data) {
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  },
+                  // complete: function () {
+                  //    isFetching = false; 
+                  //    $('.theme4-slider').hide();
+                  //    $('.auto-load').hide();
+                  // }
+               });
+         }
+      }, 100);
+   });
+</script>
 
 <style>
    body{
