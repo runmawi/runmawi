@@ -366,7 +366,7 @@
 
             {{-- Rent Modal  --}}
     @if ( $Livestream_details->access == "ppv" && !is_null($Livestream_details->ppv_price) )
-        <div class="modal fade" id="live-purchase-now" tabindex="-1" role="dialog"aria-labelledby="live-purchase-nowTitle" aria-hidden="true">
+        <div class="modal fade" id="live-purchase-now-modal" tabindex="-1" role="dialog"aria-labelledby="live-purchase-now-modal-Title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
 
@@ -607,6 +607,12 @@
                 $('.cinetpay_button').show();
             }
         });
+
+    // Modal
+        $("#live-purchase-now-button").click(function(){
+            $("#live-purchase-now-modal").modal();
+        });
+
     });
 </script>
 
