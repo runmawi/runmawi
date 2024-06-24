@@ -62,14 +62,14 @@ $data = App\Series::where('active', '1')->limit(15)
                                                             {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
                                                             {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
                                                     @else
-                                                        <img src="{{ $Episode_details->image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}">
+                                                        <img src="{{ $Episode_details->image_url }}" data-src="{{ $Episode_details->image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}">
                                                     @endif
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="#">
-                                                <img src="{{ $Episode_details->Player_image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}">
+                                                <img src="{{ $Episode_details->Player_image_url }}" data-src="{{ $Episode_details->Player_image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}">
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="#">

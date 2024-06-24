@@ -120,7 +120,7 @@
                                                 <div class="border-bg">
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                            <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
+                                                            <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
                                                         </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -141,7 +141,7 @@
 
                                                 <div class="block-description">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
                                                             @if($videos->access == 'subscriber')

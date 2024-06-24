@@ -28,7 +28,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('/channel/' . $channel->channel_slug) }}">
-                                                      <img src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name }}">
+                                                      <img src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" data-src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name }}">
                                                   </a>
                                               </div>
                                           </div>

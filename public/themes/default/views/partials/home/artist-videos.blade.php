@@ -118,14 +118,14 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
-                                                        <img loading="lazy" data-src="{{ URL::to('/public/uploads/artists/' . $artist_details->image) }}" class="img-fluid loading w-100" alt="">
+                                                        <img loading="lazy" data-src="{{ $artist_details->image ? URL::to('/public/uploads/artists/' . $artist_details->image) : $default_vertical_image_url }}" src="{{ $artist_details->image ? URL::to('/public/uploads/artists/' . $artist_details->image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="{{ $artist_details->artist_name }}">
                                                     </a>
                                                 </div>
                                             </div>
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
-                                                    <img loading="lazy" data-src="{{ $artist_details->player_image ? URL::to('/public/uploads/artists/' . $artist_details->player_image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="">
+                                                    <img loading="lazy" data-src="{{ $artist_details->player_image ? URL::to('/public/uploads/artists/' . $artist_details->player_image) : $default_vertical_image_url }}" src="{{ $artist_details->player_image ? URL::to('/public/uploads/artists/' . $artist_details->player_image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="{{ $artist_details->artist_name }}">
                                                 </a>
                                                 <div class="hover-buttons text-white">
                                                     @if($ThumbnailSetting->title == 1)

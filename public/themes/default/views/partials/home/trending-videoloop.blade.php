@@ -49,7 +49,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $watchlater_video->image) }}" alt="f-img">
+                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                   </a>
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($watchlater_video->access == 'subscriber')
@@ -67,7 +67,7 @@
 
                                           <div class="block-description">
                                               <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                  <img class="img-fluid w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $watchlater_video->player_image) }}" alt="f-img">
+                                                  <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($watchlater_video->access == 'subscriber')
                                                           <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
@@ -81,7 +81,7 @@
                                                   @endif
                                               </a>
                                               <div class="hover-buttons text-white">
-                                                  <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
+                                                  <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="{{ $watchlater_video->title }}">
                                                       @if($ThumbnailSetting->title == 1)
                                                           <p class="epi-name text-left m-0">
                                                               {{ Str::limit($watchlater_video->title, 18) }}

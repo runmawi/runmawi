@@ -29,7 +29,7 @@
                                        <div class="border-bg">
                                           <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}">
-                                                   <img class="img-fluid w-100" loading="lazy" data-src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $album->albumname }}">
+                                                   <img class="img-fluid w-100" loading="lazy" data-src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $album->albumname }}">
                                                 </a>   
                                           </div>
                                        </div>

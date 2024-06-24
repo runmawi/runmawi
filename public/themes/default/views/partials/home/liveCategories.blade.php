@@ -36,14 +36,14 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
                                                 </a>
                                             </div>
                                         </div>
 
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
                                             </a>
 
                                             <div class="hover-buttons text-white">

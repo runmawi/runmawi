@@ -92,7 +92,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -119,7 +119,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)

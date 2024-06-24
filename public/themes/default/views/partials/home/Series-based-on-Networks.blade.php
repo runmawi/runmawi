@@ -21,7 +21,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ route('network.play_series', $series->slug) }}">
-                                                        <img src="{{ $series->image_url ? $series->image_url : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $series->title }}" width="300" height="200">
+                                                        <img data-src="{{ $series->image_url ? $series->image_url : $default_vertical_image_url }}" src="{{ $series->image_url ? $series->image_url : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $series->title }}" width="300" height="200">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -57,7 +57,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ route('network.play_series', $series->slug) }}">
-                                                <img src="{{ $series->Player_image_url ? $series->Player_image_url : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-src="{{ $series->Player_image_url ? $series->Player_image_url : $default_vertical_image_url }}" src="{{ $series->Player_image_url ? $series->Player_image_url : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $series->title }}" width="300" height="200">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
 

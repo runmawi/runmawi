@@ -76,7 +76,7 @@ if (!Auth::guest()) {
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
 
                                                 </a>
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -103,7 +103,7 @@ if (!Auth::guest()) {
 
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                 
 
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)

@@ -26,7 +26,7 @@
                                           <div class="border-bg">
                                              <div class="img-box">
                                                    <a href="{{ URL::to('audio/' . $audio->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" alt="{{ $audio->title }}">
+                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" alt="{{ $audio->title }}">
                                                    </a>
                                              </div>
                                           </div>

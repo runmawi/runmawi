@@ -51,13 +51,13 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('audio/' . $latest_view_audio->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_audio->image ? URL::to('public/uploads/images/' . $latest_view_audio->image) : $default_vertical_image_url }}" alt="{{ $latest_view_audio->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_audio->image ? URL::to('public/uploads/images/' . $latest_view_audio->image) : $default_vertical_image_url }}" src="{{ $latest_view_audio->image ? URL::to('public/uploads/images/' . $latest_view_audio->image) : $default_vertical_image_url }}" alt="{{ $latest_view_audio->title }}">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ url('audio/' . $latest_view_audio->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_audio->player_image ? URL::to('public/uploads/images/' . $latest_view_audio->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_audio->title }}">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_audio->player_image ? URL::to('public/uploads/images/' . $latest_view_audio->player_image) : $default_vertical_image_url }}" src="{{ $latest_view_audio->player_image ? URL::to('public/uploads/images/' . $latest_view_audio->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_audio->title }}">
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ url('audio/' . $latest_view_audio->slug) }}">

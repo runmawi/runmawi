@@ -224,7 +224,7 @@
                                                             {{ URL::to('public/uploads/Tabletimages/'.$epg_channel_data->responsive_image.' 640w') }},
                                                             {{ URL::to('public/uploads/mobileimages/'.$epg_channel_data->responsive_image.' 420w') }}" >
                                                     @else
-                                                        <img src="{{ $epg_channel_data->image_url }}" class="img-fluid w-100" alt="{{ $epg_channel_data->title }}"  width="300" height="200">
+                                                        <img src="{{ $epg_channel_data->image_url }}" data-src="{{ $epg_channel_data->image_url }}" class="img-fluid w-100" alt="{{ $epg_channel_data->title }}"  width="300" height="200">
                                                     @endif
 
                                                     @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)
@@ -235,7 +235,7 @@
                                       </div>
                                       <div class="block-description">
                                           <a class="playTrailer" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
-                                            <img src="{{ $epg_channel_data->image_url }}" class="img-fluid w-100" alt="{{ $epg_channel_data->title }}"  width="300" height="200">
+                                            <img src="{{ $epg_channel_data->image_url }}" data-src="{{ $epg_channel_data->image_url }}" class="img-fluid w-100" alt="{{ $epg_channel_data->title }}"  width="300" height="200">
                                           </a>
                                           <div class="hover-buttons text-white">
                                               <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">

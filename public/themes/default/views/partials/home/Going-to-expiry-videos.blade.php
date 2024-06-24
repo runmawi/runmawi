@@ -55,13 +55,13 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Going_to_expiry_videos->image_url ?  $Going_to_expiry_videos->image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" src="{{ $Going_to_expiry_videos->image_url ?  $Going_to_expiry_videos->image_url : $default_vertical_image_url }}" data-src="{{ $Going_to_expiry_videos->image_url ?  $Going_to_expiry_videos->image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $Going_to_expiry_videos->Player_image_url ? $Going_to_expiry_videos->Player_image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
+                                                <img class="img-fluid w-100" loading="lazy" src="{{ $Going_to_expiry_videos->Player_image_url ? $Going_to_expiry_videos->Player_image_url : $default_vertical_image_url }}" data-src="{{ $Going_to_expiry_videos->Player_image_url ? $Going_to_expiry_videos->Player_image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">

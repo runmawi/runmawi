@@ -70,7 +70,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('live/'. $latest_view_livestreams->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_livestreams->image ? URL::to('public/uploads/images/'.$latest_view_livestreams->image) : $default_vertical_image_url }}" alt="l-img">
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_livestreams->image ? URL::to('public/uploads/images/'.$latest_view_livestreams->image) : $default_vertical_image_url }}" src="{{ $latest_view_livestreams->image ? URL::to('public/uploads/images/'.$latest_view_livestreams->image) : $default_vertical_image_url }}" alt="{{ $latest_view_livestreams->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -91,7 +91,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('live/'. $latest_view_livestreams->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_livestreams->player_image ? URL::to('public/uploads/images/'.$latest_view_livestreams->player_image) : $default_vertical_image_url }}" alt="l-img">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_livestreams->player_image ? URL::to('public/uploads/images/'.$latest_view_livestreams->player_image) : $default_vertical_image_url }}" src="{{ $latest_view_livestreams->player_image ? URL::to('public/uploads/images/'.$latest_view_livestreams->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_livestreams->title }}">
                                                     
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @if($latest_view_livestreams->access == 'subscriber')

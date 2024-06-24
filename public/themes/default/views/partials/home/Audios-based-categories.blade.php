@@ -52,7 +52,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
-                                                        <img loading="lazy" data-src="{{ $audios_details->image ? URL::to('/public/uploads/images/' . $audios_details->image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="">
+                                                        <img loading="lazy" data-src="{{ $audios_details->image ? URL::to('/public/uploads/images/' . $audios_details->image) : $default_vertical_image_url }}" src="{{ $audios_details->image ? URL::to('/public/uploads/images/' . $audios_details->image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="{{ $audios_details->title }}">
                                                     </a>
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
@@ -79,7 +79,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
-                                                    <img loading="lazy" data-src="{{ $audios_details->player_image ? URL::to('/public/uploads/images/' . $audios_details->player_image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="">
+                                                    <img loading="lazy" data-src="{{ $audios_details->player_image ? URL::to('/public/uploads/images/' . $audios_details->player_image) : $default_vertical_image_url }}" src="{{ $audios_details->player_image ? URL::to('/public/uploads/images/' . $audios_details->player_image) : $default_vertical_image_url }}" class="img-fluid loading w-100" alt="{{ $audios_details->title }}">
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
                                                             @case($audios_details->access == 'subscriber')

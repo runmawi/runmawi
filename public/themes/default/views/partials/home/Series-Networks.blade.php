@@ -40,13 +40,13 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">

@@ -27,7 +27,7 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('/contentpartner/' . $content_user->slug) }}">
-                                                    <img src="{{ $content_user->picture ? $content_user->picture : URL::to('public/uploads/images/'.$default_vertical_image_url) }}" class="img-fluid w-100" alt="{{ $content_user->username }}">
+                                                    <img src="{{ $content_user->picture ? $content_user->picture : URL::to('public/uploads/images/'.$default_vertical_image_url) }}" data-src="{{ $content_user->picture ? $content_user->picture : URL::to('public/uploads/images/'.$default_vertical_image_url) }}" class="img-fluid w-100" alt="{{ $content_user->username }}">
                                                 </a>
                                             </div>
                                         </div>

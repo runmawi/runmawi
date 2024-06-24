@@ -79,7 +79,7 @@ $data->each(function ($category) {
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('live/'.$livestream->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -115,7 +115,7 @@ $data->each(function ($category) {
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('live') . '/' . $livestream->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
 

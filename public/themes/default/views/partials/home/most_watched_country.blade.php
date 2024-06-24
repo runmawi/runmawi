@@ -21,7 +21,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/' . $Most_watched_countries->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
                                                     </a>
 
                                                     <!-- PPV price -->
@@ -49,7 +49,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $Most_watched_countries->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->player_image ? URL::to('/public/uploads/images/' . $Most_watched_countries->player_image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->player_image ? URL::to('/public/uploads/images/' . $Most_watched_countries->player_image) : $default_vertical_image_url }}" src="{{ $Most_watched_countries->player_image ? URL::to('/public/uploads/images/' . $Most_watched_countries->player_image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
                                                 </a>
 
                                                 <!-- PPV price -->

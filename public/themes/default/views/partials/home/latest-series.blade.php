@@ -47,7 +47,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ URL::to('/') . '/public/uploads/images/' . $latest_serie->image }}" alt="series">
+                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
                                                   </a>
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($latest_serie->access == 'subscriber')
@@ -66,7 +66,7 @@
                                           </div>
                                           <div class="block-description">
                                               <a class="playTrailer" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                  <img class="img-fluid w-100" loading="lazy" data-src="{{ URL::to('/') . '/public/uploads/images/' . $latest_serie->player_image }}" alt="series">
+                                                  <img class="img-fluid w-100" loading="lazy" src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" data-src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($latest_serie->access == 'subscriber')
                                                           <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -81,19 +81,6 @@
                                                       @endif
                                                   @endif
                                               </a>
-                                              @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                  @if($latest_serie->access == 'subscriber')
-                                                      <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                                  @elseif($latest_serie->access == 'registered')
-                                                      <p class="p-tag">{{ __('Register Now') }}</p>
-                                                  @elseif(!empty($latest_serie->ppv_status))
-                                                      <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_price }}</p>
-                                                  @elseif(!empty($latest_serie->ppv_status) || (!empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null))
-                                                      <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_status }}</p>
-                                                  @elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null)
-                                                      <p class="p-tag">{{ __('Free') }}</p>
-                                                  @endif
-                                              @endif
                                               <div class="hover-buttons text-white"> 
                                                   <a class="text-white" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
                                                       <p class="epi-name text-left m-0">{{ __($latest_serie->title) }}</p>

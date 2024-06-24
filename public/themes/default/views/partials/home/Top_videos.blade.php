@@ -20,7 +20,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
                                                     </a>
 
                                                     <!-- PPV price -->
@@ -42,7 +42,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->player_image ? URL::to('/public/uploads/images/' . $most_watched_video->player_image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->player_image ? URL::to('/public/uploads/images/' . $most_watched_video->player_image) : $default_vertical_image_url }}" src="{{ $most_watched_video->player_image ? URL::to('/public/uploads/images/' . $most_watched_video->player_image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
                                                 </a>
 
                                                 <!-- PPV price -->
