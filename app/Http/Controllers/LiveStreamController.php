@@ -38,6 +38,7 @@ use App\BlockLiveStream;
 use App\TimeZone;
 use App\Geofencing;
 use App\Adsvariables;
+use App\LikeDislike;
 use Theme;
 
 class LiveStreamController extends Controller
@@ -176,7 +177,7 @@ class LiveStreamController extends Controller
     
     public function Play(Request $request,$vid)
     {
-      // try {
+      try {  
         
       $Adsvariables = Adsvariables::get();
 
@@ -320,7 +321,7 @@ class LiveStreamController extends Controller
              {
                  $new_date = null;
              }
-            //  dd($new_date);
+
              $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
 
              $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
@@ -533,6 +534,34 @@ class LiveStreamController extends Controller
                   break;
               }
 
+            $item['watchlater_exist'] = Watchlater::where('live_id', $item->id)->where('type', 'live')
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+
+
+            $item['Like_exist'] = LikeDislike::where('live_id', $item->id)->where('liked',1)
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->latest()->first();
+
+            $item['dislike_exist'] = LikeDislike::where('live_id',  $item->id)->where('disliked',1)
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->latest()->first();
+
               return $item;
 
             })->first();
@@ -567,6 +596,7 @@ class LiveStreamController extends Controller
                  'Livestream_details'      => $Livestream_details ,
                  'adsvariable'             =>  $Adsvariables    ,
                  'setting'                => $settings,
+                 'current_theme'          => $this->Theme,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
@@ -584,13 +614,203 @@ class LiveStreamController extends Controller
 
           //   return view('auth.login',compact('system_settings'));
           // }
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-        //   // return $th->getMessage();
-        //     return abort(404);
-        // }
+          // return $th->getMessage();
+            return abort(404);
+        }
         }
 
+        public function videojs_live_watchlater(Request $request)
+        {
+            try {
+                
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    
+                $inputs = [
+                    'live_id' => $request->live_id,
+                    'type' => 'live',
+                    'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                    'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                ];
+    
+                $watchlater_exist = Watchlater::where('live_id', $request->live_id)->where('type', 'live')
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+            
+                !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
+    
+                $response = array(
+                    'status'=> true,
+                    'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
+                    'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
+                );
+    
+            } catch (\Throwable $th) {
+    
+                $response = array(
+                    'status'=> false,
+                    'message'=> $th->getMessage(),
+                  );
+            }
+    
+            return response()->json(['data' => $response]); 
+        }
+    
+        public function videojs_live_wishlist(Request $request)
+        {
+            try {
+                
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    
+                $inputs = [
+                    'live_id' => $request->live_id,
+                    'type' => 'live',
+                    'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                    'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                ];
+    
+                $wishlist_exist = Wishlist::where('live_id', $request->live_id)->where('type', 'live')
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+            
+                !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
+    
+                $response = array(
+                    'status'=> true,
+                    'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                    'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+                );
+    
+            } catch (\Throwable $th) {
+    
+                $response = array(
+                    'status'=> false,
+                    'message'=> $th->getMessage(),
+                  );
+            }
+    
+            return response()->json(['data' => $response]); 
+        }
+    
+        public function videojs_live_Like(Request $request)
+        {
+            try {
+                
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    
+                $inputs = [
+                    'live_id' => $request->live_id,
+                    'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                    'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                    'disliked'   => 0 ,
+                ];
+    
+                $check_Like_exist = LikeDislike::where('live_id', $request->live_id)->where('liked',1)
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+                $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
+    
+                
+                $Like_exist = LikeDislike::where('live_id', $request->live_id)
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+                !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+    
+                $response = array(
+                    'status'=> true,
+                    'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
+                    'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
+                );
+    
+            } catch (\Throwable $th) {
+    
+                $response = array(
+                    'status'=> false,
+                    'message'=> $th->getMessage(),
+                  );
+            }
+    
+            return response()->json(['data' => $response]); 
+        }
+    
+        public function videojs_live_disLike(Request $request)
+        {
+            try {
+                
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    
+                $inputs = [
+                    'live_id' => $request->live_id,
+                    'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                    'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                    'liked'      => 0 ,
+                ];
+    
+                $check_dislike_exist = LikeDislike::where('live_id', $request->live_id)->where('disliked',1)
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+                $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
+    
+    
+                $dislike_exists = LikeDislike::where('live_id', $request->live_id)
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+    
+            
+                !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+    
+                $response = array(
+                    'status'=> true,
+                    'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
+                    'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
+                );
+    
+            } catch (\Throwable $th) {
+    
+                $response = array(
+                    'status'=> false,
+                    'message'=> $th->getMessage(),
+                  );
+            }
+    
+            return response()->json(['data' => $response]); 
+        }
 
         public function channelVideos($cid)
         {

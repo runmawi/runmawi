@@ -84,6 +84,15 @@
                             </div>
                         </a>
 
+                        @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                            <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                </div>
+                            </a>
+                        @endif
+
                          {{-- subscriber & PPV  --}}
 
                         @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
@@ -105,19 +114,34 @@
                     <button class="staticback-btn" onclick="history.back()" title="Back Button">
                         <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
                     </button>
+
                     <div class="col-2"></div>
+
                     <div class="col-lg-3 col-6 mt-5">
                         <img class="posterImg w-100"  src="{{ $videodetail->image_url }}" >
                     </div>
+
                     <div class="col-lg-6 col-6 mt-5">
+
                         <h2 class="title">{{ optional($videodetail)->title }} </h2><br>
+
                         <h5 class="title"> {{ $videodetail->users_video_visibility_status_message }}</h5><br>
+
                         <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                             <div class="playbtn" style="gap:5px">
                                 {!! $play_btn_svg !!}
                                 <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                             </div>
                         </a>
+
+                        @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                            <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                </div>
+                            </a>
+                        @endif
 
                             {{-- subscriber & PPV  --}}
 
