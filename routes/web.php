@@ -2371,6 +2371,12 @@ Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.
 
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
 
+Route::post('videojs_live_watchlater', 'LiveStreamController@videojs_live_watchlater')->name('videojs.live.watchlater');
+
+Route::post('videojs_live_Like', 'LiveStreamController@videojs_live_Like')->name('videojs.live.like');
+
+Route::post('videojs_live_dislike', 'LiveStreamController@videojs_live_disLike')->name('videojs.live.dislike');
+
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
 Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
