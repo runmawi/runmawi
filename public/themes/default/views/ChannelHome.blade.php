@@ -241,7 +241,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/default/views/partials/home/latest-videos.php');  ?>
+                    <?php include public_path('themes/default/views/partials/home/latest-videos.blade.php');  ?>
                 </div>
             </div>
         </div>
@@ -257,7 +257,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/live-videos.php');
+                    include public_path('themes/default/views/partials/home/live-videos.blade.php');
                     ?>
                 </div>
             </div>
@@ -275,7 +275,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/latest-series.php');
+                    include public_path('themes/default/views/partials/home/latest-series.blade.php');
                     ?>
                 </div>
             </div>
@@ -293,7 +293,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/latest-audios.php');
+                    include public_path('themes/default/views/partials/home/latest-audios.blade.php');
                     ?>
                 </div>
             </div>
