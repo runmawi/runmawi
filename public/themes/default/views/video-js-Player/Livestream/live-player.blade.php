@@ -139,6 +139,10 @@
                         </div>
                     </a>
 
+                    {{-- <li>
+                        <a data-toggle="modal" data-target="#exampleModalCenter" href="{{ url('/login') }}" class="view-count btn btn-primary rent-video"> {{ __('Rent') }}</a>
+                    </li> --}}
+
                         {{-- subscriber & PPV  --}}
 
                     @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
