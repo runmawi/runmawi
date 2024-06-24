@@ -25,9 +25,9 @@
         }
 
         $data = $data->latest()->limit(15)->get()->map(function ($item) {
-            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  $default_vertical_image_url ;
-            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  $default_horizontal_image_url ;
-            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  $default_horizontal_image_url ;
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  @$default_vertical_image_url ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  @$default_horizontal_image_url ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  @$default_horizontal_image_url ;
             $item['source_type']        = "Videos" ;
             return $item;
         });
