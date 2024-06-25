@@ -76,6 +76,9 @@ class TvshowsController extends Controller
         $this->countryName = $countryName;
 
         $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($this->Theme);
     }
 
     /**
@@ -90,7 +93,6 @@ class TvshowsController extends Controller
 
         $settings = Setting::first();
 
-        $genre = Genre::all();
         $trending_episodes_count = Episode::where('active', '=', '1')
             ->where('status', '=', '1')
             ->where('views', '>', '5')
@@ -106,53 +108,7 @@ class TvshowsController extends Controller
             $trending_episodes = [];
         }
 
-        $featured_episodes_count = Episode::where('active', '=', '1')
-            ->where('featured', '=', '1')
-            ->orderBy('views', 'DESC')
-            ->count();
-
-        if ($featured_episodes_count > 0) {
-            $featured_episodes = Episode::where('active', '=', '1')
-                ->where('featured', '=', '1')
-                ->where('status', '=', '1')
-                ->orderBy('views', 'DESC')
-                ->get();
-        } else {
-            $featured_episodes = [];
-        }
-
-        $latest_series_count = Series::where('active', '=', '1')
-            ->orderBy('created_at', 'DESC')
-            ->count();
-        if ($latest_series_count > 0) {
-            $latest_series = Series::where('active', '=', '1')
-                ->take(30)
-                ->orderBy('created_at', 'DESC')
-                ->get();
-        } else {
-            $latest_series = [];
-        }
-        $latest_episodes_count = Episode::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->orderBy('id', 'DESC')
-            ->count();
-        if ($latest_episodes_count > 0) {
-            $latest_episodes = Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->take(30)
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
-            $latest_episodes = [];
-        }
-        // $featured_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->count();
-        // if ($featured_episodes_count > 0) {
-        //     $featured_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
-        // } else {
-        //         $featured_episodes = [];
-        // }
-
-        // Free content videos
+       
         $free_series_count = Series::where('active', '=', '1')
             ->orderBy('created_at', 'DESC')
             ->count();
@@ -197,16 +153,12 @@ class TvshowsController extends Controller
         
         $pages = Page::all();
         $data = [
-            'episodes' => Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->orderBy('id', 'DESC')
-                ->simplePaginate(120000),
+            'episodes' =>(new FrontEndQueryController)->latest_episodes() ,
             'trendings' => $trending_episodes,
-            'latest_episodes' => $latest_episodes,
-            'featured_episodes' => $featured_episodes,
-            'latest_series' => $latest_series,
+            'latest_episodes' => (new FrontEndQueryController)->latest_episodes() ,
+            'featured_episodes' => (new FrontEndQueryController)->featured_episodes(),
+            'latest_series' =>  (new FrontEndQueryController)->latest_Series(),
             'current_page' => 1,
-            'genres' => $genre,
             'pagination_url' => '/series',
             'settings' => $settings,
             'pages' => $pages,
@@ -214,15 +166,12 @@ class TvshowsController extends Controller
             'free_episodes' => $free_episodes,
             'currency' => $currency,
             'free_Contents' => $free_Contents,
-            'banner' => Episode::where('active', '1')
-                ->where('status', '1')
-                ->where('banner', '1')
-                ->orderBy('id', 'DESC')
-                ->simplePaginate(120000),
+            'current_theme'  => $this->Theme,
+            'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
+            'banner' => (new FrontEndQueryController)->Episode_sliders() ,
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
 
         ];
-
 
         return Theme::view('tv-home', $data);
     }
