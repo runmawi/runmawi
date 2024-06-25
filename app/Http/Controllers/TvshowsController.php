@@ -76,6 +76,9 @@ class TvshowsController extends Controller
         $this->countryName = $countryName;
 
         $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($this->Theme);
     }
 
     /**
@@ -87,6 +90,7 @@ class TvshowsController extends Controller
     {
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
+
 
         $settings = Setting::first();
 
@@ -214,6 +218,7 @@ class TvshowsController extends Controller
             'free_episodes' => $free_episodes,
             'currency' => $currency,
             'free_Contents' => $free_Contents,
+            'current_theme'  => $this->Theme,
             'banner' => Episode::where('active', '1')
                 ->where('status', '1')
                 ->where('banner', '1')
@@ -222,7 +227,6 @@ class TvshowsController extends Controller
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
 
         ];
-
 
         return Theme::view('tv-home', $data);
     }
