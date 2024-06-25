@@ -16,14 +16,14 @@
 {{-- video-js Script --}}
 
     <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ads.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ima.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
     <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
