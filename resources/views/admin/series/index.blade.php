@@ -39,7 +39,7 @@
     }
 
 	body.dark input{color: <?php echo GetAdminDarkText(); ?>;}
-	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>;}
+	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>!important;}
 	body.light input{color: <?php echo GetAdminLightText(); ?>;}
 
 </style>
