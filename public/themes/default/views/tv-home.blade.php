@@ -9,6 +9,8 @@
     @endif
 
     @php
+    $homepage_array_data = [  'settings' => $settings,];
+
     $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
     $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
     $order_settings_list = App\OrderHomeSetting::get();  
@@ -28,7 +30,11 @@
 
    <section id="home" class="iq-main-slider p-0">
         <div id="home-slider" class="slider m-0 p-0">
-            
+            {{-- @if($slider_choosen == 2)
+                {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-2', $Slider_array_data )->content() !!}
+            @else
+                {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-1', $Slider_array_data )->content() !!}
+            @endif --}}
         </div>
       
       <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -47,7 +53,8 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    @php include(public_path('themes/default/views/partials/home/latest-series.blade.php')) @endphp
+                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+
                 </div>
             </div>
         </div>
@@ -89,7 +96,7 @@
                 <div class="container-fluid overflow-hidden">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            @php include(public_path('themes/default/views/partials/home/SeriesGenre.blade.php')) @endphp
+                            @php //include(public_path('themes/default/views/partials/home/SeriesGenre.blade.php')) @endphp
                         </div>
                     </div>
                 </div>
