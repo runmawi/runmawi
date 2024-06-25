@@ -1758,7 +1758,7 @@ class HomeController extends Controller
                     'latest_video'      => (new FrontEndQueryController)->Latest_videos(),
                     'latest_videos'     => (new FrontEndQueryController)->Latest_videos(),
                     'sliders'           => (new FrontEndQueryController)->sliders(),
-                    'video_banners'     => (new FrontEndQueryController)->video_banner(),
+                    'video_banners'     => (new FrontEndQueryController)->video_banners(),
                     'live_banner'       => (new FrontEndQueryController)->live_banners(),
                     'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
                     'sliders'           => (new FrontEndQueryController)->latest_Series(),
@@ -1791,7 +1791,6 @@ class HomeController extends Controller
                     'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
                     'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
                     'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                   
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File; 
 use Illuminate\Support\Facades\Auth;
 use App\AdminAdvertistmentBanners;
+use App\LiveEventArtist;
 use App\HomeSetting;
 use App\VideoCategory;
 use App\AudioAlbums;
@@ -25,6 +26,7 @@ use App\Series;
 use App\Artist;
 use App\Audio;
 use App\TimeZone;
+use App\Slider;
 use Carbon\Carbon;
 use Theme;
 
@@ -367,7 +369,7 @@ class FrontEndQueryController extends Controller
  
     public function video_banners()
     {
-        $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
+        $video_banner = Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
     
         if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
             $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
