@@ -8,8 +8,6 @@
         var player = videojs('live-stream-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
-            autoplay: true,
-            muted: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
             controlBar: {
@@ -23,7 +21,7 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},                      
+                    'fullscreenToggle': {},      
                 },
                 pictureInPictureToggle: true,
             }

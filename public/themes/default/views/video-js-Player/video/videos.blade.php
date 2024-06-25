@@ -11,6 +11,7 @@
     <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
     <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+    <!-- <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet"> -->
 
 {{-- video-js Script --}}
 
@@ -25,6 +26,7 @@
     <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+    <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
 
     <div class="container-fluid p-0">
 
@@ -50,8 +52,9 @@
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                 </button>  
 
-                <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls  
-                    preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
+                <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                    width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
+                    autoplay>
                     <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
 
                                     {{-- Subtitle --}}
@@ -176,7 +179,7 @@
 <style>
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
-    .staticback-btn{display:none;}
-    .container-fluid:hover .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size: 25px; }
+    /* .staticback-btn{display:none;} */
+    .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .custom-skip-backward-button .custom-skip-forward-button{font-size: 45px;color: white;}
 </style>
