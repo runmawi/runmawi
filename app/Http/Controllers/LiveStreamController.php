@@ -433,7 +433,7 @@ class LiveStreamController extends Controller
                           
                           if ($item->access == "ppv") {
   
-                              $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+                              $item['users_video_visibility_redirect_url'] =  'live-purchase-now-button' ;
   
                           } elseif( Auth::user()->role == 'registered') {
   
@@ -616,7 +616,7 @@ class LiveStreamController extends Controller
           // }
         } catch (\Throwable $th) {
 
-          // return $th->getMessage();
+        //   return $th->getMessage();
             return abort(404);
         }
         }

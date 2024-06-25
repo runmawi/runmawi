@@ -132,7 +132,7 @@
                     <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br>
                     <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
 
-                    <a class="btn" href="{{ $Livestream_details->users_video_visibility_redirect_url }}">
+                    <a class="btn" id="{{ $Livestream_details->users_video_visibility_redirect_url }}" href="{{ $Livestream_details->users_video_visibility_redirect_url != 'live-purchase-now-button' ? $Livestream_details->users_video_visibility_redirect_url : '#' }}">
                         <div class="playbtn" style="gap:5px">
                             {!! $play_btn_svg !!}
                             <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
