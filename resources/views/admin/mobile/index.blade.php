@@ -101,84 +101,87 @@ p.welcome_p {
      <div class="iq-card">
 	<!-- This is where -->
 	@if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
+		<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+	@endif
+
+	@if(count($errors) > 0)
+		@foreach( $errors->all() as $message )
+			<div class="alert alert-danger display-hide" id="successMessage" >
+				<button id="successMessage" class="close" data-close="alert"></button>
+				<span>{{ $message }}</span>
+			</div>
+		@endforeach
+	@endif
+
 	<div class="clear"></div>
 
 	<div class="admin-section-title">
-		<h4><i class="entypo-globe"></i>  Mobile Settings</h4> 
-        <hr>
+		<h4><i class="entypo-globe"></i>  Mobile Settings</h4><hr>
 	</div>
 
 	<div class="d-flex" id="wrapper">
-	<div class="border-end bg-white" id="sidebar-wrapper">
-		<div class="tab">
-			<button class="tablinks" onclick="screen(event, 'Splash')" id="defaultOpen">Splash Screen</button>
-			<button class="tablinks" onclick="screen(event, 'Welcome')">Welcome Screen</button>
+		<div class="border-end bg-white" id="sidebar-wrapper">
+			<div class="tab">
+				<button class="tablinks" onclick="screen(event, 'Splash')" id="defaultOpen">Splash Screen</button>
+				<button class="tablinks" onclick="screen(event, 'Welcome')">Welcome Screen</button>
+				<button class="tablinks" onclick="screen(event, 'device_version')">Device Version</button>
+			</div>
+		</div>
+
+					{{-- Splash screen --}}
+		<div class="col-md-12 mob_screens" id="Splash" >
+			<div class="row">
+				<div class="col-md-8">
+					<label for="" align="left"  style="font-weight: 600;">Splash Screen</label>
+				</div>
+				<div class="col-md-4">
+					<a href="javascript:;" onclick="jQuery('#splash-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+				</div>
+			</div>
+		
+			<div class="sign-in-from" >
+			<div class="row data">
+								{{-- Splash Screen --}}
+
+					@forelse ($mobile_settings as $key => $splash)
+						<div class="splash_image" style="padding: 20px;">
+							<div class="">
+								<img src="{{ URL::to('/') . '/public/uploads/settings/' . $splash->splash_image }}" style="max-height:100px" />
+							</div>
+
+							<span> {{ 'IOS' }} {{ $key + 1 }}  </span>
+
+							<div class="action" align="right">
+								<a href="{{ route('Splash_edit', ['id' => $splash->id ,'source'=>'ios' ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+								<a href="{{ route('Splash_destroy', ['id' => $splash->id ,'source'=>'ios' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					@empty  
+							<p> No Splash Screen Available </p>
+					@endforelse
+
+								{{-- Andriod Splash Screen --}}
+
+					@forelse ($mobile_settings as $key => $andriod_splash)
+						<div class="splash_image" style="padding: 20px;">
+							<div class="">
+								<img src="{{ URL::to('/') . '/public/uploads/settings/' . $andriod_splash->andriod_splash_image }}" style="max-height:100px" />
+							</div>
+
+							<span> {{ 'Andriod'  }}  {{ $key + 1 }} </span>
+
+							<div class="action" align="right">
+								<a href="{{ route('Splash_edit', ['id' => $andriod_splash->id , 'source'=>'andriod']) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+								<a href="{{ route('Splash_destroy', ['id' => $andriod_splash->id ,'source'=>'andriod' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					@empty  
+					@endforelse
+			</div>
 		</div>
 	</div>
 
-	<div class="col-md-12 mob_screens" id="Splash" >
-		<div class="row">
-			<div class="col-md-8">
-				<label for="" align="left"  style="font-weight: 600;">Splash Screen</label>
-			</div>
-			<div class="col-md-4">
-				<a href="javascript:;" onclick="jQuery('#splash-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
-			</div>
-		</div>
-	
-		<div class="sign-in-from" >
-		<div class="row data">
-							{{-- Splash Screen --}}
-
-				@forelse ($mobile_settings as $key => $splash)
-					<div class="splash_image" style="padding: 20px;">
-						<div class="">
-							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $splash->splash_image }}" style="max-height:100px" />
-						</div>
-
-						<span> {{ 'IOS' }} {{ $key + 1 }}  </span>
-
-						<div class="action" align="right">
-							<a href="{{ route('Splash_edit', ['id' => $splash->id ,'source'=>'ios' ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
-							<a href="{{ route('Splash_destroy', ['id' => $splash->id ,'source'=>'ios' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-						</div>
-					</div>
-				@empty  
-						<p> No Splash Screen Available </p>
-				@endforelse
-
-							{{-- Andriod Splash Screen --}}
-
-				@forelse ($mobile_settings as $key => $andriod_splash)
-					<div class="splash_image" style="padding: 20px;">
-						<div class="">
-							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $andriod_splash->andriod_splash_image }}" style="max-height:100px" />
-						</div>
-
-						<span> {{ 'Andriod'  }}  {{ $key + 1 }} </span>
-
-						<div class="action" align="right">
-							<a href="{{ route('Splash_edit', ['id' => $andriod_splash->id , 'source'=>'andriod']) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
-							<a href="{{ route('Splash_destroy', ['id' => $andriod_splash->id ,'source'=>'andriod' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-						</div>
-					</div>
-				@empty  
-				@endforelse
-		</div>
-	</div>
-</div>
-
-{{-- Welcome screen --}}
+				{{-- Welcome screen --}}
 
 	<div id="Welcome" class="col-md-12 mob_screens">
 		<div class="row">
@@ -209,7 +212,23 @@ p.welcome_p {
 			</div>
 		</div>
 	</div>
-{{--End Welcome screen --}}
+
+			{{-- Device Version --}}
+
+	<div id="device_version" class="col-md-12 mob_screens">
+		<div class="row">
+			<div class="col-md-8">
+				<label for="" align="left" style="font-weight: 600;">{{ __('Device version') }}</label>
+			</div>
+		</div>
+
+		<form action="{{route('mobile_app.device_version')}}" method="get">
+			<div class="col-md-4">
+				<input type="text" class="form-control" name="ios_device_version" value="{{ !empty($mobile_settings[0]) && !is_null($mobile_settings[0]->ios_device_version) ? $mobile_settings[0]->ios_device_version : null }}" placeholder="IOS Device Version"><br>
+				<button type="submit" class="btn btn-primary" >Update</button>  
+			</div>
+		</form>
+	</div>
 </div>
 
 
