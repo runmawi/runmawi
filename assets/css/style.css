@@ -112,11 +112,11 @@ h1{font-weight:500}
 .favorites-slider .slick-list,#top-ten-slider-nav .slick-list{overflow:visible}
 .favorites-slider li.slide-item{float:left;width:25%}
 .favorites-slider .slick-list{overflow:visible}
-li.slide-item{position:relative;padding:10px 5px}
+li.slide-item, div.slide-item{position:relative;padding:10px 5px}
 li.slide-item .block-images{position:relative;transition:all .45s ease 0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);transition:all .6s ease 0;-webkit-transition:all .6s ease 0;-moz-transition:all .6s ease 0;-o-transition:all .6s ease 0;border-radius:10px}
 li.slide-item:hover .block-images{overflow:visible}
 li.slide-item:hover .block-images .img-box{position:relative}
-li.slide-item:hover .block-images{z-index:99;transform:scale3d(1.1,1.1,1.1) translate3d(0,0,0) perspective(500px);transform-origin:50% 50%;transition:all .6s ease 0;-webkit-transition:all .6s ease 0;-moz-transition:all .6s ease 0;-o-transition:all .6s ease 0;box-shadow:0 0 12px rgba(0,0,0,0.9);border-radius:10px}
+li.slide-item:hover .block-images,div.slide-item:hover .block-images{z-index:99;transform:scale3d(1.1,1.1,1.1) translate3d(0,0,0) perspective(500px);transform-origin:50% 50%;transition:all .6s ease 0;-webkit-transition:all .6s ease 0;-moz-transition:all .6s ease 0;-o-transition:all .6s ease 0;box-shadow:0 0 12px rgba(0,0,0,0.9);border-radius:10px}
 .music-play-lists li{height:30px;width:30px;line-height:35px;text-align:center;border-radius:50%;display:flex;justify-content:space-around;-webkit-display:flex;-moz-display:flex;-o-display:flex;align-items:center;list-style:none}
 .music-play-lists span{position:relative;display:block;height:20px;width:20px;line-height:26px;font-size:12px;text-align:center;color:#fff;border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;-o-border-radius:3px;margin:0 auto;display:flex;-webkit-display:flex;-moz-display:flex;-o-display:flex;align-items:center;justify-content:center;transition:all .45s ease 0;-webkit-transition:all .45s ease 0;-moz-transition:all .45s ease 0;-o-transition:all .45s ease 0;cursor:pointer}
 .music-play-lists li:hover span{background:#ffffff17;color:var(--iq-white);transition:all .45s ease 0;-webkit-transition:all .45s ease 0;-moz-transition:all .45s ease 0;-o-transition:all .45s ease 0}
@@ -127,7 +127,7 @@ li.slide-item:hover .block-images{z-index:99;transform:scale3d(1.1,1.1,1.1) tran
 body.light-theme .block-description p,body.light-theme .block-description p.epi-name{color:#000}
 .block-description [class^="ri-"],.block-description [class*=" ri-"]{font-size:25px;color:#fff;background:#0000003d;border-radius:30px;padding:8px}
 li.slide-item:hover .block-images::before{opacity:1;z-index:9}
-li.slide-item:hover .block-description{animation:fadeIn .6s ease-in-out;opacity:1}
+li.slide-item:hover .block-description,div.slide-item:hover .block-description{animation:fadeIn .6s ease-in-out;opacity:1}
 li.slide-item:hover .block-social-info{animation:fadeIn .6s ease-in-out;opacity:1}
 .block-description .playTrailer{width:100%;height:15vh;display:block;padding:10px}
 .block-description .playTrailer img{object-fit:contain;height:100%;border-radius:0}

@@ -21,7 +21,7 @@
                   </div>
 
                   <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline row p-0 mb-0">
+                      <div class="favorites-slider list-inline row p-0 mb-0">
                           @if(isset($data))
                               @php
                                   $id = !Auth::guest() && !empty($data['password_hash']) ? Auth::user()->id : 0;
@@ -44,7 +44,7 @@
                                           $publish_time = '';
                                       }
                                   @endphp
-                                  <li class="slide-item">
+                                  <div class="slide-item">
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
@@ -156,10 +156,10 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </li>
+                                  </div>
                               @endforeach
                           @endif
-                      </ul>
+                      </div>
                   </div>
 
                 </div>

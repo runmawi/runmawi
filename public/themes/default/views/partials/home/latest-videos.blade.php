@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="favorites-slider list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $watchlater_video)
                                     @php
@@ -55,7 +55,7 @@
                                         }
                                     @endphp
 
-                                    <li class="slide-item">
+                                    <div class="slide-item">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
@@ -170,10 +170,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
                             @endif
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
