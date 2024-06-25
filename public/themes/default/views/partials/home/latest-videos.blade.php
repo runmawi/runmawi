@@ -60,7 +60,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                        <img class="img-fluid w-100" loading="lazy" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                        <img class="img-fluid w-100 lazyload"  src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -80,7 +80,7 @@
                                             </div>
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                    <img class="img-fluid w-100 lazyload" src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @if($watchlater_video->access == 'subscriber')
