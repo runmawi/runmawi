@@ -1091,6 +1091,25 @@ class AdminUsersController extends Controller
         
     }
 
+    public function device_version(Request $request)
+    {
+        $MobileApp = MobileApp::get();
+
+        if(count($MobileApp) > 0){
+            foreach($MobileApp as $MobileApp_devices){
+                MobileApp::where('id',$MobileApp_devices->id)->update([
+                   'ios_device_version' => $request->ios_device_version,
+               ]);
+           }
+        }else{
+            MobileApp::create([
+                'ios_device_version' => $request->ios_device_version,
+            ]);
+        }
+
+        return redirect()->route('admin.mobileapp');
+    }
+
     public function logout(Request $request)
     {
         if (Auth::guest())

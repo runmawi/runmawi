@@ -70,8 +70,9 @@
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </button>
 
-                <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-live-control vjs-control vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                    preload="auto" width="auto" height="auto" playsinline="playsinline" preload="yes" poster="{{ $Livestream_details->Player_thumbnail }}">
+                <video id="live-stream-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                    width="auto" height="auto" poster="{{ $Livestream_details->Player_thumbnail }}" playsinline="playsinline"
+                    autoplay>
                     <source src="{{ $Livestream_details->livestream_URL }}" type="{{ $Livestream_details->livestream_player_type }}">
                 </video>
             @endif  

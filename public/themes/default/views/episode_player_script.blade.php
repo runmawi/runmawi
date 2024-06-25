@@ -180,4 +180,8 @@
         z-index: 30;
         margin-left: -3px;
     }
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
+    }
 </style>
