@@ -743,7 +743,7 @@ border-radius: 0px 4px 4px 0px;
                                         <div class="mt-1">
                                             <label class="switch">
                                                 <input type="checkbox"  {{ !is_null($settings->homepage_views_all_button_status) && $settings->homepage_views_all_button_status == 1 ? 'checked' : null }} value="{{ $settings->homepage_views_all_button_status }}"
-                                                name="homepage_views_status" />
+                                                name="homepage_views_all_button_status" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>

@@ -264,18 +264,22 @@
    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
+   
    <!-- Bootstrap CSS -->
      <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
      <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
-   <!-- Typography CSS  -->
-   <link rel="preload" href="<?= typography_link();?>" />
+   
+     <!-- Typography CSS  -->
+   <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
+   
    <!-- Style -->
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
 
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+   
    <!-- Responsive -->
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
@@ -286,8 +290,10 @@
 
    <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" />
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
+  
+   <!-- lazyload script -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
    <?php 
       if(count($Script) > 0){
       foreach($Script as $Scriptheader){   ?>

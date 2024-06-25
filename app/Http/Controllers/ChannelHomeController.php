@@ -63,19 +63,19 @@ use App\ModeratorsUser;
 use App\StorageSetting;
 use App\LiveStream;
 use App\AudioCategory;
-
+use App\OrderHomeSetting;
+use App\CompressImage;
 
 class ChannelHomeController extends Controller
 {
 
     public function __construct()
     {
-        //$this->middleware('auth');
-        $settings = Setting::first();
-        $this->videos_per_page = $settings->videos_per_page;
+        $this->settings = Setting::first();
 
-        $this->Theme = HomeSetting::pluck('theme_choosen')
-            ->first();
+        $this->videos_per_page = $this->settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
     }
     
@@ -118,8 +118,15 @@ class ChannelHomeController extends Controller
                 'SeriesGenre' => SeriesGenre::get(),
                 'AudioCategory' => AudioCategory::get(),
                 'channel_partner' => $channel,
+                'order_settings_list' => OrderHomeSetting::get(),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                'videos_expiry_date_status' => videos_expiry_date_status(),
+                'getfeching' => Geofencing::first(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+                'default_horizontal_image_url' => default_horizontal_image_url(),
+                'settings' => $this->settings ,
             );
-            
+
             return Theme::view('ChannelHome', $data);
         }
     }

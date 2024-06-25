@@ -3748,7 +3748,7 @@ public function verifyandupdatepassword(Request $request)
 
   public function splash(){
 
-        $mobile_settings = MobileApp::get('splash_image')->map(function ($item) {
+        $mobile_settings = MobileApp::get()->map(function ($item) {
           $item['splash_url'] = URL::to('/').'/public/uploads/settings/'.$item->splash_image;
           return $item;
       });

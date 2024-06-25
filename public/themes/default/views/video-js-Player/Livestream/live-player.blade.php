@@ -70,8 +70,9 @@
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </button>
 
-                <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-live-control vjs-control vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                    preload="auto" width="auto" height="auto" playsinline="playsinline" preload="yes" poster="{{ $Livestream_details->Player_thumbnail }}">
+                <video id="live-stream-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                    width="auto" height="auto" poster="{{ $Livestream_details->Player_thumbnail }}" playsinline="playsinline"
+                    autoplay>
                     <source src="{{ $Livestream_details->livestream_URL }}" type="{{ $Livestream_details->livestream_player_type }}">
                 </video>
             @endif  
@@ -132,7 +133,7 @@
                     <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br>
                     <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
 
-                    <a class="btn" href="{{ $Livestream_details->users_video_visibility_redirect_url }}">
+                    <a class="btn" id="{{ $Livestream_details->users_video_visibility_redirect_url }}" href="{{ $Livestream_details->users_video_visibility_redirect_url != 'live-purchase-now-button' ? $Livestream_details->users_video_visibility_redirect_url : '#' }}">
                         <div class="playbtn" style="gap:5px">
                             {!! $play_btn_svg !!}
                             <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>

@@ -186,10 +186,6 @@
        background: #FF0000;
     }
 
-    .modal-content{
-        background:transparent;
-    }
-
      .vjs-icon-hd:before{
         display:none;
     }
@@ -263,9 +259,12 @@
     </div>
 @endif
 
+               {{-- Message Note --}}
+<div id="message-note" ></div>
+
 <div id="video_bg">
                         {{-- Player --}}
-    {!! Theme::uses('default')->load('public/themes/default/views/video-js-Player.Livestream.live-player', [ 'Livestream_details' => $Livestream_details , 'play_btn_svg' => $play_btn_svg])->content() !!}
+    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
 
     <div class="container-fluid video-details">
         <div class="row">
@@ -330,38 +329,13 @@
         <div class="row">
             <div class="col-sm-6 col-md-6 col-xs-12">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    <?php include public_path('themes/default/views/partials/live-social-share.php'); ?>
+                    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-socail-share", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
                 </ul>
             </div>
         </div>
     </div>
 
-        {{-- For Guest - subscriber , PPV button --}}
-    @if (Auth::guest())
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-xs-12">
-                <ul class="list-inline p-0 mt-4 rental-lists">
-                    <!-- Subscribe -->
-                    @if ($video->access == 'subscriber')
-                        <li>
-                            <a href="{{ url('/login') }}">
-                                <span class="view-count btn btn-primary subsc-video">{{ __('Subscribe') }}</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    <!-- PPV button -->
-                    @if ($video->access != 'guest')
-                        <li>
-                            <a data-toggle="modal" data-target="#exampleModalCenter" href="{{ url('/login') }}" class="view-count btn btn-primary rent-video"> {{ __('Rent') }}</a>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-        </div>
-    @endif
-
-        {{-- Description --}}
+            {{-- Description --}}
     <div class="container-fluid">
         <div class="text-white col-md-6 p-0">
             <p class="trending-dec w-100 mb-0 text-white"> {!! html_entity_decode(__($video->description)) !!}</p>
@@ -369,7 +343,7 @@
         </div>
     </div>
 
-    <!-- CommentSection -->
+            {{-- CommentSection  --}}
 
     @if (App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1)
         <div class="row">
@@ -380,6 +354,7 @@
         </div>
     @endif
 
+            {{-- Related Videos --}}
     <div class="row">
         <div class="container-fluid video-list you-may-like overflow-hidden">
             <h4 style="color:#fffff;">{{ __('Related Videos') }}</h4>
@@ -389,483 +364,336 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            {{-- Rent Modal  --}}
+    @if ( $Livestream_details->access == "ppv" && !is_null($Livestream_details->ppv_price) )
+        <div class="modal fade" id="live-purchase-now-modal" tabindex="-1" role="dialog"aria-labelledby="live-purchase-now-modal-Title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
 
-                <div class="modal-header">
-                    <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">
-                        {{ __('Rent Now') }}
-                    </h4>
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">
+                            {{ __('Purchase Now') }}
+                        </h4>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row justify-content-between">
-                        <div class="col-sm-4 p-0" style="">
-                            <img class="img__img w-100" src="{{ url('/public/uploads/images/' . $video->image) }}" class="img-fluid" alt="">
-                        </div>
-
-                        <div class="col-sm-8">
-                            <h4 class=" text-black movie mb-3">
-                                {{ __($video->title) }},
-                                <span class="trending-year mt-2">
-                                    @if ($video->year == 0)
-                                        {{ '' }}
-                                    @else
-                                        {{ $video->year }}
-                                    @endif
-                                </span>
-                            </h4>
-
-                            <span class="badge badge-secondary  mb-2">{{ __($video->age_restrict) . ' ' . '+' }}</span>
-                            <span class="badge badge-secondary  mb-2 ml-1">{{ __($video->duration) }}</span><br>
-
-                            <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;">{{ __('Amount') }}:
-                                <span class="pl-2" style="font-size:20px;font-weight:700;"> {{ __($currency->symbol . ' ' . $video->ppv_price) }}</span>
-                            </a><br>
-
-                            <label class="mb-0 mt-3 p-0" for="method">
-                                <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
-                            </label>
-
-                            <!-- Stripe Button -->
-                            @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
-                                    {{ $stripe_payment_setting->payment_type }}
-                                </label>
-                            @endif
-{{-- 
-                            <!-- Razorpay Button -->
-                            @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
-                                    {{ $Razorpay_payment_setting->payment_type }}
-                                </label>
-                            @endif
-
-                            <!-- Paystack Button -->
-                            @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" name="payment_method" value="{{ $Paystack_payment_setting->payment_type }}" data-value="Paystack">
-                                    {{ $Paystack_payment_setting->payment_type }}
-                                </label>
-                            @endif
-
-                            <!-- CinetPay Button -->
-                            @if ( $CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay' && $CinetPay_payment_settings->status == 1)
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" name="payment_method" value="{{ $CinetPay_payment_settings->payment_type }}" data-value="CinetPay">
-                                    {{ $CinetPay_payment_settings->payment_type }}
-                                </label>
-                            @endif --}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-
-                    <div class="Stripe_button"> <!-- Stripe Button -->
-                        <button class="btn2  btn-outline-primary" onclick="pay({{ $video->ppv_price }})">
-                            {{ __('Continue') }}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-{{-- 
-                    <div class="Razorpay_button"> <!-- Razorpay Button -->
-                        @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                            <button class="btn2  btn-outline-primary "
-                                onclick="location.href ='{{ route('RazorpayLiveRent', ['id' => $video->id, 'amount' => $video->ppv_price]) }}' ;">
-                                {{ __('Continue') }}
-                            </button>
-                        @endif
+
+                    <div class="modal-body">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-4 p-0" style="">
+                                <img class="img__img w-100" src="{{ $Livestream_details->Thumbnail }}" class="img-fluid" alt="live-image">
+                            </div>
+
+                            <div class="col-sm-8">
+
+                                <h4 class=" text-black movie mb-3">{{ __(@$Livestream_details->title) }}</h4>
+                                <span class="badge badge-secondary  mb-2 ml-1">{{ $Livestream_details->duration != null ? gmdate('H:i:s', $Livestream_details->duration)  : null  }} </span><br>
+
+                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;">{{ __('Amount') }}:
+                                    <span class="pl-2" style="font-size:20px;font-weight:700;"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($Livestream_details->ppv_price) :  $currency->symbol .$Livestream_details->ppv_price }}</span>
+                                </a><br>
+
+                                <label class="mb-0 mt-3 p-0" for="method">
+                                    <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
+                                </label>
+
+                                <!-- Stripe Button -->
+                                @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                        {{ $stripe_payment_setting->payment_type }}
+                                    </label>
+                                @endif
+
+                                <!-- Razorpay Button -->
+                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                        {{ $Razorpay_payment_setting->payment_type }}
+                                    </label>
+                                @endif
+
+                                <!-- Paystack Button -->
+                                @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $Paystack_payment_setting->payment_type }}" data-value="Paystack">
+                                        {{ $Paystack_payment_setting->payment_type }}
+                                    </label>
+                                @endif
+
+                                <!-- CinetPay Button -->
+                                {{-- @if ( $CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay' && $CinetPay_payment_settings->status == 1)
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $CinetPay_payment_settings->payment_type }}" data-value="CinetPay">
+                                        {{ $CinetPay_payment_settings->payment_type }}
+                                    </label>
+                                @endif --}}
+                            </div>
+                        </div>
                     </div>
 
-                    @if ($video->ppv_price && $video->ppv_price != ' ')
-                        <div class="paystack_button"> <!-- Paystack Button -->
-                            @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
-                                <button class="btn2  btn-outline-primary"
-                                    onclick="location.href ='{{ route('Paystack_live_Rent', ['live_id' => $video->id, 'amount' => $video->ppv_price]) }}' ;">
+                    <div class="modal-footer">
+
+                        <div class="Stripe_button"> <!-- Stripe Button -->
+                            <button class="btn2  btn-outline-primary "
+                                onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}' ;">
+                                {{ __('Continue') }}
+                            </button>
+                        </div>
+
+                        <div class="Razorpay_button"> <!-- Razorpay Button -->
+                            @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                <button class="btn2  btn-outline-primary "
+                                    onclick="location.href ='{{ route('RazorpayLiveRent', [$Livestream_details->id, $Livestream_details->ppv_price]) }}' ;">
                                     {{ __('Continue') }}
                                 </button>
                             @endif
                         </div>
-                    @endif
 
-                    @if ($video->ppv_price && $video->ppv_price != ' ')
-                        <div class="cinetpay_button"> <!-- Cinetpay Button -->
+                        <div class="paystack_button"> <!-- Paystack Button -->
+                            @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                <button class="btn2  btn-outline-primary"
+                                    onclick="location.href ='{{ route('Paystack_live_Rent', ['live_id' => $Livestream_details->id, 'amount' => $Livestream_details->ppv_price]) }}' ;">
+                                    {{ __('Continue') }}
+                                </button>
+                            @endif
+                        </div>
+
+                        {{-- <div class="cinetpay_button"> <!-- Cinetpay Button -->
                             @if ($CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay')
                                 <button onclick="cinetpay_checkout()" id=""
                                     class="btn2  btn-outline-primary">{{ __('Continue') }}</button>
                             @endif
-                        </div>
-                    @endif --}}
+                        </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    @endif
+    
     <div class="clear"></div>
 </div>
 
-    <script>
-        $(".share").on("mouseover", function() {
-            $(".share a").show();
-        }).on("mouseout", function() {
-            $(".share a").hide();
+<script>
+    $(".share").on("mouseover", function() {
+        $(".share a").show();
+    }).on("mouseout", function() {
+        $(".share a").hide();
+    });
+</script>
+
+<!-- RESIZING FLUID VIDEO for VIDEO JS -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('a.block-thumbnail').click(function() {
+            var myPlayer = videojs('video_player');
+            var duration = myPlayer.currentTime();
+
+            $.post('<?= URL::to('watchhistory') ?>', {
+                video_id: '<?= $video->id ?>',
+                _token: '<?= csrf_token() ?>',
+                duration: duration
+            }, function(data) {});
         });
-    </script>
+    });
+</script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#video_container').fitVids();
-            $('.favorite').click(function() {
-                if ($(this).data('authenticated')) {
-                    $.post('<?= URL::to('favorite') ?>', {
-                        video_id: $(this).data('videoid'),
-                        _token: '<?= csrf_token() ?>'
-                    }, function(data) {});
-                    $(this).toggleClass('active');
-                } else {
-                    window.location = '<?= URL::to('login') ?>';
-                }
-            });
-            //watchlater
-            $('.watchlater').click(function() {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 
-                if ($(this).data('authenticated')) {
-                    $.post('<?= URL::to('ppvWatchlater') ?>', {
-                        video_id: $(this).data('videoid'),
-                        _token: '<?= csrf_token() ?>'
-                    }, function(data) {});
-                    $(this).toggleClass('active');
-                    $(this).html("");
-                    if ($(this).hasClass('active')) {
-                        $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
-                    } else {
-                        $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
-                    }
-                } else {
-                    window.location = '<?= URL::to('login') ?>';
-                }
-            });
+<script>
+    $(".slider").slick({
 
-            //My Wishlist
-            $('.mywishlist').click(function() {
-                if ($(this).data('authenticated')) {
-                    $.post('<?= URL::to('ppvWishlist') ?>', {
-                        video_id: $(this).data('videoid'),
-                        _token: '<?= csrf_token() ?>'
-                    }, function(data) {});
-                    $(this).toggleClass('active');
-                    $(this).html("");
-                    if ($(this).hasClass('active')) {
-                        $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
-                    } else {
-                        $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
-                    }
-
-                } else {
-                    window.location = '<?= URL::to('login') ?>';
-                }
-            });
-
-        });
-    </script>
-
-    <!-- RESIZING FLUID VIDEO for VIDEO JS -->
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('a.block-thumbnail').click(function() {
-                var myPlayer = videojs('video_player');
-                var duration = myPlayer.currentTime();
-
-                $.post('<?= URL::to('watchhistory') ?>', {
-                    video_id: '<?= $video->id ?>',
-                    _token: '<?= csrf_token() ?>',
-                    duration: duration
-                }, function(data) {});
-            });
-        });
-    </script>
-
-    <input type="hidden" id="purchase_url" name="purchase_url" value="<?php echo URL::to('/purchase-live'); ?>">
-    <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-
-    <script type="text/javascript">
-        var livepayment = $('#purchase_url').val();
-        var publishable_key = $('#publishable_key').val();
-
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-        });
-
-        function pay(amount) {
-            var video_id = $('#video_id').val();
-            var handler = StripeCheckout.configure({
-                key: publishable_key,
-                locale: 'auto',
-                token: function(token) {
-                    console.log('Token Created!!'); // You can access the token ID with `token.id`.
-                    console.log(token); // Get the token ID to your server-side code for use.
-                    $('#token_response').html(JSON.stringify(token));
-
-                    $.ajax({
-                        url: '<?php echo URL::to('purchase-live'); ?>',
-                        method: 'post',
-                        data: {
-                            "_token": "<?= csrf_token() ?>",
-                            tokenId: token.id,
-                            amount: amount,
-                            video_id: video_id
-                        },
-                        success: (response) => {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        },
-                        error: (error) => {
-                            swal('error');
-                            //swal("Oops! Something went wrong");
-                            /* setTimeout(function() {
-                            location.reload();
-                            }, 2000);*/
-                        }
-                    })
-
-                }
-            });
-
-            handler.open({
-                name: '<?php $settings = App\Setting::first();
-                echo $settings->website_name; ?>',
-                description: 'PAY PeR VIEW',
-                amount: amount * 100
-            });
-        }
-    </script>
-
-    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
-
-    <script>
-        $(".slider").slick({
-
-            // normal options...
-            infinite: false,
-
-            // the magic
-            responsive: [{
-
+        infinite: false,
+        responsive: [
+            {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
                     infinite: true
                 }
-
-            }, {
-
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    dots: true
-                }
-
-            }, {
-
-                breakpoint: 300,
-                settings: "unslick" // destroys slick
-
-            }]
-        });
-    </script>
+            },
+            {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                dots: true
+            }
+            }, 
+            {
+            breakpoint: 300,
+            settings: "unslick" // destroys slick
+        }]
+    });
+</script>
 
     <!-- PPV Purchase -->
 
-    <script type="text/javascript">
-        var ppv_exits = "<?php echo $ppv_exists; ?>";
+<script type="text/javascript">
+    // var ppv_exits = "<?php echo $ppv_exists; ?>";
 
-        if (ppv_exits == 1) {
+    // if (ppv_exits == 1) {
 
-            var i = setInterval(function() {
-                PPV_live_PurchaseUpdate();
-            }, 60 * 1000);
+    //     var i = setInterval(function() {
+    //         PPV_live_PurchaseUpdate();
+    //     }, 60 * 1000);
 
-            window.onload = unseen_expirydate_checking();
+    //     window.onload = unseen_expirydate_checking();
 
-            function PPV_live_PurchaseUpdate() {
+    //     function PPV_live_PurchaseUpdate() {
 
-                $.ajax({
-                    type: 'post',
-                    url: '<?= route('PPV_live_PurchaseUpdate') ?>',
-                    data: {
-                        "_token": "<?= csrf_token() ?>",
-                        "live_id": "<?php echo $video->id; ?>",
-                    },
-                    success: function(data) {
-                        if (data.status == true) {
-                            window.location.reload();
-                        }
-                    }
-                });
+    //         $.ajax({
+    //             type: 'post',
+    //             url: '<?= route('PPV_live_PurchaseUpdate') ?>',
+    //             data: {
+    //                 "_token": "<?= csrf_token() ?>",
+    //                 "live_id": "<?php echo $video->id; ?>",
+    //             },
+    //             success: function(data) {
+    //                 if (data.status == true) {
+    //                     window.location.reload();
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    //     function unseen_expirydate_checking() {
+
+    //         $.ajax({
+    //             type: 'post',
+    //             url: '<?= route('unseen_expirydate_checking') ?>',
+    //             data: {
+    //                 "_token": "<?= csrf_token() ?>",
+    //                 "live_id": "<?php echo $video->id; ?>",
+    //             },
+    //             success: function(data) {
+    //                 console.log(data);
+    //                 if (data.status == true) {
+    //                     window.location.reload();
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
+
+    $(document).ready(function() {
+
+        $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+
+        $(".payment_btn").click(function() {
+
+            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+
+            let payment_gateway = $('input[name="payment_method"]:checked').val();
+
+            if (payment_gateway == "Stripe") {
+
+                $('.Stripe_button').show();
+
+            } else if (payment_gateway == "Razorpay") {
+
+                $('.Razorpay_button').show();
+
+            } else if (payment_gateway == "Paystack") {
+
+                $('.paystack_button').show();
+
+            } else if (payment_gateway == "CinetPay") {
+
+                $('.cinetpay_button').show();
             }
-
-            function unseen_expirydate_checking() {
-
-                $.ajax({
-                    type: 'post',
-                    url: '<?= route('unseen_expirydate_checking') ?>',
-                    data: {
-                        "_token": "<?= csrf_token() ?>",
-                        "live_id": "<?php echo $video->id; ?>",
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        if (data.status == true) {
-                            window.location.reload();
-                        }
-                    }
-                });
-            }
-        }
-
-        window.onload = function() {
-            $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
-        }
-
-        $(document).ready(function() {
-
-            $(".payment_btn").click(function() {
-
-                $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
-
-                let payment_gateway = $('input[name="payment_method"]:checked').val();
-
-                if (payment_gateway == "Stripe") {
-
-                    $('.Stripe_button').show();
-                    $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
-
-                } else if (payment_gateway == "Razorpay") {
-
-                    $('.paystack_button,.Stripe_button,.cinetpay_button').hide();
-                    $('.Razorpay_button').show();
-
-                } else if (payment_gateway == "Paystack") {
-
-                    $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
-                    $('.paystack_button').show();
-                } else if (payment_gateway == "CinetPay") {
-
-                    $('.Stripe_button,.Razorpay_button,.paystack_button').hide();
-                    $('.cinetpay_button').show();
-                }
-            });
         });
-    </script>
 
-    <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+    // Modal
+        $("#live-purchase-now-button").click(function(){
+            $("#live-purchase-now-modal").modal();
+        });
 
-    <script>
-        var ppv_price = '<?= @$video->ppv_price ?>';
-        var user_name = '<?php if (!Auth::guest()) {
-            Auth::User()->username;
-        } else {
-        } ?>';
-        var email = '<?php if (!Auth::guest()) {
-            Auth::User()->email;
-        } else {
-        } ?>';
-        var mobile = '<?php if (!Auth::guest()) {
-            Auth::User()->mobile;
-        } else {
-        } ?>';
-        var CinetPay_APIKEY = '<?= @$CinetPay_payment_settings->CinetPay_APIKEY ?>';
-        var CinetPay_SecretKey = '<?= @$CinetPay_payment_settings->CinetPay_SecretKey ?>';
-        var CinetPay_SITE_ID = '<?= @$CinetPay_payment_settings->CinetPay_SITE_ID ?>';
-        var video_id = $('#video_id').val();
+    });
+</script>
 
-        // var url       = window.location.href;
-        // alert(window.location.href);
+    {{-- CinePay Payment --}}
 
-        function cinetpay_checkout() {
-            CinetPay.setConfig({
-                apikey: CinetPay_APIKEY, //   YOUR APIKEY
-                site_id: CinetPay_SITE_ID, //YOUR_SITE_ID
-                notify_url: window.location.href,
-                return_url: window.location.href,
-                // mode: 'PRODUCTION'
+<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
 
-            });
-            CinetPay.getCheckout({
-                transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
-                amount: ppv_price,
-                currency: 'XOF',
-                channels: 'ALL',
-                description: 'Test paiement',
-                //Provide these variables for credit card payments
-                customer_name: user_name, //Customer name
-                customer_surname: user_name, //The customer's first name
-                customer_email: email, //the customer's email
-                customer_phone_number: "088767611", //the customer's email
-                customer_address: "BP 0024", //customer address
-                customer_city: "Antananarivo", // The customer's city
-                customer_country: "CM", // the ISO code of the country
-                customer_state: "CM", // the ISO state code
-                customer_zip_code: "06510", // postcode
+<script>
+    var ppv_price = '<?= @$video->ppv_price ?>';
+    var user_name = '<?php if (!Auth::guest()) { Auth::User()->username; } else {} ?>';
+    var email = '<?php if (!Auth::guest()) { Auth::User()->email; } else { } ?>';
+    var mobile = '<?php if (!Auth::guest()) { Auth::User()->mobile; } else {} ?>';
+    var CinetPay_APIKEY = '<?= @$CinetPay_payment_settings->CinetPay_APIKEY ?>';
+    var CinetPay_SecretKey = '<?= @$CinetPay_payment_settings->CinetPay_SecretKey ?>';
+    var CinetPay_SITE_ID = '<?= @$CinetPay_payment_settings->CinetPay_SITE_ID ?>';
+    var video_id = $('#video_id').val();
 
-            });
-            CinetPay.waitResponse(function(data) {
-                if (data.status == "REFUSED") {
+    function cinetpay_checkout() {
+        CinetPay.setConfig({
+            apikey: CinetPay_APIKEY,
+            site_id: CinetPay_SITE_ID, 
+            notify_url: window.location.href,
+            return_url: window.location.href,
+            // mode: 'PRODUCTION'
+        });
 
-                    if (alert("Your payment failed")) {
-                        window.location.reload();
-                    }
-                } else if (data.status == "ACCEPTED") {
+        CinetPay.getCheckout({
+            transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+            amount: ppv_price,
+            currency: 'XOF',
+            channels: 'ALL',
+            description: 'Test paiement',
+            customer_name: user_name, //Customer name
+            customer_surname: user_name, //The customer's first name
+            customer_email: email, //the customer's email
+            customer_phone_number: "088767611", //the customer's email
+            customer_address: "BP 0024", //customer address
+            customer_city: "Antananarivo", // The customer's city
+            customer_country: "CM", // the ISO code of the country
+            customer_state: "CM", // the ISO state code
+            customer_zip_code: "06510", // postcode
 
-                    $.ajax({
-                        url: '<?php echo URL::to('CinetPay-live-rent'); ?>',
-                        type: "post",
-                        data: {
-                            _token: '<?php echo csrf_token(); ?>',
-                            amount: ppv_price,
-                            live_id: video_id,
+        });
+        CinetPay.waitResponse(function(data) {
+            if (data.status == "REFUSED") {
 
-                        },
-                        success: function(value) {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-
-                        },
-                        error: (error) => {
-                            swal('error');
-                        }
-                    });
-
+                if (alert("Your payment failed")) {
+                    window.location.reload();
                 }
-            });
-            CinetPay.onError(function(data) {
-                console.log(data);
-            });
-        }
-    </script>
+            } else if (data.status == "ACCEPTED") {
 
-    <?php
+                $.ajax({
+                    url: '<?php echo URL::to('CinetPay-live-rent'); ?>',
+                    type: "post",
+                    data: {
+                        _token: '<?php echo csrf_token(); ?>',
+                        amount: ppv_price,
+                        live_id: video_id,
+
+                    },
+                    success: function(value) {
+                        alert("You have done  Payment !");
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+
+                    },
+                    error: (error) => {
+                        swal('error');
+                    }
+                });
+
+            }
+        });
+        CinetPay.onError(function(data) {
+            console.log(data);
+        });
+    }
+</script>
+
+<?php
     // include('m3u_file_live.blade.php');
     include public_path('themes/default/views/footer.blade.php');
-    ?>
+?>

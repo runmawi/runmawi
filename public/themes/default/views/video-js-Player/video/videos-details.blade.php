@@ -194,6 +194,16 @@
                                         <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                     </div>
                                 </a>
+
+                                @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                                    <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                        </div>
+                                    </a>
+                                @endif
+
                             @endif
 
                             {{-- subscriber & PPV  --}}
