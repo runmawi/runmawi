@@ -422,73 +422,73 @@
       }
       /* Dark mode and light Mode */
       body.light-theme {
-      background: <?php echo GetLightBg(); ?>!important;
+      background: <?php echo $GetLightBg; ?>!important;
       }
       body.light-theme h4, body.light-theme p {
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       }
       body.light-theme header#main-header{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?> !important;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?> !important;
       box-shadow: 0 0 50px #ccc;
       }
       body.light-theme footer{
-      background: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: 0 0 50px #ccc;
       }
       body.light-theme .copyright{
-      background-color: <?php echo GetLightBg(); ?>;
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>;
+      color: <?php echo $GetLightText; ?>;
       }
       body.light-theme .s-icon{
-      background-color: <?php echo GetLightBg(); ?>; 
+      background-color: <?php echo $GetLightBg; ?>; 
       box-shadow: 0 0 50px #ccc;
       }
       body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       }
       body.light-theme .dropdown-menu.categ-head{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>!important;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
       color: rgb(0, 82, 204)!important;
          font-weight: 500;
       }
       body.light-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo GetLightBg(); ?>;  
+      background-color: <?php echo $GetLightBg; ?>;  
       }
       body.light-theme .media-body h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
       }
       body.light-theme .block-description h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
       }  
       body.light-theme .movie-time i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       }  
       body.light-theme #translator-table_filter input[type="search"]{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       }
       body.light-theme li.breadcrumb-item{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       }
       body.light-theme .p-tag1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       } body.light-theme .p-tag{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       } 
       body.light-theme .movie-time span{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       }
       body.light-theme .block-description a{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       } 
       body.light-theme .list-group-item a{
@@ -502,31 +502,31 @@
       font-weight: 400;
       }
       body.light-theme .slick-nav i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme h2{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme h5{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme .filter-option-inner-inner{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       } 
       body.light-theme .vid-title{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme .trending-info h1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }body.light-theme .text-detail{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }body.light-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }body.light-theme .btn1{
-      border: 1px solid <?php echo GetLightText(); ?>!important;
-      color: <?php echo GetLightText(); ?>!important;
+      border: 1px solid <?php echo $GetLightText; ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }body.light-theme .trending-dec{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme h6.trash{
       color: black;
