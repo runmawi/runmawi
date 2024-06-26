@@ -49,16 +49,10 @@
 
                               <div class="main-content">
 
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-
-                </div>
-            </div>
-        </div>
-    </section>
+   
+    <div>
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+    </div>
 
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
