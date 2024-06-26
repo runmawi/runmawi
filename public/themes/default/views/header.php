@@ -83,8 +83,6 @@
          $uppercase = "Home" ;
       }else{ }
       
-      $data = Session::all();
-      
       ?>
 
    <?php 
