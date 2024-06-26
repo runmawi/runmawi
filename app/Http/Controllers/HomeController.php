@@ -393,6 +393,8 @@ class HomeController extends Controller
 
                 'currency' => $currency,
                 'videos' => $latest_videos ,
+                'current_theme'     => $this->HomeSetting->theme_choosen,
+
                 'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                     'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')->where('active', '=', '1')
                                     ->where('draft', '1')
@@ -1125,6 +1127,7 @@ class HomeController extends Controller
                     $data = array(
                         'currency' => $currency,
                         'videos' => $latest_videos ,
+                        'current_theme'     => $this->HomeSetting->theme_choosen,
                        
                         'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')
                                             ->where('active', '1')->where('draft', '1')
@@ -1734,6 +1737,7 @@ class HomeController extends Controller
                 $data = array(
 
                     'currency'          => $currency,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
                     'settings'          => $settings,
                     'pages'             => Page::all(),
                     'current_page'      => 1,
