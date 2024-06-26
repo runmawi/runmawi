@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\AdminAdvertistmentBanners;
 use App\LiveEventArtist;
+use App\CompressImage;
 use App\HomeSetting;
 use App\VideoCategory;
 use App\AudioAlbums;
 use App\SeriesNetwork;
+use App\ThumbnailSetting;
 use App\AudioCategory;
 use App\LiveCategory;
 use App\VideoSchedules;
@@ -464,7 +466,18 @@ class FrontEndQueryController extends Controller
     public function admin_advertistment_banners()
     {
         $admin_advertistment_banners = AdminAdvertistmentBanners::first();
-
         return $admin_advertistment_banners ;
+    }
+
+    public function ThumbnailSetting(){
+
+        $ThumbnailSetting = ThumbnailSetting::first();
+        return $ThumbnailSetting ;
+    }
+
+    public function multiple_compress_image()
+    {
+        $multiple_compress_image = CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0;
+        return $multiple_compress_image ;
     }
 }
