@@ -72,9 +72,10 @@
       }
       
       $data = Session::all();
+   
+      // $uri_path = $_SERVER['REQUEST_URI']; 
+      $uri_path = \Request::getPathInfo(); 
       
-      $uri_path = $_SERVER['REQUEST_URI']; 
-      // dd(\Request::url());
       $uri_parts = explode('/', $uri_path);
       $request_url = end($uri_parts);
       $uppercase =  ucfirst($request_url);
@@ -255,12 +256,6 @@
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style"/>
-   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   
    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
@@ -268,7 +263,7 @@
    <!-- Bootstrap CSS -->
      <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" as="style"/>
      <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
-   
+      
      <!-- Typography CSS  -->
    <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
@@ -283,13 +278,12 @@
    <!-- Responsive -->
    <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-   <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
 
    <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
   
    <!-- lazyload script -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+   <script src="<?= URL::to('assets/js/lazysized.5.3.2.js') ?>" async></script>
 
    <?php 
       if(count($Script) > 0){
@@ -297,273 +291,275 @@
    <?= $Scriptheader ?>
    <?php } 
       } ?>
+
+
+   <style>
+      .fullpage-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity .5s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .fullpage-loader__logo {
+      position: relative;
+      &:after {
+      // this is the sliding white part
+      content: '';
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+      // opaque white slide
+      background: rgba(255,255,255,.8);
+      // gradient shine scroll
+      background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+      }
+      }
+      }
+      @keyframes shine {
+      0% {
+      transform: translateX(-100%) skew(-30deg);
+      }
+      100% {
+      transform: translateX(200%) skew(-30deg);
+      }
+      }
+      .fullpage-loader--invisible {
+      opacity: 0;
+      }
+      /* END LOADER CSS */
+      svg{
+      height: 30px;
+      widows: 30px;
+      }
+      .mk{
+      display: none;
+      }
+      #main-header{ color: #fff; }
+      .svg{ color: #fff; } 
+      #videoPlayer{
+      width:100%;
+      height: 100%;
+      margin: 20px auto;
+      }
+      i.fas.fa-child{
+      font-size: 35px;
+      color: white;
+      }
+      span.kids {
+      color: #f7dc59;
+      }  
+      span.family{
+      color: #f7dc59;
+      }
+      i.fa.fa-eercast{
+      font-size: 35px;
+      color: white;
+      }
+      a.navbar-brand.iconss {
+      font-size: 19px;
+      font-style: italic;
+      font-family: ui-rounded;
+      }
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 20px;
+      }
+      .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .sliderk {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ddd;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      .sliderk:before {
+      position: absolute;
+      content: "";
+      height: 15px;
+      width: 15px;
+      left: 5px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      input:checked + .sliderk {
+      background-color: #2196F3;
+      }
+      input:focus + .sliderk {
+      box-shadow: 0 0 1px #2196F3;
+      }
+      input:checked + .sliderk:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+      }
+      /* Rounded sliders */
+      .sliderk.round {
+      border-radius: 34px;
+      }
+      .sliderk.round:before {
+      border-radius: 50%;
+      }
+      /* Dark mode and light Mode */
+      body.light-theme {
+      background: <?php echo GetLightBg(); ?>!important;
+      }
+      body.light-theme h4, body.light-theme p {
+      color: <?php echo GetLightText(); ?>;
+      }
+      body.light-theme header#main-header{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?> !important;
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme footer{
+      background: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme .copyright{
+      background-color: <?php echo GetLightBg(); ?>;
+      color: <?php echo GetLightText(); ?>;
+      }
+      body.light-theme .s-icon{
+      background-color: <?php echo GetLightBg(); ?>; 
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      }
+      body.light-theme .dropdown-menu.categ-head{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+      color: rgb(0, 82, 204)!important;
+         font-weight: 500;
+      }
+      body.light-theme .navbar-right .iq-sub-dropdown{
+      background-color: <?php echo GetLightBg(); ?>;  
+      }
+      body.light-theme .media-body h6{
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
+      }
+      body.light-theme .block-description h6{
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
+      }  
+      body.light-theme .movie-time i{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+      }  
+      body.light-theme #translator-table_filter input[type="search"]{
+      color: <?php echo GetLightText(); ?>;
+      }
+      body.light-theme li.breadcrumb-item{
+      color: <?php echo GetLightText(); ?>;
+      }
+      body.light-theme .p-tag1{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+      } body.light-theme .p-tag{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+      } 
+      body.light-theme .movie-time span{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+      }
+      body.light-theme .block-description a{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+      } 
+      body.light-theme .list-group-item a{
+      color: <?php echo GetAdminDarkText(); ?> !important;
+      } 
+      body.light-theme .block-description{
+   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      backdrop-filter: blur(2px);
+      }
+      body.light-theme  header .navbar ul li{
+      font-weight: 400;
+      }
+      body.light-theme .slick-nav i{
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme h2{
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme h5{
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme .filter-option-inner-inner{
+      color: <?php echo GetLightText(); ?>!important;
+      } 
+      body.light-theme .vid-title{
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme .trending-info h1{
+      color: <?php echo GetLightText(); ?>!important;
+      }body.light-theme .text-detail{
+      color: <?php echo GetLightText(); ?>!important;
+      }body.light-theme .share-icons.music-play-lists li span i{
+      color: <?php echo GetLightText(); ?>!important;
+      }body.light-theme .btn1{
+      border: 1px solid <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
+      }body.light-theme .trending-dec{
+      color: <?php echo GetLightText(); ?>!important;
+      }
+      body.light-theme h6.trash{
+      color: black;
+      }
+      .Search_error_class {
+         color: red;
+      }
+   @media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
+      display:none !important;
+   } }
+   @media (min-width:801px) { li.logout_mobile_view.menu-item{
+      display:none !important;
+   } } 
+
+   .navbar-right .transdropdownlist{
+      width:150px;
+   }
+
+   #languageSearch{
+         width: 116px;
+         font-size: 12px;
+         right: 5px;
+         position: relative;
+      }
+
+   </style>
 </head>
-<style>
-   .fullpage-loader {
-   position: fixed;
-   top: 0;
-   left: 0;
-   height: 100vh;
-   width: 100vw;
-   overflow: hidden;
-   background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
-   z-index: 9999;
-   opacity: 1;
-   transition: opacity .5s;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   .fullpage-loader__logo {
-   position: relative;
-   &:after {
-   // this is the sliding white part
-   content: '';
-   height: 100%;
-   width: 100%;
-   position: absolute;
-   top: 0;
-   left: 0;
-   animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
-   // opaque white slide
-   background: rgba(255,255,255,.8);
-   // gradient shine scroll
-   background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-   background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-   background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
-   }
-   }
-   }
-   @keyframes shine {
-   0% {
-   transform: translateX(-100%) skew(-30deg);
-   }
-   100% {
-   transform: translateX(200%) skew(-30deg);
-   }
-   }
-   .fullpage-loader--invisible {
-   opacity: 0;
-   }
-   /* END LOADER CSS */
-   svg{
-   height: 30px;
-   widows: 30px;
-   }
-   .mk{
-   display: none;
-   }
-   #main-header{ color: #fff; }
-   .svg{ color: #fff; } 
-   #videoPlayer{
-   width:100%;
-   height: 100%;
-   margin: 20px auto;
-   }
-   i.fas.fa-child{
-   font-size: 35px;
-   color: white;
-   }
-   span.kids {
-   color: #f7dc59;
-   }  
-   span.family{
-   color: #f7dc59;
-   }
-   i.fa.fa-eercast{
-   font-size: 35px;
-   color: white;
-   }
-   a.navbar-brand.iconss {
-   font-size: 19px;
-   font-style: italic;
-   font-family: ui-rounded;
-   }
-   .switch {
-   position: relative;
-   display: inline-block;
-   width: 50px;
-   height: 20px;
-   }
-   .switch input { 
-   opacity: 0;
-   width: 0;
-   height: 0;
-   }
-   .sliderk {
-   position: absolute;
-   cursor: pointer;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   background-color: #ddd;
-   -webkit-transition: .4s;
-   transition: .4s;
-   }
-   .sliderk:before {
-   position: absolute;
-   content: "";
-   height: 15px;
-   width: 15px;
-   left: 5px;
-   bottom: 2px;
-   background-color: white;
-   -webkit-transition: .4s;
-   transition: .4s;
-   }
-   input:checked + .sliderk {
-   background-color: #2196F3;
-   }
-   input:focus + .sliderk {
-   box-shadow: 0 0 1px #2196F3;
-   }
-   input:checked + .sliderk:before {
-   -webkit-transform: translateX(26px);
-   -ms-transform: translateX(26px);
-   transform: translateX(26px);
-   }
-   /* Rounded sliders */
-   .sliderk.round {
-   border-radius: 34px;
-   }
-   .sliderk.round:before {
-   border-radius: 50%;
-   }
-   /* Dark mode and light Mode */
-   body.light-theme {
-   background: <?php echo GetLightBg(); ?>!important;
-   }
-   body.light-theme h4, body.light-theme p {
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme header#main-header{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?> !important;
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme footer{
-   background: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme .copyright{
-   background-color: <?php echo GetLightBg(); ?>;
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme .s-icon{
-   background-color: <?php echo GetLightBg(); ?>; 
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-   }
-   body.light-theme .dropdown-menu.categ-head{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
-   color: rgb(0, 82, 204)!important;
-       font-weight: 500;
-   }
-   body.light-theme .navbar-right .iq-sub-dropdown{
-   background-color: <?php echo GetLightBg(); ?>;  
-   }
-   body.light-theme .media-body h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
-   }
-   body.light-theme .block-description h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
-   }  
-   body.light-theme .movie-time i{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   }  
-   body.light-theme #translator-table_filter input[type="search"]{
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme li.breadcrumb-item{
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme .p-tag1{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } body.light-theme .p-tag{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } 
-   body.light-theme .movie-time span{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   }
-   body.light-theme .block-description a{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } 
-   body.light-theme .list-group-item a{
-   color: <?php echo GetAdminDarkText(); ?> !important;
-   } 
-    body.light-theme .block-description{
-  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
-    backdrop-filter: blur(2px);
-   }
-   body.light-theme  header .navbar ul li{
-   font-weight: 400;
-   }
-   body.light-theme .slick-nav i{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h2{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h5{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .filter-option-inner-inner{
-   color: <?php echo GetLightText(); ?>!important;
-   } 
-   body.light-theme .vid-title{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .trending-info h1{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .text-detail{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .share-icons.music-play-lists li span i{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .btn1{
-   border: 1px solid <?php echo GetLightText(); ?>!important;
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .trending-dec{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h6.trash{
-   color: black;
-   }
-   .Search_error_class {
-      color: red;
-   }
-@media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
-   display:none !important;
-} }
-@media (min-width:801px) { li.logout_mobile_view.menu-item{
-   display:none !important;
-} } 
 
-.navbar-right .transdropdownlist{
-   width:150px;
-}
-
-#languageSearch{
-        width: 116px;
-        font-size: 12px;
-        right: 5px;
-        position: relative;
-    }
-
-</style>
-<body>
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
       <div class="fullpage-loader">
@@ -1888,8 +1884,7 @@
             }
           });
       </script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="<?= ('assets\js\jquery.3.4.1.js') ?>"></script>
   
 <script>
                   document.getElementById('languageSearch').addEventListener('click', function(event) {

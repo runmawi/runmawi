@@ -53,6 +53,8 @@ use App\SeriesGenre;
 use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
 use App\CompressImage;
+use App\ThumbnailSetting;
+use App\OrderHomeSetting;
 
 class TvshowsController extends Controller
 {
@@ -76,6 +78,9 @@ class TvshowsController extends Controller
         $this->countryName = $countryName;
 
         $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($this->Theme);
     }
 
     /**
@@ -85,146 +90,57 @@ class TvshowsController extends Controller
      */
     public function index(Request $request)
     {
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($Theme);
+        try {
 
-        $settings = Setting::first();
+            $pages = Page::all();
 
-        $genre = Genre::all();
-        $trending_episodes_count = Episode::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->where('views', '>', '5')
-            ->orderBy('id', 'DESC')
-            ->count();
-        if ($trending_episodes_count > 0) {
-            $trending_episodes = Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->where('views', '>', '5')
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
-            $trending_episodes = [];
+            $OrderHomeSetting = OrderHomeSetting::orderBy('order_id', 'asc')->get();
+
+            $Slider_array_data = array(
+                'sliders'            => (new FrontEndQueryController)->sliders(), 
+                'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+                'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+                'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+                'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+                'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+            );   
+
+            $data = [
+                'current_page'   => 1,
+                'pagination_url' => '/series',
+                'settings'       => Setting::first(),
+                'currency'      => CurrencySetting::first(),
+                'pages'         => $pages,
+                'current_theme' => $this->Theme,
+                'free_series'   => (new FrontEndQueryController)->free_series() ,
+                'free_episodes' => (new FrontEndQueryController)->free_episodes() ,
+                'free_Contents' => (new FrontEndQueryController)->free_episodes() ,
+                'episodes'      => (new FrontEndQueryController)->latest_episodes() ,
+                'trendings'     => (new FrontEndQueryController)->trending_episodes() ,
+                'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes() ,
+                'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes(),
+                'latest_series'     =>  (new FrontEndQueryController)->latest_Series(),
+                'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
+                'banner'            =>  (new FrontEndQueryController)->Episode_sliders() ,
+                'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
+                'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
+                'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
+                'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks() ,
+                'ThumbnailSetting'  => ThumbnailSetting::first(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+                'default_horizontal_image_url' => default_horizontal_image_url(),
+                'order_settings_list' => $OrderHomeSetting, 
+                'home_settings'  => HomeSetting::first() ,
+                'Slider_array_data' => $Slider_array_data ,
+            ];
+
+            return Theme::view('tv-home', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            // return abort(404);
         }
-
-        $featured_episodes_count = Episode::where('active', '=', '1')
-            ->where('featured', '=', '1')
-            ->orderBy('views', 'DESC')
-            ->count();
-
-        if ($featured_episodes_count > 0) {
-            $featured_episodes = Episode::where('active', '=', '1')
-                ->where('featured', '=', '1')
-                ->where('status', '=', '1')
-                ->orderBy('views', 'DESC')
-                ->get();
-        } else {
-            $featured_episodes = [];
-        }
-
-        $latest_series_count = Series::where('active', '=', '1')
-            ->orderBy('created_at', 'DESC')
-            ->count();
-        if ($latest_series_count > 0) {
-            $latest_series = Series::where('active', '=', '1')
-                ->take(30)
-                ->orderBy('created_at', 'DESC')
-                ->get();
-        } else {
-            $latest_series = [];
-        }
-        $latest_episodes_count = Episode::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->orderBy('id', 'DESC')
-            ->count();
-        if ($latest_episodes_count > 0) {
-            $latest_episodes = Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->take(30)
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
-            $latest_episodes = [];
-        }
-        // $featured_episodes_count = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->orderBy('id', 'DESC')->count();
-        // if ($featured_episodes_count > 0) {
-        //     $featured_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('featured', '=', '1')->take(10)->orderBy('id', 'DESC')->get();
-        // } else {
-        //         $featured_episodes = [];
-        // }
-
-        // Free content videos
-        $free_series_count = Series::where('active', '=', '1')
-            ->orderBy('created_at', 'DESC')
-            ->count();
-        if ($free_series_count > 0) {
-            $free_series = Series::where('active', '=', '1')
-                ->orderBy('created_at', 'DESC')
-                ->get();
-        } else {
-            $free_series = [];
-        }
-        $free_episodes_count = Episode::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->orderBy('id', 'DESC');
-        if (Auth::guest()) {
-            $free_episodes_count = $free_episodes_count->where('access', 'guest');
-        }
-        $free_episodes_count = $free_episodes_count->count();
-        if ($free_episodes_count > 0) {
-            $free_episodes = Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->orderBy('id', 'DESC');
-            if (Auth::guest()) {
-                $free_episodes = $free_episodes->where('access', 'guest');
-            }
-
-            $free_episodes = $free_episodes->get();
-        } else {
-            $free_episodes = [];
-        }
-
-        //  $trending_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->where('views', '>', '5')->orderBy('created_at', 'DESC')->get();
-        //  $latest_episodes = Episode::where('active', '=', '1')->where('status', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-        //  $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')->orderBy('views', 'DESC')->get();
-        //  $latest_series = Series::where('active', '=', '1')->take(10)->orderBy('created_at', 'DESC')->get();
-        $currency = CurrencySetting::first();
-
-        $free_Contents = Episode::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->where('access', '=', 'guest')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-        
-        $pages = Page::all();
-        $data = [
-            'episodes' => Episode::where('active', '=', '1')
-                ->where('status', '=', '1')
-                ->orderBy('id', 'DESC')
-                ->simplePaginate(120000),
-            'trendings' => $trending_episodes,
-            'latest_episodes' => $latest_episodes,
-            'featured_episodes' => $featured_episodes,
-            'latest_series' => $latest_series,
-            'current_page' => 1,
-            'genres' => $genre,
-            'pagination_url' => '/series',
-            'settings' => $settings,
-            'pages' => $pages,
-            'free_series' => $free_series,
-            'free_episodes' => $free_episodes,
-            'currency' => $currency,
-            'free_Contents' => $free_Contents,
-            'banner' => Episode::where('active', '1')
-                ->where('status', '1')
-                ->where('banner', '1')
-                ->orderBy('id', 'DESC')
-                ->simplePaginate(120000),
-                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-
-        ];
-
-
-        return Theme::view('tv-home', $data);
     }
 
     public function play_episode($series_name, $episode_name)
@@ -1554,4 +1470,5 @@ class TvshowsController extends Controller
         return Theme::view('partials.home.Series-Networks-List',$data);
 
     }
+ 
 }
