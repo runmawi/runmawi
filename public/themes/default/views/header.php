@@ -92,7 +92,7 @@
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
       $SiteMeta_page = App\SiteMeta::where('page_slug',  $request_url)->first(); 
-      $SiteMeta_image = $SiteMeta_page->meta_image;
+      $SiteMeta_image = !is_null($SiteMeta_page) && !is_null($SiteMeta_page->meta_image) ? $SiteMeta_page->meta_image : null ;
    ?>
 
    <meta charset="UTF-8">
