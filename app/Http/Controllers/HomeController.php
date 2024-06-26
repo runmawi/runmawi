@@ -120,6 +120,17 @@ class HomeController extends Controller
         $default_horizontal_image_url = default_horizontal_image_url();
         $current_timezone = current_timezone();
 
+        
+        $Slider_array_data = array(
+            'sliders'            => (new FrontEndQueryController)->sliders(), 
+            'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+            'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+            'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+            'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+            'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+            'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+        );   
+
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
             return $value === '1' || $value === 1;  
@@ -394,26 +405,13 @@ class HomeController extends Controller
                 'currency' => $currency,
                 'videos' => $latest_videos ,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
-
-                'video_banners' => Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')->where('active', '=', '1')
-                                    ->where('draft', '1')
-                                    ->where('status', '1')
-                                    ->where('banner', '1')
-                                    ->orderBy('created_at', 'DESC')
-                                    ->limit(15)
-                                    ->get() ,
-
-                'live_banner' => LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                            'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                            ->where('banner', '1')
-                                            ->latest()->limit(15)->get() ,
-
-                'sliders' => Slider::where('active',  '1')->orderBy('order_position', 'ASC')->limit(15)->get() ,
-
-                'series_sliders' => Series::select('id','title','slug','year','rating','access',
-                                'duration','rating','image','featured','tv_image','player_image','details','description')
-                                ->where('active', '1')->where('banner','1')->latest()->limit(15)->get() ,
+                'sliders'            => (new FrontEndQueryController)->sliders(), 
+                'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+                'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+                'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+                'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+                'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
 
                 'current_page'      => 1,
                 'pagination_url' => '/videos',
@@ -464,6 +462,7 @@ class HomeController extends Controller
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                'Slider_array_data'      => $Slider_array_data ,
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4" || "default") {
@@ -1128,24 +1127,13 @@ class HomeController extends Controller
                         'currency' => $currency,
                         'videos' => $latest_videos ,
                         'current_theme'     => $this->HomeSetting->theme_choosen,
-                       
-                        'video_banners' => Video::select('id','title','slug','ppv_price','image','video_tv_image','player_image','details','description','trailer','trailer_type','video_title_image','enable_video_title_image')
-                                            ->where('active', '1')->where('draft', '1')
-                                            ->where('status', '1')->where('banner', '1')
-                                            ->latest()->limit(15)->get() ,
-
-                        'sliders' => Slider::where('active', '1')->orderBy('order_position', 'ASC')->limit(15)->get() ,
-    
-
-                        'live_banner' => LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                        'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
-                                        ->where('banner', '1')
-                                        ->latest()->limit(15)->get() ,
-
-                        'series_sliders' => Series::select('id','title','slug','year','rating','access',
-                                        'duration','rating','image','featured','tv_image','player_image','details','description')
-                                        ->where('active', '1')->where('banner','1')
-                                        ->limit(15)->latest() ->get() ,
+                        'sliders'            => (new FrontEndQueryController)->sliders(), 
+                        'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+                        'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+                        'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                        'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+                        'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+                        'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
 
                         'current_page'      => 1,
                         'latest_series'     => $latest_series,
@@ -1197,6 +1185,7 @@ class HomeController extends Controller
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                        'Slider_array_data'      => $Slider_array_data ,
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
@@ -1789,6 +1778,13 @@ class HomeController extends Controller
                     'SeriesGenre'               =>  (new FrontEndQueryController)->SeriesGenre() ,
                     'trending_audios'           => (new FrontEndQueryController)->trending_audios(),
                     'admin_advertistment_banners' => (new FrontEndQueryController)->admin_advertistment_banners(),
+                    'sliders'            => (new FrontEndQueryController)->sliders(), 
+                    'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+                    'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+                    'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                    'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+                    'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+                    'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
                     'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
                     'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
                     'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
