@@ -1,8 +1,4 @@
 @if (!empty($data) && $data->isNotEmpty())
-    @php
-        $id = (!Auth::guest() && !empty($data['password_hash'])) ? Auth::user()->id : 0;
-    @endphp
-
 
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
