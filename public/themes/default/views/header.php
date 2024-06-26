@@ -72,9 +72,10 @@
       }
       
       $data = Session::all();
+   
+      // $uri_path = $_SERVER['REQUEST_URI']; 
+      $uri_path = \Request::getPathInfo(); 
       
-      $uri_path = $_SERVER['REQUEST_URI']; 
-      // dd(\Request::url());
       $uri_parts = explode('/', $uri_path);
       $request_url = end($uri_parts);
       $uppercase =  ucfirst($request_url);
