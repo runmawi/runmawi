@@ -228,7 +228,7 @@ class FrontEndQueryController extends Controller
     {
         $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                 'duration','rating','image','featured','tv_image','player_image')
-                ->where('active', '1')->latest()->limit(15)
+                ->where('active', '1')->where('status', '1')->latest()->limit(15)
                 ->get()->map(function($item){
                     $item['series'] = Series::where('id',$item->series_id)->first();
                     return $item ;
@@ -241,11 +241,42 @@ class FrontEndQueryController extends Controller
 
         $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                                  'duration','rating','image','featured','tv_image','player_image')
-                                            ->where('active', 1)->where('featured' ,1)
+                                            ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
                                             ->get();
 
         return $featured_episodes;
+    }
+
+    public function trending_episodes(){
+
+        $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+                                                 'duration','rating','image','featured','tv_image','player_image')
+                                            ->where('status', '1')->where('active', 1)->where('views', '>', '5')
+                                            ->latest()->limit(15)
+                                            ->get();
+
+        return $trending_episodes;
+    }
+
+    public function free_episodes()
+    {
+        $free_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+                                                 'duration','rating','image','featured','tv_image','player_image')
+                                            ->where('status', '1')->where('active', 1)->where('access', 'guest')
+                                            ->latest()->limit(15)
+                                            ->get();
+
+        return $free_episodes;
+    }
+
+    public function free_series()
+    {
+        $free_series =  Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
+                                ->where('active', '1')->where('access', 'guest')->latest()->limit(15)
+                                ->get();
+
+        return $free_series;
     }
     
     public function livestreams()

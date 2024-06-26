@@ -1,8 +1,4 @@
 
-@php 
-    $SeriesGenre = App\SeriesGenre::all();
-@endphp
-
 @if (!empty($data) && $data->isNotEmpty())
 
 
