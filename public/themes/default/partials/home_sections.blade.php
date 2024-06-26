@@ -1,14 +1,14 @@
-@php 
-
-$homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
-                              'multiple_compress_image' => $multiple_compress_image, 
-                              'videos_expiry_date_status' => $videos_expiry_date_status,
-                              'getfeching' => $getfeching,
-                              'settings' => $settings,
-                              'ThumbnailSetting' => $ThumbnailSetting,
-                              'currency' => $currency,
-                              'default_vertical_image_url' => $default_vertical_image_url,
-                              'default_horizontal_image_url' => $default_horizontal_image_url,
+@php
+      $homepage_array_data = [ 
+                            'order_settings_list'      => $order_settings_list, 
+                            'multiple_compress_image'  => $multiple_compress_image, 
+                            'videos_expiry_date_status' => $videos_expiry_date_status,
+                            'default_vertical_image_url'   => $default_vertical_image_url,
+                            'default_horizontal_image_url' => $default_horizontal_image_url,
+                            'ThumbnailSetting' => $ThumbnailSetting,
+                            'getfeching' => $getfeching,
+                            'currency'   => $currency,
+                            'settings'   => $settings,
                          ];
 @endphp
 

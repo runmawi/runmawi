@@ -1232,6 +1232,7 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
         $videos_expiry_date_status = videos_expiry_date_status();
+        $ppv_gobal_price = $settings->ppv_status == 1 ? $settings->ppv_price : null;
 
         $check_Kidmode = 0;
 
@@ -1476,11 +1477,6 @@ class HomeController extends Controller
 
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-                $settings = $this->settings;
-
-                $PPV_settings = Setting::where('ppv_status', 1)->first();
-
-                $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
              
                 // blocked videos
                 $block_videos = BlockVideo::where('country_id', $countryName)->get();
@@ -1562,8 +1558,6 @@ class HomeController extends Controller
                 }else{
                     $blocking_videos = [];
                 }
-
-
 
                 if ($Recomended->Recommendation == 1)
                 {
@@ -1734,6 +1728,16 @@ class HomeController extends Controller
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
+                $Slider_array_data = array(
+                    'sliders'            => (new FrontEndQueryController)->sliders(), 
+                    'live_banner'        => (new FrontEndQueryController)->live_banners(),  
+                    'video_banners'      => (new FrontEndQueryController)->video_banners(), 
+                    'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                    'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
+                    'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
+                    'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+                );   
+
                 $data = array(
 
                     'currency'          => $currency,
@@ -1761,11 +1765,6 @@ class HomeController extends Controller
                     'videos'            => (new FrontEndQueryController)->Latest_videos(),
                     'latest_video'      => (new FrontEndQueryController)->Latest_videos(),
                     'latest_videos'     => (new FrontEndQueryController)->Latest_videos(),
-                    'sliders'           => (new FrontEndQueryController)->sliders(),
-                    'video_banners'     => (new FrontEndQueryController)->video_banners(),
-                    'live_banner'       => (new FrontEndQueryController)->live_banners(),
-                    'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
-                    'sliders'           => (new FrontEndQueryController)->latest_Series(),
                     'trendings'         => (new FrontEndQueryController)->trending_videos(),
                     'trending_videos'   => (new FrontEndQueryController)->trending_videos(),
                     'suggested_videos'  => (new FrontEndQueryController)->trending_videos(),
@@ -1795,6 +1794,7 @@ class HomeController extends Controller
                     'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
                     'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
                     'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
+                    'Slider_array_data'      => $Slider_array_data ,
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
