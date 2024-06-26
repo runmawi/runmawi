@@ -395,4 +395,3 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     </script>
 <?php } ?>
 </body>
-</html>
