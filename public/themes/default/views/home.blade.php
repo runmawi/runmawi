@@ -15,6 +15,17 @@
                             'currency'   => $currency,
                             'settings'   => $settings,
                          ];
+                                 
+        $Slider_array_data = array(
+            'sliders'               => $sliders, 
+            'live_banner'           => $live_banner, 
+            'video_banners'         => $video_banners, 
+            'series_sliders'        => $series_sliders, 
+            'live_event_banners'    => $live_event_banners, 
+            'Episode_sliders'       => $Episode_sliders, 
+            'VideoCategory_banner'  => $VideoCategory_banner, 
+        );   
+
    @endphp
 
 <!-- Slider Start -->

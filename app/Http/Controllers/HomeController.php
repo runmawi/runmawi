@@ -120,17 +120,6 @@ class HomeController extends Controller
         $default_horizontal_image_url = default_horizontal_image_url();
         $current_timezone = current_timezone();
 
-        
-        $Slider_array_data = array(
-            'sliders'            => (new FrontEndQueryController)->sliders(), 
-            'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-            'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-            'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-            'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
-            'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-            'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
-        );   
-
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
             return $value === '1' || $value === 1;  
@@ -462,7 +451,6 @@ class HomeController extends Controller
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                'Slider_array_data'      => $Slider_array_data ,
             );
 
             if ( $this->HomeSetting->theme_choosen == "theme4" || "default") {
@@ -1185,7 +1173,6 @@ class HomeController extends Controller
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                        'Slider_array_data'      => $Slider_array_data ,
                     );
 
                     if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
@@ -1717,16 +1704,6 @@ class HomeController extends Controller
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
-                $Slider_array_data = array(
-                    'sliders'            => (new FrontEndQueryController)->sliders(), 
-                    'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-                    'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                    'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                    'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
-                    'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-                    'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
-                );   
-
                 $data = array(
 
                     'currency'          => $currency,
@@ -1790,7 +1767,6 @@ class HomeController extends Controller
                     'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
                     'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
                     'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                    'Slider_array_data'      => $Slider_array_data ,
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
