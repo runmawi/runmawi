@@ -4636,14 +4636,17 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug )
     {
-      
         try {
 
             $adsvariables = Adsvariables::get();
             $adsvariable_url = ''; 
             
             foreach ($adsvariables as $key => $ads_variable ) {
-                $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                if ($key === 0) {
+                    $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
+                } else {
+                    $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                }
             }
             
             $setting = Setting::first();
@@ -4818,7 +4821,7 @@ class ChannelController extends Controller
                         break;
 
                         case $item['type'] == "m3u8_url":
-                        $item['videos_url'] =  $item->m3u8_url.'?'.$adsvariable_url ;
+                        $item['videos_url'] =  $item->m3u8_url.$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
@@ -4827,7 +4830,7 @@ class ChannelController extends Controller
                         break;
                         
                         case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').'?'.$adsvariable_url;
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').$adsvariable_url;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
@@ -4837,12 +4840,12 @@ class ChannelController extends Controller
                         break;
 
                         case $item['type'] == " " && !is_null($item->transcoded_url) :
-                        $item['videos_url']   = $item->transcoded_url.'?'.$adsvariable_url ;
+                        $item['videos_url']   = $item->transcoded_url.$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
                         case $item['type'] == null :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).'?'.$adsvariable_url ;
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
