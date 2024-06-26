@@ -866,6 +866,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+                  <!-- <li><a href="{{ route('access_forbidden') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> {{ __('Restrict Access') }}  </span>
+                     </a>
+                  </li> -->
+
                   <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Seeding Management  </span>
@@ -1259,6 +1265,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+                  <!-- <li><a href="{{ route('access_forbidden') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> {{ __('Restrict Access') }}  </span>
+                     </a>
+                  </li> -->
+                  
                   <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Seeding Management.svg')?>">
                         <span>{{ (__('Seeding Management')) }}   </span>
@@ -1582,6 +1594,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+                  <!-- <li><a href="{{ route('access_forbidden') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> {{ __('Restrict Access') }}  </span>
+                     </a>
+                  </li> -->
+                  
                   <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Seeding Management  </span>

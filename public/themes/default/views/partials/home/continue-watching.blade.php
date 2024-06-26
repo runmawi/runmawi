@@ -84,7 +84,7 @@
                                                    </p>
                                                 @endif
                                                 <div class="movie-time d-flex align-items-center pt-1">
-                                                   @if($ThumbnailSetting->age == 1)
+                                                   @if($ThumbnailSetting->age == 1 && !($cont_video->age_restrict == 0))
                                                       <!-- Age -->
                                                       <div class="badge badge-secondary mr-2">
                                                             {{ $cont_video->age_restrict . ' +' }}
@@ -109,7 +109,7 @@
                                                                </span>
                                                             </div>
                                                       @endif
-                                                      @if($ThumbnailSetting->published_year == 1)
+                                                      @if($ThumbnailSetting->published_year == 1 && !($cont_video->year == 0))
                                                             <!-- Published Year -->
                                                             <div class="badge badge-secondary p-1 mr-2">
                                                                <span class="text-white">

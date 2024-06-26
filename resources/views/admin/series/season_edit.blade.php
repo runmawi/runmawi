@@ -1494,49 +1494,49 @@ document.getElementById('select-all').addEventListener('change', function() {
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		
 <script type="text/javascript">
-    $(function () {
-        $("#categorytbl").sortable({
-            items: 'tr:not(tr:first-child)',
-            cursor: 'pointer',
-            axis: 'y',
-            dropOnEmpty: false,
-            start: function (e, ui) {
-                ui.item.addClass("selected");
-            },
-            stop: function (e, ui) {
-                ui.item.removeClass("selected");
-                var selectedData = new Array();
-                $(this).find("tr").each(function (index) {
-                    if (index > 0) {
-                        $(this).find("td").eq(2).html(index);
-                        selectedData.push($(this).attr("id"));
-                    }
-                });
-                var seriesid  = $('.seriesid').val();
-                var season_id  = $('.season_id').val();
-                updateOrder(selectedData,seriesid,season_id)
-            }
-        });
+   $(function () {
+    $("#categorytbl").sortable({
+        items: 'tr:not(tr:first-child)',
+        cursor: 'pointer',
+        axis: 'y',
+        dropOnEmpty: false,
+        start: function (e, ui) {
+            ui.item.addClass("selected");
+        },
+        stop: function (e, ui) {
+            ui.item.removeClass("selected");
+            var selectedData = [];
+            $(this).find("tr").each(function (index) {
+                if (index > 0) { // Skip header row
+                    $(this).find("td").eq(1).html(index); // Update the episode order display
+                    selectedData.push($(this).attr("id").replace('episode-', '')); // Get episode ID
+                }
+            });
+            var seriesid = $('.seriesid').val();
+            var season_id = $('.season_id').val();
+            updateOrder(selectedData, seriesid, season_id);
+        }
     });
+});
 
-    function updateOrder(data,seriesid,season_id) {
-
-        $.ajax({
-            url:'{{  URL::to('admin/episode_order') }}',
-            type:'post',
-            data:{
-                    position:data,
-                    seriesid:seriesid,
-                    season_id:season_id,
-                     _token :  "{{ csrf_token() }}",
-                    },
-            success:function(data){
-                // alert('Position changed successfully.');
-                // location.reload(); id="orderepisode"
-                $("#orderepisode").html(data);
-            }
-        })
-    }
+function updateOrder(data, seriesid, season_id) {
+    $.ajax({
+        url: '{{ URL::to('admin/episode_order') }}',
+        type: 'post',
+        data: {
+            position: data,
+            seriesid: seriesid,
+            season_id: season_id,
+            _token: "{{ csrf_token() }}",
+        },
+        success: function (data) {
+            $("#orderepisode").html(data);
+        },
+        error: function (xhr, status, error) {
+            // alert('An error occurred: ' + xhr.responseText);
+        }
+    });
+}
 </script>
 
 <script>
