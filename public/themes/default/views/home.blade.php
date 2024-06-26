@@ -21,7 +21,7 @@
 
    <section id="home" class="iq-main-slider m-0 p-0">
       <div id="home-slider" class="slider m-0 p-0">
-         {{-- {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!} --}}
+         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
       </div>
    </section>
 
