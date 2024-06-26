@@ -38,16 +38,16 @@
                       @endif
                   </div>
                   <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline row p-0 mb-0">
+                      <div class="favorites-slider list-inline row p-0 mb-0">
                           @if(isset($data))
                               @foreach($data as $latest_serie)
-                                  <li class="slide-item">
+                                  <div class="slide-item">
                                       <div class="block-images position-relative">
                                           <!-- block-images -->
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
+                                                      <img class="img-fluid w-100 lazyload" data-src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
                                                   </a>
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($latest_serie->access == 'subscriber')
@@ -66,7 +66,7 @@
                                           </div>
                                           <div class="block-description">
                                               <a class="playTrailer" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                  <img class="img-fluid w-100" loading="lazy" src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" data-src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
+                                                  <img class="img-fluid w-100 lazyload" src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" data-src="{{ $latest_serie->player_image ? URL::to('/public/uploads/images/' . $latest_serie->player_image) : $default_vertical_image_url }}" alt="{{ $latest_serie->title }}">
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($latest_serie->access == 'subscriber')
                                                           <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -107,10 +107,10 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </li>
+                                  </div>
                               @endforeach
                           @endif
-                      </ul>
+                      </div>
                   </div>
               </div>
           </div>

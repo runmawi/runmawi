@@ -4637,6 +4637,17 @@ class ChannelController extends Controller
     public function video_js_fullplayer( Request $request, $slug )
     {
         try {
+
+            $adsvariables = Adsvariables::get();
+            $adsvariable_url = ''; 
+            
+            foreach ($adsvariables as $key => $ads_variable ) {
+                if ($key === 0) {
+                    $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
+                } else {
+                    $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                }
+            }
             
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4646,7 +4657,7 @@ class ChannelController extends Controller
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-                                    ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
+                                    ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url)  {
 
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
@@ -4810,7 +4821,7 @@ class ChannelController extends Controller
                         break;
 
                         case $item['type'] == "m3u8_url":
-                        $item['videos_url'] =  $item->m3u8_url ;
+                        $item['videos_url'] =  $item->m3u8_url.$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
@@ -4819,7 +4830,7 @@ class ChannelController extends Controller
                         break;
                         
                         case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').$adsvariable_url;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
@@ -4829,12 +4840,12 @@ class ChannelController extends Controller
                         break;
 
                         case $item['type'] == " " && !is_null($item->transcoded_url) :
-                        $item['videos_url']   = $item->transcoded_url ;
+                        $item['videos_url']   = $item->transcoded_url.$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
                         case $item['type'] == null :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
@@ -4891,7 +4902,7 @@ class ChannelController extends Controller
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
                 'setting'   => $setting,
-                'adsvariable' =>  Adsvariables::get(),
+                'adsvariable' =>  $adsvariables,
                 'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>

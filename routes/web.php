@@ -527,7 +527,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     //        });
 
     Route::get('/', 'AdminDashboardController@index');
-    Route::get('/mobileapp', 'AdminUsersController@mobileapp');
+    Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
     Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
 
@@ -551,6 +551,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
     Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
     Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
+
+    // Device version
+    Route::get('/mobile_app/device_version', 'AdminUsersController@device_version')->name('mobile_app.device_version');
 
     // OTP Auth
     Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');

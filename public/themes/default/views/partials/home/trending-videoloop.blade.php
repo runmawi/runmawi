@@ -21,7 +21,7 @@
                   </div>
 
                   <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline row p-0 mb-0">
+                      <div class="favorites-slider list-inline row p-0 mb-0">
                           @if(isset($data))
                               @php
                                   $id = !Auth::guest() && !empty($data['password_hash']) ? Auth::user()->id : 0;
@@ -44,12 +44,12 @@
                                           $publish_time = '';
                                       }
                                   @endphp
-                                  <li class="slide-item">
+                                  <div class="slide-item">
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
                                                     <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                        <img class="img-fluid w-100 lazyload" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                     </a>
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @if($watchlater_video->access == 'subscriber')
@@ -69,7 +69,7 @@
 
                                           <div class="block-description">
                                               <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                  <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                  <img class="img-fluid w-100 lazyload" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
                                                     @if($watchlater_video->access == 'subscriber')
                                                         <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
@@ -156,10 +156,10 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </li>
+                                  </div>
                               @endforeach
                           @endif
-                      </ul>
+                      </div>
                   </div>
 
                 </div>
