@@ -1197,20 +1197,16 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $data = Session::all();
-        $ThumbnailSetting = ThumbnailSetting::first();
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
-        $current_timezone = current_timezone();
 
         $agent = new Agent();
         $settings = $this->settings;
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
-        $videos_expiry_date_status = videos_expiry_date_status();
+    
         $ppv_gobal_price = $settings->ppv_status == 1 ? $settings->ppv_price : null;
-
-        $check_Kidmode = 0;
 
         if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
         
@@ -1245,8 +1241,8 @@ class HomeController extends Controller
             return redirect()->route('landing_page', $landing_page_slug );
         }
 
-        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
-        {
+        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])){
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $userIp = $geoip->getip();
             $countryName = $geoip->getCountry();
@@ -1263,9 +1259,8 @@ class HomeController extends Controller
             }
 
             return Redirect::to('/');
-        }
-        else
-        {
+
+        }else {
 
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $userIp = $geoip->getip();
@@ -1274,7 +1269,7 @@ class HomeController extends Controller
             $cityName = $geoip->getcity();
             $data = Session::all();
             $system_settings = SystemSetting::first();
-            $user = User::where('id', '=', 1)->first();
+            $user = User::where('id', 1)->first();
           
             if (Auth::guest() && !isset($data['user']))
             {
@@ -1305,9 +1300,9 @@ class HomeController extends Controller
 
                 $user_role = Auth::user()->role;
 
-                $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->count();
+                $user_check = LoggedDevice::where('user_id', Auth::User()->id)->count();
 
-                $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)->count();
+                $subuser_check = Multiprofile::where('parent_id', Auth::User()->id)->count();
 
                 $alldevices_register = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '!=', $device_name)
@@ -1480,9 +1475,6 @@ class HomeController extends Controller
 
                 $Family_Mode = $Mode['FamilyMode'];
                 $Kids_Mode = $Mode['Kidsmode'];
-
-                $check_Kidmode = 0 ;
-                    // $Multiuser = Multiprofile::where('id', $multiuser)->first();
 
                 // Most watched videos By user
                 
@@ -1718,12 +1710,12 @@ class HomeController extends Controller
                     'Family_Mode'       => $Family_Mode,
                     'Kids_Mode'         => $Kids_Mode,
                     'Mode'              => $Mode,
-                    'ThumbnailSetting'  => $ThumbnailSetting,
+                    'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting(),
                     'order_settings_list' => OrderHomeSetting::get(), 
                     'order_settings'      => $order_settings ,
                     'getfeching'          => $getfeching ,
                     'home_settings'       => $this->HomeSetting ,
-                    'videos_expiry_date_status'    => $videos_expiry_date_status,
+                    'videos_expiry_date_status'    => videos_expiry_date_status(),
                     'Series_Networks_Status'       => Series_Networks_Status(),
                     'default_vertical_image_url'   => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
@@ -4918,5 +4910,6 @@ public function uploadExcel(Request $request)
             throw $th;
         }
     }
+
 
 }
