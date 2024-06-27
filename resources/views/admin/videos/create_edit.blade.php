@@ -1321,17 +1321,31 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function() {
 
    $('#error_ppv_price').hide();
-   $('#nextppv').click(function(){
+
+   function checkPriceInput() {
+            var priceInput = $('#price').val().trim();
+            if (!priceInput) {
+                $('#error_ppv_price').show();
+                $('#nextppv').attr('disabled', 'disabled');
+            } else {
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+            }
+        }
+        
+   $("#nextppv").click(function(){
       var priceInput = $('#price').val().trim();
          if (!priceInput) {
                event.preventDefault(); // Prevent form submission
-               // alert('PPV Price cannot be empty'); // Show an alert message
                $('#nextppv').attr('disabled','disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
                $('#error_ppv_price').show();
 
          }else{
                $('#error_ppv_price').hide();
                $('#nextppv').removeAttr('disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
+
          }
    });
       if($('#access').val() == 'ppv'){
@@ -1339,6 +1353,7 @@ $(document).ready(function() {
   
          if($('#access').val() == 'ppv'){
                $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
 
                $('#nextppv').attr('disabled','disabled');
          }
@@ -1349,6 +1364,7 @@ $(document).ready(function() {
 
          if($('#access').val() == 'ppv'){
                $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
 
                $('#nextppv').attr('disabled','disabled');
          }
@@ -1364,10 +1380,13 @@ $(document).ready(function() {
                // alert('PPV Price cannot be empty'); // Show an alert message
                $('#nextppv').attr('disabled','disabled');
                $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
 
          }else{
                $('#error_ppv_price').hide();
                $('#nextppv').removeAttr('disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
+
          }
       });
 
