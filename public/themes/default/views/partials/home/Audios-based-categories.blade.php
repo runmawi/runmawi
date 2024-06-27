@@ -45,9 +45,9 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <div class="audio-categories list-inline  row p-0 mb-0">
                                 @foreach ($audios_genre->category_audios as $key => $audios_details)
-                                    <li class="slide-item">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
@@ -105,16 +105,16 @@
                                                     <a href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
                                                         @if($ThumbnailSetting->title == 1)
                                                             <!-- Title -->
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left mt-2 m-0">
                                                                 {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
                                                             </p>
                                                         @endif
-                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                        <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->duration == 1 && !is_null($audios_details->duration))
                                                                 <!-- Duration -->
                                                                 <span class="text-white">
                                                                     <i class="fa fa-clock-o"></i>
-                                                                    {{ gmdate('H:i:s', $audios_details->duration) }}
+                                                                    {{ (floor($audios_details->duration / 3600) > 0 ? floor($audios_details->duration / 3600) . 'h ' : '') . floor(($audios_details->duration % 3600) / 60) . 'm' }}
                                                                 </span>
                                                             @endif
                                                         </div>
@@ -142,15 +142,15 @@
                                                         @endif
                                                     </a>
 
-                                                    <a class="epi-name mt-3 mb-0 btn" type="button" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
+                                                    <a class="epi-name mt-2 mb-0 btn" type="button" href="{{ URL::to('artist/'.$audios_details->artist_slug)}}">
                                                         <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
-                            </ul>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -158,3 +158,17 @@
         </section>
     @endforeach
 @endif
+
+<script>
+    var elem = document.querySelector('.audio-categories');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
