@@ -1341,9 +1341,6 @@ class HomeController extends Controller
                 $mail_check = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', $device_name)->first();
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->count();
 
-                $subuser_check = Multiprofile::where('parent_id', '=', Auth::User()->id)->count();
-                    
-
                 if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
                 {
                     LoggedDevice::where('user_ip','=', $userIp)->where('user_id', Auth::User()->id)->where('device_name', $device_name)->delete();
@@ -1448,194 +1445,9 @@ class HomeController extends Controller
 
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-             
-                // blocked videos
-                $block_videos = BlockVideo::where('country_id', $countryName)->get();
-                if (!$block_videos->isEmpty())
-                {
-                    foreach ($block_videos as $block_video)
-                    {
-                        $blockvideos[] = $block_video->video_id;
-                    }
-                }
-                else
-                {
-                    $blockvideos[] = '';
-                }
-
-                // Mode - Family & Kids
-                if ($multiuser != null)
-                {
-                    $Mode = Multiprofile::where('id', $multiuser)->first();
-                }
-                else
-                {
-                    $Mode = User::where('id', Auth::User()->id)->first();
-                }
-
-                $Family_Mode = $Mode['FamilyMode'];
-                $Kids_Mode = $Mode['Kidsmode'];
-
-                // Most watched videos By user
-                
-                if ($Recomended->Recommendation == 1)
-                {
-
-                    $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                        ->where('videos.status', '=', '1')
-                        ->where('videos.draft', '=', '1')
-                        ->where('videos.active', '=', '1')
-                        ->groupBy('video_id');
-                    if ($multiuser != null)
-                    {
-                        $most_watch_user = $most_watch_user->where('recent_views.sub_user', $multiuser);
-                    }
-                    else
-                    {
-                        $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()->id);
-                    }
-                    if ($Family_Mode == 1)
-                    {
-                        $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
-                    }
-                    if ($Kids_Mode == 1)
-                    {
-                        $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
-                    }
-                    $most_watch_user = $most_watch_user->orderByRaw('count DESC')
-                        ->limit(15)
-                        ->get();
-                }
+                // Mode -  Kids
                
-                // Most watched videos In website
-                if ($getfeching->geofencing == 'ON')
-                {
-
-                    $Blocking_videos = BlockVideo::where('country_id', $countryName)->get();
-                    if (!$Blocking_videos->isEmpty())
-                    {
-                        foreach ($Blocking_videos as $Blocking_video)
-                        {
-                            $blocking_videos[] = $Blocking_video->video_id;
-                        }
-                    }
-                    else
-                    {
-                        $blocking_videos = [];
-                    }
-                }else{
-                    $blocking_videos = [];
-                }
-
-                if ($Recomended->Recommendation == 1)
-                {
-                    $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                        ->where('videos.status', '=', '1')
-                        ->where('videos.draft', '=', '1')
-                        ->where('videos.active', '=', '1')
-                        ->groupBy('video_id')
-                        ->whereNotIn('videos.id', $blocking_videos);
-                    if ($Family_Mode == 1)
-                    {
-                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
-                    }
-                    if ($Kids_Mode == 1)
-                    {
-                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
-                    }
-                    $top_most_watched = $top_most_watched->orderByRaw('count DESC')
-                        ->limit(15)
-                        ->get();
-                }
-
-                // Most Watched Videos in country
-                if ($Recomended->Recommendation == 1)
-                {
-
-                    $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                        ->where('videos.status', '=', '1')
-                        ->where('videos.draft', '=', '1')
-                        ->where('videos.active', '=', '1')
-                        ->groupBy('video_id')
-                        ->orderByRaw('count DESC');
-                    if ($Family_Mode == 1)
-                    {
-                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
-                    }
-                    if ($Kids_Mode == 1)
-                    {
-                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
-                    }
-                    $Most_watched_country = $Most_watched_country->where('recent_views.country_name', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(15)
-                        ->get();
-                }
-
-                // User Preferences
-                if ($Recomended->Recommendation == 1)
-                {
-                    $preference_genres = User::where('id', Auth::user()->id)->pluck('preference_genres')->first();
-
-                    $preference_language = User::where('id', Auth::user()->id)->pluck('preference_language')->first();
-
-                    if ($preference_genres != null)
-                    {
-                        $video_genres = json_decode($preference_genres);
-                        $preference_gen = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                        ->where('videos.status', '1')
-                        ->where('videos.draft', '1')
-                        ->where('videos.active', '1')
-
-                        ->whereIn('category_id', $video_genres)->whereNotIn('videos.id', $blocking_videos)->groupBy('categoryvideos.video_id');
-                        if ($Family_Mode == 1)
-                        {
-                            $preference_gen = $preference_gen->where('age_restrict', '<', 18);
-                        }
-                        if ($Kids_Mode == 1)
-                        {
-                            $preference_gen = $preference_gen->where('age_restrict', '<', 10);
-                        }
-                        $preference_gen = $preference_gen->get();
-                    }
-                   
-                    if ($preference_language != null)
-                    {
-                        
-                        $video_language = json_decode($preference_language);
-                        $preference_Lan = Video::Select('videos.id','videos.title','videos.slug','videos.year','videos.rating','videos.access','videos.publish_type','videos.global_ppv','videos.publish_time','videos.publish_status','videos.ppv_price',
-                                            'duration','videos.rating','videos.image','videos.featured','videos.age_restrict','videos.video_tv_image','videos.player_image','videos.details','videos.description'
-                                            ,'languagevideos.*','videos.id as pre_video_id')
-                                            ->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-                                            ->whereIn('language_id', $video_language)
-                                            ->whereNotIn('videos.id', $blocking_videos)
-                                            ->where('videos.status', '=', '1')
-                                            ->where('videos.draft', '=', '1')
-                                            ->where('videos.active', '=', '1')
-                                            ->groupBy('languagevideos.video_id');
-                        if ($Family_Mode == 1)
-                        {
-                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
-                        }
-                        if ($Kids_Mode == 1)
-                        {
-                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 10);
-                        }
-                        $preference_Lan = $preference_Lan->get();
-                    }
-                }
-
-                // family & Kids Mode Restriction
-                $Subuser = Session::get('subuser_id');
-
-                if ($Subuser != null)
-                {
-                    $Mode = Multiprofile::where('id', $Subuser)->first();
-                }
-                else
-                {
-                    $Mode = User::where('id', Auth::user()->id)->first();
-                }
-            
-
+                $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
 
                 if ($multiuser != null)
                 {
@@ -1707,8 +1519,8 @@ class HomeController extends Controller
                     'cnt_watching'      => $cnt_watching,
                     'ppv_gobal_price'   => $ppv_gobal_price,
                     'countryName'       => $countryName,
-                    'Family_Mode'       => $Family_Mode,
-                    'Kids_Mode'         => $Kids_Mode,
+                    'Family_Mode'       => 2,
+                    'Kids_Mode'         => $Mode['Kids_Mode'],
                     'Mode'              => $Mode,
                     'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting(),
                     'order_settings_list' => OrderHomeSetting::get(), 
@@ -1754,11 +1566,11 @@ class HomeController extends Controller
                     'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
                     'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                     'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
-                    'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
-                    'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
-                    'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
-                    'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                    'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
+                    'most_watch_user'      => (new FrontEndQueryController)->Most_watched_videos_users(),
+                    'top_most_watched'     => (new FrontEndQueryController)->Most_watched_videos_site(),
+                    'Most_watched_country'   =>  (new FrontEndQueryController)->Most_watched_videos_country(), 
+                    'preference_genres'      => (new FrontEndQueryController)->preference_genres(),
+                    'preference_Language'    => (new FrontEndQueryController)->preference_language(), 
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
@@ -1774,7 +1586,6 @@ class HomeController extends Controller
             }
         }
     }
-    
     public function social()
     {
         return View::make('social');
@@ -4910,6 +4721,6 @@ public function uploadExcel(Request $request)
             throw $th;
         }
     }
-
+    
 
 }
