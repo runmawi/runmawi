@@ -33,9 +33,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="series-networks home-sec list-inline row p-0 mb-0">
                             @foreach($data as $key => $series_networks)
-                                <li class="slide-item">
+                                <li class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -46,14 +46,19 @@
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
+                                                {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" src="{{ $series_networks->banner_image_url ? $series_networks->banner_image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}"> --}}
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
                                                     <p class="epi-name text-left m-0">{{ __($series_networks->name) }}</p>
                                                     <div class="movie-time d-flex align-items-center my-2"></div>
                                                 </a>
-                                                <a class="epi-name mt-3 mb-0 btn" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
+
+                                                <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($series_networks->description) > 75 ? substr(html_entity_decode(strip_tags($series_networks->description)), 0, 75) . '...' : $series_networks->description }}
+                                                </p>
+
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                     {{ __('Play Now')}}
                                                 </a>
@@ -69,3 +74,17 @@
         </div>
     </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.series-networks');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

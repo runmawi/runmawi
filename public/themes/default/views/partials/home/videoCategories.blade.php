@@ -25,14 +25,14 @@
                   </div>
 
                   <div class="favorites-contens">
-                     <ul class="favorites-slider list-inline row p-0 mb-0">
+                     <div class="video-category home-sec list-inline row p-0 mb-0">
                         @php
                               $parentCategories = App\VideoCategory::where('in_home', '=', 1)->orderBy('order', 'ASC')->get();
                         @endphp
 
                         @if(isset($parentCategories))
                               @foreach($parentCategories as $Categories)
-                                 <li class="slide-item">
+                                 <li class="items">
                                     <div class="block-images position-relative">
                                           <div class="border-bg">
                                              <div class="img-box">
@@ -50,21 +50,26 @@
                                              <div class="hover-buttons text-white">
                                                 <a aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
                                                       @if($ThumbnailSetting->title == 1)
-                                                         <p class="epi-name text-left m-0">
+                                                         <p class="epi-name text-left mt-2 m-0">
                                                             {{ Str::limit($Categories->name, 18) }}
                                                          </p>
                                                       @endif
+
+                                                      <p class="desc-name text-left m-0 mt-1">
+                                                         {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : $Categories->description }}
+                                                      </p>
+
                                                 </a>
-                                                <a class="epi-name mt-5 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
                                                       <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
                                                 </a>
                                              </div>
                                           </div>
                                     </div>
-                                 </li>
+                                 </div>
                               @endforeach
                         @endif
-                     </ul>
+                     </div>
                   </div>
                   
                </div>
@@ -73,3 +78,18 @@
       </section>
 
 @endif
+
+
+<script>
+    var elem = document.querySelector('.video-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
