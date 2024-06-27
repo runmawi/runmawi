@@ -85,53 +85,51 @@ class ChannelHomeController extends Controller
         $channel = Channel::where('channel_slug',$slug)->first(); 
 
         $currency = CurrencySetting::first();
-            if(!empty($channel)){
-                $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-                ->get();
 
-                $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')
-                ->orderBy('created_at', 'DESC')
-                ->get() ;
+        if(!empty($channel)){
 
-                $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-                ->get();
+            $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
+            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+            ->get();
 
-                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
-                ->get();
-    
-            $ThumbnailSetting = ThumbnailSetting::first();
-            
+            $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
+            ->where('uploaded_by', '=', 'Channel')
+            ->orderBy('created_at', 'DESC')
+            ->get() ;
+
+            $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
+            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+            ->get();
+
+            $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
+            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+            ->get();
+
             $data = array(
-                'currency' => $currency,
-                'latest_video' => $latest_videos,
+                'currency'      => $currency,
+                'latest_video'  => $latest_videos,
                 'latest_series' => $latest_series,
                 'latest_audios' => $audios,
-                'audios' => $audios,
+                'audios'    => $audios,
                 'livetream' => $livetreams,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'LiveCategory' => LiveCategory::get(),
-                'VideoCategory' => VideoCategory::get(),
-                'SeriesGenre' => SeriesGenre::get(),
-                'AudioCategory' => AudioCategory::get(),
-                'channel_partner' => $channel,
+                'channel_partner'   => $channel,
+                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
+                'LiveCategory'  => (new FrontEndQueryController)->LiveCategory() ,
+                'VideoCategory' => (new FrontEndQueryController)->genre_video_display() ,
+                'SeriesGenre'   => (new FrontEndQueryController)->SeriesGenre() ,
+                'AudioCategory' => (new FrontEndQueryController)->AudioCategory() ,
+                'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() , 
                 'order_settings_list' => OrderHomeSetting::get(),
-                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                'videos_expiry_date_status' => videos_expiry_date_status(),
-                'getfeching' => Geofencing::first(),
-                'default_vertical_image_url' => default_vertical_image_url(),
-                'default_horizontal_image_url' => default_horizontal_image_url(),
+                'getfeching'          => Geofencing::first(),
+                'videos_expiry_date_status'     => videos_expiry_date_status(),
+                'default_vertical_image_url'    => default_vertical_image_url(),
+                'default_horizontal_image_url'  => default_horizontal_image_url(),
                 'settings' => $this->settings ,
             );
 
             return Theme::view('ChannelHome', $data);
         }
     }
-
-
     
     public function ChannelList()
     {
