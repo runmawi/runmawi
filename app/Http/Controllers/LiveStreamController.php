@@ -179,24 +179,6 @@ class LiveStreamController extends Controller
     {
       try {  
         
-      $Adsvariables = Adsvariables::get();
-
-      // $agent        = new Agent();
-      // $current_timezone = current_timezone() ;
-      // $current_time = Carbon::now($current_timezone)->format('H:i:s');
-
-      // if ( empty($request->query())) {
-          
-      //   $currentUrl = $request->fullUrl();
-      //   $Adsvariables_url = $currentUrl . '?App={App}&Bundle={Bundle}&App Name={App Name}&location='.$current_timezone.'&time='.$current_time.'&device=desktop&operating system='.$agent->platform();
-
-      //   foreach ($Adsvariables as $value) {
-      //       $Adsvariables_url = str_replace('{' . $value->name . '}', $value->website, $Adsvariables_url);
-      //   }
-
-      //   return redirect($Adsvariables_url);
-      // }
-
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
 
@@ -375,8 +357,19 @@ class LiveStreamController extends Controller
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
 
+            $adsvariables = Adsvariables::get();
+            $adsvariable_url = ''; 
+            
+            foreach ($adsvariables as $key => $ads_variable ) {
+                if ($key === 0) {
+                    $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
+                } else {
+                    $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                }
+            }
+
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
-                                            ->get()->map( function ($item)  use (  $geoip , $settings , $currency , $getfeching)  {
+                                            ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
 
               $item['users_video_visibility_status']         = true ;
               $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]); 
@@ -489,7 +482,7 @@ class LiveStreamController extends Controller
                   break;
 
                   case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
-                    $item['livestream_URL'] =  $item->mp4_url ;
+                    $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
                     $item['livestream_player_type'] =  'application/x-mpegURL' ;
                   break;
 
@@ -499,7 +492,7 @@ class LiveStreamController extends Controller
                   break;
 
                   case $item['url_type'] == "live_stream_video":
-                      $item['livestream_URL'] = $item->live_stream_video ;
+                      $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
                       $item['livestream_player_type'] =  'application/x-mpegURL' ;
                   break;
 
@@ -509,7 +502,7 @@ class LiveStreamController extends Controller
                   break;
 
                   case $item['url_type'] == "Encode_video":
-                      $item['livestream_URL'] =  $item->hls_url ;
+                      $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
                       $item['livestream_player_type'] =  'application/x-mpegURL'  ;
                   break;
 
@@ -524,7 +517,7 @@ class LiveStreamController extends Controller
                   break;
                   
                   case $item['url_type'] == "aws_m3u8":
-                    $item['livestream_URL'] =  $item->hls_url ;
+                    $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
                     $item['livestream_player_type'] =  'application/x-mpegURL' ;
                   break;
 
@@ -594,7 +587,7 @@ class LiveStreamController extends Controller
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
                  'Livestream_details'      => $Livestream_details ,
-                 'adsvariable'             =>  $Adsvariables    ,
+                 'adsvariable'             =>  $adsvariables    ,
                  'setting'                => $settings,
                  'current_theme'          => $this->Theme,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">

@@ -9,6 +9,9 @@ use Carbon\Carbon as Carbon;
 // @$translate_language = App\Setting::pluck('translate_language')->first();
 // \App::setLocale(@$translate_language); translate_language
 
+
+// Route::get('/update-htaccess', 'HomeController@updateHtaccess');
+
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
@@ -703,6 +706,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');
     Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
+
+    
+    // Htaccess access forbidden 
+    Route::get('/access-forbidden', 'HtaccessController@index')->name('access_forbidden');
+    Route::Post('/access-forbidden-update', 'HtaccessController@updateHtaccess')->name('updateAccessForbidden');
 
     //  Bulk Delete
     Route::get('admin/Livestream_bulk_delete', 'AdminLiveStreamController@Livestream_bulk_delete')->name('Livestream_bulk_delete');
