@@ -2,95 +2,47 @@
    @php 
       include (public_path('themes/default/views/header.php'));
 
-      $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
-      $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
+      $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
+      
+      $homepage_array_data = [ 
+                            'order_settings_list'      => $order_settings_list, 
+                            'multiple_compress_image'  => $multiple_compress_image, 
+                            'videos_expiry_date_status' => $videos_expiry_date_status,
+                            'default_vertical_image_url'   => $default_vertical_image_url,
+                            'default_horizontal_image_url' => $default_horizontal_image_url,
+                            'ThumbnailSetting' => $ThumbnailSetting,
+                            'getfeching' => $getfeching,
+                            'currency'   => $currency,
+                            'settings'   => $settings,
+                         ];
+                                 
+        $Slider_array_data = array(
+            'sliders'               => $sliders, 
+            'live_banner'           => $live_banner, 
+            'video_banners'         => $video_banners, 
+            'series_sliders'        => $series_sliders, 
+            'live_event_banners'    => $live_event_banners, 
+            'Episode_sliders'       => $Episode_sliders, 
+            'VideoCategory_banner'  => $VideoCategory_banner, 
+        );   
+
    @endphp
-<!-- Header End -->
 
 <!-- Slider Start -->
 
-   @php
-
-         $check_Kidmode = 0;
-
-         $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
-
-            if ($getfeching != null && $getfeching->geofencing == 'ON') {
-               $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
-            }
-
-            if ($check_Kidmode == 1) {
-               $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
-            }
-
-            if ($videos_expiry_date_status == 1) {
-               $video_banner = $video_banner->where(function ($query) {
-                  $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-               });
-            }
-
-         $video_banner = $video_banner->latest()->limit(15)->get();
-
-                  // Video Category Banner
-
-         $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
-
-         $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                    ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
-                                    ->where('videos.draft', 1)->where('videos.banner', 0);   
-
-                                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
-                                    $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
-                                 }
-
-                                 if ($check_Kidmode == 1) {
-                                    $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
-                                 }
-
-                                 if ($videos_expiry_date_status == 1) {
-                                    $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
-                                       $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-                                    });
-                                 }
-
-         $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
-
-         $Slider_array_data = array(
-            'sliders'            => $sliders, 
-            'live_banner'        => $live_banner , 
-            'video_banners'      => $video_banner ,
-            'series_sliders'     => $series_sliders ,
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
-            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
-            'VideoCategory_banner' => $VideoCategory_banner ,
-         );    
-
-   @endphp
-
    <section id="home" class="iq-main-slider m-0 p-0">
-
       <div id="home-slider" class="slider m-0 p-0">
-         @if($slider_choosen == 2)
-            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-2', $Slider_array_data )->content() !!}
-         @else
-            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-1', $Slider_array_data )->content() !!}
-         @endif
+         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
       </div>
-
    </section>
-<!-- Slider End -->
 
 <!-- MainContent -->
-      <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
-         {{-- continue watching videos --}}
 
+      <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
+
+               {{-- continue watching videos --}}
             @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
-               {!! Theme::uses('default')->load('public/themes/default/views/partials/home/continue-watching', [
-                  'data' => $cnt_watching, 'order_settings_list' => $order_settings_list ,
-                  'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ,
-                  'default_horizontal_image_url' => $default_horizontal_image_url , 'default_vertical_image_url' => $default_vertical_image_url,
-                  'settings' => $settings,'ThumbnailSetting' => $ThumbnailSetting,'currency' => $currency
-                  ])->content() !!}
+               {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/continue-watching", array_merge($homepage_array_data, ['data' => $cnt_watching]) )->content() !!}
             @endif
 
             @partial('home_sections')
@@ -230,13 +182,12 @@ function toggleReadMore(key) {
 </style>
 
 <!-- Trailer -->
-<?php
+@php
    include(public_path('themes/default/views/partials/home/Trailer-script.php'));
    include(public_path('themes/default/views/partials/home/home_pop_up.php'));
-   ?>
-   @php 
-      include(public_path('themes/default/views/footer.blade.php'))
-   @endphp
+   include(public_path('themes/default/views/footer.blade.php'))
+@endphp
+
 <!-- End Of MainContent -->
 
 <script>
@@ -315,46 +266,6 @@ function toggleReadMore(key) {
       overflow-y:scroll;
    }
 </style>
-
-<script>
-   $('.mywishlist').click(function(){
-        var video_id = $(this).data('videoid');
-           if($(this).data('authenticated')){
-               $(this).toggleClass('active');
-               if($(this).hasClass('active')){
-                       $.ajax({
-                           url: "<?php echo URL::to('/mywishlist');?>",
-                           type: "POST",
-                           data: { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>'},
-                           dataType: "html",
-                           success: function(data) {
-                             if(data == "Added To Wishlist"){
-                               
-                               $('#'+video_id).text('') ;
-                               $('#'+video_id).text('Remove From Wishlist');
-                               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
-                             setTimeout(function() {
-                               $('.add_watch').slideUp('fast');
-                             }, 3000);
-                             }else{
-                               
-                               $('#'+video_id).text('') ;
-                               $('#'+video_id).text('Add To Wishlist');
-                               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
-                             setTimeout(function() {
-                             $('.remove_watch').slideUp('fast');
-                             }, 3000);
-                             }               
-                       }
-                   });
-               }                
-           } else {
-             window.location = '<?= URL::to('login') ?>';
-         }
-     });
-   
-</script>
-
 
 <script>
    var scheduler_content = '<?= Session::get('scheduler_content'); ?>';

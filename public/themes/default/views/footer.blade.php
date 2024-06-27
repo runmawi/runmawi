@@ -1,12 +1,16 @@
 <?php 
-$settings = App\Setting::first(); 
-       use Carbon\Carbon;
-       $user = App\User::where('id','=',1)->first(); 
-       $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
-       $session = session()->all();
-       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-       $theme = App\SiteTheme::first();
+
+  use Carbon\Carbon;
+
+  $settings = App\Setting::first(); 
+  $user    = App\User::where('id',1)->first(); 
+  $app_setting = App\AppSetting::where('id',1)->where('status','hidden')->first();
+  $session = session()->all();
+
+  $theme = App\SiteTheme::first();
+  $theme_mode = $theme->theme_mode;
 ?>
+
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
@@ -48,8 +52,7 @@ $settings = App\Setting::first();
                       <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" alt="roku" /></a>
               <?php } ?>
               </div>
-              
-            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+
           </div>
           </div>
       </div>
@@ -196,7 +199,7 @@ function about(evt , id) {
 }
 </script>
 
-<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<?php  $search_dropdown_setting = $theme->search_dropdown_setting ; ?>
 <input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
 
 <script type="text/javascript">
@@ -347,7 +350,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
   }
 </script>
 <?php  
-  $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
+  $Prevent_inspect = $theme->prevent_inspect ;
   if( $Prevent_inspect == 1){
 ?>
 <script>
@@ -395,4 +398,3 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     </script>
 <?php } ?>
 </body>
-</html>
