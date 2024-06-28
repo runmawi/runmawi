@@ -168,8 +168,7 @@ class FrontEndQueryController extends Controller
     public function latest_Series()
     {
         $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-            ->where('active', '1')->latest()->limit(15)
-            ->get();
+            ->where('active', '1')->latest()->limit(15);
 
         return $latest_series ;
     }
@@ -496,8 +495,7 @@ class FrontEndQueryController extends Controller
         
         $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
                                 ->where('active', '1')->where('status', '1')
-                                ->latest()->limit(15)
-                                ->get();
+                                ->latest()->limit(15);
 
         return $latest_audios ;
     }
