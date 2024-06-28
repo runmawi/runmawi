@@ -138,8 +138,8 @@ class TvshowsController extends Controller
             return Theme::view('tv-home', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            // return abort(404);
+            // return $th->getMessage();
+            return abort(404);
         }
     }
 
