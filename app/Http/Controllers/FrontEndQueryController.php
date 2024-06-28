@@ -68,7 +68,7 @@ class FrontEndQueryController extends Controller
             $this->Mode =  User::where('id', Auth::User()->id)->first();
         }
                     
-        $this->check_Kidmode = !Auth::guest() && $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+        $this->check_Kidmode = !Auth::guest() && $this->Mode['user_type'] != null && $this->Mode['user_type'] == "Kids" ? 1 : 0 ;
 
     }
 
