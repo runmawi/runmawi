@@ -49,7 +49,6 @@ class FrontEndQueryController extends Controller
 
         $this->getfeching = Geofencing::first();
         $this->videos_expiry_date_status = videos_expiry_date_status();
-        $this->check_Kidmode = 0 ;
 
         $this->default_vertical_image_url = default_vertical_image_url();
         $this->default_horizontal_image_url = default_horizontal_image_url();
@@ -58,7 +57,18 @@ class FrontEndQueryController extends Controller
         $this->blockVideos = Block_videos();
         $this->countryName = Country_name();
 
+        // Verify check Kidmode
         $this->multiuser_CheckExists = Session::get('subuser_id');
+
+        if (  $this->multiuser_CheckExists  != null && !Auth::guest() ) {
+
+            $this->Mode = Multiprofile::where('id', $this->multiuser_CheckExists)->first() ;
+
+        }elseif( !Auth::guest()) {
+            $this->Mode =  User::where('id', Auth::User()->id)->first();
+        }
+                    
+        $this->check_Kidmode = !Auth::guest() && $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
 
     }
 
@@ -252,7 +262,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $featured_episodes;
     }
@@ -263,7 +276,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('status', '1')->where('active', 1)->where('views', '>', '5')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $trending_episodes;
     }
@@ -272,9 +288,12 @@ class FrontEndQueryController extends Controller
     {
         $free_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                                  'duration','rating','image','featured','tv_image','player_image')
-                                            ->where('status', '1')->where('active', 1)->where('access', 'guest')
+                                            ->where('status', 1)->where('active', 1)->where('access', 'guest')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $free_episodes;
     }
