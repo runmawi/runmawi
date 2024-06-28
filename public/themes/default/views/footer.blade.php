@@ -255,13 +255,12 @@ function about(evt , id) {
       <?php } 
     }
      ?>
- <script  src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script src="<?= URL::to('assets/js/lazysized.5.3.2.js') ?>" async></script>
- <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script async src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
 
  <script>
   function loadScriptWithTimeout(url, timeout = 50000) {
@@ -312,9 +311,9 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
         s.src = u;
         r.parentNode.insertBefore(s, r);
     }
-    if (!window.HTMLPictureElement) {
-    loadJS(" <script src="<?= URL::to('assets/js/lazysized.5.3.2.js') ?>" async></script>");
-    }
+    // if (!window.HTMLPictureElement) {
+    // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
+    // }
 </script>
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 

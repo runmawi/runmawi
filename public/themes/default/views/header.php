@@ -264,15 +264,16 @@
    <!-- Bootstrap CSS -->
      <link rel="preload" href="<?= URL::to('assets/css/bootstrap.min.css') ?>" as="style"/>
      <link rel="stylesheet" href="<?= URL::to('assets/css/bootstrap.min.css')  ?>" />
-   
-     <!-- Typography CSS  -->
+
+         <!-- Typography CSS  -->
    <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
-   
-   <!-- Style -->
-   <link rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
 
+     <!-- Style -->
+     <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
+   
+   
    <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('assets/css/variable.css') ;?>" />
    

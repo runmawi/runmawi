@@ -48,15 +48,7 @@
 <div class="main-content">
 
     <div>
-        <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden">
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-                    </div>
-                </div>
-            </div>
-        </section>
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
     </div>
 
     <section id="iq-favorites">
