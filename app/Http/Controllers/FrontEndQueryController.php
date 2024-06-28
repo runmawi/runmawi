@@ -91,7 +91,7 @@ class FrontEndQueryController extends Controller
                                     $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
                                 }
 
-        $latest_videos = $latest_videos->latest()->limit(15)->get();
+        $latest_videos = $latest_videos->latest()->limit(15);
 
         return $latest_videos ;
     }
