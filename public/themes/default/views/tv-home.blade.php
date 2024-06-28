@@ -10,7 +10,7 @@
                                 'default_horizontal_image_url' => $default_horizontal_image_url,
                             ]; 
 
-    $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
+                            $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
 @endphp
 
                 {{-- Session Note --}}
@@ -32,7 +32,13 @@
                 {{-- Slider --}}
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
-        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
+        {!! Theme::uses('default')->load('public/themes/default/views/partials/home/slider-1', [
+                'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
+                                        ->latest()->get() ,
+                'Episode_sliders' => App\Episode::where('active', '=', '1')->where('banner','=','1')
+                ->latest()->get()
+            ])->content() !!}
+
     </div>
     
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -48,15 +54,7 @@
 <div class="main-content">
 
     <div>
-        <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden">
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-                    </div>
-                </div>
-            </div>
-        </section>
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
     </div>
 
     <section id="iq-favorites">
