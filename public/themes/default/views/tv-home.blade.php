@@ -61,7 +61,9 @@
         </div>
     </section>
 
-    <section id="iq-favorites">
+    <!-- **************Don't Enable this section We don't have Access for episodes**************  -->
+    
+    <!-- <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
@@ -69,7 +71,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
