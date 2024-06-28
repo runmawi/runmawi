@@ -383,7 +383,11 @@ class FrontEndQueryController extends Controller
 
     public function Episode_sliders()
     {
-        $Episode = Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get();
+        $Episode = Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)
+        ->get()->map(function($item){
+            $item['series'] = Series::where('id',$item->series_id)->first();
+            return $item ;
+        });
        
         return $Episode ;
     }

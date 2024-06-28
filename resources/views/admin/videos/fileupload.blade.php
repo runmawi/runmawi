@@ -1029,6 +1029,7 @@ border-radius: 0px 4px 4px 0px;
                                  <div class="col-sm-6 form-group" >
                                     <label class="m-0">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                    <span id="error_ppv_price" style="color:red;">*Enter the PPV Price </span>
                                  </div>
             
                                  <div class="col-sm-6 form-group" >
@@ -1126,7 +1127,7 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                            <!-- </div> -->
                         </div>
-                        <input type="button" name="next" class="next action-button" value="Next" />
+                        <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
                         <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                      </fieldset>
 
@@ -1502,6 +1503,105 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
+
+$(document).ready(function() {
+
+$('#error_ppv_price').hide();
+
+function checkPriceInput() {
+            var priceInput = $('#price').val().trim();
+            if (!priceInput) {
+                $('#error_ppv_price').show();
+                $('#nextppv').attr('disabled', 'disabled');
+            } else {
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+            }
+        }
+        
+   $("#nextppv").click(function(){
+      var priceInput = $('#price').val().trim();
+         if (!priceInput) {
+               event.preventDefault(); // Prevent form submission
+               $('#nextppv').attr('disabled','disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
+               $('#error_ppv_price').show();
+
+         }else{
+               $('#error_ppv_price').hide();
+               $('#nextppv').removeAttr('disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
+
+         }
+   });
+      if($('#access').val() == 'ppv'){
+
+  
+         if($('#access').val() == 'ppv'){
+               $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
+
+               $('#nextppv').attr('disabled','disabled');
+         }
+      }
+   
+
+      $("#access").change(function(){
+
+         if($('#access').val() == 'ppv'){
+               $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
+
+               $('#nextppv').attr('disabled','disabled');
+         }
+
+      });
+
+   if($('#access').val() == 'ppv'){
+      
+      $('#msform').on('submit', function(event) {
+         var priceInput = $('#price').val().trim();
+         if (!priceInput) {
+               event.preventDefault(); // Prevent form submission
+               // alert('PPV Price cannot be empty'); // Show an alert message
+               $('#nextppv').attr('disabled','disabled');
+               $('#error_ppv_price').show();
+               $('#price').on('focusout keyup change', checkPriceInput);
+
+         }else{
+               $('#error_ppv_price').hide();
+               $('#nextppv').removeAttr('disabled');
+               $('#price').on('focusout keyup change', checkPriceInput);
+
+         }
+      });
+
+   }
+
+
+   
+   $("#access").change(function(){
+
+      if($('#access').val() == 'ppv'){
+      
+         $('#msform').on('submit', function(event) {
+            var priceInput = $('#price').val().trim();
+            if (!priceInput) {
+                  event.preventDefault(); // Prevent form submission
+                  $('#error_ppv_price').show();
+                  $('#nextppv').attr('disabled','disabled');
+
+               }else{
+                  $('#error_ppv_price').hide();
+                   $('#nextppv').removeAttr('disabled');
+               }
+         });
+
+      }
+
+   });
+
+});
 
 document.addEventListener('DOMContentLoaded', function () {
         var globalPpvCheckbox = document.getElementById('global_ppv');
