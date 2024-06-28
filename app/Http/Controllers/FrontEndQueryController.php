@@ -186,7 +186,7 @@ class FrontEndQueryController extends Controller
 
     public function latest_Series()
     {
-        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
+        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
             ->where('active', '1')->latest()->limit(15)->get();
 
         return $latest_series ;
@@ -332,7 +332,7 @@ class FrontEndQueryController extends Controller
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
                                         ->where('status', 1)
                                         ->latest()
@@ -512,7 +512,7 @@ class FrontEndQueryController extends Controller
     public function latest_audios()
     {
         
-        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
+        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', '1')->where('status', '1')
                                 ->latest()->limit(15)->get();
 
