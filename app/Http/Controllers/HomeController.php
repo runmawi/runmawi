@@ -1508,12 +1508,6 @@ class HomeController extends Controller
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
 
-                $series_sliders = Series::select('id','title','slug','year','rating','access',
-                                            'duration','rating','image','featured','tv_image','player_image','details','description')
-                                            ->where('active', '1')->where('banner','1')
-                                            ->latest()->limit(15)
-                                            ->get() ;
-
                 $data = array(
 
                     'currency'          => $currency,
@@ -1568,7 +1562,7 @@ class HomeController extends Controller
                     'sliders'            => (new FrontEndQueryController)->sliders(), 
                     'live_banner'        => (new FrontEndQueryController)->live_banners(),  
                     'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                    'series_sliders'     => $series_sliders,
+                    'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
                     'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
                     'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                     'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 

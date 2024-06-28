@@ -394,12 +394,13 @@ class FrontEndQueryController extends Controller
 
     public function series_sliders()
     {
-        $series_sliders = Series::select('id','title','slug','year','rating','access',
-                                            'duration','rating','image','featured','tv_image','player_image','details','description')
-                                            ->where('active', '1')->where('banner','1')
-                                            ->latest()->limit(15)
-                                            ->get() ;
-        $series_sliders ; 
+        $series_sliders = Series::select('id','title','slug','year','rating','access','banner','active',
+                                        'duration','rating','image','featured','tv_image','player_image','details','description')
+                                ->where('active', 1)->where('banner',1)
+                                ->latest()->limit(15)
+                                ->get() ;
+
+        return $series_sliders ; 
     }
 
     public function live_banners()
