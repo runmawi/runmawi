@@ -110,7 +110,7 @@
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play') }}
                                 </a>
 
-                                <a class="btn bd ml-2" href="{{ url('episode/' . @$slider_video->series_title->slug . '/' . $slider_video->slug) }}">
+                                <a class="btn bd ml-2" href="{{ url('play_series/'. $slider_video->slug) }}">
                                     <i class="fa fa-info" aria-hidden="true"></i> {{ __('More details') }}
                                 </a>
                             </div>
@@ -136,18 +136,18 @@
 {{-- Tv-shows Episode Slider  --}}
 
 @if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
-    @foreach ($Episode_sliders as $series_slider)
+    @foreach ($Episode_sliders as $Episode_slider)
 
     <?php
         $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'series_seasons.trailer_type')
         ->Join('series_seasons', 'series_seasons.series_id', '=', 'series.id')
-        ->where('series.id', $series_slider->id)
-        ->where('series_seasons.id', '=', $series_slider->season_trailer)
+        ->where('series.id', $Episode_slider->id)
+        ->where('series_seasons.id', '=', $Episode_slider->season_trailer)
         ->where('series_trailer', '1')
         ->first();
     ?>
 
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/') . '/public/uploads/images/' . $series_slider->player_image }}" style="background-position: right;" id="image-container">
+    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/') . '/public/uploads/images/' . $Episode_slider->player_image }}" style="background-position: right;" id="image-container">
 
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -155,18 +155,18 @@
                     <div class="col-xl-6 col-lg-12 col-md-12">
 
                         <h1 class="text-white">
-                            {{ strlen($series_slider->title) > 15 ? substr($series_slider->title, 0, 80) . '...' : $series_slider->title }}
+                            {{ strlen($Episode_slider->title) > 15 ? substr($Episode_slider->title, 0, 80) . '...' : $Episode_slider->title }}
                         </h1>
 
                         <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color:#fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            {{ __(strip_tags(html_entity_decode($series_slider->episode_description)))}}
+                            {{ __(strip_tags(html_entity_decode($Episode_slider->episode_description)))}}
                         </div>
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="{{ URL::to('/episode/' . $series_slider->series_title->slug . '/' . $series_slider->slug) }}" class="btn bd">
+                            <a href="{{ URL::to('episode/' . $Episode_slider->series_title->slug . '/' . $Episode_slider->slug) }}" class="btn bd">
                                 <i class="fa fa-play mr-2" aria-hidden="true"></i>  {{ __('Play') }}
                             </a>
-                            <a class="btn bd ml-2" href="{{ URL::to('episode/'. $series_slider->series_slug.'/'.$series_slider->slug ) }}">
+                            <a class="btn bd ml-2" href="{{ URL::to('episode/'. $Episode_slider->series_title->slug.'/'.$Episode_slider->slug ) }}">
                                 <i class="fa fa-info" aria-hidden="true"></i>  {{ __('More details') }}
                             </a>
                         </div>
