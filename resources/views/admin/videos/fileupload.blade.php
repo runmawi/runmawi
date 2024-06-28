@@ -1503,105 +1503,86 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-
 $(document).ready(function() {
-
-$('#error_ppv_price').hide();
-
-function checkPriceInput() {
+        // Function to check the price input and update button states
+        function checkPriceInput() {
             var priceInput = $('#price').val().trim();
-            if (!priceInput) {
+            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
+
+            if (!priceInput && !isGlobalPPVChecked) {
                 $('#error_ppv_price').show();
                 $('#nextppv').attr('disabled', 'disabled');
+                $('#submit_button').attr('disabled', 'disabled');
             } else {
                 $('#error_ppv_price').hide();
                 $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
             }
         }
-        
-   $("#nextppv").click(function(){
-      var priceInput = $('#price').val().trim();
-         if (!priceInput) {
-               event.preventDefault(); // Prevent form submission
-               $('#nextppv').attr('disabled','disabled');
-               $('#price').on('focusout keyup change', checkPriceInput);
-               $('#error_ppv_price').show();
 
-         }else{
-               $('#error_ppv_price').hide();
-               $('#nextppv').removeAttr('disabled');
-               $('#price').on('focusout keyup change', checkPriceInput);
+        // Event handler for global PPV checkbox change
+        $('#global_ppv').change(function() {
+            var isChecked = $(this).is(':checked');
+            if (isChecked) {
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+                $('#price').off('focusout keyup change', checkPriceInput); // Disable price input validation
+            } else {
+                checkPriceInput();
+                $('#price').on('focusout keyup change', checkPriceInput); // Enable price input validation
+            }
+        });
 
-         }
-   });
-      if($('#access').val() == 'ppv'){
+        // Event handler for access change
+        $('#access').change(function() {
+            if ($(this).val() == 'ppv') {
+                $('#price').on('focusout keyup change', checkPriceInput);
+                $('#global_ppv').on('change', checkPriceInput);
+                $('#msform').on('submit', function(event) {
+                    var priceInput = $('#price').val().trim();
+                    var isGlobalPPVChecked = $('#global_ppv').is(':checked');
 
-  
-         if($('#access').val() == 'ppv'){
-               $('#error_ppv_price').show();
-               $('#price').on('focusout keyup change', checkPriceInput);
+                    if (!priceInput && !isGlobalPPVChecked) {
+                        event.preventDefault(); // Prevent form submission
+                        $('#error_ppv_price').show();
+                        $('#nextppv').attr('disabled', 'disabled');
+                        $('#submit_button').attr('disabled', 'disabled');
+                    } else {
+                        $('#error_ppv_price').hide();
+                        $('#nextppv').removeAttr('disabled');
+                        $('#submit_button').removeAttr('disabled');
+                    }
+                });
+            } else {
+                $('#price').off('focusout keyup change', checkPriceInput);
+                $('#global_ppv').off('change', checkPriceInput);
+                $('#msform').off('submit');
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+            }
+        });
 
-               $('#nextppv').attr('disabled','disabled');
-         }
-      }
-   
-
-      $("#access").change(function(){
-
-         if($('#access').val() == 'ppv'){
-               $('#error_ppv_price').show();
-               $('#price').on('focusout keyup change', checkPriceInput);
-
-               $('#nextppv').attr('disabled','disabled');
-         }
-
-      });
-
-   if($('#access').val() == 'ppv'){
-      
-      $('#msform').on('submit', function(event) {
-         var priceInput = $('#price').val().trim();
-         if (!priceInput) {
-               event.preventDefault(); // Prevent form submission
-               // alert('PPV Price cannot be empty'); // Show an alert message
-               $('#nextppv').attr('disabled','disabled');
-               $('#error_ppv_price').show();
-               $('#price').on('focusout keyup change', checkPriceInput);
-
-         }else{
-               $('#error_ppv_price').hide();
-               $('#nextppv').removeAttr('disabled');
-               $('#price').on('focusout keyup change', checkPriceInput);
-
-         }
-      });
-
-   }
-
-
-   
-   $("#access").change(function(){
-
-      if($('#access').val() == 'ppv'){
-      
-         $('#msform').on('submit', function(event) {
+        // Event handler for the "Next" button click
+        $('#nextppv').click(function(event) {
+            event.preventDefault(); // Prevent form submission
             var priceInput = $('#price').val().trim();
-            if (!priceInput) {
-                  event.preventDefault(); // Prevent form submission
-                  $('#error_ppv_price').show();
-                  $('#nextppv').attr('disabled','disabled');
+            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
 
-               }else{
-                  $('#error_ppv_price').hide();
-                   $('#nextppv').removeAttr('disabled');
-               }
-         });
+            if (!priceInput && !isGlobalPPVChecked) {
+                $('#error_ppv_price').show();
+                $(this).attr('disabled', 'disabled');
+                $('#submit_button').attr('disabled', 'disabled');
+            } else {
+                $('#error_ppv_price').hide();
+                $(this).removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+            }
+        });
 
-      }
-
-   });
-
-});
+        $('#access').trigger('change');
+    });
 
 document.addEventListener('DOMContentLoaded', function () {
         var globalPpvCheckbox = document.getElementById('global_ppv');
