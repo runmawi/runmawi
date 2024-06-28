@@ -97,18 +97,22 @@ class ChannelHomeController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get() ;
 
-            $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-            ->get();
+            // $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
+            // ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+            // ->get();
 
             $latest_videos = (new FrontEndQueryController)->Latest_videos()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
 
+            $latest_series = (new FrontEndQueryController)->latest_Series()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
+           
+            $latest_audios = (new FrontEndQueryController)->latest_audios()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
+                      
             $data = array(
                 'currency'      => $currency,
                 'latest_video'  => $latest_videos,
                 'latest_series' => $latest_series,
-                'latest_audios' => $audios,
-                'audios'    => $audios,
+                'latest_audios' => $latest_audios,
+                'audios'    => (new FrontEndQueryController)->latest_audios()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get(),
                 'livetream' => $livetreams,
                 'channel_partner'   => $channel,
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
