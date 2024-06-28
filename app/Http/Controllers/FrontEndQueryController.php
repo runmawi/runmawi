@@ -89,7 +89,7 @@ class FrontEndQueryController extends Controller
     public function Latest_videos()
     {
         $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','user_id','uploaded_by')
 
                                 ->where('active',1)->where('status', 1)->where('draft',1);
 
@@ -111,7 +111,7 @@ class FrontEndQueryController extends Controller
                 $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
-            
+
         return $latest_videos ;
     }
 
