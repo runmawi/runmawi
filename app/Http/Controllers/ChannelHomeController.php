@@ -92,16 +92,11 @@ class ChannelHomeController extends Controller
             ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
             ->get();
 
-            $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')
-            ->orderBy('created_at', 'DESC')
-            ->get() ;
-
-            // $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            // ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-            // ->get();
-
-            $latest_videos = (new FrontEndQueryController)->Latest_videos()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
+            $latest_videos = (new FrontEndQueryController)->latest_videos()->filter(function ($latest_videos) {
+                if ( $latest_videos->user_id == $channel->id && $latest_videos->uploaded_by == "Channel" ) {
+                    return $latest_videos;
+                }
+            });
 
             $latest_series = (new FrontEndQueryController)->latest_Series()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
            
@@ -112,7 +107,7 @@ class ChannelHomeController extends Controller
                 'latest_video'  => $latest_videos,
                 'latest_series' => $latest_series,
                 'latest_audios' => $latest_audios,
-                'audios'    => (new FrontEndQueryController)->latest_audios()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get(),
+                'audios'    => $latest_audios,
                 'livetream' => $livetreams,
                 'channel_partner'   => $channel,
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,

@@ -39,6 +39,20 @@ use DB;
 
 class FrontEndQueryController extends Controller
 {
+    protected $default_vertical_image;
+    protected $default_horizontal_image_url;
+    protected $settings;
+    protected $videos_per_page;
+    protected $HomeSetting;
+    protected $getfeching;
+    protected $videos_expiry_date_status;
+    protected $current_timezone;
+    protected $blockVideos;
+    protected $countryName;
+    protected $multiuser_CheckExists;
+    protected $Mode;
+    protected $check_Kidmode;
+    
     public function __construct()
     {
         $this->settings = Setting::first();
@@ -91,8 +105,13 @@ class FrontEndQueryController extends Controller
                                     $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
                                 }
 
-        $latest_videos = $latest_videos->latest()->limit(15);
 
+            $latest_videos = $latest_videos->latest()->limit(15)->get()->map(function ($item) {
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                return $item;
+            });
+            
         return $latest_videos ;
     }
 
@@ -168,7 +187,7 @@ class FrontEndQueryController extends Controller
     public function latest_Series()
     {
         $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-            ->where('active', '1')->latest()->limit(15);
+            ->where('active', '1')->latest()->limit(15)->get();
 
         return $latest_series ;
     }
@@ -495,7 +514,7 @@ class FrontEndQueryController extends Controller
         
         $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
                                 ->where('active', '1')->where('status', '1')
-                                ->latest()->limit(15);
+                                ->latest()->limit(15)->get();
 
         return $latest_audios ;
     }
