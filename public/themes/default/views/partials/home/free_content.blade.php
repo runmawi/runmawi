@@ -7,12 +7,12 @@ endif;
  $ThumbnailSetting = App\ThumbnailSetting::first();
  ?>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <ul class="free-content list-inline  row p-0 mb-0">
     <?php  if(isset($free_Contents)) :
     					 foreach($free_Contents as $key => $free_Content) {
         // foreach($latest_series as $latest_serie) { 
-?>
-        <li class="slide-item">
+    ?>
+        <div class="items">
           <div class="block-images position-relative">
             <!-- block-images -->
             <div class="border-bg">
@@ -52,6 +52,7 @@ endif;
                   <?php } ?>
                   </a>
                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+              </div>
 
 <?php  if(!empty($free_Content->ppv_price == 1)){?>
 <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>
@@ -74,7 +75,7 @@ endif;
 
 
                
-                <a class="epi-name mt-3 mb-0 btn" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
+                <a class="epi-name mt-2 mb-0 btn" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>
@@ -87,3 +88,17 @@ endif;
     endif; ?>
   </ul>
 </div>
+
+<script>
+  var elem = document.querySelector('.free-content');
+  var flkty = new Flickity(elem, {
+      cellAlign: 'left',
+      contain: true,
+      groupCells: true,
+      pageDots: false,
+      draggable: true,
+      freeScroll: true,
+      imagesLoaded: true,
+      lazyload:true,
+  });
+</script>

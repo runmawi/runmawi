@@ -86,47 +86,29 @@
                                                 <div class="movie-time d-flex align-items-center pt-1">
                                                    @if($ThumbnailSetting->age == 1 && !($cont_video->age_restrict == 0))
                                                       <!-- Age -->
-                                                      <div class="badge badge-secondary mr-2">
-                                                            {{ $cont_video->age_restrict . ' +' }}
-                                                      </div>
+                                                      <span class="position-relative badge p-1 mr-2">{{ $cont_video->age_restrict . ' +' }}</span>
                                                    @endif
                                                    @if($ThumbnailSetting->duration == 1)
-                                                      <!-- Duration -->
-                                                      <span class="text-white">
-                                                         {{ (floor($cont_video->duration / 3600) > 0 ? floor($cont_video->duration / 3600) . 'h ' : '') . floor(($cont_video->duration % 3600) / 60) . 'm' }}
+                                                   <span class="position-relative text-white mr-2">
+                                                      {{ (floor($cont_video->duration / 3600) > 0 ? floor($cont_video->duration / 3600) . 'h ' : '') . floor(($cont_video->duration % 3600) / 60) . 'm' }}
+                                                  </span>
+                                                   @endif
+
+                                                   @if($ThumbnailSetting->published_year == 1 && !($cont_video->year == 0))
+                                                      <span class="position-relative badge p-1 mr-2">
+                                                            {{ __($cont_video->year) }}
+                                                      </span>
+                                                   @endif
+                                                   @if($ThumbnailSetting->featured == 1 && $cont_video->featured == 1)
+                                                      <span class="position-relative text-white">
+                                                            {{ __('Featured') }}
                                                       </span>
                                                    @endif
                                                 </div>
-                                                @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1))
-                                                   <div class="movie-time d-flex align-items-center pt-1">
-                                                      @if($ThumbnailSetting->rating == 1)
-                                                            <!-- Rating -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                               <span class="text-white">
-                                                                  <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                  {{ __($cont_video->rating) }}
-                                                               </span>
-                                                            </div>
-                                                      @endif
-                                                      @if($ThumbnailSetting->published_year == 1 && !($cont_video->year == 0))
-                                                            <!-- Published Year -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                               <span class="text-white">
-                                                                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                  {{ __($cont_video->year) }}
-                                                               </span>
-                                                            </div>
-                                                      @endif
-                                                      @if($ThumbnailSetting->featured == 1 && $cont_video->featured == 1)
-                                                            <!-- Featured -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                               <span class="text-white">
-                                                                  <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                               </span>
-                                                            </div>
-                                                      @endif
-                                                   </div>
-                                                @endif
+
+
+                                                </div>
+                                                
                                                 <div class="movie-time d-flex align-items-center pt-1">
                                                    <!-- Category Thumbnail Setting -->
                                                    @php
