@@ -101,9 +101,7 @@ class ChannelHomeController extends Controller
             ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
             ->get();
 
-            $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
-            ->get();
+            $latest_videos = (new FrontEndQueryController)->Latest_videos()->where('user_id', $channel->id)->where('uploaded_by', 'Channel')->get() ;
 
             $data = array(
                 'currency'      => $currency,
