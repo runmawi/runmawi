@@ -35,7 +35,7 @@
                     <div class="favorites-contens">
                         <div class="series-networks home-sec list-inline row p-0 mb-0">
                             @foreach($data as $key => $series_networks)
-                                <li class="items">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -65,9 +65,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>

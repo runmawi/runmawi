@@ -179,21 +179,21 @@
                                                             @endif
 
                                                             <p class="desc-name text-left m-0 mt-1">
-                                                                {{ strlen($video->description) > 75 ? substr(html_entity_decode(strip_tags($video->description)), 0, 75) . '...' : $video->description }}
+                                                                {{ strlen($videos->description) > 75 ? substr(html_entity_decode(strip_tags($videos->description)), 0, 75) . '...' : $videos->description }}
                                                             </p>
 
                                                             <div class="movie-time d-flex align-items-center pt-2">
-                                                                @if($ThumbnailSetting->age == 1 && !($video->age_restrict == 0))
-                                                                    <span class="position-relative badge p-1 mr-2">{{ $video->age_restrict . ' +' }}</span>
+                                                                @if($ThumbnailSetting->age == 1 && !($videos->age_restrict == 0))
+                                                                    <span class="position-relative badge p-1 mr-2">{{ $videos->age_restrict . ' +' }}</span>
                                                                 @endif
                                                                 @if($ThumbnailSetting->duration == 1)
                                                                     <span class="position-relative text-white mr-2">
-                                                                        {{ (floor($video->duration / 3600) > 0 ? floor($video->duration / 3600) . 'h ' : '') . floor(($video->duration % 3600) / 60) . 'm' }}
+                                                                        {{ (floor($videos->duration / 3600) > 0 ? floor($videos->duration / 3600) . 'h ' : '') . floor(($videos->duration % 3600) / 60) . 'm' }}
                                                                     </span>
                                                                 @endif
-                                                                @if($ThumbnailSetting->published_year == 1 && !($video->year == 0))
+                                                                @if($ThumbnailSetting->published_year == 1 && !($videos->year == 0))
                                                                     <span class="position-relative badge p-1 mr-2">
-                                                                        {{ __($video->year) }}
+                                                                        {{ __($videos->year) }}
                                                                     </span>
                                                                 @endif
                                                                 @if($ThumbnailSetting->featured == 1 && $videos->featured == 1)
