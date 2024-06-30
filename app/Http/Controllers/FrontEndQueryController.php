@@ -39,6 +39,20 @@ use DB;
 
 class FrontEndQueryController extends Controller
 {
+    protected $default_vertical_image;
+    protected $default_horizontal_image_url;
+    protected $settings;
+    protected $videos_per_page;
+    protected $HomeSetting;
+    protected $getfeching;
+    protected $videos_expiry_date_status;
+    protected $current_timezone;
+    protected $blockVideos;
+    protected $countryName;
+    protected $multiuser_CheckExists;
+    protected $Mode;
+    protected $check_Kidmode;
+    
     public function __construct()
     {
         $this->settings = Setting::first();
@@ -49,7 +63,6 @@ class FrontEndQueryController extends Controller
 
         $this->getfeching = Geofencing::first();
         $this->videos_expiry_date_status = videos_expiry_date_status();
-        $this->check_Kidmode = 0 ;
 
         $this->default_vertical_image_url = default_vertical_image_url();
         $this->default_horizontal_image_url = default_horizontal_image_url();
@@ -58,14 +71,25 @@ class FrontEndQueryController extends Controller
         $this->blockVideos = Block_videos();
         $this->countryName = Country_name();
 
+        // Verify check Kidmode
         $this->multiuser_CheckExists = Session::get('subuser_id');
+
+        if (  $this->multiuser_CheckExists  != null && !Auth::guest() ) {
+
+            $this->Mode = Multiprofile::where('id', $this->multiuser_CheckExists)->first() ;
+
+        }elseif( !Auth::guest()) {
+            $this->Mode =  User::where('id', Auth::User()->id)->first();
+        }
+                    
+        $this->check_Kidmode = !Auth::guest() && $this->Mode['user_type'] != null && $this->Mode['user_type'] == "Kids" ? 1 : 0 ;
 
     }
 
     public function Latest_videos()
     {
         $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','user_id','uploaded_by')
 
                                 ->where('active',1)->where('status', 1)->where('draft',1);
 
@@ -81,7 +105,12 @@ class FrontEndQueryController extends Controller
                                     $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
                                 }
 
-        $latest_videos = $latest_videos->latest()->limit(15)->get();
+
+            $latest_videos = $latest_videos->latest()->limit(15)->get()->map(function ($item) {
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                return $item;
+            });
 
         return $latest_videos ;
     }
@@ -157,9 +186,8 @@ class FrontEndQueryController extends Controller
 
     public function latest_Series()
     {
-        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-            ->where('active', '1')->latest()->limit(15)
-            ->get();
+        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
+            ->where('active', '1')->latest()->limit(15)->get();
 
         return $latest_series ;
     }
@@ -252,7 +280,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $featured_episodes;
     }
@@ -263,7 +294,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('status', '1')->where('active', 1)->where('views', '>', '5')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $trending_episodes;
     }
@@ -272,9 +306,12 @@ class FrontEndQueryController extends Controller
     {
         $free_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                                  'duration','rating','image','featured','tv_image','player_image')
-                                            ->where('status', '1')->where('active', 1)->where('access', 'guest')
+                                            ->where('status', 1)->where('active', 1)->where('access', 'guest')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $free_episodes;
     }
@@ -295,7 +332,7 @@ class FrontEndQueryController extends Controller
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
                                         ->where('status', 1)
                                         ->latest()
@@ -475,10 +512,9 @@ class FrontEndQueryController extends Controller
     public function latest_audios()
     {
         
-        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
+        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', '1')->where('status', '1')
-                                ->latest()->limit(15)
-                                ->get();
+                                ->latest()->limit(15)->get();
 
         return $latest_audios ;
     }
