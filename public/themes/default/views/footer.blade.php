@@ -256,10 +256,9 @@ function about(evt , id) {
     }
      ?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script async src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script async src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
+ {{-- <script async src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> --}}
  <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
 
  <script>
@@ -315,7 +314,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+{{-- <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
 
 <?php
     try {
@@ -336,17 +335,17 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
 ?>
 
 <script>
-  if ('loading' in HTMLImageElement.prototype) {
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    images.forEach(img => {
-      img.src = img.dataset.src;
-    });
-  } else {
-       const script = document.createElement('script');
-    script.src =
-      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
-    document.body.appendChild(script);
-  }
+  // if ('loading' in HTMLImageElement.prototype) {
+  //   const images = document.querySelectorAll('img[loading="lazy"]');
+  //   images.forEach(img => {
+  //     img.src = img.dataset.src;
+  //   });
+  // } else {
+  //      const script = document.createElement('script');
+  //   script.src =
+  //     'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+  //   document.body.appendChild(script);
+  // }
 </script>
 <?php  
   $Prevent_inspect = $theme->prevent_inspect ;
