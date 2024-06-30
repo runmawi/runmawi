@@ -37,7 +37,7 @@
                                           <div class="border-bg">
                                              <div class="img-box">
                                                 <a class="playTrailer" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="l-img">
+                                                      <img class="img-fluid w-100 lazy" data-src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->name }}">
                                                 </a>
                                              </div>
                                           </div>
