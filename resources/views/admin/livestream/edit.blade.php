@@ -663,7 +663,7 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Free Duration</label>
                     <p class="p1">Enter the Live Stream Free duration in (HH : MM : SS)</p>
                     <div class="panel-body">
-                        <input class="form-control" name="free_duration" id="free_duration" value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
+                        <input class="form-control" name="free_duration" placeholder="HH:MM:SS" id="free_duration" value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
                     </div>
                 </div>
             </div>
@@ -696,6 +696,57 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 
+                {{-- Macros --}}
+
+            <div class="row mt-3">
+
+                <div class="col-sm-6">
+                    <label class="m-0">{{ __( ucwords('ads content id') ) }}</label>
+                    <p class="p1">Add the Live stream Ads content id in the textbox below:</p>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="ads_content_id"  placeholder="Live stream Ads content id" value="{{ @$video->ads_content_id }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="m-0">{{ __( ucwords('Ads content title') ) }}</label>
+                    <p class="p1">Add the Live stream Ads content title in the textbox below:</p>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="ads_content_title"  placeholder="Live stream Ads content title" value="{{ @$video->ads_content_title }}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-sm-6">
+                    <label class="m-0">{{ __( ucwords('Ads content category') ) }}</label>
+                    <p class="p1">Add the Live stream Ads content category in the textbox below:</p>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="ads_content_category"  placeholder="Live stream Ads content category" value="{{ $video->ads_content_category }}" />
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="m-0">{{ __( ucwords('Ads content language') ) }}</label>
+                    <p class="p1">Add the Live stream Ads content language in the textbox below:</p>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="ads_content_language"  placeholder="Live stream Ads content language" value="{{ @$video->ads_content_language }}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-sm-6">
+                    <label class="m-0">{{ __( ucwords('Ads content genre') ) }}</label>
+                    <p class="p1">Add the Live stream Ads content genre in the textbox below:</p>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="ads_content_genre"  placeholder="Live stream Ads content genre" value="{{ @$video->ads_content_genre }}"  />
+                    </div>
+                </div>
+            </div>
+
+                     {{-- User Access --}}
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">User Access</label>
