@@ -61,6 +61,7 @@ use App\Episode;
 use App\ModeratorSubscription;
 use App\Audio;
 use App\SiteTheme;
+use App\ModeratorsRole;
 
 class CPPAdminVideosController extends Controller
 {
@@ -80,25 +81,41 @@ class CPPAdminVideosController extends Controller
         // $search_value = Request::get('s');
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
+
+        
+             
+        $user = Session::get('user');
+        $user_id = $user->id;
+        $user_role = ModeratorsUser::where('id', $user_id)->pluck('user_role')->first();
+        $role_name = ModeratorsRole::where('id', $user_role)->pluck('role_name')->first();
+        
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $user = Session::get('user');
             $id = $user->id;
-            if (!empty($search_value)):
+            if (!empty($search_value)) {
                 $videos = Video::where('title', 'LIKE', '%' . $search_value . '%')
                     ->where('user_id', '=', $id)
                     ->orderBy('created_at', 'desc')
                     ->paginate(9);
-            else:
+                    $detele = 1;
+            } elseif (!empty($role_name) && $role_name == 'Content Uploader') {
+                $videos = Video::where('uploaded_by', '=', 'admin')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(9);
+                $detele = 0;
+            } else {
                 $videos = Video::where('user_id', '=', $id)
                     ->orderBy('created_at', 'DESC')
                     ->paginate(9);
-            endif;
+                    $detele = 1;
+            }
 
             // $user = Auth::user();
 
             $data = [
                 'videos' => $videos,
                 'user' => $user,
+                'detele' => $detele,
                 // 'admin_user' => Auth::user()
             ];
 
@@ -110,6 +127,20 @@ class CPPAdminVideosController extends Controller
 
     public function CPPlive_search(Request $request)
     {
+
+
+        $user = Session::get('user');
+        $user_id = $user->id;
+        $user_role = ModeratorsUser::where('id', $user_id)->pluck('user_role')->first();
+        $role_name = ModeratorsRole::where('id', $user_role)->pluck('role_name')->first();
+        
+            if (!empty($role_name) && $role_name == 'Content Uploader') {
+                $detele = 0;
+            } else {
+                $detele = 1;
+            }
+
+
         if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
@@ -187,16 +218,19 @@ class CPPAdminVideosController extends Controller
                         '
         ' .
                         "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
-        </a>" .
-                        '
-        ' .
-                        "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
-        </a>" .
-                        '
-        </td>
-        </tr>
-        ';
-                }
+        </a>" ;          
+        if ($detele == 1) {
+            $output .= '
+                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="' . $delete . '/' . $row->id . '">
+                        <i class="ri-delete-bin-line"></i>
+                    </a>';
+        }
+        
+        $output .= '
+                </td>
+            </tr>';
+    
+        }
             } else {
                 $output = '
        <tr>
@@ -317,6 +351,17 @@ class CPPAdminVideosController extends Controller
         $user = Session::get('user');
 
         $user_id = $user->id;
+
+
+        $user_role = ModeratorsUser::where('id', $user_id)->pluck('user_role')->first();
+        $role_name = ModeratorsRole::where('id', $user_role)->pluck('role_name')->first();
+
+        if($role_name == 'Content Uploader'){
+            $uploaded_by = 'admin';
+        }else{
+            $uploaded_by = 'CPP';
+        }
+
         if($this->enable_moderator_Monetization == 1){
 
             $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
@@ -429,7 +474,7 @@ class CPPAdminVideosController extends Controller
                 $video->type = 'mp4_url';
                 $video->draft = 0;
                 $video->user_id = $user->id;
-                $video->uploaded_by = 'CPP';
+                $video->uploaded_by = $uploaded_by;
                 $video->image = 'default_image.jpg';
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
@@ -489,7 +534,7 @@ class CPPAdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->draft = 0;
                 $video->duration = $Video_duration;
-                $video->uploaded_by = 'CPP';
+                $video->uploaded_by = $uploaded_by;
                 $video->user_id = $user->id;
                 $video->image = 'default_image.jpg';
 
@@ -551,7 +596,7 @@ class CPPAdminVideosController extends Controller
                 $video->type = 'mp4_url';
                 $video->draft = 0;
                 $video->user_id = $user->id;
-                $video->uploaded_by = 'CPP';
+                $video->uploaded_by = $uploaded_by;
                 $video->duration = $Video_duration;
                 $video->image = 'default_image.jpg';
 
@@ -1475,6 +1520,15 @@ class CPPAdminVideosController extends Controller
 
             $user = Session::get('user');
             $user_id = $user->id;
+            $user_role = ModeratorsUser::where('id', $user_id)->pluck('user_role')->first();
+            $role_name = ModeratorsRole::where('id', $user_role)->pluck('role_name')->first();
+
+            if($role_name == 'Content Uploader'){
+                $uploaded_by = 'admin';
+            }else{
+                $uploaded_by = 'CPP';
+            }
+
             $video->user_id = $user_id;
             $shortcodes = $request['short_code'];
             $languages = $request['sub_language'];
@@ -1501,7 +1555,7 @@ class CPPAdminVideosController extends Controller
             $video->enable = $enable;
             $video->search_tags = $searchtags;
             $video->ios_ppv_price = $data['ios_ppv_price'];
-            $video->uploaded_by = 'CPP';
+            $video->uploaded_by = $uploaded_by;
 
             $video->save();
 
@@ -1749,6 +1803,18 @@ class CPPAdminVideosController extends Controller
 
             $id = $data['video_id'];
 
+             
+            $user = Session::get('user');
+            $user_id = $user->id;
+            $user_role = ModeratorsUser::where('id', $user_id)->pluck('user_role')->first();
+            $role_name = ModeratorsRole::where('id', $user_role)->pluck('role_name')->first();
+
+            if($role_name == 'Content Uploader'){
+                $uploaded_by = 'admin';
+            }else{
+                $uploaded_by = 'CPP';
+            }
+            
             $video = Video::findOrFail($id);
 
             // if(empty($data['ppv_price'])){
@@ -2061,14 +2127,14 @@ class CPPAdminVideosController extends Controller
             $video->publish_time = $data['publish_time'];
             $video->image = $data['image'];
             $video->player_image = $player_image;
-            $video->uploaded_by = 'CPP';
+            $video->uploaded_by = $uploaded_by;
             $video->ppv_price = $data['ppv_price'];
             $video->access = $data['access'];
             $video->banner = $banner;
             $video->enable = 1;
             $video->search_tags = $searchtags;
             $video->ios_ppv_price = $data['ios_ppv_price'];
-            $video->uploaded_by = 'CPP';
+            $video->uploaded_by = $uploaded_by;;
 
             $video->update($data);
 
