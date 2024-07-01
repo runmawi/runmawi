@@ -5234,7 +5234,10 @@ public function checkEmailExists(Request $request)
 
        $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
 
+       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
+
                 if(count($AllSeason) > 0){
 
 
@@ -5381,6 +5384,7 @@ public function checkEmailExists(Request $request)
         'episode' => $episode,
         'Season_Name' => $Season_Name,
         'season' => $Season,
+        'Season_array' => $Season_array ,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
         'watchlater' => $watchlaterstatus,
