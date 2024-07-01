@@ -21,19 +21,38 @@ use App\VideoSchedules;
 use App\SeriesGenre;
 use App\Geofencing;
 use App\LiveStream;
+use App\RecentView;
+use App\Multiprofile;
+use App\TimeZone;
 use App\Setting;
 use App\Episode;
 use App\Video;
 use App\Series;
 use App\Artist;
 use App\Audio;
-use App\TimeZone;
 use App\Slider;
+use App\User;
 use Carbon\Carbon;
 use Theme;
+use Session;
+use DB;
 
 class FrontEndQueryController extends Controller
 {
+    protected $default_vertical_image;
+    protected $default_horizontal_image_url;
+    protected $settings;
+    protected $videos_per_page;
+    protected $HomeSetting;
+    protected $getfeching;
+    protected $videos_expiry_date_status;
+    protected $current_timezone;
+    protected $blockVideos;
+    protected $countryName;
+    protected $multiuser_CheckExists;
+    protected $Mode;
+    protected $check_Kidmode;
+    
     public function __construct()
     {
         $this->settings = Setting::first();
@@ -42,21 +61,35 @@ class FrontEndQueryController extends Controller
         $this->HomeSetting = HomeSetting::first();
         Theme::uses($this->HomeSetting->theme_choosen);
 
-        $Recomended = $this->HomeSetting;
-
         $this->getfeching = Geofencing::first();
         $this->videos_expiry_date_status = videos_expiry_date_status();
-        $this->check_Kidmode = 1 ;
 
         $this->default_vertical_image_url = default_vertical_image_url();
         $this->default_horizontal_image_url = default_horizontal_image_url();
         $this->current_timezone = current_timezone();
+
+        $this->blockVideos = Block_videos();
+        $this->countryName = Country_name();
+
+        // Verify check Kidmode
+        $this->multiuser_CheckExists = Session::get('subuser_id');
+
+        if (  $this->multiuser_CheckExists  != null && !Auth::guest() ) {
+
+            $this->Mode = Multiprofile::where('id', $this->multiuser_CheckExists)->first() ;
+
+        }elseif( !Auth::guest()) {
+            $this->Mode =  User::where('id', Auth::User()->id)->first();
+        }
+                    
+        $this->check_Kidmode = !Auth::guest() && $this->Mode['user_type'] != null && $this->Mode['user_type'] == "Kids" ? 1 : 0 ;
+
     }
 
     public function Latest_videos()
     {
         $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','user_id','uploaded_by')
 
                                 ->where('active',1)->where('status', 1)->where('draft',1);
 
@@ -72,7 +105,12 @@ class FrontEndQueryController extends Controller
                                     $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
                                 }
 
-        $latest_videos = $latest_videos->latest()->limit(15)->get();
+
+            $latest_videos = $latest_videos->latest()->limit(15)->get()->map(function ($item) {
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                return $item;
+            });
 
         return $latest_videos ;
     }
@@ -148,9 +186,8 @@ class FrontEndQueryController extends Controller
 
     public function latest_Series()
     {
-        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-            ->where('active', '1')->latest()->limit(15)
-            ->get();
+        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
+            ->where('active', '1')->latest()->limit(15)->get();
 
         return $latest_series ;
     }
@@ -243,7 +280,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $featured_episodes;
     }
@@ -254,7 +294,10 @@ class FrontEndQueryController extends Controller
                                                  'duration','rating','image','featured','tv_image','player_image')
                                             ->where('status', '1')->where('active', 1)->where('views', '>', '5')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $trending_episodes;
     }
@@ -263,9 +306,12 @@ class FrontEndQueryController extends Controller
     {
         $free_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
                                                  'duration','rating','image','featured','tv_image','player_image')
-                                            ->where('status', '1')->where('active', 1)->where('access', 'guest')
+                                            ->where('status', 1)->where('active', 1)->where('access', 'guest')
                                             ->latest()->limit(15)
-                                            ->get();
+                                            ->get()->map(function($item){
+                                                $item['series'] = Series::where('id',$item->series_id)->first();
+                                                return $item ;
+                                            });
 
         return $free_episodes;
     }
@@ -286,7 +332,7 @@ class FrontEndQueryController extends Controller
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
                                         ->where('status', 1)
                                         ->latest()
@@ -374,19 +420,24 @@ class FrontEndQueryController extends Controller
 
     public function Episode_sliders()
     {
-        $Episode = Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get();
+        $Episode = Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)
+        ->get()->map(function($item){
+            $item['series'] = Series::where('id',$item->series_id)->first();
+            return $item ;
+        });
        
         return $Episode ;
     }
 
     public function series_sliders()
     {
-        $series_sliders = Series::select('id','title','slug','year','rating','access',
-                                            'duration','rating','image','featured','tv_image','player_image','details','description')
-                                            ->where('active', '1')->where('banner','1')
-                                            ->latest()->limit(15)
-                                            ->get() ;
-        $series_sliders ; 
+        $series_sliders = Series::select('id','title','slug','year','rating','access','banner','active',
+                                        'duration','rating','image','featured','tv_image','player_image','details','description')
+                                ->where('active', 1)->where('banner',1)
+                                ->latest()->limit(15)
+                                ->get() ;
+
+        return $series_sliders ; 
     }
 
     public function live_banners()
@@ -461,10 +512,9 @@ class FrontEndQueryController extends Controller
     public function latest_audios()
     {
         
-        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
+        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', '1')->where('status', '1')
-                                ->latest()->limit(15)
-                                ->get();
+                                ->latest()->limit(15)->get();
 
         return $latest_audios ;
     }
@@ -510,5 +560,198 @@ class FrontEndQueryController extends Controller
     {
         $multiple_compress_image = CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0;
         return $multiple_compress_image ;
+    }
+
+    public function Most_watched_videos_country(){
+
+        $Most_watched_videos_country = [];
+
+        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
+        
+            $Most_watched_videos_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where([
+                    ['videos.status', '=', 1],
+                    ['videos.draft', '=', 1],
+                    ['videos.active', '=', 1],
+                    ['recent_views.country_name', $this->countryName]
+                ])
+                ->groupBy('video_id')
+                ->orderByRaw('count DESC');
+
+            if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                $Most_watched_videos_country->whereNotIn('videos.id', $this->blockVideos);
+            }
+
+            if ($this->videos_expiry_date_status == 1) {
+                $Most_watched_videos_country->where(function($query) {
+                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                });
+            }
+
+            if ($this->check_Kidmode == 1) {
+                $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
+            }
+
+            $Most_watched_videos_country = $Most_watched_videos_country->limit(15)->get();
+
+            return $Most_watched_videos_country ;
+        }
+    }
+
+    public function Most_watched_videos_users()
+    {
+        $userWatchedVideos = [];
+
+        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
+            
+            $userWatchedVideos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where([
+                    ['videos.status', '=', 1],
+                    ['videos.draft', '=', 1],
+                    ['videos.active', '=', 1]
+                ])
+                ->groupBy('video_id');
+            
+            if ($this->multiuser_CheckExists != null) {
+                $userWatchedVideos->where('recent_views.sub_user', $this->multiuser_CheckExists);
+            } else {
+                $userWatchedVideos->where('recent_views.user_id', Auth::user()->id);
+            }
+
+            if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                $Most_watched_videos_country->whereNotIn('videos.id', $this->blockVideos);
+            }
+
+            if ($this->videos_expiry_date_status == 1) {
+                $Most_watched_videos_country->where(function($query) {
+                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                });
+            }
+
+            if ($this->check_Kidmode == 1) {
+                $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
+            }
+            
+            $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
+            
+        }
+    }
+
+    public function Most_watched_videos_site()
+    {
+        $Most_watched_videos_site = [];
+
+        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
+
+            $Most_watched_videos_site = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->where('videos.active', '=', '1')
+                            ->groupBy('video_id');
+
+                            if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                                $Most_watched_videos_site->whereNotIn('videos.id', $this->blockVideos);
+                            }
+                
+                            if ($this->videos_expiry_date_status == 1) {
+                                $Most_watched_videos_site->where(function($query) {
+                                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                                });
+                            }
+                
+                            if ($this->check_Kidmode == 1) {
+                                $Most_watched_videos_site->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+                        
+            $Most_watched_videos_site = $Most_watched_videos_site->orderByRaw('count DESC')
+                            ->limit(15)
+                            ->get();
+
+            return $Most_watched_videos_site ;
+        }
+    }
+
+    public function preference_genres()
+    {
+        $preference_genres_query = [];
+
+        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
+
+            $preference_genres = User::where('id', Auth::user()->id)->pluck('preference_genres')->first();
+
+            $videoGenres = json_decode($preference_genres);
+
+            if (!is_null($videoGenres)) {
+
+                $preference_genres_query = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                ->where([
+                    ['videos.status', 1],
+                    ['videos.draft', 1],
+                    ['videos.active', 1]
+                ])
+                ->whereIn('categoryvideos.category_id', $videoGenres)
+                ->groupBy('categoryvideos.video_id');
+    
+                if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                    $preference_genres_query->whereNotIn('videos.id', $this->blockVideos);
+                }
+    
+                if ($this->videos_expiry_date_status == 1) {
+                    $preference_genres_query->where(function($query) {
+                        $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                    });
+                }
+    
+                if ($this->check_Kidmode == 1) {
+                    $preference_genres_query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            
+                $preference_genres_query = $preference_genres_query->get();
+            }
+        }
+    }
+
+    public function preference_language()
+    {
+        $preference_language_query = [];
+
+        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
+
+            $preference_language = User::where('id', Auth::user()->id)->pluck('preference_language')->first();
+
+            $language = json_decode($preference_language);
+
+            if (!is_null($language)) {
+            
+                $preference_language_query = Video::Select('videos.id','videos.title','videos.slug','videos.year','videos.rating','videos.access','videos.publish_type','videos.global_ppv','videos.publish_time','videos.publish_status','videos.ppv_price',
+                                                            'duration','videos.rating','videos.image','videos.featured','videos.age_restrict','videos.video_tv_image','videos.player_image','videos.details','videos.description'
+                                                            ,'languagevideos.*','videos.id as pre_video_id')
+                                                            ->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+                                                            ->whereIn('language_id', $language)
+                                                            ->where('videos.status', 1)
+                                                            ->where('videos.draft', 1)
+                                                            ->where('videos.active', 1)
+                                                            ->groupBy('languagevideos.video_id');
+
+                                        if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                                            $preference_language_query->whereNotIn('videos.id', $this->blockVideos);
+                                        }
+                            
+                                        if ($this->videos_expiry_date_status == 1) {
+                                            $preference_language_query->where(function($query) {
+                                                $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                                            });
+                                        }
+                            
+                                        if ($this->check_Kidmode == 1) {
+                                            $preference_language_query->whereBetween('videos.age_restrict', [0, 12]);
+                                        }
+
+                $preference_language_query = $preference_language_query->get();
+                    
+            }
+        }
     }
 }

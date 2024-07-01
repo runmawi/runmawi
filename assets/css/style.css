@@ -932,77 +932,16 @@ header .navbar ul li.menu-item a:hover{color:#fff}
 .channel_contentpr .myp{padding-left:5px!important}
 }
 
+.desc {
+    overflow: hidden;
+    max-height: 100px; /* Initial max height, adjust as needed */
+    transition: max-height 0.5s ease;
+}
+.des-more-less-btns{border: none;
+    background: transparent;
+    color: #ff0000;
+    cursor: pointer;
+    margin-bottom: 10px;}
+    .video_title_images{width: 50%;}
+
 h2.main-title {font-size: 1.3em;font-weight: 500;}
-.block-description a.epi-name{font-size: 13px;}
-/* flickity slider */
-
-.flickity-slider .items{width:14.444%;padding:10px 5px;}
-    .home-sec{
-        padding: 10px 0 1% 1%;
-        list-style: none;
-        margin: 0;
-        position: relative;
-        z-index: 12;
-        display: block;
-    }
-    .flickity-button {
-        background: transparent;
-        color: #fff;
-    }
-    .flickity-button:disabled {
-        opacity: 0;
-    }
-    .fa-crown:before {
-        content: "\f521";
-    }
-    .flickity-slider .items:before {
-        content: '';
-        display: block;
-        position: absolute;
-        background-color: #555;
-        background-image: url(https://watch.e360tv.com/img/placeholder.jpg);
-        background-size: cover;
-        background-position: center;
-        top: 2px;
-        bottom: 2px;
-        left: 2px;
-        right: 2px;
-        z-index: 0;
-        margin: 10px 5px;
-    }
-    .flickity-button:hover{background: transparent;}
-    /* description */
-    .flickity-slider .items:hover .block-images {
-        z-index: 99;
-        transform: scale3d(1.1, 1.1, 1.1) translate3d(0, 0, 0) perspective(500px);
-        transform-origin: 50% 50%;
-        transition: all .6s ease 0;
-        -webkit-transition: all .6s ease 0;
-        -moz-transition: all .6s ease 0;
-        -o-transition: all .6s ease 0;
-        box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
-        border-radius: 10px;
-    }
-    .flickity-slider .items:hover .block-description {
-        animation: fadeIn .6s ease-in-out;
-        opacity: 1;
-    }
-    .flickity-slider .block-description .playTrailer{height: 0;}
-    .block-description p.desc-name{font-size: 12px;-webkit-line-clamp: 3;line-height: 1.4;}
-    .movie-time span.position-relative:before {
-        content: "";
-        width: 5px;
-        height: 5px;
-        top: 5px;
-        /* position: absolute; */
-        background-color: #fff;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: baseline;
-        right: -10px;
-        margin-bottom: 2px;
-    }
-
-    .movie-time span:first-child:before {
-        content: none;
-    }
