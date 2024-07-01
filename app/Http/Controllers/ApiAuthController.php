@@ -6346,42 +6346,44 @@ return response()->json($response, 200);
   public function listcontinuewatchings(Request $request)
   {
 
-      $user_id = $request->user_id;
-    /*channel videos*/
-    if(!empty($user_id)){
-      $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-      $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();  
-    }else{
-      $video_ids = 0;
-      $video_ids_count = 0;  
-    }
-    if ( $video_ids_count  > 0) {
+    $user_id = $request->user_id;
 
-      foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->videoid;
-      }
-      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
-        return $item;
-      });
-      $response = array(
-        'status' => "true",
-        'videos'=> $videos,
-      );
-    }else{
-      $response = array(
-        'status' => "false",
-        'videos'=> [],
-      );
+    /* channel videos */
+    if (!empty($user_id)) {
+        $video_ids = ContinueWatching::where('videoid', '!=', NULL)
+            ->where('user_id', '=', $user_id)
+            ->get();
+        $video_ids_count = $video_ids->count();  
+    } else {
+        $video_ids = collect();
+        $video_ids_count = 0;  
     }
 
+    if ($video_ids_count > 0) {
+        $video_ids = $video_ids->pluck('videoid');
 
-    // $response = array(
-    //     'status'=>$status,
-    //     'videos'=> $videos
-    //   );
+        $videos = Video::join('continue_watching', 'videos.id', '=', 'continue_watching.videoid')
+            ->whereIn('videos.id', $video_ids)
+            ->where('continue_watching.user_id', '=', $user_id)
+            ->orderBy('continue_watching.created_at', 'desc')
+            ->select('videos.*', 'continue_watching.watch_percentage', 'continue_watching.skip_time')
+            ->get()
+            ->map(function ($item) {
+                $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                return $item;
+            });
+
+        $response = array(
+            'status' => "true",
+            'videos' => $videos,
+        );
+    } else {
+        $response = array(
+            'status' => "false",
+            'videos' => [],
+        );
+    }
+
     return response()->json($response, 200);
 
 
