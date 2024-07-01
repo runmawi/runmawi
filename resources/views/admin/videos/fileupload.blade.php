@@ -2188,12 +2188,19 @@ $(document).ready(function($){
                 this.on("success", function(file, response) {
                     console.log(file);
                     console.log(response);
+                   
                     if (response.success == 2) {
                         swal("File not uploaded!");   
                     } else if (response.error == 3) {
                         console.log(response.error);
                         alert("File not uploaded. Choose Library!");   
-                    } else {
+                    }
+                    else if (response.success == 'videocount') { 
+                        myDropzone.removeFile(file);  
+                        Swal.fire("You have reached your video upload limit for this month.");
+                        $('#Next').hide();
+                     }
+                     else {
                         $('#Next').show();
                         $('#video_id').val(response.video_id);
                         $('#title').val(response.video_title);
@@ -2832,7 +2839,7 @@ if(this.textContent === 'destroy') {
 });
 
 </script>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
 $(document).ready(function(){
