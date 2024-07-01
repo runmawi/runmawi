@@ -18,7 +18,7 @@ endif;
             <div class="border-bg">
             <div class="img-box">
                 <a class="playTrailer" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
-                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>"  alt="content">
+                <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>"  alt="content">
                 </a>
                 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -37,7 +37,7 @@ endif;
 
               <div class="block-description">
               <a class="playTrailer" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
-                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->player_image;  ?>" alt="">
+                <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->player_image;  ?>" alt="">
                 
                 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
