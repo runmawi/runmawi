@@ -79,7 +79,7 @@ $data->each(function ($category) {
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('live/'.$livestream->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -106,10 +106,6 @@ $data->each(function ($category) {
                                                             @break
                                                         @endswitch
                                                     @endif
-
-                                                    <!-- @if($ThumbnailSetting->published_on == 1)
-                                                        <p class="published_on1">{{ $publish_day }} <span>{{ $publish_time }}</span></p>
-                                                    @endif -->
                                                 </div>
                                             </div>
 

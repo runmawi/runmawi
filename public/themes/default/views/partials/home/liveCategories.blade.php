@@ -36,7 +36,7 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded"  src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
                                                 </a>
                                             </div>
                                         </div>
@@ -77,7 +77,7 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.latest-video');
+    var elem = document.querySelector('.live-category');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,

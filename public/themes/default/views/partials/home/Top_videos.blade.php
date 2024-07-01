@@ -20,7 +20,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
                                                     </a>
 
                                                     <!-- PPV price -->
@@ -33,10 +33,10 @@
                                                                 <p class="p-tag">{{ __('Register Now') }}</p>
                                                             @break
                                                             @case(!empty($most_watched_video->ppv_price))
-                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $Wishlist_videos->ppv_price }}</p>
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $most_watched_video->ppv_price }}</p>
                                                             @break
                                                             @case(!empty($most_watched_video->global_ppv) || (!empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null))
-                                                                <p class="p-tag">{{ $Wishlist_videos->global_ppv . ' ' . $currency->symbol }}</p>
+                                                                <p class="p-tag">{{ $most_watched_video->global_ppv . ' ' . $currency->symbol }}</p>
                                                             @break
                                                             @case($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null)
                                                                 <p class="p-tag">{{ __('Free') }}</p>
@@ -48,30 +48,28 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
-                                                    {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $most_watched_video->player_image ? URL::to('/public/uploads/images/' . $most_watched_video->player_image) : $default_vertical_image_url }}" src="{{ $most_watched_video->player_image ? URL::to('/public/uploads/images/' . $most_watched_video->player_image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}">  --}}
+                                                   
+                                                    <!-- PPV price -->
+                                                    @if($ThumbnailSetting->free_or_cost_label == 1)
+                                                        @switch(true)
+                                                            @case($most_watched_video->access == 'subscriber')
+                                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            @break
+                                                            @case($most_watched_video->access == 'registered')
+                                                                <p class="p-tag">{{ __('Register Now') }}</p>
+                                                            @break
+                                                            @case(!empty($most_watched_video->ppv_price))
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $most_watched_video->ppv_price }}</p>
+                                                            @break
+                                                            @case(!empty($most_watched_video->global_ppv) || (!empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null))
+                                                                <p class="p-tag">{{ $most_watched_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                            @break
+                                                            @case($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null)
+                                                                <p class="p-tag">{{ __('Free') }}</p>
+                                                            @break
+                                                        @endswitch
+                                                    @endif
                                                 </a>
-
-                                                <!-- PPV price -->
-                                                @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                    @switch(true)
-                                                        @case($most_watched_video->access == 'subscriber')
-                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
-                                                        @break
-                                                        @case($most_watched_video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @break
-                                                        @case(!empty($most_watched_video->ppv_price))
-                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $Wishlist_videos->ppv_price }}</p>
-                                                        @break
-                                                        @case(!empty($most_watched_video->global_ppv) || (!empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null))
-                                                            <p class="p-tag">{{ $Wishlist_videos->global_ppv . ' ' . $currency->symbol }}</p>
-                                                        @break
-                                                        @case($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null)
-                                                            <p class="p-tag">{{ __('Free') }}</p>
-                                                        @break
-                                                    @endswitch
-                                                @endif
-
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
                                                         @if($ThumbnailSetting->title == 1)

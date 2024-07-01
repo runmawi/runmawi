@@ -32,38 +32,36 @@
 
                         @if(isset($parentCategories))
                               @foreach($parentCategories as $Categories)
-                                 <li class="items">
+                                 <div class="items">
                                     <div class="block-images position-relative">
                                           <div class="border-bg">
                                              <div class="img-box">
                                                 <a class="playTrailer" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                      <img class="img-fluid w-100 lazy" data-src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->name }}">
+                                                      <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->name }}">
                                                 </a>
                                              </div>
                                           </div>
 
                                           <div class="block-description">
-                                             <a class="playTrailer" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                {{-- <img loading="lazy" data-src="{{ url('public/uploads/videocategory/' . $Categories->player_image) }}" class="img-fluid loading w-100" alt="l-img"> --}}
-                                             </a>
+                                             <a aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
+                                                <div class="hover-buttons text-white">
+                                                   <a aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
+                                                         @if($ThumbnailSetting->title == 1)
+                                                            <p class="epi-name text-left mt-2 m-0">
+                                                               {{ Str::limit($Categories->name, 18) }}
+                                                            </p>
+                                                         @endif
 
-                                             <div class="hover-buttons text-white">
-                                                <a aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                      @if($ThumbnailSetting->title == 1)
-                                                         <p class="epi-name text-left mt-2 m-0">
-                                                            {{ Str::limit($Categories->name, 18) }}
+                                                         <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : $Categories->description }}
                                                          </p>
-                                                      @endif
 
-                                                      <p class="desc-name text-left m-0 mt-1">
-                                                         {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : $Categories->description }}
-                                                      </p>
-
-                                                </a>
-                                                <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                      <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
-                                                </a>
-                                             </div>
+                                                   </a>
+                                                   <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
+                                                         <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
+                                                   </a>
+                                                </div>
+                                             </a>
                                           </div>
                                     </div>
                                  </div>

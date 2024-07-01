@@ -60,15 +60,30 @@ if (!Auth::guest()) {
                         <div class="watchlater-video home-sec list-inline row p-0 mb-0">
                             @foreach($data as $watchlater_video)
                                 @php
-                                    $currentdate = now()->format("D h:i");
-                                    $publish_time = 'Published';
-                                    $publishType = $watchlater_video->publish_type;
-                                    $publishDate = $watchlater_video->publish_time ? $watchlater_video->publish_time->format('D h:i') : 'Published';
+                                    $currentdate = date("M d , y H:i:s");
+                                    date_default_timezone_set('Asia/Kolkata');
+                                    $current_date = Date("M d , y H:i:s");
+                                    $date = date_create($current_date);
+                                    $currentdate = date_format($date, "D h:i");
+                                    $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
 
-                                    if ($publishType == 'publish_later' && $currentdate < $publishDate) {
-                                        $publish_time = $publishDate;
-                                    } elseif ($publishType == 'publish_now' && now()->format("y M D") == $publishDate) {
-                                        $publish_time = $publishDate;
+                                    if ($watchlater_video->publish_type == 'publish_later') {
+                                        if ($currentdate < $publish_time) {
+                                            $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
+                                        } else {
+                                            $publish_time = 'Published';
+                                        }
+                                    } elseif ($watchlater_video->publish_type == 'publish_now') {
+                                        $currentdate = date_format($date, "y M D");
+                                        $publish_time = date("y M D", strtotime($watchlater_video->publish_time));
+
+                                        if ($currentdate == $publish_time) {
+                                            $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
+                                        } else {
+                                            $publish_time = 'Published';
+                                        }
+                                    } else {
+                                        $publish_time = 'Published';
                                     }
                                 @endphp
                                 <div class="items">
@@ -76,7 +91,7 @@ if (!Auth::guest()) {
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
 
                                                 </a>
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -103,9 +118,7 @@ if (!Auth::guest()) {
 
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}"> --}}
-                                                
-
+                                               
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
                                                     @switch(true)
                                                         @case($watchlater_video->access == 'subscriber')
@@ -130,7 +143,7 @@ if (!Auth::guest()) {
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="movie">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">
+                                                        <p class="epi-name text-left m-0 mt-2">
                                                             {{ strlen($watchlater_video->title) > 17 ? substr($watchlater_video->title, 0, 18) . '...' : $watchlater_video->title }}
                                                         </p>
                                                     @endif

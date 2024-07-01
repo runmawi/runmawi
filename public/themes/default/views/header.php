@@ -247,6 +247,12 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    
+   <!-- CSS -->
+   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.min.css" as="style">
+   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+   <!-- flickity -->
+   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
    
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">

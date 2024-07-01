@@ -58,7 +58,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $video_category )
-        <section id="iq-favorites">
+        <section id="iq-trending iq-favorites-{{ $key }}">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <div class="video-based-categories home-sec list-inline row p-0 mb-0">
+                            <div class="video-based-categories home-sec list-inline row p-0 mb-0" id="video-category-{{ $key }}">
                                 @if (!Auth::guest() && !empty($data['password_hash']))
                                     @php $id = Auth::user()->id; @endphp
                                 @else
@@ -120,7 +120,7 @@
                                                 <div class="border-bg">
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                            <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
+                                                            <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
                                                         </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -132,10 +132,10 @@
                                                                         <p class="p-tag">{{ __('Register Now') }}</p>
                                                                     @break
                                                                     @case(!empty($videos->ppv_price))
-                                                                        <p class="p-tag">{{ $currency->symbol . ' ' . $Wishlist_videos->ppv_price }}</p>
+                                                                        <p class="p-tag">{{ $currency->symbol . ' ' . $videos->ppv_price }}</p>
                                                                     @break
                                                                     @case(!empty($videos->global_ppv) && $videos->ppv_price == null)
-                                                                        <p class="p-tag">{{ $Wishlist_videos->global_ppv . ' ' . $currency->symbol }}</p>
+                                                                        <p class="p-tag">{{ $videos->global_ppv . ' ' . $currency->symbol }}</p>
                                                                     @break
                                                                     @case(empty($videos->global_ppv) && $videos->ppv_price == null)
                                                                         <p class="p-tag">{{ __('Free') }}</p>
@@ -147,7 +147,6 @@
 
                                                 <div class="block-description">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                        {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" alt="{{ $videos->title }}"> --}}
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
                                                             @switch(true)
@@ -158,10 +157,10 @@
                                                                     <p class="p-tag">{{ __('Register Now') }}</p>
                                                                 @break
                                                                 @case(!empty($videos->ppv_price))
-                                                                    <p class="p-tag">{{ $currency->symbol . ' ' . $Wishlist_videos->ppv_price }}</p>
+                                                                    <p class="p-tag">{{ $currency->symbol . ' ' . $videos->ppv_price }}</p>
                                                                 @break
                                                                 @case(!empty($videos->global_ppv) && $videos->ppv_price == null)
-                                                                    <p class="p-tag">{{ $Wishlist_videos->global_ppv . ' ' . $currency->symbol }}</p>
+                                                                    <p class="p-tag">{{ $videos->global_ppv . ' ' . $currency->symbol }}</p>
                                                                 @break
                                                                 @case(empty($videos->global_ppv) && $videos->ppv_price == null)
                                                                     <p class="p-tag">{{ __('Free') }}</p>
@@ -173,7 +172,7 @@
                                                     <div class="hover-buttons text-white">
                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}">
                                                             @if($ThumbnailSetting->title == 1)
-                                                                <p class="epi-name text-left m-0">
+                                                                <p class="epi-name text-left m-0 mt-2">
                                                                     {{ strlen($videos->title) > 17 ? substr($videos->title, 0, 18) . '...' : $videos->title }}
                                                                 </p>
                                                             @endif
@@ -235,15 +234,19 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.video-based-categories');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.video-based-categories');
+        elems.forEach(function (elem) {
+            new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: true,
+            });
+        });
     });
- </script>
+</script>
