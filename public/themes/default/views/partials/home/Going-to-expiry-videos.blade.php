@@ -48,9 +48,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="going-to-expiry' list-inline row p-0 mb-0">
                             @foreach($data as $Going_to_expiry_videos) 
-                                <li class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -70,19 +70,17 @@
                                                     @endif
 
                                                     <div class="movie-time d-flex align-items-center pt-1">
-                                                        @if($ThumbnailSetting->age == 1)
-                                                            <div class="badge badge-secondary p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict . ' +' }}</div>
+                                                        @if($ThumbnailSetting->age == 1 && !($Going_to_expiry_videos->age_restrict == 0))
+                                                        <span class="position-relative badge p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict . ' +' }}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
-                                                            <span class="text-white">
-                                                                <i class="fa fa-clock-o"></i>
-                                                                {{ gmdate('H:i:s', $Going_to_expiry_videos->duration) }}
-                                                            </span>
+                                                        <span class="position-relative text-white mr-2">
+                                                            {{ (floor($Going_to_expiry_videos->duration / 3600) > 0 ? floor($Going_to_expiry_videos->duration / 3600) . 'h ' : '') . floor(($Going_to_expiry_videos->duration % 3600) / 60) . 'm' }}
+                                                        </span>
                                                         @endif
-                                                    </div>
 
-                                                    @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
+                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @if($ThumbnailSetting->rating == 1)
                                                                 <div class="badge badge-secondary p-1 mr-2">
@@ -109,16 +107,21 @@
                                                             @endif
                                                         </div>
                                                     @endif
+
+                                                    </div>
+
+                                                    
                                                 </a>
-                                                <a class="epi-name mt-1 mb-0 btn" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
                                                     <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Play Now') }}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        
+                        </div>
                     </div>
 
                 </div>
@@ -127,3 +130,18 @@
 
     </section>
 @endif
+
+
+<script>
+    var elem = document.querySelector('.going-to-expiry');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

@@ -107,9 +107,11 @@
                                              data-original-title="Edit" href="{{ URL::to('/cpp/videos/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit Video" href="{{ URL::to('cpp/videos/editvideo') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                       <?php if($detele == 1): ?>
                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('/cpp/videos/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
+                                       <?php endif; ?>
                                     </td>
                                  </tr>
                                  @endforeach

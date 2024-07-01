@@ -67,7 +67,7 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    @php include(public_path('themes/default/views/partials/home/latest-episodes.php')) @endphp
+                    {{-- @php include(public_path('themes/default/views/partials/home/latest-episodes.php')) @endphp --}}
                 </div>
             </div>
         </div>
@@ -90,15 +90,7 @@
     @foreach($order_settings_list as $value)  
 
         @if($value->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1)
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/SeriesGenre", array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/SeriesGenre", array_merge($homepage_array_data, ['data' => $SeriesGenre]) )->content() !!}
         @endif
 
         @if($value->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1)

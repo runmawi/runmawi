@@ -29,9 +29,9 @@
                   </div>
 
                   <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline row p-0 mb-0">
+                    <div class="audio-genre home-sec list-inline row p-0 mb-0">
                           @foreach($data as $Audio_Category)
-                              <li class="slide-item">
+                            <div class="items">
                                   <div class="block-images position-relative">
                                       <div class="border-bg">
                                           <div class="img-box">
@@ -48,16 +48,16 @@
                                               <a href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
                                                   <p class="epi-name text-left m-0">{{ __($Audio_Category->name) }}</p>
                                               </a>
-                                              <a class="epi-name mt-5 mb-0 btn" href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
+                                              <a class="epi-name mt-2 mb-0 btn" href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                   {{ __('Visit Audio Category') }}
                                               </a>
                                           </div>
                                       </div>
                                   </div>
-                              </li>
+                                </div>
                           @endforeach
-                      </ul>
+                            </div>
                   </div>
                   
                 </div>
@@ -65,3 +65,17 @@
         </div>
       </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.audio-genre');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

@@ -211,9 +211,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="channel-epgslider list-inline row p-0 mb-0">
                             @foreach ($data as $key => $epg_channel_data)
-                                <li class="slide-item">
+                                <div class="items">
                                   <div class="block-images position-relative">
                                       <div class="border-bg">
                                           <div class="img-box">
@@ -239,21 +239,21 @@
                                           </a>
                                           <div class="hover-buttons text-white">
                                               <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
-                                                  <p class="epi-name text-left m-0">{{ __($epg_channel_data->name) }}</p>
+                                                  <p class="epi-name text-left mt-2 m-0">{{ __($epg_channel_data->name) }}</p>
                                               </a>
 
                                                 <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
                                                     <?= __('Click Events') ?>
                                                 </a>
 
-                                              <a class="epi-name mt-1 mb-0 btn" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
+                                              <a class="epi-name mt-2 mb-0 btn" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                   {{ __('Visit Audio Category') }}
                                               </a>
                                           </div>
                                       </div>
                                   </div>
-                              </li>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -373,3 +373,17 @@
             });
         });
 </script>
+
+<script>
+    var elem = document.querySelector('.channel-epgslider');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

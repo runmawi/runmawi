@@ -7,12 +7,12 @@
 $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <div class="latest-episodes list-inline  row p-0 mb-0">
     <?php if (isset($latest_episodes)):
       foreach ($latest_episodes as $key => $latest_episode) {
         // foreach($latest_series as $latest_serie) { 
         ?>
-        <li class="slide-item">
+        <div class="items">
           <div class="block-images position-relative">
 
             <!-- block-images -->
@@ -107,7 +107,7 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
                 </a>
 
 
-                <a class="epi-name mt-3 mb-0 btn"
+                <a class="epi-name mt-2 mb-0 btn"
                   href="<?php if ($latest_episode->series_id == @$latest_episode->series_title->id) {
                     echo URL::to('/episode' . '/' . @$latest_episode->series_title->slug . '/' . $latest_episode->slug);
                   } ?> ">
@@ -117,9 +117,23 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
               </div>
             </div>
           </div>
-        </li>
+        </div>
       <?php }
       // }
     endif; ?>
-  </ul>
+  </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.latest-episodes');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

@@ -55,7 +55,7 @@ else
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="latest-viewed-videos list-inline row p-0 mb-0">
                             @foreach($data as $latest_view_video)
                                 @php
                                     $publish_time = 'Published';
@@ -72,7 +72,7 @@ else
                                     }
                                 @endphp
 
-                                <div class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -135,45 +135,29 @@ else
                                                         <p class="epi-name text-left m-0">{{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</p>
                                                     @endif
 
-                                                    <div class="movie-time d-flex align-items-center pt-1">
-                                                        @if($ThumbnailSetting->age == 1 && !is_null($latest_view_video->age_restrict))
-                                                            <div class="badge badge-secondary p-1 mr-2">{{ $latest_view_video->age_restrict . ' +' }}</div>
-                                                        @endif
-                                                        @if($ThumbnailSetting->duration == 1)
-                                                            <span class="text-white">
-                                                                <i class="fa fa-clock-o"></i>
-                                                                {{ gmdate('H:i:s', $latest_view_video->duration) }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-
-                                                    @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->rating == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                        {{ __($latest_view_video->rating) }}
-                                                                    </span>
-                                                                </div>
+                                                    <div class="movie-time d-flex align-items-center pt-2">
+                                                        @if($ThumbnailSetting->age == 1 && !($latest_view_video->age_restrict == 0))
+                                                                <span class="position-relative badge p-1 mr-2">{{ $latest_view_video->age_restrict . ' +' }}</span>
                                                             @endif
-                                                            @if($ThumbnailSetting->published_year == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                        {{ __($latest_view_video->year) }}
-                                                                    </span>
-                                                                </div>
+
+                                                            @if($ThumbnailSetting->duration == 1)
+                                                                <span class="position-relative text-white mr-2">
+                                                                    {{ (floor($latest_view_video->duration / 3600) > 0 ? floor($latest_view_video->duration / 3600) . 'h ' : '') . floor(($latest_view_video->duration % 3600) / 60) . 'm' }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->published_year == 1 && !($latest_view_video->year == 0))
+                                                                <span class="position-relative badge p-1 mr-2">
+                                                                    {{ __($latest_view_video->year) }}
+                                                                </span>
                                                             @endif
                                                             @if($ThumbnailSetting->featured == 1 && $latest_view_video->featured == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
+                                                                <span class="position-relative text-white">
+                                                                   {{ __('Featured') }}
+                                                                </span>
                                                             @endif
-                                                        </div>
-                                                    @endif
+                                                    </div>
+
+                                                
 
                                                     <div class="movie-time d-flex align-items-center pt-1">
                                                         @php
@@ -190,7 +174,7 @@ else
                                                     </div>
                                                 </a>
 
-                                                <a class="epi-name mt-3 mb-0 btn" href="{{ URL::to('category/videos/' . $latest_view_video->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category/videos/' . $latest_view_video->slug) }}">
                                                     <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%"/>  {{ __('Watch Now') }}
                                                 </a>
                                             </div>
@@ -198,7 +182,7 @@ else
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
+                         </div>
                     </div>
                     
                 </div>
@@ -206,3 +190,17 @@ else
         </div>
     </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.latest-viewed-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

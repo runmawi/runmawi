@@ -464,6 +464,7 @@ class AdminVideosController extends Controller
             ->inFormat(new X264)
             ->save($outputPath);
         }
+
     public function uploadFile(Request $request)
     {
         $value = [];
@@ -473,9 +474,9 @@ class AdminVideosController extends Controller
             "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
         ]);
         $mp4_url = isset($data["file"]) ? $data["file"] : "";
-
+        
         $path = public_path() . "/uploads/videos/";
-
+        
         $file = $request->file->getClientOriginalName();
         $newfile = explode(".mp4", $file);
         $file_folder_name = $newfile[0];
@@ -540,10 +541,10 @@ class AdminVideosController extends Controller
             $video->player_image = default_horizontal_image();
 
 
-
-
             $video->duration = $Video_duration;
+    
             $video->save();
+
 
             $video_id = $video->id;
             $video_title = Video::find($video_id);
@@ -722,22 +723,32 @@ class AdminVideosController extends Controller
             $Video_storepath = storage_path("app/public/" . $path);
             $VideoInfo = $getID3->analyze($Video_storepath);
             $Video_duration = $VideoInfo["playtime_seconds"];
+            $currentMonth = now()->format('Y-m');
+            $user = Auth::user();
 
-            $video = new Video();
-            $video->disk = "public";
-            $video->title = $file_folder_name;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->mp4_url = $storepath;
-            $video->type = "mp4_url";
-            $video->draft = 0;
-            $video->image = default_vertical_image();
-            $video->video_tv_image = default_horizontal_image();
-            $video->player_image = default_horizontal_image();
+            $videoCount = Video::where('user_id', $user->id)
+            ->where('created_at', 'like', "$currentMonth%")
+            ->count();
 
 
-            $video->duration = $Video_duration;
-            $video->save();
+            if ($videoCount > 3) {
+                $value["success"] = 'videocount';
+                return response()->json($value);
+            } else {
+                $video = new Video();
+                $video = $user->id;
+                $video->disk = "public";
+                $video->title = $file_folder_name;
+                $video->original_name = "public";
+                $video->path = $path;
+                $video->mp4_url = $storepath;
+                $video->type = "mp4_url";
+                $video->draft = 0;
+                $video->image = default_vertical_image();
+                $video->video_tv_image = default_horizontal_image();
+                $video->player_image = default_horizontal_image();
+                $video->duration = $Video_duration;
+                $video->save();
 
             // if(Enable_Extract_Image() == 1){
             //     // extractImageFromVideo
@@ -1048,6 +1059,7 @@ class AdminVideosController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->all();
 
         $validatedData = $request->validate([
@@ -1304,6 +1316,7 @@ class AdminVideosController extends Controller
                 }
             }             
         } else {
+            dd('store videos');
             $video = Video::create($data);
         }
 
@@ -4044,6 +4057,7 @@ class AdminVideosController extends Controller
             $responsive_tv_image = null;
         }
 
+        $video->user_id = Auth::user()->id;
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
         $video->video_category_id = null;
@@ -4080,7 +4094,7 @@ class AdminVideosController extends Controller
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
         $video->ppv_option = $request->ppv_option;
-
+      
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
             $video->ads_tag_url_id = null;
@@ -4443,7 +4457,9 @@ class AdminVideosController extends Controller
 
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 
+
         return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
+
     }
     
     public function Mp4url(Request $request)

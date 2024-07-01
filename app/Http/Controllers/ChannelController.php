@@ -4267,6 +4267,11 @@ class ChannelController extends Controller
 
     public function live_location()
     {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = \Location::get($userIp)->countryName;
+
+        return $countryName ;
 
         echo '<pre>';
         echo Country_name();
