@@ -19,10 +19,10 @@
                 </div>
 
                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline row p-0 mb-0">
+                    <div class="content-partner list-inline row p-0 mb-0">
                         @if(isset($data))
                             @foreach($data as $content_user)
-                                <li class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -37,17 +37,17 @@
                                                 <a href="{{ url('/contentpartner/' . $content_user->slug) }}">
                                                     <p class="epi-name text-left m-0">{{ __($content_user->username) }}</p>
                                                 </a>
-                                                <a class="epi-name mt-3 mb-0 btn" href="{{ url('/contentpartner/' . $content_user->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ url('/contentpartner/' . $content_user->slug) }}">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                     {{ __('Visit Content Partner') }}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
                         @endif
-                    </ul>
+                    </div>
                 </div>
                 
             </div>
@@ -55,3 +55,17 @@
     </div>
 </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.content-partner');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
