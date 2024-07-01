@@ -580,7 +580,7 @@
                             <label class="m-0">Duration</label>
                             <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
                             <div class="panel-body">
-                                <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
+                                <input class="form-control" name="duration" placeholder="HH:MM:SS" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
                         </div>
                         
@@ -594,6 +594,56 @@
                                     @endforeach
                                  </select>
                                 <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Macros --}}
+
+                    <div class="row mt-3">
+
+                        <div class="col-sm-6">
+                            <label class="m-0">{{ __( ucwords('ads content id') ) }}</label>
+                            <p class="p1">Add the Live stream Ads content id in the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="ads_content_id"  placeholder="Live stream Ads Content Id" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0">{{ __( ucwords('ads content title') ) }}</label>
+                            <p class="p1">Add the Live stream Ads content title in the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="ads_content_title"  placeholder="Live stream Ads content title" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-sm-6">
+                            <label class="m-0">{{ __( ucwords('Ads content category') ) }}</label>
+                            <p class="p1">Add the Live stream Ads content category in the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="ads_content_category"  placeholder="Live stream Ads content category" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0">{{ __( ucwords('Ads content language') ) }}</label>
+                            <p class="p1">Add the Live stream Ads content language in the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="ads_content_language"  placeholder="Live stream Ads content language" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <label class="m-0">{{ __( ucwords('Ads content genre') ) }}</label>
+                            <p class="p1">Add the Live stream Ads content genre in the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="ads_content_genre"  placeholder="Live stream Ads content genre" />
                             </div>
                         </div>
                     </div>
@@ -633,7 +683,7 @@
                                 </select>
                             </div>
                         </div>
-                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-sm-6">

@@ -2405,3 +2405,8 @@ Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end
 Route::post('HomePage-watchlater', 'HomeController@Homepage_watchlater')->name('home-page.watchlater');
 
 Route::post('HomePage-wishlist', 'HomeController@Homepage_wishlist')->name('home-page.wishlist');
+
+// Test Page
+Route::get('/testpage', function () {
+    return view('testpage');
+})->name('testpage');

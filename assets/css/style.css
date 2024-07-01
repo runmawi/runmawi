@@ -931,4 +931,16 @@ header .navbar ul li.menu-item a:hover{color:#fff}
 .channel_contentpr .myp{padding-left:5px!important}
 }
 
+.desc {
+    overflow: hidden;
+    max-height: 100px; /* Initial max height, adjust as needed */
+    transition: max-height 0.5s ease;
+}
+.des-more-less-btns{border: none;
+    background: transparent;
+    color: #ff0000;
+    cursor: pointer;
+    margin-bottom: 10px;}
+    .video_title_images{width: 50%;}
+
 h2.main-title {font-size: 1.3em;font-weight: 500;}

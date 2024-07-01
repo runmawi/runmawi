@@ -796,8 +796,12 @@ class AdminLiveStreamController extends Controller
 
         }
         
-        $movie->acc_audio_url  = $request->acc_audio_url;
-        $movie->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+        $movie->acc_audio_url   = $request->acc_audio_url;
+        $movie->ads_content_id  = $request->ads_content_id ;
+        $movie->ads_content_title     = $request->ads_content_title ;
+        $movie->ads_content_category  = $request->ads_content_category ;
+        $movie->ads_content_genre     = $request->ads_content_genre ;
+        $movie->ads_content_language  = $request->ads_content_language ;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -1424,11 +1428,14 @@ class AdminLiveStreamController extends Controller
         }
 
         $video->acc_audio_url  = $request->acc_audio_url;
+        $video->ads_content_id  = $request->ads_content_id ;
+        $video->ads_content_title     = $request->ads_content_title ;
+        $video->ads_content_category  = $request->ads_content_category ;
+        $video->ads_content_genre     = $request->ads_content_genre ;
+        $video->ads_content_language  = $request->ads_content_language ;
         $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
         $video->save();
 
-
-        
         if(!empty($data['country'])){
             $country = $data['country'];
             unset($data['country']);
