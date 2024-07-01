@@ -118,7 +118,7 @@ class FrontEndQueryController extends Controller
     public function trending_videos()
     {
         $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-            'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+            'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','uploaded_by','user_id')
 
         ->where('active',1)->where('status', 1)->where('draft',1)->where('views', '>', '5');
 
@@ -143,7 +143,7 @@ class FrontEndQueryController extends Controller
     public function featured_videos()
     {
         $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','uploaded_by','user_id')
 
                                     ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
 
@@ -264,7 +264,7 @@ class FrontEndQueryController extends Controller
     public function latest_episodes()
     {
         $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                'duration','rating','image','featured','tv_image','player_image')
+                'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                 ->where('active', '1')->where('status', '1')->latest()->limit(15)
                 ->get()->map(function($item){
                     $item['series'] = Series::where('id',$item->series_id)->first();
@@ -277,7 +277,7 @@ class FrontEndQueryController extends Controller
     public function featured_episodes(){
 
         $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                 'duration','rating','image','featured','tv_image','player_image')
+                                                 'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                                             ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
                                             ->get()->map(function($item){
@@ -291,7 +291,7 @@ class FrontEndQueryController extends Controller
     public function trending_episodes(){
 
         $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                 'duration','rating','image','featured','tv_image','player_image')
+                                                 'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                                             ->where('status', '1')->where('active', 1)->where('views', '>', '5')
                                             ->latest()->limit(15)
                                             ->get()->map(function($item){
@@ -305,7 +305,7 @@ class FrontEndQueryController extends Controller
     public function free_episodes()
     {
         $free_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                 'duration','rating','image','featured','tv_image','player_image')
+                                                 'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                                             ->where('status', 1)->where('active', 1)->where('access', 'guest')
                                             ->latest()->limit(15)
                                             ->get()->map(function($item){
@@ -318,7 +318,7 @@ class FrontEndQueryController extends Controller
 
     public function free_series()
     {
-        $free_series =  Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
+        $free_series =  Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', '1')->where('access', 'guest')->latest()->limit(15)
                                 ->get();
 
@@ -432,7 +432,7 @@ class FrontEndQueryController extends Controller
     public function series_sliders()
     {
         $series_sliders = Series::select('id','title','slug','year','rating','access','banner','active',
-                                        'duration','rating','image','featured','tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', 1)->where('banner',1)
                                 ->latest()->limit(15)
                                 ->get() ;
@@ -443,7 +443,7 @@ class FrontEndQueryController extends Controller
     public function live_banners()
     {
         $live_banners = LiveStream::select('id','title','slug','year','rating','access','publish_type','publish_time','publish_status','ppv_price',
-                                            'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration')
+                                            'duration','rating','image','featured','Tv_live_image','player_image','details','description','free_duration','uploaded_by','user_id')
                                             ->where('active', '1')
                                             ->where('banner', '1')
                                             ->latest()->limit(15)
@@ -512,7 +512,7 @@ class FrontEndQueryController extends Controller
     public function latest_audios()
     {
         
-        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
+        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id','uploaded_by','user_id')
                                 ->where('active', '1')->where('status', '1')
                                 ->latest()->limit(15)->get();
 
@@ -522,7 +522,7 @@ class FrontEndQueryController extends Controller
     public function trending_audios()
     {
         
-        $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
+        $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
                                     ->where('active', '1')->where('status', '1')
                                     ->where('views', '>', '5')
                                     ->latest()->limit(15)
@@ -726,7 +726,7 @@ class FrontEndQueryController extends Controller
             if (!is_null($language)) {
             
                 $preference_language_query = Video::Select('videos.id','videos.title','videos.slug','videos.year','videos.rating','videos.access','videos.publish_type','videos.global_ppv','videos.publish_time','videos.publish_status','videos.ppv_price',
-                                                            'duration','videos.rating','videos.image','videos.featured','videos.age_restrict','videos.video_tv_image','videos.player_image','videos.details','videos.description'
+                                                            'duration','videos.rating','videos.image','videos.featured','videos.age_restrict','videos.video_tv_image','videos.player_image','videos.details','videos.description','videos.uploaded_by','videos.user_id'
                                                             ,'languagevideos.*','videos.id as pre_video_id')
                                                             ->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
                                                             ->whereIn('language_id', $language)
