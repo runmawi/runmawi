@@ -356,8 +356,10 @@ class LiveStreamController extends Controller
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
+                
+            // Adsvariables
 
-            $adsvariables = Adsvariables::get();
+            $adsvariables = Adsvariables::whereNotNull('website')->get();
             $adsvariable_url = ''; 
             
             foreach ($adsvariables as $key => $ads_variable ) {
@@ -367,6 +369,13 @@ class LiveStreamController extends Controller
                     $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
                 }
             }
+
+            $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category 
+                                        ."&ads.content_genre=".$categoryVideos->ads_content_genre 
+                                        ."&ads.content_id=".$categoryVideos->ads_content_id
+                                        ."&ads.content_language=".$categoryVideos->content_language
+                                        ."&ads.content_title=".$categoryVideos->content_title ;
+
 
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
                                             ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
