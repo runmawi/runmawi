@@ -130,7 +130,7 @@ if (!Auth::guest()) {
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="movie">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">
+                                                        <p class="epi-name text-left mt-2 m-0">
                                                             {{ strlen($watchlater_video->title) > 17 ? substr($watchlater_video->title, 0, 18) . '...' : $watchlater_video->title }}
                                                         </p>
                                                     @endif

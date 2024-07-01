@@ -148,6 +148,7 @@
                                                 <div class="block-description">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
                                                         {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" src="{{ $videos->player_image ? URL::to('public/uploads/images/'.$videos->player_image) : $default_vertical_image_url }}" alt="{{ $videos->title }}"> --}}
+                                                        </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
                                                             @switch(true)
@@ -168,7 +169,6 @@
                                                                 @break
                                                             @endswitch
                                                         @endif
-                                                    </a>
 
                                                     <div class="hover-buttons text-white">
                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}">
@@ -226,6 +226,7 @@
                                         </div>
                                     @endforeach
                                 @endif
+                        </div>
                         </div>
                     </div>
                 </div>

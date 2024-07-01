@@ -3,6 +3,8 @@
   --vjs-theme-city--secondary: #fff;
 }
 
+.container-fluid{ position: relative;}
+
 .my-video.video-js .vjs-big-play-button {
   font-size: 3em;
   line-height: 1.5em;

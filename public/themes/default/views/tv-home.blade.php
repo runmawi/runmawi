@@ -77,7 +77,11 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    @php include(public_path('themes/default/views/partials/home/featured-episodes.php')) @endphp
+                    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/featured-episodes" )->content() !!}
+
+                    <!-- @php 
+                        include public_path('themes/default/views/partials/home/featured-episodes.blade.php')
+                    @endphp -->
                 </div>
             </div>
         </div>
