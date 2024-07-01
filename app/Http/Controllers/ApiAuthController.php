@@ -5232,7 +5232,7 @@ public function checkEmailExists(Request $request)
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
 
-       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
 
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
                 if(count($AllSeason) > 0){
@@ -5255,7 +5255,6 @@ public function checkEmailExists(Request $request)
        }else{
         $Season = '';
        }
-      //  print_r($Season->id);exit;
 
 
       $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.series_id')
