@@ -6362,11 +6362,11 @@ return response()->json($response, 200);
     if ($video_ids_count > 0) {
         $video_ids = $video_ids->pluck('videoid');
 
-        $videos = Video::join('continue_watching', 'videos.id', '=', 'continue_watching.videoid')
+        $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
             ->whereIn('videos.id', $video_ids)
-            ->where('continue_watching.user_id', '=', $user_id)
-            ->orderBy('continue_watching.created_at', 'desc')
-            ->select('videos.*', 'continue_watching.watch_percentage', 'continue_watching.skip_time')
+            ->where('continue_watchings.user_id', '=', $user_id)
+            ->orderBy('continue_watchings.created_at', 'desc')
+            ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
             ->get()
             ->map(function ($item) {
                 $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
