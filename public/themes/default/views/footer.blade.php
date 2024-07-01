@@ -148,7 +148,7 @@
     </div>
 
 </footer>
-
+      <script src="<?= ('assets\js\jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
@@ -158,15 +158,16 @@
       <!-- owl carousel Js -->
       <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script  src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-<script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
+      
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -255,13 +256,11 @@ function about(evt , id) {
       <?php } 
     }
      ?>
- <script  src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script src="<?= URL::to('assets/js/lazysized.5.3.2.js') ?>" async></script>
- <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ {{-- <script async src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> --}}
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
 
  <script>
   function loadScriptWithTimeout(url, timeout = 50000) {
@@ -312,11 +311,11 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
         s.src = u;
         r.parentNode.insertBefore(s, r);
     }
-    if (!window.HTMLPictureElement) {
-    loadJS(" <script src="<?= URL::to('assets/js/lazysized.5.3.2.js') ?>" async></script>");
-    }
+    // if (!window.HTMLPictureElement) {
+    // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
+    // }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+{{-- <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
 
 <?php
     try {
@@ -337,17 +336,17 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
 ?>
 
 <script>
-  if ('loading' in HTMLImageElement.prototype) {
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    images.forEach(img => {
-      img.src = img.dataset.src;
-    });
-  } else {
-       const script = document.createElement('script');
-    script.src =
-      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
-    document.body.appendChild(script);
-  }
+  // if ('loading' in HTMLImageElement.prototype) {
+  //   const images = document.querySelectorAll('img[loading="lazy"]');
+  //   images.forEach(img => {
+  //     img.src = img.dataset.src;
+  //   });
+  // } else {
+  //      const script = document.createElement('script');
+  //   script.src =
+  //     'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+  //   document.body.appendChild(script);
+  // }
 </script>
 <?php  
   $Prevent_inspect = $theme->prevent_inspect ;
@@ -381,6 +380,9 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
             alert("This function has been disabled");
             e.preventDefault();
         });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {var lazyloadImages = document.querySelectorAll("img.lazy");var lazyloadThrottleTimeout;function lazyload () {if(lazyloadThrottleTimeout) {clearTimeout(lazyloadThrottleTimeout);}lazyloadThrottleTimeout = setTimeout(function() {var scrollTop = window.pageYOffset;lazyloadImages.forEach(function(img) {if(img.offsetTop < (window.innerHeight + scrollTop)){img.src = img.dataset.src;img.classList.remove('lazy');}});if(lazyloadImages.length == 0) {document.removeEventListener("scroll", lazyload);window.removeEventListener("resize", lazyload);window.removeEventListener("orientationChange", lazyload);}},20);}document.addEventListener("scroll", lazyload);window.addEventListener("resize", lazyload);window.addEventListener("orientationChange", lazyload);});
 </script>
 <?php } ?>
   <?php if( get_image_loader() == 1) { ?>

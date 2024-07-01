@@ -83,7 +83,6 @@ class ChannelHomeController extends Controller
     {
         $settings = Setting::first();
         $channel = Channel::where('channel_slug',$slug)->first(); 
-
         $currency = CurrencySetting::first();
 
         if(!empty($channel)){
@@ -92,25 +91,36 @@ class ChannelHomeController extends Controller
             ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
             ->get();
 
-            $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')
-            ->orderBy('created_at', 'DESC')
-            ->get() ;
+            $latest_videos = (new FrontEndQueryController)->latest_videos()->filter(function ($latest_videos) use ($channel) {
+                if ( $latest_videos->user_id == $channel->id && $latest_videos->uploaded_by == "Channel" ) {
+                    return $latest_videos;
+                }
+            });
 
-            $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-            ->get();
+            $latest_series = (new FrontEndQueryController)->latest_Series()->filter(function ($latest_Series) use ($channel) {
+                if ( $latest_Series->user_id == $channel->id && $latest_Series->uploaded_by == "Channel" ) {
+                    return $latest_Series;
+                }
+            });
 
-            $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
-            ->get();
+            $latest_audios = (new FrontEndQueryController)->latest_audios()->filter(function ($latest_audios) use ($channel) {
+                if ( $latest_audios->user_id == $channel->id && $latest_audios->uploaded_by == "Channel" ) {
+                    return $latest_audios;
+                }
+            });
+                     
+            // $livestreams = (new FrontEndQueryController)->livestreams()->filter(function ($livestreams) use ($channel) {
+            //     if ( $livestreams->user_id == $channel->id && $livestreams->uploaded_by == "Channel" ) {
+            //         return $livestreams;
+            //     }
+            // });
 
             $data = array(
                 'currency'      => $currency,
                 'latest_video'  => $latest_videos,
                 'latest_series' => $latest_series,
-                'latest_audios' => $audios,
-                'audios'    => $audios,
+                'latest_audios' => $latest_audios,
+                'audios'    => $latest_audios,
                 'livetream' => $livetreams,
                 'channel_partner'   => $channel,
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
@@ -225,22 +235,23 @@ class ChannelHomeController extends Controller
                 ->limit(30)
                 ->get();
 
-                $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')
-                ->orderBy('created_at', 'DESC')
-                ->limit(30)
-                ->get() ;
-
-                $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-                ->limit(30)
-                ->get();
-
-                $latest_videos = Video::where('user_id', $channel->id)
-                ->where('uploaded_by', 'Channel')->where('draft', '1')
-                ->where('active', '1')->where('status', '1')
-                ->limit(30)
-                ->get();
+                $latest_videos = (new FrontEndQueryController)->latest_videos()->filter(function ($latest_videos) use ($channel) {
+                    if ( $latest_videos->user_id == $channel->id && $latest_videos->uploaded_by == "Channel" ) {
+                        return $latest_videos;
+                    }
+                });
+    
+                $latest_series = (new FrontEndQueryController)->latest_Series()->filter(function ($latest_Series) use ($channel) {
+                    if ( $latest_Series->user_id == $channel->id && $latest_Series->uploaded_by == "Channel" ) {
+                        return $latest_Series;
+                    }
+                });
+    
+                $latest_audios = (new FrontEndQueryController)->latest_audios()->filter(function ($latest_audios) use ($channel) {
+                    if ( $latest_audios->user_id == $channel->id && $latest_audios->uploaded_by == "Channel" ) {
+                        return $latest_audios;
+                    }
+                });
     
             $ThumbnailSetting = ThumbnailSetting::first();
             
@@ -248,12 +259,17 @@ class ChannelHomeController extends Controller
                 'currency' => $currency,
                 'latest_video' => $latest_videos,
                 'latest_series' => $latest_series,
-                'audios' => $audios,
+                'audios' => $latest_audios,
                 'livetream' => $livetreams,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'LiveCategory' => LiveCategory::get(),
-                'VideoCategory' => VideoCategory::get(),
-                'AudioCategory' => AudioCategory::get(),
+                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
+                'LiveCategory'  => (new FrontEndQueryController)->LiveCategory() ,
+                'VideoCategory' => (new FrontEndQueryController)->genre_video_display() ,
+                'SeriesGenre'   => (new FrontEndQueryController)->SeriesGenre() ,
+                'AudioCategory' => (new FrontEndQueryController)->AudioCategory() ,
+                'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() , 
+                'order_settings_list' => OrderHomeSetting::get(),
+                'getfeching'          => Geofencing::first(),
+                
                 'channel' => $channel,
             );
             $theme = Theme::uses($this->Theme);
@@ -277,7 +293,7 @@ class ChannelHomeController extends Controller
             $respond = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
                 'audios' => $data ,
             );
 
@@ -329,7 +345,7 @@ class ChannelHomeController extends Controller
             $respond_data = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
                 'Series' => $data ,
                 'channel_slug' => $channel_slug ,
             );
@@ -356,7 +372,7 @@ class ChannelHomeController extends Controller
             $respond_data = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
                 'videos' => $data ,
                 'channel_slug' => $channel_slug ,
             );

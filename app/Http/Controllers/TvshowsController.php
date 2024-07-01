@@ -97,13 +97,13 @@ class TvshowsController extends Controller
             $OrderHomeSetting = OrderHomeSetting::orderBy('order_id', 'asc')->get();
 
             $Slider_array_data = array(
-                'sliders'            => (new FrontEndQueryController)->sliders(), 
-                'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-                'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-                'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+                'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
+                'sliders'            => [], 
+                'live_banner'        => [],  
+                'video_banners'      => [], 
+                'live_event_banners' => [], 
+                'VideoCategory_banner' => [], 
             );   
 
             $data = [
@@ -138,8 +138,8 @@ class TvshowsController extends Controller
             return Theme::view('tv-home', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            // return abort(404);
+            // return $th->getMessage();
+            return abort(404);
         }
     }
 
