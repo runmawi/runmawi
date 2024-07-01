@@ -15,7 +15,7 @@ class AddMacrosToLiveStreamsTable extends Migration
     {
         Schema::table('live_streams', function (Blueprint $table) {
             $table->string('ads_content_id')->nullable();
-            $table->string('ads_content_title')->nullable();
+            $table->text('ads_content_title')->nullable();
             $table->string('ads_content_category')->nullable();
             $table->string('ads_content_genre')->nullable();
             $table->string('ads_content_language')->nullable();
