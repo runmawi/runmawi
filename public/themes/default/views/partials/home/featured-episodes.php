@@ -18,7 +18,7 @@
               <div class="border-bg">
               <div class="img-box">
               <a class="playTrailer" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?>">
-                <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" alt="feat">
+                <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" alt="feat">
                </a>
                
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -37,7 +37,7 @@
 
               <div class="block-description">
               <a class="playTrailer" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?>">
-              <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->player_image;  ?>" alt="episod">
+              <img class="img-fluid w-100" loading="lazy" src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->player_image;  ?>" alt="episod">
                
                
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

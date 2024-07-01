@@ -5234,7 +5234,10 @@ public function checkEmailExists(Request $request)
 
        $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
 
+       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
+
                 if(count($AllSeason) > 0){
 
 
@@ -5381,6 +5384,7 @@ public function checkEmailExists(Request $request)
         'episode' => $episode,
         'Season_Name' => $Season_Name,
         'season' => $Season,
+        'Season_array' => $Season_array ,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
         'watchlater' => $watchlaterstatus,
@@ -6346,42 +6350,44 @@ return response()->json($response, 200);
   public function listcontinuewatchings(Request $request)
   {
 
-      $user_id = $request->user_id;
-    /*channel videos*/
-    if(!empty($user_id)){
-      $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-      $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();  
-    }else{
-      $video_ids = 0;
-      $video_ids_count = 0;  
-    }
-    if ( $video_ids_count  > 0) {
+    $user_id = $request->user_id;
 
-      foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->videoid;
-      }
-      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
-        return $item;
-      });
-      $response = array(
-        'status' => "true",
-        'videos'=> $videos,
-      );
-    }else{
-      $response = array(
-        'status' => "false",
-        'videos'=> [],
-      );
+    /* channel videos */
+    if (!empty($user_id)) {
+        $video_ids = ContinueWatching::where('videoid', '!=', NULL)
+            ->where('user_id', '=', $user_id)
+            ->get();
+        $video_ids_count = $video_ids->count();  
+    } else {
+        $video_ids = collect();
+        $video_ids_count = 0;  
     }
 
+    if ($video_ids_count > 0) {
+        $video_ids = $video_ids->pluck('videoid');
 
-    // $response = array(
-    //     'status'=>$status,
-    //     'videos'=> $videos
-    //   );
+        $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
+            ->whereIn('videos.id', $video_ids)
+            ->where('continue_watchings.user_id', '=', $user_id)
+            ->orderBy('continue_watchings.created_at', 'desc')
+            ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
+            ->get()
+            ->map(function ($item) {
+                $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                return $item;
+            });
+
+        $response = array(
+            'status' => "true",
+            'videos' => $videos,
+        );
+    } else {
+        $response = array(
+            'status' => "false",
+            'videos' => [],
+        );
+    }
+
     return response()->json($response, 200);
 
 
@@ -6454,35 +6460,39 @@ return response()->json($response, 200);
 
   public function listcontinuewatchingsepisode(Request $request)
   {
-
     $user_id = $request->user_id;
-    /*channel videos*/
-    $episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->count();
 
-    if ( $episode_ids_count  > 0) {
+    /* channel videos */
+    $episode_ids = ContinueWatching::where('episodeid', '!=', NULL)
+        ->where('user_id', '=', $user_id)
+        ->get();
+    $episode_ids_count = $episode_ids->count();
 
-      foreach ($episode_ids as $key => $value1) {
-        $k2[] = $value1->episodeid;
-      }
-      $episodes = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        return $item;
-      });
-      $status = "true";
-    }else{
-            $status = "false";
-            $episodes = [];
+    if ($episode_ids_count > 0) {
+        $episode_ids = $episode_ids->pluck('episodeid');
+
+        $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
+            ->whereIn('episodes.id', $episode_ids)
+            ->where('continue_watchings.user_id', '=', $user_id)
+            ->orderBy('continue_watchings.created_at', 'desc')
+            ->select('episodes.*', 'continue_watchings.watch_percentage')
+            ->get()
+            ->map(function ($item) {
+                $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                return $item;
+            });
+
+        $status = "true";
+    } else {
+        $status = "false";
+        $episodes = [];
     }
 
-
     $response = array(
-        'status'=>$status,
-        'episodes'=> $episodes
-      );
+        'status' => $status,
+        'episodes' => $episodes
+    );
     return response()->json($response, 200);
-
 
   }
 
@@ -14418,7 +14428,8 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured','description')
+        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating',
+                                      'active', 'status','image','player_image','featured','description')
                               ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
                               ->map(function ($item) {
                                   $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
@@ -15867,7 +15878,8 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Livestream_Pagelist(){
 
-      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
+      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time',
+                                        'status','duration','rating','image','player_image','featured','active')
                         ->where('active',1)->where('status', 1)->latest()->get()
                         ->map(function ($item) {
                             $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);

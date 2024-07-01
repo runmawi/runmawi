@@ -101,7 +101,7 @@ h1{font-weight:500}
 .view-count{color:#fff}
 .outline-secondary{padding:10px;color:#fff!important;background-color:gray}
 .slick-nav.prev-arrow{left:0!important;-webkit-transform:scaleX(-1);transform:scaleX(-1);z-index:999}
-.slick-nav.next-arrow{left:auto;right:0!important}
+.slick-nav.next-arrow{left:auto;right:0!important;z-index: 999;}
 .sta{color:#3daae0}
 .navbar-nav{padding-left:20px}
 .block-space{padding:40px 0}

@@ -108,32 +108,201 @@ class ChannelHomeController extends Controller
                     return $latest_audios;
                 }
             });
+
+
+            $featured_videos = (new FrontEndQueryController)->featured_videos()->filter(function ($featured_videos) use ($channel) {
+                if ( $featured_videos->user_id == $channel->id && $featured_videos->uploaded_by == "Channel" ) {
+                    return $featured_videos;
+                }
+            });
+
+
                      
-            // $livestreams = (new FrontEndQueryController)->livestreams()->filter(function ($livestreams) use ($channel) {
-            //     if ( $livestreams->user_id == $channel->id && $livestreams->uploaded_by == "Channel" ) {
-            //         return $livestreams;
+            $trending_videos = (new FrontEndQueryController)->trending_videos()->filter(function ($trending_videos) use ($channel) {
+                if ( $trending_videos->user_id == $channel->id && $trending_videos->uploaded_by == "Channel" ) {
+                    return $trending_videos;
+                }
+            });
+
+            $featured_episodes = (new FrontEndQueryController)->featured_episodes()->filter(function ($featured_episodes) use ($channel) {
+                if ( $featured_episodes->user_id == $channel->id && $featured_episodes->uploaded_by == "Channel" ) {
+                    return $featured_episodes;
+                }
+            });
+            
+            $genre_video_display = (new FrontEndQueryController)->genre_video_display()->filter(function ($genre_video_display) use ($channel) {
+                if ( $genre_video_display->user_id == $channel->id && $genre_video_display->uploaded_by == "Channel" ) {
+                    return $genre_video_display;
+                }
+            });
+
+            $albums = (new FrontEndQueryController)->AudioAlbums()->filter(function ($AudioAlbums) use ($channel) {
+                if ( $AudioAlbums->user_id == $channel->id && $albums->uploaded_by == "Channel" ) {
+                    return $AudioAlbums;
+                }
+            });
+
+            $latest_episodes = (new FrontEndQueryController)->latest_episodes()->filter(function ($latest_episodes) use ($channel) {
+                if ( $latest_episodes->user_id == $channel->id && $latest_episodes->uploaded_by == "Channel" ) {
+                    return $latest_episodes;
+                }
+            });
+            
+            $artist = (new FrontEndQueryController)->artist()->filter(function ($artist) use ($channel) {
+                if ( $artist->user_id == $channel->id && $artist->uploaded_by == "Channel" ) {
+                    return $artist;
+                }
+            });
+
+            $LiveCategory = (new FrontEndQueryController)->LiveCategory()->filter(function ($LiveCategory) use ($channel) {
+                if ( $LiveCategory->user_id == $channel->id && $LiveCategory->uploaded_by == "Channel" ) {
+                    return $LiveCategory;
+                }
+            });
+
+            $LiveEventArtist = (new FrontEndQueryController)->LiveEventArtist()->filter(function ($LiveEventArtist) use ($channel) {
+                if ( $LiveEventArtist->user_id == $channel->id && $LiveEventArtist->uploaded_by == "Channel" ) {
+                    return $LiveEventArtist;
+                }
+            });
+
+            $trending_audios = (new FrontEndQueryController)->trending_audios()->filter(function ($trending_audios) use ($channel) {
+                if ( $trending_audios->user_id == $channel->id && $trending_audios->uploaded_by == "Channel" ) {
+                    return $trending_audios;
+                }
+            });
+
+            $live_banners = (new FrontEndQueryController)->live_banners()->filter(function ($live_banners) use ($channel) {
+                if ( $live_banners->user_id == $channel->id && $live_banners->uploaded_by == "Channel" ) {
+                    return $live_banners;
+                }
+            });
+
+            $video_banners = (new FrontEndQueryController)->video_banners()->filter(function ($video_banners) use ($channel) {
+                if ( $video_banners->user_id == $channel->id && $video_banners->uploaded_by == "Channel" ) {
+                    return $video_banners;
+                }
+            });
+
+            $series_sliders = (new FrontEndQueryController)->series_sliders()->filter(function ($series_sliders) use ($channel) {
+                if ( $series_sliders->user_id == $channel->id && $series_sliders->uploaded_by == "Channel" ) {
+                    return $series_sliders;
+                }
+            });
+
+            $live_event_banners = (new FrontEndQueryController)->live_event_banners()->filter(function ($live_event_banners) use ($channel) {
+                if ( $live_event_banners->user_id == $channel->id && $live_event_banners->uploaded_by == "Channel" ) {
+                    return $live_event_banners;
+                }
+            });
+
+            $Episode_sliders = (new FrontEndQueryController)->Episode_sliders()->filter(function ($Episode_sliders) use ($channel) {
+                if ( $Episode_sliders->user_id == $channel->id && $Episode_sliders->uploaded_by == "Channel" ) {
+                    return $Episode_sliders;
+                }
+            });
+
+            
+            $VideoCategory_banner = (new FrontEndQueryController)->VideoCategory_banner()->filter(function ($VideoCategory_banner) use ($channel) {
+                if ( $VideoCategory_banner->user_id == $channel->id && $VideoCategory_banner->uploaded_by == "Channel" ) {
+                    return $VideoCategory_banner;
+                }
+            });
+
+            // $Most_watched_videos_users = (new FrontEndQueryController)->Most_watched_videos_users()->filter(function ($Most_watched_videos_users) use ($channel) {
+            //     if ( $Most_watched_videos_users->user_id == $channel->id && $Most_watched_videos_users->uploaded_by == "Channel" ) {
+            //         return $Most_watched_videos_users;
+            //     }
+            // });
+            
+            $Most_watched_videos_site = (new FrontEndQueryController)->Most_watched_videos_site()->filter(function ($Most_watched_videos_site) use ($channel) {
+                if ( $Most_watched_videos_site->user_id == $channel->id && $Most_watched_videos_site->uploaded_by == "Channel" ) {
+                    return $Most_watched_videos_site;
+                }
+            });
+
+            $Most_watched_videos_country = (new FrontEndQueryController)->Most_watched_videos_country()->filter(function ($Most_watched_videos_country) use ($channel) {
+                if ( $Most_watched_videos_country->user_id == $channel->id && $Most_watched_videos_country->uploaded_by == "Channel" ) {
+                    return $Most_watched_videos_country;
+                }
+            });
+
+            $AudioCategory = (new FrontEndQueryController)->AudioCategory()->filter(function ($AudioCategory) use ($channel) {
+                if ( $AudioCategory->user_id == $channel->id && $AudioCategory->uploaded_by == "Channel" ) {
+                    return $AudioCategory;
+                }
+            });
+            
+            // $preference_genres = (new FrontEndQueryController)->preference_genres()->filter(function ($preference_genres) use ($channel) {
+            //     if ( $preference_genres->user_id == $channel->id && $preference_genres->uploaded_by == "Channel" ) {
+            //         return $preference_genres;
             //     }
             // });
 
+            // $preference_language = (new FrontEndQueryController)->preference_language()->filter(function ($preference_language) use ($channel) {
+            //     if ( $preference_language->user_id == $channel->id && $preference_language->uploaded_by == "Channel" ) {
+            //         return $preference_language;
+            //     }
+            // });
+            // 
+            // dd($Most_watched_videos_country);
+
+
             $data = array(
-                'currency'      => $currency,
-                'latest_video'  => $latest_videos,
-                'latest_series' => $latest_series,
-                'latest_audios' => $latest_audios,
-                'audios'    => $latest_audios,
-                'livetream' => $livetreams,
-                'channel_partner'   => $channel,
-                'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
-                'LiveCategory'  => (new FrontEndQueryController)->LiveCategory() ,
-                'VideoCategory' => (new FrontEndQueryController)->genre_video_display() ,
-                'SeriesGenre'   => (new FrontEndQueryController)->SeriesGenre() ,
-                'AudioCategory' => (new FrontEndQueryController)->AudioCategory() ,
+                'currency'              => $currency,
+                'latest_video'          => $latest_videos,
+                'latest_videos'         => $latest_videos,
+                'videos'                => $latest_videos,
+                'latest_series'         => $latest_series,
+                'latest_audios'         => $latest_audios,
+                'audios'                => $latest_audios,
+                'trendings'             => $trending_videos,
+                'trending_videos'       => $trending_videos,
+                'suggested_videos'      => $trending_videos,
+                'featured_episodes'     => $featured_episodes,
+                
+                'genre_video_display'   => $genre_video_display,
+                'genres'                => $genre_video_display,
+                'video_categories'      => $genre_video_display ,
+                'VideoCategory'         => $genre_video_display ,
+                
+                'livetream'             => $livetreams,
+                'channel_partner'       => $channel,
+
+                'albums'                => $albums ,
+                'latest_episode'        => $latest_episodes , 
+                'artist'                => $artist ,
+                'VideoSchedules'        => (new FrontEndQueryController)->VideoSchedules() ,
+
+                'trending_audios'           => $trending_audios,
+
+                'ThumbnailSetting'      => (new FrontEndQueryController)->ThumbnailSetting() ,
+                'LiveCategory'          => $LiveCategory ,
+                'SeriesGenre'           => (new FrontEndQueryController)->SeriesGenre() ,
+                'AudioCategory'         => $AudioCategory ,
+                'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks(),
+                'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
+                'artist_live_event'         => $LiveEventArtist ,
+                'VideoCategory_banner' =>   $VideoCategory_banner, 
+                // 'most_watch_user'      => $Most_watched_videos_users,
+                'top_most_watched'     => $Most_watched_videos_site,
+                'Most_watched_country'   =>  $Most_watched_videos_country, 
+                // 'preference_genres'      => $preference_genres,
+                // 'preference_Language'    => $preference_language, 
                 'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() , 
                 'order_settings_list' => OrderHomeSetting::get(),
                 'getfeching'          => Geofencing::first(),
                 'videos_expiry_date_status'     => videos_expiry_date_status(),
                 'default_vertical_image_url'    => default_vertical_image_url(),
                 'default_horizontal_image_url'  => default_horizontal_image_url(),
+                'admin_advertistment_banners' => (new FrontEndQueryController)->admin_advertistment_banners(),
+                'sliders'            => (new FrontEndQueryController)->sliders(), 
+                'live_banner'        => $live_banners,  
+                'video_banners'      => $video_banners, 
+                'series_sliders'     => $series_sliders, 
+                'live_event_banners' => $live_event_banners, 
+                'Episode_sliders'    => $Episode_sliders,
+
                 'settings' => $this->settings ,
             );
 
