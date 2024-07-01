@@ -14428,7 +14428,8 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured','description')
+        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating',
+                                      'active', 'status','image','player_image','featured','description')
                               ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
                               ->map(function ($item) {
                                   $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
@@ -15877,7 +15878,8 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Livestream_Pagelist(){
 
-      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
+      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time',
+                                        'status','duration','rating','image','player_image','featured','active')
                         ->where('active',1)->where('status', 1)->latest()->get()
                         ->map(function ($item) {
                             $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
