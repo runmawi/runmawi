@@ -94,11 +94,11 @@
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $slider_video)
 
-        <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/public/uploads/images/' . $slider_video->player_image) }}" style="background-position: right;">
+        <div class="slide slick-bg s-bg-1 lazyload"  style="background:url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-6 col-md-12">
+                        <div class="col-xl-5 col-lg-5 col-md-12">
                             <h1 class="slider-text title text-uppercase">
                                 {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
                             </h1>
@@ -147,7 +147,7 @@
         ->first();
     ?>
 
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/') . '/public/uploads/images/' . $Episode_slider->player_image }}" style="background-position: right;" id="image-container">
+    <div class="slide slick-bg s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;" id="image-container">
 
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -241,7 +241,7 @@
 {{-- Live Stream --}}
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $slider_video)
-        <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/public/uploads/images/' . $slider_video->player_image) }}" style="background-position: right;">
+        <div class="slide slick-bg s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -275,7 +275,7 @@
 {{-- Live Event --}}
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $live_event_banner)
-        <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/public/uploads/images/' . $live_event_banner->player_image) }}" style="background-position: right;">
+        <div class="slide slick-bg s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -316,7 +316,7 @@
 
 @if (!empty($VideoCategory_banner) && $VideoCategory_banner->isNotEmpty())
     @forelse ($VideoCategory_banner as $key => $videos)
-        <div class="slide slick-bg s-bg-1 lazyload" data-bgset="{{ url('/public/uploads/images/' . $videos->player_image) }}" style="background-position: right;">
+        <div class="slide slick-bg s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
