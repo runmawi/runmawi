@@ -227,6 +227,12 @@ class ChannelHomeController extends Controller
                 }
             });
 
+            $AudioCategory = (new FrontEndQueryController)->AudioCategory()->filter(function ($AudioCategory) use ($channel) {
+                if ( $AudioCategory->user_id == $channel->id && $AudioCategory->uploaded_by == "Channel" ) {
+                    return $AudioCategory;
+                }
+            });
+            
             // $preference_genres = (new FrontEndQueryController)->preference_genres()->filter(function ($preference_genres) use ($channel) {
             //     if ( $preference_genres->user_id == $channel->id && $preference_genres->uploaded_by == "Channel" ) {
             //         return $preference_genres;
@@ -266,7 +272,7 @@ class ChannelHomeController extends Controller
                 'albums'                => $albums ,
                 'latest_episode'        => $latest_episodes , 
                 'artist'                => $artist ,
-                'VideoSchedules'        => $VideoSchedules ,
+                'VideoSchedules'        => (new FrontEndQueryController)->VideoSchedules() ,
 
                 'trending_audios'           => $trending_audios,
 
