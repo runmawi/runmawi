@@ -143,7 +143,7 @@ $data->each(function ($category) {
                                                     <a href="{{ URL::to('live') . '/' . $livestream->slug }}">
                                                         @if($ThumbnailSetting->title == 1)
                                                             <!-- Title -->
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left m-0 mt-2">
                                                                 {{ strlen($livestream->title) > 17 ? substr($livestream->title, 0, 18) . '...' : $livestream->title }}
                                                             </p>
                                                         @endif

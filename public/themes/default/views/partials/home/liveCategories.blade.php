@@ -49,7 +49,7 @@
                                             <div class="hover-buttons text-white">
                                                 <a class="text-white d-flex align-items-center" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">
+                                                        <p class="epi-name text-left m-0 mt-2">
                                                             {{ strlen($Categories->name) > 17 ? substr($Categories->name, 0, 18) . '...' : $Categories->name }}
                                                         </p>
                                                     @endif

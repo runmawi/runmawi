@@ -39,7 +39,7 @@ if (Auth::guest() != true) {
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="latest-viewed-episode list-inline row p-0 mb-0">
+                        <div class="latest-viewed-episode home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $latest_view_episode)
                                     <div class="items">
@@ -64,6 +64,9 @@ if (Auth::guest() != true) {
                                                                 {{ strlen($latest_view_episode->title) > 17 ? substr($latest_view_episode->title, 0, 18) . '...' : $latest_view_episode->title }}
                                                             </p>
                                                         @endif
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($latest_view_episode->episode_description) > 75 ? substr(html_entity_decode(strip_tags($latest_view_episode->episode_description)), 0, 75) . '...' : $latest_view_episode->episode_description }}
+                                                        </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @if($ThumbnailSetting->age == 1 && !($latest_view_episode->age_restrict == 0))

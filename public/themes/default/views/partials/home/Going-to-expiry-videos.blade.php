@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="going-to-expiry' list-inline row p-0 mb-0">
+                        <div class="going-to-expiry home-sec list-inline row p-0 mb-0">
                             @foreach($data as $Going_to_expiry_videos) 
                                 <div class="items">
                                     <div class="block-images position-relative">
@@ -57,63 +57,91 @@
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
                                                     <img class="img-fluid w-100" loading="lazy" src="{{ $Going_to_expiry_videos->image_url ?  $Going_to_expiry_videos->image_url : $default_vertical_image_url }}" data-src="{{ $Going_to_expiry_videos->image_url ?  $Going_to_expiry_videos->image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
                                                 </a>
+                                                @if($ThumbnailSetting->free_or_cost_label == 1)
+                                                    @switch(true)
+                                                        @case($Going_to_expiry_videos->access == 'subscriber')
+                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                        @break
+                                                        @case($Going_to_expiry_videos->access == 'registered')
+                                                            <p class="p-tag">{{ __('Register Now') }}</p>
+                                                        @break
+                                                        @case(!empty($Going_to_expiry_videos->ppv_price))
+                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $Going_to_expiry_videos->ppv_price }}</p>
+                                                        @break
+                                                        @case(!empty($Going_to_expiry_videos->global_ppv) && $Going_to_expiry_videos->ppv_price == null)
+                                                            <p class="p-tag">{{ $Going_to_expiry_videos->global_ppv . ' ' . $currency->symbol }}</p>
+                                                        @break
+                                                        @case($Going_to_expiry_videos->global_ppv == null && $Going_to_expiry_videos->ppv_price == null)
+                                                            <p class="p-tag">{{ __('Free') }}</p>
+                                                        @break
+                                                    @endswitch
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" src="{{ $Going_to_expiry_videos->Player_image_url ? $Going_to_expiry_videos->Player_image_url : $default_vertical_image_url }}" data-src="{{ $Going_to_expiry_videos->Player_image_url ? $Going_to_expiry_videos->Player_image_url : $default_vertical_image_url }}" alt="{{ $Going_to_expiry_videos->title }}">
+                                                @if($ThumbnailSetting->free_or_cost_label == 1)
+                                                    @switch(true)
+                                                        @case($Going_to_expiry_videos->access == 'subscriber')
+                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                        @break
+                                                        @case($Going_to_expiry_videos->access == 'registered')
+                                                            <p class="p-tag">{{ __('Register Now') }}</p>
+                                                        @break
+                                                        @case(!empty($Going_to_expiry_videos->ppv_price))
+                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $Going_to_expiry_videos->ppv_price }}</p>
+                                                        @break
+                                                        @case(!empty($Going_to_expiry_videos->global_ppv) && $Going_to_expiry_videos->ppv_price == null)
+                                                            <p class="p-tag">{{ $Going_to_expiry_videos->global_ppv . ' ' . $currency->symbol }}</p>
+                                                        @break
+                                                        @case($Going_to_expiry_videos->global_ppv == null && $Going_to_expiry_videos->ppv_price == null)
+                                                            <p class="p-tag">{{ __('Free') }}</p>
+                                                        @break
+                                                    @endswitch
+                                                @endif   
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">{{ strlen($Going_to_expiry_videos->title) > 17 ? substr($Going_to_expiry_videos->title, 0, 18) . '...' : $Going_to_expiry_videos->title }}</p>
+                                                        <p class="epi-name text-left m-0 mt-2">{{ strlen($Going_to_expiry_videos->title) > 17 ? substr($Going_to_expiry_videos->title, 0, 18) . '...' : $Going_to_expiry_videos->title }}</p>
                                                     @endif
 
-                                                    <div class="movie-time d-flex align-items-center pt-1">
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        {{ strlen($Going_to_expiry_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Going_to_expiry_videos->description)), 0, 75) . '...' : $Going_to_expiry_videos->description }}
+                                                    </p>
+                                                    <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($Going_to_expiry_videos->age_restrict == 0))
-                                                        <span class="position-relative badge p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict . ' +' }}</span>
+                                                            <span class="position-relative badge p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict . ' +' }}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
-                                                        <span class="position-relative text-white mr-2">
-                                                            {{ (floor($Going_to_expiry_videos->duration / 3600) > 0 ? floor($Going_to_expiry_videos->duration / 3600) . 'h ' : '') . floor(($Going_to_expiry_videos->duration % 3600) / 60) . 'm' }}
-                                                        </span>
+                                                            <span class="position-relative text-white mr-2">
+                                                                {{ (floor($Going_to_expiry_videos->duration / 3600) > 0 ? floor($Going_to_expiry_videos->duration / 3600) . 'h ' : '') . floor(($Going_to_expiry_videos->duration % 3600) / 60) . 'm' }}
+                                                            </span>
+                                                        @endif
+                                                        @if($ThumbnailSetting->published_year == 1 && !($Going_to_expiry_videos->year == 0))
+                                                            <span class="position-relative badge p-1 mr-2">
+                                                                {{ __($Going_to_expiry_videos->year) }}
+                                                            </span>
                                                         @endif
 
-                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->rating == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                        {{ __($Going_to_expiry_videos->rating) }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
+                                                        @if($ThumbnailSetting->featured == 1 && $Going_to_expiry_videos->featured == 1)
+                                                            <span class="position-relative text-white">
+                                                                {{ __('Featured') }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
 
-                                             
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                <span class="text-white">
-                                                                    {{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}
-                                                                </span>
-                                                            </div>
-
-                                                            @if($ThumbnailSetting->featured == 1 && $Going_to_expiry_videos->featured == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    @endif
-
+                                                    <div class="badge p-1 mr-2">
+                                                        <span class="text-white">
+                                                            {{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}
+                                                        </span>
                                                     </div>
 
                                                     
                                                 </a>
                                                 <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}">
-                                                    <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Play Now') }}
+                                                    <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"> {{ __('Watch Now') }}
                                                 </a>
                                             </div>
                                         </div>

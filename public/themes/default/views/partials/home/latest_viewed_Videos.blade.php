@@ -55,7 +55,7 @@ else
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="latest-viewed-videos list-inline row p-0 mb-0">
+                        <div class="latest-viewed-videos home-sec list-inline row p-0 mb-0">
                             @foreach($data as $latest_view_video)
                                 @php
                                     $publish_time = 'Published';
@@ -132,8 +132,11 @@ else
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ URL::to('category/videos/' . $latest_view_video->slug) }}" aria-label="movie">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">{{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</p>
+                                                        <p class="epi-name text-left m-0 mt-2">{{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</p>
                                                     @endif
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        {{ strlen($latest_view_video->description) > 75 ? substr(html_entity_decode(strip_tags($latest_view_video->description)), 0, 75) . '...' : $latest_view_video->description }}
+                                                    </p>
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($latest_view_video->age_restrict == 0))
@@ -192,7 +195,7 @@ else
 @endif
 
 <script>
-    var elem = document.querySelector('.latest-viewed-video');
+    var elem = document.querySelector('.latest-viewed-videos');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
