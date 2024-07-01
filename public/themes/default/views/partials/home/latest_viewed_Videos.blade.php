@@ -55,7 +55,7 @@ else
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="favorites-slider list-inline row p-0 mb-0">
                             @foreach($data as $latest_view_video)
                                 @php
                                     $publish_time = 'Published';
@@ -72,7 +72,7 @@ else
                                     }
                                 @endphp
 
-                                <li class="slide-item">
+                                <div class="slide-item">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -196,9 +196,9 @@ else
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
                     
                 </div>

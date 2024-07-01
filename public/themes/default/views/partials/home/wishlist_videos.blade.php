@@ -44,7 +44,6 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-  
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title">
                             <a href="{{ $order_settings_list[37]->header_name ? URL::to('/').'/'.$order_settings_list[37]->url : '' }}">
@@ -58,7 +57,7 @@
                         @endif  
                     </div>
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="wishlist-video home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $Wishlist_videos)
                                     @php
@@ -87,7 +86,7 @@
                                             $publish_time = 'Published';
                                         }
                                     @endphp
-                                    <li class="slide-item">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
@@ -119,7 +118,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
+                                                    {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}"> --}}
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
@@ -145,53 +144,36 @@
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}" aria-label="movie">
                                                         @if($ThumbnailSetting->title == 1)
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left mt-2 m-0">
                                                                 {{ strlen($Wishlist_videos->title) > 17 ? substr($Wishlist_videos->title, 0, 18).'...' : $Wishlist_videos->title }}
                                                             </p>
                                                         @endif
 
-                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : $watchlater_video->description }}
+                                                        </p>
+
+                                                        <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($Wishlist_videos->age_restrict == 0))
-                                                                <div class="badge badge-secondary p-1 mr-2">{{ $Wishlist_videos->age_restrict.'+' }}</div>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $Wishlist_videos->age_restrict . ' +' }}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-clock-o"></i>
-                                                                    {{ gmdate('H:i:s', $Wishlist_videos->duration) }}
+                                                                <span class="position-relative text-white mr-2">
+                                                                    {{ (floor($Wishlist_video->duration / 3600) > 0 ? floor($Wishlist_video->duration / 3600) . 'h ' : '') . floor(($Wishlist->duration % 3600) / 60) . 'm' }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->published_year == 1 && !($Wishlist_video->year == 0))
+                                                                <span class="position-relative badge p-1 mr-2">
+                                                                    {{ __($Wishlist_video->year) }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->featured == 1 && $Wishlist_video->featured == 1)
+                                                                <span class="position-relative text-white">
+                                                                   {{ __('Featured') }}
                                                                 </span>
                                                             @endif
                                                         </div>
-
-                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                            <div class="movie-time d-flex align-items-center pt-1">
-                                                                @if($ThumbnailSetting->rating == 1)
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                            {{ __($Wishlist_videos->rating) }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if($ThumbnailSetting->published_year == 1)
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                            {{ __($Wishlist_videos->year) }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if($ThumbnailSetting->featured == 1 && $Wishlist_videos->featured == 1)
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
 
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @php
@@ -202,28 +184,22 @@
                                                             @if(($ThumbnailSetting->category == 1 ) && (count($CategoryThumbnail_setting) > 0))
                                                                 <span class="text-white">
                                                                     <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                    @php
-                                                                        $Category_Thumbnail = [];
-                                                                        foreach($CategoryThumbnail_setting as $CategoryThumbnail){
-                                                                            $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                        }
-                                                                        echo implode(', ', $Category_Thumbnail);
-                                                                    @endphp
+                                                                    {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
                                                                 </span>
                                                             @endif
                                                         </div>
                                                     </a>
 
-                                                    <a class="epi-name mt-3 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
+                                                    <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
                                                         <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/').'/assets/img/default_play_buttons.svg' }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
                             @endif
-                        </ul>
+                        </div>
                     </div>
                     
                 </div>
@@ -231,3 +207,17 @@
         </div>
     </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.wishlist-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

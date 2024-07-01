@@ -25,13 +25,13 @@
                   </div>
 
                   <div class="favorites-contens">
-                      <ul class="favorites-slider list-inline row p-0 mb-0">
+                    <div class="live-category home-sec list-inline row p-0 mb-0">
                           @php
                               $data = App\LiveCategory::orderBy('order', 'ASC')->get();
                           @endphp
 
                             @foreach($data as $Categories)
-                                <li class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -43,7 +43,7 @@
 
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
+                                                {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" src="{{ $Categories->player_image ? URL::to('/public/uploads/livecategory/' . $Categories->player_image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}"> --}}
                                             </a>
 
                                             <div class="hover-buttons text-white">
@@ -53,17 +53,21 @@
                                                             {{ strlen($Categories->name) > 17 ? substr($Categories->name, 0, 18) . '...' : $Categories->name }}
                                                         </p>
                                                     @endif
+
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : $Categories->description }}
+                                                    </p>
                                                 </a>
 
-                                                <a class="epi-name mt-3 mb-0 btn" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
                                                     <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%"> {{ __('Watch Now') }}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                      </ul>
+                      </div>
                   </div>
                   
               </div>
@@ -71,3 +75,17 @@
       </div>
     </section>
 @endif
+
+<script>
+    var elem = document.querySelector('.latest-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

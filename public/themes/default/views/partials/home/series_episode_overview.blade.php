@@ -49,9 +49,9 @@ $data = App\Series::where('active', '1')->limit(15)
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="series-episode home-sec list-inline row p-0 mb-0">
                             @foreach($data as $Episode_details)
-                                <li class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -69,23 +69,23 @@ $data = App\Series::where('active', '1')->limit(15)
                                         </div>
                                         <div class="block-description">
                                             <a class="playTrailer" href="#">
-                                                <img src="{{ $Episode_details->Player_image_url }}" data-src="{{ $Episode_details->Player_image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}">
+                                                {{-- <img src="{{ $Episode_details->Player_image_url }}" data-src="{{ $Episode_details->Player_image_url }}" class="img-fluid w-100" alt="{{ $Episode_details->title }}"> --}}
                                             </a>
                                             <div class="hover-buttons text-white">
                                                 <a href="#">
                                                     <p class="epi-name text-left m-0">{{ __($Episode_details->title) }}</p>
                                                     <div class="movie-time d-flex align-items-center my-2"></div>
                                                 </a>
-                                                <a class="epi-name mt-3 mb-0 btn" href="{{ URL::to('play_series/'.$Episode_details->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('play_series/'.$Episode_details->slug) }}">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                     {{ __('Play Now')}}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,3 +93,16 @@ $data = App\Series::where('active', '1')->limit(15)
     </section>
 @endif
 
+<script>
+    var elem = document.querySelector('.series-episode');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
