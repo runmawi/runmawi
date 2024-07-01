@@ -6456,35 +6456,39 @@ return response()->json($response, 200);
 
   public function listcontinuewatchingsepisode(Request $request)
   {
-
     $user_id = $request->user_id;
-    /*channel videos*/
-    $episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->count();
 
-    if ( $episode_ids_count  > 0) {
+    /* channel videos */
+    $episode_ids = ContinueWatching::where('episodeid', '!=', NULL)
+        ->where('user_id', '=', $user_id)
+        ->get();
+    $episode_ids_count = $episode_ids->count();
 
-      foreach ($episode_ids as $key => $value1) {
-        $k2[] = $value1->episodeid;
-      }
-      $episodes = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        return $item;
-      });
-      $status = "true";
-    }else{
-            $status = "false";
-            $episodes = [];
+    if ($episode_ids_count > 0) {
+        $episode_ids = $episode_ids->pluck('episodeid');
+
+        $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
+            ->whereIn('episodes.id', $episode_ids)
+            ->where('continue_watchings.user_id', '=', $user_id)
+            ->orderBy('continue_watchings.created_at', 'desc')
+            ->select('episodes.*', 'continue_watchings.watch_percentage')
+            ->get()
+            ->map(function ($item) {
+                $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                return $item;
+            });
+
+        $status = "true";
+    } else {
+        $status = "false";
+        $episodes = [];
     }
 
-
     $response = array(
-        'status'=>$status,
-        'episodes'=> $episodes
-      );
+        'status' => $status,
+        'episodes' => $episodes
+    );
     return response()->json($response, 200);
-
 
   }
 
