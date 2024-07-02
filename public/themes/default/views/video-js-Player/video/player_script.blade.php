@@ -22,11 +22,18 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
+                    'fullscreenToggle': {},    
+                    // 'hlsQualitySelector':{}  
                     // 'audioTrackButton': {}               
                 },
                 pictureInPictureToggle: true,
             }
+        });
+
+         // Hls Quality Selector - M3U8 
+
+         player.hlsQualitySelector({ 
+            displayCurrentQuality: true,
         });
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
@@ -210,20 +217,18 @@
             }
         });
 
-        
+       
+
+        //Watermark
         player.ready(function() {
             var watermark = document.createElement('div');
             watermark.className = 'vjs-watermark';
-            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->favicon ?>" alt="Watermark">';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
             player.el().appendChild(watermark);
         });
 
 
-        // Hls Quality Selector - M3U8 
 
-        player.hlsQualitySelector({ 
-            displayCurrentQuality: true,
-        });
 
         // Advertisement
 
@@ -390,7 +395,7 @@
         height: 7%;
         top: 75%;
         left: 88%;
-        opacity: 0.5;
+        opacity: 0.7;
         cursor: pointer;
     }
     .vjs-watermark:hover{

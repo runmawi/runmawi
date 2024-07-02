@@ -3,19 +3,22 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,400;0,500;1,500&display=swap" rel="stylesheet">
 
 <section id="iq-favorites">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
-                <div class="iq-main-header align-items-center justify-content-between">
+                <div class="iq-main-header align-items-center justify-content-between fira-sans-condensed-regular">
                     <h4 class="main-title">{{ __("All Channels") }}</h4>                     
                 </div>
-                <div class="favorites-contens">
+                <div class="favorites-contens mt-5">
                     <ul class="category-page list-inline row p-0 mb-0">
                         @if(isset($channels)) 
                             @foreach($channels as $channel)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12 mb-5 ml-4 mr-4">
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12 mb-5 ml-1 mr-1">
                                     <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }} ">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
@@ -29,7 +32,7 @@
                                 
                                             <div class="channel" >
                                                     <!-- <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}"> -->
-                                                        <h4><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
+                                                        <h4 class="channelname fira-sans-condensed-regular"><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
                                                     <!-- </a>                                         -->
                                             <div>
                                             
@@ -123,7 +126,7 @@
         margin-left: 78px;
     }
     .slide-item{
-        margin-left: 6% !important;
+        /* margin-left: 6% !important; */
         display: flex;
         justify-content: center;
     }
@@ -131,8 +134,27 @@
         font-size: 25px !important;
     }
     .favorites-contens {
-        margin-left: 5% !important;
+        margin-left: 11% !important;
         width: 1140px !important;
     }
 
+    li.slide-item, div.slide-item{padding:0px 20px !important}
+
+    .fira-sans-condensed-regular {
+    font-family: "Fira Sans Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .fira-sans-condensed-medium {
+    font-family: "Fira Sans Condensed", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .fira-sans-condensed-medium-italic {
+    font-family: "Fira Sans Condensed", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
 </style>
