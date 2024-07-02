@@ -53,9 +53,6 @@ if (Auth::guest() != true) {
                                             </div>
                                                     
                                             <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" src="{{ $latest_view_episode->player_image ? URL::to('public/uploads/images/'.$latest_view_episode->player_image) : $default_vertical_image_url }}" data-src="{{ $latest_view_episode->player_image ? URL::to('public/uploads/images/'.$latest_view_episode->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_episode->title }}">
-                                                </a>
 
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">

@@ -51,7 +51,7 @@
         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
     </div>
 
-    <section id="iq-favorites">
+    {{-- <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- **************Don't Enable this section We don't have Access for episodes**************  -->
     
@@ -73,15 +73,8 @@
         </div>
     </section> -->
 
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    @php include(public_path('themes/default/views/partials/home/featured-episodes.php')) @endphp
-                </div>
-            </div>
-        </div>
-    </section>
+    
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/featured-episodes", array_merge($homepage_array_data, ['data' => $featured_episodes]) )->content() !!}
 
     @foreach($order_settings_list as $value)  
 
