@@ -568,8 +568,6 @@ class LiveStreamController extends Controller
 
             })->first();
 
-            dd($Livestream_details->livestream_URL);
-
            $data = array(
                  'currency'     => $currency,
                  'video_access' => $video_access,
