@@ -36,7 +36,7 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded"  src="{{ $Categories->image ? URL::to('/public/uploads/livecategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->title }}">
                                                 </a>
                                             </div>
                                         </div>
@@ -49,7 +49,7 @@
                                             <div class="hover-buttons text-white">
                                                 <a class="text-white d-flex align-items-center" href="{{ URL::to('LiveCategory') . '/' . $Categories->slug }}">
                                                     @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left m-0">
+                                                        <p class="epi-name text-left m-0 mt-2">
                                                             {{ strlen($Categories->name) > 17 ? substr($Categories->name, 0, 18) . '...' : $Categories->name }}
                                                         </p>
                                                     @endif
@@ -77,7 +77,7 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.latest-video');
+    var elem = document.querySelector('.live-category');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,

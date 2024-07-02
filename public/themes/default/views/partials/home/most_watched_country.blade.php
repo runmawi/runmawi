@@ -77,7 +77,7 @@
                                                     <a href="{{ URL::to('category/videos/' . $Most_watched_countries->slug) }}">
                                                         @if($ThumbnailSetting->title == 1)  
                                                             <!-- Title -->
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left m-0 mt-2">
                                                                 {{ (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title, 0, 18) . '...' : $Most_watched_countries->title }}
                                                             </p>
                                                         @endif  

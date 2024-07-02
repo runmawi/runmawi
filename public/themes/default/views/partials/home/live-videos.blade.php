@@ -50,12 +50,12 @@
                                         }
                                     @endphp
 
-                                    <li class="items">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" />
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" />
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -92,7 +92,7 @@
                                                 <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('/') . '/live/' . $video->slug }}">
                                                         @if($ThumbnailSetting->title == 1)
-                                                            <p class="epi-name text-left m-0">{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</p>
+                                                            <p class="epi-name text-left m-0 mt-2">{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</p>
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">

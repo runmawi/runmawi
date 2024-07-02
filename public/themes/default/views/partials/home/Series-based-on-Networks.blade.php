@@ -2,7 +2,7 @@
 
     @foreach($data as $section_key => $series_networks)
         @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty())
-        <section id="iq-favorites-{{ $section_key }}" >
+        <section id="iq-trending iq-favorites-{{ $section_key }}" >
             <div class="container-fluid overflow-hidden">
                 <div class="row">
                     <div class="col-sm-12">
@@ -14,7 +14,7 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <div class="series-based-network home-sec list-inline row p-0 mb-0">
+                            <div class="series-based-network home-sec list-inline row p-0 mb-0" id="network-category-{{ $section_key }}">
                                 @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                     <div class="items">
                                         <div class="block-images position-relative">
@@ -48,10 +48,6 @@
                                                             @break
                                                         @endswitch
                                                     @endif
-
-                                                    <!-- @if($ThumbnailSetting->published_on == 1)
-                                                        <p class="published_on1">{{ $publish_day }} <span>{{ $publish_time }}</span></p>
-                                                    @endif -->
                                                 </div>
                                             </div>
 
@@ -161,15 +157,19 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.series-based-network');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.series-based-network');
+        elems.forEach(function (elem) {
+            new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: true,
+            });
+        });
     });
  </script>

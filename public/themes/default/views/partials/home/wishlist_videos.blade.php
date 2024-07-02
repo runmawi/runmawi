@@ -1,17 +1,17 @@
-@if (!Auth::guest())
 
-    @php
+<?php  
+
+    if (!Auth::guest()) {
+    
         $Wishlist = App\Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
 
         $check_Kidmode = 0 ;
 
         $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                        'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
                                         'expiry_date','active','status','draft')
-                            ->where('active',1)
-                            ->where('status', 1)
-                            ->where('draft',1)
-                            ->whereIn('id',$Wishlist);
+
+        ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist);
 
         if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
         {
@@ -24,19 +24,17 @@
         }
 
         $data = $data->latest()->limit(30)->get()->map(function ($item) {
-            $item['image_url'] = $item->image != null ? URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url();
-            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
-            $item['TV_image_url'] = $item->video_tv_image != null ? URL::to('public/uploads/images/'.$item->video_tv_image) : default_horizontal_image_url();
-            $item['source_type'] = "Videos";
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+            $item['source_type']        = "Videos" ;
             return $item;
         });
-    @endphp
-
-@else
-    @php
+    }else{
         $data = [];
-    @endphp
-@endif
+    }
+
+?>
 
 @if(count($data) > 0)
 
@@ -91,7 +89,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $Wishlist_videos->image ? URL::to('public/uploads/images/' . $Wishlist_videos->image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -118,8 +116,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $Wishlist_videos->slug }}">
-                                                    {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" src="{{ $Wishlist_videos->player_image ? URL::to('public/uploads/images/' . $Wishlist_videos->player_image) : $default_vertical_image_url }}" alt="{{ $Wishlist_videos->title }}"> --}}
-
+                                                   
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
                                                             @case($Wishlist_videos->access == 'subscriber')
@@ -150,7 +147,7 @@
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : $watchlater_video->description }}
+                                                            {{ strlen($Wishlist_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Wishlist_videos->description)), 0, 75) . '...' : $Wishlist_videos->description }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
@@ -158,17 +155,17 @@
                                                                 <span class="position-relative badge p-1 mr-2">{{ $Wishlist_videos->age_restrict . ' +' }}</span>
                                                             @endif
 
-                                                            @if($ThumbnailSetting->duration == 1)
+                                                            {{-- @if($ThumbnailSetting->duration == 1)
                                                                 <span class="position-relative text-white mr-2">
-                                                                    {{ (floor($Wishlist_video->duration / 3600) > 0 ? floor($Wishlist_video->duration / 3600) . 'h ' : '') . floor(($Wishlist->duration % 3600) / 60) . 'm' }}
+                                                                    {{ (floor($Wishlist_videos->duration / 3600) > 0 ? floor($Wishlist_videos->duration / 3600) . 'h ' : '') . floor(($Wishlist->duration % 3600) / 60) . 'm' }}
                                                                 </span>
-                                                            @endif
-                                                            @if($ThumbnailSetting->published_year == 1 && !($Wishlist_video->year == 0))
+                                                            @endif --}}
+                                                            @if($ThumbnailSetting->published_year == 1 && !($Wishlist_videos->year == 0))
                                                                 <span class="position-relative badge p-1 mr-2">
-                                                                    {{ __($Wishlist_video->year) }}
+                                                                    {{ __($Wishlist_videos->year) }}
                                                                 </span>
                                                             @endif
-                                                            @if($ThumbnailSetting->featured == 1 && $Wishlist_video->featured == 1)
+                                                            @if($ThumbnailSetting->featured == 1 && $Wishlist_videos->featured == 1)
                                                                 <span class="position-relative text-white">
                                                                    {{ __('Featured') }}
                                                                 </span>
