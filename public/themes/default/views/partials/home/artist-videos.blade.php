@@ -110,10 +110,10 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="artist-video home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $artist_details)
-                                    <li class="slide-item">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
@@ -130,22 +130,22 @@
                                                 <div class="hover-buttons text-white">
                                                     @if($ThumbnailSetting->title == 1)
                                                         <a href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left mt-2 m-0">
                                                                 {{ strlen($artist_details->artist_name) > 17 ? substr($artist_details->artist_name, 0, 18) . '...' : $artist_details->artist_name }}
                                                             </p>
                                                         </a>
-                                                    @endif
+                                                    @endif  
 
-                                                    <a class="epi-name mt-5 mb-0 btn" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
+                                                    <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
                                                         <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" alt="ply" /> Watch Now
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
                             @endif
-                        </ul>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -153,3 +153,18 @@
     </section>
 
 @endif
+
+
+<script>
+    var elem = document.querySelector('.artist-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

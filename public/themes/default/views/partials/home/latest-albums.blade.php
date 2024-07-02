@@ -20,23 +20,19 @@
                   @endif
                </div>
                <div class="favorites-contens">
-                  <ul class="favorites-slider list-inline row p-0 mb-0">
-                        @if(isset($data))
-                           @foreach($data as $album) 
-                              <li class="slide-item">
+                  <div class="latest-albums home-sec list-inline row p-0 mb-0">
+                           @foreach($data as $album)
+                              <div class="items">
                                     <div class="block-images position-relative">
                                        <!-- block-images -->
                                        <div class="border-bg">
                                           <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}">
-                                                   <img class="img-fluid w-100" loading="lazy" data-src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $album->albumname }}">
+                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}">
                                                 </a>   
                                           </div>
                                        </div>
                                        <div class="block-description">
-                                          <!-- <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}">
-                                                <img src="{{ URL::to('/public/uploads/albums/'.$album->album) }}" class="img-fluid w-100" alt="album">
-                                          </a>  -->
                                           <div class="hover-buttons text-white">
                                                 <a class="epi-name mt-5 mb-0" href="{{ URL::to('album/'.$album->slug) }}">
                                                    <i class="ri-play-fill"></i>
@@ -50,13 +46,27 @@
                                           </div>
                                        </div>
                                     </div>
-                              </li>
+                              </div>
                            @endforeach
-                        @endif
-                  </ul>
+                  </div>
                </div>
             </div>
          </div>
       </div>
 </section>
 @endif
+
+
+<script>
+   var elem = document.querySelector('.latest-albums');
+   var flkty = new Flickity(elem, {
+       cellAlign: 'left',
+       contain: true,
+       groupCells: true,
+       pageDots: false,
+       draggable: true,
+       freeScroll: true,
+       imagesLoaded: true,
+       lazyload:true,
+   });
+</script>

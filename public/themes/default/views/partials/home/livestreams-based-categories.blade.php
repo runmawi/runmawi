@@ -67,19 +67,19 @@ $data->each(function ($category) {
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                            <div class="livestream-based-category home-sec list-inline row p-0 mb-0">
                                 @php
                                     $id = !Auth::guest() && !empty($data['password_hash']) ? Auth::user()->id : 0;
                                 @endphp
 
                                 @foreach ($live_Category->category_livestream as $livestream )
                                     
-                                    <li class="slide-item">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('live/'.$livestream->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $livestream->image ? URL::to('public/uploads/images/'. $livestream->image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -106,16 +106,12 @@ $data->each(function ($category) {
                                                             @break
                                                         @endswitch
                                                     @endif
-
-                                                    <!-- @if($ThumbnailSetting->published_on == 1)
-                                                        <p class="published_on1">{{ $publish_day }} <span>{{ $publish_time }}</span></p>
-                                                    @endif -->
                                                 </div>
                                             </div>
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('live') . '/' . $livestream->slug }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}">
+                                                    {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" src="{{ $livestream->player_image ? URL::to('public/uploads/images/'. $livestream->player_image) : $default_vertical_image_url }}" alt="{{ $livestream->title }}"> --}}
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
 
@@ -147,57 +143,36 @@ $data->each(function ($category) {
                                                     <a href="{{ URL::to('live') . '/' . $livestream->slug }}">
                                                         @if($ThumbnailSetting->title == 1)
                                                             <!-- Title -->
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left m-0 mt-2">
                                                                 {{ strlen($livestream->title) > 17 ? substr($livestream->title, 0, 18) . '...' : $livestream->title }}
                                                             </p>
                                                         @endif
 
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->age == 1)
-                                                                <!-- <div class="badge badge-secondary p-1 mr-2">{{ $livestream->status . ' +' }}</div> -->
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($livestream->description) > 75 ? substr(html_entity_decode(strip_tags($livestream->description)), 0, 75) . '...' : $livestream->description }}
+                                                        </p>
+
+                                                        <div class="movie-time d-flex align-items-center pt-2">
+                                                            @if($ThumbnailSetting->age == 1 && !($livestream->age_restrict == 0))
+                                                                <span class="position-relative badge p-1 mr-2">{{ $livestream->age_restrict . ' +' }}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)
-                                                                <!-- Duration -->
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-clock-o"></i>
-                                                                    {{ gmdate('H:i:s', $livestream->duration) }}
+                                                                <span class="position-relative text-white mr-2">
+                                                                    {{ (floor($livestream->duration / 3600) > 0 ? floor($livestream->duration / 3600) . 'h ' : '') . floor(($livestream->duration % 3600) / 60) . 'm' }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->published_year == 1 && !($livestream->year == 0))
+                                                                <span class="position-relative badge p-1 mr-2">
+                                                                    {{ __($livestream->year) }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->featured == 1 && $livestream->featured == 1)
+                                                                <span class="position-relative text-white">
+                                                                   {{ __('Featured') }}
                                                                 </span>
                                                             @endif
                                                         </div>
-
-                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                            <div class="movie-time d-flex align-items-center pt-1">
-                                                                @if($ThumbnailSetting->rating == 1)
-                                                                    <!--Rating  -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                            {{ __($livestream->rating) }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if($ThumbnailSetting->published_year == 1)
-                                                                    <!-- published_year -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                            {{ __($livestream->year) }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if($ThumbnailSetting->featured == 1 && $livestream->featured == 1)
-                                                                    <!-- Featured -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
 
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @php
@@ -214,16 +189,16 @@ $data->each(function ($category) {
                                                         </div>
                                                     </a>
 
-                                                    <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center"
+                                                    <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                                     href="{{ URL::to('/') . '/live/' . $livestream->slug }}">
                                                         <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%" /> Watch Now
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
-                            </ul>
+                            </div>
                         </div>
 
                         
@@ -232,6 +207,18 @@ $data->each(function ($category) {
             </div>
         </section>
     @endforeach
-
-
 @endif
+
+<script>
+    var elem = document.querySelector('.livestream-based-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

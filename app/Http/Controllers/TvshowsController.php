@@ -94,7 +94,10 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::orderBy('order_id', 'asc')->get();
+            // $OrderHomeSetting = OrderHomeSetting::orderBy('order_id', 'asc')->get();
+
+            $OrderHomeSetting = OrderHomeSetting::get();
+
 
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 

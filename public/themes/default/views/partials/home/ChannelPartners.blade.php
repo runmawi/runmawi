@@ -21,9 +21,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="channel-partner home-sec list-inline row p-0 mb-0">
                               @foreach($data as $channel)
-                                  <li class="slide-item">
+                              <div class="items">
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
@@ -39,16 +39,16 @@
                                                       <p class="epi-name text-left m-0">{{ __($channel->channel_name) }}</p>
                                                   </a>
 
-                                                  <a class="epi-name mt-3 mb-0 btn" href="{{ URL::to('/channel/' . $channel->channel_slug) }}">
+                                                  <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/channel/' . $channel->channel_slug) }}">
                                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                       Visit Channel
                                                   </a>
                                               </div>
                                           </div>
                                       </div>
-                                  </li>
+                                    </div>
                               @endforeach
-                        </ul>
+                            </div>
                     </div>
                 
                 </div>
@@ -57,3 +57,16 @@
     </section>
 
 @endif
+<script>
+    var elem = document.querySelector('.channel-partner');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

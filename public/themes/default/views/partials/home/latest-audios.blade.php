@@ -18,10 +18,10 @@
                   </div>
 
                   <div class="favorites-contens">
-                     <ul class="favorites-slider list-inline row p-0 mb-0">
+                     <div class="latest-audios home-sec list-inline row p-0 mb-0">
                            @if(isset($data))
                               @foreach($data as $audio)
-                                 <li class="slide-item">
+                                 <div class="items">
                                        <div class="block-images position-relative">
                                           <div class="border-bg">
                                              <div class="img-box">
@@ -48,10 +48,10 @@
                                              </div>
                                           </div>
                                        </div>
-                                 </li>
+                                    </div>
                               @endforeach
                            @endif
-                     </ul>
+                        </div>
                   </div>
                   
                </div>
@@ -59,3 +59,18 @@
          </div>
    </section>
 @endif
+
+
+<script>
+   var elem = document.querySelector('.latest-audios');
+   var flkty = new Flickity(elem, {
+       cellAlign: 'left',
+       contain: true,
+       groupCells: true,
+       pageDots: false,
+       draggable: true,
+       freeScroll: true,
+       imagesLoaded: true,
+       lazyload:true,
+   });
+</script>
