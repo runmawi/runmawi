@@ -18,7 +18,7 @@
                   </div>
 
                   <div class="favorites-contens">
-                     <div class="latest-audios list-inline row p-0 mb-0">
+                     <div class="latest-audios home-sec list-inline row p-0 mb-0">
                            @if(isset($data))
                               @foreach($data as $audio)
                                  <div class="items">

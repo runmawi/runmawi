@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="favorites-contens">
-                    <div class="content-partner list-inline row p-0 mb-0">
+                    <div class="content-partner home-sec list-inline row p-0 mb-0">
                         @if(isset($data))
                             @foreach($data as $content_user)
                                 <div class="items">

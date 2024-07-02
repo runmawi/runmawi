@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="latest-viewed-livestream list-inline row p-0 mb-0">
+                        <div class="latest-viewed-livestream home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $latest_view_livestreams)
                                     @php

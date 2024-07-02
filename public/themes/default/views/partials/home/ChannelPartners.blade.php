@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="channel-partner list-inline row p-0 mb-0">
+                        <div class="channel-partner home-sec list-inline row p-0 mb-0">
                               @foreach($data as $channel)
                               <div class="items">
                                       <div class="block-images position-relative">
