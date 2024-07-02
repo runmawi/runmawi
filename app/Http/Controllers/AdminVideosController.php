@@ -466,18 +466,19 @@ class AdminVideosController extends Controller
         }
     public function uploadFile(Request $request)
     {
+        // $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        $site_theme = SiteTheme::first();
         
         $today = Carbon::now() ;
 
-            // Video Upload Limit (3 Limits)
+        // Video Upload Limit (3 Limits)
 
         $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
                                     ->whereYear('created_at',  $today->year)
                                     ->whereMonth('created_at', $today->month)
                                     ->count();
-
-        if ( $videos_uplaod_limit > 3) {
-
+    
+        if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
             return response()->json( ["success" => 'video_upload_limit_exist'],200);
         }
         
@@ -505,8 +506,7 @@ class AdminVideosController extends Controller
         $client = new Client();
 
         $storage_settings = StorageSetting::first();
-        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
-        if($enable_bunny_cdn == 1){
+        if($site_theme->enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
                 return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
             }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
@@ -868,11 +868,12 @@ class AdminVideosController extends Controller
             \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
 
             return $value;
-        } else {
-            $value["success"] = 2;
-            $value["message"] = "File not uploaded.";
-            return response()->json($value);
         }
+        // } else {
+        //     $value["success"] = 2;
+        //     $value["message"] = "File not uploaded.";
+        //     return response()->json($value);
+        // }
 
         // return response()->json($value);
     }
@@ -4454,8 +4455,7 @@ class AdminVideosController extends Controller
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 
         return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
-    }
-    
+    }   
     public function Mp4url(Request $request)
     {
         $data = $request->all();
