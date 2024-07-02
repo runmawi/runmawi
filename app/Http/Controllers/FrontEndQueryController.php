@@ -94,7 +94,7 @@ class FrontEndQueryController extends Controller
                                 ->where('active',1)->where('status', 1)->where('draft',1);
 
                                 if( $this->getfeching !=null && $this->getfeching->geofencing == 'ON'){
-                                    $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
+                                    $latest_videos = $latest_videos->whereNotIn('videos.id',$this->blockVideos);
                                 }
 
                                 if ($this->videos_expiry_date_status == 1 ) {
@@ -123,7 +123,7 @@ class FrontEndQueryController extends Controller
         ->where('active',1)->where('status', 1)->where('draft',1)->where('views', '>', '5');
 
         if( $this->getfeching !=null && $this->getfeching->geofencing == 'ON'){
-            $trending_videos = $trending_videos->whereNotIn('videos.id',Block_videos());
+            $trending_videos = $trending_videos->whereNotIn('videos.id',$this->blockVideos);
         }
 
         if ($this->videos_expiry_date_status == 1 ) {
@@ -148,7 +148,7 @@ class FrontEndQueryController extends Controller
                                     ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
 
                                     if( $this->getfeching !=null && $this->getfeching->geofencing == 'ON'){
-                                        $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
+                                        $featured_videos = $featured_videos->whereNotIn('videos.id',$this->blockVideos);
                                     }
 
                                     if ($this->videos_expiry_date_status == 1 ) {
@@ -456,7 +456,7 @@ class FrontEndQueryController extends Controller
         $video_banner = Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
     
         if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-            $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
+            $video_banner = $video_banner->whereNotIn('videos.id', $this->blockVideos);
         }
     
         if ($this->check_Kidmode == 1) {
@@ -485,7 +485,7 @@ class FrontEndQueryController extends Controller
                                 ->where('videos.draft', 1)->where('videos.banner', 0);   
     
                                 if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-                                    $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
+                                    $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', $this->blockVideos);
                                 }
     
                                 if ($this->check_Kidmode == 1) {
