@@ -238,7 +238,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('signup Agree Message')) }}</label>
                            <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
-                       </div>
+                       </div>site_themes
 
                                     {{-- Sign up - Step 2 Title  --}}
                         <div class="col-sm-6">
@@ -299,6 +299,31 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div> <br>
+
+                <div class="row"> 
+                    <div class="col-sm-6">
+                        <label>{{ ucfirst(trans('Enable Video Upload limit Count')) }}</label>
+                       <input type="text" placeholder="Video Upload limit Count" name="admin_videoupload_limit_count" class="form-control admin_videoupload_limit_count" id="admin_videoupload_limit_count" value="@if(!empty($settings->admin_videoupload_limit_count)){{ $settings->admin_videoupload_limit_count }}@endif">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{ ucfirst(('Enable Video Upload limit Status')) }} </label>
+    
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div style="color:red;">Off</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="admin_videoupload_limit_status"  type="checkbox" @if( $settings->admin_videoupload_limit_status == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div style="color:green;">On</div>
+                        </div>
+                    
+                    </div>
+                </div>
+
+
 
                                  {{-- Prevent Viewing Page Source --}}
 
@@ -672,7 +697,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                                 <div style="color:green;">On</div>
                             </div>
+                        
                         </div>
+
                     </div>
                     </div>
 
