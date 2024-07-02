@@ -6336,7 +6336,9 @@ return response()->json($response, 200);
         $query->update([
             'currentTime' => $current_duration,
             'watch_percentage' => $watch_percentage,
-            'skip_time' => $skip_time
+            'skip_time' => $skip_time,
+            'user_id' => $user_id, 
+            'multiuser_id' => $multiuser_id,
         ]);
     
         $response = [
@@ -6348,7 +6350,7 @@ return response()->json($response, 200);
      else {
 
           $data = array('user_id' => $user_id, 
-                        'multiuser_id' => $request->multiuser_id,
+                        'multiuser_id' => $multiuser_id,
                         'videoid' => $video_id,
                         'currentTime' => $current_duration,
                         'watch_percentage' => $watch_percentage,
