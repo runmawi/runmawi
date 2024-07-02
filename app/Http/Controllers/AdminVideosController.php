@@ -868,10 +868,11 @@ class AdminVideosController extends Controller
             \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
 
             return $value;
-        } else {
-            $value["success"] = 2;
-            $value["message"] = "File not uploaded.";
-            return response()->json($value);
+        }
+        // } else {
+        //     $value["success"] = 2;
+        //     $value["message"] = "File not uploaded.";
+        //     return response()->json($value);
         }
 
         // return response()->json($value);
