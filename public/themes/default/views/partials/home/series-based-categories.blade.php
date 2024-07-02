@@ -48,9 +48,9 @@
                         </div>
 
                         <div class="tvthrillers-contens">
-                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                            <div class="series-based-category home-sec list-inline row p-0 mb-0">
                                 @foreach ($series_genre->category_series as $series_video)
-                                    <li class="slide-item">
+                                    <div class="items">
                                         <div class="block-images position-relative">
                                             <!-- block-images -->
                                             <div class="border-bg">
@@ -86,7 +86,7 @@
 
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ url('play_series/' . $series_video->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->player_image) : $default_vertical_image_url }}" src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->player_image) : $default_vertical_image_url }}" alt="{{ $series_video->title }}">
+                                                    {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->player_image) : $default_vertical_image_url }}" src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->player_image) : $default_vertical_image_url }}" alt="{{ $series_video->title }}"> --}}
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
                                                             @case($series_video->access == 'subscriber')
@@ -116,52 +116,47 @@
                                                     <a href="{{ url('play_series/' . $series_video->slug) }}">
                                                         @if($ThumbnailSetting->title == 1)
                                                             <!-- Title -->
-                                                            <p class="epi-name text-left m-0">
+                                                            <p class="epi-name text-left mt-2 m-0">
                                                                 {{ strlen($series_video->title) > 17 ? substr($series_video->title, 0, 18) . '...' : $series_video->title }}
                                                             </p>
                                                         @endif
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->duration == 1 && !is_null($series_video->duration))
-                                                                <!-- Duration -->
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-clock-o"></i>
-                                                                    {{ gmdate('H:i:s', $series_video->duration) }}
+
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($series_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : $watchlater_video->description }}
+                                                        </p>
+
+                                                        <div class="movie-time d-flex align-items-center pt-2">
+                                                            @if($ThumbnailSetting->age == 1 && !($series_video->age_restrict == 0))
+                                                                <span class="position-relative badge p-1 mr-2">{{ $series_video->age_restrict . ' +' }}</span>
+                                                            @endif
+
+                                                            @if($ThumbnailSetting->duration == 1)
+                                                                <span class="position-relative text-white mr-2">
+                                                                    {{ (floor($series_video->duration / 3600) > 0 ? floor($series_video->duration / 3600) . 'h ' : '') . floor(($series_video->duration % 3600) / 60) . 'm' }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->published_year == 1 && !($series_video->year == 0))
+                                                                <span class="position-relative badge p-1 mr-2">
+                                                                    {{ __($series_video->year) }}
+                                                                </span>
+                                                            @endif
+                                                            @if($ThumbnailSetting->featured == 1 && $series_video->featured == 1)
+                                                                <span class="position-relative text-white">
+                                                                   {{ __('Featured') }}
                                                                 </span>
                                                             @endif
                                                         </div>
-                                                        @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                            <div class="movie-time d-flex align-items-center pt-1">
-                                                                @if($ThumbnailSetting->rating == 1)
-                                                                    <!-- Rating -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                            {{ __($series_video->rating) }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if($ThumbnailSetting->featured == 1 && $series_video->featured == 1)
-                                                                    <!-- Featured -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white">
-                                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
                                                     </a>
 
-                                                    <a class="epi-name mt-3 mb-0 btn" type="button" href="{{ URL::to('play_series/'.$series_video->slug) }}">
+                                                    <a class="epi-name mt-2 mb-0 btn" type="button" href="{{ URL::to('play_series/'.$series_video->slug) }}">
                                                         <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 @endforeach
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,3 +164,17 @@
         </section>
     @endforeach
 @endif
+
+<script>
+    var elem = document.querySelector('.series-based-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

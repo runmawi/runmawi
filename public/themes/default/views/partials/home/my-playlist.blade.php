@@ -27,9 +27,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="my-playlist home-sec list-inline row p-0 mb-0">
                               @foreach($data as $My_Playlist)
-                                  <li class="slide-item">
+                                  <div class="items">
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
@@ -40,11 +40,15 @@
                                           </div>
                                           <div class="block-description">
                                               <a class="playTrailer" href="{{ url('/playlist/' . $My_Playlist->slug) }}">
-                                                  <img class="img-fluid w-100" loading="lazy" data-src="{{ $My_Playlist->player_image ? $My_Playlist->player_image : $default_vertical_image_url }}" alt="{{ $My_Playlist->title }}">
+                                                  {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $My_Playlist->player_image ? $My_Playlist->player_image : $default_vertical_image_url }}" alt="{{ $My_Playlist->title }}"> --}}
                                               </a>
                                               <div class="hover-buttons text-white">
                                                   <a href="{{ url('/playlist/' . $My_Playlist->slug) }}">
-                                                      <p class="epi-name text-left m-0">{{ $My_Playlist->title }}</p>
+                                                        <p class="epi-name text-left mt-2 m-0">{{ $My_Playlist->title }}</p>
+
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($My_Playlist->description) > 75 ? substr(html_entity_decode(strip_tags($My_Playlist->description)), 0, 75) . '...' : $My_Playlist->description }}
+                                                        </p>
                                                   </a>
                                                   <a class="epi-name mt-3 mb-0 btn" href="{{ url('/playlist/' . $My_Playlist->slug) }}">
                                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -53,14 +57,26 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </li>
+                                  </div>
                               @endforeach
-                        </ul>
-                    </div>
-                    
+                        </div>
+                    </div>                 
                 </div>
             </div>
         </div>
       </section>
-
 @endif
+
+<script>
+    var elem = document.querySelector('.my-playlist');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

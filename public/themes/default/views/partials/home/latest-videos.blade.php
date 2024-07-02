@@ -56,40 +56,51 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                        <img class="img-fluid w-100 lazyload"  src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if($watchlater_video->access == 'subscriber')
-                                                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                                        @elseif($watchlater_video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @elseif(!empty($watchlater_video->ppv_price))
-                                                            <p class="p-tag">{{ $currency->symbol.' '.$watchlater_video->ppv_price }}</p>
-                                                        @elseif(!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)
-                                                            <p class="p-tag">{{ $watchlater_video->global_ppv.' '.$currency->symbol }}</p>
-                                                        @elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
-                                                            <p class="p-tag">{{ __('Free') }}</p>
-                                                        @endif
+                                                        @switch(true)
+                                                            @case($watchlater_video->access == 'subscriber')
+                                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            @break
+                                                            @case($watchlater_video->access == 'registered')
+                                                                <p class="p-tag">{{ __('Register Now') }}</p>
+                                                            @break
+                                                            @case(!empty($watchlater_video->ppv_price))
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
+                                                            @break
+                                                            @case(!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)
+                                                                <p class="p-tag">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                            @break
+                                                            @case($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
+                                                                <p class="p-tag">{{ __('Free') }}</p>
+                                                            @break
+                                                        @endswitch
                                                     @endif
                                                 </div>
                                             </div>
                                             <div class="block-description">
                                                 <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                    {{-- <img class="img-fluid w-100 lazyload" src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" data-src="{{ $watchlater_video->player_image ? URL::to('/public/uploads/images/'.$watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}"> --}}
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if($watchlater_video->access == 'subscriber')
-                                                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                                        @elseif($watchlater_video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @elseif(!empty($watchlater_video->ppv_price))
-                                                            <p class="p-tag">{{ $currency->symbol.' '.$watchlater_video->ppv_price }}</p>
-                                                        @elseif(!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)
-                                                            <p class="p-tag">{{ $watchlater_video->global_ppv.' '.$currency->symbol }}</p>
-                                                        @elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
-                                                            <p class="p-tag">{{ __('Free') }}</p>
-                                                        @endif
+                                                        @switch(true)
+                                                            @case($watchlater_video->access == 'subscriber')
+                                                                <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            @break
+                                                            @case($watchlater_video->access == 'registered')
+                                                                <p class="p-tag">{{ __('Register Now') }}</p>
+                                                            @break
+                                                            @case(!empty($watchlater_video->ppv_price))
+                                                                <p class="p-tag">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
+                                                            @break
+                                                            @case(!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)
+                                                                <p class="p-tag">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                            @break
+                                                            @case($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
+                                                                <p class="p-tag">{{ __('Free') }}</p>
+                                                            @break
+                                                        @endswitch
                                                     @endif
                                                 </a>
 

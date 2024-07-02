@@ -18,34 +18,34 @@
                   @endif
                </div>
                <div class="favorites-contens">
-                  <div class="continue-watching list-inline row p-0 mb-0">
-                        @foreach($data as $cont_video)
+                  <div class="continue-watching home-sec list-inline row p-0 mb-0">
+                     @foreach($data as $cont_video)
                         <div class="items">
                               <div class="block-images position-relative">
-                                    <div class="border-bg">
-                                       <div class="img-box">
-                                          <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
-                                                <img class="img-fluid lazyload w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="Thumbnail Image">
-                                          </a>
-                                          <!-- PPV price -->
-                                          @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                @if($cont_video->access == 'subscriber')
-                                                   <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
-                                                @elseif($cont_video->access == 'registered')
-                                                   <p class="p-tag">{{ __('Register Now') }}</p>
-                                                @elseif(!empty($cont_video->ppv_price))
-                                                   <p class="p-tag1">{{ $currency->symbol . ' ' . $cont_video->ppv_price }}</p>
-                                                @elseif(!empty($cont_video->global_ppv) && $cont_video->ppv_price == null)
-                                                   <p class="p-tag1">{{ $cont_video->global_ppv . ' ' . $currency->symbol }}</p>
-                                                @elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null)
-                                                   <p class="p-tag">{{ __('Free') }}</p>
+                                       <div class="border-bg">
+                                             <div class="img-box">
+                                                <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
+                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="{{ $cont_video->title}}">
+                                                </a>
+                                                <!-- PPV price -->
+                                                @if($ThumbnailSetting->free_or_cost_label == 1)
+                                                      @if($cont_video->access == 'subscriber')
+                                                         <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
+                                                      @elseif($cont_video->access == 'registered')
+                                                         <p class="p-tag">{{ __('Register Now') }}</p>
+                                                      @elseif(!empty($cont_video->ppv_price))
+                                                         <p class="p-tag1">{{ $currency->symbol . ' ' . $cont_video->ppv_price }}</p>
+                                                      @elseif(!empty($cont_video->global_ppv) && $cont_video->ppv_price == null)
+                                                         <p class="p-tag1">{{ $cont_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                      @elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null)
+                                                         <p class="p-tag">{{ __('Free') }}</p>
+                                                      @endif
                                                 @endif
-                                          @endif
+                                             </div>
                                        </div>
-                                    </div>
                                     <div class="block-description">
                                        <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
-                                          <img class="img-fluid lazyload w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $cont_video->player_image) }}" alt="Player Image">
+                                          {{-- <img class="img-fluid lazyload w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $cont_video->player_image) }}" alt="Player Image"> --}}
                                           <!-- PPV price -->
                                           @if($ThumbnailSetting->free_or_cost_label == 1)
                                                 @if($cont_video->access == 'subscriber')
@@ -61,20 +61,6 @@
                                                 @endif
                                           @endif
                                        </a>
-                                       <!-- PPV price -->
-                                       @if($ThumbnailSetting->free_or_cost_label == 1)
-                                          @if($cont_video->access == 'subscriber')
-                                                <p class="p-tag"><i class="fas fa-crown" style='color:gold'></i></p>
-                                          @elseif($cont_video->access == 'registered')
-                                                <p class="p-tag">{{ __('Register Now') }}</p>
-                                          @elseif(!empty($cont_video->ppv_price))
-                                                <p class="p-tag">{{ $currency->symbol . ' ' . $cont_video->ppv_price }}</p>
-                                          @elseif(!empty($cont_video->global_ppv) && $cont_video->ppv_price == null)
-                                                <p class="p-tag">{{ $cont_video->global_ppv . ' ' . $currency->symbol }}</p>
-                                          @elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null)
-                                                <p class="p-tag">{{ __('Free') }}</p>
-                                          @endif
-                                       @endif
                                        <div class="hover-buttons text-white">
                                           <a href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="movie">
                                                 @if($ThumbnailSetting->title == 1)
@@ -104,9 +90,6 @@
                                                             {{ __('Featured') }}
                                                       </span>
                                                    @endif
-                                                </div>
-
-
                                                 </div>
                                                 
                                                 <div class="movie-time d-flex align-items-center pt-1">

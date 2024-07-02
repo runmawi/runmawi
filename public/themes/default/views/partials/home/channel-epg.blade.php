@@ -211,7 +211,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <div class="channel-epgslider list-inline row p-0 mb-0">
+                        <div class="channel-epgslider home-sec list-inline row p-0 mb-0">
                             @foreach ($data as $key => $epg_channel_data)
                                 <div class="items">
                                   <div class="block-images position-relative">
@@ -243,12 +243,12 @@
                                               </a>
 
                                                 <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
-                                                    <?= __('Click Events') ?>
+                                                    <?= __('View Events') ?>
                                                 </a>
 
                                               <a class="epi-name mt-2 mb-0 btn" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                  {{ __('Visit Audio Category') }}
+                                                  {{ __('Visit Now') }}
                                               </a>
                                           </div>
                                       </div>
