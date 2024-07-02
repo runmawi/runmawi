@@ -919,8 +919,15 @@ header .navbar ul li.menu-item a{color:#fff!important}
 header .navbar ul li.menu-item a:hover{color:#fff}
 .dskdflex a{display:flex!important}
 }
+@media (max-width:768px) {
+    .flickity-slider .items{width:33.333% !important;}
+}
 @media (max-width:564px) {
 .channel_contentpr .row{flex-wrap:unset}
+}
+
+@media (max-width:512px) {
+    .flickity-slider .items{width:50% !important;}
 }
 .clwert .btn-close{border-top:none;line-height:10px;float:left;width:100%;text-align:left;padding:16px 32px;color:var(--iq-white)}
 @media (max-width:375px) {
