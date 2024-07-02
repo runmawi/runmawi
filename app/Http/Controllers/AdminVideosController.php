@@ -873,7 +873,7 @@ class AdminVideosController extends Controller
         //     $value["success"] = 2;
         //     $value["message"] = "File not uploaded.";
         //     return response()->json($value);
-        }
+        // }
 
         // return response()->json($value);
     }
