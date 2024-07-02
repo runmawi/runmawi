@@ -373,8 +373,8 @@ class LiveStreamController extends Controller
             $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category 
                                         ."&ads.content_genre=".$categoryVideos->ads_content_genre 
                                         ."&ads.content_id=".$categoryVideos->ads_content_id
-                                        ."&ads.content_language=".$categoryVideos->content_language
-                                        ."&ads.content_title=".$categoryVideos->content_title ;
+                                        ."&ads.content_language=".$categoryVideos->ads_content_language
+                                        ."&ads.content_title=".$categoryVideos->ads_content_title ;
 
 
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
@@ -567,6 +567,8 @@ class LiveStreamController extends Controller
               return $item;
 
             })->first();
+
+            dd($Livestream_details->livestream_URL);
 
            $data = array(
                  'currency'     => $currency,
