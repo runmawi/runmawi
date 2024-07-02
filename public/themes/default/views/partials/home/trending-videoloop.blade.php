@@ -21,7 +21,7 @@
                   </div>
 
                   <div class="favorites-contens">
-                      <div class="favorites-slider list-inline row p-0 mb-0">
+                      <div class="featured-video home-sec list-inline row p-0 mb-0">
                           @if(isset($data))
                               @php
                                   $id = !Auth::guest() && !empty($data['password_hash']) ? Auth::user()->id : 0;
@@ -44,7 +44,7 @@
                                           $publish_time = '';
                                       }
                                   @endphp
-                                  <div class="slide-item">
+                                  <div class="items">
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
@@ -67,94 +67,78 @@
                                               </div>
                                           </div>
 
-                                          <div class="block-description">
-                                              <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                  <img class="img-fluid w-100 lazyload" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
-                                                @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                    @if($watchlater_video->access == 'subscriber')
-                                                        <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
-                                                    @elseif($watchlater_video->access == 'registered')
-                                                        <p class="p-tag">{{ __('Register Now') }}</p>
-                                                    @elseif(!empty($watchlater_video->ppv_price))
-                                                        <p class="p-tag">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
-                                                    @elseif(!empty($watchlater_video->global_ppv) || (!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null))
-                                                        <p class="p-tag">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
-                                                    @elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
-                                                        <p class="p-tag">{{ __('Free') }}</p>
+                                            <div class="block-description">
+                                                <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
+                                                    {{-- <img class="img-fluid w-100 lazyload" data-src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" src="{{ $watchlater_video->player_image ? URL::to('public/uploads/images/' . $watchlater_video->player_image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}"> --}}
+                                                    @if($ThumbnailSetting->free_or_cost_label == 1)
+                                                        @if($watchlater_video->access == 'subscriber')
+                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                        @elseif($watchlater_video->access == 'registered')
+                                                            <p class="p-tag">{{ __('Register Now') }}</p>
+                                                        @elseif(!empty($watchlater_video->ppv_price))
+                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
+                                                        @elseif(!empty($watchlater_video->global_ppv) || (!empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null))
+                                                            <p class="p-tag">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
+                                                        @elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
+                                                            <p class="p-tag">{{ __('Free') }}</p>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                              </a>
-                                              <div class="hover-buttons text-white">
-                                                  <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="{{ $watchlater_video->title }}">
-                                                      @if($ThumbnailSetting->title == 1)
-                                                          <p class="epi-name text-left m-0">
-                                                              {{ Str::limit($watchlater_video->title, 18) }}
-                                                          </p>
-                                                      @endif
+                                                </a>
+                                                <div class="hover-buttons text-white">
+                                                    <a href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="{{ $watchlater_video->title }}">
+                                                        @if($ThumbnailSetting->title == 1)
+                                                            <p class="epi-name text-left m-0 mt-2">
+                                                                {{ Str::limit($watchlater_video->title, 18) }}
+                                                            </p>
+                                                        @endif
+                                                        
+                                                            <p class="desc-name text-left m-0 mt-1">
+                                                                {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : $watchlater_video->description }}
+                                                            </p>
+                                                        
 
-                                                      <div class="movie-time d-flex align-items-center pt-1">
-                                                          @if($ThumbnailSetting->age == 1)
-                                                              <div class="badge badge-secondary p-1 mr-2">{{ $watchlater_video->age_restrict . ' +' }}</div>
-                                                          @endif
+                                                            <div class="movie-time d-flex align-items-center pt-2">
+                                                                @if($ThumbnailSetting->age == 1 && !($watchlater_video->age_restrict == 0))
+                                                                    <span class="position-relative badge p-1 mr-2">{{ $watchlater_video->age_restrict . ' +' }}</span>
+                                                                @endif
 
-                                                          @if($ThumbnailSetting->duration == 1)
-                                                              <span class="text-white">
-                                                                  <i class="fa fa-clock-o"></i>
-                                                                  {{ gmdate('H:i:s', $watchlater_video->duration) }}
-                                                              </span>
-                                                          @endif
-                                                      </div>
+                                                                @if($ThumbnailSetting->duration == 1)
+                                                                    <span class="position-relative text-white mr-2">
+                                                                        {{ (floor($watchlater_video->duration / 3600) > 0 ? floor($watchlater_video->duration / 3600) . 'h ' : '') . floor(($watchlater_video->duration % 3600) / 60) . 'm' }}
+                                                                    </span>
+                                                                @endif
+                                                                @if($ThumbnailSetting->published_year == 1 && !($watchlater_video->year == 0))
+                                                                    <span class="position-relative badge p-1 mr-2">
+                                                                        {{ __($watchlater_video->year) }}
+                                                                    </span>
+                                                                @endif
+                                                                @if($ThumbnailSetting->featured == 1 && $watchlater_video->featured == 1)
+                                                                    <span class="position-relative text-white">
+                                                                        {{ __('Featured') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
 
-                                                      @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                          <div class="movie-time d-flex align-items-center pt-1">
-                                                              @if($ThumbnailSetting->rating == 1)
-                                                                  <div class="badge badge-secondary p-1 mr-2">
-                                                                      <span class="text-white">
-                                                                          <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                          {{ __($watchlater_video->rating) }}
-                                                                      </span>
-                                                                  </div>
-                                                              @endif
-
-                                                              @if($ThumbnailSetting->published_year == 1)
-                                                                  <div class="badge badge-secondary p-1 mr-2">
-                                                                      <span class="text-white">
-                                                                          <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                          {{ __($watchlater_video->year) }}
-                                                                      </span>
-                                                                  </div>
-                                                              @endif
-
-                                                              @if($ThumbnailSetting->featured == 1 && $watchlater_video->featured == 1)
-                                                                  <div class="badge badge-secondary p-1 mr-2">
-                                                                      <span class="text-white">
-                                                                          <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                      </span>
-                                                                  </div>
-                                                              @endif
-                                                          </div>
-                                                      @endif
-
-                                                      <div class="movie-time d-flex align-items-center pt-1">
-                                                          @php
-                                                              $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                  ->where('categoryvideos.video_id', $watchlater_video->id)
-                                                                  ->pluck('video_categories.name');
-                                                          @endphp
-                                                          @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                              <span class="text-white">
-                                                                  <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                  {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
-                                                              </span>
-                                                          @endif
-                                                      </div>
-                                                  </a>
-                                                  <a class="epi-name mt-3 mb-0 btn" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                      <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />
-                                                      Watch Now
-                                                  </a>
-                                              </div>
-                                          </div>
+                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                            @php
+                                                                $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                                    ->where('categoryvideos.video_id', $watchlater_video->id)
+                                                                    ->pluck('video_categories.name');
+                                                            @endphp
+                                                            @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                    {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                    </a>
+                                                    <a class="epi-name mt-2 mb-0 btn" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />
+                                                        {{ __('Watch Now') }}
+                                                    </a>
+                                                </div>
+                                            </div>
                                       </div>
                                   </div>
                               @endforeach
@@ -169,3 +153,17 @@
 
 
 @endif
+
+<script>
+    var elem = document.querySelector('.featured-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

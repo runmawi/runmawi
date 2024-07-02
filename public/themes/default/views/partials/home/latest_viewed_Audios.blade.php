@@ -44,9 +44,9 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <div class="last-viewed-audio list-inline row p-0 mb-0">
                             @foreach($data as $latest_view_audio)
-                                <li class="slide-item">
+                                <div class="items">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
                                             <div class="img-box">
@@ -66,57 +66,39 @@
                                                     @endif
 
                                                     <div class="movie-time d-flex align-items-center pt-1">
-                                                        @if($ThumbnailSetting->age == 1)
-                                                            <div class="badge badge-secondary p-1 mr-2">{{ $latest_view_audio->age_restrict . ' +' }}</div>
+                                                        @if($ThumbnailSetting->age == 1 && !($latest_view_audio->age_restrict == 0))
+                                                        <span class="position-relative badge p-1 mr-2">{{ $latest_view_audio->age_restrict . ' +' }}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
-                                                            <span class="text-white">
-                                                                <i class="fa fa-clock-o"></i>
-                                                                {{ gmdate('H:i:s', $latest_view_audio->duration) }}
-                                                            </span>
+                                                        <span class="position-relative text-white mr-2">
+                                                            {{ (floor($latest_view_audio->duration / 3600) > 0 ? floor($latest_view_audio->duration / 3600) . 'h ' : '') . floor(($latest_view_audio->duration % 3600) / 60) . 'm' }}
+                                                        </span>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->published_year == 1 && !($latest_view_audio->year == 0))
+                                                        <span class="position-relative badge p-1 mr-2">
+                                                            {{ __($latest_view_audio->year) }}
+                                                        </span>
+                                                        @endif
+                                                        @if($ThumbnailSetting->featured == 1 && $latest_view_audio->featured == 1)
+                                                        <span class="position-relative text-white">
+                                                           {{ __('Featured') }}
+                                                        </span>
                                                         @endif
                                                     </div>
 
-                                                    @if($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if($ThumbnailSetting->rating == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                        {{ __($latest_view_audio->rating) }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            @if($ThumbnailSetting->published_year == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                        {{ __($latest_view_audio->year) }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            @if($ThumbnailSetting->featured == 1 && $latest_view_audio->featured == 1)
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white">
-                                                                        <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    @endif
+                                                
                                                 </a>
-                                                <a class="epi-name mt-5 mb-0 btn" href="{{ url('audio/' . $latest_view_audio->slug) }}">
+                                                <a class="epi-name mt-2 mb-0 btn" href="{{ url('audio/' . $latest_view_audio->slug) }}">
                                                     <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Play Now') }}
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
                             @endforeach
-                        </ul>
+                            </div>
                     </div>
                     
                 </div>
@@ -125,3 +107,18 @@
     </section>
 
 @endif
+
+
+<script>
+    var elem = document.querySelector('.last-viewed-audio');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

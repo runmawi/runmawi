@@ -562,12 +562,18 @@ function current_timezone()
 }
 
 function Country_name(){
-    
-    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    $userIp = $geoip->getip();
-    $countryName = \Location::get($userIp)->countryName;
 
-    return $countryName ;
+    try {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = \Location::get($userIp)->countryName;
+
+        return $countryName ;
+
+    } catch (\Throwable $th) {
+        return 'Unknown' ;
+    }
+
 }
 
 function city_name(){
