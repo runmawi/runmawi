@@ -47,7 +47,7 @@ if (Auth::guest() != true) {
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" data-src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" alt="{{ $latest_view_episode->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" data-src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" alt="{{ $latest_view_episode->title }}">
                                                     </a>
                                                 </div>
                                             </div>
