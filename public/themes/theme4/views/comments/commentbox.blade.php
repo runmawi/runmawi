@@ -70,20 +70,20 @@
       }
       
       .emojionearea-picker{
-        max-height: 500px !important;
+        height: 300px !important; 
+        overflow-y: auto;
       }
 
       .emojionearea .emojionearea-search input[type="text"] {
       visibility: hidden;
     }
 
-    
 
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emojionearea/dist/emojionearea.min.css">
 <script src="https://cdn.jsdelivr.net/npm/emojionearea/dist/emojionearea.min.js"></script>
-
 
 
 <?php if(Auth::guest() != true): ?>
@@ -132,12 +132,10 @@
         });
     });
 
-      // Function to hide the emoji picker
       function hideEmojiPicker() {
                 emojiPicker[0].emojioneArea.hidePicker();
             }
 
-            // Event listener for clicks outside the emoji picker
             $(document).on('click', function(event) {
                 var pickerContainer = $('.emojionearea-picker');
                 if (pickerContainer.is(':visible')) {
@@ -145,9 +143,9 @@
                 }
             });
 
-            // Event listener for clicks inside the emoji picker
             $(document).on('click', '.emojionearea', function(event) {
                 hideEmojiPicker();
             });
 
 </script>
+
