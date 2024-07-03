@@ -26,7 +26,7 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
-    <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
+    {{-- <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script> --}}
 
     <div class="container-fluid p-0">
 

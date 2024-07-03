@@ -6315,90 +6315,110 @@ return response()->json($response, 200);
 
   public function addtocontinuewatching(Request $request)
   {
-    $current_duration = $request->current_duration;
-    $watch_percentage = $request->watch_percentage;
-    $skip_time = !empty($request->skip_time) ? $request->skip_time : 0;
-    
-    $user_id = $request->user_id;
-    $video_id = $request->video_id;
-    $multiuser_id = $request->multiuser_id;
-    
-    $query = ContinueWatching::where('videoid', $video_id);
-                  if ($multiuser_id != null) {
-                      $query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
-                  } else {
-                      $query->where('user_id', $user_id);
-                  }
-    $count = $query->count();
-    
-    if ($count > 0) {
+    try {
       
-        $query->update([
-            'currentTime' => $current_duration,
-            'watch_percentage' => $watch_percentage,
-            'skip_time' => $skip_time
-        ]);
-    
-        $response = [
-            'status' => 'true',
-            'status_code' => 200,
-            'message' => 'Current Time updated'
-        ];
-    }
-     else {
+      $current_duration = $request->current_duration;
+      $watch_percentage = $request->watch_percentage;
+      $skip_time = !empty($request->skip_time) ? $request->skip_time : 0;
+      
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
+      $multiuser_id = $request->multiuser_id;
+      
+      $query = ContinueWatching::where('videoid', $video_id);
+                    if ($multiuser_id != null) {
+                        $query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
+                    } else {
+                        $query->where('user_id', $user_id)->whereNull('multiuser');
+                    }
+      $count = $query->count();
+      
+      if ($count > 0) {
+        
+          $query->update([
+              'currentTime' => $current_duration,
+              'watch_percentage' => $watch_percentage,
+              'skip_time' => $skip_time,
+          ]);
+      
+          $response = ['message' => 'Current Time updated'];
+      }
+      else {
 
-          $data = array('user_id' => $user_id, 
-                        'multiuser_id' => $request->multiuser_id,
-                        'videoid' => $video_id,
-                        'currentTime' => $current_duration,
-                        'watch_percentage' => $watch_percentage,
-                        'skip_time' => $skip_time
-                      );
+          $data = array('user_id'   => $user_id, 
+                          'multiuser' => $multiuser_id,
+                          'videoid'   => $video_id,
+                          'currentTime'      => $current_duration,
+                          'watch_percentage' => $watch_percentage,
+                          'skip_time'        => $skip_time
+                        );
 
           ContinueWatching::create($data);
 
-        $response = array(
-            'status'=>'true',
-            'status_code' => 200 ,
-            'message'=>'Added to Continue Watching List'
-        );
-
+          $response = array('message'=>'Added to Continue Watching List');
       }
 
-      return response()->json($response, $response['status_code']);
+      $response += array(
+        'status'=>'true',
+        'status_code' => 200 ,
+      );
+
+    } catch (\Throwable $th) {
+      
+      $response = array(
+        'status'=>'false',
+        'status_code' => 400 ,
+        'message'=>$th->getMessage(),
+      );
+
+    }
+    return response()->json($response, $response['status_code']);
   }
 
   public function listcontinuewatchings(Request $request)
   {
+    try {
+      
+      $user_id = $request->user_id;
+      $multiuser_id = $request->multiuser_id;
+      $video_id = $request->video_id;
+      
+      $video_id_query = ContinueWatching::query();
+                    if ($multiuser_id != null) {
+                        $video_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
+                    } else {
+                        $video_id_query->where('user_id', $user_id)->whereNull('multiuser');
+                    }
+      $video_id_query = $video_id_query->pluck('videoid');
 
-    $user_id = $request->user_id;
-    $multiuser_id = $request->multiuser_id;
-    $video_id = $request->video_id;
-    
-    $video_id_query = ContinueWatching::query();
-                  if ($multiuser_id != null) {
-                      $video_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
-                  } else {
-                      $video_id_query->where('user_id', $user_id);
-                  }
-    $video_id_query = $video_id_query->pluck('videoid');
+      $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
+          ->whereIn('videos.id', $video_id_query)
+          ->latest('continue_watchings.created_at')
+          ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
+          ->groupBy('continue_watchings.videoid')
+          ->get()
+          ->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/images/' . $item->image );
+              return $item;
+          });
 
-    $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
-        ->whereIn('videos.id', $video_id_query)
-        ->latest('continue_watchings.created_at')
-        ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
-        ->get()
-        ->map(function ($item) {
-            $item['image_url'] = URL::to('public/uploads/images/' . $item->image );
-            return $item;
-        });
+      $response = array(
+          'status' => "true",
+          'status_code' => 200,
+          'message' => 'Retrieved Continue Watching Successfully',
+          'videos' => $videos,
+      );
+      
+    } catch (\Throwable $th) {
 
-    $response = array(
-        'status' => "true",
-        'videos' => $videos,
-    );
+      $response = array(
+        'status' => "false",
+        'status_code' => 400,
+        'message' =>  $th->getMessage(),
+      );
+    }
 
-    return response()->json($response, 200);
+    return response()->json($response, $response['status_code']);
   }
 
   public function remove_continue_watchingvideo(Request $request)
