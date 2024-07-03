@@ -2359,7 +2359,8 @@ class AdminVideosController extends Controller
         if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
             $data["ppv_price"] = null;
-        }else if(empty($data["global_ppv"]) ){
+
+        }else if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
             $data["ppv_price"] = null;
         }else{
@@ -2376,11 +2377,14 @@ class AdminVideosController extends Controller
             }  else if(!empty($data["global_ppv"])) {
                 $video->global_ppv = $data["global_ppv"];
                 $data["ppv_price"] = $settings->ppv_price;
-            } else {
+            }else if(!empty($data["ppv_price"])  && $request->ppv_price != null) {
+                $data["ppv_price"] = $request->ppv_price;
+            }  else {
                 $video->global_ppv = null;
                 $data["ppv_price"] = null;
             }
         }
+
         // if (!empty($data["global_ppv"])) {
         //     $video->global_ppv = $data["global_ppv"];
         // } else {

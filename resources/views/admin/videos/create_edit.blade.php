@@ -1318,6 +1318,7 @@ border-radius: 0px 4px 4px 0px;
 
 <script>
    $(document).ready(function() {
+      $('#error_ppv_price').hide();
         // Function to check the price input and update button states
         function checkPriceInput() {
             var priceInput = $('#price').val().trim();
