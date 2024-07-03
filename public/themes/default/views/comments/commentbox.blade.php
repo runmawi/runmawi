@@ -44,8 +44,8 @@
     }
 
     #myTextarea {
-    height: 50px; /* Adjust height as needed */
-    resize: vertical; /* Allow vertical resizing if needed */
+    max-height: 150px !important; 
+    resize: vertical;
     }
     .emojionearea-button-open{
         visibility: hidden;
@@ -70,24 +70,19 @@
       }
       
       .emojionearea-picker{
-        max-height: 200px !important;
+        height: 300px !important; 
+        overflow-y: auto;
       }
 
       .emojionearea .emojionearea-search input[type="text"] {
       visibility: hidden;
     }
 
-    .emojionearea .emojionearea-picker {
-            height: 400px !important; /* Adjust this value to set the desired height */
-        }
-
 </style>
-<!-- Ensure jQuery is loaded first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emojionearea/dist/emojionearea.min.css">
 <script src="https://cdn.jsdelivr.net/npm/emojionearea/dist/emojionearea.min.js"></script>
-
 
 <?php if(Auth::guest() != true): ?>
 
@@ -129,6 +124,7 @@
     <br />
 <?php endif; ?>
 
+
 <script>
     jQuery(document).ready(function($) {
         $('#myTextarea').emojioneArea({
@@ -137,4 +133,20 @@
             autocomplete: false,
         });
     });
+
+      function hideEmojiPicker() {
+                emojiPicker[0].emojioneArea.hidePicker();
+            }
+
+            $(document).on('click', function(event) {
+                var pickerContainer = $('.emojionearea-picker');
+                if (pickerContainer.is(':visible')) {
+                    hideEmojiPicker();
+                }
+            });
+
+            $(document).on('click', '.emojionearea', function(event) {
+                hideEmojiPicker();
+            });
+
 </script>
