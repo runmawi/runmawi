@@ -336,6 +336,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
 .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg{width: 30px;height: 30px;}
 .dz-error-mark g{fill:#FF0000;}
 .dz-success-mark path{fill:#008000;}
+.ck.ck-powered-by {display: none;}
 </style>
 
 </head>
@@ -2112,6 +2113,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
   <!-- End Notifications -->
 <?php if($request_url != "filemanager"  && $request_url != 'videos') { ?>
   <?php } ?>
+  {{-- ckeditor --}}
+  <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 
 
   @yield('javascript')
