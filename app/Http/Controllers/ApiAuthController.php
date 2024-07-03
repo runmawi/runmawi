@@ -6395,6 +6395,7 @@ return response()->json($response, 200);
           ->whereIn('videos.id', $video_id_query)
           ->latest('continue_watchings.created_at')
           ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
+          ->groupBy('continue_watchings.videoid')
           ->get()
           ->map(function ($item) {
               $item['image_url'] = URL::to('public/uploads/images/' . $item->image );
