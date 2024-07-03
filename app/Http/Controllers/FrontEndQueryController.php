@@ -127,7 +127,7 @@ class FrontEndQueryController extends Controller
         }
 
         if ($this->videos_expiry_date_status == 1 ) {
-            $trending_videos = $trending_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $trending_videos = $trending_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
         }
         
         if ($this->check_Kidmode == 1) {
