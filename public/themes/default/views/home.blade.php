@@ -190,74 +190,6 @@ function toggleReadMore(key) {
 
 <!-- End Of MainContent -->
 
-<script>
-   var isFetching = false; 
-   var scrollFetch; 
-
-   $(window).scroll(function () {
-      clearTimeout(scrollFetch);
-
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#home_sections").attr('next-page-url');
-         console.log("scrolled");
-
-         if (page_url != null && !isFetching) {
-               isFetching = true; 
-               $.ajax({
-                  url: page_url,
-                  success: function (data) {
-                     $("#home_sections").append(data.view);
-                     $("#home_sections").attr('next-page-url', data.url);
-                     
-                     // Reinitialize the slider after appending new content
-                     jQuery('.favorites-slider').not('.slick-initialized').slick({
-                        dots: false,
-                        arrows: true,
-                        appendDots: '.slider-dots',
-                        infinite: false,
-                        slidesToScroll: 5,
-                        slidesToShow: 7,
-                        accessibility: true,
-                        variableWidth: false,
-                        focusOnSelect: false,
-                        nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next"><i class="ri-arrow-right-s-line"></i></a>',
-                        prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="ri-arrow-left-s-line"></i></a>',
-                        responsive: [
-                           {
-                              breakpoint: 1200,
-                              settings: {
-                                 slidesToShow: 5,
-                                 slidesToScroll: 1,
-                                 infinite: true,
-                                 dots: true
-                              }
-                           },
-                           {
-                              breakpoint: 768,
-                              settings: {
-                                 slidesToShow: 2,
-                                 slidesToScroll: 1
-                              }
-                           },
-                           {
-                              breakpoint: 480,
-                              settings: {
-                                 slidesToShow: 3,
-                                 slidesToScroll: 1
-                              }
-                           }
-                        ]
-                     });
-                     isFetching = false; // Reset fetching flag
-                  },
-                  error: function() {
-                     isFetching = false; // Reset fetching flag in case of error
-                  }
-               });
-         }
-      }, 100);
-   });
-</script>
 
 
 <style>
@@ -283,4 +215,27 @@ function toggleReadMore(key) {
       var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
       
    }
+
+   var isFetching = false; 
+   var scrollFetch; 
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         console.log("scrolled");
+
+         if (page_url != null && !isFetching) {
+               isFetching = true; 
+               $.ajax({
+                  url: page_url,
+                  success: function (data) {
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  },
+               });
+         }
+      }, 100);
+   });
 </script>
