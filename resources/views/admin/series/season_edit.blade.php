@@ -79,6 +79,11 @@
     .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
     .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
     p#cancel-message {padding: .75rem 1.25rem;margin-bottom: 1rem;border: 1px solid transparent; border-radius: .25rem;color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; position: absolute;right: 0;}
+
+    body.dark input{color: <?php echo GetAdminDarkText(); ?>;}
+	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>;}
+	body.light input{color: <?php echo GetAdminLightText(); ?>;}
+
 </style>
 <style>
     .admin-section-title {
@@ -739,7 +744,7 @@
             <!-- Manage Episode Order -->
                 <div class="float-right">
                     <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
-                    <input type="text"  id="searchInput" placeholder="Search...">
+                    <input type="text" id="searchInput" placeholder="Search...">
                 </div>
 
             <div class="p-4">
@@ -750,7 +755,8 @@
                 <div class="admin-section-title">
                     <div class="row ml-0"  id="orderepisode">
 
-                        <table class="table table-bordered iq-card text-center" id="categorytbl">
+                        <table class="table table-bordered iq-card text-center">
+                            <thead>
                             <tr class="table-header r1">
                                 <th><input type="checkbox" id="select-all"></th>
                                 <th><label>Episode </label></th>
@@ -760,7 +766,9 @@
                                 <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
+                            </thead>
 
+                        <tbody id="categorytbl">
                             @foreach($episodes as $key => $episode)
                                 <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
                                 <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
@@ -793,6 +801,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        </tbody>
                         </table>
 
                         <div class="clear"></div>
