@@ -564,16 +564,13 @@ function current_timezone()
 function Country_name(){
 
     try {
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = \Location::get($userIp)->countryName;
+        $countryName = \Location::get()->countryName;
 
         return $countryName ;
 
     } catch (\Throwable $th) {
         return 'Unknown' ;
     }
-
 }
 
 function city_name(){
