@@ -1,4 +1,5 @@
 <table class="table table-bordered iq-card text-center" id="categorytbl">
+                        <thead>
                             <tr class="table-header r1">
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
@@ -7,7 +8,9 @@
                                 <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
+                        </thead>
 
+                        <tbody id="search-episodes">
                             @foreach($episodes as $key => $episode)
                                 <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
                                 <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
@@ -38,6 +41,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        </tbody>
                         </table>
 
 
