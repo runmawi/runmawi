@@ -201,7 +201,143 @@
     body.dark table.dataTable.no-footer{border-bottom: 1px solid <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     div#ui-datepicker-div {
         display: none;
+        width: 300px;
+        background:#eee;
     }
+    /* table.ui-datepicker-calendar{width:100%;}
+    a.ui-datepicker-prev.ui-corner-all{background-color: #006AFF;color: white;border-radius: 5px;padding: 0 11px;cursor: pointer;}
+    a.ui-datepicker-next.ui-corner-all {position: absolute;right: 5px;background-color: #006AFF;color: white;border-radius: 5px;padding: 0 11px;cursor: pointer;}
+    .ui-datepicker-title {position: absolute;left: 26%;top: 0;}
+    table.ui-datepicker-calendar th{padding:10px;}
+    tr td{padding:10px;} */
+
+    /*  */
+    .ui-widget.ui-widget-content {border: 1px solid #cccccc;}
+    .ui-datepicker .ui-datepicker-header {position: relative;padding: .2em 0;}
+    .ui-datepicker .ui-datepicker-prev {left: 2px;}
+    .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: 2px;
+    width: 1.8em;
+    height: 1.8em;
+}
+.ui-widget-header a {
+    color: #ffffff;
+}
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+    margin-top: -8px;
+}
+.ui-widget-header .ui-icon {
+    background-image: url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/images/ui-icons_ffffff_256x240.png);
+}
+.ui-datepicker .ui-icon {
+    display: block;
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    left: .5em;
+    top: .3em;
+}
+.ui-icon-circle-triangle-w {
+    background-position: -80px -192px;
+}
+.ui-icon-circle-triangle-e {
+    background-position: -48px -192px;
+}
+.ui-icon {
+    width: 16px;
+    height: 16px;
+}
+.ui-widget-header {
+    border: 1px solid #e78f08;
+    background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    margin: 0 2.3em;
+    line-height: 1.8em;
+    text-align: center;
+}
+.ui-datepicker .ui-datepicker-title {
+    margin: 0 2.3em;
+    line-height: 1.8em;
+    text-align: center;
+}
+.ui-datepicker .ui-datepicker-prev {
+    left: 2px;
+}
+.ui-datepicker .ui-datepicker-next {
+    right: 2px;
+}
+.ui-datepicker table {
+    width: 100%;
+    font-size: .9em;
+    border-collapse: collapse;
+    margin: 0 0 .4em;
+}
+.ui-datepicker th {
+    padding: .7em .3em;
+    text-align: center;
+    font-weight: bold;
+    border: 0;
+}
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+    opacity: .35;
+    filter: Alpha(Opacity = 35);
+    background-image: none;
+}
+.ui-datepicker td {
+    border: 0;
+    padding: 1px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: 1px solid #cccccc;
+    background: #f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x;
+    font-weight: bold;
+    color: #1c94c4;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    display: block;
+    padding: .2em;
+    text-align: right;
+    text-decoration: none;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus {
+    border: 1px solid #fbcb09;
+    background: #fdf5ce url(images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x;
+    font-weight: bold;
+    color: #c77405;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus {
+    border: 1px solid #fbcb09;
+    background: #fdf5ce url(images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x;
+    font-weight: bold;
+    color: #c77405;
+}
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon, .ui-button:hover .ui-icon, .ui-button:focus .ui-icon {
+    background-image: url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/images/ui-icons_ef8c08_256x240.png);
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 4px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 4px;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 4px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+    border-top-left-radius: 4px;
+}
+body.dark input{color: <?php echo GetAdminDarkText(); ?>!important;}
+body.light input{color: <?php echo GetAdminLightText(); ?>;}
 </style>
 
     @section('content')
@@ -227,11 +363,17 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select class="form-control js-example-basic-single" name="time_zone_id" id="time_zone_id">
-                                @foreach($TimeZone as $key => $time_zone)
-                                    <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
-                                @endforeach
-                            </select>
+                            @if ($enable_default_timezone == 0)
+                                <select class="form-control js-example-basic-single" name="time_zone_id" id="time_zone_id">
+                                    @foreach($TimeZone as $key => $time_zone)
+                                        <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
+                                    @endforeach
+                                </select>
+                            @else 
+                                <input type="text" class="form-control" value="{{ $default_time_zone }}{{ '( UTC'.@$utc_difference.')' }}" readonly>
+                                <input type="hidden" name="time_zone_id" id='time_zone_id' class="form-control" value="{{ @$time_zoneid }}" >
+                            @endif
+
                         </div>
                         <div class="col-md-4">
                             <input type="text" class="date form-control" value="{{ date('m-d-Y') }}">
@@ -389,13 +531,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>  
     <script src="<?=URL::to("/assets/js/jquery.mask.min.js") ?>"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -435,9 +577,9 @@
   overflow-y: auto;
 }
 
-.active {
+/* .active {
   outline: 1px solid red;
-}
+} */
 
 .hover {
   outline: 1px solid blue;
@@ -482,10 +624,10 @@ details{
 }
 </style>
 
-
-
-
 <script>
+    var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
+    var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
+
   $(".drag").draggable({
     appendTo: "body",
     helper: "clone"
@@ -891,21 +1033,16 @@ $("#dropzone").droppable({
     });
 
 
-        // $('.re-schedule-date').datepicker({  
-        //     format: 'm-dd-yyyy'
-        // });  
-
-        $('.re-schedule-date').datepicker({
-            format: 'm-dd-yyyy',
-            startDate: '+1d', // Set the minimum date to tomorrow
-            autoclose: true
-        });
-
+        // Calculate the date for one day ahead
         var currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
-        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
-    
-        $('.re-schedule-date').datepicker('setDate', formattedDate); // Set the selected date
+            currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
+
+            // Initialize the datepicker with the formatted date
+            $('.re-schedule-date').datepicker({
+                format: 'm-dd-yyyy',
+                autoclose: true
+            }).datepicker('setDate', currentDate);
+
 
         $('.date').datepicker({  
             format: 'm-dd-yyyy'
@@ -1104,9 +1241,14 @@ $("#dropzone").droppable({
                         socure_type: socure_type,
                 },        
                 success: function(value){
+      
                     if(value == "Can't Set Video before current date"){
                         Swal.fire({
                                 title: "Can't Set Scheduled Before Current date",
+                        })
+                    }else if(value == 5){
+                        Swal.fire({
+                                title: "Today's Slot is Full Please Choose Next date to Continue...",
                         })
                     }
                     $('tbody').html(value.table_data);

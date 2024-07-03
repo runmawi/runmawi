@@ -11,35 +11,79 @@
             fluid: true,
 
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},  
+                    // 'audioTrackButton': {},
+                },
+                pictureInPictureToggle: true,
+            }
+        });
 
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+        var hovered = false;
+
+        skipForwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        skipBackwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
+
+        player.on('userinactive', () => {
+            skipForwardButton.addEventListener('mouseenter',handleHover);
+            skipBackwardButton.addEventListener('mouseenter',handleHover);
+            skipForwardButton.addEventListener('mouseleave',handleHover);
+            skipBackwardButton.addEventListener('mouseleave',handleHover);
+
+            function handleHover(event) {
+                const element = event.target;
+                if (event.type === 'mouseenter') {
+                    // console.log("hovered");
+                    hovered = true;
+                } else if (event.type === 'mouseleave') {
+                    // console.log("not hovered");
+                    hovered = false;
                 }
             }
+
+            // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                if(hovered == false){
+                    skipForwardButton.style.display = 'none';
+                    skipBackwardButton.style.display = 'none';
+                    playPauseButton.style.display = 'none';
+                    backButton.style.display = 'none';
+                }
+            }
+        });
+
+        player.on('useractive', () => {
+        // Show the Play pause, skip forward and backward buttons when the user becomes active
+        if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+            playPauseButton.style.display = 'block';
+            backButton.style.display = 'block';
+        }
         });
 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
+            console.log("p",player);
 
             const player_duration_Seconds        =  player.duration();
             const video_skip_intro_seconds       = '<?= $episode_details->video_skip_intro_seconds ?>' ;
@@ -135,6 +179,15 @@
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
+        });
+
+        player.on('loadedmetadata', () => {
+            const qualityLevels = player.qualityLevels();
+
+            for (let i = 0; i < qualityLevels.length; i++) {
+            // Customize label to show height in pixels or any desired format
+            qualityLevels[i].label = `${qualityLevels[i].height}p`;
+            }
         });
 
         var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
@@ -253,5 +306,9 @@
         top: -5%;
         z-index: 30;
         margin-left: -3px;
+    }
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
     }
 </style>

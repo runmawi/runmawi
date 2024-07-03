@@ -173,26 +173,6 @@ class RazorpayController extends Controller
             return false;
         }
     }
-
-    public function RazorpayUpgrade(Request $request){
-
-        $subscriptionId = "sub_IzpuMPU38PntuD";
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-        $subscription = $api->subscription->fetch($subscriptionId);
-        $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
-        $carbon = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-
-
-        ThemeIntegration::where('id',1)->update([
-            'created_at'    =>  $carbon ,
-    ]);
-
-        $testing =   $api->subscription->fetch($subscriptionId)->update($attributes);
-
-    }
     
     public function RazorpaySubscriptionStore(Request $request){
 
@@ -201,12 +181,12 @@ class RazorpayController extends Controller
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $subscription = $api->subscription->fetch($razorpay_subscription_id);
         $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
+        
+        $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+        $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
         $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-
-            Subscription::create([
+    
+        Subscription::create([
             'user_id'        =>  $request->userId,
             'name'           =>  $plan_id['item']->name,
             // 'days'        =>  $fileName_zip,
@@ -221,6 +201,7 @@ class RazorpayController extends Controller
             'PaymentGateway' =>  'Razorpay',
             'trial_ends_at'  =>  $trial_ends_at,
             'ends_at'        =>  $trial_ends_at,
+            'platform'       => 'WebSite',
         ]);
 
         User::where('id',$request->userId)->update([
@@ -229,6 +210,8 @@ class RazorpayController extends Controller
             'subscription_start'    =>  $Sub_Startday,
             'subscription_ends_at'  =>  $Sub_Endday,
             'payment_gateway'       =>  'Razorpay',
+            'payment_type'          =>  'recurring',
+            'payment_status'        =>  'active',
         ]);
 
         return Redirect::route('home');
@@ -249,9 +232,9 @@ class RazorpayController extends Controller
         $subscription = $api->subscription->fetch($subscriptionId);
         $remaining_count  =  $subscription['remaining_count'] ;
 
+        $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+        $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
         $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
-        $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']); 
-        $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
 
         if($subscription->payment_method != "upi"){
             
@@ -267,7 +250,7 @@ class RazorpayController extends Controller
                 Subscription::where('user_id',$user_id)->latest()->update([
                     'price'          =>  $updatedPlan['item']->amount,
                     'stripe_id'      =>  $UpdatedSubscription['id'],
-                    'stripe_status' =>  $UpdatedSubscription['status'],
+                    'stripe_status' =>   $UpdatedSubscription['status'],
                     'stripe_plan'    =>  $UpdatedSubscription['plan_id'],
                     'quantity'       =>  $UpdatedSubscription['quantity'],
                     'countryname'    =>  $countryName,
@@ -275,12 +258,17 @@ class RazorpayController extends Controller
                     'cityname'       =>  $cityName,
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
+                    'PaymentGateway' =>  'Razorpay',
                 ]);
 
                 User::where('id',$user_id)->update([
+                    'role'                  =>  'subscriber',
+                    'stripe_id'             =>  $UpdatedSubscription['id'] ,
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Razorpay',
+                    'payment_type'          =>  'recurring',
+                    'payment_status'        =>  'active',
                 ]);
             }
             return Redirect::route('home');
@@ -307,10 +295,7 @@ class RazorpayController extends Controller
             ]);
 
             User::where('id',Auth::user()->id )->update([
-                'payment_gateway' =>  null ,
-                'role'            => 'registered',
-                'stripe_id'       => null ,  
-                'payment_type'    => null ,
+                'payment_status' =>   'Cancel' ,
             ]);
 
             $Error_msg = "Subscription has been Cancel Successfully";
@@ -420,6 +405,7 @@ class RazorpayController extends Controller
             $purchase->status = 'active';
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
             $purchase->save();
 
             $respond=array(
@@ -532,6 +518,7 @@ class RazorpayController extends Controller
             $purchase->status = 'active';
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
             $purchase->save();
 
 
@@ -542,6 +529,7 @@ class RazorpayController extends Controller
             $livepurchase->expired_date = $to_time;
             $livepurchase->amount = $request->get('amount')/100 ;
             $livepurchase->status = 1;
+            $livepurchase->platform = 'website';
             $livepurchase->save();
 
             $respond=array(

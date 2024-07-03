@@ -4,6 +4,52 @@
 
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+
+    
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+
+    $website_default_language = App\Setting::pluck('website_default_language')->first() ? App\Setting::pluck('website_default_language')->first() : 'en';
+
+    
+    if(Auth::guest()){
+       $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+       $userIp = $geoip->getip();
+       $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+       if(!empty($UserTranslation)){
+           $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+       }else{
+           $translate_language = GetWebsiteName().@$website_default_language;
+       }
+   }else if(!Auth::guest()){
+
+       $subuser_id=Session::get('subuser_id');
+       if($subuser_id != ''){
+           $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+           if(!empty($Subuserranslation)){
+               $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+           }else{
+               $translate_language = GetWebsiteName().@$website_default_language;
+           }
+       }else if(Auth::user()->id != ''){
+           $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+           if(!empty($UserTranslation)){
+               $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+           }else{
+               $translate_language = GetWebsiteName().@$website_default_language;
+           }
+       }else{
+           $translate_language = GetWebsiteName().@$website_default_language;
+       }
+
+   }else{
+       $translate_language = GetWebsiteName().@$website_default_language;
+   }
+
+    \App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -101,7 +147,7 @@ text-align: left;
                       <div class="row justify-content-center">
                           <div class="col-md-12">
 
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                          <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
@@ -219,7 +265,7 @@ text-align: left;
                                 <?php if(@$system_settings != null && @$system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
                                         </a>
                                     </div>
                                 <?php  } ?>

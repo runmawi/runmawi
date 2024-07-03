@@ -187,6 +187,22 @@ if($home_settings->live_videos == 1){ ?>
 <?php } }?>
 
 
+<!-- Live artist -->
+<?php
+   if($value->video_name == 'live_artist'){
+      if($home_settings->live_artist == 1){  ?>
+         <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <?php include('partials/home/live-artist-videos.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+      <?php }
+   }?>
+
 <?php 
        if($value->video_name == 'audios'){
 if($home_settings->audios == 1){ ?>
@@ -407,6 +423,22 @@ if ( GetTrendingVideoStatus() == 1 ) { ?>
                </div>
             </section>
    <?php } }?>
+
+              <!-- Epg -->
+      <?php
+         if($value->video_name == "EPG" ){
+            if($home_settings->epg == 1){ ?>
+               <section id="iq-favorites">
+                  <div class="fluid overflow-hidden">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <?php include 'partials/home/channel-epg.php'; ?>
+                           </div>
+                        </div>
+                  </div>
+               </section>
+      <?php } }?>
+   
    
   <?php /*<section id="iq-topten">
         <div class="container-fluid">

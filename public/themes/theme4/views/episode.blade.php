@@ -16,7 +16,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
 <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
-<link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
+<!-- <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet"> -->
 <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css"
     rel="stylesheet">
 <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
@@ -53,9 +53,19 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .vjs-icon-hd:before{
         display:none;
     }
-    #my-video_ima-ad-container div{ overflow:hidden;}
-    #my-video { position: relative; }
-    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
+    #episode-player_ima-ad-container div{ overflow:hidden;}
+    #episode-player { position: relative; }
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
+    #series_container { position: relative;}
+    .slick-arrow{z-index: 99;}
+    .slick-next{right:0;}
+    .slick-prev{left:10px;}
+    @media only screen and (max-width: 600px) {
+    .custom-skip-forward-button, .custom-skip-backward-button {
+        top: 46% !important;
+    }
+    }
+
 </style>
 
 @if (Session::has('message'))
@@ -76,28 +86,45 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     <div class="">
         @if (!Auth::guest())
             @if ( $free_episode > 0)
-                    @if ( $free_episode > 0)
+                @if ( $free_episode > 0)
                         
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
-                        <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
+
+                        <button class="custom-skip-forward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>  
+
+                        <button class="custom-skip-backward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>
+
+                        <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
                             muted="muted" preload="yes" autoplay="autoplay"
                             poster="<?= $episode_details->Player_thumbnail ?>">
                             <source src="<?= $episode_details->Episode_url ?>"
                                 type="<?= $episode_details->Episode_player_type ?>">
+
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                                    @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
+                                        @foreach ($episodesubtitles as $episodesubtitles_file)
+                                            <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
+                                                srclang="{{ $episodesubtitles_file->sub_language }}"
+                                                label="{{ $episodesubtitles_file->shortcode }}" default>
+                                        @endforeach
+                                    @endif
+                                @endif
+
                         </video>
                     </div>
                 @else
-                    <div id="subscribers_only"
-                        style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-
+                    <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
@@ -150,36 +177,32 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                            
                             <div class="clear"></div>
                        
                             <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4> -->
                             <div class="clear"></div>
+
+                            @if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber')
+                                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                                    {{ __('Purchase Now') }}
+                                </button>
+                            @elseif( !Auth::guest() && $series->access == 'subscriber')
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
+                                </form>
+                            @else
+                                <div class=" mt-3">
+                                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
-                        <?php if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
-                        <div class=" mt-3">
-                          
-                            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                            <?php echo __('Purchase Now'); ?> 
-                        </button>
-                        </div>
-                        <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                        <div class="container-fluid mt-3">
-                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
-                            </form>
-                        </div>
-                        <?php else: ?>
-                        <div class=" mt-3">
-                            <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                                <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
-                                    <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
-                            </form>
-                        </div>
-                        <?php endif; ?>
+                        
 
                         </div>
                        
@@ -192,8 +215,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
-                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
-                            </p>
+                            <p class=" text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                             <h4 class="">
                                 <!-- {{ __('Subscribe to view more') }} -->
                                 @if ($episode->access == 'subscriber')
@@ -280,7 +302,6 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         </div>
     </div>
     <div>
-
         <div class="mar-left series-details">
             <div id="series_title">
                 <div class="">
@@ -387,21 +408,18 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                     </span>
                                 @endif
                             </li>
-
                             <li>
                                 @if ($episode_Wishlist == null)
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
-                                        data-list="{{ $episode->id }}" data-myval="10"
-                                        data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
+                                        <i class="ri-heart-line" aria-hidden="true"></i>
                                     </span>
                                 @else
                                     <span id="{{ 'episode_add_wishlist_' . $episode->id }}"
                                         class="episode_add_wishlist_" aria-hidden="true"
-                                        data-list="{{ $episode->id }}" data-myval="10"
-                                        data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
-                                        <i class="fa  fa-heart" aria-hidden="true"></i>
+                                        data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}" onclick="episodewishlist(this)">
+                                        <i class="ri-heart-fill" aria-hidden="true"></i>
                                     </span>
                                 @endif
                             </li>
@@ -583,6 +601,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
             <!-- Remaing Episodes -->
             <!-- Recommend Series Based on Category -->
+            
 
             <?php
                 include public_path('themes/theme4/views/partials/Episode/Other_episodes_list.blade.php');
@@ -617,7 +636,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     ?>
 
     <!-- Modal
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -688,13 +707,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                 </div>
             </div>
         </div>
-    </div> -->
+</div> -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-<div class="modal-content">
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
 
     <div class="modal-header">
         <h4 class="modal-title text-center" id="exampleModalLongTitle"
@@ -1170,7 +1189,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1182,7 +1201,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1219,10 +1238,10 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
                         $(id).data('myval');
                         $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+                        $(id).find($(".ri-heart-line")).removeClass('ri-heart-line').addClass('ri-heart-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1231,10 +1250,10 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     } else if (data.message == "Add the Watch list") {
                         $(id).data('myval');
                         $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+                        $(id).find($(".ri-heart-fill")).removeClass('ri-heart-fill').addClass('ri-heart-line');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1274,7 +1293,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1286,7 +1305,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1327,7 +1346,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1340,7 +1359,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             'fri-thumb-down-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1357,7 +1376,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
             );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');
@@ -1369,7 +1388,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
             );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');
@@ -1462,10 +1481,18 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 console.log(data);
             });
         }
+
+        window.onload = function () {
+            setTimeout(function () {
+                $(".header_top_position_img").fadeOut('fast');
+            }, 4000);
+        };
+
     </script>
 
      
 
 <?php
     include public_path('themes/theme4/views/footer.blade.php');
+    // include public_path('themes/theme4/views/episode_player_script.blade.php');
 ?>

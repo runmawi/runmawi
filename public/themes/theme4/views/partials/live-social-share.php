@@ -57,8 +57,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
        <div class="d-flex align-items-center"> 
           <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
           <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $media_url ?>" class="share-ico"><i class="ri-linkedin-fill"></i></a>
+          <!-- <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a> -->
        </div>
     </div>
 </li>
@@ -94,7 +94,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                 data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
                 dataType: "html",
                 success: function(data) {
-                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
+                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);
@@ -114,7 +114,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                 data: {like: like,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
                 dataType: "html",
                 success: function(data) {
-               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
+               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
                 setTimeout(function() {
                     $('.remove_watch').slideUp('fast');
                      }, 3000);
@@ -147,7 +147,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                         data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
                         dataType: "html",
                         success: function(data) {
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have disliked this media</div>');
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top:66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have disliked this media</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);
@@ -172,7 +172,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
             data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
             dataType: "html",
             success: function(data) {
-                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from disliked this media</div>');
+                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from disliked this media</div>');
                 setTimeout(function() {
                     $('.remove_watch').slideUp('fast');
                      }, 3000);

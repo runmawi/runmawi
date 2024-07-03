@@ -34,6 +34,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\Convert4kVideoForStreaming;
 use App\Jobs\TranscodeVideo;
 use App\Jobs\VideoSchedule;
 use App\Jobs\VideoClip;
@@ -94,6 +95,11 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\SiteTheme;
 use App\AdminVideoAds;
+use App\AdminEPGChannel;
+use App\Episode;
+use App\LiveStream;
+use App\SiteVideoScheduler;
+use App\DefaultSchedulerData;
 
 class AdminVideosController extends Controller
 {
@@ -461,12 +467,30 @@ class AdminVideosController extends Controller
         }
     public function uploadFile(Request $request)
     {
+        // $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        $site_theme = SiteTheme::first();
+        
+        $today = Carbon::now() ;
+
+        // Video Upload Limit (3 Limits)
+
+        $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
+                                    ->whereYear('created_at',  $today->year)
+                                    ->whereMonth('created_at', $today->month)
+                                    ->count();
+    
+        if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+            return response()->json( ["success" => 'video_upload_limit_exist'],200);
+        }
+        
         $value = [];
         $data = $request->all();
 
         $validator = Validator::make($request->all(), [
             "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
         ]);
+           
+
         $mp4_url = isset($data["file"]) ? $data["file"] : "";
 
         $path = public_path() . "/uploads/videos/";
@@ -479,7 +503,18 @@ class AdminVideosController extends Controller
         $pack = $package->package;
         $mp4_url = $data["file"];
         $settings = Setting::first();
+        $libraryid = $data['UploadlibraryID'];
+        $client = new Client();
 
+        $storage_settings = StorageSetting::first();
+        if($site_theme->enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }               
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
@@ -518,13 +553,10 @@ class AdminVideosController extends Controller
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             $video->draft = 0;
+            $video->user_id = Auth::user()->id;
             $video->image = default_vertical_image();
             $video->video_tv_image = default_horizontal_image();
             $video->player_image = default_horizontal_image();
-
-
-
-
             $video->duration = $Video_duration;
             $video->save();
 
@@ -581,10 +613,7 @@ class AdminVideosController extends Controller
                 $video->image = default_vertical_image();
                 $video->video_tv_image = default_horizontal_image();
                 $video->player_image = default_horizontal_image();
-
-
-
-                
+                $video->user_id = Auth::user()->id;
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
                 $video->save();
@@ -648,10 +677,16 @@ class AdminVideosController extends Controller
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
-                }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                    VideoClip::dispatch($video);
-                }else{
-                    ConvertVideoForStreaming::dispatch($video);
+                }
+                // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                //     VideoClip::dispatch($video);
+                // }
+                else{
+                    if(Enable_4k_Conversion() == 1){
+                        Convert4kVideoForStreaming::dispatch($video);
+                    }else{
+                        ConvertVideoForStreaming::dispatch($video);
+                    }
                 }           
                 $video_id = $video->id;
                 $video_title = Video::find($video_id);
@@ -711,8 +746,7 @@ class AdminVideosController extends Controller
             $video->image = default_vertical_image();
             $video->video_tv_image = default_horizontal_image();
             $video->player_image = default_horizontal_image();
-
-
+            $video->user_id = Auth::user()->id;
             $video->duration = $Video_duration;
             $video->save();
 
@@ -835,11 +869,12 @@ class AdminVideosController extends Controller
             \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
 
             return $value;
-        } else {
-            $value["success"] = 2;
-            $value["message"] = "File not uploaded.";
-            return response()->json($value);
         }
+        // } else {
+        //     $value["success"] = 2;
+        //     $value["message"] = "File not uploaded.";
+        //     return response()->json($value);
+        // }
 
         // return response()->json($value);
     }
@@ -1269,10 +1304,16 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
-                ConvertVideoForStreaming::dispatch($video);
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }             
         } else {
             $video = Video::create($data);
@@ -1674,6 +1715,85 @@ class AdminVideosController extends Controller
             $data["slug"] = $this->createSlug($data["title"]);
         } else {
             $data["slug"] = str_replace(" ", "-", $request->slug);
+        }
+
+    if (compress_responsive_image_enable() == 1) {
+
+         $mobileimages = public_path('/uploads/mobileimages');
+         $Tabletimages = public_path('/uploads/Tabletimages');
+         $PCimages = public_path('/uploads/PCimages');
+
+        if (!file_exists($mobileimages)) {
+            mkdir($mobileimages, 0755, true);
+        }
+
+        if (!file_exists($Tabletimages)) {
+            mkdir($Tabletimages, 0755, true);
+        }
+
+        if (!file_exists($PCimages)) {
+            mkdir($PCimages, 0755, true);
+        }
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+                $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                $image_filename = $image_filename;
+
+                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                
+                $responsive_image = $image_filename;
+
+        }else{
+
+            $responsive_image = $video->responsive_image; 
+        }
+
+        if ($request->hasFile('player_image')) {
+
+            $player_image = $request->file('player_image');
+
+                $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                
+                $responsive_player_image = $player_image_filename;
+
+        }else{
+
+            $responsive_player_image = $video->responsive_player_image; 
+        }
+
+
+        
+        if ($request->hasFile('video_tv_image')) {
+
+            $video_tv_image = $request->file('video_tv_image');
+
+                $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+
+                Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                
+                $responsive_tv_image = $video_tv_image_filename;
+
+        }else{
+
+            $responsive_tv_image = $video->responsive_tv_image; 
+        }
+
+
+        }else{
+            $responsive_image = $video->responsive_image; 
+            $responsive_player_image = $video->responsive_player_image; 
+            $responsive_tv_image = $video->responsive_tv_image; 
         }
 
         if ($request->hasFile('image')) {
@@ -2216,10 +2336,16 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
-                ConvertVideoForStreaming::dispatch($video);
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }           
              // ConvertVideoForStreaming::dispatch($video);
         }
@@ -2230,11 +2356,41 @@ class AdminVideosController extends Controller
             $video->embed_code = "";
         }
 
-        if (!empty($data["global_ppv"])) {
-            $video->global_ppv = $data["global_ppv"];
-        } else {
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+
+        }else if($request->ppv_price == null && empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            }else if(!empty($data["ppv_price"])  && $request->ppv_price != null) {
+                $data["ppv_price"] = $request->ppv_price;
+            }  else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
+
+        // if (!empty($data["global_ppv"])) {
+        //     $video->global_ppv = $data["global_ppv"];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
 
         if (!empty($data["enable"])) {
             $enable = $data["enable"];
@@ -2508,6 +2664,12 @@ class AdminVideosController extends Controller
         }
 
         $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+
+        if ($data['access'] == "ppv") {
+            $video->ppv_price = $data["ppv_price"];
+        } else {
+            $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
+        }
         
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
@@ -2540,7 +2702,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : null ;
+        $video->ppv_price = ($data['access'] == "ppv" || !empty($data["ppv_price"])) ? $data["ppv_price"] : null;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];
@@ -2558,6 +2720,11 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $tiny_video_image;
         $video->tiny_player_image = $tiny_player_image;
         $video->tiny_video_title_image = $tiny_video_title_image;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
+
         $video->save();
 
         if (
@@ -2750,32 +2917,151 @@ class AdminVideosController extends Controller
             BlockVideo::where("video_id", $video->id)->delete();
         }
 
-        if (!empty($files != "" && $files != null)) {
-            foreach ($files as $key => $val) {
-                if (!empty($files[$key])) {
-                    $destinationPath = "public/uploads/subtitles/";
-                    $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data["sub_language"] =
-                        $languages[
-                            $key
-                        ]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data["shortcode"] = $shortcodes[$key];
-                    $subtitle_data["movie_id"] = $id;
-                    $subtitle_data["url"] =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url =
-                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                    $video_subtitle->save();
+        // if (!empty($files != "" && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = "public/uploads/subtitles/";
+        //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data["sub_language"] =
+        //                 $languages[
+        //                     $key
+        //                 ]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data["shortcode"] = $shortcodes[$key];
+        //             $subtitle_data["movie_id"] = $id;
+        //             $subtitle_data["url"] =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url =
+        //                 URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
+            // // Define the convertTimeFormat function globally
+            // function convertTimeFormat($hours, $minutes, $milliseconds) {
+            //     $totalSeconds = $hours * 3600 + $minutes * 60 + $milliseconds / 1000;
+            //     $formattedTime = gmdate("H:i:s", $totalSeconds);
+            //     $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+            //     return "{$formattedTime},{$formattedMilliseconds}";
+            // }
+
+            // if (!empty($files != "" && $files != null)) {
+            //     foreach ($files as $key => $val) {
+            //         if (!empty($files[$key])) {
+            //             $destinationPath = "public/uploads/subtitles/";
+
+            //             if (!file_exists($destinationPath)) {
+            //                 mkdir($destinationPath, 0755, true);
+            //             }
+
+            //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+            //             MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+
+            //             // Move uploaded file to destination path
+            //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+
+            //             // Read contents of the uploaded file
+            //             $contents = file_get_contents($destinationPath . $filename);
+
+            //             // Convert time format and add line numbers
+            //             $lineNumber = 0;
+            //             $convertedContents = preg_replace_callback(
+            //                 '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+            //                 function ($matches) use (&$lineNumber) {
+            //                     // Increment line number for each match
+            //                     $lineNumber++;
+            //                     // Convert time format and return with the line number
+            //                     return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+            //                 },
+            //                 $contents
+            //             );
+
+            //             // Store converted contents to a new file
+            //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+            //             if (!file_exists($newDestinationPath)) {
+            //                 mkdir($newDestinationPath, 0755, true);
+            //             }
+            //             file_put_contents($newDestinationPath . $filename, $convertedContents);
+
+            //             // Save subtitle data to database
+            //             $subtitle_data = [
+            //                 "movie_id" => $video->id,
+            //                 "shortcode" => $shortcodes[$key],
+            //                 "sub_language" => $languages[$key],
+            //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+            //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+            //             ];
+            //             $video_subtitle = MoviesSubtitles::create($subtitle_data);
+            //         }
+            //     }
+            // }
+
+
+            function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
+                $formattedTime = gmdate("H:i:s", $totalSeconds);
+                $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                return "{$formattedTime},{$formattedMilliseconds}";
+            }
+            
+            if (!empty($files != "" && $files != null)) {
+                foreach ($files as $key => $val) {
+                    if (!empty($files[$key])) {
+                        $destinationPath = "public/uploads/subtitles/";
+            
+                        if (!file_exists($destinationPath)) {
+                            mkdir($destinationPath, 0755, true);
+                        }
+            
+                        $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+            
+                        MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+            
+                        // Move uploaded file to destination path
+                        move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+            
+                        // Read contents of the uploaded file
+                        $contents = file_get_contents($destinationPath . $filename);
+            
+                        // Convert time format and add line numbers
+                        $lineNumber = 0;
+                        $convertedContents = preg_replace_callback(
+                            '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
+                            function ($matches) use (&$lineNumber) {
+                                // Increment line number for each match
+                                $lineNumber++;
+                                // Convert time format and return with the line number
+                                return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
+                            },
+                            $contents
+                        );
+            
+                        // Store converted contents to a new file
+                        $newDestinationPath = "public/uploads/convertedsubtitles/";
+                        if (!file_exists($newDestinationPath)) {
+                            mkdir($newDestinationPath, 0755, true);
+                        }
+                        file_put_contents($newDestinationPath . $filename, $convertedContents);
+            
+                        // Save subtitle data to database
+                        $subtitle_data = [
+                            "movie_id" => $video->id,
+                            "shortcode" => $shortcodes[$key],
+                            "sub_language" => $languages[$key],
+                            "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                            "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                        ];
+                        $video_subtitle = MoviesSubtitles::create($subtitle_data);
+                    }
                 }
             }
-        }
 
-        // Admin Video Ads inputs
+            // Admin Video Ads inputs
 
         if( !empty($request->ads_devices)){
 
@@ -3008,11 +3294,37 @@ class AdminVideosController extends Controller
 
         $settings = Setting::where('ppv_status', '=', 1)->first();
 
-        if (!empty($data['global_ppv'])) {
-            $data['ppv_price'] = $settings->ppv_price;
-            $video->global_ppv = $data['global_ppv'];
-        } else {
+        // if (!empty($data['global_ppv'])) {
+        //     $data['ppv_price'] = $settings->ppv_price;
+        //     $video->global_ppv = $data['global_ppv'];
+        // } else {
+        //     $video->global_ppv = null;
+        // }
+
+        if($request->ppv_price == null && empty($data["global_ppv"]) ){
             $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else if(empty($data["global_ppv"]) ){
+            $video->global_ppv = null;
+            $data["ppv_price"] = null;
+        }else{
+
+            if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            }  else if(!empty($data["global_ppv"])) {
+                $video->global_ppv = $data["global_ppv"];
+                $data["ppv_price"] = $settings->ppv_price;
+            } else {
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }
         }
 
         if ($request->slug == '') {
@@ -3671,7 +3983,82 @@ class AdminVideosController extends Controller
             $video->urlEnd_linksec = $startSec + 60;
         }
 
-       
+        if (compress_responsive_image_enable() == 1){
+
+                $mobileimages = public_path('/uploads/mobileimages');
+                $Tabletimages = public_path('/uploads/Tabletimages');
+                $PCimages = public_path('/uploads/PCimages');
+
+            if (!file_exists($mobileimages)) {
+                mkdir($mobileimages, 0755, true);
+            }
+
+            if (!file_exists($Tabletimages)) {
+                mkdir($Tabletimages, 0755, true);
+            }
+
+            if (!file_exists($PCimages)) {
+                mkdir($PCimages, 0755, true);
+            }
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+
+                    $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+
+            }else{
+
+                $responsive_image = default_vertical_image(); 
+            }
+
+            if ($request->hasFile('player_image')) {
+
+                $player_image = $request->file('player_image');
+
+                    $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+
+            }else{
+                $responsive_player_image = default_horizontal_image(); 
+            }
+
+
+            
+            if ($request->hasFile('video_tv_image')) {
+
+                $video_tv_image = $request->file('video_tv_image');
+
+                    $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+
+                    Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $video_tv_image_filename;
+
+            }else{
+
+                $responsive_tv_image = default_horizontal_image(); 
+            }
+
+        }else{
+            $responsive_image = null;
+            $responsive_player_image = null;
+            $responsive_tv_image = null;
+        }
 
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
@@ -3705,6 +4092,10 @@ class AdminVideosController extends Controller
         $video->tiny_video_image = $data["tiny_video_image"] ;
         $video->tiny_player_image = $data["tiny_player_image"] ;
         $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
+        $video->responsive_image = $responsive_image;
+        $video->responsive_player_image = $responsive_player_image;
+        $video->responsive_tv_image = $responsive_tv_image;
+        $video->ppv_option = $request->ppv_option;
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -3724,6 +4115,8 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
+
+
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
         }
@@ -3900,25 +4293,87 @@ class AdminVideosController extends Controller
         //         }
         //     }
         // }
-        if (!empty($files != '' && $files != null)) {
-            foreach ($files as $key => $val) {
-                if (!empty($files[$key])) {
-                    $destinationPath = 'public/uploads/subtitles/';
-                    $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
-                    $files[$key]->move($destinationPath, $filename);
-                    $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
-                    $subtitle_data['shortcode'] = $shortcodes[$key];
-                    $subtitle_data['movie_id'] = $id;
-                    $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle = new MoviesSubtitles();
-                    $video_subtitle->movie_id = $video->id;
-                    $video_subtitle->shortcode = $shortcodes[$key];
-                    $video_subtitle->sub_language = $languages[$key];
-                    $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
-                    $video_subtitle->save();
+        // if (!empty($files != '' && $files != null)) {
+        //     foreach ($files as $key => $val) {
+        //         if (!empty($files[$key])) {
+        //             $destinationPath = 'public/uploads/subtitles/';
+        //             $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
+        //             $files[$key]->move($destinationPath, $filename);
+        //             $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+        //             $subtitle_data['shortcode'] = $shortcodes[$key];
+        //             $subtitle_data['movie_id'] = $id;
+        //             $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle = new MoviesSubtitles();
+        //             $video_subtitle->movie_id = $video->id;
+        //             $video_subtitle->shortcode = $shortcodes[$key];
+        //             $video_subtitle->sub_language = $languages[$key];
+        //             $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+        //             $video_subtitle->save();
+        //         }
+        //     }
+        // }
+
+            // Define the convertTimeFormat function globally
+
+            function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
+                $formattedTime = gmdate("H:i:s", $totalSeconds);
+                $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                return "{$formattedTime},{$formattedMilliseconds}";
+            }
+
+            if (!empty($files != "" && $files != null)) {
+                foreach ($files as $key => $val) {
+                    if (!empty($files[$key])) {
+                        $destinationPath = "public/uploads/subtitles/";
+
+                        if (!file_exists($destinationPath)) {
+                            mkdir($destinationPath, 0755, true);
+                        }
+
+                        $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+                        MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+
+                        // Move uploaded file to destination path
+                        move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+
+                        // Read contents of the uploaded file
+                        $contents = file_get_contents($destinationPath . $filename);
+
+                        // Convert time format and add line numbers
+                        $lineNumber = 0;
+                        $convertedContents = preg_replace_callback(
+                            '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
+                            function ($matches) use (&$lineNumber) {
+                                // Increment line number for each match
+                                $lineNumber++;
+                                // Convert time format and return with the line number
+                                return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
+                            },
+                            $contents
+                        );
+
+                        // Store converted contents to a new file
+                        $newDestinationPath = "public/uploads/convertedsubtitles/";
+                        if (!file_exists($newDestinationPath)) {
+                            mkdir($newDestinationPath, 0755, true);
+                        }
+                        file_put_contents($newDestinationPath . $filename, $convertedContents);
+
+                        // Save subtitle data to database
+                        $subtitle_data = [
+                            "movie_id" => $video->id,
+                            "shortcode" => $shortcodes[$key],
+                            "sub_language" => $languages[$key],
+                            "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                            "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                        ];
+                        $video_subtitle = MoviesSubtitles::create($subtitle_data);
+                    }
                 }
             }
-        }
+
         /*Advertisement Video update starts*/
         //  if($data['ads_id'] != 0){
 
@@ -4005,8 +4460,7 @@ class AdminVideosController extends Controller
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 
         return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
-    }
-    
+    }   
     public function Mp4url(Request $request)
     {
         $data = $request->all();
@@ -4554,10 +5008,16 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
-            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                VideoClip::dispatch($video);
-            }else{
-                ConvertVideoForStreaming::dispatch($video);
+            }
+            // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            //     VideoClip::dispatch($video);
+            // }
+            else{
+                if(Enable_4k_Conversion() == 1){
+                    Convert4kVideoForStreaming::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }
             }          
             $video_id = $video->id;
             $video_title = Video::find($video_id);
@@ -5500,6 +5960,9 @@ class AdminVideosController extends Controller
 
     public function ScheduleDelete($id)
     {
+
+        SiteVideoScheduler::where('channe_id', $id)->delete();
+        DefaultSchedulerData::where('channe_id', $id)->delete();
         VideoSchedules::where("id", $id)->delete();
 
         return Redirect::back()->with([
@@ -5584,19 +6047,90 @@ class AdminVideosController extends Controller
 
     public function ManageSchedule($id)
     {
-        $VideoSchedules = VideoSchedules::get();
-        $settings = Setting::first();
 
-        $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
-        $TimeZone = TimeZone::get();
+        $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
 
-        $data = [
-            "schedule" => $VideoSchedules,
-            "settings" => $settings,
-            "TimeZone" => $TimeZone,
-        ];
-        //    dd($VideoSchedules);
-        return view("admin.schedule.manage_schedule", $data);
+            if($enable_default_timezone == 1){
+
+                
+                $Channels =  VideoSchedules::where('id',$id)->Select('id','name','slug')->get();
+
+                // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+                $TimeZone = TimeZone::get();
+
+                $default_time_zone = Setting::pluck('default_time_zone')->first();
+                
+                $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+                
+                $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
+                
+                $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
+            
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+
+                $mergedCollection = $videos
+                ->concat($episodes)
+                ->concat($livestreams)
+                ->values();
+                //   dd($mergedCollection);
+                
+                $perPage = 3; // Adjust the number based on your requirement
+                $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
+                $paginator = new LengthAwarePaginator(
+                    $mergedCollection->forPage($currentPage, $perPage),
+                    $mergedCollection->count(),
+                    $perPage,
+                    $currentPage
+                );
+                
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+    
+                $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+
+                $data = array(
+                
+                    'Channels' => $Channels  ,
+                    'TimeZone' => $TimeZone  ,
+                    'default_time_zone' => $default_time_zone  ,
+                    'enable_default_timezone' => $enable_default_timezone  ,
+                    'utc_difference' => $utc_difference  ,
+                    // 'VideoCollection' => $paginator  ,
+                    'time_zoneid' => $time_zoneid  ,
+                    'VideoCollection' => $mergedCollection  ,
+                    'VideoSchedules' => $VideoSchedules  ,
+                );            
+
+            return view("admin.schedule.VideoSchedulerEpg", $data);
+
+        }else{
+
+            $VideoSchedules = VideoSchedules::get();
+            $settings = Setting::first();
+
+            $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+            $TimeZone = TimeZone::get();
+
+            $data = [
+                "schedule" => $VideoSchedules,
+                "settings" => $settings,
+                "TimeZone" => $TimeZone,
+            ];
+            //    dd($VideoSchedules);
+            return view("admin.schedule.manage_schedule", $data);
+        }
+
     }
 
     public function CalendarSchedule(Request $request)
@@ -10780,5 +11314,163 @@ class AdminVideosController extends Controller
         }
     }
 
+
+    private  function UploadVideoBunnyCDNStream(  $storage_settings,$libraryid,$mp4_url){
+    // Bunny Cdn get Videos 
+
+    $storage_settings = StorageSetting::first();
+
+    if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+    && !empty($storage_settings->bunny_cdn_access_key) ){
+        
+        $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+        
+        $ch = curl_init();
+        
+        $options = array(
+            CURLOPT_URL => $libraryurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                'Content-Type: application/json',
+            ),
+        );
+        
+        curl_setopt_array($ch, $options);
+        
+        $response = curl_exec($ch);
+        $librarys = json_decode($response, true);
+        curl_close($ch);
+
+    }else{
+        $librarys = [];
+
+    }
+    if(count($librarys) > 0){
+        foreach($librarys as $key => $value){
+            if( $value['Id'] == $libraryid){
+                $library_id = $value['Id'];
+                $library_ApiKey = $value['ApiKey']; 
+                $library_PullZoneId = $value['PullZoneId']; 
+                break;
+            }else{
+                $library_id = null;
+                $library_ApiKey = null; 
+                $library_PullZoneId = null; 
+            }
+        }
+    }else{
+        $library_id = null;
+        $library_ApiKey = null; 
+        $library_PullZoneId = null; 
+    }
+    
+    if($library_id != null && $library_ApiKey != null){
+
+        $client = new \GuzzleHttp\Client();
+        
+        $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+            'headers' => [
+                'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                'accept' => 'application/json',
+            ],
+        ]);
+
+        $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+            if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+            }else{
+                $PullZoneURl = null;
+            }    
+        }
+        
+        $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
+        $filename =  str_replace(' ', '_',$file_name);
+
+        // Step 1: Create the video entry in the library
+        try {
+            $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                'headers' => [
+                    'AccessKey' => $library_ApiKey,
+                    'Accept' => 'application/json',
+                ]
+            ]);
+        
+            $responseData = json_decode($response->getBody(), true);
+            $guid = $responseData['guid'];
+        } catch (RequestException $e) {
+            echo "Error creating video entry: " . $e->getMessage();
+            exit;
+        }
+        
+        // Step 2: Upload the video file
+
+        try {
+
+            $context = stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]);
+            // Fetch video file content using file_get_contents with SSL context
+            $videoData = file_get_contents($mp4_url, false, $context);
+            
+            $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                'headers' => [
+                    'AccessKey' => $library_ApiKey,
+                    'Content-Type' => 'video/mp4' 
+                ],
+                'body' => $videoData 
+            ]);
+
+            $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
+            // echo "<pre>";
+            // echo "Video uploaded successfully: " . $videoUrl;
+            // echo "<pre>";
+            // echo "Video uploaded successfully: " . $guid;
+            // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
+
+            $responseuploaded = json_decode($response->getBody(), true);
+            $statusCode = $responseuploaded['statusCode'];
+
+        } catch (RequestException $e) {
+            echo "Error uploading video: " . $e->getMessage();
+            exit;
+        }
+        $value = [];
+        if($statusCode == 200){
+            
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->title = $file_name;
+            $video->m3u8_url = $videoUrl;
+            $video->type = "m3u8_url";
+            $video->draft = 1;
+            $video->active = 0;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $file_name;
+
+            \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
+            return $value ;
+        }else{
+            $value["success"] = 2;
+            \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
+            return $value ;
+        }
+    }
 }
     

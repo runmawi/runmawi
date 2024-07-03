@@ -1,12 +1,6 @@
-@php
-        
-    $data = App\LiveStream::query()->where('active',1)->where('status', 1)->latest()->limit(15)->get();
-                                                                        
-@endphp
-
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid pl-0">
+        <div class="container-fluid pl-0" id="home-live-videos-container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
@@ -16,65 +10,117 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $livestream_videos)
-                                <li class="slick-slide">
-                                    <a href="javascript:void(0);">
-                                        <div class="movie-slick position-relative">
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="livestream_videos">
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list live-stream-video">
+                                @foreach ($data as $key => $livestream_videos)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
+                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                            @elseif( $livestream_videos->recurring_program_live_animation  == true )
+                                                <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
+                                            @endif
                                         </div>
-                                    </a>
-                                    @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="livestream_videos" width="100%"></div>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
+                                        
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div id="videoInfo" class="live-stream-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $livestream_videos )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
-                            @foreach ($data as $key => $livestream_videos )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image"                                        >
-                                        <button class="drp-close">×</button>
+                                        @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                            
+                                            <ul class="vod-info">
+                                                <li><span></span> LIVE NOW</li>
+                                            </ul>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @elseif ($livestream_videos->publish_type == "publish_later")
+                                            <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$livestream_videos->publish_time)->format('j F Y g:ia') }} </span>
 
-                                                        <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
+                                        @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
+                                                    
+                                            @php
+                                                switch ($livestream_videos->recurring_program_week_day) {
 
-                                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                                                <ul class="vod-info">
-                                                                    <li><span></span> LIVE NOW</li>
-                                                                </ul>
-                                                            @elseif ($livestream_videos->publish_type == "publish_later")
-                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
-                                                            @endif
+                                                    case 0:
+                                                        $recurring_program_week_day = 'Sunday' ;
+                                                    break;
 
-                                                            <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ?  $livestream_videos->description : " No description Available" !!}</div>
-                                                        
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-LiveStream-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    case 1 :
+                                                        $recurring_program_week_day =  'Monday' ;
+                                                    break;
 
-                                                        <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="livestream_videos">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    case 2:
+                                                        $recurring_program_week_day =  'Tuesday' ;
+                                                    break;
+
+                                                    case 3 :
+                                                        $recurring_program_week_day = 'Wednesday' ;
+                                                    break;
+
+                                                    case 4:
+                                                        $recurring_program_week_day =  'Thrusday' ;
+                                                    break;
+
+                                                    case 5:
+                                                        $recurring_program_week_day =  'Friday' ;
+                                                    break;
+
+                                                    case 6:
+                                                        $recurring_program_week_days =  'Saturday' ;
+                                                    break;
+
+                                                    default:
+                                                        $recurring_program_week_day =  null ;
+                                                    break;
+                                                }
+                                            @endphp
+
+                                            @if ( $livestream_videos->recurring_program == "daily")
+
+                                                <span class="trending"> {{ 'Live Streaming Starts daily from '. Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                                
+                                            @elseif( $livestream_videos->recurring_program == "weekly" )
+                                                
+                                                <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $recurring_program_week_day . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                            @elseif( $livestream_videos->recurring_program == "monthly" )
+                                                
+                                                <span class="trending"> {{ 'Live Streaming Starts On Every '. $livestream_videos->recurring_program . " " . $livestream_videos->recurring_program_month_day ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+
+                                            @endif
+
+
+                                        @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program == "custom" )
+                                            <span class="trending"> {{ 'Live Streaming On '. Carbon\Carbon::parse($livestream_videos->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
+                                        @endif
+
+                                        <div class="d-flex align-items-center p-0 mt-3">
+                                            <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
+                                        </div>
+
+                                        <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ??  $livestream_videos->description  !!}</div>
+
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-LiveStream-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,7 +136,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -126,68 +172,55 @@
 @endif
 
 
+
 <script>
     
-    $( window ).on("load", function() {
-        $('.livestream-videos-slider').hide();
+    var elem = document.querySelector('.live-stream-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+    document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.live-stream-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.live-stream-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.live-stream-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('live-stream-dropdown')[0].style.display = 'flex';
+        });
     });
 
-    $(document).ready(function() {
 
-        $('.livestream-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.livestream-videos-slider-nav',
-        });
-
-        $('.livestream-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 4,
-            asNavFor: '.livestream-videos-slider',
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.livestream-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.livestream-videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.livestream-videos-slider').hide();
-        });
+    $('body').on('click', '.drp-close', function() {
+        $('.live-stream-dropdown').hide();
     });
 </script>
+
+
 
 
 <!-- /* pulsing animation */ -->
@@ -195,15 +228,18 @@
 
 .blob {
 	margin: 10px;
-	height: 22px;
-	width: 59px;
+    height: auto !important;
+    aspect-ratio: 59 / 22; 
+	width: 59px !important;
     border-radius:25px;
 	box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
 	transform: scale(1);
 	animation: pulse 2s infinite;
     position:absolute;
     top:0;
+    opacity: 1 !important;
 }
+
 
 @keyframes pulse {
 	0% {

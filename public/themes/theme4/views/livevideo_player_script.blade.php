@@ -3,39 +3,50 @@
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-
         var player = videojs('live-stream-player', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},                      
+                },
+                pictureInPictureToggle: true,
             }
         });
+
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+        
+        player.on('userinactive', () => {
+          if (playPauseButton) {
+            playPauseButton.style.display = 'none';
+            backButton.style.display = 'none';
+          }
+        });
+
+        player.on('useractive', () => {
+          if (playPauseButton) {
+            playPauseButton.style.display = 'block';
+            backButton.style.display = 'block';
+          }
+        });
+
+        const liveControl = document.querySelector('.vjs-live-display');
+        const span = document.createElement('span');
+        span.className = "live_dot";
+        span.textContent = ".";
+        liveControl.insertBefore(span, liveControl.firstChild);
 
         // Ads Marker
 
@@ -83,14 +94,6 @@
                 }
             }
         });
-
-        
-        player.controlBar.el().appendChild(Back_button);
-
-        Back_button.addEventListener('click', function() {
-            history.back();
-        });
-
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,

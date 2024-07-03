@@ -58,14 +58,18 @@ use Session;
 use App\Channel;
 use App\EmailTemplate;
 use Mail;
+use App\Livestream;
+use App\SiteTheme;
+use App\ChannelSubscription;
 
 class ChannelSeriesController extends Controller
 {
-    /**
-     * Display a listing of series
-     *
-     * @return Response
-     */
+    
+    public function __construct()
+    {
+        $this->enable_channel_Monetization = SiteTheme::pluck('enable_channel_Monetization')->first();
+    }
+
     public function index(Request $request)
     {
 
@@ -1282,6 +1286,46 @@ class ChannelSeriesController extends Controller
 
     public function manage_season($series_id, $season_id)
     {
+
+        $user = Session::get('channel');
+        $user_id = $user->id;
+
+        if($this->enable_channel_Monetization == 1){
+
+            $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
+                
+            if($ChannelSubscription == 0 ){
+
+                return View::make('channel.becomeSubscriber');
+
+
+            }elseif($ChannelSubscription > 0){
+
+                $ChannelSubscription = ChannelSubscription::where('channel_subscriptions.user_id', '=', $user_id)->orderBy('channel_subscriptions.created_at', 'DESC')
+                                        ->join('channel_subscription_plans', 'channel_subscription_plans.plan_id', '=', 'channel_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ChannelSubscription) ){
+
+                    $upload_episode_limit = $ChannelSubscription->upload_episode_limit;
+                    $uploaded_Episodes = Episode::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
+
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
+                            if($upload_episode_limit <= $uploaded_Episodes){
+                            return View::make('channel.expired_upload');
+                        }
+                    }
+                }else{
+                    return View::make('channel.becomeSubscriber');
+
+                }
+                
+            }else{
+                return View::make('channel.becomeSubscriber');
+
+            }
+        }
+        
         $series = Series::find($series_id);
         // dd($series_id);
         $episodes = Episode::where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->orderBy('episode_order')
@@ -1790,6 +1834,49 @@ class ChannelSeriesController extends Controller
         $value = array();
         $user = Session::get('channel');
         $user_id = $user->id;
+
+        
+        
+    if($this->enable_channel_Monetization == 1){
+    
+        $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
+        
+        if($ChannelSubscription == 0 ){
+
+            $value = [];
+            $value['total_uploads'] = 0;
+            return $value;
+
+        }elseif($ChannelSubscription > 0){
+
+            $ChannelSubscription = ChannelSubscription::where('channel_subscriptions.user_id', '=', $user_id)->orderBy('channel_subscriptions.created_at', 'DESC')
+                                    ->join('channel_subscription_plans', 'channel_subscription_plans.plan_id', '=', 'channel_subscriptions.stripe_plan')
+                                    ->first(); 
+
+            if( !empty($ChannelSubscription) ){
+
+                $upload_episode_limit = $ChannelSubscription->upload_episode_limit;
+                $uploaded_Episodes = Episode::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
+                if($upload_episode_limit != null && $upload_episode_limit != 0){
+                    if($upload_episode_limit <= $uploaded_Episodes){
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                    }
+                }
+
+            }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+            }
+            
+        }else{
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+        }
+    }
 
         $data = $request->all();
         $series_id = $data['series_id'];

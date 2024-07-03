@@ -90,7 +90,7 @@
                                 <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                        <input name="status" class="status" id="status" type="checkbox"  @if( $AdminOTPCredentials->status == 1 ) checked @endif >
+                                        <input name="status" class="status" id="status" type="checkbox"  @if( !is_null($AdminOTPCredentials) && $AdminOTPCredentials->status == 1 ) checked @endif >
                                         <span class="slider round"></span>
                                     </label>
                                 </div>

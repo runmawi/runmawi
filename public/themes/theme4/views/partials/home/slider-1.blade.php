@@ -4,6 +4,9 @@
         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1" />
         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
     </svg>';
+
+    $front_end_logo = front_end_logo();
+
 ?>
 
                 {{-- Admin Slider  --}}
@@ -17,7 +20,7 @@
 
                             <a href="#">
                                 <div class="channel-logo" data-animation-in="fadeInLeft">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
 
@@ -52,9 +55,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 25 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
@@ -105,9 +108,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
@@ -158,9 +161,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
@@ -198,9 +201,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
@@ -235,14 +238,14 @@
 <!-- @if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
     @foreach ($Episode_sliders as $item)
 
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ $item->image ? URL::to('public/uploads/images/'.$item->player_image) : default_vertical_image_url() }}'); background-repeat: no-repeat;background-size: cover;" >
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ $item->image ? URL::to('public/uploads/images/'.$item->player_image) : $default_vertical_image_url }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100 pl-4">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
@@ -281,9 +284,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <a href="javascript:;">
                                 <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                    <img src="{{ $front_end_logo }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 25 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>

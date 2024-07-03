@@ -1,10 +1,16 @@
 <head>
     <?php
       $Script     = App\Script::pluck('header_script')->toArray();
-      $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-      $theme      = App\SiteTheme::first();      
+      $theme      = App\SiteTheme::first();    
+      $theme_mode = $theme->theme_mode;
+      $GetLightText = GetLightText();
+      $GetDarkText  = GetDarkText();
+      $GetDarkBg    = GetDarkBg();
+      $GetLightBg   = GetLightBg();  
+      $button_bg_color = button_bg_color();
 
-      $signin_header = App\SiteTheme::pluck('signin_header')->first();
+      $signin_header = $theme->signin_header;
+
 
       if(!empty(Auth::User()->id)){
       
@@ -65,7 +71,7 @@
       ?>
     </title>
 
-    <meta name="description" content="e360tv is a digital media company that includes e360tv, an on-demand viewing platform that is available 24/7 on all web-connected televisions and IOS/Android devices. e360tv combines the latest technology, top-tier media production, content providers and global distribution channels to deliver value to audiences." >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
@@ -87,15 +93,6 @@
       elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_name .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
-
-    <meta itemprop="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
-      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
-      elseif(!empty($livestream)){ echo $livestream->description  ;}
-      elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>">
 
     <meta itemprop="image"
         content="<?php 
@@ -203,7 +200,14 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-     
+   <!-- CSS -->
+   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style">
+   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
+<!-- JavaScript -->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
+   <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
@@ -213,47 +217,61 @@
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
     
    <!-- Bootstrap CSS -->
-         <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style">
+         <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style">
          <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>">
 
    <!-- Typography CSS -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" fetchpriority="high">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
 
    <!-- Style -->
-      <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
       
    <!-- Responsive -->
-      <link rel="preload" fetchpriority="high" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>">
 
    <!-- slick -->
-      <link rel="preload" fetchpriority="low" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>" as="style">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>" as="style">
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
-      <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="font">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
    <!-- Remixicon -->
+   <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       
    <!-- Ply.io -->
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" as="style"/>
+    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" />
 
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/remixicon.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-theme.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/owl.carousel.min.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/select2.min.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>" as="style">
+    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-animation.css') ?>" as="style">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script>
+    <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
    <script type="text/javascript">
       //	window.addEventListener("resize", function() {
@@ -449,42 +467,42 @@
    /* Dark mode and light Mode */
 
    body.light-theme {
-      background: <?php echo GetLightBg(); ?>!important;
+      background: <?php echo $GetLightBg; ?>!important;
    }
 
    body.light-theme h4, body.light-theme p {
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.light-theme header#main-header{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme footer{
-      background: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .copyright{
-      background-color: <?php echo GetLightBg(); ?>;
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.light-theme .s-icon{
-      background-color: <?php echo GetLightBg(); ?>; 
+      background-color: <?php echo $GetLightBg; ?>; 
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .search-toggle:hover {
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .dropdown-menu.categ-head{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>!important;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .search-toggle:hover {
@@ -493,41 +511,41 @@
    }
 
    body.light-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo GetLightBg(); ?>;  
+      background-color: <?php echo $GetLightBg; ?>;  
    }
 
    body.light-theme .media-body h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
    }
 
    body.light-theme .block-description h6{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
       font-weight: 400;
    }  
 
    body.light-theme .movie-time i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    }  
 
    body.light-theme .p-tag1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
    
    body.light-theme .p-tag{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
 
    body.light-theme .movie-time span{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    }
 
    body.light-theme .block-description a{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
    } 
    
@@ -541,40 +559,40 @@
    }
 
    body.light-theme .slick-nav i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme h2{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .filter-option-inner-inner{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    } 
 
    body.light-theme .vid-title{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .trending-info h1{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .text-detail{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
    
    body.light-theme .btn1{
-      border: 1px solid <?php echo GetLightText(); ?>!important;
-      color: <?php echo GetLightText(); ?>!important;
+      border: 1px solid <?php echo $GetLightText; ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
    
    body.light-theme .trending-dec{
-      color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
    }
 
    body.light-theme h6.trash{
@@ -584,45 +602,54 @@
    /* Dark Mode */
 
    body.dark-theme {
-      background: <?php echo GetDarkBg(); ?>!important;
+      background: <?php echo $GetDarkBg; ?>!important;
    }
 
    body.dark-theme h4, body.dark-theme p {
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
 
    body.dark-theme header#main-header{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme footer{
-      background: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .copyright{
-      background-color: <?php echo GetDarkBg(); ?>;
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
 
    body.dark-theme .s-icon{
-      background-color: <?php echo GetDarkBg(); ?>; 
+      background-color: <?php echo $GetDarkBg; ?>; 
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.dark-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.dark-theme .navbar-light .navbar-nav .nav-link:focus, body.dark-theme .navbar-light .navbar-nav .nav-link:hover{
+      color: <?php echo $GetDarkText; ?>!important;
+   }
+   body.light-theme .navbar-light .navbar-nav .nav-link.show{
+      color: <?php echo $GetLightText; ?>!important;
    }
    body.light-theme #translator-table_filter input[type="search"]{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
    }
 
    body.dark-theme .dropdown-menu.categ-head{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>!important;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
@@ -631,41 +658,41 @@
    }
 
    body.dark-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo GetDarkBg(); ?>;  
+      background-color: <?php echo $GetDarkBg; ?>;  
    }
 
    body.dark-theme .media-body h6{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
       font-weight: 400;
    }
 
    body.dark-theme .block-description h6{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
       font-weight: 400;
    }  
 
    body.dark-theme .movie-time i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    }  
 
    body.dark-theme .p-tag1{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
    
    body.dark-theme .p-tag{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
 
    body.dark-theme .movie-time span{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    }
 
    body.dark-theme .block-description a{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
       font-weight: 400;
    } 
    
@@ -679,40 +706,40 @@
    }
 
    body.dark-theme .slick-nav i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme h2{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .filter-option-inner-inner{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    } 
 
    body.dark-theme .vid-title{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .trending-info h1{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .text-detail{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
    body.dark-theme .btn1{
-      border: 1px solid <?php echo GetDarkText(); ?>!important;
-      color: <?php echo GetDarkText(); ?>!important;
+      border: 1px solid <?php echo $GetDarkText; ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
    body.dark-theme .trending-dec{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
 
    body.dark-theme h6.trash{
@@ -723,62 +750,62 @@
       color: red;
    }
    .channel-logo {
-    border-left: 5px solid  <?php echo GetDarkBg(); ?> !important;
-    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo button_bg_color(); ?> 100%);
+    border-left: 5px solid  <?php echo $GetDarkBg; ?> !important;
+    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo $button_bg_color; ?> 100%);
    }
-   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
-   #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>!important;}
-   .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?>;}
-   .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .text-body{color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .text-body{color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .s-icon {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .s-icon{color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme .iq-search-bar .search-input {color: <?php echo GetLightText(); ?> !important;}
-   .light-theme li.list-group-item a {background:<?php echo GetLightBg(); ?>; color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
-   .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
-   .light-theme .iq-search-bar .search-input {background:<?php echo GetLightBg(); ?> !important;}
-   .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
-   .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important; color: <?php echo GetDarkText(); ?>;}
-   body.light-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background-color: <?php echo GetLightBg(); ?>!important; color: <?php echo GetLightText(); ?>;}
+   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo $button_bg_color;?> !important; }
+   #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo $button_bg_color; ?> !important; }
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo $GetDarkText; ?>;}
+   .light-theme header .navbar ul li.menu-item a {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme ul.f-link li a {color: <?php echo $GetDarkText; ?>;}
+   .light-theme ul.f-link li a {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .text-body{color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .text-body{color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .s-icon {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .s-icon{color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .iq-search-bar .search-input {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme .iq-search-bar .search-input {color: <?php echo $GetLightText; ?> !important;}
+   .light-theme li.list-group-item a {background:<?php echo $GetLightBg; ?>; color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme ul.list-group.home-search {background: <?php echo $GetDarkBg; ?> !important;}
+   .light-theme ul.list-group.home-search {background: <?php echo $GetLightBg; ?> !important;}
+   .dark-theme .iq-search-bar .search-input {background: <?php echo $GetDarkBg; ?> !important;}
+   .light-theme .iq-search-bar .search-input {background:<?php echo $GetLightBg; ?> !important;}
+   .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo $GetDarkText; ?> !important;}
+   .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo $GetLightText; ?> !important;}
+   .dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo $GetDarkBg; ?> !important; color: <?php echo $GetDarkText; ?>;}
+   body.light-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background-color: <?php echo $GetLightBg; ?>!important; color: <?php echo $GetLightText; ?>;}
    body.dark-theme .offcanvas-collapse{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
    }
    body.light-theme .offcanvas-collapse{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    body.dark-theme ul.navbar-nav{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
    }
    body.light-theme ul.navbar-nav{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
    }
    .light-theme.onclickbutton_menu{
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo $GetLightText; ?>;
    }
    body.dark-theme .onclickbutton_menu{
-      color: <?php echo GetDarkText(); ?>;
+      color: <?php echo $GetDarkText; ?>;
    }
    body.light select:valid {
       background: #fcfcfc!important;
       color: #000000!important;
    }
    body.dark-theme select:valid {
-      background: <?php echo GetDarkBg(); ?>!important;
-      color: <?php echo GetDarkText(); ?>!important;
+      background: <?php echo $GetDarkBg; ?>!important;
+      color: <?php echo $GetDarkText; ?>!important;
    }
    
 .side-colps:not(.show){
@@ -810,7 +837,7 @@ header#main-header.menu-sticky{
 /* ============ desktop view ============ */
 @media(min-width: 991px) {
       .offcanvas-collapse{
-         top:59px !important;
+         top:89px !important;
       }
       header .navbar-collapse .offcanvas-collapse ul.navbar-nav{
         gap:10px;
@@ -873,7 +900,7 @@ header#main-header.menu-sticky{
    }
    ul.top-colps li.menu-item a{
       padding:10px 10px !important;
-      font-size:10px !important;
+      /* font-size:10px !important; */
    }
    ul.top-colps{
       align-items:center;
@@ -886,16 +913,17 @@ header#main-header.menu-sticky{
    }
 }
 @media (max-width:768px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:100%;
       left:59px;
-   }
+   } */
+   header .navbar ul.navbar-nav{display: none;}
 }
 @media (min-width:770px){
-   ul.dropdown-menu.primary_menu.show{
+   /* ul.dropdown-menu.primary_menu.show{
       top:70%;
       left:41px;
-   }
+   } */
 }
 @media (max-width:1024px){
    ul.submenu.dropdown-menu{
@@ -923,11 +951,11 @@ header#main-header.menu-sticky{
     padding-left:6px;
 }
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
    ul.navbar-nav.top-colps {
     display:none !important;
 }
-}
+} */
 
 @media (min-width:992px){
    .mob_res{
@@ -938,8 +966,8 @@ header#main-header.menu-sticky{
 
 /* Sidebar */
 body.dark-theme .offcanvas{
-      background-color: <?php echo GetDarkBg(); ?>!important;  
-      color: <?php echo GetDarkText(); ?>;
+      background-color: <?php echo $GetDarkBg; ?>!important;  
+      color: <?php echo $GetDarkText; ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    body.light-theme .offcanvas {
@@ -948,7 +976,7 @@ body.dark-theme .offcanvas{
     box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
 }
 header .navbar ul.navbar-nav {
-    display: flex;
+    /* display: flex; */
     text-align: left;
     flex-direction: row;
 }
@@ -993,7 +1021,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo" alt="logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
+                        <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" data-src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
                      </div>
                   <?php endif ;?>
 
@@ -1010,7 +1038,14 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+                              <?php if($theme->header_top_position == 1): ?>
+                                 <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle" data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu" onclick="toggleNavbarFlex()">
+                                    <i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i>
+                                 </button>
+                                 <!-- <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button> -->
+                              <?php endif ;?>
+
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -1018,7 +1053,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
 
-                                    <ul class="navbar-nav top-colps">
+                                    <ul id="navbarList" class="navbar-nav top-colps">
 
                                        <?php  
 
@@ -1098,7 +1133,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              if ( $menu->in_menu == "video" ) {  ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-video" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1149,7 +1184,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "live") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-live" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1184,7 +1219,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "audios") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-audio" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1246,7 +1281,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "series") { ?>
                                                 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-series" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -1281,7 +1316,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "networks") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="down-network" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1323,6 +1358,93 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php  } 
                                           } ?>
+                                          <!-- <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
+                                             <?php if( Auth::guest() ) : ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Sign In</h6>
+                                                         </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Sign Up</h6>
+                                                         </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/admin') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Admin</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Manage Profile</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                             <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Manage Profile</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                <li class="nav-item nav-icon btn">
+                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Logout</h6>
+                                                            </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+                                                
+                                             <?php endif; ?>
+
+
+                                          </ul> -->
                                     </ul>
 
                                  <?php endif;
@@ -1414,7 +1536,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="down" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1452,7 +1574,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
+                                                      <a class="nav-link justify-content-between" id="dn-movie" href="<?= URL::to($menu->url) ?>">
                                                          <?= $menu->name ?>
                                                       </a>
                                                       <ul class="dropdown-menu categ-head">
@@ -1473,7 +1595,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-live" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1511,7 +1633,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-audio" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1578,7 +1700,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <a class="nav-link dropdown-toggle justify-content-between" id="dn-series" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
@@ -1616,7 +1738,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <?php if(!is_null($menu->image)): ?>
                                                          <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
-                                                         <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                         <a class="nav-link dropdown-toggle justify-content-between" id="dn-network" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                          </a>
 
@@ -1667,7 +1789,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                          <div class="media align-items-center">
                                                             <div class="media-body">
-                                                               <h6 class="mb-0 ">Signin</h6>
+                                                               <h6 class="mb-0 ">Sign In</h6>
                                                             </div>
                                                          </div>
                                                       </a>
@@ -1677,7 +1799,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                          <div class="media align-items-center">
                                                             <div class="media-body">
-                                                               <h6 class="mb-0 ">Signup</h6>
+                                                               <h6 class="mb-0 ">Sign Up</h6>
                                                             </div>
                                                          </div>
                                                       </a>
@@ -1902,23 +2024,23 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signin">
                                                             <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
                                                                   <div class="media-body">
-                                                                     <h6 class="mb-0 ">Signin</h6>
+                                                                     <h6 class="mb-0 ">Sign In</h6>
                                                                   </div>
                                                                </div>
                                                             </a>
                                                          </li>
                                                          
-                                                         <li class="nav-item nav-icon">
+                                                         <li class="nav-item nav-icon res-signup">
                                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                                <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
                                                                   <div class="media-body">
-                                                                     <h6 class="mb-0 ">Signup</h6>
+                                                                     <h6 class="mb-0 ">Sign Up</h6>
                                                                   </div>
                                                                </div>
                                                             </a>
@@ -2142,8 +2264,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    <script>
 
       $(document).ready(function() {
+         console.log($(".dropdown-toggle")); 
          $(".dropdown-toggle").dropdown();
       });
+
 
       $(document).ready(function() {
             var currentdate = "<?=  $currentdate ?>";
@@ -2153,10 +2277,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
             // console.log(DOB);
             // console.log(currentdate);
 
-            if (filldate == currentdate && DOB != null && !empty(DOB) && currentdate != null && filldate !=
+            if (filldate == currentdate && DOB != null && DOB != null && currentdate != null && filldate !=
                null) {
                $("body").append(
-                  '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
+                  // '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
                   );
                setTimeout(function() {
                   $('.add_watch').slideUp('fast');
@@ -2166,7 +2290,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
         
    </script>
 
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+   <!-- <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script> -->
 
    <script>
 
@@ -2213,8 +2337,12 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
    </script>
 
-   <!-- search validation -->
-   <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+     <!-- search validation -->
+   <script src="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>"></script>
+
+
+   <script src="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>"></script>
 
    <script>
       $("#searchResult").validate({
@@ -2367,6 +2495,9 @@ window.onload = function () {
 
 </script>
 
+
+<input type="checkbox" id="toggle" style="display:none;">
+
 <script>
     const toggle = document.getElementById('toggle');
     const body = document.body;
@@ -2384,3 +2515,33 @@ window.onload = function () {
         }
     });
 </script>
+<script>
+      function toggleNavbarFlex() {
+      var navbarList = document.getElementById('navbarList');
+      navbarList.classList.toggle('navbar-list-flex');
+      }
+</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ids = [ 'down-live', 'down-network', 'down-series'];
+
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default action if needed
+                        window.location.href = this.href;
+                    });
+                } else {
+                    console.error(`Element with ID '${id}' not found.`);
+                }
+            });
+        });
+    </script>
+
+<style>
+   .navbar-list-flex {
+      display: flex !important;
+   }
+</style>

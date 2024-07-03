@@ -174,6 +174,10 @@ data: {
                mp3: $('#mp3_url').val()
 
          },        success: function(value){
+
+			if(value.total_uploads == 0){
+                location.reload();
+            }
 			console.log(value);
 			$('#audio_id').val(value.audio_id);
             $('#Next').show();
@@ -827,6 +831,9 @@ var Token = "<?= csrf_token() ?>";
     //   console.log(value)
       this.on("success", function(file, value) {
             console.log(value.title);
+			if(value.total_uploads == 0){
+                location.reload();
+            }
             $('#Next').show();
            $('#audio_id').val(value.audio_id);
            $('#title').val(value.title);

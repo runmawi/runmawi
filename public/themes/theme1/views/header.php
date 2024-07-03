@@ -10,6 +10,10 @@
     $data = Session::all();
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+    $GetLightText = GetLightText();
+    $GetDarkText  = GetDarkText();
+    $GetDarkBg    = GetDarkBg();
+    $GetLightBg   = GetLightBg();  
 
     $uri_path = $_SERVER['REQUEST_URI'];
     $uri_parts = explode('/', $uri_path);
@@ -542,7 +546,7 @@
     /* Dark mode and light Mode */
     body.light-theme {
         background:
-            <?php echo GetLightBg(); ?>
+            <?php echo $GetLightBg; ?>
             !important;
     }
 
@@ -564,24 +568,19 @@
         color: #fff;
     }
 
-    body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a p.mt-3 {
-        color: #fff;
-    }
-
     body.light-theme .search-box.iq-search-bar.d-search a {
         color: #fff !important;
     }
 
-    body.light-theme header#main-header {
-        background-color:
-            <?php echo GetLightBg(); ?>
-            !important;
-        color:
-            <?php echo GetLightText(); ?>
-        ;
-        box-shadow: 0 0 50px #ccc;
-    }
-
+    body.light-theme header#main-header{
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+   body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a{color: <?php echo $GetLightText; ?> !important;}
+   body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a p.mt-3{color: <?php echo $GetLightText; ?> !important;}
+   .light-theme header .navbar ul li.menu-item a {color: <?php echo $GetLightText; ?> !important;}
+   .light-theme .iq-search-bar .search-input{background:<?php echo GetLightBg(); ?>!important;color: <?php echo $GetLightText; ?> !important;}
     body.light-theme footer {
         background:
             <?php echo GetLightBg(); ?>
@@ -737,6 +736,7 @@
             <?php echo GetLightText(); ?>
             !important;
     }
+    body.light-theme ul.navbar-nav{background-color: <?php echo $GetLightBg; ?>!important;color: <?php echo $GetLightText; ?>;}
 
     body.light-theme .share-icons.music-play-lists li span i {
         color:
@@ -1201,7 +1201,7 @@
                                                         placeholder="<?= __('Type here to Search Videos') ?>" />
                                                     <i class="search-link ri-search-line"></i>
 
-                                                    <?php include 'public/themes/default/partials/Search_content.php'; ?>
+                                                    <?php include 'public/themes/theme1/partials/Search_content.php'; ?>
 
                                                 </div>
                                             </form>
@@ -2045,7 +2045,7 @@
                     $("body").append(
                         '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
                     );
-                    setTi meout(function() {
+                    setTimeout(function() {
                         $('.add_watch').slideUp('fast');
                     }, 3000);
                 }

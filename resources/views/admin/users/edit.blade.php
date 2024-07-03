@@ -39,6 +39,14 @@
 							<h4><i class="entypo-user"></i> Add New User</h4> 
 						@endif
 					</div>
+
+					@if(isset($user->activation_code))
+					<a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><button class="btn btn-primary float-right">Send Email Verification </button></a>
+							<!-- <p>Click <a href="{{ URL::to('admin/resend/Activation_Code') . '/' . $user->id }}" class="share-ico"><i class="ri-links-fill"></i> here</a> to Send Activation Code</p> -->
+					@endif
+					<br>
+					<br>
+					<br>
 					@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
@@ -54,7 +62,9 @@
 									@if(isset($user->avatar))<?php $avatar = $user->avatar; ?>@else<?php $avatar = 'profile.png'; ?>@endif
 									<img height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $avatar ?>" />
 									<label for="avatar">@if(isset($user->username))<?= ucfirst($user->username). '\'s'; ?>@endif Profile Image</label>
-									<input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" />
+									<input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" onchange="validateFileType(this)" />
+									<span id="file-type-validation-msg" style="color:red;"></span>
+									<!-- <input type="file" multiple="true" class="form-control mt-2 mb-3" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" /> -->
 								</div>
 
 								<div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
@@ -161,6 +171,7 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="col-md-6 mt-2" id="SubscriptionPlan">
 							<div class="panel panel-primary mt-2" data-collapsed="0"> 
 								<div class="panel-heading"> 
@@ -212,6 +223,22 @@
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tinymce/tinymce.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/jquery.mask.min.js' }}"></script>
+
+	<script>
+		function validateFileType(input) {
+		const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+		for (let i = 0; i < input.files.length; i++) {
+			const file = input.files[i];
+			if (!allowedExtensions.exec(file.name)) {
+			document.getElementById('file-type-validation-msg').textContent = '*Incorrect format. Please upload png,jpg,webp or gif.';
+			input.value = ''; // Reset the input value to allow the user to upload again
+			return false;
+			}
+		}
+		document.getElementById('file-type-validation-msg').textContent = ''; // Clear the message if all files are valid
+		return true;
+		}
+	</script>
 
 	<script type="text/javascript">
 

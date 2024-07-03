@@ -818,6 +818,7 @@ border-radius: 0px 4px 4px 0px;
                      <div class="col-sm-6 form-group" >
                         <label class="m-0">PPV Price:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                        <span id="error_ppv_price" style="color:red;">*Enter the PPV Price </span>
                      </div>
 
                      <div class="col-sm-6 form-group" >
@@ -843,6 +844,20 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                        <?php } ?>
                    </div>
+
+
+                   <div id="ppv_options" style="display: none;">
+                     <input type="radio" name="ppv_option" id="ppv_gobal_price" value="1" {{ ($video->ppv_option == 1)? "checked" : "" }}>
+                     <label for="ppv_gobal_price">Set Global Price</label><br>
+                     <input type="radio" name="ppv_option" id="global_ppv_price" value="2" {{ ($video->ppv_option == 2)? "checked" : "checked" }}>
+                     <label for="global_ppv_price">Get Settings Global Price</label>
+                  </div>
+
+                  <div id="price_input_container" class="col-sm-6 form-group mt-3" style="display: none;">
+                     <label for="ppv_price">Enter Global Price:</label>
+                     <input type="text" class="form-control" name="set_gobal_ppv_price" id="set_gobal_ppv_price" placeholder="Enter price" value="{{ $video->ppv_price  }}">
+                  </div>
+
                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
                   <label for="">  Search Tags</label>
                      <input type="text" id="tag-input1" class="tagged form-control1" data-removeBtn="true" name="searchtags" >
@@ -911,7 +926,7 @@ border-radius: 0px 4px 4px 0px;
                    </div>
                 </div> 
 
-                            <input type="button" name="next" class="next action-button" value="Next" />
+                            <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                             <button type="submit" class="btn btn-primary "style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
   
@@ -1299,9 +1314,130 @@ border-radius: 0px 4px 4px 0px;
     margin: 0 auto;
 }
    #msform input[type="file"]{border: 0; width: 100%;}
+   .ck.ck-powered-by {display: none;}
 </style>
 
 <script>
+   $(document).ready(function() {
+      $('#error_ppv_price').hide();
+        // Function to check the price input and update button states
+        function checkPriceInput() {
+            var priceInput = $('#price').val().trim();
+            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
+
+            if (!priceInput && !isGlobalPPVChecked) {
+                $('#error_ppv_price').show();
+                $('#nextppv').attr('disabled', 'disabled');
+                $('#submit_button').attr('disabled', 'disabled');
+            } else {
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+            }
+        }
+
+        // Event handler for global PPV checkbox change
+        $('#global_ppv').change(function() {
+            var isChecked = $(this).is(':checked');
+            if (isChecked) {
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+                $('#price').off('focusout keyup change', checkPriceInput); // Disable price input validation
+            } else {
+                checkPriceInput();
+                $('#price').on('focusout keyup change', checkPriceInput); // Enable price input validation
+            }
+        });
+
+        // Event handler for access change
+        $('#access').change(function() {
+            if ($(this).val() == 'ppv') {
+                $('#price').on('focusout keyup change', checkPriceInput);
+                $('#global_ppv').on('change', checkPriceInput);
+                $('#msform').on('submit', function(event) {
+                    var priceInput = $('#price').val().trim();
+                    var isGlobalPPVChecked = $('#global_ppv').is(':checked');
+
+                    if (!priceInput && !isGlobalPPVChecked) {
+                        event.preventDefault(); // Prevent form submission
+                        $('#error_ppv_price').show();
+                        $('#nextppv').attr('disabled', 'disabled');
+                        $('#submit_button').attr('disabled', 'disabled');
+                    } else {
+                        $('#error_ppv_price').hide();
+                        $('#nextppv').removeAttr('disabled');
+                        $('#submit_button').removeAttr('disabled');
+                    }
+                });
+            } else {
+                $('#price').off('focusout keyup change', checkPriceInput);
+                $('#global_ppv').off('change', checkPriceInput);
+                $('#msform').off('submit');
+                $('#error_ppv_price').hide();
+                $('#nextppv').removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+            }
+        });
+
+        // Event handler for the "Next" button click
+        $('#nextppv').click(function(event) {
+            event.preventDefault(); // Prevent form submission
+            var priceInput = $('#price').val().trim();
+            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
+
+            if (!priceInput && !isGlobalPPVChecked) {
+                $('#error_ppv_price').show();
+                $(this).attr('disabled', 'disabled');
+                $('#submit_button').attr('disabled', 'disabled');
+            } else {
+                $('#error_ppv_price').hide();
+                $(this).removeAttr('disabled');
+                $('#submit_button').removeAttr('disabled');
+            }
+        });
+
+        $('#access').trigger('change');
+    });
+
+document.addEventListener('DOMContentLoaded', function () {
+    var globalPpvCheckbox = document.getElementById('global_ppv');
+    var ppvOptionsDiv = document.getElementById('ppv_options');
+    var priceInputContainer = document.getElementById('price_input_container');
+    var ppvGlobalPriceRadio = document.getElementById('ppv_gobal_price');
+    var globalPpvPriceRadio = document.getElementById('global_ppv_price');
+    var ppvPriceInput = document.getElementById('set_gobal_ppv_price');
+
+    // Show/hide the radio buttons based on the initial state of the checkbox
+    ppvOptionsDiv.style.display = globalPpvCheckbox.checked ? 'block' : 'none';
+
+    // Show the price input container if ppv_price is not empty
+    if (ppvPriceInput.value.trim() !== '') {
+        priceInputContainer.style.display = 'block';
+        ppvGlobalPriceRadio.checked = true;
+    }
+
+    // Add an event listener to the checkbox to show/hide the radio buttons
+    globalPpvCheckbox.addEventListener('change', function () {
+        ppvOptionsDiv.style.display = this.checked ? 'block' : 'none';
+        // Hide the price input when checkbox is unchecked
+        if (!this.checked) {
+            priceInputContainer.style.display = 'none';
+        }
+    });
+
+    // Add an event listener to the "Set Global Price" radio button
+    ppvGlobalPriceRadio.addEventListener('change', function () {
+        priceInputContainer.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Hide the price input container if "Add Global Price" is selected
+    globalPpvPriceRadio.addEventListener('change', function () {
+        if (this.checked) {
+            priceInputContainer.style.display = 'none';
+        }
+    });
+});
    $(document).ready(function(){
    
    var current_fs, next_fs, previous_fs; //fieldsets
@@ -1995,12 +2131,18 @@ $('#error_video_Category').hide();
        }
    
 </script>
-<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 <script>
-   CKEDITOR.replace( 'summary-ckeditor', {
-       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-       filebrowserUploadMethod: 'form'
-   });
+         ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+         ClassicEditor
+            .create( document.querySelector( '#links-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
 
    CKEDITOR.replace( 'links-ckeditor', {
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",

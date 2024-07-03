@@ -150,20 +150,83 @@ Index Of Script
 			}
 
 		});
+		jQuery('.other-episode-slider').slick({
+            slidesToShow: 6,
+            slidesToScroll: 6,
+            dots: false,
+            arrows: true,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            infinite: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+		jQuery('.recommend-series-slider').slick({
+            slidesToShow: 6,
+            slidesToScroll: 6,
+            dots: false,
+            arrows: true,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            infinite: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
 		jQuery('.favorites-slider').slick({
 			dots: false,
 			arrows: true,
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 4,
+			slidesToShow: 6,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 
+			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
 			
-			nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
-
 			responsive: [
 			{
 				breakpoint: 1200,
@@ -189,13 +252,6 @@ Index Of Script
 				slidesToShow: 3,
 				slidesToScroll: 1,
 				arrows: true,
-				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1
 				}
 			},
 			{

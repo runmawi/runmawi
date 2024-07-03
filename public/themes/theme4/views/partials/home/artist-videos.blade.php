@@ -1,7 +1,7 @@
 @php
     $check_Kidmode = 0 ;
 
-    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode){
+    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching){
 
         // Videos 
 
@@ -11,7 +11,7 @@
 
                                             ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Videoartist);
 
-                                            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                                            if( $getfeching !=null && $getfeching->geofencing == 'ON')
                                             {
                                                 $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNotIn('videos.id',Block_videos());
                                             }
@@ -20,9 +20,13 @@
                                                 $item['artist_depends_videos']->whereBetween('videos.age_restrict', [0, 12]);
                                             }
 
+                                            if ($videos_expiry_date_status == 1 ) {
+                                                $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                            }
+
         $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) {
-                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['source']           = 'series';
                                         return $item;
                                     });
@@ -35,8 +39,8 @@
                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                     ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                                     ->map(function ($item) {
-                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                        $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
                                         $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                         $item['source']           = 'series';
@@ -52,8 +56,8 @@
                             'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                             ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                             ->map(function ($item) {
-                                $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                 $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
                                 $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                 $item['source']           = 'series';
@@ -69,14 +73,14 @@
 
                         ->where('active',1)->where('status', 1)->where('draft',1)->WhereIn('id',$Audioartist);
 
-                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                if( $getfeching !=null && $getfeching->geofencing == 'ON')
                 {
                     $item['artist_depends_audios'] = $item['artist_depends_audios']->whereNotIn('id',Block_audios());
                 }
 
             $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) {
-                            $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : default_vertical_image_url() ;
-                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : default_horizontal_image_url() ; 
+                            $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : $default_vertical_image_url ;
+                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : $default_horizontal_image_url ; 
                             return $item;
                         });
 
@@ -100,25 +104,25 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="artist-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $artist_details)
-                                <li>
-                                    <a href="javascript:void(0);">
+                                <li class="slick-slide">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="artist_details">
+                                            <img src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="artist_details" width="300" height="200">
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider">
+                        <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $artist_details )
-                                <li>
+                                <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
@@ -215,7 +219,7 @@
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}" alt="artist_details">
+                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : $default_horizontal_image_url }}" alt="artist_details">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -252,12 +256,12 @@
 
         $('.artist-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.artist-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -271,7 +275,7 @@
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },

@@ -238,6 +238,7 @@ class PaypalController extends Controller
         $subscription->countryname = $countryName;
         $subscription->cityname = $cityName;
         $subscription->ends_at = $date;
+        $subscription->platform = 'WebSite';
         $subscription->save();
 
         $response = array(

@@ -44,14 +44,18 @@ use App\InappPurchase;
 use App\Channel;
 use App\EmailTemplate;
 use Mail;
+use App\SiteTheme;
+use App\ChannelSubscription;
 
 class ChannelAudioController extends Controller
 {
-    /**
-     * Display a listing of audios
-     *
-     * @return Response
-     */
+
+
+    public function __construct()
+    {
+        $this->enable_channel_Monetization = SiteTheme::pluck('enable_channel_Monetization')->first();
+    }
+
     public function Channelindex(Request $request)
     {
         $user_package = User::where('id', 1)->first();
@@ -99,6 +103,41 @@ class ChannelAudioController extends Controller
         {
             $user = Session::get('channel');
             $user_id = $user->id;
+           
+            $user_id = $user->id;
+
+            if($this->enable_channel_Monetization == 1){
+
+                $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
+                    
+                if($ChannelSubscription == 0 ){
+
+                    return View::make('channel.becomeSubscriber');
+
+                }elseif($ChannelSubscription > 0){
+
+                    $ChannelSubscription = ChannelSubscription::where('channel_subscriptions.user_id', '=', $user_id)->orderBy('channel_subscriptions.created_at', 'DESC')
+                                            ->join('channel_subscription_plans', 'channel_subscription_plans.plan_id', '=', 'channel_subscriptions.stripe_plan')
+                                            ->first(); 
+
+                    if( !empty($ChannelSubscription) ){
+
+                        $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
+                        $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
+                            if($upload_audio_limit <= $uploaded_Audios){
+                                return View::make('channel.expired_upload');
+                            }
+                        }
+                    }else{
+                        return View::make('channel.becomeSubscriber');
+                    }
+                    
+                }else{
+                    return View::make('channel.becomeSubscriber');
+                }
+            }
+
             $settings = Setting::first();
 
             $data = array(
@@ -645,6 +684,50 @@ class ChannelAudioController extends Controller
         {
             $user = Session::get('channel');
             $user_id = $user->id;
+
+
+            if($this->enable_channel_Monetization == 1){
+
+                $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
+                    
+                if($ChannelSubscription == 0 ){
+    
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+    
+                }elseif($ChannelSubscription > 0){
+    
+                    $ChannelSubscription = ChannelSubscription::where('channel_subscriptions.user_id', '=', $user_id)->orderBy('channel_subscriptions.created_at', 'DESC')
+                                            ->join('channel_subscription_plans', 'channel_subscription_plans.plan_id', '=', 'channel_subscriptions.stripe_plan')
+                                            ->first(); 
+    
+                    if( !empty($ChannelSubscription) ){
+    
+                        $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
+                        $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
+                        
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
+                            if($upload_audio_limit <= $uploaded_Audios){
+                                $value = [];
+                                $value['total_uploads'] = 0;
+                                return $value;
+                            }
+                        }
+
+                    }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+                    
+                }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                }
+            }
+
             $audio = new Audio();
             $audio->mp3_url = $request['mp3'];
             $audio->user_id = $user_id;
@@ -671,6 +754,49 @@ class ChannelAudioController extends Controller
         {
             $user = Session::get('channel');
             $user_id = $user->id;
+            
+            if($this->enable_channel_Monetization == 1){
+
+                $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
+                    
+                if($ChannelSubscription == 0 ){
+    
+                    $value = [];
+                    $value['total_uploads'] = 0;
+                    return $value;
+    
+                }elseif($ChannelSubscription > 0){
+    
+                    $ChannelSubscription = ChannelSubscription::where('channel_subscriptions.user_id', '=', $user_id)->orderBy('channel_subscriptions.created_at', 'DESC')
+                                            ->join('channel_subscription_plans', 'channel_subscription_plans.plan_id', '=', 'channel_subscriptions.stripe_plan')
+                                            ->first(); 
+    
+                    if( !empty($ChannelSubscription) ){
+    
+                        $upload_audio_limit = $ChannelSubscription->upload_audio_limit;
+                        $uploaded_Audios = Audio::where('uploaded_by','Channel')->where('user_id', '=', $user_id)->count();
+                        
+                        if($upload_audio_limit != null && $upload_audio_limit != 0){
+                            if($upload_audio_limit <= $uploaded_Audios){
+                                $value = [];
+                                $value['total_uploads'] = 0;
+                                return $value;
+                            }
+                        }
+    
+                    }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                    }
+                    
+                }else{
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                }
+            }
+            
             $audio_upload = $request->file('file');
             $ext = $audio_upload->extension();
 

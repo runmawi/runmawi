@@ -730,13 +730,27 @@ i.search-link.ri-search-line {
 </script>
 <body>
     <!-- loader Start -->
-    <?php if( get_image_loader() == 1 ) { ?>
+   <?php if( get_image_loader() == 1) { ?>
       <div class="fullpage-loader">
          <div class="fullpage-loader__logo">
-               <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
+
+            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php }else { ?> 
+
+               <img src="<?php echo URL::to('public/uploads/settings/'. $settings->logo ); ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php } ?>
+ 
          </div>
       </div>
-    <?php } ?>
+   <?php } ?>
 
     <header id="main-header">
   <div class="main-header">
@@ -755,7 +769,7 @@ i.search-link.ri-search-line {
                         </div>
                      </a>
 
-                     <a href="<?php echo URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                     <a href="<?php echo URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="131" height="70" /> </a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="row d-flex justify-content-between screen-res-block">
@@ -1413,5 +1427,6 @@ i.search-link.ri-search-line {
             .fullpage-loader--invisible {
             opacity: 0;
             }
+            /* END LOADER CSS */
          </style>
 

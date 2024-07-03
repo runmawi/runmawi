@@ -238,7 +238,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('signup Agree Message')) }}</label>
                            <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
-                       </div>
+                       </div>site_themes
 
                                     {{-- Sign up - Step 2 Title  --}}
                         <div class="col-sm-6">
@@ -247,6 +247,24 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div> <br>
+
+                    <div class="row"> 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
+                            <div class="col-sm-6">
+                            <label>{{ ucfirst(trans('Sign up - CPP Title')) }}</label>
+                            <input type="text" placeholder="CPP Signup Title" name="signup_cpp_title" class="form-control signup_cpp_title" id="signup_cpp_title" value="@if(!empty($settings->signup_cpp_title)){{ $settings->signup_cpp_title }}@endif">
+                            </div>
+                       @endif 
+
+                                    {{-- Sign up - Channel Title  --}}
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
+                            <div class="col-sm-6">
+                                <label>{{ ucfirst(trans('Sign up - Channel Title')) }}</label>
+                                <input type="text" placeholder="Channel Signup Title" name="signup_channel_title" class="form-control signup_channel_title" id="signup_channel_title" value="@if(!empty($settings->signup_channel_title)){{ $settings->signup_channel_title }}@endif">
+                            </div>
+                       @endif 
+
+                    </div><br>
 
                   {{-- Style sheet  --}}
 
@@ -281,6 +299,31 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div> <br>
+
+                <div class="row"> 
+                    <div class="col-sm-6">
+                        <label>{{ ucfirst(trans('Enable Video Upload limit Count')) }}</label>
+                       <input type="text" placeholder="Video Upload limit Count" name="admin_videoupload_limit_count" class="form-control admin_videoupload_limit_count" id="admin_videoupload_limit_count" value="@if(!empty($settings->admin_videoupload_limit_count)){{ $settings->admin_videoupload_limit_count }}@endif">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{ ucfirst(('Enable Video Upload limit Status')) }} </label>
+    
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div style="color:red;">Off</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="admin_videoupload_limit_status"  type="checkbox" @if( $settings->admin_videoupload_limit_status == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div style="color:green;">On</div>
+                        </div>
+                    
+                    </div>
+                </div>
+
+
 
                                  {{-- Prevent Viewing Page Source --}}
 
@@ -545,6 +588,123 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+
+
+                <div class="row d-flex"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Moderator Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_moderator_payment"  type="checkbox" @if( $settings->enable_moderator_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Channel Payment')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_payment"  type="checkbox" @if( $settings->enable_channel_payment == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    @endif 
+                    <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Moderator Monetization')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_moderator_Monetization"  type="checkbox" @if( $settings->enable_moderator_Monetization == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Channel Monetization')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_Monetization"  type="checkbox" @if( $settings->enable_channel_Monetization == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable Logged User Monetization')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_logged_device"  type="checkbox" @if( $settings->enable_logged_device == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable EPG Default TimeZone')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_default_timezone"  type="checkbox" @if( $settings->enable_default_timezone == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                        <label>{{ ucfirst(('Enable 4K Resolution Conversion')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_4k_conversion"  type="checkbox" @if( $settings->enable_4k_conversion == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        
+                        </div>
+
+                    </div>
+                    </div>
+
+                </div>
+
                     </div>
                 
                 </div>

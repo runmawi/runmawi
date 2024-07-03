@@ -41,10 +41,12 @@
                          echo (__('Most watched videos from').__($category->name).__('Genre'));?>
             </h4>
         </a>
-        <h4 class="main-title"><a href="<?php echo URL::to('/category/').'/'.$category->slug;?>"><?php echo (__('View All')); ?></a></h4>
+        <?php if( $settings->homepage_views_all_button_status == 1 ):?>
+            <h4 class="main-title"><a href="<?php echo URL::to('/category/').'/'.$category->slug;?>"><?php echo (__('View All')); ?></a></h4>
+        <?php endif; ?>
     </div>
     <div class="favorites-contens">
-        <ul class="favorites-slider list-inline row p-0 mb-0">
+        <div class="most-watched-category home-sec list-inline row p-0 mb-0">
             <?php  
                 if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
@@ -52,7 +54,7 @@
                        foreach($top_category_videos as $category_video):
                         
                         ?>
-            <li class="slide-item">
+            <div class="items">
                 <div class="block-images position-relative">
                     <!-- block-images -->
                     <div class="border-bg">
@@ -82,7 +84,7 @@
              
                 <div class="block-description">
                 <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" alt="m-img" />
+                        {{-- <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" alt="m-img" /> --}}
                       
                    
 
@@ -120,91 +122,88 @@
 
                     <div class="hover-buttons text-white">
                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                    <?php if($ThumbnailSetting->title == 1) { ?>
-                    <!-- Title -->
-                 
-                    <p class="epi-name text-left m-0">
-                        <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></p>
-                
-                    <?php } ?>
+                            <?php if($ThumbnailSetting->title == 1) { ?>
+                                <!-- Title -->
+                            
+                                <p class="epi-name text-left m-0">
+                                    <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
+                                </p>
+                        
+                            <?php } ?>
 
-                    <div class="movie-time d-flex align-items-center pt-1">
-                        <?php if($ThumbnailSetting->age == 1) { ?>
-                        <!-- Age -->
-                        <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
-                        <?php } ?>
+                            <p class="desc-name text-left m-0 mt-1">
+                                <?php echo strlen($category_video->description) > 75 ? substr(html_entity_decode(strip_tags($category_video->description)), 0, 75) . '...' : $category_video->description ?>
+                            </p>
 
-                        <?php if($ThumbnailSetting->duration == 1) { ?>
-                        <!-- Duration -->
-                        <span class="text-white">
-                            <i class="fa fa-clock-o"></i>
-                            <?= gmdate('H:i:s', $category_video->duration); ?>
-                        </span>
-                        <?php } ?>
-                    </div>
+                            <div class="movie-time d-flex align-items-center pt-2">
+                                <?php if($ThumbnailSetting->age == 1 && !($category_video->age_restrict == 0)) { ?>
+                                    <!-- Age -->
+                                    <span class="position-relative badge p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></span>
+                                <?php } ?>
 
-                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                    <div class="movie-time d-flex align-items-center pt-1">
-                        <?php if($ThumbnailSetting->rating == 1) { ?>
-                        <!--Rating  -->
-                        <div class="badge badge-secondary p-1 mr-2">
-                            <span class="text-white">
-                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                <?php echo __($category_video->rating); ?>
-                            </span>
-                        </div>
-                        <?php } ?>
+                                <?php if($ThumbnailSetting->duration == 1) { ?>
+                                    <!-- Duration -->
+                                    <span class="position-relative text-white mr-2">
+                                        <?php echo (floor($category_video->duration / 3600) > 0 ? floor($category_video->duration / 3600) . 'h ' : '') . floor(($category_video->duration % 3600) / 60) . 'm' ?>
+                                    </span>       
+                                <?php } ?>
 
-                        <?php if($ThumbnailSetting->published_year == 1) { ?>
-                        <!-- published_year -->
-                        <div class="badge badge-secondary p-1 mr-2">
-                            <span class="text-white">
-                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                <?php echo __($category_video->year); ?>
-                            </span>
-                        </div>
-                        <?php } ?>
+                                <?php if($ThumbnailSetting->published_year == 1 && !($category_video->year == 0)) { ?>
+                                    <span class="position-relative badge p-1 mr-2">
+                                        <?php echo ($category_video->year) ?>
+                                    </span>
+                                <?php } ?>
 
-                        <?php if($ThumbnailSetting->featured == 1 && $category_video->featured == 1) { ?>
-                        <!-- Featured -->
-                        <div class="badge badge-secondary p-1 mr-2">
-                            <span class="text-white">
-                                <i class="fa fa-flag-o" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                        <?php }?>
-                    </div>
-                    <?php } ?>
+                                <?php if($ThumbnailSetting->featured == 1 && $category_video->featured == 1) { ?>
+                                    <span class="position-relative text-white">
+                                        <?php echo ('Featured') ?>
+                                    </span>
+                                <?php } ?>
+                            </div>
 
-                    <div class="movie-time d-flex align-items-center pt-1">
-                        <!-- Category Thumbnail  setting -->
-                        <?php $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                   ->where('categoryvideos.video_id',$category_video->id) ->pluck('video_categories.name'); ?>
-                        <?php  if ( ($ThumbnailSetting->category == 1 ) && ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                        <span class="text-white">
-                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                            <?php
-                                               $Category_Thumbnail = array();
-                                                   foreach($CategoryThumbnail_setting as $key =>
-                            $CategoryThumbnail){ $Category_Thumbnail[] = $CategoryThumbnail ; } echo implode(','.' ', $Category_Thumbnail); ?>
-                        </span>
-                        <?php } ?>
-                    </div>
-                    </a>
+                            <div class="movie-time d-flex align-items-center pt-1">
+                                <!-- Category Thumbnail  setting -->
+                                <?php $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                        ->where('categoryvideos.video_id',$category_video->id) ->pluck('video_categories.name'); ?>
+                                <?php  if ( ($ThumbnailSetting->category == 1 ) && ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                <span class="text-white">
+                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                    <?php
+                                                    $Category_Thumbnail = array();
+                                                        foreach($CategoryThumbnail_setting as $key =>
+                                    $CategoryThumbnail){ $Category_Thumbnail[] = $CategoryThumbnail ; } echo implode(','.' ', $Category_Thumbnail); ?>
+                                </span>
+                                <?php } ?>
+                            </div>
+                        </a>
 
               
-                        <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                        <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                             <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" /> Watch Now
                         </a>
                     </div>
                 </div>
                        </div>
-            </li>
+            </div>
             <?php           
                           endforeach; 
                      endif; endif; ?>
-        </ul>
+        </div>
     </div>
 </div>
 </div>
 </div>
+
+<script>
+    var elem = document.querySelector('."most-watched-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

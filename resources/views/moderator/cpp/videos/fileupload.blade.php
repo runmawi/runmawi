@@ -346,6 +346,11 @@ data: {
                m3u8_url: $('#m3u8_video_url').val()
 
          },        success: function(value){
+
+            if(value.total_uploads == 0){
+                location.reload();
+            }
+            
 			console.log(value);
             $('#Next').show();
            $('#video_id').val(value.video_id);
@@ -377,6 +382,10 @@ $(document).ready(function(){
                mp4_url: $('#mp4_url').val()
 
          },        success: function(value){
+
+            if(value.total_uploads == 0){
+                location.reload();
+            }
             console.log(value);
             $('#Next').show();
            $('#video_id').val(value.video_id);
@@ -409,6 +418,11 @@ data: {
                embed: $('#embed_code').val()
 
          },        success: function(value){
+
+            if(value.total_uploads == 0){
+                location.reload();
+            }
+
 			console.log(value);
             $('#Next').show();
            $('#video_id').val(value.video_id);
@@ -1527,12 +1541,14 @@ CKEDITOR.replace( 'summary-ckeditor', {
        formData.append("_token", CSRF_TOKEN);
       // console.log(value)
       this.on("success", function(file, value) {
-            console.log(value.video_title);
+        // console.log(value);
+            if(value.total_uploads == 0){
+                location.reload();
+            }
+            console.log(value);
             $('#Next').show();
            $('#video_id').val(value.video_id);
-           $('#title').val(value.video_title);
-
-           
+           $('#title').val(value.video_title);           
         });
 
     }); 

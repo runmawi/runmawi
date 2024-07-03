@@ -145,6 +145,10 @@ use App\AdminOTPCredentials ;
 use App\Document ;
 use App\DocumentGenre ;
 use App\AdminVideoAds;
+use App\TimeZone;
+use App\StorageSetting;
+use App\SeriesNetwork;
+use App\Adsvariables;
 
 
 class ApiAuthController extends Controller
@@ -294,6 +298,7 @@ class ApiAuthController extends Controller
               $user->password = Hash::make($request->get('password'));
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
+              $user->activation_code = Str::random(60);
               $user->referral_token = $ref_token;
               $user->country = $request->country;
               $user->state = $request->state;
@@ -304,9 +309,7 @@ class ApiAuthController extends Controller
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
-
-
-               // welcome Email
+        // welcome Email
                                   
                try {
 
@@ -359,18 +362,84 @@ class ApiAuthController extends Controller
 
     try {
       
-      if($settings->free_registration && $settings->activation_email == 1){
+      if($settings->free_registration == 0 && $settings->activation_email == 1){
 
-        try {
-          $email = $input['email'];
-          $uname = $input['username'];
-          Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-          $message->to($email,$uname)->subject('Verify your email address');
-        });
+        
+                // verify email
+                try {
+                  \Mail::send('emails.verify', array(
+                      'activation_code' => $userdata->activation_code,
+                      'website_name' => $settings->website_name
+                  ) , function ($message) use ($userdata)
+                  {
+                      $message->to($userdata->email, $userdata->name)
+                          ->subject('Verify your email address');
+                  });
+                  
+                  $email_log      = 'Mail Sent Successfully from Verify';
+                  $email_template = "verify";
+                  $user_id = $userdata->id;
+  
+                  Email_sent_log($user_id,$email_log,$email_template);
+  
+                  // return redirect('/verify-request');
+  
+              } catch (\Throwable $th) {
+  
+                  $email_log      = $th->getMessage();
+                  $email_template = "verify";
+                  $user_id = $userdata->id;
+  
+                  Email_notsent_log($user_id,$email_log,$email_template);
+  
+                  // return redirect('/verify-request-sent');
+  
+              }
+                // // welcome Email
 
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
+                // try {
+
+                //     $data = array(
+                //         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                //     );
+
+                //     Mail::send('emails.welcome', array(
+                //         'username' => $name,
+                //         'website_name' => GetWebsiteName(),
+                //         'url' => URL::to('/'),
+                //         'useremail' => $email,
+                //         'password' => $get_password,
+                //     ), 
+                //     function($message) use ($data,$user) {
+                //         $message->from(AdminMail(),GetWebsiteName());
+                //         $message->to($user->email, $user->name)->subject($data['email_subject']);
+                //     });
+
+                //     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                //     $email_template = "1";
+                //     $user_id = $user->id;
+
+                //     Email_sent_log($user_id,$email_log,$email_template);
+
+                // }catch (\Exception $e) {
+
+                //     $email_log      = $e->getMessage();
+                //     $email_template = "1";
+                //     $user_id = $user->id;
+
+                //     Email_notsent_log($user_id,$email_log,$email_template);
+
+                // }
+        // try {
+        //   $email = $input['email'];
+        //   $uname = $input['username'];
+        //   Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+        //   $message->to($email,$uname)->subject('Verify your email address');
+        // });
+
+        // } catch (\Throwable $th) {
+        //   //throw $th;
+        // }
 
         $response = array('status'=>'true','message' => 'Registered Successfully.');
       }
@@ -393,12 +462,12 @@ class ApiAuthController extends Controller
                 $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
                 $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
                 $plan_id      = $api->plan->fetch($subscription['plan_id']);
+                  
+                $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+                $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
 
-                $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
-                $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
-                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
-
-                    Subscription::create([
+                  Subscription::create([
                     'user_id'        =>  $userid,
                     'name'           =>  $plan_id['item']->name,
                     'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
@@ -412,7 +481,7 @@ class ApiAuthController extends Controller
                     'PaymentGateway' =>  'Razorpay',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
-                ]);
+                  ]);
 
                 User::where('id',$userid)->update([
                     'role'                  =>  'subscriber',
@@ -625,7 +694,7 @@ class ApiAuthController extends Controller
 
             }
                       
-                      // Stripe Payment
+          // Stripe Payment
             elseif( $paymentMode == "stripe"  ){
 
               try {
@@ -816,7 +885,7 @@ class ApiAuthController extends Controller
                             );
 
                            }
-
+                         
                             // try {
                             //     Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
                             //       $message->to($email,$uname)->subject('Verify your email address');
@@ -964,6 +1033,7 @@ class ApiAuthController extends Controller
       'otp' => $request->get('otp'),
       'password' => $request->get('password')
     );
+
 
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
 
@@ -2436,6 +2506,8 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
+      $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+
       $response = array(
         'status' => 'true',
         'shareurl' => URL::to('live').'/'.$liveid,
@@ -2445,6 +2517,7 @@ public function verifyandupdatepassword(Request $request)
         'ppv_video_status' => $ppv_video_status,
         'languages' => $languages,
         'categories' => $categories,
+        'RentURL' => URL::to('live').'/'.$livestreamSlug,
       );
 
       
@@ -2788,6 +2861,7 @@ public function verifyandupdatepassword(Request $request)
             'mobile'   => $request->user_mobile,
             'gender'   => $request->gender,
             'DOB'      => $request->DOB,
+            'country'      => $request->country,
           );
 
           if($request->hasFile('avatar')){
@@ -3674,7 +3748,7 @@ public function verifyandupdatepassword(Request $request)
 
   public function splash(){
 
-        $mobile_settings = MobileApp::get('splash_image')->map(function ($item) {
+        $mobile_settings = MobileApp::get()->map(function ($item) {
           $item['splash_url'] = URL::to('/').'/public/uploads/settings/'.$item->splash_image;
           return $item;
       });
@@ -5160,7 +5234,10 @@ public function checkEmailExists(Request $request)
 
        $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
 
+       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
+
                 if(count($AllSeason) > 0){
 
 
@@ -5307,6 +5384,7 @@ public function checkEmailExists(Request $request)
         'episode' => $episode,
         'Season_Name' => $Season_Name,
         'season' => $Season,
+        'Season_array' => $Season_array ,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
         'watchlater' => $watchlaterstatus,
@@ -6237,81 +6315,110 @@ return response()->json($response, 200);
 
   public function addtocontinuewatching(Request $request)
   {
-      $user_id = $request->user_id;
+    try {
+      
       $current_duration = $request->current_duration;
       $watch_percentage = $request->watch_percentage;
-      if(!empty($request->skip_time)){
-      $skip_time = $request->skip_time;
-      }else{
-        $skip_time = 0;
+      $skip_time = !empty($request->skip_time) ? $request->skip_time : 0;
+      
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
+      $multiuser_id = $request->multiuser_id;
+      
+      $query = ContinueWatching::where('videoid', $video_id);
+                    if ($multiuser_id != null) {
+                        $query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
+                    } else {
+                        $query->where('user_id', $user_id)->whereNull('multiuser');
+                    }
+      $count = $query->count();
+      
+      if ($count > 0) {
+        
+          $query->update([
+              'currentTime' => $current_duration,
+              'watch_percentage' => $watch_percentage,
+              'skip_time' => $skip_time,
+          ]);
+      
+          $response = ['message' => 'Current Time updated'];
       }
-      if($request->video_id){
-          $video_id = $request->video_id;
-          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
-          if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
-            $response = array(
-              'status'=>'true',
-              'message'=>'Current Time updated'
-          );
-        } else {
-            $data = array('user_id' => $user_id, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
-            ContinueWatching::insert($data);
-            $response = array(
-              'status'=>'true',
-              'message'=>'Added  to  Continue Watching List'
-          );
+      else {
 
-        }
+          $data = array('user_id'   => $user_id, 
+                          'multiuser' => $multiuser_id,
+                          'videoid'   => $video_id,
+                          'currentTime'      => $current_duration,
+                          'watch_percentage' => $watch_percentage,
+                          'skip_time'        => $skip_time
+                        );
+
+          ContinueWatching::create($data);
+
+          $response = array('message'=>'Added to Continue Watching List');
       }
 
+      $response += array(
+        'status'=>'true',
+        'status_code' => 200 ,
+      );
 
-      return response()->json($response, 200);
+    } catch (\Throwable $th) {
+      
+      $response = array(
+        'status'=>'false',
+        'status_code' => 400 ,
+        'message'=>$th->getMessage(),
+      );
+
+    }
+    return response()->json($response, $response['status_code']);
   }
 
   public function listcontinuewatchings(Request $request)
   {
-
+    try {
+      
       $user_id = $request->user_id;
-    /*channel videos*/
-    if(!empty($user_id)){
-      $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-      $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();  
-    }else{
-      $video_ids = 0;
-      $video_ids_count = 0;  
-    }
-    if ( $video_ids_count  > 0) {
+      $multiuser_id = $request->multiuser_id;
+      $video_id = $request->video_id;
+      
+      $video_id_query = ContinueWatching::query();
+                    if ($multiuser_id != null) {
+                        $video_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
+                    } else {
+                        $video_id_query->where('user_id', $user_id)->whereNull('multiuser');
+                    }
+      $video_id_query = $video_id_query->pluck('videoid');
 
-      foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->videoid;
-      }
-      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
-        return $item;
-      });
+      $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
+          ->whereIn('videos.id', $video_id_query)
+          ->latest('continue_watchings.created_at')
+          ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
+          ->groupBy('continue_watchings.videoid')
+          ->get()
+          ->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/images/' . $item->image );
+              return $item;
+          });
+
       $response = array(
-        'status' => "true",
-        'videos'=> $videos,
+          'status' => "true",
+          'status_code' => 200,
+          'message' => 'Retrieved Continue Watching Successfully',
+          'videos' => $videos,
       );
-    }else{
+      
+    } catch (\Throwable $th) {
+
       $response = array(
         'status' => "false",
-        'videos'=> [],
+        'status_code' => 400,
+        'message' =>  $th->getMessage(),
       );
     }
 
-
-    // $response = array(
-    //     'status'=>$status,
-    //     'videos'=> $videos
-    //   );
-    return response()->json($response, 200);
-
-
-
+    return response()->json($response, $response['status_code']);
   }
 
   public function remove_continue_watchingvideo(Request $request)
@@ -6380,35 +6487,39 @@ return response()->json($response, 200);
 
   public function listcontinuewatchingsepisode(Request $request)
   {
-
     $user_id = $request->user_id;
-    /*channel videos*/
-    $episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->count();
 
-    if ( $episode_ids_count  > 0) {
+    /* channel videos */
+    $episode_ids = ContinueWatching::where('episodeid', '!=', NULL)
+        ->where('user_id', '=', $user_id)
+        ->get();
+    $episode_ids_count = $episode_ids->count();
 
-      foreach ($episode_ids as $key => $value1) {
-        $k2[] = $value1->episodeid;
-      }
-      $episodes = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        return $item;
-      });
-      $status = "true";
-    }else{
-            $status = "false";
-            $episodes = [];
+    if ($episode_ids_count > 0) {
+        $episode_ids = $episode_ids->pluck('episodeid');
+
+        $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
+            ->whereIn('episodes.id', $episode_ids)
+            ->where('continue_watchings.user_id', '=', $user_id)
+            ->orderBy('continue_watchings.created_at', 'desc')
+            ->select('episodes.*', 'continue_watchings.watch_percentage')
+            ->get()
+            ->map(function ($item) {
+                $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                return $item;
+            });
+
+        $status = "true";
+    } else {
+        $status = "false";
+        $episodes = [];
     }
 
-
     $response = array(
-        'status'=>$status,
-        'episodes'=> $episodes
-      );
+        'status' => $status,
+        'episodes' => $episodes
+    );
     return response()->json($response, 200);
-
 
   }
 
@@ -8593,9 +8704,11 @@ public function LocationCheck(Request $request){
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
             $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
             $plan_id      = $api->plan->fetch($subscription['plan_id']);
-
-            $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
-            $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
+              
+            $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString(); 
+            $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+            $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
+    
 
                 Subscription::create([
                 'user_id'        =>  $request->userId,
@@ -14073,8 +14186,35 @@ public function QRCodeMobileLogout(Request $request)
           $header_name = $OrderHomeSetting['header_name'] ;
           $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "Document_Category" ;
-
         }
+
+        if($OrderHomeSetting['video_name'] == "Series_based_on_Networks"){      // Series based on Networks
+          
+          $data = $this->All_Homepage_Series_based_on_Networks();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "series" ;
+        }
+
+        if($OrderHomeSetting['video_name'] == "Series_Networks"){      // Series Networks
+          
+          $data = $this->All_Homepage_Series_Networks();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series_Networks" ;
+        }
+
+        if($OrderHomeSetting['video_name'] == "Series_Genre_videos"){      // Series Networks
+
+          $data = $this->All_Homepage_Series_based_on_genre();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series" ;
+        }
+
 
         $result[] = array(
           "source"      => $source,
@@ -14199,26 +14339,34 @@ public function QRCodeMobileLogout(Request $request)
 
     if($Homesetting->my_playlist == 1 && $this->All_Homepage_my_playlist( $user_id )->isNotEmpty() ){
       array_push($input,'my_play_list');
-   }
+    }
 
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
-    array_push($input,'video_play_list');
- }
+      array_push($input,'video_play_list');
+    }
 
-  if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
-    array_push($input,'Document');
-  }
-  if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
-    array_push($input,'Document_Category');
-  }
-    // if($Homesetting->artist == 1){
-    //   array_push($input,'artist');
-    // }
+    if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
+      array_push($input,'Document');
+    }
+
+    if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
+      array_push($input,'Document_Category');
+    }
+
+    if($Homesetting->Series_Networks == 1 && $this->All_Homepage_Series_Networks()->isNotEmpty() ){
+      array_push($input,'Series_Networks');
+    }
+
+    if($Homesetting->Series_based_on_Networks == 1 && $this->All_Homepage_Series_based_on_Networks()->isNotEmpty() ){
+      array_push($input,'Series_based_on_Networks');
+    }
+
+    if($Homesetting->SeriesGenre_videos == 1 && $this->All_Homepage_Series_based_on_genre()->isNotEmpty() ){
+      array_push($input,'Series_Genre_videos');
+    }
 
     return $input;
-
   }
-
 
   private static function All_Homepage_latestvideos(){
 
@@ -14307,7 +14455,8 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured','description')
+        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating',
+                                      'active', 'status','image','player_image','featured','description')
                               ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
                               ->map(function ($item) {
                                   $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
@@ -14675,7 +14824,7 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
-  
+
   private static function All_Homepage_my_playlist( $user_id ){
 
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
@@ -14721,7 +14870,7 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
-  
+
   private static function All_Homepage_Documents(){
 
     $Document_status = MobileHomeSetting::pluck('Document')->first();
@@ -15063,6 +15212,131 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
+  private static function All_Homepage_Series_Networks(){
+
+    $Homepage_Series_Networks_status = MobileHomeSetting::pluck('Series_Networks')->first();
+
+    if( $Homepage_Series_Networks_status == null || $Homepage_Series_Networks_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Series Networks status) is turned off in the admin panel
+    else:
+      
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+          $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+
+          // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+          //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+          //                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+          //                                                                                     ->latest()->limit(15)->get()->map(function ($item) {
+          //                                                                                             $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+          //                                                                                             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+          //                                                                                             $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+          //                                                                                             $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+          //                                                                                             $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+          //                                                                                             $item['source']   = "series";
+          //                                                                                             return $item;
+          //                                                                                         });  
+
+          return $item;
+        });
+
+    endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_based_on_Networks(){
+
+    $Homepage_Series_based_on_Networks_status = MobileHomeSetting::pluck('Series_based_on_Networks')->first();
+
+    if( $Homepage_Series_based_on_Networks_status == null || $Homepage_Series_based_on_Networks_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Series based on Networks status) is turned off in the admin panel
+    else:
+      
+      $data = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+        $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                    ->whereJsonContains('network_id', [(string)$item->id])
+    
+                    ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+            
+            $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+            $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+    
+            $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+    
+            $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+    
+            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                    ->map(function ($item) {
+                                                    $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                    return $item;
+                                                });
+    
+            $item['source'] = 'Series';
+            return $item;
+                                                                
+        });
+        return $item;
+      });
+
+    endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_based_on_genre(){
+
+    $Homepage_Series_based_on_genre_status = MobileHomeSetting::pluck('SeriesGenre_videos')->first();
+
+    if( $Homepage_Series_based_on_genre_status == null || $Homepage_Series_based_on_genre_status == 0 ){
+
+        $data = array();   
+
+    }else{
+      
+      $data = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->limit(15)
+                    ->get();
+  
+      $data->each(function ($category) {
+          $category->category_series->transform(function ($item) {
+  
+              $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+              $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+  
+              $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+              $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+              $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                      ->map(function ($item) {
+                                                          $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                          return $item;
+                                                  });
+  
+              $item['source'] = 'Series';
+              return $item;
+          });
+          return $category;
+      });
+    }
+
+    return $data;
+  }
+
   public function All_Pagelist(Request $request)
   {
     try {
@@ -15195,6 +15469,21 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Document_Category_Pagelist($request->category_id);
                 $Page_List_Name = 'Document_Category_Pagelist';
                 break;  
+                
+              case 'Series_Networks':
+                $data = $this->SeriesNetwork_Pagelist();
+                $Page_List_Name = 'Series_Network_Pagelist';
+                break;  
+                
+              case 'Series_based_on_Networks':
+                $data = $this->Series_based_on_Networks_Pagelist();
+                $Page_List_Name = 'Series_based_on_Networks_Pagelist';
+                break;  
+
+              case 'Series_based_on_genre':
+                $data = $this->Series_based_on_genre_Pagelist();
+                $Page_List_Name = 'Series_based_on_genre_Pagelist';
+                break;  
           }
       }
 
@@ -15323,6 +15612,135 @@ public function QRCodeMobileLogout(Request $request)
   
     return $data;
     
+  }
+
+  private static function SeriesNetwork_Pagelist(){
+    
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+          $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['source'] = 'Series_Networks';
+
+          $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+                                                                                              'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
+                                                                                              ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
+                                                                                              ->latest()->limit(15)->get()->map(function ($item) {
+                                                                                                      $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                                                                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                                                                                      $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url ;       
+                                                                                                      $item['season_count'] =  SeriesSeason::where('series_id',$item->id)->count();
+                                                                                                      $item['episode_count'] =  Episode::where('series_id',$item->id)->count();
+                                                                                                      return $item;
+                                                                                                  });  
+
+          return $item;
+        });
+
+      return $data ;
+  }
+
+  public function Network_depends_series(Request $request)
+  {
+    try {
+      
+        $this->validate($request, [ 'network_id'  => 'required|integer' ]);
+
+        $Networks_depends_series = Series::where('series.active', 1)->whereJsonContains('network_id', [(string)$request->network_id])
+                                      ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+                        
+                                          $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                          $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+                                          $item['upload_on']        = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                                          $item['duration_format']  =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                                          $item['source'] = 'Series';
+                                          return $item;
+                                      });
+
+          $response = array(
+            'status'  => 'true',
+            'Message' => 'Retrieved Network depends sereis Successfully',
+            'Series_depends_Networks'  => $Networks_depends_series,
+          );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
+  
+  private static function Series_based_on_Networks_Pagelist( ){
+    
+    $query = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+
+      $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                  ->whereJsonContains('network_id', [(string)$item->id])
+  
+                  ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+          
+          $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+          $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
+  
+          $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+          $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+
+  
+          $item['source'] = 'Series';
+          return $item;
+                                                              
+      });
+      return $item;
+    });
+
+    return $query;
+    
+  }
+
+  private static function Series_based_on_genre_Pagelist(){
+
+      $data = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->limit(15)
+                    ->get();
+  
+      $data->each(function ($category) {
+          $category->category_series->transform(function ($item) {
+  
+              $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+              $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+  
+              $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+  
+              $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+  
+              $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                      ->map(function ($item) {
+                                                          $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                          return $item;
+                                                  });
+  
+              $item['source'] = 'Series';
+              return $item;
+          });
+          return $category;
+      });
+
+    return $data ;
   }
 
   private static function Document_Pagelist(){
@@ -15487,17 +15905,14 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Livestream_Pagelist(){
 
-      $query = LiveStream::query()
-        ->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
-        ->where('active',1)->where('status', 1);
-
-      $data = $query->latest()->get();
-
-      $data->transform(function ($item) {
-            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-            $item['source']    = "Livestream";
-          return $item;
+      $data = LiveStream::query()->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time',
+                                        'status','duration','rating','image','player_image','featured','active')
+                        ->where('active',1)->where('status', 1)->latest()->get()
+                        ->map(function ($item) {
+                            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                            $item['source']    = "Livestream";
+                        return $item;
       });
           
       return $data;
@@ -23784,10 +24199,20 @@ public function TV_login(Request $request)
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
             $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
-            $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+            // $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+  
+            $scheduled_videos = ChannelVideoScheduler::where('channe_id', $item->id)->where('time_zone', $request->time_zone)->where('choosed_date', $choosed_date)->get();
+            $scheduled_videos->each(function ($video, $index) use ($scheduled_videos, $item,$request) {
+                $nextVideoTitle = $index + 1 < $scheduled_videos->count() ? $scheduled_videos[$index + 1]->socure_title : null;
+                $video->channel_name = $nextVideoTitle ? $item->name : $item->name;
+                $video->up_next = $nextVideoTitle ? $nextVideoTitle : 0;
+                $item['time_zone_name'] = TimeZone::where('id', $request->time_zone)->pluck('time_zone')->first();
+              });
+
+            $item['scheduled_videos'] = $scheduled_videos;
           return $item;
         });
-
+       
         $response = array(
           "status"  => 'true' ,
           "Channel_videos" => $Channel_videos ,
@@ -23920,6 +24345,7 @@ public function TV_login(Request $request)
             $user_id = $request->user_id;
             $subuser_id = $request->subuser_id;
             $mobile_address = $request->mobile_address;
+            $website_default_language = Setting::pluck('website_default_language')->first() ? Setting::pluck('website_default_language')->first() : 'en';
 
             if(!empty($mobile_address)){
 
@@ -23929,8 +24355,8 @@ public function TV_login(Request $request)
                   $translate_language = GetWebsiteName().$UserTranslation->translate_language;
                   $language_code = $UserTranslation->translate_language;
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
 
@@ -23943,13 +24369,13 @@ public function TV_login(Request $request)
                       $language_code = $Subuserranslation->translate_language;
 
                   }else{
-                      $translate_language = GetWebsiteName().'en';
-                      $language_code = 'en';
+                      $translate_language = GetWebsiteName().$website_default_language;
+                      $language_code = $website_default_language;
   
                     }
               }else{
-                  $translate_language = GetWebsiteName().'en';
-                  $language_code = 'en';
+                  $translate_language = GetWebsiteName().$website_default_language;
+                  $language_code = $website_default_language;
 
               }
      
@@ -23962,17 +24388,17 @@ public function TV_login(Request $request)
                     $language_code = $UserTranslation->translate_language;
 
                 }else{
-                    $translate_language = GetWebsiteName().'en';
-                    $language_code = 'en';
+                    $translate_language = GetWebsiteName().$website_default_language;
+                    $language_code = $website_default_language;
               }
             }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
             }
    
           }else{
-                $translate_language = GetWebsiteName().'en';
-                $language_code = 'en';
+                $translate_language = GetWebsiteName().$website_default_language;
+                $language_code = $website_default_language;
           }
           $translationFilePath = URL::to('resources/lang/' . $translate_language . '.json');
           $context = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
@@ -24209,6 +24635,21 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
+        // Only for Play Store Testing 
+        if( $request->mobile_number == "8077744443"){
+
+          $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->update([
+            "otp" => "1234",
+            "password" => Hash::make("1234"),
+          ]);
+
+          return response()->json( [
+            'status'    => 'true',
+            'message'    => Str::title('Otp verify successfully !!'),
+          ], 200); 
+
+        }
+
         $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
@@ -24236,6 +24677,212 @@ public function TV_login(Request $request)
         );
 
       }
+      return response()->json($response, 200);
+    }
+
+
+public function SendVideoPushNotification(Request $request)
+  {
+    
+    $user_id = $request->user_id;
+    $userId = $request->user_id;
+
+    $currentDate = Carbon::now();
+    $threeDaysAgo = $currentDate->subDays(5);
+
+    $videos = Video::where('publish_time', '>', $threeDaysAgo)
+    ->get();
+
+    $videos = Video::where('publish_time', '>', $threeDaysAgo)
+    ->whereNotIn('id', function($query) use ($userId) {
+         $query->select('socure_id')
+               ->from('notifications')
+               ->where('user_id', $userId)
+               ->where('socure_type', 'Video');
+     })
+    ->get();
+      if(count($videos) > 0){
+        foreach($videos as $key => $video){
+          $video_img = URL::to('/public/uploads/images/'.$video->player_image);
+          send_video_push_notifications('Notification From '. GetWebsiteName(),'Latest Video Available',$video->title,$video->id,$userId,$video_img);
+        }
+        $response = array(
+          'status'=>'true',
+          'message'=>'Notification Latest Video Available.',
+          // 'videos' => $videos
+        );
+
+      }else{
+        $response = array(
+          'status'=>'false',
+          'message'=>'Notification No Latest Video Available.',
+          // 'videos' => $videos
+        );
+      }
+    return response()->json($response, 200);
+  }
+
+
+  public function TimeZone( Request $request ){
+
+    try {
+
+        
+      $response = array(
+        "status"  => 'true' ,
+        "TimeZone_ID" => TimeZone::where('time_zone', $request->time_zone)->pluck('id')->first() ,
+        "TimeZone" => TimeZone::where('time_zone', $request->time_zone)->first() ,
+        "message" => "Retrieved Channels Videos Successfully" ,
+      );
+      
+    } catch (\Throwable $th) {
+        $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+      );
+    }
+      return response()->json($response, 200);
+
+  }
+
+  public function channel_epg(Request $request)
+  {
+    try {
+          $this->validate($request, [
+            'current_timezone'  => 'required' ,
+            'date' => 'required'
+          ]);
+
+          $default_vertical_image_url = default_vertical_image_url() ;
+          $default_horizontal_image_url = default_horizontal_image_url();
+          $current_timezone = $request->current_timezone;
+
+          $epg_channel_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->each(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
+
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
+              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+
+              $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::query()
+                                                  
+                                                  ->when( !is_null($request->date), function ($query) use ($request) {
+                                                      return $query->Where('choosed_date', $request->date);
+                                                  })
+
+                                                  ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($request) {
+
+                                                      $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                      $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
+
+                                                      $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
+
+                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+
+                                                      $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                      $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+
+                                                      $item['channel_name'] = AdminEPGChannel::where('id',$item->channe_id)->pluck('name')->first();
+                                                      return $item;
+                                                  });
+
+                                                  $item['ChannelVideoScheduler']->each(function ($scheduleItem, $key) use ($item) {
+
+                                                      if ($key < $item['ChannelVideoScheduler']->count() - 1) {
+                                                          $scheduleItem['up_next']  = $item['ChannelVideoScheduler'][$key + 1]->socure_title;
+                                                      }else{
+                                                          $scheduleItem['up_next'] = null;
+                                                      }
+                                                  });
+
+              return $item;
+          });
+
+          $response = array(
+            "status"  => 'true' ,
+            "message" => "Retrieved Channels EPG Successfully" ,
+            "epg_channel_data" => $epg_channel_data,
+          );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        "status"  => 'false' ,
+        "message" => $th->getMessage(),
+      );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+
+  public function StorageSetting(Request $request)
+  {
+    try {
+    
+      $response = array(
+        "status"  => 'true' ,
+        "message" => "Retrieved Storage Setting Successfully" ,
+        "StorageSetting" => StorageSetting::first(),
+      );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+        );
+    }
+
+      return response()->json($response, 200);
+
+    }
+
+
+    public function GeoIPLocation( Request $request ){
+
+      try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            $response = array(
+              "status"  => 'true' ,
+              "message" => "GeoIP Location" ,
+              'userIp'  => $userIp ,
+            );
+
+          }catch (\Throwable $th) {
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $th->getMessage(),
+          );
+        }
+          return response()->json($response, 200);
+    }
+
+    public function Ads_variables( ){
+
+      try {
+
+        $response = array(
+          "status"  => 'true' ,
+          "message" => "Retrieved Ads Variables" ,
+          'ads_variables'  => Adsvariables::all() ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+
       return response()->json($response, 200);
     }
 }

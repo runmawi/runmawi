@@ -58,6 +58,10 @@ use Session;
 use App\ModeratorsUser;
 use App\EmailTemplate;
 use Mail;
+use App\Livestream;
+use App\ModeratorSubscription;
+use App\Audio;
+use App\SiteTheme;
 
 class CPPSeriesController extends Controller
 {
@@ -66,6 +70,12 @@ class CPPSeriesController extends Controller
      *
      * @return Response
      */
+
+    public function __construct()
+    {
+        $this->enable_moderator_Monetization = SiteTheme::pluck('enable_moderator_Monetization')->first();
+    }
+ 
     public function index(Request $request)
     {
 
@@ -1289,6 +1299,46 @@ class CPPSeriesController extends Controller
 
     public function manage_season($series_id, $season_id)
     {
+
+        $user = Session::get('user');
+        $user_id = $user->id;
+
+        if($this->enable_moderator_Monetization == 1){
+
+            $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+                
+            if($ModeratorSubscription == 0 ){
+
+                return View::make('moderator.becomeSubscriber');
+
+
+            }elseif($ModeratorSubscription > 0){
+
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ModeratorSubscription) ){
+
+                    $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
+                    $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
+                        if($upload_episode_limit <= $uploaded_Episodes){
+                        return View::make('moderator.expired_upload');
+                    }
+                }
+
+                }else{
+                    return View::make('moderator.becomeSubscriber');
+
+                }
+                
+            }else{
+                return View::make('moderator.becomeSubscriber');
+
+            }
+        }
         $series = Series::find($series_id);
         // dd($series_id);
         $episodes = Episode::where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->orderBy('episode_order')
@@ -1797,6 +1847,62 @@ class CPPSeriesController extends Controller
         $value = array();
         $user = Session::get('user');
         $user_id = $user->id;
+
+        if($this->enable_moderator_Monetization == 1){
+    
+        $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
+            
+            if($ModeratorSubscription == 0 ){
+
+                $value = [];
+                $value['total_uploads'] = 0;
+                return $value;
+
+            }elseif($ModeratorSubscription > 0){
+
+                $ModeratorSubscription = ModeratorSubscription::where('moderator_subscriptions.user_id', '=', $user_id)->orderBy('moderator_subscriptions.created_at', 'DESC')
+                                        ->join('moderator_subscription_plans', 'moderator_subscription_plans.plan_id', '=', 'moderator_subscriptions.stripe_plan')
+                                        ->first(); 
+
+                if( !empty($ModeratorSubscription) ){
+
+                    $upload_episode_limit = $ModeratorSubscription->upload_episode_limit;
+                    $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+                    
+                    if($upload_episode_limit != null && $upload_episode_limit != 0){
+                        if($upload_episode_limit <= $uploaded_Episodes){
+                            $value = [];
+                            $value['total_uploads'] = 0;
+                            return $value;
+                        }
+                    }
+
+                }else{
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+                }
+                
+            }else{
+                        $value = [];
+                        $value['total_uploads'] = 0;
+                        return $value;
+            }
+        }
+        // if($ModeratorSubscription == 0 ){
+        //     $uploaded_videos = Video::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Audios = Audio::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Livestreams = Livestream::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $uploaded_Episodes = Episode::where('uploaded_by','CPP')->where('user_id', '=', $user_id)->count();
+        //     $total_uploads = $uploaded_videos + $uploaded_Audios + $uploaded_Livestreams + $uploaded_Episodes ;
+        //     if($total_uploads >= 30){
+            
+        //         $value = [];
+        //         $value['total_uploads'] = 0;
+        //         return $value;
+        //     }
+        // }
+
         $data = $request->all();
         $series_id = $data['series_id'];
         $season_id = $data['season_id'];

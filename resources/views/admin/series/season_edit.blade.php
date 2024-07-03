@@ -9,6 +9,11 @@
 <!-- JS -->
 <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 <style type="text/css">
+
+
+    .dz-error-mark {
+        
+    }
     .has-switch .switch-on label {
         background-color: #fff;
         color: #000;
@@ -71,12 +76,31 @@
         display: inline-block;
         cursor: pointer;
     }
+    .dropzone .dz-preview .dz-progress{overflow:visible;top:82%;border:none;}
+    .dropzone .dz-preview.dz-complete .dz-progress{opacity: 1;}
+    p#cancel-message {padding: .75rem 1.25rem;margin-bottom: 1rem;border: 1px solid transparent; border-radius: .25rem;color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; position: absolute;right: 0;}
+
+    body.dark input{color: <?php echo GetAdminDarkText(); ?>;}
+	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>;}
+	body.light input{color: <?php echo GetAdminLightText(); ?>;}
+
 </style>
 <style>
     .admin-section-title {
         height: 500px; /* Set a fixed height for your container */
         overflow-y: auto; /* Enable vertical scrolling */
     }
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
+    }
+    .dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
 </style>
 
 @section('css')
@@ -86,6 +110,32 @@
 
 
 <div id="content-page" class="content-page">
+
+    <!-- BREADCRUMBS -->
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="breadcrumb-item">{{ __("Manage Episodes") }}</li>
+               
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <p id="cancel-message" class="alert alert-danger" style="display:none;"></p>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -102,12 +152,59 @@
             </div>
             <div class="clear"></div>
             <div id="episode_uploads">
-                <div class="content file">
-                    <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
-                    <!-- Dropzone -->
-                    <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
-                    <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
-                </div>
+                @if(@$theme_settings->enable_bunny_cdn == 1)
+
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                    <!-- videolibrary -->
+                    <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                            <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select> 
+                    @else
+                        <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                     @endif 
+                    <br>
+                    <div class="content file UploadEnable">
+                            <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
+                            <!-- Dropzone -->
+                            <form action="{{ $post_dropzone_url }}" method="post" class="dropzone" id="my-dropzone"></form>
+                            <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
+                        </div>
+
+                        <!-- Dropzone template -->
+                        <div id="template" style="display: none;">
+                            <div class="dz-preview dz-file-preview">
+                                <div class="dz-image"><img data-dz-thumbnail/></div>
+                                <div class="dz-details">
+                                    <button class="dz-cancel" type="button">Cancel</button>
+                                    <div class="dz-filename"><span data-dz-name></span></div>
+                                    <div class="dz-size" data-dz-size></div>
+                                    <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress></span><span class="dz-upload-percentage" id="upload-percentage">0%</span></div>
+                                    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                                    <div class="dz-success-mark">
+                                         <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <title>Check</title> 
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> 
+                                                <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path> 
+                                            </g> 
+                                        </svg>
+                                    </div>
+                                    <div class="dz-error-mark"> 
+                                        <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+                                            <title>Error</title> 
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> 
+                                                <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475"> <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path> 
+                                                </g> 
+                                            </g> 
+                                        </svg> 
+                                    </div>
+                                
+                                </div>
+                               
+                            </div>
+                        </div>
             </div>
 
             
@@ -644,27 +741,43 @@
                 </form>
             </div>
             <div class="clear"></div>
-            <!-- Manage Season -->
+            <!-- Manage Episode Order -->
+                <div class="float-right">
+                    <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
+                    <input type="text" id="searchInput" placeholder="Search...">
+                </div>
+
             <div class="p-4">
 
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
+  
                 <div class="admin-section-title">
-                    <div class="row">
+                    <div class="row ml-0"  id="orderepisode">
 
-                        <table class="table table-bordered iq-card text-center" id="categorytbl">
+                        <table class="table table-bordered iq-card text-center">
+                            <thead>
                             <tr class="table-header r1">
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
+                                <th><label>Episode Duration</label></th>
                                 <th><label>Slider</label></th>
                                 <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
+                            </thead>
 
+                        <tbody id="categorytbl">
                             @foreach($episodes as $key => $episode)
-                                <tr id="{{ $episode->id }}">
+                                <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
+                                <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
+                                <!-- <tr id="{{ $episode->id }}"> -->
+                                    <tr id="episode-{{ $episode->id }}">
+                                    <td><input type="checkbox" class="episode-checkbox" value="{{ $episode->id }}"></td>
                                     <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
                                     <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                    <td valign="bottom"><p>@if(!empty($episode->duration)){{ gmdate('H:i:s', $episode->duration) }}@endif</p></td>
                                     <td valign="bottom">
                                         <div class="mt-1">
                                             <label class="switch">
@@ -688,6 +801,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        </tbody>
                         </table>
 
                         <div class="clear"></div>
@@ -698,9 +812,20 @@
             </div>
         </div>
     </div>
-
+    <style>
+       
+       .dz-cancel {
+           color: #FF0000;
+           background: none;
+           border: none;
+           padding: 5px;
+       }
+       .dz-cancel:hover {
+           text-decoration: underline;
+       }
+   </style>
     @section('javascript')
-
+    
     <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
@@ -709,7 +834,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-    <script>
+   
+   <script>
+
+
+document.getElementById('select-all').addEventListener('change', function() {
+        let checkboxes = document.querySelectorAll('.episode-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    document.getElementById('delete-selected').addEventListener('click', function() {
+        let selected = [];
+        document.querySelectorAll('.episode-checkbox:checked').forEach(checkbox => {
+            selected.push(checkbox.value);
+        });
+
+        if(selected.length > 0) {
+            if(confirm('Are you sure you want to delete the selected episodes?')) {
+                fetch("{{ route('admin.episodes.deleteSelected') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ids: selected})
+                }).then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        selected.forEach(id => {
+                            document.getElementById('episode-' + id).remove();
+                        });
+                    } else {
+                        alert('An error occurred while deleting episodes.');
+                    }
+                });
+            }
+        } else {
+            alert('No episodes selected.');
+        }
+    });
+
+            $(document).ready(function(){
+                $("#searchInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#categorytbl tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+
+        var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+         if(enable_bunny_cdn == 1){
+            $('.UploadEnable').hide();
+         }
+
+            $('#UploadlibraryID').change(function(){
+               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+               // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
 
         // $("#intro_start_time").datetimepicker({
         //     format: "hh:mm ",
@@ -724,7 +910,7 @@
         //     format: "hh:mm ",
         // });
     </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -804,7 +990,9 @@
                 type: "post",
                  data: {
                         _token: '{{ csrf_token() }}',
-                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val()
+                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
         
                     },        success: function(value){
                         console.log(value);
@@ -1065,191 +1253,299 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
+    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    // alert('test');
+    $("#buttonNext").hide();
+    $("#episode_video_data").hide();
+    $("#submit").hide();
+    var series_id = '<?= $series->id ?>';
+    var season_id = '<?= $season_id ?>';
+    Dropzone.autoDiscover = false;
+        var MAX_RETRIES = 3;
         var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-        // alert('test');
-        $("#buttonNext").hide();
-        $("#episode_video_data").hide();
-        $("#submit").hide();
-        var series_id = '<?= $series->id ?>' ;
-        var season_id = '<?= $season_id ?>' ;
 
-        Dropzone.autoDiscover = false;
-        var myDropzone = new Dropzone(".dropzone", {
-            //   maxFilesize: 900,  // 3 mb
-            maxFilesize: 15000,
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
-        });
-        myDropzone.on("sending", function (file, xhr, formData) {
-            formData.append('series_id',series_id);
-            formData.append('season_id',season_id);
-            formData.append("_token", CSRF_TOKEN);
-            // console.log(value)
-            this.on("success", function (file, value) {
-                // console.log(value);
-                $("#buttonNext").show();
-                $("#episode_id").val(value.episode_id);
-                $("#title").val(value.episode_title);
-                $("#duration").val(value.episode_duration);
+        function handleError(e, t) {
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
+            }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
             });
+        }
+    }
+
+        var myDropzone = new Dropzone(".dropzone", { 
+            parallelUploads: 10,
+            maxFilesize: 15000000000000000, // 15000MB
+            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            previewTemplate: document.getElementById('template').innerHTML,
+            init: function() {
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append('series_id', series_id);
+                    formData.append('season_id', season_id);
+                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("_token", CSRF_TOKEN);
+
+                    // Initialize retry counter and canceled flag if they don't exist
+                    if (!file.retryCount) {
+                        file.retryCount = 0;
+                    }
+                    if (!file.userCanceled) {
+                        file.userCanceled = false;
+                    }
+
+                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                        console.log("Cancel button clicked for file: " + file.name);
+                        file.userCanceled = true; 
+                        xhr.abort();
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                        // alert("Upload canceled for file: " + file.name);
+                        handleError(file, "Upload canceled by user.");
+                        var cancelMessage = "Upload canceled for file: " + file.name;
+                        var messageElement = document.getElementById('cancel-message');
+                        messageElement.innerHTML = cancelMessage;
+                        messageElement.style.display = 'block'; 
+                        setTimeout(function() {
+                            messageElement.style.display = 'none'; 
+                        }, 5000);
+                    });
+                });
+                this.on("uploadprogress", function(file, progress) {
+                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+                    progressElement.textContent = Math.round(progress) + '%';
+                });
+                
+                this.on("success", function (file, value) {
+                    if (value.error == 3) {
+                        console.log(value.error);
+                        alert("File not uploaded. Choose Library!");
+                        location.reload();
+                    } else {
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.episode_id);
+                        $("#title").val(value.episode_title);
+                        $("#duration").val(value.episode_duration);
+                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
+                    }
+                });
+
+                this.on("error", function(file, response) {
+                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
+                        file.retryCount++;
+                        setTimeout(function() {
+                            myDropzone.removeFile(file);  // Remove the failed file from Dropzone
+                            myDropzone.addFile(file);     // Requeue the file for upload
+                        }, 1000); 
+                    } else if (file.userCanceled) {
+                        console.log("File upload canceled by user: " + file.name);
+                    } else {
+                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                    }
+                });
+            }
         });
-        $("#buttonNext").click(function () {
-         	$('#bunnycdnvideo').hide();
-            $("#episode_uploads").hide();
-            $('#optionradio').hide();
-            $("#Next").hide();
-            $("#episode_video_data").show();
-            $("#submit").show();
-            
-                $.ajax({
-                        url: '{{ URL::to('admin/episode/extractedimage') }}',
-                        type: "post",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            episode_id: $('#episode_id').val()
-                        },
-                        success: function(value) {
-                            // console.log(value.ExtractedImage.length);
 
-                            if (value && value.ExtractedImage.length > 0) {
-                                $('#ajaxImagesContainer').empty();
-                                $('#ImagesContainer').empty();
-                                var ExtractedImage = value.ExtractedImage;
-                                var ExtractedImage = value.ExtractedImage;
+    // Dropzone.autoDiscover = false;
+    // var myDropzone = new Dropzone(".dropzone", {
+    //     //   maxFilesize: 900,  // 3 mb
+    //     parallelUploads: 10,
+    //     maxFilesize: 15000,
+    //     acceptedFiles: "video/mp4,video/x-m4v,video/*",
+    // });
 
-                                var previouslySelectedElement = null;
-                                var previouslySelectedVideoImag = null;
-                                var previouslySelectedTVImage = null;
-                                
-                                ExtractedImage.forEach(function(Image,index ) {
-                                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
-                                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
-                                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+    // myDropzone.on("sending", function (file, xhr, formData) {
+    //     formData.append('series_id', series_id);
+    //     formData.append('season_id', season_id);
+    //     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+    //     formData.append("_token", CSRF_TOKEN);
+    //     // console.log(value)
+    // });
 
-                                    imgElement.click(function() {
-                                        $('.ajax-image').css('border', 'none');
-                                        if (previouslySelectedElement) {
-                                            previouslySelectedElement.css('border', 'none');
-                                        }
-                                        imgElement.css('border', '2px solid red');
-                                        var clickedImageUrl = Image.image_path;
+    // // Add the event listener for upload progress
+    // myDropzone.on("uploadprogress", function(file, progress) {
+    //     var progressElement = document.getElementById('upload-percentage');
+    //     progressElement.textContent = Math.round(progress) + '%';
+    // });
 
-                                        var SelectedImageUrl = Image.image_original_name;
-                                        console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
-                                        previouslySelectedElement = $(this);
+    // myDropzone.on("success", function (file, value) {
+    //     if (value.error == 3) {
+    //         console.log(value.error);
+    //         alert("File not uploaded Choose Library!");
+    //         location.reload();
+    //     }
+    //     // console.log(value);
+    //     $("#buttonNext").show();
+    //     $("#episode_id").val(value.episode_id);
+    //     $("#title").val(value.episode_title);
+    //     $("#duration").val(value.episode_duration);
+    // });
 
-                                        $('#selectedImageUrlInput').val(SelectedImageUrl);
-                                    });
+    $("#buttonNext").click(function () {
+        $('#bunnycdnvideo').hide();
+        $("#episode_uploads").hide();
+        $('#optionradio').hide();
+        $("#Next").hide();
+        $("#episode_video_data").show();
+        $("#submit").show();
 
-                                    if (index === 0) {
-                                        imgElement.click();
-                                    }
-                                    $('#ajaxImagesContainer').append(imgElement);
+        $.ajax({
+            url: '{{ URL::to('admin/episode/extractedimage') }}',
+            type: "post",
+            data: {
+                _token: '{{ csrf_token() }}',
+                episode_id: $('#episode_id').val()
+            },
+            success: function(value) {
+                // console.log(value.ExtractedImage.length);
 
-                                    ImagesContainer.click(function() {
-                                        $('.video-image').css('border', 'none');
-                                        if (previouslySelectedVideoImag) {
-                                            previouslySelectedVideoImag.css('border', 'none');
-                                        }
-                                        ImagesContainer.css('border', '2px solid red');
-                                        
-                                        var clickedImageUrl = Image.image_path;
+                if (value && value.ExtractedImage.length > 0) {
+                    $('#ajaxImagesContainer').empty();
+                    $('#ImagesContainer').empty();
+                    var ExtractedImage = value.ExtractedImage;
+                    var ExtractedImage = value.ExtractedImage;
 
-                                        var VideoImageUrl = Image.image_original_name;
-                                        console.log('VideoImageUrl Image URL:', VideoImageUrl);
-                                        previouslySelectedVideoImag = $(this);
+                    var previouslySelectedElement = null;
+                    var previouslySelectedVideoImag = null;
+                    var previouslySelectedTVImage = null;
 
-                                        $('#videoImageUrlInput').val(VideoImageUrl);
-                                    });
-                                    if (index === 0) {
-                                        ImagesContainer.click();
-                                        }
-                                    $('#ImagesContainer').append(ImagesContainer);
+                    ExtractedImage.forEach(function(Image, index) {
+                        var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                        var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                        var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
 
-                                    TVImagesContainer.click(function() {
-                                        $('.tv-video-image').css('border', 'none');
-                                        if (previouslySelectedTVImage) {
-                                            previouslySelectedTVImage.css('border', 'none');
-                                        }
-                                        TVImagesContainer.css('border', '2px solid red');
-                                        
-                                        var clickedImageUrl = Image.image_path;
-
-                                        var TVImageUrl = Image.image_original_name;
-                                        previouslySelectedTVImage = $(this);
-
-                                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
-                                    });
-                                    
-                                    if (index === 0) {
-                                        TVImagesContainer.click();
-                                    }
-                                    $('#TVImagesContainer').append(TVImagesContainer);
-
-                                });
-                            } else {
-                                    var SelectedImageUrl = '';
-
-                                    $('#selectedImageUrlInput').val(SelectedImageUrl);
-                                    $('#videoImageUrlInput').val(SelectedImageUrl);
-                                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-                            //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                        imgElement.click(function() {
+                            $('.ajax-image').css('border', 'none');
+                            if (previouslySelectedElement) {
+                                previouslySelectedElement.css('border', 'none');
                             }
-                        },
-                        error: function(error) {
+                            imgElement.css('border', '2px solid red');
+                            var clickedImageUrl = Image.image_path;
 
-                            var SelectedImageUrl = '';
+                            var SelectedImageUrl = Image.image_original_name;
+                            console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                            previouslySelectedElement = $(this);
 
                             $('#selectedImageUrlInput').val(SelectedImageUrl);
-                            $('#videoImageUrlInput').val(SelectedImageUrl);
-                            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-                            console.error(error);
+                        });
+
+                        if (index === 0) {
+                            imgElement.click();
                         }
+                        $('#ajaxImagesContainer').append(imgElement);
+
+                        ImagesContainer.click(function() {
+                            $('.video-image').css('border', 'none');
+                            if (previouslySelectedVideoImag) {
+                                previouslySelectedVideoImag.css('border', 'none');
+                            }
+                            ImagesContainer.css('border', '2px solid red');
+
+                            var clickedImageUrl = Image.image_path;
+
+                            var VideoImageUrl = Image.image_original_name;
+                            console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                            previouslySelectedVideoImag = $(this);
+
+                            $('#videoImageUrlInput').val(VideoImageUrl);
+                        });
+                        if (index === 0) {
+                            ImagesContainer.click();
+                        }
+                        $('#ImagesContainer').append(ImagesContainer);
+
+                        TVImagesContainer.click(function() {
+                            $('.tv-video-image').css('border', 'none');
+                            if (previouslySelectedTVImage) {
+                                previouslySelectedTVImage.css('border', 'none');
+                            }
+                            TVImagesContainer.css('border', '2px solid red');
+
+                            var clickedImageUrl = Image.image_path;
+
+                            var TVImageUrl = Image.image_original_name;
+                            previouslySelectedTVImage = $(this);
+
+                            $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                        });
+
+                        if (index === 0) {
+                            TVImagesContainer.click();
+                        }
+                        $('#TVImagesContainer').append(TVImagesContainer);
+
                     });
-                
+                } else {
+                    var SelectedImageUrl = '';
+
+                    $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                    //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                }
+            },
+            error: function(error) {
+
+                var SelectedImageUrl = '';
+
+                $('#selectedImageUrlInput').val(SelectedImageUrl);
+                $('#videoImageUrlInput').val(SelectedImageUrl);
+                $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                console.error(error);
+            }
         });
-    </script>
+
+    });
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		
 <script type="text/javascript">
-    $(function () {
-        $("#categorytbl").sortable({
-            items: 'tr:not(tr:first-child)',
-            cursor: 'pointer',
-            axis: 'y',
-            dropOnEmpty: false,
-            start: function (e, ui) {
-                ui.item.addClass("selected");
-            },
-            stop: function (e, ui) {
-                ui.item.removeClass("selected");
-                var selectedData = new Array();
-                $(this).find("tr").each(function (index) {
-                    if (index > 0) {
-                        $(this).find("td").eq(2).html(index);
-                        selectedData.push($(this).attr("id"));
-                    }
-                });
-                updateOrder(selectedData)
-            }
-        });
+   $(function () {
+    $("#categorytbl").sortable({
+        items: 'tr:not(tr:first-child)',
+        cursor: 'pointer',
+        axis: 'y',
+        dropOnEmpty: false,
+        start: function (e, ui) {
+            ui.item.addClass("selected");
+        },
+        stop: function (e, ui) {
+            ui.item.removeClass("selected");
+            var selectedData = [];
+            $(this).find("tr").each(function (index) {
+                if (index > 0) { // Skip header row
+                    $(this).find("td").eq(1).html(index); // Update the episode order display
+                    selectedData.push($(this).attr("id").replace('episode-', '')); // Get episode ID
+                }
+            });
+            var seriesid = $('.seriesid').val();
+            var season_id = $('.season_id').val();
+            updateOrder(selectedData, seriesid, season_id);
+        }
     });
+});
 
-    function updateOrder(data) {
-        
-        $.ajax({
-            url:'{{  URL::to('admin/episode_order') }}',
-            type:'post',
-            data:{
-                    position:data,
-                     _token :  "{{ csrf_token() }}",
-                    },
-            success:function(){
-                // alert('Position changed successfully.');
-                location.reload();
-            }
-        })
-    }
+function updateOrder(data, seriesid, season_id) {
+    $.ajax({
+        url: '{{ URL::to('admin/episode_order') }}',
+        type: 'post',
+        data: {
+            position: data,
+            seriesid: seriesid,
+            season_id: season_id,
+            _token: "{{ csrf_token() }}",
+        },
+        success: function (data) {
+            $("#orderepisode").html(data);
+        },
+        error: function (xhr, status, error) {
+            // alert('An error occurred: ' + xhr.responseText);
+        }
+    });
+}
 </script>
 
 <script>
@@ -1303,6 +1599,7 @@
 	}
 	}
 </script>
+
 
 @include('admin.series.search_tag'); 
 

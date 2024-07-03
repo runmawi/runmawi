@@ -1,14 +1,14 @@
 <?php 
     $check_Kidmode = 0 ;
 
-    $data = App\VideoCategory::query()->limit(15)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+    $data = App\VideoCategory::query()->limit(15)->whereHas('category_videos', function ($query) use ($check_Kidmode,$videos_expiry_date_status,$getfeching) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+        if ($getfeching != null && $getfeching->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
         
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -17,17 +17,17 @@
         }
     })
 
-    ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date')
+    ->with(['category_videos' => function ($videos) use ($check_Kidmode,$videos_expiry_date_status,$getfeching) {
+        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
             ->where('videos.draft', 1);
 
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+        if ($getfeching != null && $getfeching->geofencing == 'ON') {
             $videos->whereNotIn('videos.id', Block_videos());
         }
 
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -39,14 +39,14 @@
     }])
     ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
     ->where('video_categories.in_home', 1)
-    ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+    ->whereHas('category_videos', function ($query) use ($check_Kidmode,$videos_expiry_date_status,$getfeching) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+        if ($getfeching != null && $getfeching->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
 
-        if (videos_expiry_date_status() == 1 ) {
+        if ($videos_expiry_date_status == 1 ) {
             $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
@@ -86,11 +86,18 @@
 
                                 @foreach ($video_category->category_videos as $videos )
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="Videos">
-                                                
-                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                @if ( $multiple_compress_image == 1)
+                                                <img class="img-fluid position-relative" alt="{{ $videos->title }}" src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') }}" >
+                                                @else
+                                                    <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="Videos">
+                                                @endif  
+
+                                                @if ($videos_expiry_date_status == 1 && optional($videos)->expiry_date)
                                                     <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                                 @endif
                                             
@@ -100,7 +107,7 @@
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
+                            <ul id="trending-slider" class= "{{ 'theme4-slider category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" style="display:none;">
                                 @foreach ($video_category->category_videos as $key => $videos )
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -108,31 +115,40 @@
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                                @if ($videos_expiry_date_status == 1 && optional($videos)->expiry_date)
                                                                     <ul class="vod-info">
                                                                         <li>{{ "Expiry In ". Carbon\Carbon::parse($videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                                     </ul>
                                                                 @endif
 
                                                                 @if ( optional($videos)->description )
-                                                                    <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
+                                                                    <div class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</div>
                                                                 @endif
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-videos-based-category-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-videos-based-category-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos">
+                                                                
+                                                                @if ( $multiple_compress_image == 1)
+                                                                    <img  alt="" width="100%" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}"
+                                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
+                                                                        {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
+                                                                        {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+
+                                                                @else
+                                                                    <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}" alt="Videos">
+                                                                @endif 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -160,7 +176,16 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="Videos" width="100%">
+                                                                                                            
+                                            @if ( $multiple_compress_image == 1)
+                                                <img width="100%" alt="" width="100%" src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}"
+                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$videos->responsive_player_image.' 860w') }},
+                                                    {{ URL::to('public/uploads/Tabletimages/'.$videos->responsive_player_image.' 640w') }},
+                                                    {{ URL::to('public/uploads/mobileimages/'.$videos->responsive_player_image.' 420w') }}" >
+
+                                            @else
+                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : $default_horizontal_image_url }}" alt="Videos">
+                                            @endif
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -201,9 +226,9 @@
     $(document).ready(function() {
 
         $('.category-videos-slider').slick({
-            slidesToShow: 6,
-            slidesToScroll: 4,
-            arrows: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.category-videos-slider-nav',
@@ -211,13 +236,13 @@
 
         $('.category-videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.category-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
-            infinite: false,
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
+            infinite: true,
             focusOnSelect: true,
             responsive: [
                 {
@@ -251,6 +276,10 @@
              let category_key_id = $(this).attr("data-key-id");
              $('.category-videos-slider').hide();
              $('.category-videos-' + category_key_id).show();
+        });
+
+        $('body').on('click', '.slick-arrow', function() {
+            $('.category-videos-slider').hide();
         });
 
         $('body').on('click', '.drp-close', function() {

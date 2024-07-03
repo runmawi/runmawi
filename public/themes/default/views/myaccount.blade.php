@@ -755,7 +755,8 @@ cursor: pointer;
                               <span id="user_img" class="collapse">
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
+                                                <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" accept="image/png, image/gif, image/jpeg, image/webp" onchange="validateFileType(this)" required/>
+                                                <span id="file-type-validation-msg" style="color:red;"></span>
                                           </div>
                                        <div class="col-md-4">
                                              <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
@@ -795,6 +796,18 @@ cursor: pointer;
                                        </div>
                               </span>
                            </form>
+
+                           {{-- Logged User Device --}}
+                           <hr style="border:0.5px solid #fff;">
+                           <a href="{{ URL::to('my-logged-devices') }}"  type="button" class="text-white font-size-13" >
+                           <div class="row align-items-center">
+                              <div class="col-md-8">
+                                 <span class="text-light font-size-13">{{ __('Manage Logged Device') }}</span>
+                              </div>
+                              <div class="col-md-4 text-right">
+                                    <!-- <a href="{{ URL::to('my-logged-devices') }}"  type="button" class="text-white font-size-13" >{{ __('Logged Device') }}</a> -->
+                              </div>
+                           </div></a>
 
                            {{-- DOB --}}
                            <hr style="border:0.5px solid #fff;">
@@ -1565,6 +1578,22 @@ cursor: pointer;
 
           <!-- back-to-top End -->
    
+<script>
+function validateFileType(input) {
+const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+for (let i = 0; i < input.files.length; i++) {
+   const file = input.files[i];
+   if (!allowedExtensions.exec(file.name)) {
+   document.getElementById('file-type-validation-msg').textContent = '*Incorrect format. Please upload png,jpg,webp or gif.';
+   input.value = ''; // Reset the input value to allow the user to upload again
+   return false;
+   }
+}
+document.getElementById('file-type-validation-msg').textContent = ''; // Clear the message if all files are valid
+return true;
+}
+</script>
+
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();

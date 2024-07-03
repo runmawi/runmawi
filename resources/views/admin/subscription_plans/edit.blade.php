@@ -61,12 +61,21 @@
 							<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
                         @endif
 				    @endForeach -->
-                           
                     <div class="form-group">
                         <label>Video Quality:</label>
                         <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
                     </div> 
                            
+                    <div class="form-group">
+                        <label>Billing Interval:</label>
+                        <input type="text" id="billing_interval" name="billing_interval"  value="{{ $edit_plan[0]->billing_interval }}" class="form-control" placeholder="Billing Interval">
+                    </div> 
+                           
+                    <div class="form-group">
+                        <label> Billing Type:</label>
+                        <input type="text" id="billing_type" name="billing_type" value="{{ $edit_plan[0]->billing_type }}" class="form-control" placeholder="Billing Type">
+                    </div>
+                    
                     <div class="form-group">
                         <label> Price ( {{ @$allCurrency->symbol }} ):</label>
                         <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
@@ -79,6 +88,11 @@
                         One Time Payment  <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
                         Recurring   <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
                     </div> 
+
+                    <div class="form-group">
+                        <label>Days :</label>
+                        <input type="text" id="days" name="days"  value="{{ $edit_plan[0]->days }}" class="form-control" placeholder="Days">
+                    </div>  
 
                     <div class="form-group">
                         <label>Resolution :</label>

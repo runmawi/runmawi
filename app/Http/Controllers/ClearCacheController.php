@@ -59,6 +59,9 @@ class ClearCacheController extends Controller
         try {
             Artisan::call('cache:clear');
             Artisan::call('view:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
+
             return response()->json(['message'=>"true"]);
 
         } catch (\Throwable $th) {

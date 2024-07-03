@@ -52,7 +52,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
       }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video { position: relative; }
-    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
+    header#main-header{position: absolute !important;}
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 13%; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
+    .my-video.video-js .vjs-big-play-button{top: 52%; left: 49%;}
 </style>
 
 @if (Session::has('message'))
@@ -77,14 +79,33 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
-                        <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
+
+                        <button class="custom-skip-forward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>  
+
+                        <button class="custom-skip-backward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>
+                        <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
                             muted="muted" preload="yes" autoplay="autoplay"
                             poster="<?= $episode_details->Player_thumbnail ?>">
                             <source src="<?= $episode_details->Episode_url ?>"
                                 type="<?= $episode_details->Episode_player_type ?>">
+
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                                    @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
+                                        @foreach ($episodesubtitles as $episodesubtitles_file)
+                                            <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
+                                                srclang="{{ $episodesubtitles_file->sub_language }}"
+                                                label="{{ $episodesubtitles_file->shortcode }}" default>
+                                        @endforeach
+                                    @endif
+                                @endif
+                                
                         </video>
                     </div>
                 @else

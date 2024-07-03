@@ -175,7 +175,10 @@ class AdminDashboardController extends Controller
                         }
 
                         
-
+                        $terabytes = $spacedisk / 1024 / 1024; 
+                
+                        $space_disk = number_format($terabytes, 2) . " TB.";
+                        
                         // dd(intval($fileSize));
 
                         // $spaceavailable = $space_available * 1024; // space_available Convert TB to GB

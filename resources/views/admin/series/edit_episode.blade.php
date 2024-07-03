@@ -37,6 +37,15 @@
    grid-template-columns: repeat(5, calc(100% / 5));
 }
 
+.bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
+    }
+
 </style>
 
 
@@ -52,6 +61,32 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
+
+    <!-- BREADCRUMBS -->
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('admin/series-list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('admin/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+
+                    <li class="breadcrumb-item"><a class="black-text" href="{{ URL::to('admin/season/edit') . '/' . $series->id  . '/' . $episodes->season_id }}">{{ __('Manage Episodes') }} </a><i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i></li>
+                    <li class="breadcrumb-item">{{ __($episodes->title) }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -183,7 +218,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <label class="m-0"> Episode Description </label>
                         <p class="p1"> Add a description of the Episode below: </p> 
                         <div class="panel-body">
-					        <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+					        <textarea class="form-control" name="episode_description" id="summary-ckeditor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
                         </div>
                     </div>
                 </div>
@@ -217,6 +252,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                                 <option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
                                 <option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
                                 <option value="aws_m3u8" @if(!empty($episodes->type) && $episodes->type == 'aws_m3u8'){{ 'selected' }}@endif>AWS Upload Episode</option>
+                                <option value="bunny_cdn" @if(!empty($episodes->type) && $episodes->type == 'bunny_cdn'){{ 'selected' }}@endif>Bunny CDN Upload Episode</option>
                             </select>
                             <hr />
                         </div>
@@ -579,7 +615,16 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
+        <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+        <script>
+                 ClassicEditor
+                    .create( document.querySelector( '#summary-ckeditor' ) )
+                    .catch( error => {
+                        console.error( error );
+                    } );
+                    </script>
         
+        <script> 
 
         <script>
 

@@ -30,12 +30,14 @@
         color: <?php echo GetAdminDarkText(); ?> !important;
     }  */
 </style>
+
+
 <div class="container-fluid overflow-hidden">
     <div class="row">
         <div class="col-sm-12 ">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title">
+                    <h2 class="main-title">
                         <?php
                         if (!empty($category->home_genre)) {
                             echo __($category->home_genre);
@@ -43,11 +45,13 @@
                             echo __($category->name);
                         }
                         ?>
-                    </h4>
+                    </h2>
                 </a>
-                <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title"><?php echo('View all') ?>  </h4>
-                </a>
+                <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
+                    <a href="<?php echo URL::to('/category/') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
+                        <h2 class="main-title"><?php echo('View all') ?>  </h2>
+                    </a>
+                <?php endif; ?>  
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -128,7 +132,7 @@
 
                                 <div class="block-description">
                                 <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img class="img-fluid w-100" loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
+                                    <img class="img-fluid w-100" loading="lazyload" src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" alt="cate">
 
                                 
                                     
@@ -153,26 +157,6 @@
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?> -->
                                     </a>
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
-                                          }
-                                       ?>
-                                    </p>
-                                    <?php } ?>
-                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?> -->
 
 
                                     <div class="hover-buttons text-white">
@@ -331,7 +315,7 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                     height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>

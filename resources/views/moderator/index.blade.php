@@ -8,7 +8,7 @@
 </style>
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 <script src="category/videos/js/rolespermission.js"></script>
 
@@ -81,6 +81,20 @@
                             </div>
                         </div>
 
+                        <!-- <div class="col-md-6" >
+                            <label>{{ ucfirst(('Website Show IN')) }} </label>
+
+                                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                    <div style="color:red;">Off</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="show_in" id="show_in"  type="checkbox" @if( @$value->show_in == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div style="color:green;">On</div>
+                                </div>
+                            </div> -->
 
                         <div class="col-md-6" >
                             <div class="form-group row">
@@ -176,12 +190,24 @@
 });
 
 
+
 </script>
 
 @section('javascript')
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
+
+// $('#show_in').hide();
+
+// $('#user_role').change(function(){
+//         if($('#user_role').val() == "4"){
+//         $('#show_in').show();
+//         }else{
+//             $('#show_in').hide();
+//         }
+//     });
+    
 $('form[id="Moderator_form"]').validate({
 	rules: {
         username : 'required',

@@ -77,15 +77,15 @@
                         <?php } ?>
                     </div>
                     
-                    <div class="d-flex">
+                    <div class="d-flex col-6">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>" aria-label="android"><img class="apps1 w-100"  alt="apps1" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>" aria-label="ios"><img class="apps1 w-100"  alt="apps" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>" aria-label="androidtv"><img class="apps1 w-100"  alt="and" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
 
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <!-- <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script> -->
    <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
@@ -239,14 +239,16 @@
     }
 ?>
 
+<!-- JavaScript -->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
-<script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js" async></script> -->
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> -->
-<script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script>
+<!-- <script src="<?= URL::to('/') . '/assets/js/hls.js' ?>"></script> -->
 
 <script>
     function loadJS(u) {
@@ -259,7 +261,6 @@
         loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
     try {
@@ -271,9 +272,12 @@
             include 'footerPlayerScript.blade.php';
         }
     } catch (\Throwable $th) {
-        //throw $th;
+        // throw $th;
     }
 ?>
+
+<!-- Lazy load script -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.7/jquery.lazyload.js"></script> -->
 
 <script>
     if ('loading' in HTMLImageElement.prototype) {
@@ -288,7 +292,6 @@
         document.body.appendChild(script);
     }
 </script>
-
 <?php  
 $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
 if ($Prevent_inspect == 1) { ?>
@@ -332,4 +335,29 @@ if ($Prevent_inspect == 1) { ?>
             }
         });
     </script>
+
+<!-- scrolling performance -->
+<script>
+    jQuery.event.special.touchstart = {
+    setup: function( _, ns, handle ) {
+        this.addEventListener("touchstart", handle, { passive: !ns.includes("noPreventDefault") });
+    }
+    };
+    jQuery.event.special.touchmove = {
+        setup: function( _, ns, handle ) {
+            this.addEventListener("touchmove", handle, { passive: !ns.includes("noPreventDefault") });
+        }
+    };
+    jQuery.event.special.wheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("wheel", handle, { passive: true });
+        }
+    };
+    jQuery.event.special.mousewheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("mousewheel", handle, { passive: true });
+        }
+    };
+</script>
+
 <?php } ?>

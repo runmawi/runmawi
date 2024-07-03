@@ -38,6 +38,7 @@ class AdminTranslationLanguageController extends Controller
 
             $data = array(
                 'TranslationLanguage' => TranslationLanguage::get(),
+                'settings' => $settings,
             );
 
             return View::make('admin.languages.translation.index', $data);
@@ -55,6 +56,7 @@ class AdminTranslationLanguageController extends Controller
 
             $data = array(
                 'TranslationLanguage' => TranslationLanguage::where('id',$id)->first(),
+                'settings' => $settings,
             );
 
             return View::make('admin.languages.translation.edit', $data);
@@ -67,11 +69,16 @@ class AdminTranslationLanguageController extends Controller
     public function store(Request $request)
     {
       $input = $request->all();
+
       $TranslationLanguage = new TranslationLanguage;
       $TranslationLanguage->name = $input['name'];
       $TranslationLanguage->code = $input['code'];
       $TranslationLanguage->status = !empty($request->status) ?  1 : 0 ;
       $TranslationLanguage->save();
+
+      $settings = Setting::first();
+      $settings->website_default_language = !empty($request->website_default_language) ?  $input['code'] : 'en' ;
+      $settings->save();
 
       return Redirect::back();
  
@@ -93,6 +100,10 @@ class AdminTranslationLanguageController extends Controller
             $TranslationLanguage->status = !empty($request->status) ?  1 : 0 ;
             $TranslationLanguage->code = $request->code;
             $TranslationLanguage->save();
+
+            $settings = Setting::first();
+            $settings->website_default_language = !empty($request->website_default_language) ?  $request->code : 'en' ;
+            $settings->save();
 
             return Redirect::back()->with(['note' => 'successfully Updated', 'note_type' => 'success']);
 

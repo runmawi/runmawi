@@ -570,7 +570,8 @@ $settings  = App\Setting::first();?>
 	</div>
 	
 		<div class="row p-3">
-<table class="table table-bordered genres-table">
+
+<table class="table table-bordered genres-table" id="categorytbl">
 
 		<tr class="table-header">
 			<th>Seasons</th>
@@ -578,7 +579,7 @@ $settings  = App\Setting::first();?>
 			<th>Operation</th>
 			
 			@foreach($seasons as $key=>$seasons_value)
-			<tr>
+			<tr id="{{ $seasons_value->id }}">
 				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
@@ -605,7 +606,6 @@ $settings  = App\Setting::first();?>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-
 
 <script type="text/javascript">
    $ = jQuery;
@@ -731,16 +731,14 @@ $settings  = App\Setting::first();?>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     	
-        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
-        <script>
-        CKEDITOR.replace( 'summary-ckeditor', {
-            filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: 'form'
-        });
-
-
-        </script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+<script>
+         ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+			</script>
 
 <script>
 			
@@ -764,6 +762,48 @@ $('#submit-new-cat').click(function(){
 @section('javascript')
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		
+        <script type="text/javascript">
+			$(function () {
+				$("#categorytbl").sortable({
+					items: 'tr:not(tr:first-child)',
+					cursor: 'pointer',
+					axis: 'y',
+					dropOnEmpty: false,
+					start: function (e, ui) {
+						ui.item.addClass("selected");
+					},
+					stop: function (e, ui) {
+						ui.item.removeClass("selected");
+						var selectedData = new Array();
+						$(this).find("tr").each(function (index) {
+							if (index > 0) {
+								$(this).find("td").eq(2).html(index);
+								selectedData.push($(this).attr("id"));
+							}
+						});
+						updateOrder(selectedData)
+					}
+				});
+			});
+
+			function updateOrder(data) {
+				
+				$.ajax({
+					url:'<?= URL::to('admin/Series_Season_order');?>',
+					type:'post',
+					data:{position:data, _token : '{{ csrf_token() }}'},
+					success:function(){
+						alert('Position changed successfully.');
+						location.reload();
+					}
+				})
+			}
+		</script>
+
+
 <script>
 
 // 

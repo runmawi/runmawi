@@ -244,6 +244,28 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->Tv_Logged_User_List       = !empty($data['Tv_Logged_User_List']) ? '1' : '0';
 
+        $theme_settings->enable_channel_payment       = !empty($data['enable_channel_payment']) ? '1' : '0';
+
+        $theme_settings->enable_moderator_payment       = !empty($data['enable_moderator_payment']) ? '1' : '0';
+     
+        $theme_settings->enable_moderator_Monetization       = !empty($data['enable_moderator_Monetization']) ? '1' : '0';
+
+        $theme_settings->enable_channel_Monetization       = !empty($data['enable_channel_Monetization']) ? '1' : '0';
+
+        $theme_settings->signup_cpp_title = $request->signup_cpp_title ? $request->signup_cpp_title : null;
+        
+        $theme_settings->signup_channel_title = $request->signup_channel_title ? $request->signup_channel_title : null;
+        
+        $theme_settings->enable_logged_device       = !empty($data['enable_logged_device']) ? '1' : '0';
+
+        $theme_settings->enable_default_timezone       = !empty($data['enable_default_timezone']) ? '1' : '0';
+        
+        $theme_settings->enable_4k_conversion       = !empty($data['enable_4k_conversion']) ? '1' : '0';
+
+        $theme_settings->admin_videoupload_limit_count = $request->admin_videoupload_limit_count ? $request->admin_videoupload_limit_count : null;
+        
+        $theme_settings->admin_videoupload_limit_status       = !empty($data['admin_videoupload_limit_status']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

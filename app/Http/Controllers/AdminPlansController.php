@@ -479,6 +479,9 @@ class AdminPlansController extends Controller
             $plans->ios_product_id = $request->ios_product_id;
             $plans->ios_plan_price = $request->ios_plan_price;
             $plans->plan_content = $request->plan_content;
+            $plans->billing_interval = $request->billing_interval;
+            $plans->billing_type = $request->billing_type;
+            $plans->days = $request->days;
             // $plans->andriod_paystack_url = $request->andriod_paystack_url;
             $plans->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
             $plans->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;

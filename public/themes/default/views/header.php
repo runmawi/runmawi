@@ -1,17 +1,17 @@
 <head>
    <?php
       $Script = App\Script::pluck('header_script')->toArray();
-      // dd(($Script[2]));
-      $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    
       $theme = App\SiteTheme::first();      
+      $theme_mode = $theme->theme_mode;
 
-      $signin_header = App\SiteTheme::pluck('signin_header')->first();
-      
-      $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+      $settings = App\Setting::first();
+      @$translate_language = $settings->translate_language;
+      $website_default_language = $settings->translate_language ? $settings->translate_language : 'en';
 
-      @$translate_language = App\Setting::pluck('translate_language')->first();
-
-
+      $GetLightText = GetLightText();
+      $GetLightBg   = GetLightBg();  
+      $GetWebsiteName  = GetWebsiteName();
 
       if(Auth::guest()){
          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -19,9 +19,9 @@
          $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
 
          if(!empty($UserTranslation)){
-             $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+             $translate_language = $GetWebsiteName.$UserTranslation->translate_language;
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = $GetWebsiteName.@$website_default_language;
          }
      }else if(!Auth::guest()){
 
@@ -29,23 +29,23 @@
          if($subuser_id != ''){
              $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
              if(!empty($Subuserranslation)){
-                 $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+                 $translate_language = $GetWebsiteName.$Subuserranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = $GetWebsiteName.@$website_default_language;
              }
          }else if(Auth::user()->id != ''){
              $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
              if(!empty($UserTranslation)){
-                 $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                 $translate_language = $GetWebsiteName.$UserTranslation->translate_language;
              }else{
-                 $translate_language = GetWebsiteName().'en';
+                 $translate_language = $GetWebsiteName.@$website_default_language;
              }
          }else{
-             $translate_language = GetWebsiteName().'en';
+             $translate_language = $GetWebsiteName.@$website_default_language;
          }
 
      }else{
-         $translate_language = GetWebsiteName().'en';
+         $translate_language = $GetWebsiteName.@$website_default_language;
      }
 
       \App::setLocale(@$translate_language);
@@ -71,9 +71,10 @@
       }
       
       $data = Session::all();
+   
+      // $uri_path = $_SERVER['REQUEST_URI']; 
+      $uri_path = \Request::getPathInfo(); 
       
-      $uri_path = $_SERVER['REQUEST_URI']; 
-      // dd(\Request::url());
       $uri_parts = explode('/', $uri_path);
       $request_url = end($uri_parts);
       $uppercase =  ucfirst($request_url);
@@ -82,138 +83,135 @@
          $uppercase = "Home" ;
       }else{ }
       
-      $data = Session::all();
-      
       ?>
-   <!-- Required meta tags -->
-   <?php $settings = App\Setting::first();?>
-   <?php //if (!empty($data["password_hash"])) {
-      $videos_data = App\Video::where("slug", $request_url)->first();
-      // }
-      ?>
-   <?php //if (!empty($data["password_hash"])) {
-      $series = App\Series::where("slug", $request_url)->first();
-      // }
-      ?>
-   <?php //if (!empty($data["password_hash"])) {
-      $episdoe = App\Episode::where("slug", $request_url)->first();
-      // }
-      ?>
-   <?php //if (!empty($data["password_hash"])) {
-      $livestream = App\LiveStream::where("slug", $request_url)->first();
-      // }
-      ?>
-   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
-   //dd($request_url); ?>
 
-   <?php    $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first(); 
-            $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first(); ?>
+   <?php 
+      $videos_data = App\Video::where("slug", $request_url)->first();
+      $series = App\Series::where("slug", $request_url)->first();
+      $episdoe = App\Episode::where("slug", $request_url)->first();
+      $livestream = App\LiveStream::where("slug", $request_url)->first();
+      $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
+      $SiteMeta_page = App\SiteMeta::where('page_slug',  $request_url)->first(); 
+      $SiteMeta_image = !is_null($SiteMeta_page) && !is_null($SiteMeta_page->meta_image) ? $SiteMeta_page->meta_image : null ;
+   ?>
+
    <meta charset="UTF-8">
 
 
-<!-- Place this data between the <head> tags of your website -->
-<title><?php
-      if(!empty($videos_data)){  echo urldecode($videos_data->title) .' | '. $settings->website_name ;
-       }
-      elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
-      elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
-      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?></title>
-<meta name="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
+   <!-- Place this data between the <head> tags of your website -->
+   <title>
+      <?php
+         if(!empty($videos_data)){ echo urldecode($videos_data->title) .' | '. $settings->website_name ;}
+         elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
+         elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
+         elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
+         elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
+         elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
+         else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} 
+      ?>
+   </title>
+
+   <meta name="description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;}
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>" />
-      
- <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
+      else{ echo $settings->website_description   ;}  ?>" 
+   />
+         
+   <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
-<!-- Schema.org markup for Google+ -->
-<meta itemprop="name" content="<?php
-      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;
-       }
+   <!-- Schema.org markup for Google+ -->
+   <meta itemprop="name" content="<?php
+      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;}
       elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
       elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_name) .' | '. $settings->website_name ; }
-      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>">
-<meta itemprop="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>"
+   />
+
+   <meta itemprop="description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;}
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>">
-<meta itemprop="image" content="<?php 
-      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
-      }
+      else{ echo $settings->website_description   ;}  ?>"
+   />
+
+   <meta itemprop="image" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
       elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->player_image ;}
       elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>">
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;}  ?>"
+   />
 
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary_large_image">
+
 <?php if(!empty($settings->twitter_page_id)){ ?><meta name="twitter:site" content="<?php echo $settings->twitter_page_id ;?>"><?php } ?>
-<meta name="twitter:title" content="<?php
-      if(!empty($videos_data)){  echo urldecode($videos_data->title) .' | '. $settings->website_name ;
-       }
+
+   <meta name="twitter:title" content="<?php
+      if(!empty($videos_data)){  echo urldecode($videos_data->title) .' | '. $settings->website_name ;}
       elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
       elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
-      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>">
-<meta name="twitter:description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>"
+   >
+
+   <meta name="twitter:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;}
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>">
-<!-- Twitter summary card with large image must be at least 280x150px -->
-<meta name="twitter:image:src" content="<?php 
-      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
-      }
+      else{ echo $settings->website_description   ;}  ?>"
+   >
+
+   <!-- Twitter summary card with large image must be at least 280x150px -->
+   <meta name="twitter:image:src" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
       elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>">
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;}  ?>"
+   >
 
-<!-- Open Graph data -->
-<meta property="og:title" content="<?php
-      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;
-       }
+   <!-- Open Graph data -->
+   <meta property="og:title" content="<?php
+      if(!empty($videos_data)){  echo urldecode($videos_data->title).' | '. $settings->website_name ;}
       elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
       elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
-      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>" />
-<meta property="og:image" content="<?php 
-      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
-      }
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>" 
+   />
+
+   <meta property="og:image" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
       elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>" />
-<meta property="og:description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;}  ?>" 
+   />
+
+   <meta property="og:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;}
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+      else{ echo $settings->website_description   ;}  ?>"
+   />
 
 <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
 
@@ -222,14 +220,13 @@
       $http_site_url = explode("http://",$site_url);
       $https_site_url = explode("https://",$site_url);
       if(!empty($http_site_url[1])){
-      $site_page_url = $http_site_url[1];
+         $site_page_url = $http_site_url[1];
       }elseif(!empty($https_site_url[1])){
          $site_page_url = $https_site_url[1];
       }else{
          $site_page_url = "";
       }
-      // dd($site_page_url);
-       ?>
+   ?>
 
    <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?>
    <meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" />
@@ -249,316 +246,344 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
+   <!-- CSS -->
+   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.min.css" as="style">
+   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+   <!-- flickity -->
+   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+   
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-   <link async rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-   
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" as="style">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
+
    <!-- Bootstrap CSS -->
-     <link rel="preload" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
-     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
-   <!-- Typography CSS  -->
-   <link rel="preload" href="<?= typography_link();?>" />
+   <link rel="preload" href="<?= URL::to('assets/css/bootstrap.min.css') ?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/bootstrap.min.css')  ?>" />
+
+      <!-- Typography CSS  -->
+      <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
+   
    <!-- Style -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+   <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
 
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+   <link rel="preload" fetchpriority="high" href="https://rodtv.co.uk/public/uploads/images/player-image-1714229598.webp" as="image"/>
+
+   <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/variable.css') ;?>" />
+   <link rel="preload" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style"/>
+
+   <link rel="preload" fetchpriority="high" href="assets/js/jquery-3.4.1.min.js" as="script"/>
+
+   <!-- <link rel="preload" href="assets/js/jquery.3.4.1.js" as="script"/> -->
+
+
    <!-- Responsive -->
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/slick.css');?>" />
 
-   <link rel="preload" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-   <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
-
-   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
+
+
+   <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
+   
+   <!--
+   <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
+   <link rel="preload" href="https://cdn.plyr.io/3.5.10/plyr.js" as="script"/>
+   <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
+   <link rel="preload" href="assets/js/popper.min.js" as="script"/>
+   <link rel="preload" href="assets/js/bootstrap.min.js" as="script"/>
+   <link rel="preload" href="assets/js/slick.min.js" as="script"/>
+   <link rel="preload" href="assets/js/owl.carousel.min.js" as="script"/>
+   <link rel="preload" href="assets/js/select2.min.js" as="script"/>
+   <link rel="preload" href="assets/js/jquery.magnific-popup.min.js" as="script"/>
+   <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/> -->
+
+   <!-- lazyload script -->
+
    <?php 
       if(count($Script) > 0){
-      foreach($Script as $Scriptheader){   ?>
-   <?= $Scriptheader ?>
-   <?php } 
+         foreach($Script as $Scriptheader){   ?>
+            <?= $Scriptheader ?>
+         <?php } 
       } ?>
-</head>
+
 <style>
-   .fullpage-loader {
-   position: fixed;
-   top: 0;
-   left: 0;
-   height: 100vh;
-   width: 100vw;
-   overflow: hidden;
-   background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
-   z-index: 9999;
-   opacity: 1;
-   transition: opacity .5s;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   .fullpage-loader__logo {
-   position: relative;
-   &:after {
-   // this is the sliding white part
-   content: '';
-   height: 100%;
-   width: 100%;
-   position: absolute;
-   top: 0;
-   left: 0;
-   animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
-   // opaque white slide
-   background: rgba(255,255,255,.8);
-   // gradient shine scroll
-   background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-   background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-   background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
-   }
-   }
-   }
-   @keyframes shine {
-   0% {
-   transform: translateX(-100%) skew(-30deg);
-   }
-   100% {
-   transform: translateX(200%) skew(-30deg);
-   }
-   }
-   .fullpage-loader--invisible {
-   opacity: 0;
-   }
-   /* END LOADER CSS */
-   svg{
-   height: 30px;
-   widows: 30px;
-   }
-   .mk{
-   display: none;
-   }
-   #main-header{ color: #fff; }
-   .svg{ color: #fff; } 
-   #videoPlayer{
-   width:100%;
-   height: 100%;
-   margin: 20px auto;
-   }
-   i.fas.fa-child{
-   font-size: 35px;
-   color: white;
-   }
-   span.kids {
-   color: #f7dc59;
-   }  
-   span.family{
-   color: #f7dc59;
-   }
-   i.fa.fa-eercast{
-   font-size: 35px;
-   color: white;
-   }
-   a.navbar-brand.iconss {
-   font-size: 19px;
-   font-style: italic;
-   font-family: ui-rounded;
-   }
-   .switch {
-   position: relative;
-   display: inline-block;
-   width: 50px;
-   height: 20px;
-   }
-   .switch input { 
-   opacity: 0;
-   width: 0;
-   height: 0;
-   }
-   .sliderk {
-   position: absolute;
-   cursor: pointer;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   background-color: #ddd;
-   -webkit-transition: .4s;
-   transition: .4s;
-   }
-   .sliderk:before {
-   position: absolute;
-   content: "";
-   height: 15px;
-   width: 15px;
-   left: 5px;
-   bottom: 2px;
-   background-color: white;
-   -webkit-transition: .4s;
-   transition: .4s;
-   }
-   input:checked + .sliderk {
-   background-color: #2196F3;
-   }
-   input:focus + .sliderk {
-   box-shadow: 0 0 1px #2196F3;
-   }
-   input:checked + .sliderk:before {
-   -webkit-transform: translateX(26px);
-   -ms-transform: translateX(26px);
-   transform: translateX(26px);
-   }
-   /* Rounded sliders */
-   .sliderk.round {
-   border-radius: 34px;
-   }
-   .sliderk.round:before {
-   border-radius: 50%;
-   }
-   /* Dark mode and light Mode */
-   body.light-theme {
-   background: <?php echo GetLightBg(); ?>!important;
-   }
-   body.light-theme h4, body.light-theme p {
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme header#main-header{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?> !important;
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme footer{
-   background: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme .copyright{
-   background-color: <?php echo GetLightBg(); ?>;
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme .s-icon{
-   background-color: <?php echo GetLightBg(); ?>; 
-   box-shadow: 0 0 50px #ccc;
-   }
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-   }
-   body.light-theme .dropdown-menu.categ-head{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
-   color: rgb(0, 82, 204)!important;
-       font-weight: 500;
-   }
-   body.light-theme .navbar-right .iq-sub-dropdown{
-   background-color: <?php echo GetLightBg(); ?>;  
-   }
-   body.light-theme .media-body h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
-   }
-   body.light-theme .block-description h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
-   }  
-   body.light-theme .movie-time i{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   }  
-   body.light-theme #translator-table_filter input[type="search"]{
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme li.breadcrumb-item{
-   color: <?php echo GetLightText(); ?>;
-   }
-   body.light-theme .p-tag1{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } body.light-theme .p-tag{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } 
-   body.light-theme .movie-time span{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   }
-   body.light-theme .block-description a{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } 
-   body.light-theme .list-group-item a{
-   color: <?php echo GetAdminDarkText(); ?> !important;
-   } 
-    body.light-theme .block-description{
-  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
-    backdrop-filter: blur(2px);
-   }
-   body.light-theme  header .navbar ul li{
-   font-weight: 400;
-   }
-   body.light-theme .slick-nav i{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h2{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h5{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .filter-option-inner-inner{
-   color: <?php echo GetLightText(); ?>!important;
-   } 
-   body.light-theme .vid-title{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme .trending-info h1{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .text-detail{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .share-icons.music-play-lists li span i{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .btn1{
-   border: 1px solid <?php echo GetLightText(); ?>!important;
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .trending-dec{
-   color: <?php echo GetLightText(); ?>!important;
-   }
-   body.light-theme h6.trash{
-   color: black;
-   }
-   .Search_error_class {
-      color: red;
-   }
-@media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
-   display:none !important;
-} }
-@media (min-width:801px) { li.logout_mobile_view.menu-item{
-   display:none !important;
-} } 
+      .fullpage-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity .5s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .fullpage-loader__logo {
+      position: relative;
+      &:after {
+      // this is the sliding white part
+      content: '';
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+      // opaque white slide
+      background: rgba(255,255,255,.8);
+      // gradient shine scroll
+      background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+      }
+      }
+      }
+      @keyframes shine {
+      0% {
+      transform: translateX(-100%) skew(-30deg);
+      }
+      100% {
+      transform: translateX(200%) skew(-30deg);
+      }
+      }
+      .fullpage-loader--invisible {
+      opacity: 0;
+      }
+      /* END LOADER CSS */
+      svg{
+      height: 30px;
+      widows: 30px;
+      }
+      .mk{
+      display: none;
+      }
+      #main-header{ color: #fff; }
+      .svg{ color: #fff; } 
+      #videoPlayer{
+      width:100%;
+      height: 100%;
+      margin: 20px auto;
+      }
+      i.fas.fa-child{
+      font-size: 35px;
+      color: white;
+      }
+      span.kids {
+      color: #f7dc59;
+      }  
+      span.family{
+      color: #f7dc59;
+      }
+      i.fa.fa-eercast{
+      font-size: 35px;
+      color: white;
+      }
+      a.navbar-brand.iconss {
+      font-size: 19px;
+      font-style: italic;
+      font-family: ui-rounded;
+      }
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 20px;
+      }
+      .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .sliderk {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ddd;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      .sliderk:before {
+      position: absolute;
+      content: "";
+      height: 15px;
+      width: 15px;
+      left: 5px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      input:checked + .sliderk {
+      background-color: #2196F3;
+      }
+      input:focus + .sliderk {
+      box-shadow: 0 0 1px #2196F3;
+      }
+      input:checked + .sliderk:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+      }
+      /* Rounded sliders */
+      .sliderk.round {
+      border-radius: 34px;
+      }
+      .sliderk.round:before {
+      border-radius: 50%;
+      }
+      /* Dark mode and light Mode */
+      body.light-theme {
+      background: <?php echo $GetLightBg; ?>!important;
+      }
+      body.light-theme h4, body.light-theme p {
+      color: <?php echo $GetLightText; ?>;
+      }
+      body.light-theme header#main-header{
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?> !important;
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme footer{
+      background: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>;
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme .copyright{
+      background-color: <?php echo $GetLightBg; ?>;
+      color: <?php echo $GetLightText; ?>;
+      }
+      body.light-theme .s-icon{
+      background-color: <?php echo $GetLightBg; ?>; 
+      box-shadow: 0 0 50px #ccc;
+      }
+      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      }
+      body.light-theme .dropdown-menu.categ-head{
+      background-color: <?php echo $GetLightBg; ?>!important;  
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+      color: rgb(0, 82, 204)!important;
+         font-weight: 500;
+      }
+      body.light-theme .navbar-right .iq-sub-dropdown{
+      background-color: <?php echo $GetLightBg; ?>;  
+      }
+      body.light-theme .media-body h6{
+      color: <?php echo $GetLightText; ?>;
+      font-weight: 400;
+      }
+      body.light-theme .block-description h6{
+      color: <?php echo $GetLightText; ?>;
+      font-weight: 400;
+      }  
+      body.light-theme .movie-time i{
+      color: <?php echo $GetLightText; ?>!important;
+      font-weight: 400;
+      }  
+      body.light-theme #translator-table_filter input[type="search"]{
+      color: <?php echo $GetLightText; ?>;
+      }
+      body.light-theme li.breadcrumb-item{
+      color: <?php echo $GetLightText; ?>;
+      }
+      body.light-theme .p-tag1{
+      color: <?php echo $GetLightText; ?>!important;
+      font-weight: 400;
+      } body.light-theme .p-tag{
+      color: <?php echo $GetLightText; ?>!important;
+      font-weight: 400;
+      } 
+      body.light-theme .movie-time span{
+      color: <?php echo $GetLightText; ?>!important;
+      font-weight: 400;
+      }
+      body.light-theme .block-description a{
+      color: <?php echo $GetLightText; ?>!important;
+      font-weight: 400;
+      } 
+      body.light-theme .list-group-item a{
+      color: <?php echo GetAdminDarkText(); ?> !important;
+      } 
+      body.light-theme .block-description{
+   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      backdrop-filter: blur(2px);
+      }
+      body.light-theme  header .navbar ul li{
+      font-weight: 400;
+      }
+      body.light-theme .slick-nav i{
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme h2{
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme h5{
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme .filter-option-inner-inner{
+      color: <?php echo $GetLightText; ?>!important;
+      } 
+      body.light-theme .vid-title{
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme .trending-info h1{
+      color: <?php echo $GetLightText; ?>!important;
+      }body.light-theme .text-detail{
+      color: <?php echo $GetLightText; ?>!important;
+      }body.light-theme .share-icons.music-play-lists li span i{
+      color: <?php echo $GetLightText; ?>!important;
+      }body.light-theme .btn1{
+      border: 1px solid <?php echo $GetLightText; ?>!important;
+      color: <?php echo $GetLightText; ?>!important;
+      }body.light-theme .trending-dec{
+      color: <?php echo $GetLightText; ?>!important;
+      }
+      body.light-theme h6.trash{
+      color: black;
+      }
+      .Search_error_class {
+         color: red;
+      }
+   @media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
+      display:none !important;
+   } }
+   @media (min-width:801px) { li.logout_mobile_view.menu-item{
+      display:none !important;
+   } } 
 
-.navbar-right .transdropdownlist{
-   width:150px;
-}
+   .navbar-right .transdropdownlist{
+      width:150px;
+   }
 
-#languageSearch{
-        width: 116px;
-        font-size: 12px;
-        right: 5px;
-        position: relative;
-    }
+   #languageSearch{
+         width: 116px;
+         font-size: 12px;
+         right: 5px;
+         position: relative;
+      }
 
-</style>
-<body>
+   </style>
+
+</head>
+
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
       <div class="fullpage-loader">
@@ -581,11 +606,7 @@
          </div>
       </div>
    <?php } ?>
-   <!-- <div id="loading">
-      <div id="loading-center">
-      </div>
-      </div>-->
-   <!-- loader END -->
+
    <!-- Header -->
    <header id="main-header">
       <div class="main-header">
@@ -609,36 +630,15 @@
                      <?php }else { ?> 
                      <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                      <?php } ?>
-                     <!-- dark mode 
-                        <label class="switch toggle mt-3">
-                        <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                        <span class="sliderk round"></span>
-                        </label>-->
-                     <!-- <div class="toggle">
-                        <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                        <label for="toggle"></label>
-                        </div>-->
+                   
                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
                        
                         <div class="menu-main-menu-container">
-                           <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
-                              <li class="menu-item">
-                                 <a href="<?php echo URL::to('home') ?>">Home</a>
-                              </li>
-                              <li class="menu-item">
-                                 <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
-                              </li>
-                              <li class="menu-item">
-                                 <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
-                              </li>
-                              </ul>-->
-                              
-
                               
                            <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                
                               <?php if(Auth::guest()){ ?>
-                                 <?php if($signin_header == 1 ):?>
+                                 <?php if($theme->signin_header == 1 ):?>
 
                                     <li class="menu-item dk" style="display:none;">
                                        <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -694,17 +694,13 @@
                            <li class="col-sm-6 ">
                            <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
                            <li class="dropdown menu-item col-sm-6">
-                              <!-- <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
-    border-top: none; float:right"> -->
+                             
                         <div class="btn-close" data-toggle="collapse">
-                        <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
-    border-top: none; float:right"><i class="fa fa-times" style="
-    font-size: 20px;
-    color: white;"></i></a>
+                        <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                           data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                           aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
+                              <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                        </button>
                         </div>
                      <!-- </a> -->
                               </li>      
@@ -714,13 +710,13 @@
                                
                               <?php
                                  $stripe_plan = SubscriptionPlan();
-                                 //  $menus = App\Menu::all();
+                                
                                  if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
                                     $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                  }else{
                                     $menus = App\Menu::orderBy('order', 'asc')->get();
                                  }
-                                 // dd($menus);
+                                
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  foreach ($menus as $menu) { 
@@ -735,16 +731,12 @@
                                     }else{
                                        $cat = App\VideoCategory::orderBy('order', 'asc')->where('in_home','=',1)->get();
                                     }
-                                 // $cat = App\VideoCategory::orderBy('order', 'asc')->get();
+                                 
                                  ?>
                                  
-                                  <!-- <li class="logout_mobile_view menu-item">
-                                       <a href="<?php echo URL::to('/logout'); ?>">
-                                          <?php echo __('Logout');?>
-                                       </a>
-                                 </li> -->
+                                  
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -761,7 +753,7 @@
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -778,7 +770,7 @@
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -798,7 +790,7 @@
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -998,14 +990,20 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+               <a href="<?= $app_settings->android_url ?>">
+                  <img src="<?php echo URL::to('/assets/img/apps1.webp') ?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
+
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+               <a href="<?= $app_settings->ios_url ?>">
+                  <img src="<?php echo  URL::to('/assets/img/apps.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-                  <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+               <a href="<?= $app_settings->android_tv ?>">
+                  <img src="<?php echo  URL::to('/assets/img/and.webp')?>" alt="App Icon" style="width: 100%; height: auto;">
+               </a>
               <?php } ?>
               </div>
               
@@ -1047,10 +1045,9 @@
                         </div>
                      </div>
                      <div class="mobile-more-menu">
-                        <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                           data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="ri-more-line"></i>
-                        </a>
+                        <button class="more-toggle" id="dropdownMenuButton" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
+                           <i class="ri-more-line"></i>
+                        </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
@@ -1129,7 +1126,7 @@
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
                               <a href="#"  class="search-toggle active" aria-label="Toggle Search" data-toggle="search-toggle">
-                                 <?php if(@$translate_checkout == 1){ ?>
+                                 <?php if(@$theme->translate_checkout == 1){ ?>
                                     <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
                                        <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                                        <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
@@ -1152,7 +1149,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if(GetWebsiteName().$Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if($GetWebsiteName.$Language->code == $GetWebsiteName.$website_default_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1173,7 +1170,7 @@
 
                            <li class="nav-item nav-icon">
 
-                           <!-- <?php if(@$translate_checkout == 1){ ?>
+                           <!-- <?php if(@$theme->translate_checkout == 1){ ?>
                            <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
@@ -1188,45 +1185,10 @@
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                            </svg>
-                              <div class="iq-sub-dropdown">
-                                 <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body">
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                <small class="font-size-12"> just now</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                <small class="font-size-12">15 minutes ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                       <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
-                                                alt="streamit" />
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                <small class="font-size-12">1 hour ago</small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                    </div>
-                                 </div>
-                              </div>
+                              
                            </li>
                            <?php if(Auth::guest()): ?>
-                              <?php if( $signin_header == 1 ): ?>
+                              <?php if( $theme->signin_header == 1 ): ?>
                                  <li class="nav-item nav-icon">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -1505,7 +1467,7 @@
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 pl-3 pr-3">
-                                       <a class="p-0">
+                                       <a href="#" class="p-0">
                                           <!-- <div class="toggle mt-3 text-right">
                                              <input type="checkbox" id="toggle" />
                                              <label for="toggle"></label>
@@ -1851,8 +1813,7 @@
          });
          
       </script>
-      <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
-      
+
       <script>
          $("#toggle").click(function(){
          
@@ -1896,7 +1857,7 @@
          });
       </script>
                   <!-- search validation -->
-      <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+      <script defer src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
       <script>
          $( "#searchResult" ).validate({
@@ -1914,8 +1875,6 @@
             }
           });
       </script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
 <script>
                   document.getElementById('languageSearch').addEventListener('click', function(event) {
@@ -1947,9 +1906,7 @@
                            dropdownContent.style.display = "none";
                         }
                   });
-               } else {
-                  console.error("Error: Dropdown elements not found in the document.");
-               }
+               } 
             });
 
 

@@ -18,16 +18,24 @@
                             <ul id="trending-slider-nav" class="content-portal-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $channel)
                                     <li class="slick-slide">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:;">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" >
+                                                @if ( $multiple_compress_image == 1)
+                                                    <img class="img-fluid position-relative" alt="{{ $channel->title }}" src="{{ $channel->image ?  URL::to('public/uploads/images/'.$channel->image) : $default_vertical_image_url }}"
+                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$channel->responsive_image.' 860w') }},
+                                                        {{ URL::to('public/uploads/Tabletimages/'.$channel->responsive_image.' 640w') }},
+                                                        {{ URL::to('public/uploads/mobileimages/'.$channel->responsive_image.' 420w') }}" >
+                                                @else
+                                                    <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid w-100" alt="channel">
+                                                @endif
+                                                <img src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" class="img-fluid" >
                                             </div>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <ul id="trending-slider content-portal" class="list-inline p-0 m-0 align-items-center content-portal">
+                            <ul id="trending-slider content-portal" class="list-inline p-0 m-0 align-items-center content-portal theme4-slider" style="display:none;">
                                 @foreach ($data as $channel)
                                     <li class="slick-slide">
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -35,7 +43,7 @@
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div id="" class="overview-tab tab-pane fade active show h-100">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-4">
@@ -49,7 +57,14 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" alt="">
+                                                                @if ( $multiple_compress_image == 1)
+                                                                    <img  alt="latest_series" src="{{$channel->player_image ?  URL::to('public/uploads/images/'.$channel->player_image) : $default_horizontal_image_url }}"
+                                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$channel->responsive_player_image.' 860w') }},
+                                                                        {{ URL::to('public/uploads/Tabletimages/'.$channel->responsive_player_image.' 640w') }},
+                                                                        {{ URL::to('public/uploads/mobileimages/'.$channel->responsive_player_image.' 420w') }}" >
+                                                                @else
+                                                                    <img  src="{{ $channel->channel_image ? $channel->channel_image : $default_vertical_image_url }}" alt="channel">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -79,9 +94,9 @@
     $(document).ready(function() {
 
         $('.content-portal').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.content-portal-nav',
@@ -89,12 +104,12 @@
 
         $('.content-portal-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 1,
+            slidesToScroll: 6,
             asNavFor: '.content-portal',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

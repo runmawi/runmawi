@@ -99,7 +99,7 @@
 							 <tr>
 								  <td>{{ __('Discount Coupon')  }}</td>
 								  <td class="detail_stripe_coupon"  id="detail_stripe_coupon">
-                                      <?php echo NewSubscriptionCouponCode();?> - {{ __(Coupon Appiled for your  Subscription) }}
+                                      <?php echo NewSubscriptionCouponCode();?> - {{ __("Coupon Appiled for your  Subscription") }}
                                   </td>
 							 </tr>
 							 <tr>

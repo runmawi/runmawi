@@ -1,6 +1,8 @@
 <script>
 
     let video_url = "<?php echo $videodetail->videos_url; ?>";
+    let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
+    let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -9,33 +11,78 @@
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-
             controlBar: {
-
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
-                }
+                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},      
+                    // 'audioTrackButton': {}               
+                },
+                pictureInPictureToggle: true,
             }
         });
+
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+        var hovered = false;
+
+        skipForwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        skipBackwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
+
+        player.on('userinactive', () => {
+
+            skipForwardButton.addEventListener('mouseenter',handleHover);
+            skipBackwardButton.addEventListener('mouseenter',handleHover);
+            
+            skipForwardButton.addEventListener('mouseleave',handleHover);
+            skipBackwardButton.addEventListener('mouseleave',handleHover);
+
+            function handleHover(event) {
+                const element = event.target;
+                if (event.type === 'mouseenter') {
+                    // console.log("hovered");
+                    hovered = true;
+                } else if (event.type === 'mouseleave') {
+                    // console.log("not hovered");
+                    hovered = false;
+                }
+            }
+
+            // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                if(hovered == false){
+                    skipForwardButton.style.display = 'none';
+                    skipBackwardButton.style.display = 'none';
+                    playPauseButton.style.display = 'none';
+                }
+                backButton.style.display = 'none';
+            }
+        });
+
+        player.on('useractive', () => {
+        // Show the Play pause, skip forward and backward buttons when the user becomes active
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                skipForwardButton.style.display = 'block';
+                skipBackwardButton.style.display = 'block';
+                playPauseButton.style.display = 'block';
+                backButton.style.display = 'block';
+            }
+        });
+
 
         // Skip Intro & Skip Recap 
 
@@ -85,6 +132,37 @@
             }
         });
 
+        // player.on('userinactive', () => {
+          // Hide the skip forward and backward buttons when the user becomes inactive
+        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        //     if (skipForwardButton && skipBackwardButton) {
+        //         skipForwardButton.style.display = 'none';
+        //         skipBackwardButton.style.display = 'none';
+        //     }
+        // });
+
+        // player.on('useractive', () => {
+          // Show the skip forward and backward buttons when the user becomes active
+        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        //   if (skipForwardButton && skipBackwardButton) {
+        //     skipForwardButton.style.display = 'block';
+        //     skipBackwardButton.style.display = 'block';
+        //   }
+        // });
+
+        // const skipForward = (duration) => {
+        //     const playerTime = player.current;
+        //     playerTime.currentTime(playerTime.currentTime() + duration);
+        //     console.log("player",playerTime)
+        // };
+
+        // const skipBackward = (duration) => {
+        //     const pplayerTime = player.current;
+        //     playerTime.currentTime(playerTime.currentTime() - duration);
+        // };
+
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -132,17 +210,11 @@
             }
         });
 
-        // Back Button 
-        // const Back_button = videojs.dom.createEl('button', {
-        //     className: '',
-        //     innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        //     title: 'Back Button',
-        // });
-
-        // player.controlBar.el().appendChild(Back_button);
-
-        // Back_button.addEventListener('click', function() {
-        //     history.back();
+        // Initialize the watermark component with options
+        // player.ready(function() {
+        //     player.addChild('Watermark', {
+        //         // file: 'https://picsum.photos/200',
+        //     });
         // });
 
         // Hls Quality Selector - M3U8 
@@ -159,7 +231,7 @@
         var prerollTriggered = false;
         var postrollTriggered = false;
 
-        const vastTagMidroll_array = '<?php echo $mid_advertisement; ?>';
+        const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;
@@ -192,9 +264,15 @@
             player.ima.requestAds();
         }
 
+        var initial_current_time = 0;
+        var timeupdate_counter = 0; 
+
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
+            var Player_duration = player.duration() ;
+
+            // Mid ads 
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 
@@ -208,6 +286,37 @@
                 const vastTagMidroll = vastTagMidrollArray[random_array_index];
 
                 requestMidrollAd(vastTagMidroll);
+            }
+
+            // Free Duration
+
+            if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
+                player.pause();
+                player.dispose();
+                player.off('timeupdate');  
+                $('#visibilityMessage').show();
+                $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
+            }
+
+            // Free Duration - Live
+
+            if ( Player_duration == "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime  ) {
+    
+                if (timeupdate_counter <= 2) {
+                    initial_current_time = player.currentTime();
+                    timeupdate_counter++;
+                }
+
+                let time_diff = currentTime - initial_current_time;
+                let round_off_time  = parseInt(time_diff);
+
+                if( round_off_time >=  free_duration_seconds ){
+                    player.pause();
+                    player.dispose();
+                    player.off('timeupdate');  
+                    $('#visibilityMessage').show();
+                    $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
+                }
             }
         });
 
@@ -255,7 +364,26 @@
             player.play();
 
         });
+
+        player.on("skipDuration", function(duration){
+            // console.log("!#");
+        })
     });
+
+    // videojs.registerComponent('Watermark', videojs.extend(videojs.getComponent('Component'), {
+    //     constructor: function(player, options) {
+    //         videojs.getComponent('Component').apply(this, arguments);
+
+    //         // Create the watermark element
+    //         var watermark = document.createElement('div');
+    //         watermark.className = 'vjs-watermark';
+    //         watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->favicon ?>" alt="Watermark">';
+    //         // https://picsum.photos/200    -->Live img url
+    //         // ../../../../../../public/uploads/settings/finexs.png  --> watermark uploaded path
+
+    //         player.el().appendChild(watermark);
+    //     }
+    // }));
 
 </script>
 
@@ -268,5 +396,21 @@
         top: -5%;
         z-index: 30;
         margin-left: -3px;
+    }
+    .vjs-watermark {
+        position: absolute;
+        width: 4%;
+        height: 7%;
+        top: 75%;
+        left: 88%;
+        opacity: 0.5;
+        cursor: pointer;
+    }
+    .vjs-watermark:hover{
+        opacity: 1;
+    }
+    .vjs-watermark img{
+        width: 100%;
+        height: 100%;
     }
 </style>

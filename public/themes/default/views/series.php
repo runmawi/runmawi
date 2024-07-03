@@ -131,7 +131,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
-     <div class="container-fluid pl-5" >
+     <div class="container-fluid pl-4" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
@@ -152,7 +152,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 							<?php endforeach; ?>
 						</select>
 					</div>-->
-					<div class="row p-2 text-white">
+					<div class="row p-0 mt-3 text-white">
                         <div class="col-md-7">
                         <?= __('Season') ?>  <span class="sea"> 1 </span> -<?= __('U/A English') ?> 
                             <!-- <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p> -->
@@ -196,24 +196,29 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 						                <!-- <p class="desc" style="color:#fff;"><?php echo $series->description;?></p> -->
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="ply"/> </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
-                                    <div></div><ul>
-                                    <li class="share">
-<span><i class="ri-share-fill"></i></span>
-    <div class="share-box">
-       <div class="d-flex align-items-center"> 
-       <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-              class="share-ico"><i class="ri-facebook-fill"></i></a>
-          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-              class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="#"onclick="Copy();" class="share-ico"><i
-                  class="ri-links-fill"></i></a>
-       </div>
-    </div>
-</li><?= __('Share') ?>
-                                    </ul></div>
+                                    <ul>
+                                      <li class="share">
+                                        <span><i class="ri-share-fill"></i></span>
+                                        <div class="share-box">
+                                              <div class="d-flex align-items-center"> 
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+                                                    class="share-ico"><i class="ri-facebook-fill"></i>
+                                                </a>
+                                                <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+                                                    class="share-ico"><i class="ri-twitter-fill"></i>
+                                                </a>
+                                                <a href="#"onclick="Copy();" class="share-ico"><i
+                                                        class="ri-links-fill"></i>
+                                                </a>
+                                              </div>
+                                        </div>
+                                      </li>
+                                      <?= __('Share') ?>
+                                    </ul>
+                                </div>
                                           
                                           
                               
@@ -500,8 +505,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 			<div class="col-md-7 p-0">
 				<div id="series_title">
             <div class="container">
-              <h3><?= $series->title ?></h3>
-              <div class="row p-2 text-white">
+              <h1><?= $series->title ?></h1>
+              <div class="row p-0 mt-3 text-white">
                 <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
 
@@ -541,14 +546,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                               <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                                 <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
-                                  <div class="row p-0 mt-3 align-items-center">
+                                  <div class="row ml-1 mt-3 align-items-center">
                                       <!-- <div class="col-md-2"> 
                                          <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div> -->
                                             <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                              <div class="col-md-1 pls  d-flex text-center mt-2">
-                                                  <div></div>
-                                                  <ul>
+                                              <div class="pls mt-2">                                             
+                                                  <ul class="p-0">
                                                     <li class="share">
                                                       <span><i class="ri-share-fill"></i></span>
                                                         <div class="share-box">
@@ -651,8 +655,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
           <div class="col-md-7 p-0">
 				    <div id="series_title">
               <div class="container">
-                <h3><?= $series->title ?></h3>
-                  <div class="row p-2 text-white">
+                <h1><?= $series->title ?></h1>
+                  <div class="row p-0 mt-3 text-white">
                     <div class="col-md-7">
                       <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
 
@@ -690,16 +694,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                         <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                         <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
-                        <div class="row p-0 mt-3 align-items-center">
+                        <div class="row ml-1 mt-3 align-items-center">
                                         <!-- <div class="col-md-2">
                                           <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                           </a>
                                         </div> -->
                                             <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                          <div class="col-md-1 pls  d-flex text-center mt-2">
+                                          <div class="pls mt-2">
                                             <div></div>
-                                            <ul>
+                                            <ul class="p-0">
                                               <li class="share">
                                                 <span><i class="ri-share-fill"></i></span>
                                                 <div class="share-box">
@@ -772,8 +776,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
               <div class="col-md-7 p-0">
                 <div id="series_title">
                   <div class="container">
-                    <h3><?= $series->title ?></h3>
-                      <div class="row p-2 text-white">
+                    <h1><?= $series->title ?></h1>
+                      <div class="row p-0 mt-3 text-white">
                         <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
 
@@ -809,16 +813,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                             <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                             <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
-                            <div class="row p-0 mt-3 align-items-center">
+                            <div class="row ml-1 mt-3 align-items-center">
                                             <!-- <div class="col-md-2">
                                               <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                               </a>
                                             </div> -->
                                                 <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                              <div class="col-md-1 pls  d-flex text-center mt-2">
+                                              <div class="pls mt-2">
                                                 <div></div>
-                                                <ul>
+                                                <ul class="p-0">
                                                   <li class="share">
                                                     <span><i class="ri-share-fill"></i></span>
                                                     <div class="share-box">

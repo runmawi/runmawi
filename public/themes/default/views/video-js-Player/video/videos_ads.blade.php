@@ -64,6 +64,7 @@
                                     
                                     ->pluck('ads_path');
 
+
             // Post-advertisement 
 
         $post_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
@@ -91,5 +92,42 @@
                                         ->pluck('ads_path')
                                         ->first();
 
+                                               // Default ads 
+                
+        if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url) && is_null($pre_advertisement) ){
+            $pre_advertisement  = $setting->default_ads_url;
+        }
+
+        if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && count($mid_advertisement) == 0 ){
+            $mid_advertisement[]  = $setting->default_ads_url;
+            $video_js_mid_advertisement_sequence_time = 1800 ;
+        }
+
+        if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && is_null($post_advertisement) ){
+            $post_advertisement = $setting->default_ads_url;
+        }
+
+        //             //Pre  Ads Variable
+        // if (!is_null($pre_advertisement)) {
+        //     foreach ($adsvariable as $value) {
+        //         $pre_advertisement = str_replace('${' . $value->name . '}', $value->website, $pre_advertisement);
+        //     }
+        // }
+
+        //             // Mid Ads Variable
+        // if (count($mid_advertisement) > 0 ) {
+        //     foreach ($mid_advertisement as &$url) {
+        //         foreach ($adsvariable as $value) {
+        //             $url = str_replace('${' . $value->name . '}', $value->website, $url);
+        //         }
+        //     }
+        // }
+
+        //             // Post Ads Variable
+        // if (!is_null($post_advertisement)) {
+        //     foreach ($adsvariable as $value) {
+        //         $post_advertisement = str_replace('${' . $value->name . '}', $value->website, $post_advertisement);
+        //     }
+        // }
     }
 ?>

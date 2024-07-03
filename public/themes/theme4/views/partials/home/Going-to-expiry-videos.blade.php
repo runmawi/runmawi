@@ -10,11 +10,11 @@
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
-        if( videos_expiry_date_status() == 1 ){
+        if( $videos_expiry_date_status == 1 ){
             $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
-        if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+        if( $getfeching !=null && $getfeching->geofencing == 'ON')
         {
             $data = $data->whereNotIn('videos.id',Block_videos());
         }
@@ -25,9 +25,9 @@
         }
 
         $data = $data->latest()->limit(15)->get()->map(function ($item) {
-            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  @$default_vertical_image_url ;
+            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  @$default_horizontal_image_url ;
+            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  @$default_horizontal_image_url ;
             $item['source_type']        = "Videos" ;
             return $item;
         });
@@ -51,9 +51,9 @@
                         <ul id="trending-slider-nav" class="Going_to_expiry_videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $Going_to_expiry_videos)
                                 <li class="slick-slide">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:;">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" alt="expiry_videos">
+                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="expiry_videos">
                                             <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span>
                                         </div>
                                     </a>
@@ -61,7 +61,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider">
+                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider theme4-slider" style="display:none;">
                             @foreach ($data as $key => $Going_to_expiry_videos )
                                 <li class="slick-slide">
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
@@ -69,14 +69,14 @@
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                <div id="" class="overview-tab tab-pane fade active show h-100">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
 
                                                         <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
                                                         
-                                                        @if ( videos_expiry_date_status() == 1 && optional($Going_to_expiry_videos)->expiry_date)
+                                                        @if ( $videos_expiry_date_status == 1 && optional($Going_to_expiry_videos)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>
@@ -89,13 +89,13 @@
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
                                                                 <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Going_to_expiry_videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Going_to_expiry_videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="expiry_videos">
+                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : default_horizontal_image_url() }}" alt="expiry_videos" width="100%">
+                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -162,9 +162,9 @@
     $(document).ready(function() {
 
         $('.Going_to_expiry_videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.Going_to_expiry_videos-slider-nav',
@@ -172,12 +172,12 @@
 
         $('.Going_to_expiry_videos-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.Going_to_expiry_videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [

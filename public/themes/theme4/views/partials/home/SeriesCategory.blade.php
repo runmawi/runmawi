@@ -273,7 +273,7 @@
                         <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" alt="Videos"/>
+                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : $default_vertical_image_url }}" style="object-fit: cover; height: 350px;" alt="Videos"/>
                     </div>
                 </div> 
             </div>
@@ -289,7 +289,7 @@
                                     <li class="slick-slide">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos">
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" alt="Videos">
                                             </div>
                                         </a>
                                     </li>
@@ -297,7 +297,7 @@
                             @endif
                         </ul>
 
-                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
+                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider theme4-slider">
                             @if (isset($SeriesGenre))
                                 @foreach ($SeriesGenre as $Series_Genre)
                                     <li class="slick-slide">
@@ -362,7 +362,7 @@
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
+                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="Videos">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -391,7 +391,7 @@
         $('.series-category-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: true,
+            arrows: false,
             fade: true,
             draggable: false,
             asNavFor: '.series-category-slider-nav',
@@ -399,12 +399,12 @@
 
         $('.series-category-slider-nav').slick({
             slidesToShow: 6,
-            slidesToScroll: 4,
+            slidesToScroll: 6,
             asNavFor: '.series-category-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" aria-label="arrow" class="slick-arrow slick-prev"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
+            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
             infinite: false,
             focusOnSelect: true,
             responsive: [
@@ -452,5 +452,5 @@
 </script>
 
 @php
-    include public_path('themes/default/views/footer.blade.php');
+    include public_path('themes/theme6/views/footer.blade.php');
 @endphp

@@ -2,45 +2,60 @@
 
     let video_url = "<?php echo $videodetail->videos_url ?>" ; 
 
-    document.addEventListener("DOMContentLoaded", function () {
-
-        var player = videojs('my-video', {              // Video Js Player 
+    document.addEventListener("DOMContentLoaded", function() {
+        var player = videojs('my-video', { // Video Js Player 
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
-            fluid: true, 
-
+            fluid: true,
             controlBar: {
-                
-                volumePanel: {
-                    inline: false
-                },
-
+                volumePanel: { inline: false },
                 children: {
-                    'playToggle':{},
-                    'currentTimeDisplay':{},
-                    'timeDivider':{},
-                    'durationDisplay':{},
-                    'liveDisplay':{},
+                    'playToggle': {},
+                    'currentTimeDisplay': {},
+                    'remainingTime': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {},
+                    // 'audioTrackButton': {}
+                },
+                pictureInPictureToggle: true,
+            }
+    });
 
-                    'flexibleWidthSpacer':{},
-                    'progressControl':{},
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    const playPauseButton = document.querySelector('.vjs-big-play-button');
 
-                    'settingsMenuButton': {
-                        entries : [
-                            'subtitlesButton',
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle':{}
-                }
-		    }
-        });
+    skipForwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() + 10);
+    });
 
+    skipBackwardButton.addEventListener('click', function() {
+        player.currentTime(player.currentTime() - 10);
+    });
 
-                    
+    player.on('userinactive', () => {
+    // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'none';
+        skipBackwardButton.style.display = 'none';
+        playPauseButton.style.display = 'none';
+    }
+    });
 
-    
+    player.on('useractive', () => {
+    // Show the Play pause, skip forward and backward buttons when the user becomes active
+    if (skipForwardButton && skipBackwardButton && playPauseButton) {
+        skipForwardButton.style.display = 'block';
+        skipBackwardButton.style.display = 'block';
+        playPauseButton.style.display = 'block';
+    }
+    });
+
         player.hlsQualitySelector({                     // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });    
@@ -203,3 +218,9 @@
     // }
 
 </script>
+<style>
+    .vjs-fg-skip-button{
+	    background: #2971ea !important;
+	    border-radius: 10px !important;
+    }
+</style>

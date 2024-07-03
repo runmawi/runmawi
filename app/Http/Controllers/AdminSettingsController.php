@@ -29,6 +29,7 @@ use App\TimeZone;
 use App\CommentSection;
 use App\WebComment;
 use Illuminate\Support\Facades\File;
+use App\Jobs\ConvertVideoClip;
 
 //use Illuminate\Http\Request;
 
@@ -105,6 +106,7 @@ class AdminSettingsController extends Controller
 
     public function save_settings(Request $request)
     {
+
         $input = $request->all();
 
         $video_clip = (isset($input['video_clip'])) ? $input['video_clip'] : '';
@@ -183,14 +185,12 @@ class AdminSettingsController extends Controller
         $settings->ppv_price = $request['ppv_price'];
         $settings->website_description = $request['website_description'];
         $settings->website_name = $request['website_name'];
-        $settings->ads_play_unlimited_period = $request['ads_play_unlimited_period'];
         $settings->login_text = $request['login_text'];
         $settings->signature = $request['signature'];
         $settings->system_email = $request['system_email'];
         $settings->enable_https = $request['enable_https'];
         $settings->free_registration = $request['free_registration'];
         $settings->activation_email = $activation_email;
-        $settings->ads_on_videos = $request['ads_on_videos'];
         $settings->featured_pre_ad = $request['featured_pre_ad'];
         $settings->featured_mid_ad = $request['featured_mid_ad'];
         $settings->featured_post_ad = $request['featured_post_ad'];
@@ -245,6 +245,8 @@ class AdminSettingsController extends Controller
         $settings->show_artist = $request['show_artist'];
         $settings->show_subtitle = $request['show_subtitle'];
         $settings->show_views = $request['show_views'];
+        
+        $settings->homepage_views_all_button_status = $request['homepage_views_all_button_status'];
 
         $settings->search_title_status  = $request['search_title_status'];
         $settings->search_category_status = $request['search_category_status'];
@@ -255,6 +257,9 @@ class AdminSettingsController extends Controller
         $settings->ppv_status = $request['ppv_status'];
         $settings->system_address = $request['system_address'];
         $settings->system_phone_number = $request['system_phone_number'];
+        $settings->default_ads_status = !empty($request['default_ads_status']) ? 1 : 0 ;
+        $settings->ads_on_videos = !empty($request['ads_on_videos']) ? 1 : 0 ;
+        $settings->ads_play_unlimited_period = !empty($request['ads_play_unlimited_period']) ? 1 : 0 ;
 
         $path = storage_path('app/public/');
 
@@ -267,11 +272,12 @@ class AdminSettingsController extends Controller
             //upload new file
             $randval = Str::random(16);
             $file = $video_clip;
-            $video_clip_vid  = $randval.'.'.$request->file('video_clip')->extension();
-            $video_clip_name  = str_replace(" ", "-", $video_clip_vid);
-            $file->move($path, $video_clip_name);
-            $settings->video_clip  = str_replace(" ", "-", $video_clip_name);
-
+            $video_clip_vid = $randval . '.' . $request->file('video_clip')->extension();
+            $video_clip_name_with_ext = str_replace(" ", "-", $video_clip_vid); // Replace spaces with dashes and keep extension
+            $file->move($path, $video_clip_name_with_ext);
+            $video_clip_name_without_ext = pathinfo($video_clip_name_with_ext, PATHINFO_FILENAME);
+            $settings->video_clip = $video_clip_name_without_ext; 
+            
         } else {
             $settings->video_clip = $settings->video_clip;
         }
@@ -439,9 +445,6 @@ class AdminSettingsController extends Controller
             $settings->notification_icon = '';
         }
 
-        if (empty($settings->ads_on_videos)) {
-            $settings->ads_on_videos = 0;
-        }
 
         //		if(empty($activation_email) || $settings->activation_email = 0){
         //			$settings->activation_email= 0;
@@ -514,11 +517,18 @@ class AdminSettingsController extends Controller
         $settings->default_ads_url = $request['default_ads_url'];
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
         $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
+        $settings->enable_ppv_rent_live = !empty($request->enable_ppv_rent_live) ?  "1" : "0" ;
         $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
         $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
 
         $settings->save();
+
+        $storepath  = URL::to('storage/app/public/');
+
+        if($settings->video_clip_enable == 1 && $video_clip != ''){
+            ConvertVideoClip::dispatch($settings,$storepath,$video_clip_name_with_ext,$video_clip_name_without_ext);
+        }
 
         return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Site Settings!', 'note_type' => 'success']);
     }
@@ -1076,6 +1086,7 @@ class AdminSettingsController extends Controller
                 'compress_resolution_size' => $request->compress_resolution_size,
                 'compress_resolution_format' => $request->compress_resolution_format,
                 'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
+                'enable_multiple_compress_image' => $request->enable_multiple_compress_image == null ? '0' : '1',
                 'videos' => $request->videos == null ? '0' : '1',
                 'live' => $request->live == null ? '0' : '1',
                 'tv_image_live_validation' => $request->tv_image_live_validation == null ? '0' : '1',

@@ -78,6 +78,7 @@ class PaymentController extends Controller
             $purchase->user_id = $user_id;
             $purchase->video_id = $video_id;
             $purchase->to_time = $to_time;
+            $purchase->platform = 'website';
             $purchase->save();
             //  DB::table('ppv_purchases')->insert([
             //         ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
@@ -97,6 +98,7 @@ public function RentPaypal(Request $request)
               $purchase->user_id = $user_id;
               $purchase->video_id = $video_id;
               $purchase->to_time = $to_time;
+              $purchase->platform = 'website';
               $purchase->save();
                 // DB::table('ppv_purchases')->insert([
                 //     ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
@@ -251,6 +253,7 @@ public function RentPaypal(Request $request)
     $purchase->to_time = $to_time;
     $purchase->moderator_id = $moderator_id;
     $purchase->channel_id = $channel_id;
+    $purchase->platform = 'website';
     $purchase->save();
 
     $livepurchase = new LivePurchase;
@@ -262,6 +265,7 @@ public function RentPaypal(Request $request)
     $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
     $livepurchase->amount = $request->get('amount');
     $livepurchase->status = 1;
+    $livepurchase->platform = 'website';
     $livepurchase->save();
     
     // DB::table('live_purchases')->insert([
@@ -326,6 +330,7 @@ public function RentPaypal(Request $request)
     $purchase->moderator_commssion = $moderator_commssion;
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
+    $purchase->platform = 'website';
 
     $purchase->save();
 
@@ -404,6 +409,7 @@ public function RentPaypal(Request $request)
     $purchase->moderator_commssion = $moderator_commssion;
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
+    $purchase->platform = 'website';
 
     $purchase->save();
 
@@ -450,6 +456,7 @@ public function RentPaypal(Request $request)
     $purchase->total_amount = $data['amount'];
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
+    $purchase->platform = 'website';
 
     $purchase->save();
 
@@ -560,6 +567,7 @@ public function RentPaypal(Request $request)
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
     $purchase->moderator_id = $moderator_id;
+    $purchase->platform = 'website';
 
     $purchase->save();
     // DB::table('ppv_purchases')->insert([
@@ -1052,6 +1060,7 @@ public function RentPaypal(Request $request)
                            $subscription->countryname = $countryName;
                            $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
+                           $subscription->platform = 'WebSite';
                            $subscription->save();
                           } catch (IncompletePayment $exception) {
                               return redirect()->route(
@@ -1083,7 +1092,8 @@ public function RentPaypal(Request $request)
                            $subscription->countryname = $countryName;
                            $subscription->cityname = $cityName;
                            $subscription->ends_at = $date;
-                          $subscription->save();
+                           $subscription->platform = 'WebSite';
+                           $subscription->save();
 
               } else {
 
@@ -1115,6 +1125,7 @@ public function RentPaypal(Request $request)
                                           $subscription->regionname = $regionName;
                                           $subscription->countryname = $countryName;
                                           $subscription->cityname = $cityName;
+                                          $subscription->platform = 'WebSite';
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'
@@ -1147,6 +1158,7 @@ public function RentPaypal(Request $request)
                                           $subscription->regionname = $regionName;
                                           $subscription->countryname = $countryName;
                                           $subscription->cityname = $cityName;
+                                          $subscription->platform = 'WebSite';
                                           $subscription->save();
                                           $response = array(
                                             'status' => 'success'
@@ -1619,6 +1631,7 @@ public function UpgadeSubscription(Request $request){
                     'PaymentGateway' =>  'Stripe',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
+                    'platform'       => 'WebSite',
                 ]);
 
         
@@ -1828,7 +1841,8 @@ public function UpgadeSubscription(Request $request){
               'PaymentGateway' =>  'Stripe',
               'trial_ends_at'  =>  $trial_ends_at,
               'ends_at'        =>  $trial_ends_at,
-          ]);
+              'platform'       => 'WebSite',
+            ]);
 
           User::where('id',$user_id)->update([
               'role'                  =>  'subscriber',
@@ -1987,6 +2001,7 @@ public function UpgadeSubscription(Request $request){
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
     $purchase->moderator_id = $moderator_id;
+    $purchase->platform = 'website';
 
     $purchase->save();
     return 1;
@@ -2039,6 +2054,7 @@ public function UpgadeSubscription(Request $request){
           $subscription->cityname = city_name();
           $subscription->PaymentGateway =  'paypal';
           $subscription->ends_at = $date;
+          $subscription->platform = 'WebSite';
           $subscription->save();
 
               $subId = $request->subId;        
@@ -2143,6 +2159,7 @@ public function UpgadeSubscription(Request $request){
           $purchase->status = 'active';
           $purchase->to_time = $to_time;
           $purchase->moderator_id = $moderator_id;
+          $purchase->platform = 'website';
       
           $purchase->save();
           return 1;

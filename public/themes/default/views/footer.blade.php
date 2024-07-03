@@ -1,12 +1,16 @@
 <?php 
-$settings = App\Setting::first(); 
-       use Carbon\Carbon;
-       $user = App\User::where('id','=',1)->first(); 
-       $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
-       $session = session()->all();
-       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-       $theme = App\SiteTheme::first();
+
+  use Carbon\Carbon;
+
+  $settings = App\Setting::first(); 
+  $user    = App\User::where('id',1)->first(); 
+  $app_setting = App\AppSetting::where('id',1)->where('status','hidden')->first();
+  $session = session()->all();
+
+  $theme = App\SiteTheme::first();
+  $theme_mode = $theme->theme_mode;
 ?>
+
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
@@ -16,69 +20,67 @@ $settings = App\Setting::first();
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  "><?php echo (__('Download App')); ?></h5>
+              <p class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></p>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1"> 
+             <div class="map1 ml-3"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.png')?>" alt="android" /></a>
+                <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.png')?>" alt="ios" /></a>
+                 <a href="<?= $app_settings->ios_url ?>" aria-label="Download the Ios app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/ios.webp')?>" src="<?php echo  URL::to('/assets/img/ios.webp')?>" alt="ios" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>" aria-label="Download the Androidtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.png')?>" alt="android-tv" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" src="<?php echo  URL::to('/assets/img/android-tv-1.webp')?>" alt="android-tv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Firetv_url)){ ?>
                   <a href="<?= $app_settings->Firetv_url ?>" aria-label="Download the firetv app">
-                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.png')?>" alt="firetv" /></a>
+                      <img class="lazy" height="60"  width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" src="<?php echo  URL::to('/assets/img/firetv-1.webp')?>" alt="firetv" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->samsungtv_url)){ ?>
                   <a href="<?= $app_settings->samsungtv_url ?>" aria-label="Download the samsung app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.png')?>" alt="samsng" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/samsng.webp')?>" src="<?php echo  URL::to('/assets/img/samsng.webp')?>" alt="samsng" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Lgtv_url)){ ?>
                   <a href="<?= $app_settings->Lgtv_url ?>" aria-label="Download the lgtv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.png')?>" alt="lg" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/lg.webp')?>" src="<?php echo  URL::to('/assets/img/lg.webp')?>" alt="lg" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Rokutv_url)){ ?>
                   <a href="<?= $app_settings->Rokutv_url ?>" aria-label="Download the rokutv app">
-                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.png')?>" alt="roku" /></a>
+                      <img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" src="<?php echo  URL::to('/assets/img/roku-1.webp')?>" alt="roku" /></a>
               <?php } ?>
               </div>
-              
-            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+
           </div>
           </div>
       </div>
       
       
-      <div class="row  justify-content-center ">
+      <div class="row  justify-content-center mb-3">
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
-                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.png')?>" alt="inst" />
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t.png')?>" alt="t" />
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
-                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40"
-                               data-src="<?php echo  URL::to('/assets/img/lan/fb.png')?>" alt="fb" />
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" />
                       </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->skype_page_id)){?>
-                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" aria-label="skype" target="_blank" class="ml-1">
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" aria-label="skype" target="_blank" class="ml-2">
                           <i class="fa fa-skype"></i>
                       </a>
                       <?php } ?>
@@ -88,8 +90,8 @@ $settings = App\Setting::first();
                    
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
-                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.png')?>" alt="link" />
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" />
                       </a>
                       <?php } ?>
 
@@ -100,8 +102,8 @@ $settings = App\Setting::first();
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
-                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.png')?>" alt="youtube" />
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" />
                       </a>
                       <?php } ?>
 
@@ -112,8 +114,8 @@ $settings = App\Setting::first();
                       <?php } ?>
 
                       <?php if(!empty($settings->tiktok_page_id)){?>
-                        <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-1">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.png')?>" alt="tiktok" />
+                        <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-2">
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" />
                         </a>
                         <?php } ?>
                         
@@ -146,7 +148,7 @@ $settings = App\Setting::first();
     </div>
 
 </footer>
-
+      <script src="<?= ('assets\js\jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
@@ -156,15 +158,16 @@ $settings = App\Setting::first();
       <!-- owl carousel Js -->
       <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script  src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-<script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
+      
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -197,7 +200,7 @@ function about(evt , id) {
 }
 </script>
 
-<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<?php  $search_dropdown_setting = $theme->search_dropdown_setting ; ?>
 <input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
 
 <script type="text/javascript">
@@ -253,12 +256,53 @@ function about(evt , id) {
       <?php } 
     }
      ?>
- <script  src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
- <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ {{-- <script async src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script> --}}
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
+
+ <script>
+  function loadScriptWithTimeout(url, timeout = 50000) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+
+        const timer = setTimeout(() => {
+            reject(new Error(`Timed out while loading ${url}`));
+            script.remove();
+        }, timeout);
+
+        script.onload = () => {
+            clearTimeout(timer);
+            resolve();
+        };
+
+        script.onerror = () => {
+            clearTimeout(timer);
+            reject(new Error(`Failed to load ${url}`));
+        };
+
+        document.body.appendChild(script);
+    });
+}
+
+// Specify the URL for your hls.min.js file
+const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
+const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
+
+// Load HLS.js with a timeout
+loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
+    .then(() => {
+        console.log(`HLS.js loaded successfully.`);
+        // You can now use HLS.js functionalities safely
+    })
+    .catch((error) => {
+        console.error(`Error loading HLS.js:`, error);
+        // Handle the error (e.g., show a message to the user)
+    });
+
+ </script>
 
 <script>
     function loadJS(u) {
@@ -267,17 +311,17 @@ function about(evt , id) {
         s.src = u;
         r.parentNode.insertBefore(s, r);
     }
-    if (!window.HTMLPictureElement) {
-    loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
-    }
+    // if (!window.HTMLPictureElement) {
+    // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
+    // }
 </script>
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+{{-- <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
 
 <?php
     try {
 
       if( Route::currentRouteName() == "LiveStream_play" ){
-        include('livevideo_player_script.blade.php');
+        // include(public_path('themes/default/views/video-js-Player/Livestream/live-player.blade.php'));
       }
       elseif ( Route::currentRouteName() == "play_episode"){
         include('episode_player_script.blade.php');
@@ -292,20 +336,20 @@ function about(evt , id) {
 ?>
 
 <script>
-  if ('loading' in HTMLImageElement.prototype) {
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    images.forEach(img => {
-      img.src = img.dataset.src;
-    });
-  } else {
-       const script = document.createElement('script');
-    script.src =
-      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
-    document.body.appendChild(script);
-  }
+  // if ('loading' in HTMLImageElement.prototype) {
+  //   const images = document.querySelectorAll('img[loading="lazy"]');
+  //   images.forEach(img => {
+  //     img.src = img.dataset.src;
+  //   });
+  // } else {
+  //      const script = document.createElement('script');
+  //   script.src =
+  //     'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+  //   document.body.appendChild(script);
+  // }
 </script>
 <?php  
-  $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
+  $Prevent_inspect = $theme->prevent_inspect ;
   if( $Prevent_inspect == 1){
 ?>
 <script>
@@ -337,6 +381,9 @@ function about(evt , id) {
             e.preventDefault();
         });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {var lazyloadImages = document.querySelectorAll("img.lazy");var lazyloadThrottleTimeout;function lazyload () {if(lazyloadThrottleTimeout) {clearTimeout(lazyloadThrottleTimeout);}lazyloadThrottleTimeout = setTimeout(function() {var scrollTop = window.pageYOffset;lazyloadImages.forEach(function(img) {if(img.offsetTop < (window.innerHeight + scrollTop)){img.src = img.dataset.src;img.classList.remove('lazy');}});if(lazyloadImages.length == 0) {document.removeEventListener("scroll", lazyload);window.removeEventListener("resize", lazyload);window.removeEventListener("orientationChange", lazyload);}},20);}document.addEventListener("scroll", lazyload);window.addEventListener("resize", lazyload);window.addEventListener("orientationChange", lazyload);});
+</script>
 <?php } ?>
   <?php if( get_image_loader() == 1) { ?>
  <script>
@@ -353,4 +400,3 @@ function about(evt , id) {
     </script>
 <?php } ?>
 </body>
-</html>

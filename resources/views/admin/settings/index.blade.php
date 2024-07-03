@@ -478,40 +478,39 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="row mt-3">
-                            {{-- <div class="col-sm-6" >
-                                <div class="form-group">
-                                    <p class="p1">{{ ucwords('Enable Rent as PPV') }}</p>
-                                    <div class="make-switch" data-on="success" data-off="warning">
-                                        <div class="mr-2">OFF</div>
-                                        <div class="mt-1">
-                                            <label class="switch">
-                                                <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <div class="ml-2">ON</div>
+
+                            <div class="col-sm-6">
+                                <div><label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - videos)</small> </label> </div>
+
+                                <div class="d-flex ">
+                                    <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
+                                    <div>ON</div>
                                 </div>
-                        </div> --}}
-
-                    <div class="col-sm-6">
-                        <div>
-                            <label class="mt-1"> Enable Rent as PPV</label>
-                            <span>( Free for subscriber )</span>
-                        </div>
-
-                        <div class="d-flex ">
-                            <div>OFF</div>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
-                                    <span class="slider round"></span>
-                                </label>
                             </div>
-                            <div>ON</div>
+
+                            <div class="col-sm-6">
+                                <div>
+                                    <label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - Live)</small> </label>
+                                </div>
+
+                                <div class="d-flex ">
+                                    <div>OFF</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox" {{ !empty($settings->enable_ppv_rent_live) && $settings->enable_ppv_rent_live ? 'checked' : '' }} value="1" name="enable_ppv_rent_live" id="enable_ppv_rent_live" />
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-            </div>
         </div>
                                 {{-- End Set Expiry time --}}
     </div>
@@ -735,6 +734,24 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Enable Home-Page Views All  </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ !is_null($settings->homepage_views_all_button_status) && $settings->homepage_views_all_button_status == 1 ? 'checked' : null }} value="{{ $settings->homepage_views_all_button_status }}"
+                                                name="homepage_views_all_button_status" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1493,17 +1510,56 @@ border-radius: 0px 4px 4px 0px;
 
 										  
  					 
-<div class="container-fluid" id="advertisement" style="">
-        <div class="panel panel-primary mt-3" data-collapsed="0">
-            <div class="panel-heading">
-                <div class="panel-title"><label>Advertisement</label></div>
-                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-            </div>
-    </div>
-          
-                <div class="row">
+            <div class="container-fluid" id="advertisement" style="">
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>Advertisement</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                    </div>
+                </div><br>
 
-                    <div class="col-md-12">
+                <div class="row d-flex">
+                    <div class="col-md-6">
+                        <label for=""> Ads on videos Status :</label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            
+                            <div style="color:red;">Disable</div>
+
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox"  {{ $settings->ads_on_videos == 1 ? 'checked' : null }} name="ads_on_videos" id="ads_on_videos">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div style="color:green;">Enable</div>
+                        </div>
+                        <div class="make-switch" data-on="success" data-off="warning"></div>
+                    </div>
+                </div>
+                <br>
+          
+                <div class="row d-flex">
+
+                    <div class="col-md-6">
+                        <label for="">Default Ads Status :</label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            
+                            <div style="color:red;">Disable</div>
+
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox"  {{ $settings->default_ads_status == 1 ? 'checked' : null }} name="default_ads_status" id="default_ads_status">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div style="color:green;">Enable</div>
+                        </div>
+                        <div class="make-switch" data-on="success" data-off="warning"></div>
+                    </div>
+
+                    <div class="col-md-6">
                         <label for="">Ads Play 24/7 :</label>
                         <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                             
@@ -1521,77 +1577,67 @@ border-radius: 0px 4px 4px 0px;
                         <div class="make-switch" data-on="success" data-off="warning"></div>
                     </div>
 
-                       <div class="col-md-6">
-                            <div class="d-flex align-items-baseline">
-                            <p class="p1">Enable Advertisement on Videos:</p>
-
-                            <div class="form-group">
-                                <div class="make-switch" data-on="success" data-off="warning">
-                                    <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
-                                    (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
-                                    value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
-                                </div>
-                            </div>
+                    <div class="col-md-6">
+                    
+                            {{-- default URL --}}
+                        <div class="form-group ">
+                            <label>Default Ads url</label>
+                            <input id="default_ads" type="text" name="default_ads_url" class="form-control"
+                            placeholder="Default Ads in videos"
+                            value="@if(!empty($settings->default_ads_url)){{ $settings->default_ads_url }}@endif" />
                         </div>
-                        
-                              {{-- default URL --}}
-                            <div class="form-group ">
-                                <label>Default Ads url</label>
-                                <input id="default_ads" type="text" name="default_ads_url" class="form-control"
-                                placeholder="Default Ads in videos"
-                                value="@if(!empty($settings->default_ads_url)){{ $settings->default_ads_url }}@endif" />
-                            </div>
 
-
-                            <div class="form-group add-profile-pic">
-                                <label>Featured Ad Pre Roll:</label>
-                                <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"
-                                placeholder="Featured Ad Pre Roll"
-                                value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
-                            </div>
-                            <div class="form-group add-profile-pic">
-                                <label>Featured Ad Mid Roll:</label>
-                                <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
-                                placeholder="Featured Ad Mid Roll"
-                                value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
-                            </div>
-                            <div class="form-group add-profile-pic">
-                                <label>Featured Ad Post Roll:</label>
-                                <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control"
-                                placeholder="Featured Ad Post Roll"
-                                value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
-                            </div></div> <div class="col-md-6">
-                            <div class="form-group add-profile-pic">
-                                <label>Cost Per Click Advertiser:</label>
-                                <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
-                                placeholder="Cost Per Click Advertiser"
-                                value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
-                            </div>
-                   
-                            <div class="form-group add-profile-pic">
-                                <label>Cost Per Click Admin:</label>
-                                <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
-                                placeholder="Cost Per Click Admin"
-                                value="@if(!empty($settings->cpc_admin)){{ $settings->cpc_admin }}@endif" />
-                            </div>
-                            <div class="form-group add-profile-pic">
-                                <label>Cost Per View Advertiser:</label>
-                                <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control"
-                                placeholder="Cost Per View Advertiser"
-                                value="@if(!empty($settings->cpv_advertiser)){{ $settings->cpv_advertiser }}@endif" />
-                            </div>
-                            <div class="form-group add-profile-pic">
-                                <label>Cost Per View Admin:</label>
-                                <input id="cpv_admin" type="text" name="cpv_admin" class="form-control"
-                                placeholder="Cost Per View Admin"
-                                value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
-                            </div>
+                        <div class="form-group add-profile-pic">
+                            <label>Featured Ad Pre Roll:</label>
+                            <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"
+                            placeholder="Featured Ad Pre Roll"
+                            value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
                         </div>
+
+                        <div class="form-group add-profile-pic">
+                            <label>Featured Ad Mid Roll:</label>
+                            <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
+                            placeholder="Featured Ad Mid Roll"
+                            value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
+                        </div>
+
+                        <div class="form-group add-profile-pic">
+                            <label>Featured Ad Post Roll:</label>
+                            <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control" placeholder="Featured Ad Post Roll"
+                            value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
+                        </div></div> <div class="col-md-6">
+                        <div class="form-group add-profile-pic">
+                            <label>Cost Per Click Advertiser:</label>
+                            <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
+                            placeholder="Cost Per Click Advertiser"
+                            value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
+                        </div>
+                
+                        <div class="form-group add-profile-pic">
+                            <label>Cost Per Click Admin:</label>
+                            <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
+                            placeholder="Cost Per Click Admin"
+                            value="@if(!empty($settings->cpc_admin)){{ $settings->cpc_admin }}@endif" />
+                        </div>
+                        <div class="form-group add-profile-pic">
+                            <label>Cost Per View Advertiser:</label>
+                            <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control"
+                            placeholder="Cost Per View Advertiser"
+                            value="@if(!empty($settings->cpv_advertiser)){{ $settings->cpv_advertiser }}@endif" />
+                        </div>
+                        <div class="form-group add-profile-pic">
+                            <label>Cost Per View Admin:</label>
+                            <input id="cpv_admin" type="text" name="cpv_admin" class="form-control"
+                            placeholder="Cost Per View Admin"
+                            value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
                         </div>
                     </div>
+                </div>
+            </div>
+
         <div class="d-flex justify-content-end">
-    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-    <input type="submit" id = "settingupdate" value="Update Settings" class="mt-3 btn btn-primary pull-right" /></div>
+        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+        <input type="submit" id = "settingupdate" value="Update Settings" class="mt-3 btn btn-primary pull-right" /></div>
             </form>
 
 

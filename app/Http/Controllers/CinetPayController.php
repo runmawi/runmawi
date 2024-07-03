@@ -83,6 +83,7 @@ class CinetPayController extends Controller
         $purchase->status = 'active';
         $purchase->to_time = $to_time;
         $purchase->moderator_id = $moderator_id;
+        $purchase->platform = 'website';
         $purchase->save();
 
         if ($err) {                 // Error 
@@ -140,6 +141,7 @@ class CinetPayController extends Controller
                 'PaymentGateway' =>  'CinetPay',
                 'trial_ends_at'  =>  $ends_at,
                 'ends_at'        =>  $ends_at,
+                'platform'       => 'WebSite',
             ]);
 
             User::where('id',$request->user_id)->update([
@@ -254,6 +256,7 @@ class CinetPayController extends Controller
         $purchase->status = 'active';
         $purchase->to_time = $to_time;
         $purchase->moderator_id = $moderator_id;
+        $purchase->platform = 'website';
         $purchase->save();
 
                     // Success 
@@ -337,6 +340,7 @@ class CinetPayController extends Controller
             $purchase->status = 'active';
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
             $purchase->save();
 
             $livepurchase = new LivePurchase;
@@ -348,6 +352,7 @@ class CinetPayController extends Controller
             $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
             $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
             $livepurchase->status = 1;
+            $livepurchase->platform = 'website';
             $livepurchase->save();
 
             if ($err) {                 // Error 

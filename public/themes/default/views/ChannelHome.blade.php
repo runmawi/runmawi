@@ -163,73 +163,22 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </div></div>
 </div>
    
-</section>
-<!--<section class="">
-    <div class="sec-3">
-        <div class="container-fluid mt-5">
-            <div class="mt-3 ">
-                <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
+</section><link rel="stylesheet" href="style.css">
 
-                    <li class="nav-item">
-                        <a class="nav-link " id="pills-profile-tab" data-toggle="pill" role="tab"
-                            aria-controls="pills-profile" aria-selected="false">
-                            All
-                        </a>
-                    </li>
 
-                    <li class="nav-item videonav">
-                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                            data-id-type='video' data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">Videos
-                        </a>
-<div class="position-relative">
-                       
-</div>
-                    </li>
-                        
-                    <li class="nav-item ">
+@php 
 
-                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                            data-id-type='live' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Live
-                            Stream
-                        </a>
-
-                       
-
-                    <li class="nav-item ">
-
-                      
-                       
-
-                        &nbsp;&nbsp;
-                    <li class="nav-item ">
-
-                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                            data-id-type='audio' data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">Audios
-                        </a>
-
-                        <div class="Audio_Categorynav">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
-                                href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div>
-                    </li>
-                     </ul>
-            </div>
-        </div>
-    </div>
-
-   
-  
-   
-</section>-->
-
+$homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
+                              'multiple_compress_image' => $multiple_compress_image, 
+                              'videos_expiry_date_status' => $videos_expiry_date_status,
+                              'getfeching' => $getfeching,
+                              'settings' => $settings,
+                              'ThumbnailSetting' => $ThumbnailSetting,
+                              'currency' => App\CurrencySetting::first(),
+                              'default_vertical_image_url' => $default_vertical_image_url,
+                              'default_horizontal_image_url' => $default_horizontal_image_url,
+                         ];
+@endphp
 
 <div class='channel_home'>
     <?php 
@@ -241,7 +190,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/default/views/partials/home/latest-videos.php');  ?>
+                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -256,9 +205,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/live-videos.php');
-                    ?>
+                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -274,9 +221,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/latest-series.php');
-                    ?>
+                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -292,9 +237,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/latest-audios.php');
-                    ?>
+                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
                 </div>
             </div>
         </div>

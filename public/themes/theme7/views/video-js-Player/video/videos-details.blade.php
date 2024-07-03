@@ -45,6 +45,9 @@
         top: 42px;
         width: 117px;
     }
+    .utilities.d-flex.align-items-center{gap:10px;}
+    .vjs-icon-hd:before{display:none;}
+    .vjs-theme-fantasy .vjs-big-play-button{font-size:45px !important;}
 </style>
 
 
@@ -70,6 +73,9 @@
 
 {{-- Section content --}}
 
+
+
+                            
     <div class="vpageBanner">
         <div class="backdrop-img">    {{-- Background image --}}
             <span class=" lazy-load-image-background blur lazy-load-image-loaded"  style="color: transparent; display: inline-block;">
@@ -79,8 +85,7 @@
 
         <div class="opacity-layer"></div>
 
-                {{-- Message Note --}}
-        <div id="message-note" ></div>
+                
 
         <div class="pageWrapper">
                 
