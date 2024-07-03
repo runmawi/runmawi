@@ -2195,7 +2195,7 @@ $(document).ready(function($){
                         console.log(response.error);
                         alert("File not uploaded. Choose Library!");   
                     }
-                    else if (response.success == 'videocount') { 
+                    else if (response.success == 'video_upload_limit_exist') { 
                         myDropzone.removeFile(file);  
                         Swal.fire("You have reached your video upload limit for this month.");
                         $('#Next').hide();
