@@ -23,7 +23,7 @@
                         <div class="latest-video home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $watchlater_video)
-                                    <!-- @php
+                                    @php
                                         $currentdate = date("M d , y H:i:s");
                                         date_default_timezone_set('Asia/Kolkata');
                                         $current_date = Date("M d , y H:i:s");
@@ -49,7 +49,7 @@
                                         } else {
                                             $publish_time = 'Published';
                                         }
-                                    @endphp -->
+                                    @endphp
 
                                     <div class="items">
                                         <div class="block-images position-relative">

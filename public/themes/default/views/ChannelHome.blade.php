@@ -16,23 +16,10 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         cursor: pointer;
     }
     
-    .fira-sans-condensed-regular {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .fira-sans-condensed-medium {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  .fira-sans-condensed-medium-italic {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 500;
-    font-style: italic;
-  }
+    .channel-img img{
+        position:absolute !important;
+        bottom:35px !important;
+    }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -48,16 +35,16 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
 @if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
     <section class="channel-header"
-        style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+        style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;background-size: cover;height:75vh;background-color: rgba(0, 0, 0, 0.45);
         background-blend-mode: multiply;">
     </section>
 @else
     <section class="channel-header"
-        style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+        style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;background-size: cover;height:75vh;background-color: rgba(0, 0, 0, 0.45);
         background-blend-mode: multiply;">
     </section>
 @endif
-<div class="container-fluid">
+<div class="container-fluid" style="position:relative;bottom:335px;">
     <div class="position-relative">
         <div class="channel-img">
             @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
@@ -67,55 +54,56 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             @endif
         </div>
     </div>
-</div>
 
-<section class="mt-5 mb-5">
-    <div class="container-fluid">
-        <div class="row ">
-            <div class="col-6 col-lg-6">
 
-                <div class="channel-about fira-sans-condensed-regular">
-                    @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                     <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
-                    @endif
+    <section class="mt-5 mb-5" style="padding: 0 10px !important;">
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-6 col-lg-6">
+
+                    <div class="channel-about fira-sans-condensed-regular">
+                        @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                        <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
+                        @endif
+                    </div>
                 </div>
             </div>
-        </div>
-            <div class="col-2 col-lg-2">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
-                    @endphp
-                </ul>
-            </div>
-            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
-                <div class="col-2 col-lg-2 fira-sans-condensed-regular  ">
-                    <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
-                        <span class="text-white">
-                        <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
-                        </span>
-                    </a>
+                <div class="col-2 col-lg-2">
+                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                        @php
+                            include(public_path('themes/default/views/partials/channel-social-share.php'));
+                        @endphp
+                    </ul>
+                </div>
+                @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
+                    <div class="col-2 col-lg-2 fira-sans-condensed-regular  ">
+                        <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
+                            <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                            </span>
+                        </a>
 
-                    <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog"  style='max-width: 800px;'>
-                            <div class="modal-content" style="background-color: transparent;border:none;">
-                                <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <div class="modal-body">
-                                    <video id="videoPlayer1" 
-                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                                        type="video/mp4" src="{{ @$channel_partner->intro_video }}">
-                                    </video>
+                        <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog"  style='max-width: 800px;'>
+                                <div class="modal-content" style="background-color: transparent;border:none;">
+                                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div class="modal-body">
+                                        <video id="videoPlayer1" 
+                                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
+                                        </video>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+            
                     </div>
-        
+                @endif
                 </div>
-             @endif
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 <!-- <section class="channel_nav"> -->
     <!-- <div class="container-fluid"> -->
         <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -136,7 +124,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             </li>
         </ul> -->
         <!-- <div class="tab-content" id="myTabContent"> -->
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
+            <!-- <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div> -->
             <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
       
             <div class=" Video_Categorynav ">
@@ -202,7 +190,7 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
                          ];
 @endphp
 
-<div class='channel_home'>
+<div class='channel_home' style="position: relative; bottom: 290px;">
     <?php 
 if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){

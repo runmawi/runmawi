@@ -23,7 +23,6 @@
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
                     'fullscreenToggle': {},    
-                    // 'hlsQualitySelector':{}  
                     // 'audioTrackButton': {}               
                 },
                 pictureInPictureToggle: true,
