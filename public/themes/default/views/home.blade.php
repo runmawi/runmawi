@@ -96,36 +96,6 @@
            });   
    });
    
-   $('.family_mode').click(function () {
-        var family_mode = $(this).data("custom-value");
-   
-              $.ajax({
-              url: "<?php echo URL::to('/FamilyMode');?>",
-              type: "get",
-              data:{
-                 family_mode:family_mode, 
-              },
-              success: function (response) {
-                 location.reload();               
-              },
-           });   
-   });
-   
-   $('.family_mode_off').click(function () {
-        var family_mode = $(this).data("custom-value");
-   
-              $.ajax({
-              url: "<?php echo URL::to('/FamilyModeOff');?>",
-              type: "get",
-              data:{
-                 family_mode:family_mode, 
-              },
-              success: function (response) {
-                 location.reload();               
-              },
-           });   
-   });
-   
    $('#kids_mode_off').click(function () {
      var kids_mode = $(this).data("custom-value");
               $.ajax({
@@ -146,40 +116,22 @@
      $(".home-search").hide();
    });
    
+   function toggleReadMore(key) {
+      const description = document.getElementById('description-' + key);
+      const readMoreBtn = document.getElementById('read-more-btn-' + key);
+      const readLessBtn = document.getElementById('read-less-btn-' + key);
+
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px'; // Collapse description, adjust as needed
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none'; // Expand description
+      }
+   }
 </script>
-
-
-<script>
-function toggleReadMore(key) {
-    const description = document.getElementById('description-' + key);
-    const readMoreBtn = document.getElementById('read-more-btn-' + key);
-    const readLessBtn = document.getElementById('read-less-btn-' + key);
-
-    if (readMoreBtn.style.display === 'none') {
-        readMoreBtn.style.display = 'inline';
-        readLessBtn.style.display = 'none';
-        description.style.maxHeight = '100px'; // Collapse description, adjust as needed
-    } else {
-        readMoreBtn.style.display = 'none';
-        readLessBtn.style.display = 'inline';
-        description.style.maxHeight = 'none'; // Expand description
-    }
-}
-</script>
-
-<style>
-.desc {
-    overflow: hidden;
-    max-height: 100px; /* Initial max height, adjust as needed */
-    transition: max-height 0.5s ease;
-}
-.des-more-less-btns{border: none;
-    background: transparent;
-    color: #ff0000;
-    cursor: pointer;
-    margin-bottom: 10px;}
-    .video_title_images{width: 50%;}
-</style>
 
 <!-- Trailer -->
 @php
@@ -257,17 +209,7 @@ function toggleReadMore(key) {
          }
       }, 100);
    });
-</script>
 
-
-<style>
-   body{
-      overflow-x:hidden;
-      overflow-y:scroll;
-   }
-</style>
-
-<script>
    var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
 
    if(scheduler_content == 1){
@@ -284,3 +226,22 @@ function toggleReadMore(key) {
       
    }
 </script>
+
+<style>
+   .desc {
+       overflow: hidden;
+       max-height: 100px; /* Initial max height, adjust as needed */
+       transition: max-height 0.5s ease;
+   }
+   .des-more-less-btns{border: none;
+       background: transparent;
+       color: #ff0000;
+       cursor: pointer;
+       margin-bottom: 10px;}
+       .video_title_images{width: 50%;}
+ 
+   body{
+      overflow-x:hidden;
+      overflow-y:scroll;
+   }
+</style>
