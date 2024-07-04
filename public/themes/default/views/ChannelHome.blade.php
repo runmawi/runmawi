@@ -19,32 +19,30 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .channel-img img{
         position:absolute !important;
         bottom:35px !important;
+        left: 3%;
     }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-<!-- Font - Fira Sans Condensed -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,400;0,500;1,500&display=swap" rel="stylesheet">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
 <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
-@if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
-    <section class="channel-header"
-        style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;background-size: cover;height:75vh;background-color: rgba(0, 0, 0, 0.45);
-        background-blend-mode: multiply;">
-    </section>
-@else
-    <section class="channel-header"
-        style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;background-size: cover;height:75vh;background-color: rgba(0, 0, 0, 0.45);
-        background-blend-mode: multiply;">
-    </section>
-@endif
-<div class="container-fluid" style="position:relative;bottom:335px;">
+    @if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
+        <section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+            <img src="<?php echo @$channel_partner->channel_banner; ?>" alt="channel-banner" style="height:75vh;
+            width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
+        </section>
+    @else
+        <section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+            <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>" alt="channel-banner" style="height:75vh;
+            width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
+        </section>
+    @endif
+<div class="container-fluid" style="position:relative;bottom: 250px;">
     <div class="position-relative">
         <div class="channel-img">
             @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
@@ -56,12 +54,12 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     </div>
 
 
-    <section class="mt-5 mb-5" style="padding: 0 10px !important;">
+    <section class="mt-5 mb-5">
         <div class="container-fluid">
             <div class="row ">
                 <div class="col-6 col-lg-6">
 
-                    <div class="channel-about fira-sans-condensed-regular">
+                    <div class="channel-about">
                         @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
                         <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
                         @endif
@@ -75,8 +73,8 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         @endphp
                     </ul>
                 </div>
-                @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
-                    <div class="col-2 col-lg-2 fira-sans-condensed-regular  ">
+                @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
+                    <div class="col-2 col-lg-2 " style="max-width:20% !important;">
                         <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                             <span class="text-white">
                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
@@ -190,77 +188,87 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
                          ];
 @endphp
 
-<div class='channel_home' style="position: relative; bottom: 290px;">
+<div class='channel_home' style="position: relative; bottom: 40%;">
     <?php 
-if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
-      if(count($latest_video) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+    if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
+        if(count($latest_video) > 0 ){ ?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
-    <?php 
-      if(count($livetream) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+        <?php if(count($livetream) > 0 ){?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
 
-    <?php 
-      if(count($latest_series) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+        <?php if(count($latest_series) > 0 ){?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
 
-    <?php 
-      if(count($audios) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+        <?php if(count($audios) > 0 ){ ?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+        <?php } 
+    }
+    else{ ?>
+        <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
+            <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
+            <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
-    </section>
-    <?php } }else{ ?>
-    <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4 fira-sans-condensed-regular">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
-    </div>
     <?php   } ?>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<!-- <script>
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY; // Get the current scroll position
+            var windowHeight = window.innerHeight; // Get the height of the window
+            var maxOpacity = 0.5; // Maximum opacity
+            var minOpacity = 0; // Minimum opacity
+            console.log("scrollPosition",scrollPosition);
+
+            // Calculate the new opacity based on the scroll position
+            var newOpacity = maxOpacity - (scrollPosition / windowHeight);
+
+            // Clamp the opacity value between minOpacity and maxOpacity
+            newOpacity = Math.max(minOpacity, Math.min(maxOpacity, newOpacity));
+
+            // Set the new opacity to the image
+            document.querySelector('.channel-banner').style.opacity = newOpacity;
+        });
+</script> -->
 
 <script>
   const player = new Plyr('#videoPlayer1'); 

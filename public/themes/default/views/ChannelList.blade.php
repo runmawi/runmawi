@@ -3,15 +3,11 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,400;0,500;1,500&display=swap" rel="stylesheet">
-
 <section id="iq-favorites">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
-                <div class="iq-main-header align-items-center justify-content-between fira-sans-condensed-regular">
+                <div class="iq-main-header align-items-center justify-content-between">
                     <h4 class="main-title">{{ __("All Channels") }}</h4>                     
                 </div>
                 <div class="favorites-contens mt-5">
@@ -32,7 +28,7 @@
                                 
                                             <div class="channel" >
                                                     <!-- <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}"> -->
-                                                        <h4 class="channelname fira-sans-condensed-regular"><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
+                                                        <h4 class="channelname"><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
                                                     <!-- </a>                                         -->
                                             <div>
                                             
@@ -140,21 +136,4 @@
 
     li.slide-item, div.slide-item{padding:0px 20px !important}
 
-    .fira-sans-condensed-regular {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .fira-sans-condensed-medium {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  .fira-sans-condensed-medium-italic {
-    font-family: "Fira Sans Condensed", sans-serif;
-    font-weight: 500;
-    font-style: italic;
-  }
 </style>
