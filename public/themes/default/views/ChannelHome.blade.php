@@ -15,27 +15,34 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .lkn{
         cursor: pointer;
     }
+    
+    .channel-img img{
+        position:absolute !important;
+        bottom:35px !important;
+        left: 3%;
+    }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
 <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
-@if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
-<section class="channel-header"
-    style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
-    background-blend-mode: multiply;">
-</section>
-@else
-<section class="channel-header"
-    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
-    background-blend-mode: multiply;">
-</section>
-@endif
-<div class="container-fluid">
+    @if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
+        <section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+            <img src="<?php echo @$channel_partner->channel_banner; ?>" alt="channel-banner" style="height:75vh;
+            width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
+        </section>
+    @else
+        <section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+            <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>" alt="channel-banner" style="height:75vh;
+            width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
+        </section>
+    @endif
+<div class="container-fluid" style="position:relative;bottom: 250px;">
     <div class="position-relative">
         <div class="channel-img">
             @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
@@ -45,125 +52,126 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             @endif
         </div>
     </div>
-</div>
-
-<section class="mt-5 mb-5">
-    <div class="container-fluid">
-        <div class="row ">
-            <div class="col-6 col-lg-6">
-
-                <div class="channel-about">
-                    @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                     <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
-                    @endif
-                </div>
-            </div>
-        </div>
-            <div class="col-2 col-lg-2">
-
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
-                    @endphp
-                </ul>
-            </div>
-            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
-            <div class="col-2 col-lg-2">
-            <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
-                <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
-                </span>
-            </a>
 
 
-            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog"  style='max-width: 800px;'>
-                    <div class="modal-content" style="background-color: transparent;border:none;">
-                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-body">
-                        <video id="videoPlayer1" 
-                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
-                        </video>
+    <section class="mt-5 mb-5">
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-6 col-lg-6">
+
+                    <div class="channel-about">
+                        @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                        <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
+                        @endif
                     </div>
                 </div>
+            </div>
+                <div class="col-2 col-lg-2">
+                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                        @php
+                            include(public_path('themes/default/views/partials/channel-social-share.php'));
+                        @endphp
+                    </ul>
+                </div>
+                @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
+                    <div class="col-2 col-lg-2 " style="max-width:20% !important;">
+                        <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
+                            <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                            </span>
+                        </a>
+
+                        <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog"  style='max-width: 800px;'>
+                                <div class="modal-content" style="background-color: transparent;border:none;">
+                                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div class="modal-body">
+                                        <video id="videoPlayer1" 
+                                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                @endif
                 </div>
             </div>
-      
         </div>
-        @endif
+    </section>
+</div>
+<!-- <section class="channel_nav"> -->
+    <!-- <div class="container-fluid"> -->
+        <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item Allnav">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
+            </li>
+            <li class="nav-item videonav">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
+            </li>
+            <li class="nav-item livenav">
+                <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
+            </li>
+            <li class="nav-item seriesnav">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
+            </li>
+            <li class="nav-item audionav">
+                <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
+            </li>
+        </ul> -->
+        <!-- <div class="tab-content" id="myTabContent"> -->
+            <!-- <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div> -->
+            <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
+      
+            <div class=" Video_Categorynav ">
+                @foreach ($VideoCategory as $key => $videos_category)
+                    <div>
+                        <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
+                            data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
+                            href="#pills-kids" role="tab" aria-controls="pills-kids"
+                            aria-selected="false"><?php echo $videos_category->name; ?>
+                        </a>
+                    </div>
+                @endforeach 
             </div>
-        </div>
-    </div>
-</section>
-<section class="channel_nav">
-    <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
-  </li>
-  <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
-  </li>
-        <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
-  </li>
-  <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
-  </li>
-         <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
-      
-      <div class=" Video_Categorynav ">
-                            @foreach ($VideoCategory as $key => $videos_category)
-                                <div>
-                                <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
-                                    data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
-                                    href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                    aria-selected="false"><?php echo $videos_category->name; ?></a>
-</div>
-                                    @endforeach 
-                        </div></div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($SeriesGenre as $key => $series_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
-                            <?php }  ?>
-      
-                        </div></div>
-  <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
-     
-      <div class="Audio_Categorynav d-flex">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
-                                href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div></div>
-    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
-     
-      <div class="Live_Categorynav">
-                            <?php foreach ($LiveCategory as $key => $live_category) { ?>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div>
-</div></div>
-</div>
-   
-</section><link rel="stylesheet" href="style.css">
+        </div> -->
+        <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr>
+            <div class="Series_Categorynav ">
+                <?php foreach ($SeriesGenre as $key => $series_category) { ?>
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
+                        role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
+                <?php }  ?>
+        
+            </div>
+        </div> -->
+        <!-- <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
+            <div class="Audio_Categorynav d-flex">
+                <?php foreach ($AudioCategory as $key => $audios_category) { ?>
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
+                        href="#pills-kids" role="tab" aria-controls="pills-kids"
+                        aria-selected="false"><?php echo $audios_category->name; ?>
+                    </a>
+                <?php }  ?>
+            </div>
+        </div> -->
+        <!-- <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
+            <div class="Live_Categorynav">
+                <?php foreach ($LiveCategory as $key => $live_category) { ?>
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
+                        role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?>
+                    </a>
+                <?php }  ?>
+            </div>
+        </div> -->
+    <!-- </div> -->
+    <!-- </div>  -->
+<!-- </section> -->
+<link rel="stylesheet" href="style.css">
 
 
 @php 
@@ -180,77 +188,87 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
                          ];
 @endphp
 
-<div class='channel_home'>
+<div class='channel_home' style="position: relative; bottom: 40%;">
     <?php 
-if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
-      if(count($latest_video) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+    if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
+        if(count($latest_video) > 0 ){ ?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
-    <?php 
-      if(count($livetream) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+        <?php if(count($livetream) > 0 ){?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
 
-    <?php 
-      if(count($latest_series) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+        <?php if(count($latest_series) > 0 ){?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
+            </section>
+        <?php }  ?>
 
 
-    <?php 
-      if(count($audios) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+        <?php if(count($audios) > 0 ){ ?>
+            <section id="iq-favorites">
+                <div class="container-fluid overflow-hidden">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+        <?php } 
+    }
+    else{ ?>
+        <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
+            <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
+            <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
-    </section>
-    <?php } }else{ ?>
-    <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
-    </div>
     <?php   } ?>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<!-- <script>
+        window.addEventListener('scroll', function() {
+            var scrollPosition = window.scrollY; // Get the current scroll position
+            var windowHeight = window.innerHeight; // Get the height of the window
+            var maxOpacity = 0.5; // Maximum opacity
+            var minOpacity = 0; // Minimum opacity
+            console.log("scrollPosition",scrollPosition);
+
+            // Calculate the new opacity based on the scroll position
+            var newOpacity = maxOpacity - (scrollPosition / windowHeight);
+
+            // Clamp the opacity value between minOpacity and maxOpacity
+            newOpacity = Math.max(minOpacity, Math.min(maxOpacity, newOpacity));
+
+            // Set the new opacity to the image
+            document.querySelector('.channel-banner').style.opacity = newOpacity;
+        });
+</script> -->
 
 <script>
   const player = new Plyr('#videoPlayer1'); 
