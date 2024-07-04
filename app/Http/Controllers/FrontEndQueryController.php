@@ -634,7 +634,7 @@ class FrontEndQueryController extends Controller
                 $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
             }
             
-            $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
+            $Most_watched_videos_country = $Most_watched_videos_country->orderByRaw('count DESC')->limit(15)->get();
             
         }
     }
