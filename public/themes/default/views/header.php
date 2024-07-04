@@ -281,7 +281,7 @@
 
    <link rel="preload" fetchpriority="high" href="assets/js/jquery-3.4.1.min.js" as="script"/>
 
-   <!-- <link rel="preload" href="assets/js/jquery.3.4.1.js" as="script"/> -->
+   <link rel="preload" href="assets/js/jquery.3.4.1.js" as="script"/>
 
 
    <!-- Responsive -->
@@ -297,9 +297,6 @@
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style"/>
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/select2.min.css') ;?>" as="style"/>
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/magnific-popup.css') ;?>" as="style"/>
-   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/owl.carousel.min.css') ;?>" as="style"/>
-   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style"/>
-   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick-theme.css') ;?>" as="style"/>
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/select2-bootstrap4.min.css') ;?>" as="style"/>
 
    <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
@@ -312,8 +309,6 @@
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
    <link rel="preload" href="assets/js/popper.min.js" as="script"/>
    <link rel="preload" href="assets/js/bootstrap.min.js" as="script"/>
-   <link rel="preload" href="assets/js/slick.min.js" as="script"/>
-   <link rel="preload" href="assets/js/owl.carousel.min.js" as="script"/>
    <link rel="preload" href="assets/js/select2.min.js" as="script"/>
    <link rel="preload" href="assets/js/jquery.magnific-popup.min.js" as="script"/>
    <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/>

@@ -330,14 +330,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
-          <ul class="favorites-slider list-inline row p-0 mb-0">
+          <ul class="series-slider home-sec list-inline row p-0 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):
                         if($seasons->ppv_interval > $key):
 							 ?>
                            
-                  <li class="slide-item episodes_div season_<?= $seasons->id;?>">
+                  <li class="items episodes_div season_<?= $seasons->id;?>">
                       <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                               <div class="img-box">
@@ -404,7 +404,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                         </li>
                            
                            	<?php else : ?>
-                             <li class="slide-item episodes_div season_<?= $seasons->id;?>">
+                             <li class="items episodes_div season_<?= $seasons->id;?>">
                               <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative" >
                                     <div class="img-box">
@@ -1174,7 +1174,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
 
 <script>
-    window.onload = function() {
+  window.onload = function() {
         $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button').hide();
     }
 
@@ -1643,4 +1643,19 @@ function Copy() {
             }, 3000);
         }
         
+         // banner slider
+         function initializeFlickity() {
+          var elem = document.querySelector('.series-slider');
+          var flkty = new Flickity(elem, {
+              cellAlign: 'left',
+              contain: true,
+              groupCells: true,
+              pageDots: false,
+              draggable: true,
+              freeScroll: true,
+              imagesLoaded: true,
+              lazyload:true,
+          });
+          window.onload =  initializeFlickity;     }
+
 </script>
