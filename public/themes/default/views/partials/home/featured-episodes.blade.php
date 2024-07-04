@@ -21,7 +21,7 @@
                                       <div class="block-images position-relative">
                                           <div class="border-bg">
                                               <div class="img-box">
-                                                  <a class="playTrailer" href="{{ URL::to('episode/'. $featured_episodes->series_slug.'/'.$featured_episodes->slug ) }}">
+                                                  <a class="playTrailer" href="{{ URL::to('episode/'. $featured_episodes->series_title->slug.'/'.$featured_episodes->slug ) }}">
                                                       <img class="img-fluid w-100" loading="lazy" src="{{ $featured_episodes->image ? URL::to('public/uploads/images/'.$featured_episodes->image) : $default_vertical_image_url }}" data-src="{{ $featured_episodes->image ? URL::to('public/uploads/images/'.$featured_episodes->image) : $default_vertical_image_url }}" alt="{{ $featured_episodes->title }}">
                                                   </a>
                                               </div>
@@ -30,7 +30,7 @@
                                           <div class="block-description">
 
                                               <div class="hover-buttons text-white">
-                                                  <a href="{{ URL::to('episode/'. $featured_episodes->series_slug.'/'.$featured_episodes->slug ) }}">
+                                                  <a href="{{ URL::to('episode/'. $featured_episodes->series_title->slug.'/'.$featured_episodes->slug ) }}">
                                                       @if($ThumbnailSetting->title == 1)
                                                           <p class="epi-name text-left m-0">
                                                               {{ strlen($featured_episodes->title) > 17 ? substr($featured_episodes->title, 0, 18) . '...' : $featured_episodes->title }}
@@ -63,7 +63,7 @@
                                                       </div>
                                                   </a>
                                               
-                                                  <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('episode/'. $featured_episodes->series_slug.'/'.$featured_episodes->slug ) }}">
+                                                  <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('episode/'. $featured_episodes->series_title->slug.'/'.$featured_episodes->slug ) }}">
                                                       <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
                                                   </a>
                                               </div>
