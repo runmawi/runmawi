@@ -270,6 +270,8 @@
       <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
    
+   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
    <!-- Style -->
    <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
@@ -292,10 +294,19 @@
    <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/dark.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/animate.min.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/all.min.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/select2.min.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/magnific-popup.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/owl.carousel.min.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick-theme.css') ;?>" as="style"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/select2-bootstrap4.min.css') ;?>" as="style"/>
 
    <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
    
-   <!--
    <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
    <link rel="preload" href="https://cdn.plyr.io/3.5.10/plyr.js" as="script"/>
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
@@ -305,7 +316,7 @@
    <link rel="preload" href="assets/js/owl.carousel.min.js" as="script"/>
    <link rel="preload" href="assets/js/select2.min.js" as="script"/>
    <link rel="preload" href="assets/js/jquery.magnific-popup.min.js" as="script"/>
-   <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/> -->
+   <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/>
 
    <!-- lazyload script -->
 

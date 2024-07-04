@@ -45,7 +45,6 @@
                                        </div>
                                     <div class="block-description">
                                        <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
-                                          {{-- <img class="img-fluid lazyload w-100" loading="lazy" data-src="{{ url('public/uploads/images/' . $cont_video->player_image) }}" alt="Player Image"> --}}
                                           <!-- PPV price -->
                                           @if($ThumbnailSetting->free_or_cost_label == 1)
                                                 @if($cont_video->access == 'subscriber')
@@ -69,6 +68,9 @@
                                                       {{ strlen($cont_video->title) > 17 ? substr($cont_video->title, 0, 18) . '...' : $cont_video->title }}
                                                    </p>
                                                 @endif
+                                                <p class="desc-name text-left m-0 mt-1">
+                                                   {{ strlen($cont_video->description) > 75 ? substr(html_entity_decode(strip_tags($cont_video->description)), 0, 75) . '...' : $cont_video->description }}
+                                               </p>
                                                 <div class="movie-time d-flex align-items-center pt-1">
                                                    @if($ThumbnailSetting->age == 1 && !($cont_video->age_restrict == 0))
                                                       <!-- Age -->

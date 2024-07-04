@@ -437,7 +437,7 @@ class FrontEndQueryController extends Controller
                                 ->latest()->limit(15)
                                 ->get() ;
 
-        return $series_sliders ; 
+        return $series_sliders ;
     }
 
     public function live_banners()
