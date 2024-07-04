@@ -136,9 +136,9 @@ class ChannelHomeController extends Controller
                 }
             });
 
-            $albums = (new FrontEndQueryController)->AudioAlbums()->filter(function ($AudioAlbums) use ($channel) {
-                if ( $AudioAlbums->user_id == $channel->id && $albums->uploaded_by == "Channel" ) {
-                    return $AudioAlbums;
+            $albums = (new FrontEndQueryController)->AudioAlbums()->filter(function ($albums) use ($channel) {
+                if ( $albums->user_id == $channel->id && $albums->uploaded_by == "Channel" ) {
+                    return $albums;
                 }
             });
 

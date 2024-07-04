@@ -22,11 +22,17 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
+                    'fullscreenToggle': {},    
                     // 'audioTrackButton': {}               
                 },
                 pictureInPictureToggle: true,
             }
+        });
+
+         // Hls Quality Selector - M3U8 
+
+         player.hlsQualitySelector({ 
+            displayCurrentQuality: true,
         });
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
@@ -132,37 +138,6 @@
             }
         });
 
-        // player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
-        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //     if (skipForwardButton && skipBackwardButton) {
-        //         skipForwardButton.style.display = 'none';
-        //         skipBackwardButton.style.display = 'none';
-        //     }
-        // });
-
-        // player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
-        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //   if (skipForwardButton && skipBackwardButton) {
-        //     skipForwardButton.style.display = 'block';
-        //     skipBackwardButton.style.display = 'block';
-        //   }
-        // });
-
-        // const skipForward = (duration) => {
-        //     const playerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() + duration);
-        //     console.log("player",playerTime)
-        // };
-
-        // const skipBackward = (duration) => {
-        //     const pplayerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() - duration);
-        // };
-
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -210,17 +185,12 @@
             }
         });
 
-        // Initialize the watermark component with options
-        // player.ready(function() {
-        //     player.addChild('Watermark', {
-        //         // file: 'https://picsum.photos/200',
-        //     });
-        // });
-
-        // Hls Quality Selector - M3U8 
-
-        player.hlsQualitySelector({ 
-            displayCurrentQuality: true,
+        //Watermark
+        player.ready(function() {
+            var watermark = document.createElement('div');
+            watermark.className = 'vjs-watermark';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+            player.el().appendChild(watermark);
         });
 
         // Advertisement
@@ -370,21 +340,6 @@
         })
     });
 
-    // videojs.registerComponent('Watermark', videojs.extend(videojs.getComponent('Component'), {
-    //     constructor: function(player, options) {
-    //         videojs.getComponent('Component').apply(this, arguments);
-
-    //         // Create the watermark element
-    //         var watermark = document.createElement('div');
-    //         watermark.className = 'vjs-watermark';
-    //         watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->favicon ?>" alt="Watermark">';
-    //         // https://picsum.photos/200    -->Live img url
-    //         // ../../../../../../public/uploads/settings/finexs.png  --> watermark uploaded path
-
-    //         player.el().appendChild(watermark);
-    //     }
-    // }));
-
 </script>
 
 <style>
@@ -403,7 +358,7 @@
         height: 7%;
         top: 75%;
         left: 88%;
-        opacity: 0.5;
+        opacity: 0.7;
         cursor: pointer;
     }
     .vjs-watermark:hover{
