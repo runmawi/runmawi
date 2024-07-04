@@ -31,7 +31,7 @@
 <!-- Slider Start -->
 
    <section id="home" class="iq-main-slider m-0 p-0">
-      <div id="home-slider" class="slider m-0 p-0">
+      <div id="home-slider" class="home-sliders slider m-0 p-0">
          {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
       </div>
    </section>
@@ -218,7 +218,6 @@
       overflow-y:scroll;
    }
 </style>
-
 <script>
    var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
 
@@ -235,5 +234,18 @@
       var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
       
    }
+
+   // banner slider
+   var elem = document.querySelector('.home-sliders');
+   var flkty = new Flickity(elem, {
+       cellAlign: 'left',
+       contain: true,
+       groupCells: true,
+       pageDots: false,
+       draggable: true,
+       freeScroll: true,
+       imagesLoaded: true,
+       lazyload:true,
+   });
 
 </script>

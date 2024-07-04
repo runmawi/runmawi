@@ -248,12 +248,9 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    
    <!-- CSS -->
-   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.min.css" as="style">
-   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-   <!-- flickity -->
-   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
-   
+   <link rel="preload" href="<?= URL::to('assets/css/flickity.css') ;?>" as="style">
+   <link rel="stylesheet" href="<?= URL::to('assets/css/flickity.css') ;?>">
+     
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -267,7 +264,7 @@
    <link rel="stylesheet" href="<?= URL::to('assets/css/bootstrap.min.css')  ?>" />
 
       <!-- Typography CSS  -->
-      <link rel="preload" href="<?= typography_link();?>" as="style"/>
+   <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
    
    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -307,6 +304,9 @@
 
    <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
    
+   <!-- flickity -->
+   <script src="<?= URL::to('assets/js/flickity.js') ;?>"></script>
+
    <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
    <link rel="preload" href="https://cdn.plyr.io/3.5.10/plyr.js" as="script"/>
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
