@@ -755,7 +755,7 @@
                 <div class="admin-section-title">
                     <div class="row ml-0"  id="orderepisode">
 
-                        <table class="table table-bordered iq-card text-center">
+                        <table class="table table-bordered iq-card text-center" id="categorytbl" >
                             <thead>
                             <tr class="table-header r1">
                                 <th><input type="checkbox" id="select-all"></th>
@@ -768,7 +768,7 @@
                             </tr>
                             </thead>
 
-                        <tbody id="categorytbl">
+                        <tbody id="search-episodes">
                             @foreach($episodes as $key => $episode)
                                 <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
                                 <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
@@ -877,7 +877,7 @@ document.getElementById('select-all').addEventListener('change', function() {
             $(document).ready(function(){
                 $("#searchInput").on("keyup", function() {
                     var value = $(this).val().toLowerCase();
-                    $("#categorytbl tr").filter(function() {
+                    $("#search-episodes tr").filter(function() {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
                 });
