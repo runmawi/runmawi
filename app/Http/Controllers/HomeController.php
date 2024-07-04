@@ -125,8 +125,13 @@ class HomeController extends Controller
             return $value === '1' || $value === 1;  
         })->keys()->toArray(); 
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
-
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+             
+        if($this->HomeSetting->theme_choosen == "theme4"){
+            $order_settings = $order_settings->paginate(3);    // Pagination 
+        }else{
+            $order_settings = $order_settings->get();
+        }
 
         $check_Kidmode = 0;
 
@@ -1502,11 +1507,18 @@ class HomeController extends Controller
 
                 // Order Setting 
 
+
                 $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
                     return $value === '1' || $value === 1;  
                 })->keys()->toArray(); 
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->paginate(3);
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+             
+                if($this->HomeSetting->theme_choosen == "theme4"){
+                    $order_settings = $order_settings->paginate(3);    // Pagination 
+                }else{
+                    $order_settings = $order_settings->get();
+                }
 
                 $data = array(
 
