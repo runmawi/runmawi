@@ -1319,6 +1319,7 @@ border-radius: 0px 4px 4px 0px;
 
 <script>
    $(document).ready(function() {
+      $('#error_ppv_price').hide();
         // Function to check the price input and update button states
         function checkPriceInput() {
             var priceInput = $('#price').val().trim();
@@ -1361,6 +1362,7 @@ border-radius: 0px 4px 4px 0px;
                     if (!priceInput && !isGlobalPPVChecked) {
                         event.preventDefault(); // Prevent form submission
                         $('#error_ppv_price').show();
+                        $('#price').hide();
                         $('#nextppv').attr('disabled', 'disabled');
                         $('#submit_button').attr('disabled', 'disabled');
                     } else {

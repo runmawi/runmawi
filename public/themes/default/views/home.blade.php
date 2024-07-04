@@ -38,7 +38,7 @@
 
 <!-- MainContent -->
 
-      <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
+      <div class="main-content">
 
                {{-- continue watching videos --}}
             @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
@@ -150,22 +150,39 @@
 
 
 <script>
-function toggleReadMore(key) {
-    const description = document.getElementById('description-' + key);
-    const readMoreBtn = document.getElementById('read-more-btn-' + key);
-    const readLessBtn = document.getElementById('read-less-btn-' + key);
+   function toggleReadMore(key) {
+       const description = document.getElementById('description-' + key);
+       const readMoreBtn = document.getElementById('read-more-btn-' + key);
+       const readLessBtn = document.getElementById('read-less-btn-' + key);
+   
+       if (readMoreBtn.style.display === 'none') {
+           readMoreBtn.style.display = 'inline';
+           readLessBtn.style.display = 'none';
+           description.style.maxHeight = '100px'; // Collapse description, adjust as needed
+       } else {
+           readMoreBtn.style.display = 'none';
+           readLessBtn.style.display = 'inline';
+           description.style.maxHeight = 'none'; // Expand description
+       }
+   }
+   
+   function toggleSeriesReadMore(key) {
+      console.log('toggleSeriesReadMore called with key:', key);
+      const description = document.getElementById('series-description-' + key);
+      const readMoreBtn = document.getElementById('series-read-more-btn-' + key);
+      const readLessBtn = document.getElementById('series-read-less-btn-' + key);
 
-    if (readMoreBtn.style.display === 'none') {
-        readMoreBtn.style.display = 'inline';
-        readLessBtn.style.display = 'none';
-        description.style.maxHeight = '100px'; // Collapse description, adjust as needed
-    } else {
-        readMoreBtn.style.display = 'none';
-        readLessBtn.style.display = 'inline';
-        description.style.maxHeight = 'none'; // Expand description
-    }
-}
-</script>
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px'; // Collapse description, adjust as needed
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none'; // Expand description
+      }
+   }
+   </script>
 
 <style>
 .desc {
@@ -180,6 +197,9 @@ function toggleReadMore(key) {
     margin-bottom: 10px;}
     .video_title_images{width: 50%;}
 </style>
+
+<!-- flickity -->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
 <!-- Trailer -->
 @php
@@ -216,26 +236,4 @@ function toggleReadMore(key) {
       
    }
 
-   var isFetching = false; 
-   var scrollFetch; 
-
-   $(window).scroll(function () {
-      clearTimeout(scrollFetch);
-
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#home_sections").attr('next-page-url');
-         console.log("scrolled");
-
-         if (page_url != null && !isFetching) {
-               isFetching = true; 
-               $.ajax({
-                  url: page_url,
-                  success: function (data) {
-                     $("#home_sections").append(data.view);
-                     $("#home_sections").attr('next-page-url', data.url);
-                  },
-               });
-         }
-      }, 100);
-   });
 </script>

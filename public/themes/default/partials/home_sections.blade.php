@@ -12,6 +12,7 @@
                          ];
 @endphp
 
+
 @forelse ($order_settings as $key => $item)
 
     @if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1') {{-- latest videos --}}
