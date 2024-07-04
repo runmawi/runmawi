@@ -152,7 +152,7 @@ class FrontEndQueryController extends Controller
                                     }
 
                                     if ($this->videos_expiry_date_status == 1 ) {
-                                        $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                       $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                                     }
                                     
                                     if ($this->check_Kidmode == 1) {
@@ -634,7 +634,7 @@ class FrontEndQueryController extends Controller
                 $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
             }
             
-            $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
+            $Most_watched_videos_country = $Most_watched_videos_country->orderByRaw('count DESC')->limit(15)->get();
             
         }
     }
