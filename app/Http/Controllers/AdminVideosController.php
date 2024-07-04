@@ -869,11 +869,11 @@ class AdminVideosController extends Controller
 
             return $value;
         }
-        // } else {
-        //     $value["success"] = 2;
-        //     $value["message"] = "File not uploaded.";
-        //     return response()->json($value);
-        // }
+        else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+        }
 
         // return response()->json($value);
     }
@@ -2377,14 +2377,14 @@ class AdminVideosController extends Controller
             }  else if(!empty($data["global_ppv"])) {
                 $video->global_ppv = $data["global_ppv"];
                 $data["ppv_price"] = $settings->ppv_price;
-            }else if(!empty($data["ppv_price"])  && $request->ppv_price != null) {
+            }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
                 $data["ppv_price"] = $request->ppv_price;
+                $video->global_ppv = null;
             }  else {
                 $video->global_ppv = null;
                 $data["ppv_price"] = null;
             }
         }
-
         // if (!empty($data["global_ppv"])) {
         //     $video->global_ppv = $data["global_ppv"];
         // } else {
@@ -3320,6 +3320,9 @@ class AdminVideosController extends Controller
             }  else if(!empty($data["global_ppv"])) {
                 $video->global_ppv = $data["global_ppv"];
                 $data["ppv_price"] = $settings->ppv_price;
+            }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
+                $data["ppv_price"] = $request->ppv_price;
+                $video->global_ppv = null;
             } else {
                 $video->global_ppv = null;
                 $data["ppv_price"] = null;

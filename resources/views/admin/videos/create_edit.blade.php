@@ -1362,6 +1362,7 @@ border-radius: 0px 4px 4px 0px;
                     if (!priceInput && !isGlobalPPVChecked) {
                         event.preventDefault(); // Prevent form submission
                         $('#error_ppv_price').show();
+                        $('#price').hide();
                         $('#nextppv').attr('disabled', 'disabled');
                         $('#submit_button').attr('disabled', 'disabled');
                     } else {
