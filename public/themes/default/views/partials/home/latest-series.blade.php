@@ -86,7 +86,7 @@
                                                         <p class="desc-name text-left m-0 mt-1">
                                                             {{ strlen($latest_serie->description) > 75 ? substr(html_entity_decode(strip_tags($latest_serie->description)), 0, 75) . '...' : $latest_serie->description }}
                                                         </p>
-                                                      <div class="movie-time d-flex align-items-center my-2">
+                                                        <div class="movie-time d-flex align-items-center my-2">
 
                                                             @if($ThumbnailSetting->age == 1 && !($latest_serie->age_restrict == 0))
                                                                 <span class="position-relative badge p-1 mr-2">{{ $latest_serie->age_restrict . ' +' }}</span>
