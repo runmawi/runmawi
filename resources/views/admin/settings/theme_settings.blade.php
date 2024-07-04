@@ -301,11 +301,14 @@ border-radius: 0px 4px 4px 0px;
                 </div> <br>
 
                 <div class="row"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_videoupload_limit_count == 1)
                     <div class="col-sm-6">
                         <label>{{ ucfirst(trans('Enable Video Upload limit Count')) }}</label>
                        <input type="text" placeholder="Video Upload limit Count" name="admin_videoupload_limit_count" class="form-control admin_videoupload_limit_count" id="admin_videoupload_limit_count" value="@if(!empty($settings->admin_videoupload_limit_count)){{ $settings->admin_videoupload_limit_count }}@endif">
                     </div>
+                    @endif
 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_videoupload_limit_status == 1)
                     <div class="col-sm-6">
                         <label>{{ ucfirst(('Enable Video Upload limit Status')) }} </label>
     
@@ -319,8 +322,8 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div style="color:green;">On</div>
                         </div>
-                    
                     </div>
+                    @endif
                 </div>
 
 
