@@ -35,17 +35,14 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
 Import CSS
 -----------------------------------------------------------------------*/
+@import url("variable-boots-flick.css");
 @import url("variable.css");
 @import url("all.min.css");
 @import url("remixicon.css");
 @import url("slick.css");
 @import url("slick-theme.css");
 @import url("owl.carousel.min.css");
-@import url("animate.min.css");
-@import url("magnific-popup.css");
-@import url("select2.min.css");
-@import url("select2-bootstrap4.min.css");
-@import url("dark.css");
+@import url("compine.css");
 @import url("slick-animation.css");
 
 /*---------------------------------------------------------------------
