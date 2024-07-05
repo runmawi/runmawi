@@ -15260,6 +15260,8 @@ public function QRCodeMobileLogout(Request $request)
       
       $data = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
+        $item['source'] = "Series_based_on_Networks" ;
+
         $item['Series_depends_Networks'] = Series::where('series.active', 1)
                     ->whereJsonContains('network_id', [(string)$item->id])
     
