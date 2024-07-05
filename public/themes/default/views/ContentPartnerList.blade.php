@@ -14,7 +14,7 @@
                     <ul class="category-page list-inline row p-0 mb-0">
                       @if(isset($Content_Partner)) 
                         @foreach($Content_Partner as $content_user)
-                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12 mb-5 ml-1 mr-1">
                                 <a href="{{ URL::to('contentpartner').'/'.$content_user->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
@@ -27,7 +27,7 @@
                             
                                         <div class="content_user" >
                                                 <a href="{{ URL::to('contentpartner').'/'.$content_user->slug   }}">
-                                                    <h4><?php  echo (strlen($content_user->username) > 17) ? substr($content_user->username,0,18).'...' : $content_user->username; ?></h4>
+                                                    <h4 class="ml-5"><?php  echo (strlen($content_user->username) > 17) ? substr($content_user->username,0,18).'...' : $content_user->username; ?></h4>
                                                 </a>
                                             
                                     <div>
@@ -114,3 +114,28 @@
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
+
+<style>
+    .iq-main-header{
+        width: 15%;
+        left: 38%;
+        position: relative;
+        margin-bottom: 25px;
+        margin-left: 78px;
+    }
+    .slide-item{
+        /* margin-left: 6% !important; */
+        display: flex;
+        justify-content: center;
+    }
+    .main-title{
+        font-size: 25px !important;
+    }
+    .favorites-contens {
+        margin-left: 11% !important;
+        width: 1140px !important;
+    }
+
+    li.slide-item, div.slide-item{padding:0px 20px !important}
+
+</style>
