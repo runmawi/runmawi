@@ -167,7 +167,6 @@
                                                                 @break
                                                             @endswitch
                                                         @endif
-                                                    </a>
 
                                                     <div class="hover-buttons text-white">
                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}">
@@ -225,6 +224,7 @@
                                         </div>
                                     @endforeach
                                 @endif
+                        </div>
                         </div>
                     </div>
                 </div>

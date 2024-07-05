@@ -127,7 +127,7 @@ class FrontEndQueryController extends Controller
         }
 
         if ($this->videos_expiry_date_status == 1 ) {
-            $trending_videos = $trending_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $trending_videos = $trending_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
         }
         
         if ($this->check_Kidmode == 1) {
@@ -152,7 +152,7 @@ class FrontEndQueryController extends Controller
                                     }
 
                                     if ($this->videos_expiry_date_status == 1 ) {
-                                        $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                       $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                                     }
                                     
                                     if ($this->check_Kidmode == 1) {
@@ -263,7 +263,7 @@ class FrontEndQueryController extends Controller
 
     public function latest_episodes()
     {
-        $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+        $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                 'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                 ->where('active', '1')->where('status', '1')->latest()->limit(15)
                 ->get()->map(function($item){
@@ -276,7 +276,7 @@ class FrontEndQueryController extends Controller
 
     public function featured_episodes(){
 
-        $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+        $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                                                  'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
                                             ->where('active', 1)->where('featured' ,1)->where('status', '1')
                                             ->latest()->limit(15)
@@ -437,7 +437,7 @@ class FrontEndQueryController extends Controller
                                 ->latest()->limit(15)
                                 ->get() ;
 
-        return $series_sliders ; 
+        return $series_sliders ;
     }
 
     public function live_banners()
@@ -634,7 +634,7 @@ class FrontEndQueryController extends Controller
                 $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
             }
             
-            $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
+            $Most_watched_videos_country = $Most_watched_videos_country->orderByRaw('count DESC')->limit(15)->get();
             
         }
     }

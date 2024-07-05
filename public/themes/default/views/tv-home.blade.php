@@ -31,7 +31,7 @@
 
                 {{-- Slider --}}
 <section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
+    <div id="home-slider" class="home-sliders slider m-0 p-0">
         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
     </div>
     
@@ -51,7 +51,7 @@
         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
     </div>
 
-    <section id="iq-favorites">
+    {{-- <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- **************Don't Enable this section We don't have Access for episodes**************  -->
     
@@ -73,15 +73,8 @@
         </div>
     </section> -->
 
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    @php include(public_path('themes/default/views/partials/home/featured-episodes.php')) @endphp
-                </div>
-            </div>
-        </div>
-    </section>
+    
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/featured-episodes", array_merge($homepage_array_data, ['data' => $featured_episodes]) )->content() !!}
 
     @foreach($order_settings_list as $value)  
 
@@ -116,6 +109,19 @@
             $(".home-search").hide();
         });
     })
+
+    // banner slider
+   var elem = document.querySelector('.home-sliders');
+   var flkty = new Flickity(elem, {
+       cellAlign: 'left',
+       contain: true,
+       groupCells: true,
+       pageDots: false,
+       draggable: true,
+       freeScroll: true,
+       imagesLoaded: true,
+       lazyload:true,
+   });
 </script>
 
 @php 

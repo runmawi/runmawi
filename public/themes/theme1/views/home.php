@@ -72,7 +72,7 @@ $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
 
 
 <!-- Most Watched Videos User -->
-    <?php if(count($most_watch_user) > 0){ ?>
+   <?php if(!($most_watch_user) == 'null'){ ?>
        <section id="iq-favorites">
             <div class="container-fluid overflow-hidden">
                <div class="row">
