@@ -888,7 +888,9 @@
                                        </div>
                                  <?php endif; ?>
 
-                     <?php if(!Auth::guest()){ ?>
+                     <?php if(!Auth::guest()){ 
+                        
+                        $ModeratorsUser = App\ModeratorsUser::where('email',Auth::user()->email)->first(); ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
