@@ -1,7 +1,7 @@
 @php
     $check_Kidmode = 0 ;
 
-    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching){
+    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching,$default_vertical_image_url,$default_vertical_image_url){
 
         // Videos 
 
