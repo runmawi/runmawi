@@ -1,7 +1,7 @@
 @php
     $check_Kidmode = 0 ;
 
-    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching,$default_vertical_image_url,$default_vertical_image_url){
+    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching,$default_vertical_image_url,$default_horizontal_image_url){
 
         // Videos 
 
@@ -24,7 +24,7 @@
                                                 $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                             }
 
-        $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) {
+        $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) use ($default_horizontal_image_url,$default_vertical_image_url) {
                                         $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                         $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['source']           = 'series';
@@ -38,7 +38,7 @@
         $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                     ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
-                                    ->map(function ($item) {
+                                    ->map(function ($item) use ($default_horizontal_image_url,$default_vertical_image_url) {
                                         $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                         $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
@@ -46,24 +46,6 @@
                                         $item['source']           = 'series';
                                         return $item;
                                     });  
-
-                                    
-        // Series 
-        
-        $Seriesartist = App\Seriesartist::where('artist_id',$item->id)->groupBy('series_id')->pluck('series_id'); 
-
-        $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
-                            'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
-                            ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
-                            ->map(function ($item) {
-                                $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                $item['season_count']     =  App\SeriesSeason::where('series_id',$item->id)->count();
-                                $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
-                                $item['source']           = 'series';
-                                return $item;
-                            });  
-
         // Audio 
         
         $Audioartist = App\Audioartist::where('artist_id',$item->id)->groupBy('audio_id')->pluck('audio_id'); 
@@ -78,7 +60,7 @@
                     $item['artist_depends_audios'] = $item['artist_depends_audios']->whereNotIn('id',Block_audios());
                 }
 
-            $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) {
+            $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) use ($default_horizontal_image_url,$default_vertical_image_url) {
                             $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : $default_vertical_image_url ;
                             $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : $default_horizontal_image_url ; 
                             return $item;
