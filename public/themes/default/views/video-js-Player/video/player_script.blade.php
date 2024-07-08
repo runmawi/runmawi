@@ -4,6 +4,10 @@
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    var skipButton = true;
+
     document.addEventListener("DOMContentLoaded", function() {
 
         var player = videojs('my-video', { // Video Js Player 
@@ -34,8 +38,8 @@
             displayCurrentQuality: true,
         });
 
-        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
@@ -61,9 +65,11 @@
                 if (event.type === 'mouseenter') {
                     // console.log("hovered");
                     hovered = true;
+                    skipButton = true;
                 } else if (event.type === 'mouseleave') {
                     // console.log("not hovered");
                     hovered = false;
+                    skipButton = false;
                 }
             }
 
@@ -81,10 +87,12 @@
         player.on('useractive', () => {
         // Show the Play pause, skip forward and backward buttons when the user becomes active
             if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                skipForwardButton.style.display = 'block';
-                skipBackwardButton.style.display = 'block';
-                playPauseButton.style.display = 'block';
-                backButton.style.display = 'block';
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.display = 'block';
+                    skipBackwardButton.style.display = 'block';
+                    playPauseButton.style.display = 'block';
+                    backButton.style.display = 'block';
+                }
             }
         });
 
@@ -337,20 +345,19 @@
         player.on("skipDuration", function(duration){
             // console.log("!#");
         })
-        player.endcard({
-            getRelatedContent: getRelatedContent,
-            // getNextVid: getNextVid, 
-            count: 20
-        });
+        // player.endcard({
+        //     getRelatedContent: getRelatedContent,
+        //     // getNextVid: getNextVid, 
+        //     count: 20
+        // });
     });
 
     function createRelatedContent(title, url) {
-
-        var sdiv = document.createElement('div');
-        sdiv.setAttribute('class', 'col-lg-12');
-
         var div = document.createElement('div');
-        div.setAttribute('class', 'card col-4 col-sm-4 col-md-4 col-lg-4');
+        div.setAttribute('class', 'swiper-slide');
+
+        var card = document.createElement('div');
+        card.setAttribute('class', 'card');
 
         var a = document.createElement('a');
         var p = document.createElement('p');
@@ -358,37 +365,71 @@
         p.innerHTML = title;
         a.href = url;
         a.appendChild(p);
-        div.appendChild(a);
+        card.appendChild(a);
 
+        div.appendChild(card);
         return div;
     }
 
     // Creating related content boxes
     var rel_content_1 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_2 = createRelatedContent("This Man Found a LinkBait LinkBait. You Won't Believe What the LinkBait Did Next!", "http://www.youtube.com/watch?v=6k3--GPk-l4");
+    var rel_content_2 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_3 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_4 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_5 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_6 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_7 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
 
     // Asynchronous function to get related content
     function getRelatedContent(callback) {
-        var list = [rel_content_1, rel_content_2];
+        var list = [rel_content_1, rel_content_2, rel_content_3, rel_content_4, rel_content_5, rel_content_6, rel_content_7];
 
         setTimeout(function () {
             callback(list);
         }, 0);
     }
 
-    var next_video = document.createElement('div');
-    var a3 = document.createElement('a');
-    var p3 = document.createElement('p');
-    p3.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/'. $settings->logo ?>" alt="End-card">'; //video poster src
-    a3.href = "#"; // video-src
-    a3.appendChild(p3);
-    next_video.appendChild(a3);
+    // var next_video = document.createElement('div');
+    // var a3 = document.createElement('a');
+    // var p3 = document.createElement('p');
+    // p3.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/'. $settings->logo ?>" alt="End-card">'; //video poster src
+    // a3.href = "#"; // video-src
+    // a3.appendChild(p3);
+    // next_video.appendChild(a3);
 
-    function getNextVid(callback) {
-        setTimeout(function(){
-            callback(next_video);
-        }, 0);
-    }
+    // function getNextVid(callback) {
+    //     setTimeout(function(){
+    //         callback(next_video);
+    //     }, 0);
+    // }
+
+    // Initialize Swiper when the player is ready
+    player.ready(function() {
+        var swiperContainer = document.querySelector('.swiper-container');
+        var swiperWrapper = swiperContainer.querySelector('.swiper-wrapper');
+
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // Add related content to Swiper
+        getRelatedContent(function(contentList) {
+            console.log("contentList",contentList);
+            contentList.forEach(function(content) {
+                swiperWrapper.appendChild(content);
+            });
+            swiper.update(); // Update Swiper after adding slides
+        });
+    });
 
 </script>
 
@@ -419,7 +460,19 @@
         height: 100%;
     }
     .card{
-        width: 25%;
-        height: 20% !important;
+        width: 100%;
+        height: 100% !important;
+        top: 0;
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5%;
+        width: 15% !important;
     }
 </style>
