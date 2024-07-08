@@ -221,7 +221,7 @@ class ChannelHomeController extends Controller
             //     }
             // });
 
-            // $Most_watched_videos_country = $FrontEndQueryController->Most_watched_videos_country()->filter(function ($Most_watched_videos_country) use ($channel) {
+            // $Most_watched_videos_country = (new FrontEndQueryController)->Most_watched_videos_country()->filter(function ($Most_watched_videos_country) use ($channel) {
             //     if ( $Most_watched_videos_country->user_id == $channel->id && $Most_watched_videos_country->uploaded_by == "Channel" ) {
             //         return $Most_watched_videos_country;
             //     }
@@ -245,13 +245,16 @@ class ChannelHomeController extends Controller
             //     }
             // });
             // 
+            // dd($Most_watched_videos_country);
+
+            $FrontEndQueryController = new FrontEndQueryController();
 
             $data = array(
                 'currency'              => $currency,
-                'latest_video'          => $latest_videos,
-                'latest_videos'         => $latest_videos,
+                'latest_video'          => $FrontEndQueryController->Latest_videos(),
+                'latest_videos'         => $FrontEndQueryController->Latest_videos(),
                 'videos'                => $latest_videos,
-                'latest_series'         => $latest_series,
+                'latest_series'         => $FrontEndQueryController->latest_Series(),
                 'latest_audios'         => $latest_audios,
                 'audios'                => $latest_audios,
                 'trendings'             => $trending_videos,
@@ -262,7 +265,7 @@ class ChannelHomeController extends Controller
                 'genres'                => $genre_video_display,
                 'video_categories'      => $genre_video_display ,
                 'VideoCategory'         => $genre_video_display ,
-                'livetream'             => $livetreams,
+                'livetream'              => $FrontEndQueryController->livestreams() ,
                 'channel_partner'       => $channel,
                 'albums'                => $albums ,
                 'latest_episode'        => $latest_episodes , 

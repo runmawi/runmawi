@@ -1,7 +1,6 @@
 <!-- Header Start -->
 <?php
     include public_path("themes/{$current_theme}/views/header.php");
-    
 ?>
 
 <style>
@@ -52,9 +51,7 @@
             </div>
                 <div class="col-2 col-lg-2">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                        @php
-                            include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php"));
-                        @endphp
+                        @php include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php")); @endphp
                     </ul>
                 </div>
                 
@@ -62,7 +59,7 @@
                     <div class="col-2 col-lg-2 " style="max-width:20% !important;">
                         <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                             <span class="text-white">
-                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
                             </span>
                         </a>
 
@@ -105,63 +102,30 @@
 @endphp
 
 <div class='channel_home' style="position: relative; bottom: 40%;">
-    
+     
     @if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0)
+        
+        <div>
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+        </div>
+       
+        <div>
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+        </div>
 
-        @if(count($latest_video) > 0 )
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
+        <div>
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+        </div>
 
-        @if(count($livetream) > 0 )
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
-
-        @if(count($latest_series) > 0 )
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
-
-        @if(count($audios) > 0 )
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-audios", array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif 
+        <div>
+            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+        </div>
     @else
         <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
             <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
             <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
     @endif
-
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
