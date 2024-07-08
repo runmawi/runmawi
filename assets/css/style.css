@@ -517,7 +517,7 @@ li.list-group-item a:hover{color:var(--iq-primary)!important}
 #sidebar-scrollbar::-webkit-scrollbar-track{background-color:var(--iq-light-primary)}
 ::-webkit-scrollbar{width:8px;height:8px;border-radius:5px}
 li.list-group-item{background-color:transparent!important;padding-right:unset!important}
-li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!important;font-size:12px!important;padding-left:10px!important}
+li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!important;font-size:12px!important;/*padding-left:10px!important;*/}
 #main-header{color:#fff}
 .search_content{top:40px!important;margin-right:px!important}
 ul.list-group{text-align:left!important;max-height:450px!important}
