@@ -180,6 +180,14 @@ class ChannelHomeController extends Controller
                 }
             });
 
+            // Order Setting 
+
+            $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
+                return $value === '1' || $value === 1;  
+            })->keys()->toArray(); 
+
+            $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->get();
+
             $data = array(
                 'settings'           => $this->settings ,
                 'HomeSetting'        => $this->HomeSetting ,
@@ -211,6 +219,8 @@ class ChannelHomeController extends Controller
                 'default_vertical_image_url'    => default_vertical_image_url(),
                 'default_horizontal_image_url'  => default_horizontal_image_url(),
                 'order_settings_list'   => OrderHomeSetting::get(),
+                'order_settings'        => $order_settings ,
+                'home_settings'       => $this->HomeSetting ,
                 'getfeching'            => Geofencing::first(),
             );
 
