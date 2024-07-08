@@ -261,26 +261,26 @@
    <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
    <!-- compine.css -->
-   <link rel="preload" href="<?= URL::to('assets/css/compine.css') ;?>" as="style" />
+   <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
 
    <!-- js -->
-   <link rel="preload" fetchpriority="high" href="assets/js/jquery-3.4.1.min.js" as="script"/>
+   <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
 
-   <link rel="preload" href="assets/js/jquery.3.4.1.js" as="script"/>
+   <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
    
    <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
-   <script src="<?= URL::to('assets/js/flick-popper-magnific.js') ;?>"></script>
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
   
 
-   <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
    
    
 
-   <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
+   <!-- <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
    <link rel="preload" href="assets/js/bootstrap.min.js" as="script"/>
    <link rel="preload" href="assets/js/select2.min.js" as="script"/>
-   <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/>
+   <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/> -->
 
    <!-- lazyload script -->
 
@@ -1834,7 +1834,7 @@
          });
       </script>
                   <!-- search validation -->
-      <script defer src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+      <script  src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
       <script>
          $( "#searchResult" ).validate({
