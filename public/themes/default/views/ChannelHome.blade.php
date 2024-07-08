@@ -189,62 +189,33 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
 @endphp
 
 <div class='channel_home' style="position: relative; bottom: 40%;">
-    <?php 
-    if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
-        if(count($latest_video) > 0 ){ ?>
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <?php }  ?>
+     
+    @if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0)
+        
+        <div>
+                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+        </div>
 
-        @if(!null($livetream))
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
+       
+        <div>
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+        </div>
 
 
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                                {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div>
+                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+        </div>
 
 
-        <?php if(count($audios) > 0 ){ ?>
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
-                    <div class="row">
-                        <div class="col-sm-12 ">
-                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <?php } 
-    }
-    else{ ?>
+        <div>
+            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
+        </div>
+    @else
         <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
             <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
             <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
-    <?php   } ?>
+    @endif
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
