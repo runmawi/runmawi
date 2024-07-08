@@ -330,14 +330,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
-          <ul class="series-slider home-sec list-inline row p-0 mb-0">
+          <div class="series-slider home-sec list-inline row p-0 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):
                         if($seasons->ppv_interval > $key):
 							 ?>
                            
-                  <li class="items episodes_div season_<?= $seasons->id;?>">
+                  <div class="items episodes_div season_<?= $seasons->id;?>">
                       <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                               <div class="img-box">
@@ -401,10 +401,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             
                             </div>   
                           </a>
-                        </li>
+                        </div>
                            
                            	<?php else : ?>
-                             <li class="items episodes_div season_<?= $seasons->id;?>">
+                             <div class="items episodes_div season_<?= $seasons->id;?>">
                               <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative" >
                                     <div class="img-box">
@@ -490,10 +490,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                         </div>
                                     
                               </a>
-                           </li>
+                                          </div>
                            <?php endif;	endforeach; 
 						                      endforeach; ?>
-                        </ul>
+                        </div>
                      </div></div>
 			<?php elseif( Auth::guest() && $series->access == "subscriber"):
 						
@@ -1644,18 +1644,19 @@ function Copy() {
         }
         
          // banner slider
-         function initializeFlickity() {
-          var elem = document.querySelector('.series-slider');
-          var flkty = new Flickity(elem, {
-              cellAlign: 'left',
-              contain: true,
-              groupCells: true,
-              pageDots: false,
-              draggable: true,
-              freeScroll: true,
-              imagesLoaded: true,
-              lazyload:true,
-          });
-          window.onload =  initializeFlickity;     }
+         setTimeout(function() { 
+
+            const elem = document.querySelector('.series-slider');
+            const flkty = new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyload:true,
+            });
+        },0);
 
 </script>
