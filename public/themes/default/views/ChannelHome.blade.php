@@ -94,9 +94,12 @@
 @endphp
 
 <div class='channel_home mt-4'>
-     
-    @if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0)
-        
+    @if(
+        (isset($latest_video) && is_countable($latest_video) && count($latest_video) > 0) || 
+        (isset($livetream) && is_countable($livetream) && count($livetream) > 0) || 
+        (isset($latest_series) && is_countable($latest_series) && count($latest_series) > 0) || 
+        (isset($audios) && is_countable($audios) && count($audios) > 0)
+    )
         <div>
             {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
         </div>
