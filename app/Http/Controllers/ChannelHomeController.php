@@ -251,10 +251,10 @@ class ChannelHomeController extends Controller
 
             $data = array(
                 'currency'              => $currency,
-                'latest_video'          => $FrontEndQueryController->Latest_videos(),
-                'latest_videos'         => $FrontEndQueryController->Latest_videos(),
+                'latest_video'          => $latest_videos,
+                'latest_videos'         => $latest_videos,
                 'videos'                => $latest_videos,
-                'latest_series'         => $FrontEndQueryController->latest_Series(),
+                'latest_series'         => $latest_series,
                 'latest_audios'         => $latest_audios,
                 'audios'                => $latest_audios,
                 'trendings'             => $trending_videos,
