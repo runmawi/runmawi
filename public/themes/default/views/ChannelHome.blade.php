@@ -26,37 +26,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+<section class="channel-header" style="position:relative;background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
     <img src="{{ !empty($channel_partner->channel_banner) && ($channel_partner->channel_banner != null) ? $channel_partner->channel_banner : URL::to('public/uploads/images/' . $settings->default_horizontal_image) }}" alt="channel-banner" style="height:75vh;
     width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
-</section>
-    
-<div class="container-fluid" style="position:relative;bottom: 250px;">
-    <div class="position-relative">
-        <div class="channel-img">
+
+    <div class="container-fluid" style="position:absolute;bottom: 50px;">
+        <div class="channels-img container-fluid">
             <img src="{{ !empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null ? $channel_partner->channel_logo : URL::to('/public/uploads/images/' . $settings->default_video_image) }}"  width="150" alt="user">
         </div>
-    </div>
 
-    <section class="mt-5 mb-5">
-        <div class="container-fluid">
-            <div class="row ">
-                <div class="col-6 col-lg-6">
-                    <div class="channel-about">
-                        @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                            <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
-                        @endif
-                    </div>
-                </div>
+        <div class="mt-3 container-fluid">
+            <div class="channel-about">
+                @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                    <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
+                @endif
             </div>
-                <div class="col-2 col-lg-2">
+            <div class="row">
+                <div class="col-1 col-lg-1">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         @php include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php")); @endphp
                     </ul>
                 </div>
-                
                 @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
-                    <div class="col-2 col-lg-2 " style="max-width:20% !important;">
+                    <div class="col-4 col-lg-4 d-flex align-items-center" style="max-width:20% !important;">
                         <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                             <span class="text-white">
                                 <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
@@ -79,12 +71,12 @@
             
                     </div>
                 @endif
-
-                </div>
             </div>
         </div>
-    </section>
-</div>
+
+</section>
+    
+
 
 @php 
 
@@ -101,7 +93,7 @@
                             ];
 @endphp
 
-<div class='channel_home' style="position: relative; bottom: 40%;">
+<div class='channel_home mt-4'>
      
     @if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0)
         
