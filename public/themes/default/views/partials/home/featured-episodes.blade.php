@@ -7,9 +7,7 @@
 
                   <div class="iq-main-header d-flex align-items-center justify-content-between">
                       <h4 class="main-title">
-                          <a href="#">
-                              {{ __('Featured Episodes') }}
-                          </a>
+                            {{ __('Featured Episodes') }}
                       </h4>
                   </div>
 
