@@ -2139,7 +2139,7 @@ class HomeController extends Controller
                         foreach ($videos as $row)
                         {
                             $output .= '<li class="list-group-item">
-                            <img width="35px" height="35px" alt="videos" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="videos" style="max-width: 35px; padding-right:10px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '">' . $row->title . '</div></a></li>';
                         }
 
                     }else{
@@ -2154,7 +2154,7 @@ class HomeController extends Controller
                         foreach ($livestream as $row)
                         {
                             $livestreams .= '<li class="list-group-item">
-                            <img width="35px" height="35px" alt="livestream" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="livestream" style="max-width: 35px; padding-right:10px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '">' . $row->title . '</div></a></li>';
                         }
                     }
                     else{
@@ -2169,7 +2169,7 @@ class HomeController extends Controller
                         foreach ($audio as $row)
                         {
                             $audios .= '<li class="list-group-item">
-                            <img width="35px" height="35px" alt="audio" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            <a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="audio" style="max-width: 35px; padding-right:10px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '">' . $row->title . '</div></a></li>';
                         }
                     }
                     else{
@@ -2189,7 +2189,7 @@ class HomeController extends Controller
                                                 'duration','rating','image','featured','tv_image','player_image','details','description')
                                                 ->where('id',$row->series_id)->pluck('slug')->first();
                                 $Episodes .= '<li class="list-group-item">
-                                <img width="35px" height="35px" alt="Episode" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                                <a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="Episode" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '">' . $row->title . '</div></a></li>';
                             }
                         }
                     }
@@ -2206,7 +2206,7 @@ class HomeController extends Controller
                     foreach ($Series as $row)
                     {
                         $Series_search .= '<li class="list-group-item">
-                        <img width="35px" height="35px" alt="Series" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        <a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="Series" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '">' . $row->title . '</div></a></li>';
                     }
                 }
                 else{
@@ -2222,7 +2222,7 @@ class HomeController extends Controller
                     foreach ($station_audio as $row)
                     {
                         $station_search .= '<li class="list-group-item">
-                        <img width="35px" height="35px" alt="station_audio" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
+                        <a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><img width="35px" height="35px" alt="station_audio" style="max-width: 35px; max-height: 35px; width: auto; height: auto;" src="' . $row->image . '">' . $row->station_name . '</div></a></li>';
                     }
                 }
                 else{

@@ -1,3 +1,32 @@
+
+{{-- video-js Style --}}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+<!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+<link href="<?= asset('public/themes/default/assets/css/video-js/videojs.min.css') ?>" rel="stylesheet" >
+<link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+<link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet" >
+<link href="<?= asset('public/themes/default/assets/css/video-js/videos-player.css') ?>" rel="stylesheet" >
+<link href="<?= asset('public/themes/default/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet" >
+<link href="<?= URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') ?>" rel="stylesheet" >
+
+
+{{-- video-js Script --}}
+
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="<?= asset('assets/js/video-js/video.min.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-contrib-quality-levels.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-http-source-selector.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs.ads.min.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs.ima.min.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-hls-quality-selector.min.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/end-card.js') ?>"></script>
+<script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
+<script src="<?= URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') ?>"></script>
+<script src="<?= URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') ?>"></script>
+
+
+
 <style>
     .video-js-trailer-modal-dialog {
         max-width: 800px;
@@ -19,6 +48,8 @@
         color: #fff;
         opacity: 1;
     }
+    .my-video.vjs-fluid{height:65vh !important;}
+    .embed-responsive::before{display: none;}
 </style>
 
 <div class="modal fade" id="video-js-trailer-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="video-js-trailer-modalLabel" aria-hidden="true">
@@ -41,10 +72,12 @@
 
                     <?php else: ?>
 
-                        <video id="video-js-trailer-player" class="video-js vjs-theme-fantasy vjs-icon-hd embed-responsive-item video-btn" controls
-                                preload="auto" width="100%" height="auto" poster="<?= $videodetail->player_image_url ?>" >
-                                <source src="<?= $videodetail->trailer_videos_url ?>" type="<?= $videodetail->trailer_video_player_type ?>">
-                        </video>       
+                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                        width="auto" height="auto" poster="<?= $videodetail->player_image_url ?>" playsinline="playsinline"
+                        autoplay>
+                        <source src="<?= $videodetail->trailer_videos_url ?>" type="<?= $videodetail->trailer_video_player_type ?>">
+
+                    </video>      
 
                     <?php endif; ?>
 
@@ -68,20 +101,14 @@
 
                 children: {
                     'playToggle': {},
-                    'currentTimeDisplay': {},
-                    'timeDivider': {},
-                    'durationDisplay': {},
+                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
-
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
-
-                    'settingsMenuButton': {
-                        entries: [
-                            'playbackRateMenuButton'
-                        ]
-                    },
-                    'fullscreenToggle': {}
+                    'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
+                    'playbackRateMenuButton': {},
+                    'fullscreenToggle': {}, 
                 }
             }
         });
