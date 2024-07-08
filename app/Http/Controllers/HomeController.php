@@ -119,6 +119,7 @@ class HomeController extends Controller
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
         $current_timezone = current_timezone();
+        $FrontEndQueryController = new FrontEndQueryController();
 
                         // Order Setting 
         $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
@@ -394,18 +395,20 @@ class HomeController extends Controller
                 return $category;
             });
 
+            $FrontEndQueryController = new FrontEndQueryController();
+
             $data = array(
 
                 'currency' => $currency,
                 'videos' => $latest_videos ,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
-                'sliders'            => (new FrontEndQueryController)->sliders(), 
-                'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-                'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
-                'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-                'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+                'sliders'            => $FrontEndQueryController->sliders(), 
+                'live_banner'        => $FrontEndQueryController->live_banners(),  
+                'video_banners'      => $FrontEndQueryController->video_banners(), 
+                'series_sliders'     => $FrontEndQueryController->series_sliders(), 
+                'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
+                'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
+                'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
 
                 'current_page'      => 1,
                 'pagination_url' => '/videos',
@@ -1115,18 +1118,18 @@ class HomeController extends Controller
                         $category->source = 'Series_Genre';
                         return $category;
                     });
-                   
+                    
                     $data = array(
                         'currency' => $currency,
                         'videos' => $latest_videos ,
                         'current_theme'     => $this->HomeSetting->theme_choosen,
-                        'sliders'            => (new FrontEndQueryController)->sliders(), 
-                        'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-                        'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                        'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                        'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
-                        'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-                        'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
+                        'sliders'            => $FrontEndQueryController->sliders(), 
+                        'live_banner'        => $FrontEndQueryController->live_banners(),  
+                        'video_banners'      => $FrontEndQueryController->video_banners(), 
+                        'series_sliders'     => $FrontEndQueryController->series_sliders(), 
+                        'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
+                        'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
+                        'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
 
                         'current_page'      => 1,
                         'latest_series'     => $latest_series,
@@ -1520,6 +1523,8 @@ class HomeController extends Controller
                     $order_settings = $order_settings->get();
                 }
 
+                $FrontEndQueryController = new FrontEndQueryController();
+
                 $data = array(
 
                     'currency'          => $currency,
@@ -1534,7 +1539,7 @@ class HomeController extends Controller
                     'Family_Mode'       => 2,
                     'Kids_Mode'         => $Mode['Kids_Mode'],
                     'Mode'              => $Mode,
-                    'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting(),
+                    'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                     'order_settings_list' => OrderHomeSetting::get(), 
                     'order_settings'      => $order_settings ,
                     'getfeching'          => $getfeching ,
@@ -1544,45 +1549,45 @@ class HomeController extends Controller
                     'default_vertical_image_url'   => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
                     'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                    'videos'            => (new FrontEndQueryController)->Latest_videos(),
-                    'latest_video'      => (new FrontEndQueryController)->Latest_videos(),
-                    'latest_videos'     => (new FrontEndQueryController)->Latest_videos(),
-                    'trendings'         => (new FrontEndQueryController)->trending_videos(),
-                    'trending_videos'   => (new FrontEndQueryController)->trending_videos(),
-                    'suggested_videos'  => (new FrontEndQueryController)->trending_videos(),
-                    'latest_audios'     => (new FrontEndQueryController)->latest_audios(),
-                    'audios'            => (new FrontEndQueryController)->latest_audios(),
-                    'featured_videos'   => (new FrontEndQueryController)->featured_videos(),
-                    'featured_episodes' => (new FrontEndQueryController)->featured_episodes(),
-                    'genre_video_display' => (new FrontEndQueryController)->genre_video_display(),
-                    'genres'              => (new FrontEndQueryController)->genre_video_display(),
-                    'video_categories'    => (new FrontEndQueryController)->genre_video_display() ,
-                    'albums'              => (new FrontEndQueryController)->AudioAlbums() ,
-                    'latest_episode'      => (new FrontEndQueryController)->latest_episodes() , 
-                    'livetream'              => (new FrontEndQueryController)->livestreams() ,
-                    'latest_series'          => (new FrontEndQueryController)->latest_Series(),
-                    'artist'                 => (new FrontEndQueryController)->artist(), 
-                    'VideoSchedules'         => (new FrontEndQueryController)->VideoSchedules(), 
-                    'LiveCategory'           => (new FrontEndQueryController)->LiveCategory(), 
-                    'AudioCategory'          => (new FrontEndQueryController)->AudioCategory(), 
-                    'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks(),
-                    'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
-                    'artist_live_event'         => (new FrontEndQueryController)->LiveEventArtist() ,
-                    'SeriesGenre'               =>  (new FrontEndQueryController)->SeriesGenre() ,
-                    'trending_audios'           => (new FrontEndQueryController)->trending_audios(),
-                    'admin_advertistment_banners' => (new FrontEndQueryController)->admin_advertistment_banners(),
-                    'sliders'            => (new FrontEndQueryController)->sliders(), 
-                    'live_banner'        => (new FrontEndQueryController)->live_banners(),  
-                    'video_banners'      => (new FrontEndQueryController)->video_banners(), 
-                    'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                    'live_event_banners' => (new FrontEndQueryController)->live_event_banners(), 
-                    'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
-                    'VideoCategory_banner' => (new FrontEndQueryController)->VideoCategory_banner(), 
-                    'most_watch_user'      => (new FrontEndQueryController)->Most_watched_videos_users(),
-                    'top_most_watched'     => (new FrontEndQueryController)->Most_watched_videos_site(),
-                    'Most_watched_country'   =>  (new FrontEndQueryController)->Most_watched_videos_country(), 
-                    'preference_genres'      => (new FrontEndQueryController)->preference_genres(),
-                    'preference_Language'    => (new FrontEndQueryController)->preference_language(), 
+                    'videos'            => $FrontEndQueryController->Latest_videos(),
+                    'latest_video'      => $FrontEndQueryController->Latest_videos(),
+                    'latest_videos'     => $FrontEndQueryController->Latest_videos(),
+                    'trendings'         => $FrontEndQueryController->trending_videos(),
+                    'trending_videos'   => $FrontEndQueryController->trending_videos(),
+                    'suggested_videos'  => $FrontEndQueryController->trending_videos(),
+                    'latest_audios'     => $FrontEndQueryController->latest_audios(),
+                    'audios'            => $FrontEndQueryController->latest_audios(),
+                    'featured_videos'   => $FrontEndQueryController->featured_videos(),
+                    'featured_episodes' => $FrontEndQueryController->featured_episodes(),
+                    'genre_video_display' => $FrontEndQueryController->genre_video_display(),
+                    'genres'              => $FrontEndQueryController->genre_video_display(),
+                    'video_categories'    => $FrontEndQueryController->genre_video_display() ,
+                    'albums'              => $FrontEndQueryController->AudioAlbums() ,
+                    'latest_episode'      => $FrontEndQueryController->latest_episodes() , 
+                    'livetream'              => $FrontEndQueryController->livestreams() ,
+                    'latest_series'          => $FrontEndQueryController->latest_Series(),
+                    'artist'                 => $FrontEndQueryController->artist(), 
+                    'VideoSchedules'         => $FrontEndQueryController->VideoSchedules(), 
+                    'LiveCategory'           => $FrontEndQueryController->LiveCategory(), 
+                    'AudioCategory'          => $FrontEndQueryController->AudioCategory(), 
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category() ,
+                    'artist_live_event'         => $FrontEndQueryController->LiveEventArtist() ,
+                    'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre() ,
+                    'trending_audios'           => $FrontEndQueryController->trending_audios(),
+                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
+                    'sliders'            => $FrontEndQueryController->sliders(), 
+                    'live_banner'        => $FrontEndQueryController->live_banners(),  
+                    'video_banners'      => $FrontEndQueryController->video_banners(), 
+                    'series_sliders'     => $FrontEndQueryController->series_sliders(), 
+                    'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
+                    'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
+                    'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
+                    'most_watch_user'      => $FrontEndQueryController->Most_watched_videos_users(),
+                    'top_most_watched'     => $FrontEndQueryController->Most_watched_videos_site(),
+                    'Most_watched_country'   =>  $FrontEndQueryController->Most_watched_videos_country(), 
+                    'preference_genres'      => $FrontEndQueryController->preference_genres(),
+                    'preference_Language'    => $FrontEndQueryController->preference_language(), 
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {

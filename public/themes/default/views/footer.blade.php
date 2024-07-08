@@ -148,7 +148,7 @@
     </div>
 
 </footer>
-      <script src="<?= ('assets\js\jquery.3.4.1.js') ?>"></script>
+      <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
@@ -315,7 +315,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
-{{-- <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
     try {
@@ -325,6 +325,8 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
       }
       elseif ( Route::currentRouteName() == "play_episode"){
         include('episode_player_script.blade.php');
+      }elseif( Route::currentRouteName() == "video-js-fullplayer"){
+              // 
       }
       else{
         include('footerPlayerScript.blade.php');

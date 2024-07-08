@@ -190,6 +190,13 @@ overflow: hidden;
 max-height: 100px; /* Initial max height, adjust as needed */
 transition: max-height 0.5s ease;
 }
+
+@media (max-width: 600px){
+ .desc{
+   overflow-y: auto !important;
+ }
+}
+
 .des-more-less-btns{border: none;
 background: transparent;
 color: #ff0000;
