@@ -193,7 +193,7 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
     @if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0)
         
         <div>
-                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
         </div>
 
        
@@ -203,7 +203,7 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
 
 
         <div>
-                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+            {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
         </div>
 
 

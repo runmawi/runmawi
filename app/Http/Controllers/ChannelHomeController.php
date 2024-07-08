@@ -209,23 +209,23 @@ class ChannelHomeController extends Controller
                 }
             });
 
-            $Most_watched_videos_users = (new FrontEndQueryController)->Most_watched_videos_users()->filter(function ($Most_watched_videos_users) use ($channel) {
-                if ( $Most_watched_videos_users->user_id == $channel->id && $Most_watched_videos_users->uploaded_by == "Channel" ) {
-                    return $Most_watched_videos_users;
-                }
-            });
+            // $Most_watched_videos_users = (new FrontEndQueryController)->Most_watched_videos_users()->filter(function ($Most_watched_videos_users) use ($channel) {
+            //     if ( $Most_watched_videos_users->user_id == $channel->id && $Most_watched_videos_users->uploaded_by == "Channel" ) {
+            //         return $Most_watched_videos_users;
+            //     }
+            // });
             
-            $Most_watched_videos_site = (new FrontEndQueryController)->Most_watched_videos_site()->filter(function ($Most_watched_videos_site) use ($channel) {
-                if ( $Most_watched_videos_site->user_id == $channel->id && $Most_watched_videos_site->uploaded_by == "Channel" ) {
-                    return $Most_watched_videos_site;
-                }
-            });
+            // $Most_watched_videos_site = (new FrontEndQueryController)->Most_watched_videos_site()->filter(function ($Most_watched_videos_site) use ($channel) {
+            //     if ( $Most_watched_videos_site->user_id == $channel->id && $Most_watched_videos_site->uploaded_by == "Channel" ) {
+            //         return $Most_watched_videos_site;
+            //     }
+            // });
 
-            $Most_watched_videos_country = (new FrontEndQueryController)->Most_watched_videos_country()->filter(function ($Most_watched_videos_country) use ($channel) {
-                if ( $Most_watched_videos_country->user_id == $channel->id && $Most_watched_videos_country->uploaded_by == "Channel" ) {
-                    return $Most_watched_videos_country;
-                }
-            });
+            // $Most_watched_videos_country = (new FrontEndQueryController)->Most_watched_videos_country()->filter(function ($Most_watched_videos_country) use ($channel) {
+            //     if ( $Most_watched_videos_country->user_id == $channel->id && $Most_watched_videos_country->uploaded_by == "Channel" ) {
+            //         return $Most_watched_videos_country;
+            //     }
+            // });
 
             $AudioCategory = (new FrontEndQueryController)->AudioCategory()->filter(function ($AudioCategory) use ($channel) {
                 if ( $AudioCategory->user_id == $channel->id && $AudioCategory->uploaded_by == "Channel" ) {
@@ -286,8 +286,8 @@ class ChannelHomeController extends Controller
                 'artist_live_event'         => $LiveEventArtist ,
                 'VideoCategory_banner' =>   $VideoCategory_banner, 
                 // 'most_watch_user'      => $Most_watched_videos_users,
-                'top_most_watched'     => $Most_watched_videos_site,
-                'Most_watched_country'   =>  $Most_watched_videos_country, 
+                // 'top_most_watched'     => $Most_watched_videos_site,
+                // 'Most_watched_country'   =>  $Most_watched_videos_country, 
                 // 'preference_genres'      => $preference_genres,
                 // 'preference_Language'    => $preference_language, 
                 'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() , 
