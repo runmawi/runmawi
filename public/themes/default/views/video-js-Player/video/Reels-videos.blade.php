@@ -28,10 +28,10 @@
     <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body" id="Reels">
-                <video id="Reels_player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls preload="auto" width="640" height="264">
-                    <source id="video_source" src="" type="video/mp4">
+                <video id="Reels_player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls width="auto" height="auto">
+                    <!-- <source id="video_source" src="" type="video/mp4"> -->
                 </video>
-                <button type="button" class="close reelsclose video-js-trailer-modal-close" >
+                <button type="button" class="close reelsclose video-js-reels-modal-close" >
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -94,28 +94,35 @@
             });
         });
 
+    document.addEventListener("DOMContentLoaded", function() {
+
         var player = videojs('Reels_player', { // Video Js Player 
             aspectRatio: '16:9',
-            fill: true,
-            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+
             controlBar: {
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
                     // 'currentTimeDisplay': {},
-                    // 'liveDisplay': {},
-                    // 'flexibleWidthSpacer': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
-                    // 'subtitlesButton': {},
-                    // 'playbackRateMenuButton': {},
                     'fullscreenToggle': {},    
-                    // 'audioTrackButton': {}               
-                },
-                // pictureInPictureToggle: true,
+                }
             }
         });
+
+        $(".reelsclose").click(function(){
+            player.pause();  
+            $('#video-js-reels-modal').modal('hide');
+        });
+    });
+    $(".video-js-reels-modal-close").click(function(){
+        $('#Reels_player').attr('src'," ");
+        $('#Reels').modal('hide');
+    });
 </script>
 
 <style>
@@ -125,5 +132,19 @@
 
     .modal-footer {
         background: black;
+    }
+    .video-js-reels-modal-close {
+        position: absolute;
+        right: -30px;
+        top: 0;
+        z-index: 999;
+        font-size: 2rem;
+        font-weight: normal;
+        color: #fff;
+        opacity: 1;
+    }
+    .modal-content{
+        background: transparent !important;
+        border: none !important;
     }
 </style>
