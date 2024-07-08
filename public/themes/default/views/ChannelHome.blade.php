@@ -196,37 +196,35 @@ $homepage_array_data = [ 'order_settings_list' => $order_settings_list,
                 <div class="container-fluid overflow-hidden">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
+                                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
                         </div>
                     </div>
                 </div>
             </section>
         <?php }  ?>
 
-        <?php if(count($livetream) > 0 ){?>
+        @if(!null($livetream))
             <section id="iq-favorites">
                 <div class="container-fluid overflow-hidden">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+                                {!! Theme::uses('default')->load("public/themes/default/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
                         </div>
                     </div>
                 </div>
             </section>
-        <?php }  ?>
+        @endif
 
 
-        <?php if(count($latest_series) > 0 ){?>
             <section id="iq-favorites">
                 <div class="container-fluid overflow-hidden">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
+                                {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
                         </div>
                     </div>
                 </div>
             </section>
-        <?php }  ?>
 
 
         <?php if(count($audios) > 0 ){ ?>

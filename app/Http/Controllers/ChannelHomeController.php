@@ -209,11 +209,11 @@ class ChannelHomeController extends Controller
                 }
             });
 
-            // $Most_watched_videos_users = (new FrontEndQueryController)->Most_watched_videos_users()->filter(function ($Most_watched_videos_users) use ($channel) {
-            //     if ( $Most_watched_videos_users->user_id == $channel->id && $Most_watched_videos_users->uploaded_by == "Channel" ) {
-            //         return $Most_watched_videos_users;
-            //     }
-            // });
+            $Most_watched_videos_users = (new FrontEndQueryController)->Most_watched_videos_users()->filter(function ($Most_watched_videos_users) use ($channel) {
+                if ( $Most_watched_videos_users->user_id == $channel->id && $Most_watched_videos_users->uploaded_by == "Channel" ) {
+                    return $Most_watched_videos_users;
+                }
+            });
             
             $Most_watched_videos_site = (new FrontEndQueryController)->Most_watched_videos_site()->filter(function ($Most_watched_videos_site) use ($channel) {
                 if ( $Most_watched_videos_site->user_id == $channel->id && $Most_watched_videos_site->uploaded_by == "Channel" ) {
@@ -247,13 +247,14 @@ class ChannelHomeController extends Controller
             // 
             // dd($Most_watched_videos_country);
 
+            $FrontEndQueryController = new FrontEndQueryController();
 
             $data = array(
                 'currency'              => $currency,
-                'latest_video'          => $latest_videos,
-                'latest_videos'         => $latest_videos,
+                'latest_video'          => $FrontEndQueryController->Latest_videos(),
+                'latest_videos'         => $FrontEndQueryController->Latest_videos(),
                 'videos'                => $latest_videos,
-                'latest_series'         => $latest_series,
+                'latest_series'         => $FrontEndQueryController->latest_Series(),
                 'latest_audios'         => $latest_audios,
                 'audios'                => $latest_audios,
                 'trendings'             => $trending_videos,
@@ -266,7 +267,7 @@ class ChannelHomeController extends Controller
                 'video_categories'      => $genre_video_display ,
                 'VideoCategory'         => $genre_video_display ,
                 
-                'livetream'             => $livetreams,
+                'livetream'              => $FrontEndQueryController->livestreams() ,
                 'channel_partner'       => $channel,
 
                 'albums'                => $albums ,
