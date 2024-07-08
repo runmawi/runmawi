@@ -22,21 +22,29 @@
           <div class="row">
               <div class="col-sm-12 ">
 
-                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                      <h2 class="main-title">
-                          <!-- Recently Added Series -->
-                          <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
-                              {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
-                          </a>
-                      </h2> 
-                      @if($settings->homepage_views_all_button_status == 1)
-                          <h2 class="main-title">
-                              <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}"> 
-                                  {{ __('View All') }}
-                              </a>
-                          </h2>
-                      @endif
-                  </div>
+                    @if (!Str::endsWith(request()->path(), 'tv-shows'))
+                        <div class="iq-main-header d-flex align-items-center justify-content-between">
+                            <h2 class="main-title">
+                                <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
+                                    {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
+                                </a>
+                            </h2> 
+                            @if($settings->homepage_views_all_button_status == 1)
+                                <h2 class="main-title">
+                                    <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}"> 
+                                        {{ __('View All') }}
+                                    </a>
+                                </h2>
+                            @endif
+                        </div>
+                    @else
+                        <div class="iq-main-header d-flex align-items-center justify-content-between">
+                            <h2 class="main-title">
+                                {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
+                            </h2> 
+                        </div>
+                    @endif
+                
                   <div class="favorites-contens">
                         <div class="latest-series-video home-sec list-inline row p-0 mb-0">
                           @if(isset($data))
