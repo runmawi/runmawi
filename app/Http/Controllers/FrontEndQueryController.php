@@ -342,9 +342,11 @@ class FrontEndQueryController extends Controller
                                         ->get();
     
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+            $Current_time = Carbon::now($current_timezone);
+
             if ($livestream->publish_type === 'recurring_program') {
         
-                $Current_time = Carbon::now($current_timezone);
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
@@ -388,6 +390,13 @@ class FrontEndQueryController extends Controller
                 $livestream->recurring_program_live_animation = $recurring_program_live_animation;
         
                 return $recurring_program_Status;
+            }
+
+            if( $livestream->publish_type === 'publish_later' ){
+
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+                return $publish_later_Status;
             }
             return true;
         });
