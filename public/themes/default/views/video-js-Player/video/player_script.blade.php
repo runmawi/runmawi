@@ -6,7 +6,7 @@
 
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-    var skipButton = true;
+    var remainingDuration = false;
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -43,6 +43,7 @@
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
+        console.log("remainingDuration",remainingDuration);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -75,7 +76,7 @@
 
             // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
             if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                if(hovered == false){
+                if(hovered == false && remainingDuration == false){
                     skipForwardButton.style.display = 'none';
                     skipBackwardButton.style.display = 'none';
                     playPauseButton.style.display = 'none';
@@ -350,86 +351,44 @@
         //     // getNextVid: getNextVid, 
         //     count: 20
         // });
-    });
+    });   
 
-    function createRelatedContent(title, url) {
+    function createRelatedContent(imgUrl, url) {
+
+        var sdiv = document.createElement('div');
+        sdiv.setAttribute('class', 'col-lg-12');
+
         var div = document.createElement('div');
-        div.setAttribute('class', 'swiper-slide');
-
-        var card = document.createElement('div');
-        card.setAttribute('class', 'card');
+        div.setAttribute('class', 'card col-2 col-sm-2 col-md-2 col-lg-2');
 
         var a = document.createElement('a');
-        var p = document.createElement('p');
+        var img = document.createElement('img');
 
-        p.innerHTML = title;
+        img.src = imgUrl;
         a.href = url;
-        a.appendChild(p);
-        card.appendChild(a);
+        a.appendChild(img);
+        div.appendChild(a);
 
-        div.appendChild(card);
         return div;
     }
 
     // Creating related content boxes
-    var rel_content_1 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_2 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_3 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_4 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_5 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_6 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
-    var rel_content_7 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_1 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    var rel_content_2 = createRelatedContent("https://picsum.photos/200", "http://www.youtube.com/watch?v=6k3--GPk-l4");
+    var rel_content_3 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    var rel_content_4 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    var rel_content_5 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    var rel_content_6 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    var rel_content_7 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
 
     // Asynchronous function to get related content
     function getRelatedContent(callback) {
-        var list = [rel_content_1, rel_content_2, rel_content_3, rel_content_4, rel_content_5, rel_content_6, rel_content_7];
+    var list = [rel_content_1,rel_content_2,rel_content_3,rel_content_4,rel_content_5,rel_content_6,rel_content_7];
 
-        setTimeout(function () {
-            callback(list);
-        }, 0);
+    setTimeout(function () {
+        callback(list);
+    }, 0);
     }
-
-    // var next_video = document.createElement('div');
-    // var a3 = document.createElement('a');
-    // var p3 = document.createElement('p');
-    // p3.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/'. $settings->logo ?>" alt="End-card">'; //video poster src
-    // a3.href = "#"; // video-src
-    // a3.appendChild(p3);
-    // next_video.appendChild(a3);
-
-    // function getNextVid(callback) {
-    //     setTimeout(function(){
-    //         callback(next_video);
-    //     }, 0);
-    // }
-
-    // Initialize Swiper when the player is ready
-    player.ready(function() {
-        var swiperContainer = document.querySelector('.swiper-container');
-        var swiperWrapper = swiperContainer.querySelector('.swiper-wrapper');
-
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 3,
-            spaceBetween: 30,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-
-        // Add related content to Swiper
-        getRelatedContent(function(contentList) {
-            console.log("contentList",contentList);
-            contentList.forEach(function(content) {
-                swiperWrapper.appendChild(content);
-            });
-            swiper.update(); // Update Swiper after adding slides
-        });
-    });
 
 </script>
 
@@ -460,19 +419,11 @@
         height: 100%;
     }
     .card{
-        width: 100%;
-        height: 100% !important;
-        top: 0;
-    }
-    .swiper-container {
-        width: 100%;
-        height: 100%;
-    }
-    .swiper-slide {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 5%;
-        width: 15% !important;
+        display: inline-block;
+        /* width: 400px; */
+        /* height: 200px; */
+        margin : 10px;
+        background: transparent;
+        cursor: pointer;
     }
 </style>
