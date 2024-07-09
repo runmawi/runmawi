@@ -252,16 +252,14 @@
         });
     </script>
 
-
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-
-    <script type="text/javascript">
-        CKEDITOR.replace('summary-ckeditor', {
-            filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-
-        });
-    </script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+<script>
+         ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            </script>
 
     {{-- validate --}}
 
