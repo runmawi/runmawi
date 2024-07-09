@@ -1,5 +1,5 @@
 @php
-    $recurring_program_Status = false ;
+    $recurring_program_Status  = false ;
     $live_publish_later_status = false;
 
     if ( $Livestream_details->publish_type == "recurring_program" ) {
@@ -46,9 +46,15 @@
         }
     }
     elseif ( $Livestream_details->publish_type == "publish_later"  ) {
-        $live_publish_later_status = true ;
-    }
 
+        $live_publish_later_status = true ;
+
+        $Current_time = Carbon\Carbon::now(current_timezone());
+
+        if ( Carbon\Carbon::parse($Livestream_details->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i')) {
+            $live_publish_later_status =  false ;
+        }
+    }
 @endphp
 
 @if( $recurring_program_Status == false && $live_publish_later_status ==  false )
@@ -225,7 +231,7 @@
             
         <h2>{{ ucwords($Livestream_details->title) }}</h2><br>
 
-        <h2>{{ "Live Streaming Coming Soon On ".@$Livestream_details->publish_time }}</h2>
+        <h2>{{ "Live Streaming Coming Soon On ". Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $Livestream_details->publish_time)->format('l, jS F Y g:ia') }}</h2>
 
     </div>
 @endif
@@ -234,6 +240,7 @@
     $(document).ready(function () {  
 
         let recurring_program_check_exist = "{{ json_encode($recurring_program_Status) }}";
+        let live_publish_later_status_exist  = "{{ json_encode($live_publish_later_status) }}";
 
         if (recurring_program_check_exist == "true") {
             
@@ -242,6 +249,19 @@
                 recurring_program_check_exist = "{{ json_encode($recurring_program_Status) }}";
 
                 if (recurring_program_check_exist == "true") {
+                    location.reload();
+                } else {
+                    clearInterval(reloadInterval);
+                }
+            }, 60000);
+
+        }else if( live_publish_later_status_exist == 'true' ){
+
+            let reloadInterval = setInterval(function() {
+
+                live_publish_later_status_exist = "{{ json_encode($live_publish_later_status) }}";
+
+                if (live_publish_later_status_exist == "true") {
                     location.reload();
                 } else {
                     clearInterval(reloadInterval);

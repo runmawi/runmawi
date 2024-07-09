@@ -1,6 +1,6 @@
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path("themes/{$current_theme}/views/header.php"));
 @endphp
 
 <section id="iq-favorites">
@@ -15,10 +15,10 @@
                         @if(isset($channels)) 
                             @foreach($channels as $channel)
                                 <li class="slide-item col-sm-2 col-md-2 col-xs-12 mb-5 ml-1 mr-1">
-                                    <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }} ">
+                                    <a href="{{ URL::to('channel/'.$channel->channel_slug )   }} ">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ $channel->channel_logo ? $channel->channel_logo : $default_horizontal_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name}}">
+                                                <img src="{{ !is_null($channel->channel_logo) ? $channel->channel_logo : $default_horizontal_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name}}">
                                             </div>
                                 
                                             <div class="channel" >
@@ -105,7 +105,7 @@
 </div>
     
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path("themes/{$current_theme}/views/footer.blade.php"));
 @endphp
 
 <style>

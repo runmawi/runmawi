@@ -259,6 +259,8 @@ class FrontEndQueryController extends Controller
             });
             return $item;
         });
+
+        return $Series_based_on_Networks;
     }
 
     public function latest_episodes()
@@ -333,16 +335,18 @@ class FrontEndQueryController extends Controller
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
-                                        ->where('active', '1')
+                                        ->where('active', 1)
                                         ->where('status', 1)
                                         ->latest()
                                         ->limit(15)
                                         ->get();
     
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+            $Current_time = Carbon::now($current_timezone);
+
             if ($livestream->publish_type === 'recurring_program') {
         
-                $Current_time = Carbon::now($current_timezone);
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
@@ -387,8 +391,17 @@ class FrontEndQueryController extends Controller
         
                 return $recurring_program_Status;
             }
+
+            if( $livestream->publish_type === 'publish_later' ){
+
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+                return $publish_later_Status;
+            }
             return true;
         });
+
+        return $livestreams ;
     }
 
     public function LiveCategory()
@@ -595,8 +608,9 @@ class FrontEndQueryController extends Controller
 
             $Most_watched_videos_country = $Most_watched_videos_country->limit(15)->get();
 
-            return $Most_watched_videos_country ;
         }
+
+        return $Most_watched_videos_country ;
     }
 
     public function Most_watched_videos_users()
@@ -635,10 +649,9 @@ class FrontEndQueryController extends Controller
             }
             
             $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
-
         }
         
-            return $userWatchedVideos;
+        return $userWatchedVideos;
     }
 
     public function Most_watched_videos_site()
@@ -670,9 +683,10 @@ class FrontEndQueryController extends Controller
             $Most_watched_videos_site = $Most_watched_videos_site->orderByRaw('count DESC')
                             ->limit(15)
                             ->get();
-
-            return $Most_watched_videos_site ;
         }
+
+        return $Most_watched_videos_site ;
+
     }
 
     public function preference_genres()
@@ -713,6 +727,7 @@ class FrontEndQueryController extends Controller
                 $preference_genres_query = $preference_genres_query->get();
             }
         }
+        return $preference_genres_query;
     }
 
     public function preference_language()
@@ -755,5 +770,7 @@ class FrontEndQueryController extends Controller
                     
             }
         }
+
+        return $preference_language_query;
     }
 }

@@ -2,7 +2,6 @@
     if(isset($videodetail->Reels_videos)) :
         foreach($videodetail->Reels_videos as $reel): 
 ?>
-
     <div class="sectionArtists broadcast">
         <div class="block-images position-relative" data-toggle="modal" data-target="#Reels" data-name=<?php echo $reel->reels_videos; ?>
             onclick="addvidoes(this)">
@@ -35,9 +34,6 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <!-- <div class="modal-footer" style="">
-                <button type="button" class="btn btn-secondary reelsclose" data-dismiss="modal"><?= __('Close') ?></button>
-            </div> -->
         </div>
     </div>
 </div>
@@ -76,7 +72,7 @@
             var Reels_videos = $(ele).attr('data-name');
             var Reels_url = <?php echo json_encode($ReelVideos); ?>;
             var Reels = Reels_url + Reels_videos;
-            console.log("Reels",Reels);
+            // console.log("Reels",Reels);
             
             var player = videojs('Reels_player');
             player.src({
@@ -84,7 +80,7 @@
                 type: 'video/mp4'
             });
             player.play();
-            console.log("player",player.src());
+            // console.log("player",player.src());
         }
 
         $(document).ready(function() {
@@ -95,7 +91,6 @@
         });
 
     document.addEventListener("DOMContentLoaded", function() {
-
         var player = videojs('Reels_player', { // Video Js Player 
             aspectRatio: '16:9',
             fluid: true,
