@@ -122,6 +122,23 @@
        imagesLoaded: true,
        lazyload:true,
    });
+
+   // series slider read more option
+    function detailsReadMore(key) {
+        const description = document.getElementById('details-' + key);
+        const readMoreBtn = document.getElementById('read-more-details-' + key);
+        const readLessBtn = document.getElementById('read-less-details-' + key);
+    
+        if (readMoreBtn.style.display === 'none') {
+            readMoreBtn.style.display = 'inline';
+            readLessBtn.style.display = 'none';
+            description.style.maxHeight = '100px';
+        } else {
+            readMoreBtn.style.display = 'none';
+            readLessBtn.style.display = 'inline';
+            description.style.maxHeight = 'none';
+        }
+    }
 </script>
 
 @php 
