@@ -72,11 +72,9 @@
 
                     <?php else: ?>
 
-                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
-                        width="auto" height="auto" poster="<?= $videodetail->player_image_url ?>" playsinline="playsinline"
-                        autoplay>
+                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                        width="auto" height="auto">
                         <source src="<?= $videodetail->trailer_videos_url ?>" type="<?= $videodetail->trailer_video_player_type ?>">
-
                     </video>      
 
                     <?php endif; ?>
@@ -106,17 +104,10 @@
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
-                    'subtitlesButton': {},
-                    'playbackRateMenuButton': {},
                     'fullscreenToggle': {}, 
                 }
             }
         });
-
-        player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
-            displayCurrentQuality: true,
-        });
-
         
         $(".video-js-trailer-modal-close").click(function(){
             player.pause();  
@@ -127,7 +118,7 @@
         // iframe video close
 
     $(".video-js-trailer-modal-close").click(function(){
-        $('#video-js-trailer-player_embed').attr('src'," ");
+        $('#video-js-trailer-player').attr('src'," ");
         $('#video-js-trailer-modal').modal('hide');
     });
 
