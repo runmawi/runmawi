@@ -394,7 +394,7 @@ class FrontEndQueryController extends Controller
 
             if( $livestream->publish_type === 'publish_later' ){
 
-                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
                 return $publish_later_Status;
             }
