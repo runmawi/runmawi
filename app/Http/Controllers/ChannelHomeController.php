@@ -246,6 +246,10 @@ class ChannelHomeController extends Controller
                 'currency' => $currency,
                 'channels' => $channels,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'default_vertical_image_url'    => default_vertical_image_url(),
+                'default_horizontal_image_url'  => default_horizontal_image_url(),
+                'home_settings'       => $this->HomeSetting ,
+                'current_theme'      => $this->HomeSetting->theme_choosen,
             );
             
             return Theme::view('ChannelList', $data);
