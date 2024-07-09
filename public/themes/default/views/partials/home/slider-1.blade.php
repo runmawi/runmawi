@@ -92,7 +92,7 @@
 
 {{-- Series  --}}
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
-    @foreach ($series_sliders as $slider_video)
+    @foreach ($series_sliders as $key => $slider_video)
 
         <div class="s-bg-1 lazyload"  style="background:url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
@@ -102,9 +102,23 @@
                             <h1 class="slider-text title text-uppercase">
                                 {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
                             </h1>
-                            <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color:#fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                                {{ __($slider_video->description) }}
+                            <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
+                                @php
+                                    $details = __(strip_tags(html_entity_decode($slider_video->details)));
+                                @endphp
+
+                                <div class="video-banner">
+                                    <p class="desc" id="details-{{ $key }}" style="max-height: 100px; overflow: hidden;">
+                                        {{ $details }}
+                                    </p>
+
+                                    @if(strlen($details) > 300)
+                                        <button class="des-more-less-btns p-0" id="read-more-details-{{ $key }}" onclick="detailsReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="des-more-less-btns p-0" id="read-less-details-{{ $key }}" onclick="detailsReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                    @endif
+                                </div>
                             </div>
+                            
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('play_series/'. $slider_video->slug) }}" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Watch Now') }}

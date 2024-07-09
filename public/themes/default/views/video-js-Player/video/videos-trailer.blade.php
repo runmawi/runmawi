@@ -1,5 +1,5 @@
 
-{{-- video-js Style --}}
+ <!-- video-js Style  -->
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
 <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
@@ -11,7 +11,7 @@
 <link href="<?= URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') ?>" rel="stylesheet" >
 
 
-{{-- video-js Script --}}
+<!--  video-js Script  -->
 
 <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 <script src="<?= asset('assets/js/video-js/video.min.js') ?>"></script>

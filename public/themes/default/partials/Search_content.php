@@ -116,25 +116,19 @@
 
     <?php foreach ($latest_videos as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/category/videos/' . $row->slug; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($latest_livestreams as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($latest_audio as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
@@ -143,18 +137,14 @@
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
 
     <?php foreach ($latest_Series as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
@@ -170,25 +160,19 @@
 
     <?php foreach ($Most_view_videos as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($Most_view_live as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($Most_view_audios as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
@@ -197,18 +181,14 @@
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
 
     <?php foreach ($Most_view_Series as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
@@ -224,25 +204,19 @@
 
     <?php foreach ($videos as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/category/videos/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($livestreams as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/live' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
     <?php foreach ($audio as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/audio/' . $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
@@ -251,18 +225,14 @@
          $series_slug = App\Series::where('id',$row->series_id)->pluck('slug')->first(); 
     ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 
 
     <?php foreach ($Series as $row) { ?>
         <li class="list-group-item" style="display: flex; align-items: center;">
-            <div>
-                <a href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
-            </div>
+            <a class="w-100" href="<?php echo URL::to('/') . '/play_series' .'/'. $row->slug ; ?>" style="color: #000; text-decoration: none;"><?php echo $row->title ; ?></a>
         </li>
     <?php } ?>
 

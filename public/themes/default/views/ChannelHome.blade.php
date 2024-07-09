@@ -34,21 +34,15 @@
 
                 {{-- Channel Logo --}}
     <div class="position-relative">
-        <div class="channel-img">
+        <div class="channel-img  container-fluid">
             <img src="{{ !empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null ? $channel_partner->channel_logo : URL::to('/public/uploads/images/' . $settings->default_video_image) }}"  width="150" alt="user">
         </div>
-    </div>
 
-    <section class="mt-5 mb-5">
-        <div class="container-fluid">
-            <div class="row ">
-                <div class="col-6 col-lg-6">
-                    <div class="channel-about">
-                        @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                            <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
-                        @endif
-                    </div>
-                </div>
+        <div class="mt-3 container-fluid">
+            <div class="channel-about">
+                @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                    <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
+                @endif
             </div>
 
             <div class="col-2 col-lg-2">
@@ -83,8 +77,8 @@
             </div>
             </div>
         </div>
-    </section>
-</div>
+
+</section>
 
 @php 
 
