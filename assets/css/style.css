@@ -1,5 +1,5 @@
 .edit-icon{display:none}
-.channel-img img{position:absolute;bottom:-30px;background-color:#fff;border-radius:30px;border:5px solid gray}
+.channel-img img{position:absolute;bottom:-30px;background-color:#fff;border-radius:30px;}
 .outline-share{padding:10px 15px;border:1px solid #fff;color:#000!important;margin:0 10px auto;border-radius:5px;font-size:16px;background-color:#fafafa}
 .outline-share:hover{padding:10px 15px;background-color:#dc143c;border:1px solid #dc143c;color:#fff!important}
 .outline-danger{padding:10px 20px;color:#fff!important;border:1px solid #fff;border-radius:5px}
@@ -83,7 +83,8 @@ h1{font-weight:500}
 .slider-description{position:absolute;top:15%;left:80px}
 #home-slider h1.slider-text{font-size:50px;margin:15px 0}
 #home-slider p{margin:5px 0;width:75%;color:#fff;font-size:14px}
-#home-slider .slick-bg{width:100%;background-size:contain;background-position:center center;background-repeat:no-repeat;position:relative;z-index:1}
+#home-slider .s-bg-1{width:100%;background-size:contain;background-position:center center;background-repeat:no-repeat;position:relative;z-index:1}
+.s-bg-1{width:100%;background-size:contain;background-position:center center;background-repeat:no-repeat;position:relative;z-index:1}
 .trailor-video{bottom:75px!important;right:0;z-index:999}
 .channel-name{color:var(--iq-primary);font-size:20px;margin-left:10px;letter-spacing:2.5px;font-weight:500}
 .c-logo{width:80%;background-size:contain!important;object-fit:contain!important}
@@ -516,7 +517,7 @@ li.list-group-item a:hover{color:var(--iq-primary)!important}
 #sidebar-scrollbar::-webkit-scrollbar-track{background-color:var(--iq-light-primary)}
 ::-webkit-scrollbar{width:8px;height:8px;border-radius:5px}
 li.list-group-item{background-color:transparent!important;padding-right:unset!important}
-li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!important;font-size:12px!important;padding-left:10px!important}
+li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!important;font-size:12px!important;/*padding-left:10px!important;*/}
 #main-header{color:#fff}
 .search_content{top:40px!important;margin-right:px!important}
 ul.list-group{text-align:left!important;max-height:450px!important}
@@ -1026,3 +1027,78 @@ h2.main-title {font-size: 1.3em;font-weight: 500;}
     .video_title_images{width: 50%;}
 
 h2.main-title {font-size: 1.3em;font-weight: 500;}
+
+.block-description a.epi-name{font-size: 13px;}
+
+/* / flickity slider / */
+
+.flickity-slider .items{width:14.444%;padding:10px 5px;}
+    .home-sec{
+        padding: 10px 0 1% 1%;
+        list-style: none;
+        margin: 0;
+        position: relative;
+        z-index: 12;
+        display: block;
+    }
+    .flickity-button {
+        background: transparent;
+        color: #fff;
+    }
+    .flickity-button:disabled {
+        opacity: 0;
+    }
+    .fa-crown:before {
+        content: "\f521";
+    }
+    .flickity-slider .items:before {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: #555;
+        background-image: url(https://watch.e360tv.com/img/placeholder.jpg);
+        background-size: cover;
+        background-position: center;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        right: 2px;
+        z-index: 0;
+        margin: 10px 5px;
+    }
+    .flickity-button:hover{background: transparent;}
+    /* / description / */
+    .flickity-slider .items:hover .block-images {
+        z-index: 99;
+        transform: scale3d(1.1, 1.1, 1.1) translate3d(0, 0, 0) perspective(500px);
+        transform-origin: 50% 50%;
+        transition: all .6s ease 0;
+        -webkit-transition: all .6s ease 0;
+        -moz-transition: all .6s ease 0;
+        -o-transition: all .6s ease 0;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+        border-radius: 10px;
+    }
+    .flickity-slider .items:hover .block-description {
+        animation: fadeIn .6s ease-in-out;
+        opacity: 1;
+    }
+    .flickity-slider .block-description .playTrailer{height: 0;}
+    .block-description p.desc-name{font-size: 12px;-webkit-line-clamp: 3;line-height: 1.4;}
+    .movie-time span.position-relative:before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        top: 5px;
+        /* / position: absolute; / */
+        background-color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: baseline;
+        right: -10px;
+        margin-bottom: 2px;
+    }
+
+    .movie-time span:first-child:before {
+        content: none;
+    }

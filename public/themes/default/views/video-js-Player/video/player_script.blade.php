@@ -4,6 +4,10 @@
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    var skipButton = true;
+
     document.addEventListener("DOMContentLoaded", function() {
 
         var player = videojs('my-video', { // Video Js Player 
@@ -22,15 +26,20 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
+                    'fullscreenToggle': {},    
                     // 'audioTrackButton': {}               
                 },
                 pictureInPictureToggle: true,
             }
         });
 
-        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ 
+            displayCurrentQuality: true,
+        });
+
+        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
@@ -56,9 +65,11 @@
                 if (event.type === 'mouseenter') {
                     // console.log("hovered");
                     hovered = true;
+                    skipButton = true;
                 } else if (event.type === 'mouseleave') {
                     // console.log("not hovered");
                     hovered = false;
+                    skipButton = false;
                 }
             }
 
@@ -76,10 +87,12 @@
         player.on('useractive', () => {
         // Show the Play pause, skip forward and backward buttons when the user becomes active
             if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                skipForwardButton.style.display = 'block';
-                skipBackwardButton.style.display = 'block';
-                playPauseButton.style.display = 'block';
-                backButton.style.display = 'block';
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.display = 'block';
+                    skipBackwardButton.style.display = 'block';
+                    playPauseButton.style.display = 'block';
+                    backButton.style.display = 'block';
+                }
             }
         });
 
@@ -132,37 +145,6 @@
             }
         });
 
-        // player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
-        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //     if (skipForwardButton && skipBackwardButton) {
-        //         skipForwardButton.style.display = 'none';
-        //         skipBackwardButton.style.display = 'none';
-        //     }
-        // });
-
-        // player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
-        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //   if (skipForwardButton && skipBackwardButton) {
-        //     skipForwardButton.style.display = 'block';
-        //     skipBackwardButton.style.display = 'block';
-        //   }
-        // });
-
-        // const skipForward = (duration) => {
-        //     const playerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() + duration);
-        //     console.log("player",playerTime)
-        // };
-
-        // const skipBackward = (duration) => {
-        //     const pplayerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() - duration);
-        // };
-
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -210,17 +192,12 @@
             }
         });
 
-        // Initialize the watermark component with options
-        // player.ready(function() {
-        //     player.addChild('Watermark', {
-        //         // file: 'https://picsum.photos/200',
-        //     });
-        // });
-
-        // Hls Quality Selector - M3U8 
-
-        player.hlsQualitySelector({ 
-            displayCurrentQuality: true,
+        //Watermark
+        player.ready(function() {
+            var watermark = document.createElement('div');
+            watermark.className = 'vjs-watermark';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+            player.el().appendChild(watermark);
         });
 
         // Advertisement
@@ -368,22 +345,91 @@
         player.on("skipDuration", function(duration){
             // console.log("!#");
         })
+        // player.endcard({
+        //     getRelatedContent: getRelatedContent,
+        //     // getNextVid: getNextVid, 
+        //     count: 20
+        // });
     });
 
-    // videojs.registerComponent('Watermark', videojs.extend(videojs.getComponent('Component'), {
-    //     constructor: function(player, options) {
-    //         videojs.getComponent('Component').apply(this, arguments);
+    function createRelatedContent(title, url) {
+        var div = document.createElement('div');
+        div.setAttribute('class', 'swiper-slide');
 
-    //         // Create the watermark element
-    //         var watermark = document.createElement('div');
-    //         watermark.className = 'vjs-watermark';
-    //         watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->favicon ?>" alt="Watermark">';
-    //         // https://picsum.photos/200    -->Live img url
-    //         // ../../../../../../public/uploads/settings/finexs.png  --> watermark uploaded path
+        var card = document.createElement('div');
+        card.setAttribute('class', 'card');
 
-    //         player.el().appendChild(watermark);
-    //     }
-    // }));
+        var a = document.createElement('a');
+        var p = document.createElement('p');
+
+        p.innerHTML = title;
+        a.href = url;
+        a.appendChild(p);
+        card.appendChild(a);
+
+        div.appendChild(card);
+        return div;
+    }
+
+    // Creating related content boxes
+    var rel_content_1 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_2 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_3 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_4 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_5 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_6 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+    var rel_content_7 = createRelatedContent("Video JS Website, For All Your HTML5 Needs.... AND MORE!", "http://www.videojs.com/");
+
+    // Asynchronous function to get related content
+    function getRelatedContent(callback) {
+        var list = [rel_content_1, rel_content_2, rel_content_3, rel_content_4, rel_content_5, rel_content_6, rel_content_7];
+
+        setTimeout(function () {
+            callback(list);
+        }, 0);
+    }
+
+    // var next_video = document.createElement('div');
+    // var a3 = document.createElement('a');
+    // var p3 = document.createElement('p');
+    // p3.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/'. $settings->logo ?>" alt="End-card">'; //video poster src
+    // a3.href = "#"; // video-src
+    // a3.appendChild(p3);
+    // next_video.appendChild(a3);
+
+    // function getNextVid(callback) {
+    //     setTimeout(function(){
+    //         callback(next_video);
+    //     }, 0);
+    // }
+
+    // Initialize Swiper when the player is ready
+    player.ready(function() {
+        var swiperContainer = document.querySelector('.swiper-container');
+        var swiperWrapper = swiperContainer.querySelector('.swiper-wrapper');
+
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // Add related content to Swiper
+        getRelatedContent(function(contentList) {
+            console.log("contentList",contentList);
+            contentList.forEach(function(content) {
+                swiperWrapper.appendChild(content);
+            });
+            swiper.update(); // Update Swiper after adding slides
+        });
+    });
 
 </script>
 
@@ -403,7 +449,7 @@
         height: 7%;
         top: 75%;
         left: 88%;
-        opacity: 0.5;
+        opacity: 0.7;
         cursor: pointer;
     }
     .vjs-watermark:hover{
@@ -412,5 +458,21 @@
     .vjs-watermark img{
         width: 100%;
         height: 100%;
+    }
+    .card{
+        width: 100%;
+        height: 100% !important;
+        top: 0;
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5%;
+        width: 15% !important;
     }
 </style>

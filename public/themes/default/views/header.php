@@ -247,64 +247,39 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    
-   <!-- CSS -->
-   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.min.css" as="style">
-   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-   <!-- flickity -->
-   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
-   
+   <!-- variable-boots-flick -->
+   <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" as="style">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
-
-   <!-- Bootstrap CSS -->
-   <link rel="preload" href="<?= URL::to('assets/css/bootstrap.min.css') ?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('assets/css/bootstrap.min.css')  ?>" />
-
-      <!-- Typography CSS  -->
-      <link rel="preload" href="<?= typography_link();?>" as="style"/>
+   <!-- Typography CSS  -->
+   <link rel="preload" href="<?= typography_link();?>" as="style"/>
    <link rel="stylesheet" href="<?= typography_link();?>" />
-   
+   <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
    <!-- Style -->
    <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
    <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
+   <!-- compine.css -->
+   <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
 
-   <link rel="preload" fetchpriority="high" href="https://rodtv.co.uk/public/uploads/images/player-image-1714229598.webp" as="image"/>
+   <!-- js -->
+   <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
 
-   <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('assets/css/variable.css') ;?>" />
-   <link rel="preload" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style"/>
-
-   <link rel="preload" fetchpriority="high" href="assets/js/jquery-3.4.1.min.js" as="script"/>
-
-   <!-- <link rel="preload" href="assets/js/jquery.3.4.1.js" as="script"/> -->
-
-
-   <!-- Responsive -->
-   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/css/slick.css') ;?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('assets/css/slick.css');?>" />
-
-   <link rel="preload" href="https://cdn.plyr.io/3.6.9/plyr.css" as="style"/>
-   <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-
-
-   <link rel="preload" fetchpriority="low" href="assets/js/slick-animation.min.js" as="script"/>
+   <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
    
-   <!--
-   <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
-   <link rel="preload" href="https://cdn.plyr.io/3.5.10/plyr.js" as="script"/>
+   <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+  
+
+   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
+   
+   
+
+   <!-- <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
-   <link rel="preload" href="assets/js/popper.min.js" as="script"/>
    <link rel="preload" href="assets/js/bootstrap.min.js" as="script"/>
-   <link rel="preload" href="assets/js/slick.min.js" as="script"/>
-   <link rel="preload" href="assets/js/owl.carousel.min.js" as="script"/>
    <link rel="preload" href="assets/js/select2.min.js" as="script"/>
-   <link rel="preload" href="assets/js/jquery.magnific-popup.min.js" as="script"/>
    <link rel="preload" href="assets/admin/dashassets/js/google_analytics_tracking_id.js" as="script"/> -->
 
    <!-- lazyload script -->
@@ -587,7 +562,7 @@
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
       <div class="fullpage-loader">
-         <div class="fullpage-loader__logo">
+         <div class="fullpage-loader__logo" style="text-align:center;" >
 
             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
 
@@ -624,11 +599,11 @@
                         </div>
                      </a>
                      <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                      <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                      <?php }else { ?> 
-                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                      <?php } ?>
                    
                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -692,7 +667,7 @@
                               <div class="col-sm-12 d-flex justify-content-around pt-2 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                            <li class="col-sm-6 ">
-                           <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
+                           <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
                            <li class="dropdown menu-item col-sm-6">
                              
                         <div class="btn-close" data-toggle="collapse">
@@ -882,7 +857,9 @@
                                        </div>
                                  <?php endif; ?>
 
-                     <?php if(!Auth::guest()){ ?>
+                     <?php if(!Auth::guest()){ 
+                        
+                        $ModeratorsUser = App\ModeratorsUser::where('email',Auth::user()->email)->first(); ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
@@ -1857,7 +1834,7 @@
          });
       </script>
                   <!-- search validation -->
-      <script defer src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+      <script  src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
       <script>
          $( "#searchResult" ).validate({

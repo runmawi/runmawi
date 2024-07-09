@@ -1,11 +1,6 @@
 <!-- Header Start -->
-<?php
-include public_path('themes/default/views/header.php');
+@php include public_path("themes/{$current_theme}/views/header.php"); @endphp
 
-$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
-$order_settings_list = App\OrderHomeSetting::get();
-$continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
-?>
 <style>
     hr{
         border-top:none!important;
@@ -15,376 +10,189 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .lkn{
         cursor: pointer;
     }
+    
+    .channel-img img{
+        position:absolute !important;
+        bottom:35px !important;
+        left: 3%;
+    }
 </style>
+
 <!-- Favicon -->
-<link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<link rel="shortcut icon" href="{{ URL::to('/public/uploads/settings/' . $settings->favicon) }}" />
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
-<script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
-@if(!empty($channel_partner->channel_banner) && $channel_partner->channel_banner != null)
-<section class="channel-header"
-    style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
-    background-blend-mode: multiply;">
+{{-- Channel Banner --}}
+<section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
+    <img src="{{ !empty($channel_partner->channel_banner) && ($channel_partner->channel_banner != null) ? $channel_partner->channel_banner : URL::to('public/uploads/images/' . $settings->default_horizontal_image) }}" alt="channel-banner" style="height:75vh;
+    width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
 </section>
-@else
-<section class="channel-header"
-    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
-    background-blend-mode: multiply;">
-</section>
-@endif
-<div class="container-fluid">
+    
+<div class="container-fluid" style="position:relative;bottom: 250px;">
+
+                {{-- Channel Logo --}}
     <div class="position-relative">
-        <div class="channel-img">
-            @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
-                <img src="<?php echo $channel_partner->channel_logo;  ?>"  class=" " width="150" alt="user">
-            @else
-                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>"  class=" " width="150" alt="user">
-            @endif
+        <div class="channel-img  container-fluid">
+            <img src="{{ !empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null ? $channel_partner->channel_logo : URL::to('/public/uploads/images/' . $settings->default_video_image) }}"  width="150" alt="user">
         </div>
-    </div>
-</div>
 
-<section class="mt-5 mb-5">
-    <div class="container-fluid">
-        <div class="row ">
-            <div class="col-6 col-lg-6">
-
-                <div class="channel-about">
-                    @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                     <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
-                    @endif
-                </div>
+        <div class="mt-3 container-fluid">
+            <div class="channel-about">
+                @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                    <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
+                @endif
             </div>
-        </div>
-            <div class="col-2 col-lg-2">
 
+            <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
-                    @endphp
+                    @php include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php")); @endphp
                 </ul>
             </div>
-            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
-            <div class="col-2 col-lg-2">
-            <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
-                <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
-                </span>
-            </a>
+            
+            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
+                <div class="col-2 col-lg-2 " style="max-width:20% !important;">
+                    <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
+                        <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                        </span>
+                    </a>
 
-
-            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog"  style='max-width: 800px;'>
-                    <div class="modal-content" style="background-color: transparent;border:none;">
-                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-body">
-                        <video id="videoPlayer1" 
-                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
-                        </video>
+                    <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog"  style='max-width: 800px;'>
+                            <div class="modal-content" style="background-color: transparent;border:none;">
+                                <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="modal-body">
+                                    <video id="channel-intro-video-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls >
+                                        <source src="{{ @$channel_partner->intro_video }}" type="video/mp4" >
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
+            @endif
+
             </div>
-      
-        </div>
-        @endif
             </div>
         </div>
-    </div>
+
 </section>
-<section class="channel_nav">
-    <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
-  </li>
-  <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
-  </li>
-        <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
-  </li>
-  <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
-  </li>
-         <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
-      
-      <div class=" Video_Categorynav ">
-                            @foreach ($VideoCategory as $key => $videos_category)
-                                <div>
-                                <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
-                                    data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
-                                    href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                    aria-selected="false"><?php echo $videos_category->name; ?></a>
-</div>
-                                    @endforeach 
-                        </div></div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($SeriesGenre as $key => $series_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
-                            <?php }  ?>
-      
-                        </div></div>
-  <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
-     
-      <div class="Audio_Categorynav d-flex">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
-                                href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div></div>
-    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
-     
-      <div class="Live_Categorynav">
-                            <?php foreach ($LiveCategory as $key => $live_category) { ?>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div>
-</div></div>
-</div>
-   
-</section><link rel="stylesheet" href="style.css">
-
 
 @php 
 
-$homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
-                              'multiple_compress_image' => $multiple_compress_image, 
-                              'videos_expiry_date_status' => $videos_expiry_date_status,
-                              'getfeching' => $getfeching,
-                              'settings' => $settings,
-                              'ThumbnailSetting' => $ThumbnailSetting,
-                              'currency' => App\CurrencySetting::first(),
-                              'default_vertical_image_url' => $default_vertical_image_url,
-                              'default_horizontal_image_url' => $default_horizontal_image_url,
-                         ];
+    $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
+                                'multiple_compress_image' => $multiple_compress_image, 
+                                'videos_expiry_date_status' => $videos_expiry_date_status,
+                                'getfeching' => $getfeching,
+                                'settings' => $settings,
+                                'ThumbnailSetting' => $ThumbnailSetting,
+                                'currency' => App\CurrencySetting::first(),
+                                'default_vertical_image_url' => $default_vertical_image_url,
+                                'default_horizontal_image_url' => $default_horizontal_image_url,
+                            ];
 @endphp
 
-<div class='channel_home'>
-    <?php 
-if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
-      if(count($latest_video) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
-                </div>
-            </div>
+<div class='channel_home' >
+     
+    @forelse ($order_settings as $key => $item)
+        
+        @if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1') {{-- latest videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/trending-videoloop", array_merge($homepage_array_data, ['data' => $featured_videos]) )->content() !!} </div>
+        @endif     
+        
+        @if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1') {{-- trending videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $trending_videos]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}} 
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/videoCategories",  array_merge($homepage_array_data, ['data' => $genre_video_display]) )->content() !!}</div>
+        @endif
+
+        @if(  $item->video_name == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/artist-videos",  array_merge($homepage_array_data) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'series' && $home_settings->series == 1 )        {{-- series  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!} </div>
+        @endif
+
+        @if ( $item->video_name == 'series' && $home_settings->series == 1) {{-- latest-series  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/featured-episodes", array_merge($homepage_array_data, ['data' => $featured_episodes]) )->content() !!} </div>
+        @endif
+
+        @if ( $item->video_name == 'series' && $home_settings->series == 1 ) {{-- featured-episodes  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/Latest-episodes", array_merge($homepage_array_data, ['data' => $latest_episode]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}</div>
+        @endif
+        
+        @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live Artist videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $artist_live_event]) )->content() !!}</div>
+        @endif
+        
+        @if(  $item->video_name == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}} 
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/liveCategories", array_merge($homepage_array_data, ['data' => $LiveCategory]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-audios", array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}</div>
+        @endif
+
+        @if(  $item->video_name == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-albums", array_merge($homepage_array_data, ['data' => $albums]) )->content() !!}</div>
+        @endif
+
+    @empty
+    
+        <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
+            <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
+            <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
-    </section>
-    <?php }  ?>
-
-    <?php 
-      if(count($livetream) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
-
-
-    <?php 
-      if(count($latest_series) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
-
-
-    <?php 
-      if(count($audios) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {!! Theme::uses('default')->load('public/themes/default/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php } }else{ ?>
-    <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
-    </div>
-    <?php   } ?>
+    @endforelse
 </div>
 
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<!-- video-js Style  -->
+
+<link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet">
+<link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet">
+
+<!-- video-js Script  -->
+<script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
 
 <script>
-  const player = new Plyr('#videoPlayer1'); 
+    document.addEventListener("DOMContentLoaded", function() {
+        var player = videojs('channel-intro-video-player', { 
+            aspectRatio: '16:9',
+            fill: true,
+            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+            fluid: true,
+            controlBar: {
+                volumePanel: { inline: false },
+                children: [
+                    'playToggle',
+                    'flexibleWidthSpacer',
+                    'progressControl',
+                    'remainingTimeDisplay',
+                    'playbackRateMenuButton',
+                    'fullscreenToggle'
+                ],
+                pictureInPictureToggle: true,
+            }
+        });
 
-      $(document).ready(function(){
-        $(".close").click(function(){
-            $('#videoPlayer1')[0].pause();
+        $('#videoModal').on('hidden.bs.modal', function () {
+            player.pause();
+            player.currentTime(0);
         });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $('.Video_Categorynav').hide();
-        $('.Live_Categorynav').hide();
-        $('.Series_Categorynav').hide();
-        $('.Audio_Categorynav').hide();
 
-        $('.videonav').click(function() {
-            $('.Video_Categorynav').show();
-            $('.Live_Categorynav').hide();
-            $('.Series_Categorynav').hide();
-            $('.Audio_Categorynav').hide();
-        });
-        $('.livenav').click(function() {
-            $('.Video_Categorynav').hide();
-            $('.Live_Categorynav').show();
-            $('.Series_Categorynav').hide();
-            $('.Audio_Categorynav').hide();
-        });
-        $('.seriesnav').click(function() {
-            $('.Video_Categorynav').hide();
-            $('.Live_Categorynav').hide();
-            $('.Series_Categorynav').show();
-            $('.Audio_Categorynav').hide();
-        });
-        $('.audionav').click(function() {
-            $('.Video_Categorynav').hide();
-            $('.Live_Categorynav').hide();
-            $('.Series_Categorynav').hide();
-            $('.Audio_Categorynav').show();
-        });
-
-        $('.Allnav').click(function() {
-        //     $.ajax({
-        //     type: "get",
-        //     url: "<?php echo URL::to('/all_Channel_videos'); ?>",
-        //     data: {
-        //         _token: "{{ csrf_token() }}",
-        //         channel_slug:"{{ @$channel_partner->channel_slug }}",
-        //     },
-        //     success: function(data) {
-        //         $(".channel_home").html(data);
-        //     },
-        // });
-        location.reload();
-        });
-
-    });
-
-
-    function Videos_Category(ele) {
-        var category_id = $(ele).attr('data-category-id');
-
-        $.ajax({
-            type: "get",
-            url: "<?php echo URL::to('/channel_category_videos'); ?>",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$channel_partner->id }}",
-            },
-            success: function(data) {
-                $(".channel_home").html(data);
-            },
-        });
-    }
-
-    function Series_Category(ele) {
-
-        var category_id = $(ele).attr('data-category-id');
-
-        $.ajax({
-            type: "get",
-            url: "{{ route('channel_category_series') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$channel_partner->id }}",
-            },
-            success: function(data) {
-                $(".channel_home").html(data);
-            },
-        });
-    }
-
-    function Audios_Category(ele) {
-
-        var category_id = $(ele).attr('data-category-id');
-
-        $.ajax({
-            type: "get",
-            url: "{{ route('channel_category_audios') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$channel_partner->id }}",
-            },
-            success: function(data) {
-                $(".channel_home").html(data);
-            },
-        });
-        }
-
-        function Live_Category(ele) {
-
-        var category_id = $(ele).attr('data-category-id');
-
-        $.ajax({
-            type: "get",
-            url: "{{ route('channel_category_live') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$channel_partner->id }}",
-            },
-            success: function(data) {
-                $(".channel_home").html(data);
-            },
-        });
-        }
-</script>
-
-
-
-<?php
-    include public_path('themes/default/views/footer.blade.php');
-?>
+@php include public_path("themes/{$current_theme}/views/footer.blade.php"); @endphp

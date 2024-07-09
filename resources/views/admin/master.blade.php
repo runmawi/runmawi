@@ -587,7 +587,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('/') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="men" style="">
@@ -1317,7 +1317,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('/') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
                   <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class=""><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div style="">
@@ -1673,7 +1673,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </div>
                    <?php } ?>
                        <div class="pt-2 pull-right">
-                            <a class="btn btn-primary" href="<?php echo URL::to('home') ?>" ><span>Visit Website </span><img style="filter: invert(1);" height="25" width="25" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
+                            <a class="btn btn-primary" href="<?php echo URL::to('/') ?>" ><span>Visit Website </span><img style="filter: invert(1);" height="25" width="25" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
                        </div>
                       <form action="#" class="searchbox">
                         <!-- <input type="text" class="text search-input" placeholder="Search Here...">

@@ -26,9 +26,6 @@
 
                   <div class="favorites-contens">
                     <div class="live-category home-sec list-inline row p-0 mb-0">
-                          @php
-                              $data = App\LiveCategory::orderBy('order', 'ASC')->get();
-                          @endphp
 
                             @foreach($data as $Categories)
                                 <div class="items">

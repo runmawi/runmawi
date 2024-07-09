@@ -5,13 +5,13 @@
             <div class="row">
                 <div class="col-sm-12 ">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h2 class="main-title">
+                        <h2 class="main-title fira-sans-condensed-regular">
                             <a href="{{ $order_settings_list[1]->header_name ? URL::to('/').'/'.$order_settings_list[1]->url : '' }}">
                                 {{ $order_settings_list[1]->header_name ? __($order_settings_list[1]->header_name) : '' }}
                             </a>
                         </h2>  
                         @if($settings->homepage_views_all_button_status == 1)
-                            <h2 class="main-title">
+                            <h2 class="main-title fira-sans-condensed-regular">
                                 <a href="{{ $order_settings_list[1]->header_name ? URL::to('/').'/'.$order_settings_list[1]->url : '' }}">
                                     {{ __('View All') }}
                                 </a>
@@ -19,7 +19,7 @@
                         @endif
                     </div>
 
-                    <div class="favorites-contens">
+                    <div class="favorites-contens"> 
                         <div class="latest-video home-sec list-inline row p-0 mb-0">
                             @if(isset($data))
                                 @foreach($data as $watchlater_video)

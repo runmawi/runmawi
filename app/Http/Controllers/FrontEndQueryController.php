@@ -152,7 +152,7 @@ class FrontEndQueryController extends Controller
                                     }
 
                                     if ($this->videos_expiry_date_status == 1 ) {
-                                        $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                       $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                                     }
                                     
                                     if ($this->check_Kidmode == 1) {
@@ -437,7 +437,7 @@ class FrontEndQueryController extends Controller
                                 ->latest()->limit(15)
                                 ->get() ;
 
-        return $series_sliders ; 
+        return $series_sliders ;
     }
 
     public function live_banners()
@@ -621,22 +621,24 @@ class FrontEndQueryController extends Controller
             }
 
             if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-                $Most_watched_videos_country->whereNotIn('videos.id', $this->blockVideos);
+                $userWatchedVideos->whereNotIn('videos.id', $this->blockVideos);
             }
 
             if ($this->videos_expiry_date_status == 1) {
-                $Most_watched_videos_country->where(function($query) {
+                $userWatchedVideos->where(function($query) {
                     $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
                 });
             }
 
             if ($this->check_Kidmode == 1) {
-                $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
+                $userWatchedVideos->whereBetween('videos.age_restrict', [0, 12]);
             }
             
             $userWatchedVideos = $userWatchedVideos->orderByRaw('count DESC')->limit(15)->get();
-            
+
         }
+        
+            return $userWatchedVideos;
     }
 
     public function Most_watched_videos_site()
