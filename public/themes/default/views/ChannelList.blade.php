@@ -130,5 +130,6 @@
     }
 
     li.slide-item, div.slide-item{padding:0px 20px !important}
-
+    .img-box{height: 155px;}
+    .img-box img{height: 100%;}
 </style>
