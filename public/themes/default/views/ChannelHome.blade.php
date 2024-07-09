@@ -64,8 +64,8 @@
                             <div class="modal-content" style="background-color: transparent;border:none;">
                                 <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <div class="modal-body">
-                                    <video id="channel-intro-video-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
-                                        controls type="video/mp4" src="{{ @$channel_partner->intro_video }}">
+                                    <video id="channel-intro-video-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls >
+                                        <source src="{{ @$channel_partner->intro_video }}" type="video/mp4" >
                                     </video>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                             ];
 @endphp
 
-<div class='channel_home' style="position: relative; bottom: 40%;">
+<div class='channel_home' >
      
     @forelse ($order_settings as $key => $item)
         
@@ -165,12 +165,10 @@
 <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet">
 
 <!-- video-js Script  -->
-
 <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        console.log("Document is ready, initializing Video.js player...");
         var player = videojs('channel-intro-video-player', { 
             aspectRatio: '16:9',
             fill: true,
@@ -178,20 +176,23 @@
             fluid: true,
             controlBar: {
                 volumePanel: { inline: false },
-                children: {
-                    'playToggle': {},
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-                    'remainingTimeDisplay': {},
-                    'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
-                },
+                children: [
+                    'playToggle',
+                    'flexibleWidthSpacer',
+                    'progressControl',
+                    'remainingTimeDisplay',
+                    'playbackRateMenuButton',
+                    'fullscreenToggle'
+                ],
                 pictureInPictureToggle: true,
             }
         });
-        console.log("Video.js player initialized:", player);
+
+        $('#videoModal').on('hidden.bs.modal', function () {
+            player.pause();
+            player.currentTime(0);
+        });
     });
 </script>
-
 
 @php include public_path("themes/{$current_theme}/views/footer.blade.php"); @endphp
