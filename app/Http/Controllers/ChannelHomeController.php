@@ -143,9 +143,11 @@ class ChannelHomeController extends Controller
 
             // Live Stream 
 
-            $livetreams = LiveStream::where('active', 1)->where('status',1)->where('user_id', $channel_partner->id)
-                                            ->where('uploaded_by', 'Channel')->orderBy('created_at', 'DESC')
-                                            ->get();
+            $livetreams = $FrontEndQueryController->livestreams()->filter(function ($livetreams) use ($channel_partner) {
+                if ( $livetreams->user_id == $channel_partner->id && $livetreams->uploaded_by == "Channel" ) {
+                    return $livetreams;
+                }
+            });
 
             $LiveCategory = $FrontEndQueryController->LiveCategory()->filter(function ($LiveCategory) use ($channel_partner) {
                 if ( $LiveCategory->user_id == $channel_partner->id && $LiveCategory->uploaded_by == "Channel" ) {
