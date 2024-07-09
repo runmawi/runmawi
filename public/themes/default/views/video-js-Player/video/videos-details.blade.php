@@ -144,28 +144,28 @@
                         <div class="col-sm-6 col-md-6 col-xs-12">
                             <ul class="list-inline p-0 share-icons music-play-lists">
                                         <!-- Watchlater -->
-                                <li class="share">
-                                    <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
-                                        <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
-                                    </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
-                                        <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                    <li class="share">
+                                        <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
+                                            <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
+                                        </span>
+                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                            <div class="playbtn"  data-toggle="modal">  
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
 
-                                        <!-- Wishlist -->
-                                <li class="share">
-                                    <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
-                                        <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
-                                    </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
-                                        <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                            <!-- Wishlist -->
+                                    <li class="share">
+                                        <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
+                                            <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
+                                        </span>
+                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                            <div class="playbtn"  data-toggle="modal">  
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
 
                                 <!-- Like -->
                                 <li>
@@ -313,51 +313,53 @@
 
             <!-- Broadcast  -->
 
-            <div class="sectionArtists broadcast">   
-                <div class="artistHeading">
-                    {{ ucwords(__('Promos & Resources')) }}
-                </div>
-                        
+            @if(($videodetail->trailer_videos_url) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
+                <div class="sectionArtists broadcast">   
+                    <div class="artistHeading">
+                        {{ ucwords(__('Promos & Resources')) }}
+                    </div>
+                            
 
-                    <div class="listItems">
+                        <div class="listItems">
 
-                        @if( optional($videodetail)->trailer_videos_url )
-                            <a>
-                                <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                            @if( optional($videodetail)->trailer_videos_url )
+                                <a>
+                                    <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                                        <div class="profileImg">
+                                            <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                                <img src="{{ optional($videodetail)->image_url }}">
+                                            </span>
+
+                                            @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+
+                                        </div>
+                                        
+                                        <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> {{ __('Trailer') }}</span></div>
+                                    </div>
+                                </a>
+                            @endif
+
+                            @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
+                                                                    
+                                @php  include public_path('themes/default/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                            
+                            @endif
+
+                            @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                                <div class="listItem">
                                     <div class="profileImg">
                                         <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                            <img src="{{ optional($videodetail)->image_url }}">
+                                            <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
                                         </span>
-
-                                        @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
-
                                     </div>
-                                    
-                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> {{ __('Trailer') }}</span></div>
+                                    <div class="name">{{ __('Document') }}</div>
                                 </div>
-                            </a>
-                        @endif
-
-                        @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
-                                                                
-                            @php  include public_path('themes/default/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                            @endif
+                                
+                        </div>
                         
-                        @endif
-
-                        @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
-                            <div class="listItem">
-                                <div class="profileImg">
-                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
-                                    </span>
-                                </div>
-                                <div class="name">{{ __('Document') }}</div>
-                            </div>
-                        @endif
-                            
-                    </div>
-                    
-            </div>
+                </div>
+            @endif
 
             {{-- comment Section --}}
 
