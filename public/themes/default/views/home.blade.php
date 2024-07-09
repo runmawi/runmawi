@@ -150,38 +150,38 @@ $(".home-search").hide();
 
 
 <script>
-function toggleReadMore(key) {
- const description = document.getElementById('description-' + key);
- const readMoreBtn = document.getElementById('read-more-btn-' + key);
- const readLessBtn = document.getElementById('read-less-btn-' + key);
+   function toggleReadMore(key) {
+      const description = document.getElementById('description-' + key);
+      const readMoreBtn = document.getElementById('read-more-btn-' + key);
+      const readLessBtn = document.getElementById('read-less-btn-' + key);
 
- if (readMoreBtn.style.display === 'none') {
-     readMoreBtn.style.display = 'inline';
-     readLessBtn.style.display = 'none';
-     description.style.maxHeight = '100px'; // Collapse description, adjust as needed
- } else {
-     readMoreBtn.style.display = 'none';
-     readLessBtn.style.display = 'inline';
-     description.style.maxHeight = 'none'; // Expand description
- }
-}
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
 
-function toggleSeriesReadMore(key) {
-console.log('toggleSeriesReadMore called with key:', key);
-const description = document.getElementById('series-description-' + key);
-const readMoreBtn = document.getElementById('series-read-more-btn-' + key);
-const readLessBtn = document.getElementById('series-read-less-btn-' + key);
-
-if (readMoreBtn.style.display === 'none') {
-   readMoreBtn.style.display = 'inline';
-   readLessBtn.style.display = 'none';
-   description.style.maxHeight = '100px'; // Collapse description, adjust as needed
-} else {
-   readMoreBtn.style.display = 'none';
-   readLessBtn.style.display = 'inline';
-   description.style.maxHeight = 'none'; // Expand description
-}
-}
+   // series slider read more option
+   function detailsReadMore(key) {
+      const description = document.getElementById('details-' + key);
+      const readMoreBtn = document.getElementById('read-more-details-' + key);
+      const readLessBtn = document.getElementById('read-less-details-' + key);
+   
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
 </script>
 
 <style>
