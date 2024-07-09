@@ -1,5 +1,9 @@
+<?php
+    use Carbon\Carbon;
+?>
+
 <footer class="iq-footer">
-   <div class="container-fluid">
+   <div class="container-fluid p-5">
        <div class="row">
            <div class="col-lg-6">
                <ul class="list-inline mb-0">
@@ -8,8 +12,9 @@
                </ul>
            </div>
            <div class="col-lg-6 text-right">
-               Copyright 2023 <a href="<?php echo URL::to('home'); ?>"><?php $settings = App\Setting::first();
-               echo $settings->website_name; ?></a> All Rights Reserved.
+            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
+
+           
            </div>
        </div>
    </div>
