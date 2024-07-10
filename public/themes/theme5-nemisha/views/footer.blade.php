@@ -115,18 +115,17 @@ entertainment.</p>
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1" aria-label="insta">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.webp')?>" alt="i" />
+                        <img class="" width="40" height="40" src="<?php echo URL::to('/assets/img/lan/i.webp'); ?>" alt="i" loading="lazy" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1" aria-label="twitter">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" alt="t" />
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" alt="t" loading="lazy" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1" aria-label="face">
-                          <img class="" width="40" height="40"
-                               src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="f" />
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="f" loading="lazy" />
                       </a>
                       <?php } ?>
 
@@ -138,7 +137,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1" aria-label="link">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" alt="line" />
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" alt="line" loading="lazy" />
                       </a>
                       <?php } ?>
 
@@ -150,7 +149,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1" aria-label="tube">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" alt="y" />
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" alt="y" loading="lazy" />
                       </a>
                       <?php } ?>
 
