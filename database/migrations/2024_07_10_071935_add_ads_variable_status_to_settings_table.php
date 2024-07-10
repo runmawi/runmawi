@@ -14,7 +14,7 @@ class AddAdsVariableStatusToSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->integer('ads_variable_status')->default(0);
+            $table->tinyInteger('ads_variable_status')->default(0);
         });
     }
 
