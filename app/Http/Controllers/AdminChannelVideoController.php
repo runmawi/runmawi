@@ -85,15 +85,15 @@ class AdminChannelVideoController extends Controller
             
             $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
            
-            $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $videos = Video::Select('id','title','slug','duration','image')->where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Video';
                 return $item;
               });
-            $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $episodes = Episode::Select('id','title','slug','duration','image')->where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Episode';
                 return $item;
               });
-            $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $livestreams = LiveStream::Select('id','title','slug','duration','image')->where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'LiveStream';
                 return $item;
               });
@@ -102,9 +102,8 @@ class AdminChannelVideoController extends Controller
               ->concat($episodes)
               ->concat($livestreams)
               ->values();
-            //   dd($mergedCollection);
               
-            $perPage = 3; // Adjust the number based on your requirement
+            $perPage = 50; // Adjust the number based on your requirement
             $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
             $paginator = new LengthAwarePaginator(
                 $mergedCollection->forPage($currentPage, $perPage),
@@ -113,6 +112,7 @@ class AdminChannelVideoController extends Controller
                 $currentPage
             );
 
+            
             $data = array(
             
                 'Channels' => $Channels  ,
@@ -120,11 +120,20 @@ class AdminChannelVideoController extends Controller
                 'default_time_zone' => $default_time_zone  ,
                 'enable_default_timezone' => $enable_default_timezone  ,
                 'utc_difference' => $utc_difference  ,
-                // 'VideoCollection' => $paginator  ,
-                'time_zoneid' => $time_zoneid  ,
                 'VideoCollection' => $mergedCollection  ,
+                'time_zoneid' => $time_zoneid  ,
             );
+            
+            // if($request->ajax()) {
 
+            //     $view = view('admin.scheduler.video_collection_section', ['VideoCollection' => $paginator])->render();
+
+            //     return $data = [
+            //         'view' => $view,
+            //         'url' => URL::to('/admin/video-scheduler').$paginator->nextPageUrl()
+            //     ];
+            // }
+          
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -132,7 +141,102 @@ class AdminChannelVideoController extends Controller
         return view('admin.scheduler.VideoSchedulerEpg',$data);
     }
 
+    public function ChannelVideoSchedulerold(Request $request){
+        
+            try {
+                // Fetch channels and time zones
+                $Channels = AdminEPGChannel::select('id', 'name', 'slug', 'status')->get();
+                $TimeZone = TimeZone::get();
+                
+                // Fetch default time zone settings
+                $default_time_zone = Setting::pluck('default_time_zone')->first();
+                $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+                $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone', $default_time_zone)->pluck('utc_difference')->first() : '';
+                $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone', $default_time_zone)->pluck('id')->first() : '';
+    
+                // Fetch initial videos, episodes, and livestreams
+                         $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                            $item['socure_type'] = 'Video';
+                            return $item;
+                        });
+                        $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                            $item['socure_type'] = 'Episode';
+                            return $item;
+                        });
+                        $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                            $item['socure_type'] = 'LiveStream';
+                            return $item;
+                        });
 
+    
+                // Merge and sort the collections
+                $mergedCollection = $videos->concat($episodes)->concat($livestreams)->values();
+                          $perPage = 50; // Adjust the number based on your requirement
+            $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
+            $paginator = new LengthAwarePaginator(
+                $mergedCollection->forPage($currentPage, $perPage),
+                $mergedCollection->count(),
+                $perPage,
+                $currentPage
+            );
+            // dd($paginator) ;
+    
+                $data = [
+                    'Channels' => $Channels,
+                    'TimeZone' => $TimeZone,
+                    'default_time_zone' => $default_time_zone,
+                    'enable_default_timezone' => $enable_default_timezone,
+                    'utc_difference' => $utc_difference,
+                    'time_zoneid' => $time_zoneid,
+                    'VideoCollection' => $paginator,
+                ];
+    
+                return view('admin.scheduler.VideoSchedulerEpg', $data);
+    
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        }
+        public function getMoreVideos(Request $request)
+        {
+            try {
+                $perPage = 50;
+                $page = $request->get('page', 1);
+                print_r($page);exit;
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+
+
+                // Merge and sort the collections
+                $mergedCollection = $videos->concat($episodes)->concat($livestreams)->values();
+                $currentPage = request()->get('page', $page); // Get the current page from the request or default to 1
+                $paginator = new LengthAwarePaginator(
+                    $mergedCollection->forPage($currentPage, $perPage),
+                    $mergedCollection->count(),
+                    $perPage,
+                    $currentPage
+                );   
+                
+                // Prepare HTML for the new items
+                $html = View::make('admin.scheduler..VideoCollectionEpg', ['VideoCollection' => $mergedCollection])->render();
+
+                return response()->json(['html' => $html]);
+
+            } catch (\Throwable $th) {
+                return response()->json(['error' => 'Error loading more videos.'], 500);
+            }
+        }
+    
     public function FilterVideoScheduler(Request $request){
 
         try {

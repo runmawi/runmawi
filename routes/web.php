@@ -1160,6 +1160,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/Scheduler-ReSchedule', 'AdminChannelVideoController@SchedulerReSchedule');
     Route::post('/get-all-channel-details', 'AdminChannelVideoController@GetAllChannelDetails');
     Route::post('/remove-scheduler', 'AdminChannelVideoController@RemoveSchedulers');
+    Route::get('/get-more-videos', 'AdminChannelVideoController@getMoreVideos');
+
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
