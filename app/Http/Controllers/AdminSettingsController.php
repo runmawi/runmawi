@@ -259,6 +259,7 @@ class AdminSettingsController extends Controller
         $settings->system_phone_number = $request['system_phone_number'];
         $settings->default_ads_status = !empty($request['default_ads_status']) ? 1 : 0 ;
         $settings->ads_on_videos = !empty($request['ads_on_videos']) ? 1 : 0 ;
+        $settings->ads_variable_status = !empty($request['ads_variable_status']) ? 1 : 0 ;
         $settings->ads_play_unlimited_period = !empty($request['ads_play_unlimited_period']) ? 1 : 0 ;
 
         $path = storage_path('app/public/');
