@@ -37,6 +37,7 @@
 
     <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
 
+    <link rel="preload" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp" alt="logo" width="140" height="60">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,6 +74,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" defer></script>
 
     <!-- Include jQuery library -->
+    <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
@@ -1251,7 +1253,7 @@
             </div>
 
             <!-- <div class="position-relative ban"
-            style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
+            style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.webp'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
             <div class="fixe">
                 <div class="row m-0  p-0" style="">
                     <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top"
@@ -1267,7 +1269,7 @@
         </div>-->
         </section>
         <section class="sec-21"
-            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
+            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.webp'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1293,7 +1295,7 @@
         </section>
 
         <section class="sec-2"
-            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg.png'); ?>');background-repeat: no-repeat;background-size: cover;">
+            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg.webp'); ?>');background-repeat: no-repeat;background-size: cover;">
             <div class="container">
                 <div class="" style="padding:5% 0 5% 0;">
                     <div class="row m-0 p-0 justify-content-around align-items-center">
@@ -1307,9 +1309,9 @@
                             </video>
 
                             <!-- <div class="row p-0">
-                                <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
-                                <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
-                                <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
+                                <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" style=""></div>
+                                <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.webp'); ?>" style=""></div>
+                                <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.webp'); ?>" style=""></div>
                                 </div>color: #1D639B;
                             -->
                         </div>
@@ -1377,7 +1379,7 @@
 
         <!-- <section>
            <div>
-               <img class="w-100" src="<?php echo URL::to('/assets/img/rt.png'); ?>" alt="">
+               <img class="w-100" src="<?php echo URL::to('/assets/img/rt.webp'); ?>" alt="">
            </div>
        </section>-->
 
@@ -1385,17 +1387,17 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 text-center">
-                        <img class=" mb-3" src="<?php echo URL::to('/assets/img/g1.png'); ?>" style="">
+                        <img class=" mb-3" src="<?php echo URL::to('/assets/img/g1.webp'); ?>" style="">
                         <h3 class="text-black">Watch Everywhere</h3>
                         <p class="wat">Watch videos, podcasts and live events on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
                     </div>
                     <div class="col-md-4 text-center">
-                            <img class="  mb-3" src="<?php echo URL::to('/assets/img/g2.png'); ?>" style="">
+                            <img class="  mb-3" src="<?php echo URL::to('/assets/img/g2.webp'); ?>" style="">
                         <h3 class="text-black">Stream Live</h3>
                         <p class="wat" style="padding: 10px 30px 10px 30px">Stream unlimited videos, podcasts and live events for free anytime! Wherever you are in Mzansi, we got you covered!</p>
                     </div>
                     <div class="col-md-4 text-center">
-                            <img class=" mb-3 " src="<?php echo URL::to('/assets/img/g3.png'); ?>" style="">
+                            <img class=" mb-3 " src="<?php echo URL::to('/assets/img/g3.webp'); ?>" style="">
                         <h3 class="text-black">Quality Videos</h3>
                         <p class="wat">Explore our edutainment video packed with 4IR and digital skills. Choose from a variety of documentaries, animation, radio, live shows and much more...</p>
                     </div>
@@ -1466,108 +1468,108 @@
 
                     <!-- <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
-                    <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/r1.png'); ?>" alt="online" width="184" height="120">
+                    <img class="lazy" data-src="<?php echo URL::to('/assets/img/lan/r1.webp'); ?>" alt="online" width="184" height="120">
                     <p class="io">Digitech news update</p>
                 </div>
                 <div class="col-lg-2 p-0">
-                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                        <p class="io">Webinars</p></div>
-                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.png'); ?>" style=>
+                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.webp'); ?>" style=>
                        <p class="io">Events</p></div>
                     
                    
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.webp'); ?>" style=>
                      <p class="io">User content</p>
                     
                 </div>
                 <div class="col-lg-2 p-0">
                     <div class="position-relative mn">
-                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                       <p class="io">Music videos </p>
                     </div>
                     <div class="position-relative mn">
-                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.png'); ?>" style=>
+                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.webp'); ?>" style=>
                       <p class="io">Movies</p>
                     </div>
                      
                      
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.webp'); ?>" style=>
                      <p class="io">Animation</p>
                 </div>
             </div></div>
             <div>
             <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
-                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r1.png'); ?>" style=>
+                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r1.webp'); ?>" style=>
                     <p class="io">Technical and practical</p>
                 </div>
                 <div class="col-lg-2 p-0">
-                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                        <p class="io">Futuristic </p></div>
-                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.png'); ?>" style=>
+                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.webp'); ?>" style=>
                        <p class="io">Innovative </p></div>
                     
                    
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.webp'); ?>" style=>
                      <p class="io">Creative Ideas</p>
                     
                 </div>
                 <div class="col-lg-2 p-0">
                     <div class="position-relative mn">
-                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                       <p class="io">Creative Ideas </p>
                     </div>
                     <div class="position-relative mn">
-                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.png'); ?>" style=>
+                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.webp'); ?>" style=>
                       <p class="io">Alternative ideas</p>
                     </div>
                      
                      
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.webp'); ?>" style=>
                      <p class="io">Animation</p>
                 </div>
             </div></div>
             <div>
             <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
-                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r1.png'); ?>" style=>
+                    <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r1.webp'); ?>" style=>
                     <p class="io">Radio</p>
                 </div>
                 <div class="col-lg-2 p-0">
-                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                    <div class="position-relative mn"> <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                        <p class="io">Education</p></div>
-                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.png'); ?>" style=>
+                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r3.webp'); ?>" style=>
                        <p class="io">Live <br>Streaming</p></div>
                     
                    
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r4.webp'); ?>" style=>
                      <p class="io">Podcast</p>
                     
                 </div>
                 <div class="col-lg-2 p-0">
                     <div class="position-relative mn">
-                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.png'); ?>" style=>
+                        <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r2.webp'); ?>" style=>
                       <p class="io">Online <br>Streaming </p>
                     </div>
                     <div class="position-relative mn">
-                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.png'); ?>" style=>
+                        <img class="w-100 mt-3" src="<?php echo URL::to('/assets/img/lan/r6.webp'); ?>" style=>
                       <p class="io">Movies</p>
                     </div>
                      
                      
                 </div>
                 <div class="col-lg-2 position-relative p-0">
-                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.png'); ?>" style=>
+                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/r7.webp'); ?>" style=>
                      <p class="io">Animation</p>
                 </div>
             </div></div>-->
@@ -1577,7 +1579,7 @@
                 </div>
         </section>
         <section class="sec-2"
-            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
+            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.webp'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
 
                 <div class="" style="padding:5% 0 5% 0;">
@@ -1587,16 +1589,16 @@
                         <div class="col-lg-6 mt-5">
                             <div class="" style="margin:4px;">
                                 <video id="player1" height="800" controls autoplay muted
-                                    poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
+                                    poster="<?php echo URL::to('/assets/img/lan/vi1.webp'); ?>">
                                     <source src="<?php echo URL::to('/assets/img/Vq(1).mp4'); ?>" type="video/mp4">
                                     <source src="" type="video/ogg">
                                 </video>
 
 
                                 <!-- <div class="row p-0">
-                                    <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
-                                    <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
-                                    <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
+                                    <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" style=""></div>
+                                    <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.webp'); ?>" style=""></div>
+                                    <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.webp'); ?>" style=""></div>
                                 </div>color: #1D639B;-->
                             </div>
                         </div>
@@ -1613,7 +1615,7 @@
                                 <div class="col-lg-6 pa">
                                     <div></div>
                                     <div class=" lan">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" alt="v3">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3">
                                         <h5 class="">User Feedback and Interaction</h5>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
@@ -1623,7 +1625,7 @@
                                 <div class="col-lg-6 p-0">
                                     <div></div>
                                     <div class="lan ">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" alt="v4">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4">
                                         <h5 class="">Aggregated User generated content</h5>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
@@ -1631,7 +1633,7 @@
                                 </div>
 
                                 <div class=" col-lg-6 rated mt-3">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" alt="v5">
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5">
                                     <h5 class="">Curated multiformat<br> training content</h5>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
@@ -1645,7 +1647,7 @@
         </section>
 
         <!--<section class="sec-31 p-0" >
-         <div class="pt" style="background-image:url('<?php echo URL::to('/assets/img/lan/ntv.png'); ?>');background-repeat: no-repeat;
+         <div class="pt" style="background-image:url('<?php echo URL::to('/assets/img/lan/ntv.webp'); ?>');background-repeat: no-repeat;
                     background-position: right bottom;
                     padding:30px;">
        
@@ -1656,12 +1658,12 @@
                 <div class="row mt-5 ">
                     <div class="col-lg-6 pa">
                         <div>
-                             <img class="" src="<?php echo URL::to('/assets/img/lan/v1.png'); ?>" style=>
+                             <img class="" src="<?php echo URL::to('/assets/img/lan/v1.webp'); ?>" style=>
                         <h4 class="">Hours of content</h4>
                         <p style="color:#00DADA;">Watch your favorite content across Languages & topics</p>
                         </div>
                         <div class=" lan" style="margin-top:65px;">
-                             <img class="" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
+                             <img class="" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" style=>
                         <h4 class="">User Feedback and<br> Interaction</h4>
                         <p style="color:#00DADA;">Learn by interacting with experts and other users.</p>
                         </div>
@@ -1669,19 +1671,19 @@
                     </div>
                     <div class="col-lg-6 p-0">
                         <div>
-                        <img class="" src="<?php echo URL::to('/assets/img/lan/v2.png'); ?>" style=>
+                        <img class="" src="<?php echo URL::to('/assets/img/lan/v2.webp'); ?>" style=>
                         <h4 class="">Audience Tested</h4>
                         <p style="color:#00DADA;">Enjoy the wide variety of movies & Educations Content much more choice of Audience</p>
                         </div>
                         <div class="lan ">
-                             <img class="" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
+                             <img class="" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" style=>
                         <h4 class="">Aggregated User generated content</h4>
                         <p style="color:#00DADA;">Create and contribute your own digital content to empower other users.</p>
                         </div>
                          
                     </div>
                     <div class="lan col-lg-6 " style="margin-top:20px;">
-                             <img class="" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
+                             <img class="" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" style=>
                         <h4 class="">Curated multiformat<br> training content</h4>
                         <p style="color:#00DADA;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
                         </div>
@@ -1728,7 +1730,7 @@
                 </div>
 
                 <!-- <div class="">
-                    <p class="ital nem"> <img class="w-20" src="<?php echo URL::to('/assets/img/comma.png'); ?>" style="margin-top:-35px;">I come to NEMISA TV for the curation and class quality. That's really worth the cost of membership to me.</p>
+                    <p class="ital nem"> <img class="w-20" src="<?php echo URL::to('/assets/img/comma.webp'); ?>" style="margin-top:-35px;">I come to NEMISA TV for the curation and class quality. That's really worth the cost of membership to me.</p>
                     <p class="text-center mt-4">—Jason R, Nemisa Student</p>
                 </div>-->
 
@@ -1741,12 +1743,12 @@
                 <h2 class="mb-3">Hours of Infotainment, Edutainment <br>and Entertainment</h2>
 
                 <div class="col-lg-7 vid">
-                    <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
+                    <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.webp'); ?>">
                         <source src="<?php echo URL::to('/assets/img/danc.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
 
-                    <!--<video controls crossorigin playsinline poster="<?php echo URL::to('/assets/img/dan.png'); ?>" id="player">
+                    <!--<video controls crossorigin playsinline poster="<?php echo URL::to('/assets/img/dan.webp'); ?>" id="player">
                             <source src="<?php echo URL::to('/assets/img/dance.mp4'); ?>" type="video/mp4">
                     </video>  -->
                 </div>
@@ -1767,7 +1769,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="comp">
-                                <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" alt="comp">
+                                <img class="" src="<?php echo URL::to('/assets/img/comp.webp'); ?>" alt="comp">
                             </div>
                             <h3>Watch Everywhere</h3>
                             <p>Watch videos, podcasts and live events
@@ -1779,7 +1781,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color1" style="min-height: 266px;">
                             <div class="clive">
-                                <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" alt="clive">
+                                <img class=" " src="<?php echo URL::to('/assets/img/clive.webp'); ?>" alt="clive">
                             </div>
                             <h3>Stream Live </h3>
                             <p>Stream unlimited videos, podcasts
@@ -1793,7 +1795,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="set">
-                                <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" alt="set">
+                                <img class=" " src="<?php echo URL::to('/assets/img/set.webp'); ?>" alt="set">
                             </div>
                             <h3>Quality Videos</h3>
                             <p>Explore our edutainment video
