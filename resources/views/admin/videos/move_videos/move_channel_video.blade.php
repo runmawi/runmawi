@@ -41,10 +41,10 @@ border-radius: 0px 4px 4px 0px;
                      <div class="col-md-12">
                   <div class="row">
                      <div class="col-md-6">
-                        <a href="{{ URL::to('/admin/assign_videos/partner') }}"><button type="button" class="btn btn-default">Move Videos CPP </button></a>
+                        <a href="{{ URL::to('/admin/assign_videos/partner') }}"><button type="button" class="btn btn-primary btn-default">Move Videos CPP </button></a>
                      </div>
                      <div class="col-md-6">
-                        <a href="{{ URL::to('/admin/assign_videos/channel_partner') }}"><button type="button" class="btn btn-default" >Move Videos Channel </button></a>
+                        <a href="{{ URL::to('/admin/assign_videos/channel_partner') }}"><button type="button" class="btn btn-primary btn-default" >Move Videos Channel </button></a>
                      </div>
                   </div>
                </div>
