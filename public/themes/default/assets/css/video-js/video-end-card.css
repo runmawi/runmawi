@@ -33,7 +33,7 @@
 
 .video-js #player-endcard #related-content div {
     height: 25%;
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
 }
 
 .video-js #player-endcard #related-content div img {

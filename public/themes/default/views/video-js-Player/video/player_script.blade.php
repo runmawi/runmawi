@@ -346,48 +346,46 @@
         player.on("skipDuration", function(duration){
             // console.log("!#");
         })
-        // player.endcard({
-        //     getRelatedContent: getRelatedContent,
-        //     // getNextVid: getNextVid, 
-        //     count: 20
-        // });
+        player.endcard({
+            getRelatedContent: getRelatedContent,
+            // getNextVid: getNextVid, 
+            count: 20
+        });
     });   
-
-    function createRelatedContent(imgUrl, url) {
-
-        var sdiv = document.createElement('div');
-        sdiv.setAttribute('class', 'col-lg-12');
+    
+    function createRelatedContent(title ,slug, image) {
 
         var div = document.createElement('div');
         div.setAttribute('class', 'card col-2 col-sm-2 col-md-2 col-lg-2');
 
         var a = document.createElement('a');
+        var p = document.createElement('p');
         var img = document.createElement('img');
 
-        img.src = imgUrl;
-        a.href = url;
+        img.src = "<?= URL::to('/') . '/public/uploads/images/'?>"+image;//need to set path
+        a.href = "<?= URL::to('/category/videos')?>"+'/'+slug;
+        p.innerHTML = title;
         a.appendChild(img);
+        img.appendChild(p);
         div.appendChild(a);
 
         return div;
     }
 
+    var rel_content = <?= json_encode($recomended); ?>;
+    const contentBoxes = [];
+
     // Creating related content boxes
-    var rel_content_1 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
-    var rel_content_2 = createRelatedContent("https://picsum.photos/200", "http://www.youtube.com/watch?v=6k3--GPk-l4");
-    var rel_content_3 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
-    var rel_content_4 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
-    var rel_content_5 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
-    var rel_content_6 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
-    var rel_content_7 = createRelatedContent("https://picsum.photos/200", "http://www.videojs.com/");
+    rel_content.map(content => {
+        const contentBox = createRelatedContent(content.title, content.slug, content.image);
+        contentBoxes.push(contentBox);
+    });
 
-    // Asynchronous function to get related content
     function getRelatedContent(callback) {
-    var list = [rel_content_1,rel_content_2,rel_content_3,rel_content_4,rel_content_5,rel_content_6,rel_content_7];
-
-    setTimeout(function () {
-        callback(list);
-    }, 0);
+        var list = [contentBoxes];
+        setTimeout(function () {
+            callback(list[0]);
+        }, 0);
     }
 
 </script>

@@ -4901,8 +4901,99 @@ class ChannelController extends Controller
 
             $subtitle = MoviesSubtitles::where('movie_id', '=', $video_id)->get();
 
+
+            $category_id = CategoryVideo::where('video_id', $video_id)->get();
+            $categoryvideo = CategoryVideo::where('video_id', $video_id)
+                ->pluck('category_id')
+                ->toArray();
+            $languages_id = LanguageVideo::where('video_id', $video_id)
+                ->pluck('language_id')
+                ->toArray();
+
+            // Recomendeds And Endcard
+            foreach ($category_id as $key => $value) {
+                $recomendeds = Video::select('videos.title', 'videos.slug','videos.image')
+                    ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('videos.id', '!=', $video_id)
+                    ->where('videos.active',  1)
+                    ->where('videos.status',  1)
+                    ->where('videos.draft',  1)
+                    ->groupBy('videos.id')
+                    ->limit(10)
+                    ->get();
+
+                $endcardvideo = Video::select('videos.title', 'videos.slug','videos.image')
+                    ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('videos.id', '!=', $video_id)
+                    ->limit(5)
+                    ->get();
+            }
+
+            if (!Auth::guest()) {
+                $latestRecentView = RecentView::where('user_id', '!=', Auth::user()->id)
+                    ->distinct()
+                    ->limit(30)
+                    ->pluck('video_id');
+                if (count($latestRecentView) > 10) {
+                    $latestviews = [];
+                } else {
+                    $latestviews = Video::select('videos.title', 'videos.slug','videos.image')
+                        ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->whereIn('videos.id', $latestRecentView)
+                        ->groupBy('videos.id')
+                        ->get();
+                }
+            } else {
+                $latestRecentView = [];
+                $latestviews = [];
+                $recomendeds = $recomendeds;
+            }
+
+            $related_videos = Video::select('videos.title', 'videos.slug','videos.image')
+                ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+                ->where('related_videos.video_id', '=', $video_id)
+                ->limit(5)
+                ->get();
+
+            if (count($related_videos) > 0) {
+                $endcardvideo = $related_videos;
+            } elseif (!empty($endcardvideo)) {
+                $endcardvideo = $endcardvideo;
+            } else {
+                $endcardvideo = [];
+            }
+
+            if (count($latestviews) <= 15) {
+                if (!empty($recomendeds)) {
+                    $recomended = Video::select('videos.title', 'videos.slug','videos.image')
+                        ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $video_id)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
+                        ->groupBy('videos.id')
+                        ->limit(10)
+                        ->get();
+                } else {
+                    $recomended = [];
+                }
+            } else {
+                $recomended = $latestviews;
+            }
+
+            if (!empty($recomended)) {
+                $recomended = $recomended;
+            } else {
+                $recomended = [];
+            }
+            
             $data = array(
                 'videodetail' => $videodetail ,
+                'recomended' => $recomended ,
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
                 'subtitles' => $subtitle ,
