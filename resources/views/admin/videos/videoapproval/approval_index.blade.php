@@ -41,10 +41,10 @@ border-radius: 0px 4px 4px 0px;
                      <div class="col-md-12">
                   <div class="row">
                      <div class="col-md-6">
-                        <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Videos</button></a>
+                        <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-primary btn-default">CPP Uploaded Videos</button></a>
                      </div>
                      <div class="col-md-6">
-                        <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Videos</button></a>
+                        <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-primary btn-default" >Channel Uploaded Videos</button></a>
                      </div>
                   </div>
                </div>
