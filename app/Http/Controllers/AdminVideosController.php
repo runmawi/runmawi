@@ -4674,7 +4674,7 @@ class AdminVideosController extends Controller
             return View::make('admin.expired_storage', $data);
         } else {
             
-            $videos = Video::where("active", 1)->orWhere('active', '=', 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
+            $videos = Video::where('status',0)->where('uploaded_by','CPP')->latest()->get();
 
             $data = [ "videos" => $videos, ];
 
@@ -4692,7 +4692,6 @@ class AdminVideosController extends Controller
         $settings = Setting::first();
         $user_id = $video->user_id;
         $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
-
         try {
 
             $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
