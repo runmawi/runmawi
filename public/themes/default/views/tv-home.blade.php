@@ -31,7 +31,7 @@
 
                 {{-- Slider --}}
 <section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
+    <div id="home-slider" class="home-sliders slider m-0 p-0">
         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
     </div>
     
@@ -109,6 +109,36 @@
             $(".home-search").hide();
         });
     })
+
+    // banner slider
+   var elem = document.querySelector('.home-sliders');
+   var flkty = new Flickity(elem, {
+       cellAlign: 'left',
+       contain: true,
+       groupCells: true,
+       pageDots: false,
+       draggable: true,
+       freeScroll: true,
+       imagesLoaded: true,
+       lazyload:true,
+   });
+
+   // series slider read more option
+    function detailsReadMore(key) {
+        const description = document.getElementById('details-' + key);
+        const readMoreBtn = document.getElementById('read-more-details-' + key);
+        const readLessBtn = document.getElementById('read-less-details-' + key);
+    
+        if (readMoreBtn.style.display === 'none') {
+            readMoreBtn.style.display = 'inline';
+            readLessBtn.style.display = 'none';
+            description.style.maxHeight = '100px';
+        } else {
+            readMoreBtn.style.display = 'none';
+            readLessBtn.style.display = 'inline';
+            description.style.maxHeight = 'none';
+        }
+    }
 </script>
 
 @php 

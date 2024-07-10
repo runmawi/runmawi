@@ -4,6 +4,10 @@
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
 
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    var remainingDuration = false;
+
     document.addEventListener("DOMContentLoaded", function() {
 
         var player = videojs('my-video', { // Video Js Player 
@@ -22,18 +26,24 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
+                    'fullscreenToggle': {},    
                     // 'audioTrackButton': {}               
                 },
                 pictureInPictureToggle: true,
             }
         });
 
-        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ 
+            displayCurrentQuality: true,
+        });
+
+        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
+        console.log("remainingDuration",remainingDuration);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -56,15 +66,17 @@
                 if (event.type === 'mouseenter') {
                     // console.log("hovered");
                     hovered = true;
+                    skipButton = true;
                 } else if (event.type === 'mouseleave') {
                     // console.log("not hovered");
                     hovered = false;
+                    skipButton = false;
                 }
             }
 
             // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
             if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                if(hovered == false){
+                if(hovered == false && remainingDuration == false){
                     skipForwardButton.style.display = 'none';
                     skipBackwardButton.style.display = 'none';
                     playPauseButton.style.display = 'none';
@@ -76,10 +88,12 @@
         player.on('useractive', () => {
         // Show the Play pause, skip forward and backward buttons when the user becomes active
             if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                skipForwardButton.style.display = 'block';
-                skipBackwardButton.style.display = 'block';
-                playPauseButton.style.display = 'block';
-                backButton.style.display = 'block';
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.display = 'block';
+                    skipBackwardButton.style.display = 'block';
+                    playPauseButton.style.display = 'block';
+                    backButton.style.display = 'block';
+                }
             }
         });
 
@@ -132,37 +146,6 @@
             }
         });
 
-        // player.on('userinactive', () => {
-          // Hide the skip forward and backward buttons when the user becomes inactive
-        //     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //     if (skipForwardButton && skipBackwardButton) {
-        //         skipForwardButton.style.display = 'none';
-        //         skipBackwardButton.style.display = 'none';
-        //     }
-        // });
-
-        // player.on('useractive', () => {
-          // Show the skip forward and backward buttons when the user becomes active
-        //   const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        //   const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        //   if (skipForwardButton && skipBackwardButton) {
-        //     skipForwardButton.style.display = 'block';
-        //     skipBackwardButton.style.display = 'block';
-        //   }
-        // });
-
-        // const skipForward = (duration) => {
-        //     const playerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() + duration);
-        //     console.log("player",playerTime)
-        // };
-
-        // const skipBackward = (duration) => {
-        //     const pplayerTime = player.current;
-        //     playerTime.currentTime(playerTime.currentTime() - duration);
-        // };
-
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -210,17 +193,12 @@
             }
         });
 
-        // Initialize the watermark component with options
-        // player.ready(function() {
-        //     player.addChild('Watermark', {
-        //         // file: 'https://picsum.photos/200',
-        //     });
-        // });
-
-        // Hls Quality Selector - M3U8 
-
-        player.hlsQualitySelector({ 
-            displayCurrentQuality: true,
+        //Watermark
+        player.ready(function() {
+            var watermark = document.createElement('div');
+            watermark.className = 'vjs-watermark';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+            player.el().appendChild(watermark);
         });
 
         // Advertisement
@@ -368,22 +346,47 @@
         player.on("skipDuration", function(duration){
             // console.log("!#");
         })
+        player.endcard({
+            getRelatedContent: getRelatedContent,
+            // getNextVid: getNextVid, 
+            count: 20
+        });
+    });   
+    
+    function createRelatedContent(title ,slug, image) {
+
+        var div = document.createElement('div');
+        div.setAttribute('class', 'card col-2 col-sm-2 col-md-2 col-lg-2');
+
+        var a = document.createElement('a');
+        var p = document.createElement('p');
+        var img = document.createElement('img');
+
+        img.src = "<?= URL::to('/') . '/public/uploads/images/'?>"+image;//need to set path
+        a.href = "<?= URL::to('/category/videos')?>"+'/'+slug;
+        p.innerHTML = title;
+        a.appendChild(img);
+        img.appendChild(p);
+        div.appendChild(a);
+
+        return div;
+    }
+
+    var rel_content = <?= json_encode($recomended); ?>;
+    const contentBoxes = [];
+
+    // Creating related content boxes
+    rel_content.map(content => {
+        const contentBox = createRelatedContent(content.title, content.slug, content.image);
+        contentBoxes.push(contentBox);
     });
 
-    // videojs.registerComponent('Watermark', videojs.extend(videojs.getComponent('Component'), {
-    //     constructor: function(player, options) {
-    //         videojs.getComponent('Component').apply(this, arguments);
-
-    //         // Create the watermark element
-    //         var watermark = document.createElement('div');
-    //         watermark.className = 'vjs-watermark';
-    //         watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->favicon ?>" alt="Watermark">';
-    //         // https://picsum.photos/200    -->Live img url
-    //         // ../../../../../../public/uploads/settings/finexs.png  --> watermark uploaded path
-
-    //         player.el().appendChild(watermark);
-    //     }
-    // }));
+    function getRelatedContent(callback) {
+        var list = [contentBoxes];
+        setTimeout(function () {
+            callback(list[0]);
+        }, 0);
+    }
 
 </script>
 
@@ -403,7 +406,7 @@
         height: 7%;
         top: 75%;
         left: 88%;
-        opacity: 0.5;
+        opacity: 0.7;
         cursor: pointer;
     }
     .vjs-watermark:hover{
@@ -412,5 +415,13 @@
     .vjs-watermark img{
         width: 100%;
         height: 100%;
+    }
+    .card{
+        display: inline-block;
+        /* width: 400px; */
+        /* height: 200px; */
+        margin : 10px;
+        background: transparent;
+        cursor: pointer;
     }
 </style>
