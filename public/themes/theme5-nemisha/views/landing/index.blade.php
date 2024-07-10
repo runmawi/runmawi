@@ -1615,7 +1615,7 @@
                                 <div class="col-lg-6 pa">
                                     <div></div>
                                     <div class=" lan">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3" width:"5%" height="5%">
                                         <h5 class="">User Feedback and Interaction</h5>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
@@ -1625,7 +1625,7 @@
                                 <div class="col-lg-6 p-0">
                                     <div></div>
                                     <div class="lan ">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4" width:"5%" height="5%">
                                         <h5 class="">Aggregated User generated content</h5>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
@@ -1633,7 +1633,7 @@
                                 </div>
 
                                 <div class=" col-lg-6 rated mt-3">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5">
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5" width:"5%" height="5%">
                                     <h5 class="">Curated multiformat<br> training content</h5>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
@@ -1769,7 +1769,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="comp">
-                                <img class="" src="<?php echo URL::to('/assets/img/comp.webp'); ?>" alt="comp">
+                                <img class="" src="<?php echo URL::to('/assets/img/comp.webp'); ?>" alt="comp" width="100%" height="100%">
                             </div>
                             <h3>Watch Everywhere</h3>
                             <p>Watch videos, podcasts and live events
@@ -1781,7 +1781,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color1" style="min-height: 266px;">
                             <div class="clive">
-                                <img class=" " src="<?php echo URL::to('/assets/img/clive.webp'); ?>" alt="clive">
+                                <img class=" " src="<?php echo URL::to('/assets/img/clive.webp'); ?>" alt="clive"  width="100%" height="100%">
                             </div>
                             <h3>Stream Live </h3>
                             <p>Stream unlimited videos, podcasts
@@ -1795,7 +1795,7 @@
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="set">
-                                <img class=" " src="<?php echo URL::to('/assets/img/set.webp'); ?>" alt="set">
+                                <img class=" " src="<?php echo URL::to('/assets/img/set.webp'); ?>" alt="set"  width="100%" height="100%">
                             </div>
                             <h3>Quality Videos</h3>
                             <p>Explore our edutainment video
