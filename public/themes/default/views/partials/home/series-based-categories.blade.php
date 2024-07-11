@@ -36,7 +36,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $series_genre )
-        <section id="iq-favorites">
+        <section id="iq-favorites iq-favorites-{{ $key }}">
             <div class="container-fluid overflow-hidden">
                 <div class="row">
                     <div class="col-sm-12 ">
@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="tvthrillers-contens">
-                            <div class="series-based-category home-sec list-inline row p-0 mb-0">
+                            <div class="series-based-category home-sec list-inline row p-0 mb-0" id="series-category-{{ $key }}">
                                 @foreach ($series_genre->category_series as $series_video)
                                     <div class="items">
                                         <div class="block-images position-relative">
@@ -166,15 +166,19 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.series-based-category');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.series-based-category');
+        elems.forEach(function (elem) {
+            new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: true,
+            });
+        });
     });
  </script>
