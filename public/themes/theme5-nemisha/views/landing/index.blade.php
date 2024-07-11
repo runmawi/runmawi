@@ -1616,7 +1616,7 @@
                                     <div></div>
                                     <div class=" lan">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3" width:"5%" height="5%">
-                                        <h5 class="">User Feedback and Interaction</h5>
+                                        <h5 class="benefits">User Feedback and Interaction</h5>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
@@ -1626,7 +1626,7 @@
                                     <div></div>
                                     <div class="lan ">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4" width:"5%" height="5%">
-                                        <h5 class="">Aggregated User generated content</h5>
+                                        <h4 class="benefits" style="font-weight:400 !important;font-size 18px;">Aggregated User generated content</h5>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
                                     </div>
@@ -1634,7 +1634,7 @@
 
                                 <div class=" col-lg-6 rated mt-3">
                                     <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5" width:"5%" height="5%">
-                                    <h5 class="">Curated multiformat<br> training content</h5>
+                                    <h3 class="benefits" style="font-size 23px !important; font-weight:400 !important">Curated multiformat<br> training content</h5>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
                                 </div>

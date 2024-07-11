@@ -224,7 +224,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .main-title a:hover, .main-title a:focus {color:#ED563C !important;}
 :focus{outline: none !important;}
 /*--------------------------*/
-.favorites-slider .slick-list, #top-ten-slider-nav .slick-list { overflow: visible; padding-bottom:  !important; }
+.favorites-slider .slick-list, #top-ten-slider-nav .slick-list { overflow: visible; padding-bottom:0 !important; }
 .favorites-slider li.slide-item { float: left; width: 25%; }
 .favorites-slider .slick-list { overflow: visible; }
 li.slide-item { position: relative; padding: 10px 5px; }
@@ -421,7 +421,7 @@ footer {background: #191825 ;
 color: #fff; }
 ul.f-link li { margin-bottom: 4px; }
 ul.f-link li a { margin-bottom: 4px; color: var(--iq-body-text);padding: 10px 10px; }
-ul.f-link li a:hover { color: var(--iq-primary);!important }
+ul.f-link li a:hover { color: var(--iq-primary)!important; }
 .f-link li a { margin-bottom: 4px; color: var(--iq-body-text)!important; }
 .f-link li a:hover { color: var(--iq-primary)!important; }
 
@@ -556,7 +556,7 @@ video { display: block; width: 100%; height: 100%; }
 
 /*-----------------------*/
 .favorites-slider .slick-arrow,
-#trending-slider-nav .slick-arrow {display: flex; align-items: center; justify-content: center;width: 30px; height: 30px; text-align: center; opacity: 1; z-index: 9;top:-46px; background: /*var(--iq-primary) 0% 0% no-repeat padding-box*/; margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: #fff!important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; /*border:1px solid var(--iq-primary);*/}
+#trending-slider-nav .slick-arrow {display: flex; align-items: center; justify-content: center;width: 30px; height: 30px; text-align: center; opacity: 1; z-index: 9;top:-46px; /*background: var(--iq-primary) 0% 0% no-repeat padding-box;*/ margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: #fff!important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; /*border:1px solid var(--iq-primary);*/}
 .favorites-slider .slick-arrow:hover,
 #trending-slider-nav .slick-arrow:hover { /*background: var(--iq-white);*/ color: aqua!important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-prev,
@@ -852,9 +852,8 @@ footer, .home footer {
 }
 .btn-danger:hover{
     color: #fff;
-    background-color: !important;
-    border-color: #45c
-        5e1 !important;
+    background-color:#45c5e1 !important;
+    border-color:#45c5e1 !important;
 }
 .btn-primary {
     color: #fff;
@@ -1569,7 +1568,7 @@ td{
     margin-left: 480px;
 }
 .sign-user_card input{
-  background: ;
+  /* background: ; */
     border: 1px solid #F1F1F1;
 letter-spacing: 2px;
     outline: none;
@@ -1598,7 +1597,7 @@ letter-spacing: 2px;
     margin-left: 10px;
 }
 .black{
-    background-color: ;
+    /* background-color: ; */
     border:1px solid hsla(0,0%,100%,.8);
     color:#fff !important;
     padding: 10px 20px;
@@ -1718,7 +1717,7 @@ padding: 15px;
     -ms-flex-align         : center;
     -webkit-align-items    : center;
     align-items            : center;
-	max-width:
+	/* max-width: */
 }
 .luna-container{
 	margin-bottom:20px;
@@ -1926,7 +1925,7 @@ padding: 15px;
     
 }
 .cont-item:hover{
-    color: #!important;
+    /* color: # !important; */
 }
 #signup-form{
     background: #fff;
@@ -2104,8 +2103,8 @@ footer p{
     right: 17px;
     top: 0px;
     padding: 2px;
-    border-left: 1px solid #d1d5db
-        color:#fff;
+    border-left: 1px solid #d1d5db;
+    color: #fff;
 }
 
 .left-pan {
@@ -2328,7 +2327,7 @@ a {
 }
 .slick-nav {
     --active: #fff;
-    border: none!important;/
+    border: none!important;
     width: 44px;
     height: 44px;
     position: absolute;
@@ -2450,7 +2449,7 @@ font-size: 10px;
 line-height: 18px;
 display: flex;
 align-items: center;
-color: ;
+/* color: ; */
 font-family: 'Roboto', sans-serif;
 
 }
