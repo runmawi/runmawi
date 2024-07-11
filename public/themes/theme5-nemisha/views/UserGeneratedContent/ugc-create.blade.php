@@ -27,7 +27,9 @@
     }
    #video_upload .file form i {display: block; font-size: 50px;}
 
-
+   .ugc-icon{
+    width: 100px;
+   }
    
    .form-control1 {
 	 display: block;
@@ -656,19 +658,39 @@ border-radius: 0px 4px 4px 0px;
           
            <div class="iq-card " style="padding:40px;">
          <div class="row justify-content-center">
-            <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
-               <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
+            <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mb-2">
+               <div class="px-0 pb-0 mb-3 col-md-12">
                   <!-- <h2 id="heading">Sign Up Your User Account</h2>
                      <p>Fill all form field to go to next step</p> -->
                   <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                      <!-- progressbar -->
                      <ul id="progressbar">
-                        <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
-                        <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
-                        <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
+                        <li class="active" id="account">
+                            <div class="col">
+                                <div class=""><img class="ugc-icon" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>"></div>
+                                <div class=""> Video Details</div>
+                            </div>
+                        </li>
+                        <li id="personal">
+                            <div class="col">
+                                <div class=""><img class="ugc-icon" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>"></div>
+                                <div class="">Category</div>
+                            </div>    
+                        </li>
+                        <li id="useraccess_ppvprice">
+                            <div class="col">
+                                <div class=""><img class="ugc-icon" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>"></div>
+                                <div class=""> User Video Access</div>
+                            </div>        
+                        </li>
                         <!-- <li id="payment"><strong>Upload Image & Trailer</strong></li> -->
-                        <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
-                        <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management</li>
+                        <li id="payment">
+                            <div class="col">
+                                <div class=""><img class="ugc-icon" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>"></div>
+                                <div class=""> Upload Image &amp; Trailer</div>
+                            </div>       
+                        </li>
+                        {{-- <li id="confirm"><img class="ugc-icon" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management</li> --}}
                      </ul>
                      <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -1310,6 +1332,7 @@ border-radius: 0px 4px 4px 0px;
 
 .form-card {
     text-align: left;
+    padding: 30px;
 }
 
 #msform fieldset:not(:first-of-type) {

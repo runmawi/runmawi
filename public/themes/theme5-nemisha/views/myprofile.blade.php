@@ -347,7 +347,37 @@
         <section class="m-profile setting-wrapper pt-0">
             <div class="container">
 
-                <div class="row justify-content-evenly">
+                <div class="row justify-content-center">
+                <img
+                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 40px;" alt="banner" >
+                </div>
+                <div class="row justify-content-start">
+                   <div>
+                    <img class="rounded-circle img-fluid text-center mb-3 mt-4"
+                    src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" alt="profile-bg" style="height: 80px; width: 80px;">
+                   </div>
+                   <div class="col" style="padding-top: 40px;" >
+                    <div>
+                    <h4>Karabo Mthembu</h4>
+                    </div>
+                    <div>
+                       <h5>Entertainmnt channel </h5>
+                    </div>
+                   </div>
+                </div>
+                <div class="row">
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Bio</button>
+                    </div>
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Videos</button>
+                    </div>
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Playlist</button>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-5 sigk text-center">
                         <div class="d-flex justify-content-center">
 
@@ -410,69 +440,6 @@
                                 <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
                             </p>
 
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-md-5 text-center">
-                        <div class="iq-card">
-                            <div class="iq-card-header ">
-                            
-                               <div class="iq-card-header-toolbar d-flex justify-content-between d-flex align-items-baseline">
-                               {{-- <div class="form-group mr-2">                  
-                                  <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
-                                     <option value="">Select Videos By CPP</option>
-                                        <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
-                                     </select>
-                               </div> --}}
-       
-                               <div class="form-group mr-2">
-                                   <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
-                               </div>
-                                  <a href="{{ URL::to('ugc-create') }}" class="btn btn-primary">Upload Your Own Content</a>
-       
-                    
-                               </div>
-                            </div>
-                            <div class="iq-card-body table-responsive p-0">
-                               <div class="table-view">
-                                  <table class="table text-center  table-striped table-bordered table movie_table iq-card " style="width:100%">
-                                     <thead>
-                                        <tr class="r1">
-                                           <th>Select All <input type="checkbox" id="select_all"></th>
-                                           <th>Title</th>
-                                           <th>Rating</th>
-                                           <!-- <th>Category</th> -->
-                                           <!-- <th>Release Year</th> -->
-                                           <!-- <th>Uploaded by</th> -->
-                                           <th>Video Uploaded By</th>
-                                           <th>Video Type</th>
-                                           <th>Video Access</th>
-                                           <th>Status</th>
-                                           <!-- <th>Language</th> -->
-                                           <!--<th style="width: 20%;">Description</th>-->
-                                            <th>Views</th>
-                                            <th>Slider</th>
-                                           <th>Action</th>
-                                        </tr>
-                                     </thead>
-                                     <tbody>
-                                            <td>1</td>
-                                            <td>Video Title</td>
-                                            <td>3</td>
-                                            <td>Uploaded by Admin</td>
-                                            <td>MP4 Video	</td>
-                                            <td>guest</td>
-                                            <td>published</td>
-                                            <td>28</td>
-                                            <td>Toggle</td>
-                                            <td>Action 1 2 3 4</td>
-                                     </tbody>
-                                  </table>
-                                  <div class="clear"></div>
-                                    <div class="pagination-outter mt-3 pull-right" >
-                                    <h6>Showing 1 - 9 of 20 </h6>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
             </div>

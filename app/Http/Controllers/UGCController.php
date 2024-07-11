@@ -129,8 +129,8 @@ class UGCController extends Controller
     }
 
   
-      public function index()
-        {
+    public function index()
+    {
     
             if (!Auth::user()->role == "admin") {
                 return redirect("/home");
@@ -219,10 +219,10 @@ class UGCController extends Controller
     
                 return View("admin.videos.index", $data);
             }
-        }
+    }
     
-        public function live_search(Request $request)
-        {
+    public function live_search(Request $request)
+    {
             if ($request->ajax()) {
                 $output = "";
                 $query = $request->get("query");
@@ -345,10 +345,10 @@ class UGCController extends Controller
                     echo json_encode($data);
                 }
             }
-        }
+    }
     
-        public function CPPVideos(Request $request)
-        {
+    public function CPPVideos(Request $request)
+    {
             if ($request->ajax()) {
                 $output = "";
                 $query = $request->get("query");
@@ -474,10 +474,10 @@ class UGCController extends Controller
                     echo json_encode($data);
                 }
             }
-        }
+    }
         // Image extraction function
-            private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
-            {
+    private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
+    {
                 // Open the video file
                 $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
     
@@ -489,9 +489,10 @@ class UGCController extends Controller
                 ->toDisk('local')
                 ->inFormat(new X264)
                 ->save($outputPath);
-            }
-        public function uploadFile(Request $request)
-        {
+    }
+
+    public function uploadFile(Request $request)
+    {
             // $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
             $site_theme = SiteTheme::first();
             
@@ -893,6 +894,7 @@ class UGCController extends Controller
     
                 \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
     
+                dd($value);
                 return $value;
             }
             else {
@@ -902,15 +904,15 @@ class UGCController extends Controller
             }
     
             // return response()->json($value);
-        }
+    }
     
         /**
          * Show the form for creating a new video
          *
          * @return Response
          */
-        public function create()
-        {
+    public function create()
+    {
             if (!Auth::user()->role == "admin") {
                 return redirect("/home");
             }
@@ -1059,7 +1061,7 @@ class UGCController extends Controller
                     "page" => "Creates",
                     "ads_category" => Adscategory::all(),
                     "InappPurchase" => InappPurchase::all(),
-                    "post_dropzone_url" => $post_dropzone_urlpost_dropzone_url,
+                    "post_dropzone_url" => $dropzone_url,
                     "ads_tag_urls" => Advertisement::where('status',1)->get(),
                     "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
                     'video_js_Advertisements' => $video_js_Advertisements ,
@@ -1076,7 +1078,7 @@ class UGCController extends Controller
     
                 // return View::make('admin.videos.create_edit', $data);
             }
-        }
+    }
     
         /**
          * Store a newly created video in storage.
@@ -11499,13 +11501,5 @@ class UGCController extends Controller
                 \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
                 return $value ;
             }
-        }
-
-      
+        }   
 }
-       
-
-
-
-
-   
