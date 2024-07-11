@@ -135,7 +135,7 @@ else
                                                         <p class="epi-name text-left m-0 mt-2">{{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</p>
                                                     @endif
                                                     <p class="desc-name text-left m-0 mt-1">
-                                                        {{ strlen($latest_view_video->description) > 75 ? substr(html_entity_decode(strip_tags($latest_view_video->description)), 0, 75) . '...' : $latest_view_video->description }}
+                                                        {{ strlen($latest_view_video->description) > 75 ? substr(html_entity_decode(strip_tags($latest_view_video->description)), 0, 75) . '...' : strip_tags($latest_view_video->description) }}
                                                     </p>
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
