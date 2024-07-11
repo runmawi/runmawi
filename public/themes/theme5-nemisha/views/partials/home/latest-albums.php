@@ -1,16 +1,16 @@
 <?php  if(count($albums) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-<h4 class="main-title"><a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>">
+<h5 class="main-title"><a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>">
     <?php if ($order_settings_list[6]->header_name) { echo $order_settings_list[6]->header_name ;} else { echo "" ; } ?>
     <!-- Albums -->
-</a></h4>      
+</a></h5>      
 </div>
 <div class="favorites-contens">
-<ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-slider list-inline  row p-0 mb-0">
      <?php  if(isset($albums)) :
      foreach($albums as $album): ?>
-   <li class="slide-item">
-   <a href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
+   <div class="slide-item">
+   <a href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="videos">
          <div class="block-images position-relative">
                              <!-- block-images -->
             <div class="img-box">
@@ -33,10 +33,10 @@
 
        
       </a>
-   </li>
+     </div>
 
     <?php endforeach; 
                endif; ?>
-</ul>
+</div>
 </div>
 <?php endif; ?>

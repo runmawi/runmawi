@@ -4,19 +4,19 @@
 
       <?php if( Route::currentRouteName() == "ChannelHome"){?>
 
-         <h4 class="main-title"><a href="<?php echo route('Channel_Audios_list',Request::segment(2)); ?>">
+         <h5 class="main-title"><a href="<?php echo route('Channel_Audios_list',Request::segment(2)); ?>">
             <?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>
             </a>
-         </h4>             
+         </h5>             
          
          <a class="see" href="<?php echo route('Channel_Audios_list',Request::segment(2)); ?>">See All </a>
 
       <?php }else{ ?>
 
-         <h4 class="main-title"><a href="<?php if ($order_settings_list[5]->header_name) { echo URL::to('/').'/'.$order_settings_list[5]->url ;} else { echo "" ; } ?>">
+         <h5 class="main-title"><a href="<?php if ($order_settings_list[5]->header_name) { echo URL::to('/').'/'.$order_settings_list[5]->url ;} else { echo "" ; } ?>">
             <?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>
             </a>
-         </h4>             
+         </h5>             
          
          <a class="see" href="<?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>">See All </a>
 

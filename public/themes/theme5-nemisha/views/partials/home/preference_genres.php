@@ -1,13 +1,13 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="">Preference By Genres </a></h4>
+    <h5 class="main-title"><a href="">Preference By Genres </a></h5>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($preference_genres)) :
                     foreach($preference_genres as $preference_genre): 
                 ?>
 
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
@@ -110,7 +110,7 @@
                 </div>
 
             </a>
-        </li>
+        </div>
         <?php endforeach; endif; ?>
-    </ul>
+    </div>
 </div>
