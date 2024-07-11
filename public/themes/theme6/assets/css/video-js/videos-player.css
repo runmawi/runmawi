@@ -368,7 +368,7 @@ display: block;
 
 .my-video.vjs-paused .vjs-big-play-button {
 opacity: 1;
-pointer-events: auto;
+pointer-events: none;
 transition: opacity 0.5s;
 }
 

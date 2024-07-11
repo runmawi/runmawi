@@ -346,11 +346,11 @@
         player.on("skipDuration", function(duration){
             // console.log("!#");
         })
-        player.endcard({
-            getRelatedContent: getRelatedContent,
-            // getNextVid: getNextVid, 
-            count: 20
-        });
+        // player.endcard({
+        //     getRelatedContent: getRelatedContent,
+        //     // getNextVid: getNextVid, 
+        //     count: 20
+        // });
     });   
     
     function createRelatedContent(title ,slug, image) {
