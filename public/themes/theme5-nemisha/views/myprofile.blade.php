@@ -347,8 +347,8 @@
         <section class="m-profile setting-wrapper pt-0">
             <div class="container">
 
-                <div class="row justify-content-center">
-                    <div class="col-md-5 sigk text-center">
+                <div class="row justify-content-evenly">
+                    <div class="col-lg-5 col-md-5 sigk text-center">
                         <div class="d-flex justify-content-center">
 
                             {{-- message --}}
@@ -411,103 +411,72 @@
                             </p>
 
                         </div>
-                </div>
-            </div>
-            <div class="col-md-8 targetDiv" id="div3">
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');">
-                        <div class="container ">
-
-                            <p>SAVE $ 594</p>
-                            <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1>
-                        </div>
                     </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container ">
-
-                            <p>SAVE $ 300</p>
-                            <h1><span class="dl">$</span>894 <span>for 6 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container ">
-
-
-                            <p>SAVE $ 99</p>
-                            <h1><span class="dl">$</span>498 <span>for 3 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container mt-4">
-
-                            <p></p>
-                            <h1><span class="dl">$</span>198 <span>for 1 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-md-8 targetDiv" id="div4">
-                <div class=" mb-3">
-                    <h4 class="card-title mb-0">Preference for videos</h4>
-                    <form action="{{ route('users-profile-Preference') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-
-                        <div class="form-group  mt-4 pt-5">
-                            <div class="col-md-6 p-0">
-                                <label>
-                                    <h5 class="mb-4">Preference Language</h5>
-                                </label>
-
-                                <select id="" name="preference_language[]"
-                                    class="js-example-basic-multiple myselect col-md-5" style="width: 46%!important;"
-                                    multiple="multiple">
-                                    @foreach ($preference_languages as $preference_language)
-                                        <option value="{{ $preference_language->id }}">{{ $preference_language->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                    <div class="col-lg-7 col-md-5 text-center">
+                        <div class="iq-card">
+                            <div class="iq-card-header ">
+                            
+                               <div class="iq-card-header-toolbar d-flex justify-content-between d-flex align-items-baseline">
+                               {{-- <div class="form-group mr-2">                  
+                                  <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
+                                     <option value="">Select Videos By CPP</option>
+                                        <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
+                                     </select>
+                               </div> --}}
+       
+                               <div class="form-group mr-2">
+                                   <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
+                               </div>
+                                  <a href="{{ URL::to('ugc-create') }}" class="btn btn-primary">Upload Your Own Content</a>
+       
+                    
+                               </div>
+                            </div>
+                            <div class="iq-card-body table-responsive p-0">
+                               <div class="table-view">
+                                  <table class="table text-center  table-striped table-bordered table movie_table iq-card " style="width:100%">
+                                     <thead>
+                                        <tr class="r1">
+                                           <th>Select All <input type="checkbox" id="select_all"></th>
+                                           <th>Title</th>
+                                           <th>Rating</th>
+                                           <!-- <th>Category</th> -->
+                                           <!-- <th>Release Year</th> -->
+                                           <!-- <th>Uploaded by</th> -->
+                                           <th>Video Uploaded By</th>
+                                           <th>Video Type</th>
+                                           <th>Video Access</th>
+                                           <th>Status</th>
+                                           <!-- <th>Language</th> -->
+                                           <!--<th style="width: 20%;">Description</th>-->
+                                            <th>Views</th>
+                                            <th>Slider</th>
+                                           <th>Action</th>
+                                        </tr>
+                                     </thead>
+                                     <tbody>
+                                            <td>1</td>
+                                            <td>Video Title</td>
+                                            <td>3</td>
+                                            <td>Uploaded by Admin</td>
+                                            <td>MP4 Video	</td>
+                                            <td>guest</td>
+                                            <td>published</td>
+                                            <td>28</td>
+                                            <td>Toggle</td>
+                                            <td>Action 1 2 3 4</td>
+                                     </tbody>
+                                  </table>
+                                  <div class="clear"></div>
+                                    <div class="pagination-outter mt-3 pull-right" >
+                                    <h6>Showing 1 - 9 of 20 </h6>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group  mt-4">
-                            <div class="col-sm-6 p-0">
-                                <label>
-                                    <h5 class="mb-4">Preference Genres</h5>
-                                </label>
-
-                                <select id="" name="preference_genres[]"
-                                    class="js-example-basic-multiple myselect" style="width: 46%;"
-                                    multiple="multiple">
-                                    @foreach ($videocategory as $preference_genres)
-                                        <option value="{{ $preference_genres->id }}">{{ $preference_genres->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="">
-                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2"
-                                type="submit" name="create-account"
-                                value="<?= __('Update Profile') ?>">{{ __('Update Profile') }}</button>
-                        </div>
-                    </form>
-
-                </div>
+                    </div>
             </div>
+           
 
     </div>
     </div>
