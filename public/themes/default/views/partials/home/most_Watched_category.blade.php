@@ -138,7 +138,7 @@
                             <div class="movie-time d-flex align-items-center pt-2">
                                 <?php if($ThumbnailSetting->age == 1 && !($category_video->age_restrict == 0)) { ?>
                                     <!-- Age -->
-                                    <span class="position-relative badge p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></span>
+                                    <span class="position-relative badge p-1 mr-2"><?php echo $category_video->age_restrict ?></span>
                                 <?php } ?>
 
                                 <?php if($ThumbnailSetting->duration == 1) { ?>
