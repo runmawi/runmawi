@@ -92,7 +92,7 @@
                                                         @endif
                                                         
                                                             <p class="desc-name text-left m-0 mt-1">
-                                                                {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : $watchlater_video->description }}
+                                                                {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : strip_tags($watchlater_video->description) }}
                                                             </p>
                                                         
 

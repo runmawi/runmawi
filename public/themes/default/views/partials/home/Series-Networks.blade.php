@@ -55,7 +55,7 @@
                                                 </a>
 
                                                 <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($series_networks->description) > 75 ? substr(html_entity_decode(strip_tags($series_networks->description)), 0, 75) . '...' : $series_networks->description }}
+                                                            {{ strlen($series_networks->description) > 75 ? substr(html_entity_decode(strip_tags($series_networks->description)), 0, 75) . '...' : strip_tags($series_networks->description) }}
                                                 </p>
 
                                                 <a class="epi-name mt-2 mb-0 btn" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
