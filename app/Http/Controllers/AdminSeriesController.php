@@ -1760,10 +1760,10 @@ class AdminSeriesController extends Controller
                 "subtitles" => Subtitle::all(),
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 "ads_category" => Adscategory::all(),
-                'theme_settings' => SiteTheme::first(),
                 'storage_settings' => $storage_settings ,
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
+                'theme_settings' => SiteTheme::first(),
             );
 
         return View::make('admin.series.season_edit', $data);

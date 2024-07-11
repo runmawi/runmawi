@@ -26,7 +26,9 @@ $uppercase =  ucfirst($request_url);
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-                         <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+
+        <link rel="preload" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp" alt="header-logo" width="100%" height="100%">
 
       <!-- Typography CSS -->
          <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" />
@@ -346,7 +348,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" width="100%" height="100%"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
