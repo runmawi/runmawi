@@ -107,7 +107,7 @@
                                                     @endif
 
                                                     <p class="desc-name text-left m-0 mt-1">
-                                                        {{ strlen($Going_to_expiry_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Going_to_expiry_videos->description)), 0, 75) . '...' : $Going_to_expiry_videos->description }}
+                                                        {{ strlen($Going_to_expiry_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Going_to_expiry_videos->description)), 0, 75) . '...' : strip_tags($Going_to_expiry_videos->description) }}
                                                     </p>
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($Going_to_expiry_videos->age_restrict == 0))

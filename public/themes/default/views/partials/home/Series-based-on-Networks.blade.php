@@ -91,7 +91,7 @@
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($series->description) > 75 ? substr(html_entity_decode(strip_tags($series->description)), 0, 75) . '...' : $series->description }}
+                                                            {{ strlen($series->description) > 75 ? substr(html_entity_decode(strip_tags($series->description)), 0, 75) . '...' : strip_tags($series->description) }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">

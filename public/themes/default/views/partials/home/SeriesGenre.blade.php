@@ -46,7 +46,7 @@
                                                   </a>
 
                                                   <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($Series_Genre->description) > 75 ? substr(html_entity_decode(strip_tags($Series_Genre->description)), 0, 75) . '...' : $Series_Genre->description }}
+                                                            {{ strlen($Series_Genre->description) > 75 ? substr(html_entity_decode(strip_tags($Series_Genre->description)), 0, 75) . '...' : strip_tags($Series_Genre->description) }}
                                                     </p>
 
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('series/category/'. $Series_Genre->slug) }}">

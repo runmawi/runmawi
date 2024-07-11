@@ -83,7 +83,7 @@
                                                         @endif  
 
                                                         <p class="desc-name text-left mt-2 m-0 mt-1">
-                                                            {{ strlen($Most_watched_countries->description) > 75 ? substr(html_entity_decode(strip_tags($Most_watched_countries->description)), 0, 75) . '...' : $Most_watched_countries->description }}
+                                                            {{ strlen($Most_watched_countries->description) > 75 ? substr(html_entity_decode(strip_tags($Most_watched_countries->description)), 0, 75) . '...' : strip_tags($Most_watched_countries->description) }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
