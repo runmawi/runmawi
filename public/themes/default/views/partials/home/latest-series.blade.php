@@ -92,7 +92,7 @@
                                                   <a class="text-white" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
                                                       <p class="epi-name text-left m-0 mt-2">{{ __($latest_serie->title) }}</p>
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($latest_serie->description) > 75 ? substr(html_entity_decode(strip_tags($latest_serie->description)), 0, 75) . '...' : $latest_serie->description }}
+                                                            {{ strlen($latest_serie->description) > 75 ? substr(html_entity_decode(strip_tags($latest_serie->description)), 0, 75) . '...' : strip_tags($latest_serie->description) }}
                                                         </p>
                                                         <div class="movie-time d-flex align-items-center my-2">
 

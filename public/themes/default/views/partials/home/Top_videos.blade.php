@@ -78,7 +78,7 @@
                                                     @endif
 
                                                     <p class="desc-name text-left m-0 mt-1">
-                                                        {{ strlen($most_watched_video->description) > 75 ? substr(html_entity_decode(strip_tags($most_watched_video->description)), 0, 75) . '...' : $most_watched_video->description }}
+                                                        {{ strlen($most_watched_video->description) > 75 ? substr(html_entity_decode(strip_tags($most_watched_video->description)), 0, 75) . '...' : strip_tags($most_watched_video->description) }}
                                                     </p>
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
