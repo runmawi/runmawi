@@ -1,23 +1,23 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title">
+    <h5 class="main-title">
         <a href="<?php echo route('All_Country_MostwatchedVideos') ?>">
            Most Watched Videos in South Africa
             <!--<?php echo $countryName;?>-->
         </a>
-    </h4>
+    </h5>
     <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($Most_watched_country)) :
                     foreach($Most_watched_country as $Most_watched_countries): 
                 ?>
 
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" aria-label="videos">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid w-100" alt="">
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" data-play="hover">
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
@@ -116,7 +116,7 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php endforeach; endif; ?>
-    </ul>
+    </div>
 </div>

@@ -3,13 +3,13 @@
         <div class="iq-main-header d-flex align-items-center justify-content-between">
             <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
             <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-                <h4 class="movie-title">
+                <h5 class="movie-title">
                     <?php 
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
                          echo __('Most watched videos from '.$category->name.' Genre');?>
-                </h4>
+                </h5>
 
                 <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
             </a>
@@ -26,7 +26,7 @@
                 <li class="slide-item">
                     <div class="block-images position-relative">
                         <!-- block-images -->
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>" aria-label="videos">
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid w-100" alt="">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" data-play="hover">
