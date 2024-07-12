@@ -37,12 +37,12 @@
                                                           </p>
                                                       @endif
                                                       <p class="desc-name text-left m-0 mt-1">
-                                                          {{ strlen($featured_episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($featured_episodes->episode_description)), 0, 75) . '...' : $featured_episodes->episode_description }}
+                                                          {{ strlen($featured_episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($featured_episodes->episode_description)), 0, 75) . '...' : strip_tags($featured_episodes->episode_description) }}
                                                       </p>
 
                                                       <div class="movie-time d-flex align-items-center pt-1">
                                                           @if($ThumbnailSetting->age == 1 && !($featured_episodes->age_restrict == 0))
-                                                          <span class="position-relative badge p-1 mr-2">{{ $featured_episodes->age_restrict . ' +' }}</span>
+                                                          <span class="position-relative badge p-1 mr-2">{{ $featured_episodes->age_restrict }}</span>
                                                           @endif
 
                                                           @if($ThumbnailSetting->duration == 1)

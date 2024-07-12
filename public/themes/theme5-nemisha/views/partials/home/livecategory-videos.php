@@ -51,10 +51,10 @@ $currency = App\CurrencySetting::first();
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
                 <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title">
+                    <h5 class="movie-title">
                         <?php 
                           echo __($category->name);?>
-                    </h4>
+                    </h5>
                 </a>
             </div>
             <div class="favorites-contens">

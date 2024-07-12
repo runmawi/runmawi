@@ -53,7 +53,7 @@
                                                          @endif
 
                                                          <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : $Categories->description }}
+                                                            {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : strip_tags($Categories->description) }}
                                                          </p>
 
                                                    </a>

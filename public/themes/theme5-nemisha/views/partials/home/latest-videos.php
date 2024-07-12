@@ -7,21 +7,21 @@
     <!-- Header Link -->
 
     <?php if( Route::currentRouteName() == "ChannelHome"){?>
-        <h4 class="main-title">
+        <h5 class="main-title">
             <a href="<?php echo route('Channel_videos_list',Request::segment(2)); ?>">
                 <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
             </a>
-        </h4>  
+        </h5>  
 
         <a class="see" href="<?php echo route('Channel_videos_list',Request::segment(2))  ; ?>"> See All  </a>
 
     <?php }else{ ?>
 
-        <h4 class="main-title">
+        <h5 class="main-title">
             <a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
                 <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
             </a>
-        </h4>  
+        </h5>  
 
         <a class="see" href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"> See All  </a>
     <?php } ?>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($latest_video)) :
                          foreach($latest_video as $watchlater_video): 
                             if (!empty($watchlater_video->publish_time) && !empty($watchlater_video->publish_time))
@@ -68,12 +68,12 @@
                                 $publish_time = '';
                             }
                           ?>
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="videos">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
@@ -100,7 +100,7 @@
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play" /> </a>
                         <div class="hover-buttons d-flex">
 
                         </div>
@@ -175,11 +175,11 @@
                         <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php                     
                         endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 
 <?php endif; ?>

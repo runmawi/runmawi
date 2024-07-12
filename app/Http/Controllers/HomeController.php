@@ -122,9 +122,30 @@ class HomeController extends Controller
         $FrontEndQueryController = new FrontEndQueryController();
 
                         // Order Setting 
-        $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-            return $value === '1' || $value === 1;  
-        })->keys()->toArray(); 
+            $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
+                return $value === '1' || $value === 1;  
+            })->map(function ($value, $key) {
+                switch ($key) {
+                    case 'channel_partner':
+                        return 'ChannelPartner';
+                    case 'content_partner':
+                        return 'ContentPartner';
+                    case 'video_schedule':
+                        return 'video_schedule';
+                    case 'SeriesGenre':
+                        return 'Series_Genre';
+                    case 'SeriesGenre_videos':
+                        return 'Series_Genre_videos';
+                    case 'AudioGenre':
+                        return 'Audio_Genre';
+                    case 'AudioGenre_audios':
+                        return 'Audio_Genre_audios';
+                    case 'my_playlist':
+                        return 'Audio_Genre_audios';
+                    default:
+                        return $key;
+                }
+            })->values()->toArray();
 
         $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
              
@@ -1511,9 +1532,30 @@ class HomeController extends Controller
                 // Order Setting 
 
 
-                $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
+                $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
                     return $value === '1' || $value === 1;  
-                })->keys()->toArray(); 
+                })->map(function ($value, $key) {
+                    switch ($key) {
+                        case 'channel_partner':
+                            return 'ChannelPartner';
+                        case 'content_partner':
+                            return 'ContentPartner';
+                        case 'video_schedule':
+                            return 'video_schedule';
+                        case 'SeriesGenre':
+                            return 'Series_Genre';
+                        case 'SeriesGenre_videos':
+                            return 'Series_Genre_videos';
+                        case 'AudioGenre':
+                            return 'Audio_Genre';
+                        case 'AudioGenre_audios':
+                            return 'Audio_Genre_audios';
+                        case 'my_playlist':
+                            return 'Audio_Genre_audios';
+                        default:
+                            return $key;
+                    }
+                })->values()->toArray();
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
              

@@ -10587,11 +10587,11 @@ $cpanel->end();
 
         try {
 
-          User::find($request->user_id)->delete();
           ContinueWatching::where('user_id',$request->user_id)->delete();
           Watchlater::where('user_id',$request->user_id)->delete();
           Wishlist::where('user_id',$request->user_id)->delete();
           Multiprofile::where('parent_id',$request->user_id)->delete();
+          User::find($request->user_id)->delete();
 
           $status = "true";
           $message = "Your ". GetWebsiteName() ." user account was successfully deleted" ;

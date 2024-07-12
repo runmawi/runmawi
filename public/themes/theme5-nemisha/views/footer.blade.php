@@ -115,7 +115,7 @@ entertainment.</p>
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1" aria-label="insta">
-                        <img class="" width="40" height="40" src="<?php echo URL::to('/assets/img/lan/i.webp'); ?>" alt="i" loading="lazy" />
+                        <img class="lazy" width="40" height="40" src="<?php echo URL::to('/assets/img/lan/i.webp'); ?>" alt="i" loading="lazy" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
