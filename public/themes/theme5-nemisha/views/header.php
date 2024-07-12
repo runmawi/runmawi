@@ -202,21 +202,38 @@
     <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
 
 
-
+    <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" as="style" 
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
+    <!-- DNS Prefetch for the Plyr CDN -->
+    <link rel="dns-prefetch" href="https://cdn.plyr.io">
+
+    <!-- Preconnect to the Plyr CDN -->
+    <link rel="preconnect" href="https://cdn.plyr.io" crossorigin>
+
     <!-- Bootstrap CSS -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <!-- Typography CSS -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
     <!-- Style -->
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="preload" as="style">
+    
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
 
 
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="prelaod" as="style">
+    <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="preload" as="style">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
@@ -225,6 +242,9 @@
 
 
     <!-- Responsive -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
+    <link rel="preload" as="style" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1696,7 +1716,7 @@
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                        <a class="p-0" href="#">
+                                                        <a class="p-0" href="#" aria-label="dark-light-mode-toggle">
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">
