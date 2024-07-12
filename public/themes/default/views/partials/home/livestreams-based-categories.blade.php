@@ -154,7 +154,7 @@ $data->each(function ($category) {
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($livestream->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $livestream->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $livestream->age_restrict}}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)

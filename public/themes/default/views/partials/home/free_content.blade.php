@@ -68,7 +68,7 @@ endif;
               <p class="epi-name text-left m-0"><?php echo __($free_Content->title); ?></p>
                
                 <div class="movie-time d-flex align-items-center my-2">
-                  <div class="badge badge-secondary p-1 mr-2"><?php echo $free_Content->age_restrict.' '.'+' ?></div>
+                  <div class="badge badge-secondary p-1 mr-2"><?php echo $free_Content-> ?></div>
                   <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_Content->duration); ?></span>-->
                 </div>
               </a>
