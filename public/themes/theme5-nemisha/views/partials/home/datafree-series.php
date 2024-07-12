@@ -46,7 +46,7 @@
                 <div class="block-description">
                             <div class="hover-buttons">
                                 <a type="button" class="text-white btn-cl" href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/>
                                 </a>                       
                             </div>
                         </div>
