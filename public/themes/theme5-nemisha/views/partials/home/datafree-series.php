@@ -1,6 +1,6 @@
 <?php  if(count($series) > 0 && $countDataFreeseriesCategories > 0 )  : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-<h4 class="main-title">
+<h5 class="main-title">
         <!-- Data Free series -->
    <a href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
      
@@ -11,7 +11,7 @@
      
    </a>
      
-        </h4>
+        </h5>
     <a class="see" href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
@@ -21,11 +21,11 @@
                             ?>
         <!-- .@$video->categories->name. -->
         <li class="slide-item">
-            <a href="<?= URL::to('/') ?><?= '/play_series'.'/' . $category_series->slug ?>">
+            <a href="<?= URL::to('/') ?><?= '/play_series'.'/' . $category_series->slug ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                    <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>">
+                    <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
                                 <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
                                         class="img-fluid w-100" alt=""> 
                             </a>

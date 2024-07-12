@@ -930,8 +930,8 @@
 
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /> <?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -961,8 +961,8 @@
                                         ?>
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /><?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!--<i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -982,8 +982,8 @@
                                         ?>
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /><?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1054,7 +1054,7 @@
                     echo $menu->custom_url;
                 } ?>">
                     <!-- <img class=""  src="<?php echo URL::to('/assets/img/home.png'); ?>" /> <span class="mt-2" ><?php echo __($menu->name); ?></span> -->
-                    <img class="" src="<?php echo $menu->image; ?>" /> <span
+                    <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
                         class=""><?php echo __($menu->name); ?></span>
 
                 </a>
@@ -1119,7 +1119,7 @@
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="mobile-menu-header">
                                         <div class="btn-close" data-toggle="collapse">
-                                            <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                                            <a type="button" href="#" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
                                                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                                 aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
                                                 border-top: none; float:right"><i class="fa fa-times" style="
@@ -1486,7 +1486,7 @@
                                 </div>
                                 <div class="mobile-more-menu">
                                     <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                                        data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
+                                        data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" href="#">
                                         <i class="ri-more-line"></i>
                                     </a>
                                     <div class="more-menu" aria-labelledby="dropdownMenuButton">
@@ -1580,7 +1580,7 @@
                                                 </div>
                                             </div>
 
-                                            <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search">
+                                            <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search" aria-label="Search-Toogle">
 
                                                 <i class="ri-search-line"></i>
                                             </a>
@@ -1680,9 +1680,9 @@
                                                 data-toggle="search-toggle">
                                                 
                                                 <?php if(Auth::user() && Auth::user()->avatar != null): ?>
-                                                    <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
+                                                    <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle" alt="avatar image">
                                                 <?php else: ?>
-                                                    <img src="<?php echo URL::to('/assets/img/placeholder.webp'); ?>" class="img-fluid avatar-40 rounded-circle" alt="Placeholder Image">
+                                                    <img src="<?php echo URL::to('/assets/img/placeholder.webp'); ?>" class="img-fluid avatar-40 rounded-circle" alt="avatar image">
                                                 <?php endif; ?>
 
 
@@ -1708,7 +1708,7 @@
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                        <a class="p-0">
+                                                        <a class="p-0" href="#">
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">

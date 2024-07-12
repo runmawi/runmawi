@@ -2,17 +2,17 @@
         $SeriesGenre = App\SeriesGenre::all();
         if(isset($SeriesGenre)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title"> Series Genre</h4>                      
+  <h5 class="main-title"> Series Genre</h5>                      
 </div>
 <?php
  endif;
 ?>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <div class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($SeriesGenre)) :
     					 foreach($SeriesGenre as $key => $Series_Genre) {
             ?>
-        <li class="slide-item">
+        <div class="slide-item">
           <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
@@ -38,9 +38,9 @@
            
            
           </a>
-        </li>
+        </div>
       <?php  } 
       // }
     endif; ?>
-  </ul>
+  </div>
 </div>

@@ -2,16 +2,16 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">Continue Watching</a></h4>
+    <h5 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">Continue Watching</a></h5>
     <a class="see" href="<?php echo URL::to('continue-watching-list') ?>">See All</a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($cnt_watching)) :
                          foreach($cnt_watching as $cont_video): 
                           ?>
-        <li class="slide-item">
-            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+        <div class="slide-item">
+            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <!-- block-images -->
                     <div class="img-box">
@@ -113,11 +113,11 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php                     
                         endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 <?php endif; ?>
 
