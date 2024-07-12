@@ -96,7 +96,7 @@
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($series->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $series->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $series->age_restrict }}</span>
                                                                 <!-- <div class="badge badge-secondary p-1 mr-2">{{ $series->status . ' +' }}</div> -->
                                                             @endif
 
