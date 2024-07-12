@@ -25,7 +25,7 @@
 </div>
 
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($livetream)) :
                          foreach($livetream as $video): 
                             if (!empty($video->publish_time))
@@ -94,7 +94,7 @@
                               }
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
@@ -197,17 +197,13 @@
                             echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
-                    <?php } ?>
-                    
-                    
-                </div>
-                  
+                    <?php } ?>                                       
+                </div>     
             </a>
-        </li>
-
+        </div>
         <?php endforeach; 
-                                   endif; ?>
-    </ul>
+      endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 
