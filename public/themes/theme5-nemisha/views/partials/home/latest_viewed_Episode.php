@@ -16,7 +16,7 @@ if (Auth::guest() != true) {
 ?>
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title">
+    <h5 class="main-title">
         <a href="<?php if ($order_settings_list[18]->header_name) {
             echo URL::to('/') . '/' . $order_settings_list[18]->url;
         } else {
@@ -29,7 +29,7 @@ if (Auth::guest() != true) {
                 echo '';
             } ?>
         </a>
-    </h4>
+    </h5>
 </div>
 
 <div class="favorites-contens">

@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">
+  <h5 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list->header_name) { echo URL::to('/').'/'.$order_settings_list->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,7 +20,7 @@
         } 
   ?>
   </a>
-  </h4>  
+  </h5>  
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
