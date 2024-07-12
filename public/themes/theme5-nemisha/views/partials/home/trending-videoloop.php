@@ -8,7 +8,7 @@
 
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($featured_videos)) :
                       if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } foreach($featured_videos as $watchlater_video): 
@@ -48,14 +48,15 @@
                                 $publish_time = '';
                             }
                         ?>
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
+                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                        <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
-                        </video>
+                        </video> -->
 
                         <!-- PPV price -->
                        
@@ -167,11 +168,11 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+    </div>
         <?php      
                         endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 
 

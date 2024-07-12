@@ -16,7 +16,7 @@
       <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($videos)) :
                          foreach($videos as $category_video): 
                            if (!empty($category_video->publish_time) && !empty($category_video->publish_time))
@@ -56,7 +56,7 @@
                            }
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/category'.'/' . $category_video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
@@ -159,11 +159,11 @@
                             <?php } ?>
                         </div>
 
-        </li>
+            </div>
 
         <?php endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 <?php endif; ?>
 
