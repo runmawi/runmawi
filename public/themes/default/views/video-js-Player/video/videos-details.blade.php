@@ -312,8 +312,8 @@
             @endif
 
             <!-- Broadcast  -->
-
-            @if(($videodetail->trailer_videos_url) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
+            
+            @if(($videodetail->trailer) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
                 <div class="sectionArtists broadcast">   
                     <div class="artistHeading">
                         {{ ucwords(__('Promos & Resources')) }}
@@ -322,7 +322,7 @@
 
                         <div class="listItems">
 
-                            @if( optional($videodetail)->trailer_videos_url )
+                            @if( optional($videodetail)->trailer )
                                 <a>
                                     <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
                                         <div class="profileImg">
