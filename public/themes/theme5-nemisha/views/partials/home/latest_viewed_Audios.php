@@ -56,8 +56,8 @@
                 <div class="block-description">
                     <div class="hover-buttons text-white">
                         <a href="<?= URL::to('audio/' . $latest_view_audio->slug); ?>">
-                        <img
-                                class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                            <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" alt="play"/> 
+                        </a>
                         <div></div>
                     </div>
                 </div>
