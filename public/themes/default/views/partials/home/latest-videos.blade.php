@@ -155,7 +155,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
