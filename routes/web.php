@@ -291,6 +291,9 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');
 
+    // Page List
+    Route::get('Latest-videos-Pagelist', 'PageListController@Latest_videos')->name('pagelist.Lates-tvideos');
+
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
 
