@@ -41,7 +41,7 @@
 
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/channel/' . $channel->channel_slug) }}">
                                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                      Visit Channel
+                                                      {{ __('Visit Channel') }}
                                                   </a>
                                               </div>
                                           </div>
