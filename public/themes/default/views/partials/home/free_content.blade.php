@@ -77,7 +77,7 @@ endif;
                
                 <a class="epi-name mt-2 mb-0 btn" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Watch Series
+                  {{ __(' Watch Series') }}
                   </a>
                 </div>
               </div>

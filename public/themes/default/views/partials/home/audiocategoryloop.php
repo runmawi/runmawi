@@ -187,7 +187,7 @@
                                             <a type="button" class="epi-name mt-5 mb-0 btn"
                                                 href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                                                 <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> {{ __('Watch Now') }}
+                                                    width="10%" height="10%" /> <?= __('Watch Now') ?>
                                             </a>
                                         </div>
                                 </div>

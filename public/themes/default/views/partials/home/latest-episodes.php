@@ -112,7 +112,7 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
                     echo URL::to('/episode' . '/' . @$latest_episode->series_title->slug . '/' . $latest_episode->slug);
                   } ?> ">
                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                  Watch Series
+                  <?= __('Watch Series') ?>
                 </a>
               </div>
             </div>

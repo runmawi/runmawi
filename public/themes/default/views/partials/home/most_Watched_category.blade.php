@@ -179,7 +179,7 @@
 
               
                         <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" /> {{ __('Watch Now') }}
+                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />{{ __('Watch Now') }}
                         </a>
                     </div>
                 </div>
