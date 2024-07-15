@@ -82,7 +82,7 @@ ol.breadcrumb {
                                             <a class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('/play_series'.'/'.$Series_Genre->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Visit Series
+                                                {{ __('Visit Series') }}
                                             </a>
                                         </div>
                                     </div>

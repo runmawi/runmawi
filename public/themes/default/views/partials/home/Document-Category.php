@@ -81,7 +81,7 @@
                                 <a type="button" class="epi-name mt-3 mb-0 btn"
                                 target="_blank" href="<?php URL::to('public/uploads/Document/'.$Document->document) ?>">
                                     <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                        width="10%" height="10%" /> View Now
+                                        width="10%" height="10%" /> <?= __('View Now') ?>
                                 </a>
                             </div>
                         </div>

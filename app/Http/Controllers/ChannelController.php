@@ -4299,7 +4299,7 @@ class ChannelController extends Controller
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
 
                 $item['users_video_visibility_status']         = true ;
-                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                $item['users_video_visibility_status_button']  = 'Watch Now' ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]); 
 
 

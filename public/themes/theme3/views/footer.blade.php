@@ -14,7 +14,7 @@
     .row.m-0 {
         border-top: 1px solid;
         border-bottom: 1px solid;
-        margin: 20px 0 !important;
+        /* margin: 20px 0 !important; */
     }
 
     li.list-inline-item{

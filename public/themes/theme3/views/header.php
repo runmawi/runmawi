@@ -1083,7 +1083,7 @@
          !important;
    }
 
-   .navbar-expand-lg .navbar-nav .dropdown-menu {
+   body.dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {
       background:
          <?php echo GetDarkBg(); ?>
          !important;
@@ -1174,6 +1174,7 @@
    a.profile-icons.iq-user-dropdown.search-toggle.p-0.d-flex.align-items-center:hover{
       color: #fff !important;
    }
+   .dropdown-menu.show{display:none;}
 </style>
 
 <style type="text/css">
@@ -1295,7 +1296,7 @@
    @media (min-width:770px) {
       ul.dropdown-menu.primary_menu.show {
          top: 70%;
-         left: 41px;
+         /* left: 41px; */
       }
    }
 
@@ -1994,7 +1995,7 @@
                                              if ( $menu->in_menu == "video" ) {  ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="cate-down" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
@@ -2027,19 +2028,19 @@
 
                                              <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
-                                                <li class="dropdown menu-item dskdflex">
-                                                   <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                   <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
                                                          <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
                                                    </a>
 
-                                                   <ul class="dropdown-menu categ-head">
-                                                         <?php foreach ( $languages as $language): ?>
+                                                   <ul class="dropdown-menu primary_menu">
+                                                      <?php foreach ( $languages as $language): ?>
                                                          <li>
-                                                               <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
-                                                                  <?= $language->name;?>
-                                                               </a>
+                                                            <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
+                                                               <?= $language->name;?>
+                                                            </a>
                                                          </li>
-                                                         <?php endforeach; ?>
+                                                      <?php endforeach; ?>
                                                    </ul>
                                                 </li>
 
