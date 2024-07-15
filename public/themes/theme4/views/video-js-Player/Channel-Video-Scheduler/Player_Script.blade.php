@@ -1,25 +1,40 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-    var player = videojs('channel-video-scheduler-player', { // Video Js Player 
-        aspectRatio: '16:9',
-        fill: true,
-        playbackRates: [0.5, 1, 1.5, 2, 3, 4],
-        fluid: true,
+    const player = videojs('channel-video-scheduler-player', {
         controlBar: {
             volumePanel: { inline: false },
             children: {
-                'playToggle': {},
-                'currentTimeDisplay': {},
-                'remainingTime': {},
-                // 'liveDisplay': {},
-                'flexibleWidthSpacer': {},
+                // 'flexibleWidthSpacer': {},
                 'progressControl': {},
                 'subtitlesButton': {},
-                'playbackRateMenuButton': {},
-                'fullscreenToggle': {}                     
+                'fullscreenToggle': {},
             },
             pictureInPictureToggle: true,
+        }
+    });
+
+    // Function to reload the video player when paused for 10sec & more.
+    var pauseStartTime = null;
+    var totalPausedTime = 0;
+    player.on('pause', function() {
+        pauseStartTime = new Date();
+    });
+
+    player.on('play', function() {
+        if (pauseStartTime !== null) {
+            var pauseEndTime = new Date();
+            var pauseDuration = (pauseEndTime - pauseStartTime) / 1000;
+
+            totalPausedTime += pauseDuration;
+            pauseStartTime = null;
+
+            // console.log("Total paused time: " + Math.floor(totalPausedTime));
+            if(Math.floor(totalPausedTime) >= 10){
+                player.pause();
+                window.location.reload();
+            }
+            totalPausedTime = 0;
         }
     });
 
@@ -76,3 +91,9 @@
         });
     });
 </script>
+
+<style>
+    .vjs-progress-control{
+        pointer-events: none;
+    }
+</style>
