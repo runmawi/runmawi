@@ -33,7 +33,7 @@
                                     </a>
                               
                                    <a class="epi-name mt-3 mb-0 btn"  data-toggle="modal" data-target="#Reels"  >
-                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now </a>
+                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }} </a>
                                          <input type="hidden" name="reals_videos_id" class="reals_videos_id" value=<?php echo $reel->reels_videos ?> >
                                     </a>
                                         </div>

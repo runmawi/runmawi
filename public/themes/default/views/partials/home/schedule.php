@@ -39,7 +39,7 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                                     
                                    
                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>" >
-                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
                                        </a>
                                     </div>
                                  </div>

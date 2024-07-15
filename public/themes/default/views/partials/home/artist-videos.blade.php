@@ -119,7 +119,7 @@
                                                     @endif  
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" alt="ply" /> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" alt="ply" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
