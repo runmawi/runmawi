@@ -149,7 +149,7 @@ setTimeout(function() {
 </script>
 </body>
 @php
-    include('packages\webnexs\avod\src\views\ads_footer.blade.php')
+    include('packages/webnexs/avod/src/views/ads_footer.blade.php')
 @endphp
 <!-- jQuery, Popper JS -->
 <script src="{{URL::to('/')}}/assets/js/jquery-3.4.1.min.js"></script>
