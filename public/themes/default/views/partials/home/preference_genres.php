@@ -86,7 +86,7 @@
                                     <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
-                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_genre->age_restrict.' '.'+' ?></div>
+                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_genre->age_restrict ?></div>
                                       <?php } ?>
 
                                       <?php if($ThumbnailSetting->duration == 1) { ?>

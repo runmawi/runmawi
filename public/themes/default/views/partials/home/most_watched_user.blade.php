@@ -87,7 +87,7 @@
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($watchlater_video->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $watchlater_video->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $watchlater_video->age_restrict}}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)

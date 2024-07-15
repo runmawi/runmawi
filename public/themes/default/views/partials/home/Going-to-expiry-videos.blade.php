@@ -111,7 +111,7 @@
                                                     </p>
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($Going_to_expiry_videos->age_restrict == 0))
-                                                            <span class="position-relative badge p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict . ' +' }}</span>
+                                                            <span class="position-relative badge p-1 mr-2">{{ $Going_to_expiry_videos->age_restrict }}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
