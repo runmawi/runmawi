@@ -182,6 +182,12 @@ class ChannelHomeController extends Controller
                 }
             });
 
+            $AudioCategory = $FrontEndQueryController->AudioCategory()->filter(function ($AudioCategory) use ($channel_partner) {
+                if ( $AudioCategory->user_id == $channel_partner->id && $AudioCategory->uploaded_by == "Channel" ) {
+                    return $AudioCategory;
+                }
+            });
+
             // Order Setting 
 
             $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
@@ -201,7 +207,7 @@ class ChannelHomeController extends Controller
                 'featured_videos'    => $featured_videos,
                 'trending_videos'    => $trending_videos,
                 'genre_video_display'   => $genre_video_display,
-                'VideoCategory'   => $genre_video_display,
+                'VideoCategory'         => $genre_video_display,
                 'latest_series'         => $latest_series,
                 'latest_audios'         => $latest_audios,
                 'audios'                => $latest_audios,
@@ -213,6 +219,7 @@ class ChannelHomeController extends Controller
                 'albums'                => $albums ,
                 'trending_audios'       => $trending_audios,
                 'artist_live_event'     => $LiveEventArtist ,
+                'AudioCategory'         => $AudioCategory ,
                 'ThumbnailSetting'      => $FrontEndQueryController->ThumbnailSetting() ,
                 'SeriesGenre'           => $FrontEndQueryController->SeriesGenre() ,
                 'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
