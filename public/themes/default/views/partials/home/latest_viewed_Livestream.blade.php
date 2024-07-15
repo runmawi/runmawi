@@ -154,7 +154,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('live/'. $latest_view_livestreams->slug) }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

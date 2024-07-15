@@ -80,7 +80,7 @@
                                         </a>
                                             <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Visit Audio Player
+                                                <?= __('Visit Audio Player') ?>
                                             </a>
                                         </div>
                                     </div>
