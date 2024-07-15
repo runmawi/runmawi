@@ -99,7 +99,7 @@
                                 <div class="movie-time d-flex align-items-center pt-1">
                                       <?php if($ThumbnailSetting->age == 1) { ?>
                                       <!-- Age -->
-                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_Languages->age_restrict.' '.'+' ?></div>
+                                      <div class="badge badge-secondary p-1 mr-2"><?php echo $preference_Languages->age_restrict ?></div>
                                       <?php } ?>
 
                                       <?php if($ThumbnailSetting->duration == 1) { ?>
@@ -169,7 +169,7 @@
                                     
                                    
                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
                                       </a>
                                 </div>
                             </div>

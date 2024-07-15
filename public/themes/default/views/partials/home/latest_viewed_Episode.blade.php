@@ -67,7 +67,7 @@ if (Auth::guest() != true) {
 
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @if($ThumbnailSetting->age == 1 && !($latest_view_episode->age_restrict == 0))
-                                                            <span class="position-relative badge p-1 mr-2">{{ $latest_view_episode->age_restrict . ' +' }}</span>
+                                                            <span class="position-relative badge p-1 mr-2">{{ $latest_view_episode->age_restrict }}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)
@@ -89,7 +89,7 @@ if (Auth::guest() != true) {
                                                     </a>
                                                 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

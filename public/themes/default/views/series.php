@@ -45,9 +45,9 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
-    color: #FF0000	;
+    color: #fff	;
     text-shadow: 0 1px 0 #fff;
-    opacity: .5;
+    opacity: 1;
     display: flex!important;
     justify-content: end!important;
 }
@@ -119,7 +119,7 @@
     .modal {
         top: 2%;
     }
-    
+    div#video-js-trailer-player{height:65vh !important;}
 </style>
 
 <?php 
