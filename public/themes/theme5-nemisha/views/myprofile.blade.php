@@ -348,7 +348,37 @@
             <div class="container">
 
                 <div class="row justify-content-center">
-                    <div class="col-md-5 sigk text-center">
+                <img
+                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 40px;" alt="banner" >
+                </div>
+                <div class="row justify-content-start">
+                   <div>
+                    <img class="rounded-circle img-fluid text-center mb-3 mt-4"
+                    src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" alt="profile-bg" style="height: 80px; width: 80px;">
+                   </div>
+                   <div class="col" style="padding-top: 40px;" >
+                    <div>
+                    <h4>Karabo Mthembu</h4>
+                    </div>
+                    <div>
+                       <h5>Entertainmnt channel </h5>
+                    </div>
+                   </div>
+                </div>
+                <div class="row">
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Bio</button>
+                    </div>
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Videos</button>
+                    </div>
+                    <div class="p-1">
+                        <button style="border-radius:10px; padding: 0px 10px" >Playlist</button>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-5 col-md-5 sigk text-center">
                         <div class="d-flex justify-content-center">
 
                             {{-- message --}}
@@ -411,103 +441,9 @@
                             </p>
 
                         </div>
-                </div>
+                    </div>
             </div>
-            <div class="col-md-8 targetDiv" id="div3">
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col" onclick="jQuery('#add-new').modal('show');">
-                        <div class="container ">
-
-                            <p>SAVE $ 594</p>
-                            <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container ">
-
-                            <p>SAVE $ 300</p>
-                            <h1><span class="dl">$</span>894 <span>for 6 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container ">
-
-
-                            <p>SAVE $ 99</p>
-                            <h1><span class="dl">$</span>498 <span>for 3 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <div class="bg-col">
-                        <div class="container mt-4">
-
-                            <p></p>
-                            <h1><span class="dl">$</span>198 <span>for 1 months</span></h1>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-md-8 targetDiv" id="div4">
-                <div class=" mb-3">
-                    <h4 class="card-title mb-0">Preference for videos</h4>
-                    <form action="{{ route('users-profile-Preference') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-
-                        <div class="form-group  mt-4 pt-5">
-                            <div class="col-md-6 p-0">
-                                <label>
-                                    <h5 class="mb-4">Preference Language</h5>
-                                </label>
-
-                                <select id="" name="preference_language[]"
-                                    class="js-example-basic-multiple myselect col-md-5" style="width: 46%!important;"
-                                    multiple="multiple">
-                                    @foreach ($preference_languages as $preference_language)
-                                        <option value="{{ $preference_language->id }}">{{ $preference_language->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group  mt-4">
-                            <div class="col-sm-6 p-0">
-                                <label>
-                                    <h5 class="mb-4">Preference Genres</h5>
-                                </label>
-
-                                <select id="" name="preference_genres[]"
-                                    class="js-example-basic-multiple myselect" style="width: 46%;"
-                                    multiple="multiple">
-                                    @foreach ($videocategory as $preference_genres)
-                                        <option value="{{ $preference_genres->id }}">{{ $preference_genres->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="">
-                            <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2"
-                                type="submit" name="create-account"
-                                value="<?= __('Update Profile') ?>">{{ __('Update Profile') }}</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
+           
 
     </div>
     </div>

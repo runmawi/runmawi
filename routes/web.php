@@ -1615,7 +1615,7 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
     Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
-    Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+    Route::post('video_exportCsv', 'CPPAnalyticsContrmyprofileoller@VideoExportCsv');
 
     Route::get('myprofile', 'ModeratorsUserController@CPPMyProfile');
     Route::post('update-myprofile', 'ModeratorsUserController@CPPUpdateMyProfile');
@@ -2415,3 +2415,8 @@ Route::post('HomePage-wishlist', 'HomeController@Homepage_wishlist')->name('home
 Route::get('/testpage', function () {
     return view('testpage');
 })->name('testpage');
+
+// User Generated Content
+Route::get('ugc-create', 'UGCController@create');
+// Route::post('/videos/fileupdate', ['before' => 'demo', 'uses' => 'AdminVideosController@fileupdate']);
+// Route::post('/videos/store', ['before' => 'demo', 'uses' => 'AdminVideosController@store']);
