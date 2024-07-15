@@ -4563,6 +4563,7 @@ class AdminSeriesController extends Controller
             $value = [];
             if($statusCode == 200){
                 
+
                 $series_id = $data['series_id'];
                 $season_id = $data['season_id'];
                     
@@ -4581,6 +4582,68 @@ class AdminSeriesController extends Controller
                 $Episode->save();
 
                 $Episode_id = $Episode->id;
+
+
+                if(Enable_Extract_Image() == 1){
+                    // extractImageFromVideo
+                    
+                    $rand = Str::random(16);
+                
+                    $ffmpeg = \FFMpeg\FFMpeg::create();
+                    $videoFrame = $ffmpeg->open($mp4_url);
+                    
+                    // Define the dimensions for the frame (16:9 aspect ratio)
+                    $frameWidth = 1280;
+                    $frameHeight = 720;
+                    
+                    // Define the dimensions for the frame (9:16 aspect ratio)
+                    $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                    $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                    
+                    $randportrait = 'portrait_' . $rand;
+                    
+                    $interval = 5; // Interval for extracting frames in seconds
+                    $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                    $totalDuration = intval($totalDuration);
+    
+    
+                    if ( 600 < $totalDuration) { 
+                        $timecodes = [5, 120, 240, 360, 480]; 
+                    } else { 
+                        $timecodes = [5, 10, 15, 20, 25]; 
+                    }
+    
+                    
+                    foreach ($timecodes as $index => $time) {
+                        $imagePortraitPath = public_path("uploads/images/{$Episode_id}_{$randportrait}_{$index}.jpg");
+                        $imagePath = public_path("uploads/images/{$Episode_id}_{$rand}_{$index}.jpg");
+                
+                        try {
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                            $VideoExtractedImage = new VideoExtractedImages();
+                            $VideoExtractedImage->user_id = Auth::user()->id;
+                            $VideoExtractedImage->socure_type = 'Episode';
+                            $VideoExtractedImage->video_id = $Episode_id;
+                            $VideoExtractedImage->image_original_name = $Episode_id;
+                            $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $Episode_id . '_' . $rand . '_' . $index . '.jpg');
+                            $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $Episode_id . '_' . $randportrait . '_' . $index . '.jpg');
+                            $VideoExtractedImage->image_original_name = $Episode_id . '_' . $rand . '_' . $index . '.jpg';
+                            $VideoExtractedImage->save();
+    
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                
+                }
+    
 
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
