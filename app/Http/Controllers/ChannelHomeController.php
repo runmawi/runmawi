@@ -201,6 +201,7 @@ class ChannelHomeController extends Controller
                 'featured_videos'    => $featured_videos,
                 'trending_videos'    => $trending_videos,
                 'genre_video_display'   => $genre_video_display,
+                'VideoCategory'   => $genre_video_display,
                 'latest_series'         => $latest_series,
                 'latest_audios'         => $latest_audios,
                 'audios'                => $latest_audios,

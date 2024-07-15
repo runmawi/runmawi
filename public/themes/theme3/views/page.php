@@ -28,6 +28,7 @@
         font-size: 27px;
         font-weight: 400;
     }
+    body.light-theme .vid-title, body.light-theme p {color:<?php echo GetDarkText(); ?> !important;}
 </style>
 
     <div class="container">

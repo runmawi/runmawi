@@ -4,9 +4,14 @@
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title topten-title-sm"> {{ optional($order_settings_list[0])->header_name }} </h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
+                        <h4 class="main-title"><a
+                                href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a>
+                        </h4>
+                        <h4 class="main-title"><a
+                                href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ 'view all' }}</a>
+                        </h4>
                     </div>
+
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline p-0 mb-0">
