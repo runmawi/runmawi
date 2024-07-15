@@ -14,25 +14,37 @@
                       @if(isset($category_list)) 
                         @foreach($category_list as $category_lists)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href="{{ URL::to('category').'/'.$category_lists->slug   }} ">
-                                    <div class="block-images position-relative">
-                                        <div class="img-box">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
-                                        </div>
-                            
-                                        <div class="block-description" >
-                                                <a href="{{ URL::to('category').'/'.$category_lists->slug   }}">
-                                                    <h6><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></h6>
-                                                </a>
-                                            <div class="hover-buttons"><div>
-                                        </div>
+
+                                <div class="block-images position-relative">
+                                    <div class="border-bg">
+                                       <div class="img-box">
+                                          <a class="playTrailer" aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" alt="{{ $category_lists->name }}">
+                                          </a>
+                                       </div>
                                     </div>
-                                    <div>
-                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_lists->id;?>">
-                                            <span class="text-center thumbarrow-sec"></span>
-                                        </button>
-                                    </div> </div> </div>
-                                </a>
+
+                                    <div class="block-description">
+                                       <a aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                          <div class="hover-buttons text-white">
+                                             <a aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                      <p class="epi-name text-left mt-2 m-0">
+                                                         {{ Str::limit($category_lists->name, 18) }}
+                                                      </p>
+
+                                                   <p class="desc-name text-left m-0 mt-1">
+                                                      {{ strlen($category_lists->description) > 75 ? substr(html_entity_decode(strip_tags($category_lists->description)), 0, 75) . '...' : strip_tags($category_lists->description) }}
+                                                   </p>
+
+                                             </a>
+                                             <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                   <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Visit Category') }}
+                                             </a>
+                                          </div>
+                                       </a>
+                                    </div>
+                              </div>
+
                             </li>
                         @endforeach
                     @endif
