@@ -17,9 +17,8 @@
             <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100" alt="" loading="lazy">
             </div>  </div>
             <div class="block-description" >  </div>
-            <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                       
-                     </a>                         
+               <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="Podcasts">
+               </a>                         
                <div class="hover-buttons">
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>

@@ -103,8 +103,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
-                            muted="muted" preload="yes" autoplay="autoplay"
-                            poster="<?= $episode_details->Player_thumbnail ?>">
+                            preload="yes" autoplay="autoplay" poster="<?= $episode_details->Player_thumbnail ?>">
                             <source src="<?= $episode_details->Episode_url ?>"
                                 type="<?= $episode_details->Episode_player_type ?>">
 

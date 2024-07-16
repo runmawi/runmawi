@@ -35,7 +35,7 @@
               </div> </div>
 
               <div class="block-description"> </div>
-                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " aria-label="videos">
+                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " aria-label="ContentPartner">
 
               <h6><?php echo __($content_user->username); ?></h6>
                                <!-- </div> -->
