@@ -393,7 +393,7 @@
         <!--<hr />-->
 
         <!-- MainContent -->
-        <section class="m-profile setting-wrapper pt-0">
+    {{-- <section class="m-profile setting-wrapper pt-0">
             <div class="container">
 
                 <div class="row justify-content-center m-1">
@@ -474,74 +474,6 @@
     
                         
                     </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-lg-5 col-md-5 sigk text-center">
-                            <div class="d-flex justify-content-center">
-    
-                                {{-- message --}}
-                                @if (Session::has('message'))
-                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                                @endif
-    
-                               <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
-                                <div>
-                                    <h4 class="main-title mb-4 text-center">My Account</h4>
-                                </div>
-                               <!-- <div><a herf="" class="text-white">Done</a>
-                                </div>-->
-    
-                            </div>
-    
-                            <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                                src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
-                            <div> 
-                                <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i> Edit
-                                </a>
-                            </div>
-    
-                            <div class="text-center">
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">First Name:</span> 
-                                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
-                                </p>
-    
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">User Name:</span>
-                                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
-                                </p>
-    
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">Email-id:</span>
-                                    <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
-                                </p>
-    
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">Cell Phone:</span>
-                                    <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
-                                </p>
-    
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">Gender:</span>
-                                    <span class="col-lg-5 text-left"> 
-                                        <select class="form-control" id="gender" name="gender">
-                                            <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
-                                            <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
-                                            <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                            <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
-                                        </select>
-                                    </span>
-                                </p>
-    
-                                <p class="account row ">
-                                    <span class="col-lg-4 text-left">DOB:</span>
-                                    <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
-                                </p>
-    
-                            </div>
-                        </div>
-                </div>
-               
 
                 </div>
 
@@ -659,12 +591,78 @@
 
               
 
+        </div>
+        </div>
+
+
+    </section> --}}
+
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-5 sigk text-center">
+            <div class="d-flex justify-content-center">
+
+                {{-- message --}}
+                @if (Session::has('message'))
+                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                @endif
+
+               <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
+                <div>
+                    <h4 class="main-title mb-4 text-center">My Account</h4>
+                </div>
+               <!-- <div><a herf="" class="text-white">Done</a>
+                </div>-->
+
+            </div>
+
+            <img class="rounded-circle img-fluid text-center mb-3 mt-4"
+                src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
+            <div> 
+                <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i> Edit
+                </a>
+            </div>
+
+            <div class="text-center">
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">First Name:</span> 
+                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                </p>
+
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">User Name:</span>
+                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                </p>
+
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">Email-id:</span>
+                    <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
+                </p>
+
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">Cell Phone:</span>
+                    <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
+                </p>
+
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">Gender:</span>
+                    <span class="col-lg-5 text-left"> 
+                        <select class="form-control" id="gender" name="gender">
+                            <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
+                            <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
+                            <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
+                            <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                        </select>
+                    </span>
+                </p>
+
+                <p class="account row ">
+                    <span class="col-lg-4 text-left">DOB:</span>
+                    <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
+                </p>
+
+            </div>
+        </div>
     </div>
-    </div>
-
-
-    </section>
-
     
     
                         <!-- Add New Modal -->
