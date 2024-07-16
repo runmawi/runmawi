@@ -292,7 +292,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/reels', 'AdminReelsVideo@index');
 
     // Page List
-    Route::get('Latest-videos-Pagelist', 'PageListController@Latest_videos')->name('pagelist.Lates-tvideos');
+    Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Lates-tvideos');
 
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');

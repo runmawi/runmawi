@@ -12,6 +12,7 @@ use App\CurrencySetting;
 use App\Setting ;
 use App\Video;
 use Theme;
+use App\OrderHomeSetting;
 
 class PageListController extends Controller
 {
@@ -41,7 +42,8 @@ class PageListController extends Controller
         try {
              
             $FrontEndQueryController = new FrontEndQueryController();
-
+            $order_settings_list = OrderHomeSetting::get();
+            
             $latest_videos_pagelist = $FrontEndQueryController->Latest_videos();
             $latest_videos_paginate = $this->paginateCollection($latest_videos_pagelist, $this->videos_per_page);
 
@@ -49,6 +51,7 @@ class PageListController extends Controller
                 'current_theme' => $this->current_theme ,
                 'currency'      => CurrencySetting::first(),
                 'latest_videos_pagelist' => $latest_videos_paginate,
+                'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
             );
         
