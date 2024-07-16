@@ -1468,6 +1468,9 @@
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn  "
                                             style="">Visit Content Portal </button>
+                                            <div class="">
+                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            </div>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1481,6 +1484,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn "
                                             style="">Visit Channel Portal </button>
+                                            <div class="">
+                                        <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                        </div>
                                     </form>
                                 </div>
                                 <?php } ?>
@@ -1555,6 +1561,9 @@
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
                                 </div>
+                                <!-- <div class="bg-primary p-1">
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Youxdxr Own Content</a>
+                                </div> -->
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
@@ -1566,6 +1575,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
+                                            <div class="">
+                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            </div>
                                     </form>
                                 </div>
                                 <?php } ?>
