@@ -20,7 +20,9 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Style -->
       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
-                  <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+
+        <link rel="preload" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp" alt="header-logo" width="100%" height="100%">
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,47 +148,44 @@ line-height: 55px;
 	
        
     .signcont {
- }
-    label{
-        color: #000!important;
-        margin-bottom: 0;
     }
+        label{
+            color: #000!important;
+            margin-bottom: 0;
+        }
     a.f-link {
-    
-        font-size: 14px;
-        
-    
-}
-   .d-inline-block {
-    display: block !important;
-}
-i.fa.fa-google-plus {
-    /* padding: 10px !important;*/}
-    .btn-success{
-        background: #ED553B!important;
-        border: 1px solid #ED553B;
-
+        font-size: 14px;  
     }
-    .demo_cred {
-    background: #5c5c5c69;
-    padding: 15px;
-    border-radius: 15px;
-    border: 2px dashed #51bce8;
-    text-align: left;
-}    
-   .form-control::-moz-placeholder {
-  color: #fff!important;
-  opacity: 1;
-         letter-spacing: 0.28em;
-}
-.form-control:-ms-input-placeholder {
-  color: #999;
-      letter-spacing: 0.28em;
-}
-.form-control::-webkit-input-placeholder {
-  color: #999;
-      letter-spacing: 0.28em;
-}
+    .d-inline-block {
+        display: block !important;
+    }
+    i.fa.fa-google-plus {
+        /* padding: 10px !important;*/}
+        .btn-success{
+            background: #ED553B!important;
+            border: 1px solid #ED553B;
+
+        }
+        .demo_cred {
+        background: #5c5c5c69;
+        padding: 15px;
+        border-radius: 15px;
+        border: 2px dashed #51bce8;
+        text-align: left;
+    }    
+    .form-control::-moz-placeholder {
+    color: #fff!important;
+    opacity: 1;
+            letter-spacing: 0.28em;
+    }
+    .form-control:-ms-input-placeholder {
+    color: #999;
+        letter-spacing: 0.28em;
+    }
+    .form-control::-webkit-input-placeholder {
+    color: #999;
+        letter-spacing: 0.28em;
+    }
     .sign-in-page{
         
       /*  padding: 40px;
@@ -205,10 +204,9 @@ i.fa.fa-google-plus {
     .signup-desktop{
         background-color: #fff;
         border:1px solid #252525!important;
-       
- padding: 7px 8px!important;
-font-style: normal;
-font-weight: 600;
+        padding: 7px 8px!important;
+        font-style: normal;
+        font-weight: 600;
 
     }
     .signup-desktop i{
@@ -217,16 +215,13 @@ font-weight: 600;
      .signup-desktop:hover{
         background-color: burlywood;
          color: #fff;
-
     }
     .signup{
        background: rgba(1, 220, 130, 1)!important;
-
     }
     p{
-   font-family: 'Roboto', sans-serif;
-
-}
+        font-family: 'Roboto', sans-serif;
+    }
     .join{
         color: #FFD109;
     }
@@ -256,7 +251,7 @@ font-weight: 600;
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style=""></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" alt="header-logo" width="100%" height="100%"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->

@@ -1,15 +1,15 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo route('All_MostwatchedVideos') ?>"> Most Watched Videos</a></h4>
+    <h5 class="main-title"><a href="<?php echo route('All_MostwatchedVideos') ?>"> Most Watched Videos</a></h5>
     <a class="see" href="<?php echo route('All_MostwatchedVideos') ?>">See All</a>
 
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($top_most_watched)) :
                 foreach($top_most_watched as $most_watched_video): 
             ?>
 
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
@@ -39,7 +39,7 @@
                 <div class="block-description">
                     <div class="hover-buttons">
                         <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/>
                         </a>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                 </div>
 
             </a>
-        </li>
+        </div>
         <?php endforeach; endif; ?>
-    </ul>
+    </div>
 </div>

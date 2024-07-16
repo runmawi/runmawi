@@ -185,7 +185,6 @@
                     </div>
 
                     <div class="row">
-
                         @if ( $videodetail->users_video_visibility_status == false )
                             @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
                                 <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
@@ -313,7 +312,7 @@
 
             <!-- Broadcast  -->
 
-            @if(($videodetail->trailer_videos_url) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
+            @if(($videodetail->trailer) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
                 <div class="sectionArtists broadcast">   
                     <div class="artistHeading">
                         {{ ucwords(__('Promos & Resources')) }}
@@ -322,7 +321,7 @@
 
                         <div class="listItems">
 
-                            @if( optional($videodetail)->trailer_videos_url )
+                            @if( optional($videodetail)->trailer )
                                 <a>
                                     <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
                                         <div class="profileImg">
@@ -449,7 +448,7 @@
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($recommended_video->description) > 75 ? substr(html_entity_decode(strip_tags($recommended_video->description)), 0, 75) . '...' : $recommended_video->description }}
+                                                            {{ strlen($recommended_video->description) > 75 ? substr(html_entity_decode(strip_tags($recommended_video->description)), 0, 75) . '...' : strip_tags($recommended_video->description) }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
@@ -491,7 +490,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/>{{ __('Watch Now') }} 
                                                     </a>
                                                 </div>
                                             </div>

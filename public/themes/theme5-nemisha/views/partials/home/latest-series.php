@@ -7,21 +7,21 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <?php if( Route::currentRouteName() == "ChannelHome"){?>
 
-      <h4 class="main-title">
+      <h5 class="main-title">
             <a href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">
               <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
             </a>
-        </h4>  
+        </h5>  
 
       <a class="see" href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">See All </a>
 
   <?php }else{ ?>
     
-    <h4 class="main-title">
+    <h5 class="main-title">
           <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
             <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
           </a>
-      </h4>  
+      </h5>  
 
       <a class="see" href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">See All </a>
 
@@ -29,10 +29,10 @@
 
 </div>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <divl class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($latest_series)) :
       foreach($latest_series as $latest_serie): ?>
-        <li class="slide-item">
+        <div class="slide-item">
           <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
                              <!-- block-images -->
             <div class="block-images position-relative">
@@ -44,8 +44,7 @@
                
                 <div class="hover-buttons d-flex">
                   <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
-                  
+                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"> 
                   </a>
                 </div>
               </div>
@@ -77,9 +76,9 @@
               </div>
            
           </a>
-        </li>
+        </div>
       <?php endforeach; 
     endif; ?>
-  </ul>
+  </div>
 </div>
 <?php  endif; ?>

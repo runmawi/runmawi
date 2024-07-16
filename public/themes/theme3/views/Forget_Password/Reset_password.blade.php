@@ -84,6 +84,7 @@
         .sign-in-page {
             background: #000;
         }
+        footer{margin-top:0 !important;}
     </style>
 </head>
 

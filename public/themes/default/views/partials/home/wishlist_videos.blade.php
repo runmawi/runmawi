@@ -147,12 +147,12 @@
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($Wishlist_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Wishlist_videos->description)), 0, 75) . '...' : $Wishlist_videos->description }}
+                                                            {{ strlen($Wishlist_videos->description) > 75 ? substr(html_entity_decode(strip_tags($Wishlist_videos->description)), 0, 75) . '...' : strip_tags($Wishlist_videos->description) }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($Wishlist_videos->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $Wishlist_videos->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $Wishlist_videos->age_restrict }}</span>
                                                             @endif
 
                                                             {{-- @if($ThumbnailSetting->duration == 1)

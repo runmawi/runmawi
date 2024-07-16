@@ -1414,7 +1414,7 @@ function admin_ads_pre_post_position()
 function ads_theme_status()
 {
     $themeChosen = App\HomeSetting::pluck('theme_choosen')->first();
-    $adsThemeStatus = ($themeChosen == "theme4" || $themeChosen == "theme3") ? 1 : 0;
+    $adsThemeStatus = ($themeChosen == "theme4" || $themeChosen == "theme3" || $themeChosen == "default" ) ? 1 : 0;
     
     return $adsThemeStatus;
 }

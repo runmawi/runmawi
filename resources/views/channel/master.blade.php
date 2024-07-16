@@ -445,11 +445,9 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
 						      <input type=  "hidden" name="previous" value="{{ url()->previous() }}">						
                   <input id="email" type="hidden"  name="email"  value="{{  $channel->email }}"  autocomplete="email" autofocus>
                          <input id="password" type="hidden"  name="password" value="{{  $channel->unhased_password }}" autocomplete="current-password" >
-                              <button type="submit" class="btn btn-primary ab" style="position: absolute;
-    top: 27px;
-    right: 220px;">Visit Website </button>                          
+                              {{-- <button type="submit" class="btn btn-primary ab" style="position: absolute;top: 27px;right: 220px;">Visit Website </button>                           --}}
                      </form>
-
+                     
                    </div>
                    <?php $ModeratorsUser = App\ModeratorsUser::where('email', $channel->email)->first(); ?>
                     <?php if(!empty($ModeratorsUser)){ ?>
@@ -466,6 +464,9 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                       <i class="ri-menu-3-line"></i>
                    </button>
                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <div class="iq-search-bar ml-auto">
+                          <a class="btn btn-primary" href="<?php echo URL::to('/') ?>" ><span>Visit Website </span><img style="filter: invert(1);" height="25" width="25" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
+                      </div>
                       <ul class="navbar-nav ml-auto navbar-list">
                          <li class="nav-item nav-icon search-content">
                             <a href="#" class="search-toggle iq-waves-effect text-gray rounded">

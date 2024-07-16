@@ -202,21 +202,38 @@
     <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
 
 
-
+    <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" as="style" 
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
+    <!-- DNS Prefetch for the Plyr CDN -->
+    <link rel="dns-prefetch" href="https://cdn.plyr.io">
+
+    <!-- Preconnect to the Plyr CDN -->
+    <link rel="preconnect" href="https://cdn.plyr.io" crossorigin>
+
     <!-- Bootstrap CSS -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <!-- Typography CSS -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
     <!-- Style -->
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="preload" as="style">
+    
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
 
 
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="prelaod" as="style">
+    <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="preload" as="style">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
@@ -225,6 +242,9 @@
 
 
     <!-- Responsive -->
+    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
+    <link rel="preload" as="style" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -930,8 +950,8 @@
 
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /> <?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -961,8 +981,8 @@
                                         ?>
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /><?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!--<i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -982,8 +1002,8 @@
                                         ?>
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>"> <img
-                            class="" src="<?php echo $menu->image; ?>" /><?php echo __($menu->name); ?>
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>"> 
+                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1054,7 +1074,7 @@
                     echo $menu->custom_url;
                 } ?>">
                     <!-- <img class=""  src="<?php echo URL::to('/assets/img/home.png'); ?>" /> <span class="mt-2" ><?php echo __($menu->name); ?></span> -->
-                    <img class="" src="<?php echo $menu->image; ?>" /> <span
+                    <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
                         class=""><?php echo __($menu->name); ?></span>
 
                 </a>
@@ -1119,7 +1139,7 @@
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="mobile-menu-header">
                                         <div class="btn-close" data-toggle="collapse">
-                                            <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                                            <a type="button" href="#" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
                                                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                                 aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
                                                 border-top: none; float:right"><i class="fa fa-times" style="
@@ -1441,6 +1461,9 @@
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn  "
                                             style="">Visit Content Portal </button>
+                                            <div class="">
+                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            </div>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1454,6 +1477,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn "
                                             style="">Visit Channel Portal </button>
+                                            <div class="">
+                                        <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                        </div>
                                     </form>
                                 </div>
                                 <?php } ?>
@@ -1480,7 +1506,7 @@
                                 </div>
                                 <div class="mobile-more-menu">
                                     <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                                        data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
+                                        data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" href="#">
                                         <i class="ri-more-line"></i>
                                     </a>
                                     <div class="more-menu" aria-labelledby="dropdownMenuButton">
@@ -1528,6 +1554,9 @@
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
                                 </div>
+                                <!-- <div class="bg-primary p-1">
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Youxdxr Own Content</a>
+                                </div> -->
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
@@ -1539,6 +1568,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
+                                            <div class="">
+                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            </div>
                                     </form>
                                 </div>
                                 <?php } ?>
@@ -1568,7 +1600,7 @@
                                                 </div>
                                             </div>
 
-                                            <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search">
+                                            <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search" aria-label="Search-Toogle">
 
                                                 <i class="ri-search-line"></i>
                                             </a>
@@ -1668,9 +1700,9 @@
                                                 data-toggle="search-toggle">
                                                 
                                                 <?php if(Auth::user() && Auth::user()->avatar != null): ?>
-                                                    <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle">
+                                                    <img src="<?php echo URL::to('public/uploads/avatars/' . Auth::user()->avatar); ?>" class="img-fluid avatar-40 rounded-circle" alt="avatar image">
                                                 <?php else: ?>
-                                                    <img src="<?php echo URL::to('/assets/img/placeholder.webp'); ?>" class="img-fluid avatar-40 rounded-circle" alt="Placeholder Image">
+                                                    <img src="<?php echo URL::to('/assets/img/placeholder.webp'); ?>" class="img-fluid avatar-40 rounded-circle" alt="avatar image">
                                                 <?php endif; ?>
 
 
@@ -1696,7 +1728,7 @@
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                        <a class="p-0">
+                                                        <a class="p-0" href="#" aria-label="dark-light-mode-toggle">
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">

@@ -1,6 +1,6 @@
 <?php  if(count($audio) > 0 && $countDataFreeAudioCategories > 0 )  : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-<h4 class="main-title">
+<h5 class="main-title">
         <!-- Data Free audios -->
    <a href="<?php echo URL::to('/audios/category').'/'.$DataFreeAudioCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
       
@@ -11,16 +11,16 @@
     
    </a>
     
-        </h4>
+        </h5>
      <a class="see" href="<?php echo URL::to('/audios/category/').'/'.$DataFreeAudioCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($audio)) :
                          foreach($audio as $category_audio): 
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/audio'.'/' . $category_audio->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
@@ -96,11 +96,11 @@
                             <?php } ?>
                         </div>
 
-        </li>
+        </div>
 
         <?php endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 <?php endif; ?>
 

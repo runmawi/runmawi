@@ -8,7 +8,7 @@
          url('futura_bold_italic_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -20,7 +20,7 @@
          url('futura_book_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -32,7 +32,7 @@
          url('futura_book_italic_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -44,7 +44,7 @@
          url('futura_extra_black_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -56,7 +56,7 @@
          url('futura_heavy_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -68,7 +68,7 @@
          url('futura_heavy_italic_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -80,7 +80,7 @@
          url('futura_light_bt-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -92,7 +92,7 @@
          url('futura_light_italic_font-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -104,7 +104,7 @@
          url('futura_medium_bt-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }
 
 
@@ -116,5 +116,5 @@
          url('futura_medium_condensed_bt-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
+    font-display: swap;
 }

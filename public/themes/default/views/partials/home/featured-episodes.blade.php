@@ -35,12 +35,12 @@
                                                           </p>
                                                       @endif
                                                       <p class="desc-name text-left m-0 mt-1">
-                                                          {{ strlen($featured_episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($featured_episodes->episode_description)), 0, 75) . '...' : $featured_episodes->episode_description }}
+                                                          {{ strlen($featured_episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($featured_episodes->episode_description)), 0, 75) . '...' : strip_tags($featured_episodes->episode_description) }}
                                                       </p>
 
                                                       <div class="movie-time d-flex align-items-center pt-1">
                                                           @if($ThumbnailSetting->age == 1 && !($featured_episodes->age_restrict == 0))
-                                                          <span class="position-relative badge p-1 mr-2">{{ $featured_episodes->age_restrict . ' +' }}</span>
+                                                          <span class="position-relative badge p-1 mr-2">{{ $featured_episodes->age_restrict}}</span>
                                                           @endif
 
                                                           @if($ThumbnailSetting->duration == 1)
@@ -62,7 +62,7 @@
                                                   </a>
                                               
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('episode/'. $featured_episodes->series_title->slug.'/'.$featured_episodes->slug ) }}">
-                                                      <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
+                                                      <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Watch Now') }}
                                                   </a>
                                               </div>
                                           </div>

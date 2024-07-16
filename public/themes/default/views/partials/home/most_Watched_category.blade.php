@@ -132,13 +132,13 @@
                             <?php } ?>
 
                             <p class="desc-name text-left m-0 mt-1">
-                                <?php echo strlen($category_video->description) > 75 ? substr(html_entity_decode(strip_tags($category_video->description)), 0, 75) . '...' : $category_video->description ?>
+                                <?php echo strlen($category_video->description) > 75 ? substr(html_entity_decode(strip_tags($category_video->description)), 0, 75) . '...' : strip_tags($category_video->description) ?>
                             </p>
 
                             <div class="movie-time d-flex align-items-center pt-2">
                                 <?php if($ThumbnailSetting->age == 1 && !($category_video->age_restrict == 0)) { ?>
                                     <!-- Age -->
-                                    <span class="position-relative badge p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></span>
+                                    <span class="position-relative badge p-1 mr-2"><?php echo $category_video->age_restrict ?></span>
                                 <?php } ?>
 
                                 <?php if($ThumbnailSetting->duration == 1) { ?>
@@ -179,7 +179,7 @@
 
               
                         <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" /> Watch Now
+                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />{{ __('Watch Now') }}
                         </a>
                     </div>
                 </div>

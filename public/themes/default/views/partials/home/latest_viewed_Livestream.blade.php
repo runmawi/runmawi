@@ -117,7 +117,7 @@
 
                                                         <div class="movie-time d-flex align-items-center pt-1">
                                                             @if($ThumbnailSetting->age == 1 && !($latest_view_livestreams->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $latest_view_livestreams->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $latest_view_livestreams->age_restrict }}</span>
                                                             @endif
                                                             @if($ThumbnailSetting->duration == 1)
                                                                 <span class="position-relative text-white mr-2">
@@ -154,7 +154,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('live/'. $latest_view_livestreams->slug) }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

@@ -359,23 +359,27 @@ class LiveStreamController extends Controller
                 
             // Adsvariables
 
-            $adsvariables = Adsvariables::whereNotNull('website')->get();
             $adsvariable_url = ''; 
+
+            if ($settings->ads_variable_status == 1) {
+                $adsvariables = Adsvariables::whereNotNull('website')->get();
             
-            foreach ($adsvariables as $key => $ads_variable ) {
-                if ($key === 0) {
-                    $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
-                } else {
-                    $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                foreach ($adsvariables as $key => $ads_variable ) {
+                    if ($key === 0) {
+                        $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
+                    } else {
+                        $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
+                    }
                 }
+    
+                $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category 
+                                            ."&ads.content_genre=".$categoryVideos->ads_content_genre 
+                                            ."&ads.content_id=".$categoryVideos->ads_content_id
+                                            ."&ads.content_language=".$categoryVideos->ads_content_language
+                                            ."&ads.content_title=".$categoryVideos->ads_content_title
+                                            ."&ads.channel_name=".$categoryVideos->title
+                                            ."&ads.network_name=".$categoryVideos->title;
             }
-
-            $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category 
-                                        ."&ads.content_genre=".$categoryVideos->ads_content_genre 
-                                        ."&ads.content_id=".$categoryVideos->ads_content_id
-                                        ."&ads.content_language=".$categoryVideos->ads_content_language
-                                        ."&ads.content_title=".$categoryVideos->ads_content_title ;
-
 
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
                                             ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
@@ -596,7 +600,6 @@ class LiveStreamController extends Controller
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
                  'Livestream_details'      => $Livestream_details ,
-                 'adsvariable'             =>  $adsvariables    ,
                  'setting'                => $settings,
                  'current_theme'          => $this->Theme,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
