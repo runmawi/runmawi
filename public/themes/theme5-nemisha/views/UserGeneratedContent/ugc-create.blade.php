@@ -180,6 +180,9 @@
 <div id=" content_videopage" class="content-page">
    <div class="container-fluid p-0" id="content_videopage">
       <div class="admin-section-title">
+         <div class="text-center">
+            <h1>Upload Your Own Content</h1>
+         </div>
          <div class="iq-card">
             <div class="row">
                

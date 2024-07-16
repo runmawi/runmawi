@@ -216,6 +216,55 @@
         color: #FFFFFF;
         font-size: 20px;
     }
+
+    .ugc-button{
+        margin: 5px;
+        padding: 3px 30px;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    ul.ugc-tabs{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+
+	ul.ugc-tabs li{
+		background: #848880;
+		color: #fff;
+		display: inline-block;
+        margin: 5px;
+        padding: 3px 30px;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+		cursor: pointer;
+	}
+
+    ul.ugc-tabs li.ugc-current{
+		background: #ED563C;
+		color: #fff;
+	}
+
+    .ugc-tab-content{
+		display: none;
+		padding: 15px;
+	}
+
+	.ugc-tab-content.ugc-current{
+		display: inherit;
+	}
+
+    .ugc-videos img{
+        width: 100%;
+        height: 200px;
+        border-radius: 15px;
+    }
+
     a.edit-button.Text-white{color:#fff !important;}
     body.light-theme .sigk{background: linear-gradient(180deg, rgba(220, 220, 220, 0.85) 0%, rgba(220, 220, 220, 0) 100%);}
     body.light-theme .account{background: linear-gradient(180deg, #c0c6ca -35.59%, rgba(200, 204, 207, 0.36) 173.05%);}
@@ -347,11 +396,11 @@
         <section class="m-profile setting-wrapper pt-0">
             <div class="container">
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center m-1">
                 <img
-                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 40px;" alt="banner" >
+                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" >
                 </div>
-                <div class="row justify-content-start">
+                <div class="row justify-content-start mx-3">
                    <div>
                     <img class="rounded-circle img-fluid text-center mb-3 mt-4"
                     src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" alt="profile-bg" style="height: 80px; width: 80px;">
@@ -365,85 +414,250 @@
                     </div>
                    </div>
                 </div>
-                <div class="row">
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Bio</button>
+               
+                <ul class="ugc-tabs mx-3">
+                    <li class="tab-link ugc-current" data-tab="ugc-tab-1">Bio</li>
+                    <li class="tab-link" data-tab="ugc-tab-2">Videos</li>
+                    <li class="tab-link" data-tab="ugc-tab-3">Playlist</li>
+                </ul>
+
+                <div id="ugc-tab-1" class="ugc-tab-content ugc-current">
+                    <div class="col-12 pt-3">
+                        <div>
+                            <h2>About</h2>
+                            <p style="background-color:#848880; color:white; border-radius:10px; " class="mt-2 p-3" >
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            </p>
+                        </div>
+                        <div class="pt-4" >
+                            <h2>Links</h2>
+                            <div class="py-2">
+                            <h5>Facebook</h5>
+                            <p style="color: white">
+                            <a href="">facebook.com</a>
+                            </p>
+                            </div>
+                            <div class="py-2">
+                            <h5>Instagram</h5>
+                            <p style="color: white">
+                            <a href="">instagram.com</a>
+                            </p>
+                            </div>
+                            <div class="py-2">
+                            <h5>Twitter</h5>
+                            <p style="color: white">
+                            <a href="">twitter.com</a>
+                            </p>
+                            </div>
+                        </div>
+                        <div class="pt-4" >
+                            <h2>Profile Details</h2>
+                            <div class="text-white pt-4">
+                            <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >nemisa.co.za</span></p> 
+                            </div>
+                            <div class=" text-white">
+                            <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >3 videos</span></p> 
+                            </div>
+                            <div class=" text-white">
+                            <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >15000 views</span></p> 
+                            </div>
+                            <div class=" text-white">
+                            <p style="font-weight: 600; font-size: 18px;" >Joined: <span style="font-weight: 100; font-size:15px;" >24 June 2020</span></p> 
+                            </div>
+                            <div class=" text-white">
+                            <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >South Africa</span></p> 
+                            </div>
+                            <div>
+                                <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
+                            </div>
+                        </div>
+    
+                        
                     </div>
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Videos</button>
-                    </div>
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Playlist</button>
-                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-md-5 sigk text-center">
+                            <div class="d-flex justify-content-center">
+    
+                                {{-- message --}}
+                                @if (Session::has('message'))
+                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                                @endif
+    
+                               <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
+                                <div>
+                                    <h4 class="main-title mb-4 text-center">My Account</h4>
+                                </div>
+                               <!-- <div><a herf="" class="text-white">Done</a>
+                                </div>-->
+    
+                            </div>
+    
+                            <img class="rounded-circle img-fluid text-center mb-3 mt-4"
+                                src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
+                            <div> 
+                                <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i> Edit
+                                </a>
+                            </div>
+    
+                            <div class="text-center">
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">First Name:</span> 
+                                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                                </p>
+    
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">User Name:</span>
+                                    <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                                </p>
+    
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">Email-id:</span>
+                                    <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
+                                </p>
+    
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">Cell Phone:</span>
+                                    <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
+                                </p>
+    
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">Gender:</span>
+                                    <span class="col-lg-5 text-left"> 
+                                        <select class="form-control" id="gender" name="gender">
+                                            <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
+                                            <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
+                                            <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
+                                            <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                                        </select>
+                                    </span>
+                                </p>
+    
+                                <p class="account row ">
+                                    <span class="col-lg-4 text-left">DOB:</span>
+                                    <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
+                                </p>
+    
+                            </div>
+                        </div>
+                </div>
+               
+
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-lg-5 col-md-5 sigk text-center">
-                        <div class="d-flex justify-content-center">
+        <div id="ugc-tab-2" class="ugc-tab-content">
+                  
+            <div class="row mx-3">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href="" class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/deer-3275594_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/04/09/19/55/low-poly-3305284_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/04/06/13/46/poly-3295856_960_720.png" alt="" />
+                                </div>
 
-                            {{-- message --}}
-                            @if (Session::has('message'))
-                                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                            @endif
-
-                           <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
-                            <div>
-                                <h4 class="main-title mb-4 text-center">My Account</h4>
-                            </div>
-                           <!-- <div><a herf="" class="text-white">Done</a>
-                            </div>-->
-
-                        </div>
-
-                        <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                            src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
-                        <div> 
-                            <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i> Edit
-                            </a>
-                        </div>
-
-                        <div class="text-center">
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">First Name:</span> 
-                                <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
-                            </p>
-
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">User Name:</span>
-                                <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
-                            </p>
-
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">Email-id:</span>
-                                <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
-                            </p>
-
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">Cell Phone:</span>
-                                <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
-                            </p>
-
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">Gender:</span>
-                                <span class="col-lg-5 text-left"> 
-                                    <select class="form-control" id="gender" name="gender">
-                                        <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
-                                        <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
-                                        <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                        <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
-                                    </select>
-                                </span>
-                            </p>
-
-                            <p class="account row ">
-                                <span class="col-lg-4 text-left">DOB:</span>
-                                <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
-                            </p>
-
-                        </div>
-                    </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/12/dog-3275593_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
             </div>
-           
+    
+        </div>
+
+        <div id="ugc-tab-3" class="ugc-tab-content">
+            <div class="row mx-3">
+
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/12/dog-3275593_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/deer-3275594_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/04/09/19/55/low-poly-3305284_960_720.jpg" alt="" />
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href=""  class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="https://cdn.pixabay.com/photo/2018/04/06/13/46/poly-3295856_960_720.png" alt="" />
+                                </div>
+
+                                <div class="text-white pt-3">
+                                    <h6>My Videos Episode 1</h6>
+                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
+                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+
+              
 
     </div>
     </div>
@@ -991,4 +1205,20 @@ if (isset($page) && $page == 'admin-dashboard') {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
+
+<script>
+$(document).ready(function(){
+	
+	$('ul.ugc-tabs li').click(function(){
+		var tab_id = $(this).attr('data-tab');
+
+		$('ul.ugc-tabs li').removeClass('ugc-current');
+		$('.ugc-tab-content').removeClass('ugc-current');
+
+		$(this).addClass('ugc-current');
+		$("#"+tab_id).addClass('ugc-current');
+	})
+
+})
 </script>
