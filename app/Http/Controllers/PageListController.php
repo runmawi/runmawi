@@ -142,6 +142,32 @@ class PageListController extends Controller
         }
     }
 
+    public function Albums_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $albums_list_pagelist = $FrontEndQueryController->AudioAlbums();
+            $albums_list_paginate = $this->paginateCollection($albums_list_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'albums_list_pagelist' => $albums_list_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+            );
+        
+            return Theme::view('Page-List.albums-list', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     public function deconstruct()
     {
         $this->settings = Setting::first();
