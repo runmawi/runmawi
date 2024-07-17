@@ -24771,7 +24771,7 @@ public function SendVideoPushNotification(Request $request)
                                                       return $query->Where('choosed_date', $request->date);
                                                   })
 
-                                                  ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($request) {
+                                                  ->orderBy('start_time','asc')->where('channe_id',$item->id)->limit(30)->get()->map(function ($item) use ($request) {
 
                                                       $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 

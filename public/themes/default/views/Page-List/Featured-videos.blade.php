@@ -10,15 +10,15 @@
 
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h2 class="main-title fira-sans-condensed-regular">
-                            {{ $order_settings_list[1]->header_name ? __($order_settings_list[1]->header_name) : '' }}
+                            {{ $order_settings_list[0]->header_name ? __($order_settings_list[0]->header_name) : '' }}
                     </h2>  
                 </div>
 
-                @if (($latest_videos_pagelist)->isNotEmpty())
+                @if (($featured_videos_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
-                            @forelse($latest_videos_pagelist as $key => $video)
+                            @forelse($featured_videos_pagelist as $key => $video)
                                 <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <div class="block-images position-relative">
                                         <div class="border-bg">
@@ -86,7 +86,7 @@
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($video->age_restrict == 0))
-                                                            <span class="position-relative badge p-1 mr-2">{{ $video->age_restrict}}</span>
+                                                            <span class="position-relative p-1 mr-2">{{ $video->age_restrict}}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
@@ -95,7 +95,7 @@
                                                             </span>
                                                         @endif
                                                         @if($ThumbnailSetting->published_year == 1 && !($video->year == 0))
-                                                            <span class="position-relative badge p-1 mr-2">
+                                                            <span class="position-relative p-1 mr-2">
                                                                 {{ __($video->year) }}
                                                             </span>
                                                         @endif
@@ -139,7 +139,7 @@
                         </ul>
 
                         <div class="col-md-12 pagination justify-content-end">
-                            {!! $latest_videos_pagelist->links() !!}
+                            {!! $featured_videos_pagelist->links() !!}
                         </div>
 
                     </div>
