@@ -202,7 +202,7 @@
     <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
 
 
-    <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" as="style" 
+    <link rel="preload" as="style" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -232,12 +232,13 @@
 
 
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="prelaod" as="style">
+    <link rel="prelaod" as="style" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
     <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="preload" as="style">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
 
 
@@ -247,10 +248,18 @@
 
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
+    <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js" as="script">
+    
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+    
     <?php 
       $Script = App\Script::pluck('header_script')->toArray();
       if(count($Script) > 0){
@@ -1505,8 +1514,8 @@
                                     </div>
                                 </div>
                                 <div class="mobile-more-menu">
-                                    <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
-                                        data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" href="#">
+                                    <a href="javascript:void(0);" class="div.slide-item" id="dropdownMenuButton"
+                                        data-toggle="div.slide-item" aria-haspopup="true" aria-expanded="false" aria-label="Drop-Down-Menu">
                                         <i class="ri-more-line"></i>
                                     </a>
                                     <div class="more-menu" aria-labelledby="dropdownMenuButton">
@@ -1728,7 +1737,7 @@
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                        <a class="p-0" href="#" aria-label="dark-light-mode-toggle">
+                                                        <a href="#" class="p-0" aria-label="dark-light-mode-toggle">
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">
@@ -1901,7 +1910,7 @@
                                             <div class="iq-sub-dropdown iq-user-dropdown">
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
-                                                        <a class="p-0">
+                                                        <a class="p-0" href="#">
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">

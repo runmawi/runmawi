@@ -35,12 +35,12 @@
                 </div></div>
 
               <div class="block-description"></div>
-                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
+                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> " aria-label="Channel-Partner">
 
               <h6><?php echo __($channel->channel_name); ?></h6>
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> " >
+                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?>" aria-label="Channel-Partner" >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Channel
                   </a>
