@@ -56,9 +56,9 @@
 
 .pageWrapper {
     width: 100%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 66px;
 }
 
 .vpageBanner .content {
@@ -295,13 +295,6 @@
     margin-bottom: 50px;
 }
 
-.pageWrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .sectionArtists .artistHeading {
     font-size: 24px;
     color: #fff;
@@ -356,6 +349,16 @@
     opacity: .5;
 }
 .scp-breadcrumb { }
+
+@media (min-width: 1400px) and (max-width: 2565px) {
+    .my-video.vjs-fluid {
+        height: 50vh !important;
+    }
+    .video-js-trailer-modal-dialog {
+        max-width: 1400px;
+    }
+}
+
 
 @media only screen and (min-width: 768px) {
     .vpageBanner {
@@ -434,6 +437,14 @@
     display: block;
 }
 
+@media (max-width:1600px){
+    .modal-dialog{ max-width: 700px;}
+}
+
+@media (max-width:920px){
+    .modal-dialog{ max-width: 600px;}
+}
+
 @media (max-width:765px){
     .vpageBanner .content{
         gap: 0px;
@@ -462,6 +473,8 @@
     .vpageBanner .content .right .overview .heading{
         font-size: 21px;
     }
+    .pageWrapper{padding:0 25px;}
+    .modal-dialog{ max-width: 600px;}
 }
 
 @media (max-width:425px){

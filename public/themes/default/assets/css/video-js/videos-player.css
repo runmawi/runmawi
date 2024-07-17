@@ -90,10 +90,7 @@
   background-image: url(../../../../../images/VideoPlayer-icon/pip.svg);
 }
 
-.my-video.vjs-fluid {
-  padding-top: 0 !important;
-  height: 100vh !important;
-}
+
 
 .my-video.video-js .vjs-tech {
   object-fit: cover;
@@ -986,7 +983,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
     padding-top: 0 !important;
-    height: 26vh !important;
+    height: 26vh;
   }
   .live_dot {
     color: red;
@@ -1067,7 +1064,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
     padding-top: 0 !important;
-    height: 26vh !important;
+    height: 26vh;
   }
   .live_dot {
     color: red;

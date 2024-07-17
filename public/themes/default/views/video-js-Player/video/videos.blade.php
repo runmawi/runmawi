@@ -185,6 +185,10 @@
 @endif
 
 <style>
+    .my-video.vjs-fluid {
+        padding-top: 0 !important;
+        height: 100vh !important;
+    }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
     /* .staticback-btn{display:none;} */

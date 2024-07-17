@@ -12,7 +12,7 @@
  
 <style>
     .video-js-trailer-modal-dialog {
-        max-width: 800px;
+        /* max-width: 800px; */
         margin: 30px auto;
     }
 
@@ -31,12 +31,12 @@
         color: #fff;
         opacity: 1;
     }
-    .my-video.vjs-fluid{height:65vh !important;}
+    @media(max-width:2400px){    .my-video.vjs-fluid{height:65vh !important;}}
     .embed-responsive::before{display: none;}
 </style>
 
 <div class="modal fade" id="video-js-trailer-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="video-js-trailer-modalLabel" aria-hidden="true">
-    <div class="modal-dialog video-js-trailer-modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered video-js-trailer-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body video-js-trailer-modal-body">
 
