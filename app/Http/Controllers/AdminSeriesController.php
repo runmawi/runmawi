@@ -2122,7 +2122,7 @@ class AdminSeriesController extends Controller
                     $episodes->pre_post_ads =  null ;
                 }
 
-                $episode->mid_ads  =  $data['mid_ads'];
+                $episodes->mid_ads  =  $data['mid_ads'];
                 $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
             }
             else{
