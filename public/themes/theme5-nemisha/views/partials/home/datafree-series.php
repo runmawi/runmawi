@@ -25,10 +25,10 @@
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                    <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
-                                        class="img-fluid w-100" alt=""> 
-                            </a>
+                        <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
+                                    class="img-fluid w-100" alt=""> 
+                        </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                     <?php  if(!empty($category_series->ppv_price)){?>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="block-description">
                             <div class="hover-buttons">
-                                <a type="button" class="text-white btn-cl" href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>">
+                                <a type="button" class="text-white btn-cl" href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="DataFree-Series">
                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/>
                                 </a>                       
                             </div>

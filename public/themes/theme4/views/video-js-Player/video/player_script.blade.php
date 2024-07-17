@@ -7,10 +7,8 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
-            // watermark: true,
             controlBar: {
                 volumePanel: { inline: false },
-                // descriptionsButton: true,
                 children: {
                     'playToggle': {},
                     // 'currentTimeDisplay': {},
@@ -24,17 +22,6 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                 pictureInPictureToggle: true,
             },
         }); 
-
-        // player.ready(function() {
-            // player.watermark({
-                // file: 'https://www.dropbox.com/scl/fi/m5owk95leqp0njcdhwiaf/D20PRO-Logo-03.png?rlkey=oupnk8xh39mjzmg4ajt3s9psx&e=1' ,
-                // xpos: 100,
-                // ypos: 100,
-                // xrepeat: 0,
-                // opacity: 0.5,
-                // className: 'vjs-watermark'
-            // });
-        // });
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
@@ -272,7 +259,56 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         player.on("skipDuration", function(duration){
             console.log("!#");
         })
+
+        //Video End-card 
+        // player.endcard({
+        //     getRelatedContent: getRelatedContent,
+        //     // getNextVid: getNextVid, 
+        //     count: 20
+        // });
+
+        //Watermark
+        player.ready(function() {
+            var watermark = document.createElement('div');
+            watermark.className = 'vjs-watermark';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+            player.el().appendChild(watermark);
+        });
     });
+
+    function createRelatedContent(title ,slug, image) {
+        var div = document.createElement('div');
+        div.setAttribute('class', 'card col-2 col-sm-2 col-md-2 col-lg-2');
+
+        var a = document.createElement('a');
+        var p = document.createElement('p');
+        var img = document.createElement('img');
+
+        img.src = "<?= URL::to('/') . '/public/uploads/images/'?>"+image;//need to set path
+        a.href = "<?= URL::to('/category/videos')?>"+'/'+slug;
+        p.innerHTML = title;
+        a.appendChild(img);
+        img.appendChild(p);
+        div.appendChild(a);
+
+        return div;
+    }
+
+    var rel_content = <?= json_encode($recomended); ?>;
+    const contentBoxes = [];
+
+    // Creating related content boxes
+    rel_content.map(content => {
+        const contentBox = createRelatedContent(content.title, content.slug, content.image);
+        contentBoxes.push(contentBox);
+    });
+
+    function getRelatedContent(callback) {
+        var list = [contentBoxes];
+        setTimeout(function () {
+            callback(list[0]);
+        }, 0);
+    }
 
 </script>
 
