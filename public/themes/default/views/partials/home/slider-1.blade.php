@@ -35,14 +35,15 @@
 @endif
 
 
+
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
+        <div class="s-bg-1" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12 bgc">
+                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" >
 
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                                 <!-- Video thumbnail image -->
@@ -56,13 +57,13 @@
                                 </h1>
                             @endif
 
-                            <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
+                            <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
                                 @php
                                     $description = __(strip_tags(html_entity_decode($videos->description)));
                                 @endphp
 
                                 <div class="video-banner">
-                                    <p class="desc" id="description-{{ $key }}" style="max-height: 100px; overflow: hidden;">
+                                    <p class="desc" id="description-{{ $key }}" class="description-text">
                                         {{ $description }}
                                     </p>
 

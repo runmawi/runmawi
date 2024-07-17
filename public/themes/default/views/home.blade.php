@@ -151,20 +151,23 @@ $(".home-search").hide();
 
 <script>
    function toggleReadMore(key) {
-      const description = document.getElementById('description-' + key);
-      const readMoreBtn = document.getElementById('read-more-btn-' + key);
-      const readLessBtn = document.getElementById('read-less-btn-' + key);
+    const description = document.getElementById('description-' + key);
+    const readMoreBtn = document.getElementById('read-more-btn-' + key);
+    const readLessBtn = document.getElementById('read-less-btn-' + key);
 
-      if (readMoreBtn.style.display === 'none') {
-         readMoreBtn.style.display = 'inline';
-         readLessBtn.style.display = 'none';
-         description.style.maxHeight = '100px';
-      } else {
-         readMoreBtn.style.display = 'none';
-         readLessBtn.style.display = 'inline';
-         description.style.maxHeight = 'none';
-      }
-   }
+    if (readMoreBtn.style.display === 'none') {
+        readMoreBtn.style.display = 'inline';
+        readLessBtn.style.display = 'none';
+        description.style.maxHeight = '100px';
+        if (window.innerWidth <= 500) {
+            description.style.maxHeight = '65px';
+        }
+    } else {
+        readMoreBtn.style.display = 'none';
+        readLessBtn.style.display = 'inline';
+        description.style.maxHeight = 'none';
+    }
+}
 
    // series slider read more option
    function detailsReadMore(key) {
@@ -185,17 +188,6 @@ $(".home-search").hide();
 </script>
 
 <style>
-.desc {
-overflow: hidden;
-max-height: 100px; /* Initial max height, adjust as needed */
-transition: max-height 0.5s ease;
-}
-
-@media (max-width: 600px){
- .desc{
-   overflow-y: auto !important;
- }
-}
 
 .des-more-less-btns{border: none;
 background: transparent;
