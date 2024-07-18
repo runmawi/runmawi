@@ -8,7 +8,7 @@
                 </ul>
             </div>
             <div class="col-lg-6 text-right">
-                 <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon\Carbon::now()->year ; ?> <?= (__('All Rights Reserved')); ?> 
+                 <?= GetWebsiteName()."&nbsp;". '<i class="ri-copyright-line"></i>' ."&nbsp;". Carbon\Carbon::now()->year ."&nbsp;&nbsp;". (__('All Rights Reserved')); ?> 
             </div>
         </div>
     </div>

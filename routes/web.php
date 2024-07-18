@@ -291,11 +291,14 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/reels', 'AdminReelsVideo@index');
 
     // Page List
-    Route::get('Latest-videos-Pagelist', 'PageListController@Latest_videos')->name('pagelist.Lates-tvideos');
+    Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
+    Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
+    Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
+    Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
 
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
-
 
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');

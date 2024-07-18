@@ -43,7 +43,7 @@
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
 
-{{-- video-js Style --}}
+
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
     <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
@@ -52,7 +52,7 @@
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
     {{-- <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
-{{-- video-js Script --}}
+
 
     <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>

@@ -37,7 +37,7 @@ if(count($latest_video) > 0) : ?>
                 </div>
 
                 <div class="block-description">
-                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>">
+                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="VideoCategory">
                         <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%" height="10%" />
                     </a>
                 </div>

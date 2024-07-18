@@ -1226,7 +1226,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <img class="lazy land-logo" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
+                <img class="lazy land-logo" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="100" height="60">
                
                 <div class="collapse justify-content-end" id="navbarSupportedContent">
                     <a type="button" class="btn btn-outline-danger bp my-2 mr-2 my-sm-0" href="{{ route('login') }}">Sign In </a>

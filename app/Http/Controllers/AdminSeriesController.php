@@ -2119,10 +2119,10 @@ class AdminSeriesController extends Controller
                     
                     $episodes->pre_ads      =  $data['pre_ads'];
                     $episodes->post_ads     =  $data['post_ads'];
-                    $episodes->mid_ads      =  $data['mid_ads'];
                     $episodes->pre_post_ads =  null ;
                 }
 
+                $episodes->mid_ads  =  $data['mid_ads'];
                 $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
             }
             else{
@@ -2695,11 +2695,11 @@ class AdminSeriesController extends Controller
             else{
                 
                 $episode->pre_ads      =  $data['pre_ads'];
-                $episode->mid_ads      =  $data['mid_ads'];
                 $episode->post_ads     =  $data['post_ads'];
                 $episode->pre_post_ads =  null ;
             }
-
+            
+            $episode->mid_ads  =  $data['mid_ads'];
             $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
         }
         else{
