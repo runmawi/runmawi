@@ -2195,33 +2195,23 @@
             </div>
 
             <?php 
-    $playerui_settings = App\Playerui::first();
-    if($playerui_settings->watermark == 1){ ?>
-            <style>
-                /* .plyr__video-wrapper::before  {
-                width: <?php echo $playerui_settings->watermar_width; ?>;
-                float: right;
-                position: absolute;
-                top:<?php echo $playerui_settings->watermark_top; ?>;
-                right: <?php echo $playerui_settings->watermark_right; ?>;
-                left:<?php echo $playerui_settings->watermark_left; ?>;
-                bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
-                transform: translate(-50%, 0%);
-            } */
+                $playerui_settings = App\Playerui::first();
+                if($playerui_settings->watermark == 1){ ?>
+                <style>
                 .plyr__video-wrapper::before {
-                    position: absolute;
-                    top: <?php echo $playerui_settings->watermark_top; ?>;
-                    left: <?php echo $playerui_settings->watermark_left; ?>;
-                    opacity: <?php echo $playerui_settings->watermark_opacity; ?>;
-                    z-index: 10;
-                    content: '';
-                    height: 300px;
-                    width: <?php echo $playerui_settings->watermar_width; ?>;
-                    background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
-                    background-size: 100px auto, auto;
+                position: absolute;
+                top: <?php echo $playerui_settings->watermark_top; ?>;
+                left: <?php echo $playerui_settings->watermark_left; ?>;
+                opacity : <?php echo $playerui_settings->watermark_opacity; ?>;
+                z-index: 2;
+                content: '';
+                height: 150px;
+                width: <?php echo $playerui_settings->watermar_width; ?>;
+                background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
+                /* background-size: 100px auto, auto; */
+                background-size: contain;
                 }
-            </style>
-
+                </style>
             <?php } else{ } ?>
             <script>
                 $(document).ready(function() {
