@@ -149,12 +149,12 @@ $data->each(function ($category) {
                                                         @endif
 
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($livestream->description) > 75 ? substr(html_entity_decode(strip_tags($livestream->description)), 0, 75) . '...' : $livestream->description }}
+                                                            {{ strlen($livestream->description) > 75 ? substr(html_entity_decode(strip_tags($livestream->description)), 0, 75) . '...' : strip_tags($livestream->description) }}
                                                         </p>
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($livestream->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $livestream->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $livestream->age_restrict}}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)
@@ -191,7 +191,7 @@ $data->each(function ($category) {
 
                                                     <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                                     href="{{ URL::to('/') . '/live/' . $livestream->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%" /> Watch Now
+                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%" /> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

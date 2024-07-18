@@ -32,7 +32,7 @@
         <div class="col-sm-12 ">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
-                    <h4 class="movie-title">
+                    <h5 class="movie-title">
                         <?php
                         if (!empty($category->name)) {
                             echo $category->name;
@@ -40,7 +40,7 @@
                             echo $category->name;
                         }
                         ?>
-                    </h4>
+                    </h5>
                 </a>
             </div>
             <div class="favorites-contens">

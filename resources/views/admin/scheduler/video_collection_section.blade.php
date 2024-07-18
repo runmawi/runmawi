@@ -1,6 +1,6 @@
 
                 @foreach($VideoCollection as $value)
-                    <div class="drag d-flex justify-content-between" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
+                    <div class="drag d-flex justify-content-between" id="next_drag" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
                         <span class="d-flex overflow-hidden">
                             <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                             <a class="btn btn-default">{{ $value->title }}</a>
@@ -11,6 +11,7 @@
 
           
 
+                
                 <!-- //pagelist  -->
 
 
@@ -489,17 +490,9 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                         <div class="row">
                                 <div class="col-md-3 p-0">
                                     <div id="modules">
-                                        <!-- @foreach($VideoCollection as $value)
-                                        <div class="drag d-flex justify-content-between" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
-                                            <span class="d-flex overflow-hidden">
-                                                <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
-                                                <a class="btn btn-default">{{ $value->title }}</a>
-                                            </span>
-                                            <p style="margin-top:auto; margin-bottom:auto;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
-                                        </div>
-                                        @endforeach -->
+                                      
                                             @include('admin.scheduler.video_collection_section')
-                                            </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-9 p-0">
                                     <div id="dropzone"></div>
@@ -644,38 +637,6 @@ details{
 </style>
 
 <script>
-
-$(document).ready(function() {
-    var isFetching = false; 
-   var scrollFetch; 
-
-   $(window).scroll(function () {
-      clearTimeout(scrollFetch);
-
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#videoContainer").attr('next-page-url');
-         console.log("scrolled");
-
-         if (page_url != null && !isFetching) {
-               isFetching = true; 
-               $.ajax({
-                  url: page_url,
-                  beforeSend: function () {
-                    //  $('.auto-load').show();
-                  },
-                  success: function (data) {
-                     $("#videoContainer").append(data.view);
-                     $("#videoContainer").attr('next-page-url', data.url);
-                  },
-                  complete: function () {
-                     isFetching = false; 
-                    //  $('.auto-load').hide();
-                  }
-               });
-         }
-      }, 2000);
-   });
-});
 
 
     var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
@@ -1313,9 +1274,44 @@ $("#dropzone").droppable({
     }
 
 
+    $(document).ready(function() {
+    var isFetching = false; 
+   var scrollFetch; 
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#videoContainer").attr('next-page-url');
+         console.log("scrolled");
+
+         if (page_url != null && !isFetching) {
+               isFetching = true; 
+               $.ajax({
+                  url: page_url,
+                  beforeSend: function () {
+                    //  $('.auto-load').show();
+                  },
+                  success: function (data) {
+                    //  $("#videoContainer").append(data.view);
+                    $("#modules").append(data.view);
+                    $("#modules .drag").addClass("ui-draggable ui-draggable-handle");
+                     $("#videoContainer").attr('next-page-url', data.url);
+                  },
+                  complete: function () {
+                     isFetching = false; 
+                    //  $('.auto-load').hide();
+                  }
+               });
+         }
+      }, 2000);
+   });
+});
+
 
     </script>
 
 @stop
 
 @stop
+

@@ -4,19 +4,19 @@
 
   <?php if( Route::currentRouteName() == "ChannelHome"){?>
     
-    <h4 class="main-title">
+    <h5 class="main-title">
         <a href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">
           <?php if ($order_settings_list[3]->header_name) { echo $order_settings_list[3]->header_name ;} else { echo "" ; } ?></a>
-    </h4>
+    </h5>
 
     <a class="see" href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">See All </a>
 
   <?php }else{ ?>
 
-    <h4 class="main-title">
+    <h5 class="main-title">
         <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
           <?php if ($order_settings_list[3]->header_name) { echo $order_settings_list[3]->header_name ;} else { echo "" ; } ?></a>
-    </h4>
+    </h5>
 
     <a class="see" href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">See All </a>
 
@@ -25,7 +25,7 @@
 </div>
 
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($livetream)) :
                          foreach($livetream as $video): 
                             if (!empty($video->publish_time))
@@ -94,12 +94,12 @@
                               }
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>" aria-label="videos">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
                         </a>
                         
@@ -197,17 +197,13 @@
                             echo implode(','.' ', $Category_Thumbnail);
                         ?>
                     </span>
-                    <?php } ?>
-                    
-                    
-                </div>
-                  
+                    <?php } ?>                                       
+                </div>     
             </a>
-        </li>
-
+        </div>
         <?php endforeach; 
-                                   endif; ?>
-    </ul>
+      endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 

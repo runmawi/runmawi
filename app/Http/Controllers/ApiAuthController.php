@@ -10587,11 +10587,11 @@ $cpanel->end();
 
         try {
 
-          User::find($request->user_id)->delete();
           ContinueWatching::where('user_id',$request->user_id)->delete();
           Watchlater::where('user_id',$request->user_id)->delete();
           Wishlist::where('user_id',$request->user_id)->delete();
           Multiprofile::where('parent_id',$request->user_id)->delete();
+          User::find($request->user_id)->delete();
 
           $status = "true";
           $message = "Your ". GetWebsiteName() ." user account was successfully deleted" ;
@@ -24773,7 +24773,7 @@ public function SendVideoPushNotification(Request $request)
                                                       return $query->Where('choosed_date', $request->date);
                                                   })
 
-                                                  ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($request) {
+                                                  ->orderBy('start_time','asc')->where('channe_id',$item->id)->limit(30)->get()->map(function ($item) use ($request) {
 
                                                       $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
 

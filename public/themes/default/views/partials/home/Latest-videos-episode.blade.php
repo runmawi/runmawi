@@ -152,7 +152,7 @@ if( count($latest_video) > 0 || count($latest_episode) > 0 ) : ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->age == 1) { ?>
                                             <!-- Age -->
-                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_videos_data->age_restrict . ' ' . '+'; ?></div>
+                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_videos_data->age_restrict; ?></div>
                                             <?php } ?>
 
                                             <?php if($ThumbnailSetting->duration == 1) { ?>
@@ -221,7 +221,7 @@ if( count($latest_video) > 0 || count($latest_episode) > 0 ) : ?>
 
                                     <a class="epi-name mt-3 mb-0 btn" href="<?= URL::to('category/videos/' . $latest_videos_data->slug) ?>" >
                                     <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('assets/img/default_play_buttons.svg') ?>" width="10%"
-                                            height="10%" /> Watch Now
+                                            height="10%" /> {{ __('Watch Now') }}
                                     </a>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@ if( count($latest_video) > 0 || count($latest_episode) > 0 ) : ?>
                                     <a class="epi-name mt-3 mb-0 btn"
                                         href="<?= URL::to('/episode' . '/' . $latest_episode_data->series->slug . '/' . $latest_episode_data->slug); ?>">
                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
-                                            height="10%" /> Watch Now
+                                            height="10%" /> {{ __('Watch Now') }}
                                     </a>
                                 </div>
                             </div>

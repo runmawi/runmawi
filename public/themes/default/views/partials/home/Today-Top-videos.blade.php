@@ -40,7 +40,7 @@
                             <span class="text-white ml-3">{{ $data->rating ? ( $data->rating / 2 ) : " "  }}</span>
                         </div>
                         <div class="movie-time d-flex align-items-center mb-3">
-                            <div class="badge badge-secondary mr-3">{{ optional($data)->age_restrict.'+' }}</div>
+                            <div class="badge badge-secondary mr-3">{{ optional($data)->age_restrict}}</div>
                             <h6 class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
                             </h6>
                         </div>

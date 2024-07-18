@@ -1,18 +1,18 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo route('All_User_MostwatchedVideos') ?>">Your Most Watched Videos</a></h4>
+    <h5 class="main-title"><a href="<?php echo route('All_User_MostwatchedVideos') ?>">Your Most Watched Videos</a></h5>
     <a class="see" href="<?php echo route('All_User_MostwatchedVideos') ?>">See All</a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($most_watch_user)) :
                     foreach($most_watch_user as $watchlater_video): 
                 ?>
 
-        <li class="slide-item">
-            <a href="<?php echo URL::to('home') ?>">
+        <div class="slide-item">
+            <a href="<?php echo URL::to('home') ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="videos">
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
@@ -36,7 +36,9 @@
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="MostWatched-Videos"> 
+                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/> 
+                        </a>
                     </div>
                 </div>
 
@@ -108,7 +110,7 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php endforeach; endif; ?>
-    </ul>
+    </div>
 </div>

@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">
+  <h5 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list[13]->header_name) { echo URL::to('/').'/'.$order_settings_list[13]->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,14 +20,14 @@
         } 
   ?>
   </a>
-  </h4>  
+  </h5>  
 </div>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <div class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($channels)) :
       foreach($channels as $channel): ?>
-        <li class="slide-item">
-          <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>">
+        <div class="slide-item">
+          <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>" aria-label="videos">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -35,12 +35,12 @@
                 </div></div>
 
               <div class="block-description"></div>
-                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
+                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> " aria-label="Channel-Partner">
 
               <h6><?php echo __($channel->channel_name); ?></h6>
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> " >
+                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?>" aria-label="Channel-Partner" >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Channel
                   </a>
@@ -48,9 +48,9 @@
                      </a>
             
           </a>
-        </li>
+        </div>
       <?php endforeach; 
     endif; ?>
-  </ul>
+  </div>
 </div>
 <?php endif; ?>

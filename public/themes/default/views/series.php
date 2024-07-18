@@ -20,9 +20,7 @@
     }
     select:invalid { color:grey!important; }
     select:valid { color:#808080!important; }
-    .plyr__video-wrapper::before{
-        display: none;
-    }
+   
     .img-fluid {
   min-height: 0px!important;
 }
@@ -47,9 +45,9 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
-    color: #FF0000	;
+    color: #fff	;
     text-shadow: 0 1px 0 #fff;
-    opacity: .5;
+    opacity: 1;
     display: flex!important;
     justify-content: end!important;
 }
@@ -121,7 +119,15 @@
     .modal {
         top: 2%;
     }
-    
+    div#video-js-trailer-player{height:65vh;}
+    @media (min-width: 1400px) and (max-width: 2565px) {
+      div#video-js-trailer-player {
+            height: 50vh;
+        }
+        .modal-dialog-centered {
+            max-width: 1400px !important;
+        }
+  }
 </style>
 
 <?php 
@@ -191,13 +197,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                         }
                                     </script>
 
-                                
-
-						                <!-- <p class="desc" style="color:#fff;"><?php echo $series->description;?></p> -->
                             <div class="row p-0 mt-3 align-items-center">
-                                <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="ply"/> </a></div>
-                              <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+
+                                <div class="col-md-2 trailerbutton">  
+                                    <a data-video="<?= $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                      <img class="ply" src="<?= URL::to('assets/img/default_play_buttons.svg') ;  ?>" alt="ply"/>
+                                    </a>
+                                  </div>
+
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
                                     <ul>
                                       <li class="share">
@@ -219,43 +226,21 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <?= __('Share') ?>
                                     </ul>
                                 </div>
-                                          
-                                          
-                              
-                              
-
-
                             </div>
+                            
+                            <!-- Season Trailer -->
                             <div class="modal fade modal-xl videoModal" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-            <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-body videoModalbody">
-        
-            
-         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
-            </video>
-
-
-
-            <video  id="videos" class=""  
-            poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>"
-                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="application/x-mpegURL">
-
-                            <source id="m3u8urlsource"
-                              type="application/x-mpegURL" 
-                              src=""
-                            >
-
-                        </video>
-        </div>
-      </div>
-    </div>
-  </div>
-       <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-      
-      <script>  const player = new Plyr('#videoPlayer1'); </script>
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <div class="modal-body videoModalbody">
+                                       <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                                          width="auto" height="auto">
+                                      </video>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         </div>
 					</div>
 				</div>
@@ -591,11 +576,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
                                 </div>
                               </div>
-                                  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-                                  
-                                  <script>  const player = new Plyr('#videoPlayer1'); </script>
-
-
+                                
                                   </div>
 
 
@@ -736,8 +717,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                               </div>
                                             </div>
                                           </div>
-                                          <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-                                          <script>  const player = new Plyr('#videoPlayer1'); </script>
+                                        
                         </div>
                     </div>
                 </div>
@@ -855,8 +835,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   </div>
                                                 </div>
                                               </div>
-                                              <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-                                              <script>  const player = new Plyr('#videoPlayer1'); </script>
+                                           
                             </div>
                         </div>
                     </div>
@@ -1172,6 +1151,22 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
+ <!-- video-js Style  -->
+
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+<link href="<?= asset('public/themes/default/assets/css/video-js/videojs.min.css') ?>" rel="stylesheet" >
+<link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+<link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet" >
+<link href="<?= asset('public/themes/default/assets/css/video-js/videos-player.css') ?>" rel="stylesheet" >
+
+<!--  video-js Script  -->
+
+<script src="<?= asset('assets/js/video-js/video.min.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-contrib-quality-levels.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-http-source-selector.js') ?>"></script>
+<script src="<?= asset('assets/js/video-js/videojs-hls-quality-selector.min.js') ?>"></script>
+<script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
+
 
 <script>
   window.onload = function() {
@@ -1214,90 +1209,64 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 var purchase_series = $('#purchase_url').val();
 var publishable_key = $('#publishable_key').val();
 
-
-// alert(livepayment);
-
 $(document).ready(function () {  
 
- $('.videoModalClose').click(function (){
-  $('#videoPlayer1')[0].pause();
-  $('#videos')[0].pause();
-
-});
-
 	var imageseason = '<?= $season_trailer ?>' ;
-// console.log(imageseason)
-$("#videoPlayer1").hide();
-$("#videos").hide();
-
 var obj = JSON.parse(imageseason);
-console.log(obj)
 var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-// alert($val.trailer_type)	
-	console.log('season_'+$val.id)
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
-    $("#videoPlayer1").attr("src", $val.trailer);
-
-
-    $('.videoModalClose').click(function (){
-      $('#videoPlayer1')[0].pause();
-    });
-
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-   $("#m3u8urlsource").attr("src", $val.trailer);
-  
-  
-   $('.videoModalClose').click(function (){
-      $('#videos')[0].pause();
-    });
-
-  }
+	// console.log('season_'+$val.id)
+ 
 }
 });
-
-
-
-
-
-
-
 
 
 $('#season_id').change(function(){
+
 	var season_id = $('#season_id').val();
-// alert($('#season_id').val())	
 
-$.each(obj, function(i, $val)
-{
-if('season_'+$val.id == season_id){
-	console.log('season_'+$val.id)
-	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
-	$("#myImage").attr("src", $val.image);
-	// $("#videoPlayer1").attr("src", $val.trailer);
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
+  $.each(obj, function(i, $val){
+    if('season_'+$val.id == season_id){
 
-    $("#videoPlayer1").attr("src", $val.trailer);
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-    $("#m3u8urlsource").attr("src", $val.trailer);
-  }
+      let player_url = $val.trailer ;
+      const parts = player_url.split('.');
+      const extension = parts[parts.length - 1];
+      const player_type = extension === "mp4" ? "video/mp4" : (extension === "m3u8" ? "application/x-mpegURL" : "unknown");
 
-  $(".sea").empty();
-  // alert($val.id);
-  var id = $val.id;
-	$(".sea").html(i+1);
-}
-});
+      var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
+          aspectRatio: '16:9',
+          fluid: true,
+
+          controlBar: {
+              volumePanel: {
+                  inline: false
+              },
+
+              children: {
+                  'playToggle': {},
+                  'liveDisplay': {},
+                  'flexibleWidthSpacer': {},
+                  'progressControl': {},
+                  'remainingTimeDisplay': {},
+                  'fullscreenToggle': {}, 
+              }
+          }
+      });
+
+      player.src({
+        type: player_type,
+        src: player_url,
+      });
+      
+      $("#myImage").attr("src", $val.image);
+
+      $(".sea").empty();
+      var id = $val.id;
+      $(".sea").html(i+1);
+    }
+  });
 
 })
 
@@ -1318,10 +1287,9 @@ var handler = StripeCheckout.configure({
 key: publishable_key,
 locale: 'auto',
 token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
-console.log('Token Created!!');
-console.log(token);
+
+// console.log('Token Created!!');
+// console.log(token);
 $('#token_response').html(JSON.stringify(token));
 $.ajax({
  url: '<?php echo URL::to("purchase-series") ;?>',
@@ -1351,64 +1319,9 @@ amount: amount * 100
 }
 </script>
 
-	<!-- <script type="text/javascript"> 
-
-	// videojs('Player').videoJsResolutionSwitcher(); 
-	$(document).ready(function () {  
-		 $.ajaxSetup({
-		   headers: {
-			 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		   }
-		 });
-	   });
-
-function pay(amount) {
-var publishable_key = $('#publishable_key').val();
-
-var series_id = $('#series_id').val();
-// alert(series_id);
-// alert(publishable_key);
-
-var handler = StripeCheckout.configure({
-
-key: publishable_key,
-locale: 'auto',
-token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
-console.log('Token Created!!');
-console.log(token);
-$('#token_response').html(JSON.stringify(token));
-
-$.ajax({
-url: '<?php echo URL::to("purchase-series") ;?>',
-method: 'post',
-data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , series_id: series_id },
-success: (response) => {
-alert("You have done  Payment !");
-setTimeout(function() {
- location.reload();
-}, 2000);
-
-},
-error: (error) => {
-swal('error');
-
-}
-})
-}
-});
-
-
-handler.open({
-name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-description: 'Rent a Episode',
-amount: amount * 100
-});
-}
-</script> -->
 
 <script type="text/javascript">
+  
 	var first = $('select').val();
 	$(".episodes_div").hide();
 	$("."+first).show();
@@ -1417,221 +1330,76 @@ amount: amount * 100
 		$(".episodes_div").hide();
 		$("."+this.value).show();
 	});
-</script>
 
-<script>
+  var imageseason = '<?= $season_trailer ?>' ;
 
-var imageseason = '<?= $season_trailer ?>' ;
-// console.log(imageseason)
-$("#videoPlayer1").hide();
-$("#videos").hide();
+  var obj = JSON.parse(imageseason);
+  var season_id = $('#season_id').val();
 
-var obj = JSON.parse(imageseason);
-console.log(obj)
-var season_id = $('#season_id').val();
+  $.each(obj, function(i, $val){
 
-$.each(obj, function(i, $val)
-{
+    if('season_'+$val.id == season_id){
 
-  if( $val.trailer_type == 'm3u8_url'){
+        let player_url = $val.trailer ;
+        const parts = player_url.split('.');
+        const extension = parts[parts.length - 1];
+        const player_type = extension === "mp4" ? "video/mp4" : (extension === "m3u8" ? "application/x-mpegURL" : "unknown");
 
-    // alert($('#videos').attr("src"));
-    // alert(sourcevaltrailer);
-  
-  document.addEventListener("DOMContentLoaded", () => {
+        var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
+            aspectRatio: '16:9',
+            fluid: true,
 
-    // alert(sourcevaltrailer);
-    var video = document.querySelector('#videos');
-    // var sourcess = video.getElementsByTagName("source")[0].src;
-    // alert(sourcess);
-    var source = $val.trailer;
-    // alert(source);
+            controlBar: {
+                volumePanel: {
+                    inline: false
+                },
 
-    const defaultOptions = {};
-  
-    if (!Hls.isSupported()) {
-      video.src = source;
-      var player = new Plyr(video, defaultOptions);
-    } else {
-      // For more Hls.js options, see https://github.com/dailymotion/hls.js
-      const hls = new Hls();
-      hls.loadSource(source);
-
-      // From the m3u8 playlist, hls parses the manifest and returns
-                  // all available video qualities. This is important, in this approach,
-                // we will have one source on the Plyr player.
-              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-                // Transform available levels into an array of integers (height values).
-                const availableQualities = hls.levels.map((l) => l.height)
-            availableQualities.unshift(0) //prepend 0 to quality array
-
-                // Add new qualities to option
-          defaultOptions.quality = {
-            default: 0, //Default - AUTO
-              options: availableQualities,
-              forced: true,        
-              onChange: (e) => updateQuality(e),
-          }
-          // Add Auto Label 
-          defaultOptions.i18n = {
-            qualityLabel: {
-              0: 'Auto',
-            },
-          }
-
-          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
-              if (hls.autoLevelEnabled) {
-                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-              } else {
-                span.innerHTML = `AUTO`
-              }
-            })
-      
-              // Initialize new Plyr player with quality options
-          var player = new Plyr(video, defaultOptions);
-          });	
-
-    hls.attachMedia(video);
-        window.hls = hls;		 
-      }
-
-      function updateQuality(newQuality) {
-        if (newQuality === 0) {
-          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-        } else {
-          window.hls.levels.forEach((level, levelIndex) => {
-            if (level.height === newQuality) {
-              console.log("Found quality match with " + newQuality);
-              window.hls.currentLevel = levelIndex;
+                children: {
+                    'playToggle': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'fullscreenToggle': {}, 
+                }
             }
-          });
-        }
-      }
-});
+        });
 
+        player.src({
+          type: player_type,
+          src: player_url,
+        });
+        
+        $("#myImage").attr("src", $val.image);
 
-  }
-});
-
-
-
-
-
-
-
-
-
-
-$('#season_id').change(function(){
-	var season_id = $('#season_id').val();
-$.each(obj, function(i, $val)
-{
-if('season_'+$val.id == season_id){
-	console.log('season_'+$val.id)
-	$("#myImage").attr("src", $val.image);
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
-    $("#videoPlayer1").attr("src", $val.trailer);
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-    $("#m3u8urlsource").attr("src", $val.trailer);
+        $(".sea").empty();
+        var id = $val.id;
+        $(".sea").html(i+1);
+    }
     
-  if( $val.trailer_type == 'm3u8_url'){
+  });
 
-// alert($('#videos').attr("src"));
-// alert(sourcevaltrailer);
+// Need to Change - 2 (Manivel)
 
-document.addEventListener("DOMContentLoaded", () => {
+  $('#season_id').change(function(){
 
-// alert(sourcevaltrailer);
-var video = document.querySelector('#videos');
-// var sourcess = video.getElementsByTagName("source")[0].src;
-// alert(sourcess);
-var source = $val.trailer;
-// alert(source);
+    var season_id = $('#season_id').val();
+    
+    $.each(obj, function(i, $val)
+    {
+      if('season_'+$val.id == season_id){
 
-const defaultOptions = {};
+        $("#myImage").attr("src", $val.image);
 
-if (!Hls.isSupported()) {
-      video.src = source;
-      var player = new Plyr(video, defaultOptions);
-    } else {
-      // For more Hls.js options, see https://github.com/dailymotion/hls.js
-      const hls = new Hls();
-      hls.loadSource(source);
-
-      // From the m3u8 playlist, hls parses the manifest and returns
-                  // all available video qualities. This is important, in this approach,
-                // we will have one source on the Plyr player.
-              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-                // Transform available levels into an array of integers (height values).
-                const availableQualities = hls.levels.map((l) => l.height)
-            availableQualities.unshift(0) //prepend 0 to quality array
-
-                // Add new qualities to option
-          defaultOptions.quality = {
-            default: 0, //Default - AUTO
-              options: availableQualities,
-              forced: true,        
-              onChange: (e) => updateQuality(e),
-          }
-          // Add Auto Label 
-          defaultOptions.i18n = {
-            qualityLabel: {
-              0: 'Auto',
-            },
-          }
-
-          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
-              if (hls.autoLevelEnabled) {
-                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-              } else {
-                span.innerHTML = `AUTO`
-              }
-            })
-      
-              // Initialize new Plyr player with quality options
-          var player = new Plyr(video, defaultOptions);
-          });	
-
-    hls.attachMedia(video);
-        window.hls = hls;		 
+        $(".sea").empty();
+        var id = $val.id;
+        $(".sea").html(i+1);
       }
+    });
 
-      function updateQuality(newQuality) {
-        if (newQuality === 0) {
-          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-        } else {
-          window.hls.levels.forEach((level, levelIndex) => {
-            if (level.height === newQuality) {
-              console.log("Found quality match with " + newQuality);
-              window.hls.currentLevel = levelIndex;
-            }
-          });
-        }
-      }
-});
+  })
 
-
-}
-  }
-
-  $(".sea").empty();
-  // alert($val.id);
-  var id = $val.id;
-	$(".sea").html(i+1);
-}
-});
-
-})
-
-function Copy() {
+        function Copy() {
             var media_path = '<?= $media_url ?>';;
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);

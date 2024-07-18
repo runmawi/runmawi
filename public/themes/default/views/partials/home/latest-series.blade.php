@@ -92,12 +92,12 @@
                                                   <a class="text-white" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
                                                       <p class="epi-name text-left m-0 mt-2">{{ __($latest_serie->title) }}</p>
                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($latest_serie->description) > 75 ? substr(html_entity_decode(strip_tags($latest_serie->description)), 0, 75) . '...' : $latest_serie->description }}
+                                                            {{ strlen($latest_serie->description) > 75 ? substr(html_entity_decode(strip_tags($latest_serie->description)), 0, 75) . '...' : strip_tags($latest_serie->description) }}
                                                         </p>
                                                         <div class="movie-time d-flex align-items-center my-2">
 
                                                             @if($ThumbnailSetting->age == 1 && !($latest_serie->age_restrict == 0))
-                                                                <span class="position-relative badge p-1 mr-2">{{ $latest_serie->age_restrict . ' +' }}</span>
+                                                                <span class="position-relative badge p-1 mr-2">{{ $latest_serie->age_restrict}}</span>
                                                             @endif
 
                                                             @if($ThumbnailSetting->duration == 1)

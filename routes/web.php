@@ -291,9 +291,15 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');
 
+    // Page List
+    Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
+    Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
+    Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
+    Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
+
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
-
 
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
@@ -1612,7 +1618,7 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
     Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
-    Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+    Route::post('video_exportCsv', 'CPPAnalyticsContrmyprofileoller@VideoExportCsv');
 
     Route::get('myprofile', 'ModeratorsUserController@CPPMyProfile');
     Route::post('update-myprofile', 'ModeratorsUserController@CPPUpdateMyProfile');
@@ -2412,3 +2418,8 @@ Route::post('HomePage-wishlist', 'HomeController@Homepage_wishlist')->name('home
 Route::get('/testpage', function () {
     return view('testpage');
 })->name('testpage');
+
+// User Generated Content
+Route::get('ugc-create', 'UGCController@create');
+// Route::post('/videos/fileupdate', ['before' => 'demo', 'uses' => 'AdminVideosController@fileupdate']);
+// Route::post('/videos/store', ['before' => 'demo', 'uses' => 'AdminVideosController@store']);

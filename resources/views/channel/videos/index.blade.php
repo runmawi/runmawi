@@ -90,7 +90,7 @@
                                     <!-- <td>
                                    
                                     </td> -->
-                                    <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else Uploaded by Admin @endif</td>
+                                    <td>@if(isset($video->channeluser->channel_name)) Uploaded by {{ $video->channeluser->channel_name }} @else Uploaded by Admin @endif</td>
 
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->access }}</td>

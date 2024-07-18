@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">
+  <h5 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list[14]->header_name) { echo URL::to('/').'/'.$order_settings_list[14]->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,14 +20,14 @@
         } 
   ?>
   </a>
-  </h4>  
+  </h5>  
 </div>
 <div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+  <div class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($ModeratorsUsers)) :
       foreach($ModeratorsUsers as $content_user): ?>
-        <li class="slide-item">
-          <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>">
+        <div class="slide-item">
+          <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>" aria-label="videos">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -35,7 +35,7 @@
               </div> </div>
 
               <div class="block-description"> </div>
-                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> ">
+                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " aria-label="ContentPartner">
 
               <h6><?php echo __($content_user->username); ?></h6>
                                <!-- </div> -->
@@ -49,9 +49,9 @@
             
            
           </a>
-        </li>
+      </div>
       <?php endforeach; 
     endif; ?>
-  </ul>
+  </div>
 </div>
 <?php endif; ?>
