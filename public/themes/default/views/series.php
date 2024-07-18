@@ -119,7 +119,15 @@
     .modal {
         top: 2%;
     }
-    div#video-js-trailer-player{height:65vh !important;}
+    div#video-js-trailer-player{height:65vh;}
+    @media (min-width: 1400px) and (max-width: 2565px) {
+      div#video-js-trailer-player {
+            height: 50vh;
+        }
+        .modal-dialog-centered {
+            max-width: 1400px !important;
+        }
+  }
 </style>
 
 <?php 
@@ -222,7 +230,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             
                             <!-- Season Trailer -->
                             <div class="modal fade modal-xl videoModal" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
+                              <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                   <div class="modal-body videoModalbody">

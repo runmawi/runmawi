@@ -79,4 +79,8 @@ class Video extends Model
 	public function player_analytic_videos(){
 		return $this->belongsTo('App\PlayerAnalytic','id','user_id');
 	}
+
+	public function channeluser(){
+		return $this->belongsTo('App\Channel','user_id','id');
+	}
 }
