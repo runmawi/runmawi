@@ -973,6 +973,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
             </ul>
           </li>
+          {{-- <li><a href="#ugcmanagement" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/E360_icons/Channel management.svg')?>"><span class="">{{ (__('UGC Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="ugcmanagement" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+               <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">All UGC Videos</a></li> 
+               <li><a href="{{ route('VideoScheduler') }}" class="iq-waves-effect">UGC Videos For Approval</a></li>
+            </ul>
+         </li> --}}
           <li>
           <div class="men" style=""> 
                  <p class="lnk" >{{ (__('Live Stream')) }}</p>

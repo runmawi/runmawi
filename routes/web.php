@@ -2421,5 +2421,9 @@ Route::get('/testpage', function () {
 
 // User Generated Content
 Route::get('ugc-create', 'UGCController@create');
+// Route::get('formdesign', 'UGCController@formdesign');
+// Route::post('/ugc/fileupdate', ['before' => 'demo', 'uses' => 'UGCController@ugcfileupdate']);
+// Route::post('ugc/uploadFile', 'UGCController@uploadFile');
+
 // Route::post('/videos/fileupdate', ['before' => 'demo', 'uses' => 'AdminVideosController@fileupdate']);
 // Route::post('/videos/store', ['before' => 'demo', 'uses' => 'AdminVideosController@store']);
