@@ -43,6 +43,8 @@
     /* font-family: Helvetica; */
     height: 100%;
     width: 100%;
+    /* border: 5px solid rgb(112, 112, 112); */
+    border-radius: 10px;
     /* white-space: normal; */
 }
 
