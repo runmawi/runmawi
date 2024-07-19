@@ -538,7 +538,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  $Channel->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  $Channel->unhased_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -6%;margin-left: -65%;">Channel Visit Portal </button>                          
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -6%;">Channel Visit Portal </button>                          
                            </form>
                         </div>
                         <?php } ?>

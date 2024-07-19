@@ -231,15 +231,16 @@ class AdminVideosController extends Controller
                         elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
                         elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
                         else{ $type = ''; }
-                        if ($row->active == 0) {
-                            $active = "Pending";
-                            $class = "bg-warning";
-                        } elseif ($row->active == 1) {
-                            $active = "Approved";
-                            $class = "bg-success";
+
+                        if ($row->draft == null ) {
+                            $active = "Draft";
+                            $class = "bg-warning video_active";
+                        } elseif ( $row->draft == 1 && $row->status == 1 && $row->active == 1 ) {
+                            $active = "Published";
+                            $class = "bg-success video_active";
                         } else {
-                            $active = "Rejected";
-                            $class = "bg-danger";
+                            $active = "Draft";
+                            $class = "bg-warning video_active";
                         }
                         if($row->draft != null && $row->draft == 1 && $row->status != null && $row->status == 1 && $row->active != null && $row->active == 1){ 
                             $style = "";
