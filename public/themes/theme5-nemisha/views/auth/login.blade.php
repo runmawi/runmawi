@@ -2,8 +2,9 @@
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
 ?>
-<html>
+<html lang="en-US">
 <head>
+<meta name="description" content="Nemisa TV">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -338,10 +339,10 @@ line-height: 55px;
                         </div> 
                             <div class="position-relative">
                                  <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-label="eyeSlash-icon" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-label="eyeShow-icon" aria-hidden="true"></i></button>
                                  </span>
                             </div>
                                  </div>
