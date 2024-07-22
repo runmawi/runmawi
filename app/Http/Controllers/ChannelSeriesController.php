@@ -61,6 +61,7 @@ use Mail;
 use App\Livestream;
 use App\SiteTheme;
 use App\ChannelSubscription;
+use App\CompressImage;
 
 class ChannelSeriesController extends Controller
 {
@@ -132,6 +133,9 @@ class ChannelSeriesController extends Controller
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
+        $compress_image_settings = CompressImage::first();
+
         if ($current_date > $duedate)
         {
             $client = new Client();
@@ -164,6 +168,7 @@ class ChannelSeriesController extends Controller
                 'category_id' => [],
                 'languages_id' => [],
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
 
             );
             return View::make('channel.series.create_edit', $data);
@@ -474,6 +479,9 @@ class ChannelSeriesController extends Controller
             ->get();
         // $books = SeriesSeason::with('episodes')->get();
         // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
+
+        $compress_image_settings = CompressImage::first();
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -492,6 +500,7 @@ class ChannelSeriesController extends Controller
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')
                 ->toArray() ,
             'InappPurchase' => InappPurchase::all() ,
+            'compress_image_settings' => $compress_image_settings,
         );
 
         return View::make('channel.series.create_edit', $data);
@@ -1290,6 +1299,8 @@ class ChannelSeriesController extends Controller
         $user = Session::get('channel');
         $user_id = $user->id;
 
+        $compress_image_settings = CompressImage::first();
+
         if($this->enable_channel_Monetization == 1){
 
             $ChannelSubscription = ChannelSubscription::where('user_id', '=', $user_id)->count(); 
@@ -1341,6 +1352,7 @@ class ChannelSeriesController extends Controller
             'age_categories' => AgeCategory::all() ,
             'settings' => Setting::first() ,
             'InappPurchase' => InappPurchase::all() ,
+            'compress_image_settings' => $compress_image_settings,
 
         );
 
@@ -1577,6 +1589,9 @@ class ChannelSeriesController extends Controller
     public function edit_episode($id)
     {
         $episodes = Episode::find($id);
+
+        $compress_image_settings = CompressImage::first();
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Episode ' . $episodes->title,
             'episodes' => $episodes,
@@ -1585,6 +1600,7 @@ class ChannelSeriesController extends Controller
             // 'admin_user' => Auth::user(),
             'age_categories' => AgeCategory::all() ,
             'settings' => Setting::first() ,
+            'compress_image_settings' => $compress_image_settings,
 
         );
 
