@@ -486,7 +486,7 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                             <div class="col-md-3 p-0">
                                 <div id="modules">
                                     @foreach(@$VideoCollection as $value)
-                                        <div class="drag d-flex justify-content-between" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
+                                        <div class="drag d-flex justify-content-between searchItems" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
                                             <span class="d-flex overflow-hidden">
                                                 <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                                                 <a class="btn btn-default">{{ $value->title }}</a>
@@ -1044,12 +1044,25 @@ $("#dropzone").droppable({
         }
 
         // Event listener for the search input
-        $('#searchInput').on('input', function () {
-            var searchTerm = $(this).val();
-            filterItems(searchTerm);
-        });
+        // $('#searchInput').on('input', function () {
+        //     var searchTerm = $(this).val();
+        //     filterItems(searchTerm);
+        // });
     });
    
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        var searchItems = document.querySelectorAll('.searchItems');
+
+        searchItems.forEach(function(item) {
+            var title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(query)) {
+                item.style.setProperty('display', 'flex', 'important');
+            } else {
+                item.style.setProperty('display', 'none', 'important');
+            }
+        });
+    });
         // Calculate the date for one day ahead
         var currentDate = new Date();
             currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
