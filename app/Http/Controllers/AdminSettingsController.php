@@ -1083,26 +1083,54 @@ class AdminSettingsController extends Controller
     {
         $CompressImage = CompressImage::first();
 
-            $inputs = array(
-                'compress_resolution_size' => $request->compress_resolution_size,
-                'compress_resolution_format' => $request->compress_resolution_format,
-                'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
-                'enable_multiple_compress_image' => $request->enable_multiple_compress_image == null ? '0' : '1',
-                'videos' => $request->videos == null ? '0' : '1',
-                'live' => $request->live == null ? '0' : '1',
-                'tv_image_live_validation' => $request->tv_image_live_validation == null ? '0' : '1',
-                'series' => $request->series == null ? '0' : '1',
-                'season' => $request->season == null ? '0' : '1',
-                'episode' => $request->episode == null ? '0' : '1',
-                'audios' => $request->audios == null ? '0' : '1',
-            );        
+        $inputs = array(
+            'compress_resolution_size' => $request->compress_resolution_size,
+            'compress_resolution_format' => $request->compress_resolution_format,
+            'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
+            'enable_multiple_compress_image' => $request->enable_multiple_compress_image == null ? '0' : '1',
+            'videos' => $request->videos == null ? '0' : '1',
+            'live' => $request->live == null ? '0' : '1',
+            'tv_image_live_validation' => $request->tv_image_live_validation == null ? '0' : '1',
+            'series' => $request->series == null ? '0' : '1',
+            'season' => $request->season == null ? '0' : '1',
+            'episode' => $request->episode == null ? '0' : '1',
+            'audios' => $request->audios == null ? '0' : '1',
+            'width_validation_videos' => $request->width_validation_videos,
+            'height_validation_videos' => $request->height_validation_videos,
+            'width_validation_player_img' => $request->width_validation_player_img,
+            'height_validation_player_img' => $request->height_validation_player_img,
+            'width_validation_live' => $request->width_validation_live,
+            'height_validation_live' => $request->height_validation_live,
+            'live_player_img_width' => $request->live_player_img_width,
+            'live_player_img_height' => $request->live_player_img_height,
+            'width_validation_series' => $request->width_validation_series,
+            'height_validation_series' => $request->height_validation_series,
+            'series_player_img_width' => $request->series_player_img_width,
+            'series_player_img_height' => $request->series_player_img_height,
+            'width_validation_season' => $request->width_validation_season,
+            'height_validation_season' => $request->height_validation_season,
+            'width_validation_episode' => $request->width_validation_episode,
+            'height_validation_episode' => $request->height_validation_episode,
+            'episode_player_img_width' => $request->episode_player_img_width,
+            'episode_player_img_height' => $request->episode_player_img_height,
+            'width_validation_audio' => $request->width_validation_audio,
+            'height_validation_audio' => $request->height_validation_audio,
+            'audio_player_img_width' => $request->audio_player_img_width,
+            'audio_player_img_height' => $request->audio_player_img_height,
+        );
 
-        $CompressImage == null ? CompressImage::create($inputs) : CompressImage::first()->update($inputs)  ; 
+        if ($CompressImage == null) {
+            CompressImage::create($inputs);
+        } else {
+            $CompressImage->update($inputs);
+        }
 
         return redirect()
             ->route('compress_image')
             ->with(['message' => 'Successfully Updated!', 'note_type' => 'success']);
     }
+
+
 
     public function captcha(Request $request)
     {

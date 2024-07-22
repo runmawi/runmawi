@@ -30,6 +30,7 @@ use App\EmailTemplate;
 use Mail;
 use App\SiteTheme;
 use App\ChannelSubscription;
+use App\CompressImage;
 
 class ChannelLiveStreamController extends Controller
 {
@@ -95,6 +96,7 @@ class ChannelLiveStreamController extends Controller
         $package = $user_package->package;
         $user = Session::get('channel'); 
         $user_id = $user->id;
+        $compress_image_settings = CompressImage::first();
         
         if($this->enable_channel_Monetization == 1){
 
@@ -130,6 +132,7 @@ class ChannelLiveStreamController extends Controller
         {
             $user = Session::get('channel');
             $user_id = $user->id;
+
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('channel/livestream/store') ,
@@ -142,6 +145,7 @@ class ChannelLiveStreamController extends Controller
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all() ,
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
             );
             return View::make('channel.livestream.create_edit', $data);
         }
@@ -571,6 +575,8 @@ class ChannelLiveStreamController extends Controller
             $Rtmp_url = Session::get('Rtmp_url');
             $title = Session::get('title');
 
+            $compress_image_settings = CompressImage::first();
+
             $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Video',
                 'video' => $video,
@@ -592,6 +598,7 @@ class ChannelLiveStreamController extends Controller
                 'title' => $title ? $title : null,
                 'Rtmp_urls' => RTMP::all() ,
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
             );
 
             return View::make('channel.livestream.edit', $data);
