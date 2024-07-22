@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
    <head>
       <?php
@@ -20,6 +20,10 @@ $uppercase =  ucfirst($request_url);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Favicon -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" as="style"> 
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js" as="script"> 
+
+
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -30,12 +34,21 @@ $uppercase =  ucfirst($request_url);
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
+      <link rel="preload" href="assets/css/responsive.css" as="style"> 
       <link rel="stylesheet" href="assets/css/responsive.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-  </script>
-<style>
+
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map" as="script">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map"></script>
+
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" as="script"> 
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" as="style"> 
+      <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" as="script"> 
+      
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <style>
     /*.sign-user_card {
         background: none !important;
     }*/
@@ -446,7 +459,7 @@ i.fa.fa-google-plus {
     </div>
   </div>
 </div>
-    </section>
+</section>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
@@ -866,24 +879,25 @@ $(document).ready(function() {
 
 
  <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
-      <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
-      <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
-      <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
-      <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
-      <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
-      <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
-      <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
-       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Slick JS -->
+    <script src="assets/js/slick.min.js"></script>
+    <!-- owl carousel Js -->
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <!-- select2 Js -->
+    <script src="assets/js/select2.min.js"></script>
+    <!-- Magnific Popup-->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Slick Animation-->
+    <script src="assets/js/slick-animation.min.js"></script>
+    <!-- Custom JS-->
+    <link rel="preload" href="assets/js/custom.js" as="script"> 
+    <script src="assets/js/custom.js"></script>
+    <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
+    <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
 
 

@@ -1248,6 +1248,7 @@ class AdminAdvertiserController extends Controller
                     "roku" => $request->roku,
                     "Lg" => $request->Lg,
                     "samsung" => $request->samsung,
+                    "firetv" => $request->firetv,
                 );
 
                 Adsvariables::create($data);
@@ -1281,6 +1282,7 @@ class AdminAdvertiserController extends Controller
             "roku" => $request->roku,
             "Lg" => $request->Lg,
             "samsung" => $request->samsung,
+            "firetv" => $request->firetv,
         );
 
         $Adsvariables = Adsvariables::find($id)->update($data);

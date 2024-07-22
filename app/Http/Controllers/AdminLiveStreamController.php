@@ -46,6 +46,7 @@ use App\LivePurchase;
 use App\BlockLiveStream;
 use App\CountryCode;
 use App\TimeZone;
+use App\CompressImage;
 
 class AdminLiveStreamController extends Controller
 {
@@ -265,6 +266,7 @@ class AdminLiveStreamController extends Controller
         else{
 
             $settings = Setting::first();
+            $compress_image_settings = CompressImage::first();
 
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
@@ -286,6 +288,7 @@ class AdminLiveStreamController extends Controller
                 'ads_category' => Adscategory::all(),
                 "countries" => CountryCode::all(),
                 "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
+                'compress_image_settings' => $compress_image_settings,
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -919,6 +922,7 @@ class AdminLiveStreamController extends Controller
         $Rtmp_url = Session::get('Rtmp_url');
         $title = Session::get('title');
         $settings = Setting::first();
+        $compress_image_settings = CompressImage::first();
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -947,6 +951,7 @@ class AdminLiveStreamController extends Controller
             "countries" => CountryCode::all(),
             "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
             "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
+            'compress_image_settings' => $compress_image_settings,
         );
 
         return View::make('admin.livestream.edit', $data); 

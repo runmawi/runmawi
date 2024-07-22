@@ -58,6 +58,7 @@ use App\Livestream;
 use App\Episode;
 use App\ModeratorSubscription;
 use App\SiteTheme;
+use App\CompressImage;
 
 class CPPAdminAudioController extends Controller
 {
@@ -115,6 +116,8 @@ class CPPAdminAudioController extends Controller
         $user = Session::get('user'); 
         $id = $user->id;
         $settings = Setting::first();
+
+        $compress_image_settings = CompressImage::first();
 
         $user_id = $user->id;
         if($this->enable_moderator_Monetization == 1){
@@ -177,6 +180,7 @@ class CPPAdminAudioController extends Controller
             'languages_id' => [],
             'settings' => $settings,
             'InappPurchase' => InappPurchase::all(),
+            'compress_image_settings' => $compress_image_settings,
 
             );
         return View::make('moderator.cpp.audios.create_edit', $data);
@@ -322,6 +326,7 @@ class CPPAdminAudioController extends Controller
         $user_id = $user->id;
         $audio = Audio::find($id);
         $settings = Setting::first();
+        $compress_image_settings = CompressImage::first();
         
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Audio',
@@ -338,6 +343,7 @@ class CPPAdminAudioController extends Controller
             'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
             'settings' => $settings,
             'InappPurchase' => InappPurchase::all(),
+            'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('moderator.cpp.audios.edit', $data);

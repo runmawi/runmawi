@@ -162,21 +162,50 @@
 							<div class="row">
 								<div class="col-md-6">
 								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label class="mb-1">Audio Image Cover <small>( 9:16 Ratio or 1080X1920px )</small> </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-title"><label class="mb-1">Audio Image Cover </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
-									@if(!empty($audio->image))
-									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
+									
+									@php 
+										$width = $compress_image_settings->width_validation_audio;
+										$heigth = $compress_image_settings->height_validation_audio
+
+									@endphp
+									@if($width !== null && $heigth !== null)
+									<p class="p1">{{ ("Select The Audio Image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+									@else
+										<p class="p1">{{ "Select The Audio Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
 									@endif
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
-
+									<span>
+										<p id="audio_image_error_msg" style="color:red !important; display:none;">
+											* Please upload an image with the correct dimensions.
+										</p>
+									</span>
+									@if(!empty($audio->image))
+										<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
+									@endif
 								</div> 
 							</div>
 								</div>
 								<div class="col-md-6">
-								<div class="col-sm-6 form-group">
-									
-							<label class="mb-1">Player Audio Thumbnail <small>(16:9 Ratio or 1280X720px)</small></label><br>
+								<div class="col-sm-12 form-group mt-3">
+									<div class="panel-title"><label class="mb-1">Audio Player Image </label></div>
+								@php 
+									$player_width = $compress_image_settings->audio_player_img_width;
+									$player_heigth = $compress_image_settings->audio_player_img_height
+
+								@endphp
+								@if($player_width !== null && $player_heigth !== null)
+									<p class="p1">{{ ("Select The Player Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+								@else
+									<p class="p1">{{ "Select The Player Image ( 16:9 Ratio or 1280X720px )"}}:</p> 
+								@endif
 							<input type="file" name="player_image" id="player_image" >
+							<span>
+								<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
+									* Please upload an image with the correct dimensions.
+								</p>
+							</span>
 							@if(!empty($audio->player_image))
 								<div class="col-sm-8 p-0">
 							<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 mt-1" /></div>

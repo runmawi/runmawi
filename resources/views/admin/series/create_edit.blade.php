@@ -122,18 +122,28 @@ $settings  = App\Setting::first();?>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the TV Shows image ( 9:16 Ratio or 1080X1920px ):</p> 
+							@php 
+								$width = $compress_image_settings->width_validation_series;
+								$heigth = $compress_image_settings->height_validation_series
+							@endphp
+							@if($width !== null && $heigth !== null)
+								<p class="p1">{{ ("Select the TV Shows image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+							@else
+								<p class="p1">{{ "Select the TV Shows image ( 9:16 Ratio or 1080X1920px)"}}:</p> 
+							@endif
+							<input type="file" multiple="true" class="form-group image series_image" name="image" id="series_image" />
 
-							<input type="file" multiple="true" class="form-group image series_image" name="image" id="image" />
+							<span>
+								<p id="video_image_error_msg" style="color:red !important; display:none;">
+									* Please upload an image with the correct dimensions.
+								</p>
+							</span>
 
 							@if(!empty($series->image))
 								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
 							@endif
 							
-							{{-- for validate --}}
-							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-						</div> 
+							</div> 
 					</div>
 				</div>
 
@@ -146,17 +156,27 @@ $settings  = App\Setting::first();?>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the Player image ( 16:9 Ratio or 1280X720px ):</p> 
+							@php 
+								$player_width = $compress_image_settings->series_player_img_width;
+								$player_heigth = $compress_image_settings->series_player_img_height
+							@endphp
+							@if($player_width !== null && $player_heigth !== null)
+								<p class="p1">{{ ("Select The Player Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+							@else
+								<p class="p1">{{ "Select The Player Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+							@endif
+							<input type="file" multiple="true" class="form-group" name="player_image" id="series_player_image" />
 
-							<input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
-
+							<span>
+								<p id="player_image_error_msg" style="color:red !important; display:none;">
+									* Please upload an image with the correct dimensions.
+								</p>
+							</span>
 							@if(!empty($series->player_image))
 								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
 							@endif
 
-							{{-- for validate --}}
-							<input type="hidden" id="player_image" name="player_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-						</div> 
+							</div> 
 					</div>
 				</div>
 			</div>
@@ -470,7 +490,7 @@ $settings  = App\Setting::first();?>
                     @endif
 
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary " />
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary update_btn" />
                 </div>
 			</div><!-- row -->
         </div>
@@ -522,8 +542,22 @@ $settings  = App\Setting::first();?>
 							</div>
 						
 							<div class="form-group">
-								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-								<input type="file" class="season_image" name="image" id="" >
+								@php 
+									$player_width = $compress_image_settings->width_validation_season;
+									$player_heigth = $compress_image_settings->height_validation_season
+								@endphp
+								@if($player_width !== null && $player_heigth !== null)
+									<p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+								@else
+									<p class="p1">{{ "Select Season Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+								@endif
+								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
+								<input type="file" class="season_image" name="image" id="season_img" >
+								<span>
+									<p id="season_image_error_msg" style="color:red !important; display:none;">
+										* Please upload an image with the correct dimensions.
+									</p>
+								</span>
 							</div>
                                 
 						    <div class="form-group">
@@ -763,6 +797,97 @@ $('#submit-new-cat').click(function(){
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
+{{-- image validation --}}
+<script>
+    document.getElementById('series_image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+				console.log(width);
+				console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->width_validation_series }};
+                var validHeight = {{ $compress_image_settings->height_validation_series }};
+				console.log(validWidth);
+				console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('video_image_error_msg').style.display = 'block';
+                    $('.update_btn').prop('disabled', true);
+                    document.getElementById('video_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('video_image_error_msg').style.display = 'none';
+                    $('.update_btn').prop('disabled', false);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+    document.getElementById('series_player_image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+				console.log(width);
+				console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->series_player_img_width }};
+                var validHeight = {{ $compress_image_settings->series_player_img_height }};
+				console.log(validWidth);
+				console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('player_image_error_msg').style.display = 'block';
+                    $('.update_btn').prop('disabled', true);
+                    document.getElementById('player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('player_image_error_msg').style.display = 'none';
+                    $('.update_btn').prop('disabled', true);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+	document.getElementById('season_img').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+                console.log(width);
+                console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->width_validation_season }};
+                var validHeight = {{ $compress_image_settings->height_validation_season }};
+                console.log(validWidth);
+                console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('season_image_error_msg').style.display = 'block';
+                    $('#submit-new-cat').prop('disabled', true);
+                    document.getElementById('season_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('season_image_error_msg').style.display = 'none';
+                    $('#submit-new-cat').prop('disabled', false);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		
         <script type="text/javascript">
@@ -809,123 +934,123 @@ $('#submit-new-cat').click(function(){
 // 
 
 		// Season Image upload dimention validation
-		$.validator.addMethod('season_dimention', function(value, element, param) {
-				if(element.files.length == 0){
-					return true; 
-				}
+		// $.validator.addMethod('season_dimention', function(value, element, param) {
+		// 		if(element.files.length == 0){
+		// 			return true; 
+		// 		}
 
-				var width = $(element).data('imageWidth');
-				var height = $(element).data('imageHeight');
-				var ratio = $(element).data('imageratio');
-				var image_validation_status = "{{  image_validation_season() }}" ;
+		// 		var width = $(element).data('imageWidth');
+		// 		var height = $(element).data('imageHeight');
+		// 		var ratio = $(element).data('imageratio');
+		// 		var image_validation_status = "{{  image_validation_season() }}" ;
 
-				if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
-					return true;
-				}else{
-					return false;
-				}
-			},'Please upload an image with 1280X720px  pixels dimension or 16:9 Ratio ');
-
-
-			// Image upload dimention validation
-		$.validator.addMethod('Series_Image_dimention', function(value, element, param) {
-            if(element.files.length == 0){
-                return true; 
-            }
-
-            var width = $(element).data('imageWidth');
-            var height = $(element).data('imageHeight');
-            var ratio = $(element).data('imageratio');
-            var image_validation_status = "{{  image_validation_series() }}" ;
-
-            if( image_validation_status == "0" || ratio == '0.56'|| width == param[0] && height == param[1]){
-                return true;
-            }else{
-                return false;
-            }
-        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio ');
+		// 		if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
+		// 			return true;
+		// 		}else{
+		// 			return false;
+		// 		}
+		// 	},'Please upload an image with 1280X720px  pixels dimension or 16:9 Ratio ');
 
 
-                // player Image upload validation
-        $.validator.addMethod('player_dimention', function(value, element, param) {
-            if(element.files.length == 0){
-                return true; 
-            }
+		// 	// Image upload dimention validation
+		// $.validator.addMethod('Series_Image_dimention', function(value, element, param) {
+        //     if(element.files.length == 0){
+        //         return true; 
+        //     }
 
-            var width = $(element).data('imageWidth');
-            var height = $(element).data('imageHeight');
-            var ratio = $(element).data('imageratio');
-            var image_validation_status = "{{  image_validation_series() }}" ;
+        //     var width = $(element).data('imageWidth');
+        //     var height = $(element).data('imageHeight');
+        //     var ratio = $(element).data('imageratio');
+        //     var image_validation_status = "{{  image_validation_series() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
-                return true;
-            }else{
-                return false;
-            }
-        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
-
-
-		$('.series_image').change(function() {
-
-			$('.series_image').removeData('imageWidth');
-			$('.series_image').removeData('imageHeight');
-			$('.series_image').removeData('imageratio');
-
-			var file = this.files[0];
-			var tmpImg = new Image();
-
-			tmpImg.src=window.URL.createObjectURL( file ); 
-			tmpImg.onload = function() {
-				width = tmpImg.naturalWidth,
-				height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-				$('.series_image').data('imageWidth', width);
-				$('.series_image').data('imageHeight', height);
-				$('.series_image').data('imageratio', ratio);
-
-			}
-		});
+        //     if( image_validation_status == "0" || ratio == '0.56'|| width == param[0] && height == param[1]){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio ');
 
 
-        $('.season_image').change(function() {
+        //         // player Image upload validation
+        // $.validator.addMethod('player_dimention', function(value, element, param) {
+        //     if(element.files.length == 0){
+        //         return true; 
+        //     }
 
-            $('.season_image').removeData('imageWidth');
-            $('.season_image').removeData('imageHeight');
-            $('.season_image').removeData('imageratio');
+        //     var width = $(element).data('imageWidth');
+        //     var height = $(element).data('imageHeight');
+        //     var ratio = $(element).data('imageratio');
+        //     var image_validation_status = "{{  image_validation_series() }}" ;
 
-            var file = this.files[0];
-            var tmpImg = new Image();
+        //     if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
 
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-                $('.season_image').data('imageWidth', width);
-                $('.season_image').data('imageHeight', height);
-                $('.season_image').data('imageratio', ratio);
-            }
-        });
 
-        $('#player_image').change(function() {
+		// $('.series_image').change(function() {
 
-            $('#player_image').removeData('imageWidth');
-            $('#player_image').removeData('imageHeight');
-            $('#player_image').removeData('imageratio');
+		// 	$('.series_image').removeData('imageWidth');
+		// 	$('.series_image').removeData('imageHeight');
+		// 	$('.series_image').removeData('imageratio');
 
-            var file = this.files[0];
-            var tmpImg = new Image();
+		// 	var file = this.files[0];
+		// 	var tmpImg = new Image();
 
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-                $('#player_image').data('imageWidth', width);
-                $('#player_image').data('imageHeight', height);
-                $('#player_image').data('imageratio', ratio);
-            }
-        });
+		// 	tmpImg.src=window.URL.createObjectURL( file ); 
+		// 	tmpImg.onload = function() {
+		// 		width = tmpImg.naturalWidth,
+		// 		height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
+		// 		$('.series_image').data('imageWidth', width);
+		// 		$('.series_image').data('imageHeight', height);
+		// 		$('.series_image').data('imageratio', ratio);
+
+		// 	}
+		// });
+
+
+        // $('.season_image').change(function() {
+
+        //     $('.season_image').removeData('imageWidth');
+        //     $('.season_image').removeData('imageHeight');
+        //     $('.season_image').removeData('imageratio');
+
+        //     var file = this.files[0];
+        //     var tmpImg = new Image();
+
+        //     tmpImg.src=window.URL.createObjectURL( file ); 
+        //     tmpImg.onload = function() {
+        //         width = tmpImg.naturalWidth,
+        //         height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
+        //         $('.season_image').data('imageWidth', width);
+        //         $('.season_image').data('imageHeight', height);
+        //         $('.season_image').data('imageratio', ratio);
+        //     }
+        // });
+
+        // $('#player_image').change(function() {
+
+        //     $('#player_image').removeData('imageWidth');
+        //     $('#player_image').removeData('imageHeight');
+        //     $('#player_image').removeData('imageratio');
+
+        //     var file = this.files[0];
+        //     var tmpImg = new Image();
+
+        //     tmpImg.src=window.URL.createObjectURL( file ); 
+        //     tmpImg.onload = function() {
+        //         width = tmpImg.naturalWidth,
+        //         height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
+        //         $('#player_image').data('imageWidth', width);
+        //         $('#player_image').data('imageHeight', height);
+        //         $('#player_image').data('imageratio', ratio);
+        //     }
+        // });
 
 
 
