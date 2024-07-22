@@ -10,6 +10,7 @@
       $button_bg_color = button_bg_color();
 
       $signin_header = $theme->signin_header;
+      $admin_advertistment_banners = App\AdminAdvertistmentBanners::first();
 
 
       if(!empty(Auth::User()->id)){
@@ -1025,10 +1026,11 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                            <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
                         </div>
                      <?php endif ;?>
+                     
                      <?php if (optional($admin_advertistment_banners)->top_script_url ): ?>
-                           <script src="<?= optional($admin_advertistment_banners)->top_script_url ?>"></script>
-                     <?php endif ;?>
-                  <?php endif ;?>
+                        <script src="<?= optional($admin_advertistment_banners)->top_script_url ?>"></script>
+                     <?php endif ;
+                  endif ;?>
 
                   <div class="col-sm-12">
 
