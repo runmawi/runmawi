@@ -145,10 +145,24 @@
                     				<div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image(1080x1920 px or 9:16 ratio):</p>
+
+                                             @php 
+												$width = $compress_image_settings->width_validation_live;
+												$heigth = $compress_image_settings->height_validation_live
+											@endphp
+											@if($width !== null && $heigth !== null)
+												<p class="p1">{{ ("Select the Live Stream image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+											@else
+												<p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+											@endif
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
+												<span>
+													<p id="live_image_error_msg" style="color:red !important; display:none;">
+														* Please upload an image with the correct dimensions.
+													</p>
+												</span> 
                                             </div>
 
 											<div class="">
@@ -162,9 +176,22 @@
                    						</div>
                     					<div class="col-md-6">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
+											@php 
+												$player_width = $compress_image_settings->live_player_img_width;
+												$player_heigth = $compress_image_settings->live_player_img_height
+											@endphp
+											@if($player_width !== null && $player_heigth !== null)
+												<p class="p1">{{ ("Select the Live Stream image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+											@else
+												<p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+											@endif
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+												<span>
+													<p id="live_player_image_error_msg" style="color:red !important; display:none;">
+														* Please upload an image with the correct dimensions.
+													</p>
+												</span> 
                                             </div>
 											<div class="">
 												<div class="panel-body">
@@ -519,81 +546,81 @@
 
 
 	        // Image upload dimention validation
-		$.validator.addMethod('dimention', function(value, element, param) {
-            if(element.files.length == 0){
-                return true; 
-            }
+		// $.validator.addMethod('dimention', function(value, element, param) {
+        //     if(element.files.length == 0){
+        //         return true; 
+        //     }
 
-            var width = $(element).data('imageWidth');
-            var height = $(element).data('imageHeight');
-            var ratio = $(element).data('imageratio');
-            var image_validation_status = "{{  image_validation_live() }}" ;
+        //     var width = $(element).data('imageWidth');
+        //     var height = $(element).data('imageHeight');
+        //     var ratio = $(element).data('imageratio');
+        //     var image_validation_status = "{{  image_validation_live() }}" ;
 
-            if( image_validation_status == "0" || ratio == '0.56'|| width == param[0] && height == param[1]){
-                return true;
-            }else{
-                return false;
-            }
-        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio');
+        //     if( image_validation_status == "0" || ratio == '0.56'|| width == param[0] && height == param[1]){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio');
 
-                // player Image upload validation
-        $.validator.addMethod('player_dimention', function(value, element, param) {
-            if(element.files.length == 0){
-                return true; 
-            }
+        //         // player Image upload validation
+        // $.validator.addMethod('player_dimention', function(value, element, param) {
+        //     if(element.files.length == 0){
+        //         return true; 
+        //     }
 
-            var width = $(element).data('imageWidth');
-            var height = $(element).data('imageHeight');
-            var ratio = $(element).data('imageratio');
-            var image_validation_status = "{{  image_validation_live() }}" ;
+        //     var width = $(element).data('imageWidth');
+        //     var height = $(element).data('imageHeight');
+        //     var ratio = $(element).data('imageratio');
+        //     var image_validation_status = "{{  image_validation_live() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.78'||  width == param[0] && height == param[1]){
-                return true;
-            }else{
-                return false;
-            }
-        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
+        //     if( image_validation_status == "0" || ratio == '1.78'||  width == param[0] && height == param[1]){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
 
-        $('#image').change(function() {
+        // $('#image').change(function() {
 
-            $('#image').removeData('imageWidth');
-            $('#image').removeData('imageHeight');
-            $('#image').removeData('imageratio');
+        //     $('#image').removeData('imageWidth');
+        //     $('#image').removeData('imageHeight');
+        //     $('#image').removeData('imageratio');
 
-            var file = this.files[0];
-            var tmpImg = new Image();
+        //     var file = this.files[0];
+        //     var tmpImg = new Image();
 
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-                $('#image').data('imageWidth', width);
-                $('#image').data('imageHeight', height);
-                $('#image').data('imageratio', ratio);
-            }
-        });
+        //     tmpImg.src=window.URL.createObjectURL( file ); 
+        //     tmpImg.onload = function() {
+        //         width = tmpImg.naturalWidth,
+        //         height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
+        //         $('#image').data('imageWidth', width);
+        //         $('#image').data('imageHeight', height);
+        //         $('#image').data('imageratio', ratio);
+        //     }
+        // });
 
-        $('#player_image').change(function() {
+        // $('#player_image').change(function() {
 
-            $('#player_image').removeData('imageWidth');
-            $('#player_image').removeData('imageHeight');
-            $('#player_image').removeData('imageratio');
+        //     $('#player_image').removeData('imageWidth');
+        //     $('#player_image').removeData('imageHeight');
+        //     $('#player_image').removeData('imageratio');
 
-            var file = this.files[0];
-            var tmpImg = new Image();
+        //     var file = this.files[0];
+        //     var tmpImg = new Image();
 
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-                $('#player_image').data('imageWidth', width);
-                $('#player_image').data('imageHeight', height);
-                $('#player_image').data('imageratio', ratio);
-            }
-        });
+        //     tmpImg.src=window.URL.createObjectURL( file ); 
+        //     tmpImg.onload = function() {
+        //         width = tmpImg.naturalWidth,
+        //         height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
+        //         $('#player_image').data('imageWidth', width);
+        //         $('#player_image').data('imageHeight', height);
+        //         $('#player_image').data('imageratio', ratio);
+        //     }
+        // });
 
 
 	$('form[id="cpp_live_video"]').validate({				
@@ -662,6 +689,67 @@
 <!-- {{-- End validate --}} -->
 
 
+{{-- image validation --}}
+
+<script>
+	document.getElementById('image').addEventListener('change', function() {
+		var file = this.files[0];
+		if (file) {
+			var img = new Image();
+			img.onload = function() {
+				var width = img.width;
+				var height = img.height;
+				console.log(width);
+				console.log(height);
+				
+				var validWidth = {{ $compress_image_settings->width_validation_live }};
+				var validHeight = {{ $compress_image_settings->height_validation_live }};
+				console.log(validWidth);
+				console.log(validHeight);
+
+				if (width !== validWidth || height !== validHeight) {
+					document.getElementById('live_image_error_msg').style.display = 'block';
+					$('.pull-right').prop('disabled', true);
+					document.getElementById('live_image_error_msg').innerText = 
+						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+				} else {
+					document.getElementById('live_image_error_msg').style.display = 'none';
+					$('.pull-right').prop('disabled', false);
+				}
+			};
+			img.src = URL.createObjectURL(file);
+		}
+	});
+
+	document.getElementById('player_image').addEventListener('change', function() {
+		var file = this.files[0];
+		if (file) {
+			var img = new Image();
+			img.onload = function() {
+				var width = img.width;
+				var height = img.height;
+				console.log(width);
+				console.log(height);
+				
+				var validWidth = {{ $compress_image_settings->live_player_img_width }};
+				var validHeight = {{ $compress_image_settings->live_player_img_height }};
+				console.log(validWidth);
+				console.log(validHeight);
+
+				if (width !== validWidth || height !== validHeight) {
+					document.getElementById('live_player_image_error_msg').style.display = 'block';
+					$('.pull-right').prop('disabled', true);
+					document.getElementById('live_player_image_error_msg').innerText = 
+						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+				} else {
+					document.getElementById('live_player_image_error_msg').style.display = 'none';
+					$('.pull-right').prop('disabled', false);
+				}
+			};
+			img.src = URL.createObjectURL(file);
+		}
+	});
+</script>
 
 
 {{-- Sweet alert --}}

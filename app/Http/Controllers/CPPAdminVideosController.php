@@ -62,6 +62,7 @@ use App\ModeratorSubscription;
 use App\Audio;
 use App\SiteTheme;
 use App\ModeratorsRole;
+use App\CompressImage;
 
 class CPPAdminVideosController extends Controller
 {
@@ -651,6 +652,8 @@ class CPPAdminVideosController extends Controller
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
 
+        $compress_image_settings = CompressImage::first();
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $settings = Setting::first();
             $user = Session::get('user'); 
@@ -710,6 +713,7 @@ class CPPAdminVideosController extends Controller
                 'video_artist' => [],
                 'ads' => Advertisement::where('status', '=', 1)->get(),
                 'InappPurchase' => InappPurchase::all(),
+                'compress_image_settings' => $compress_image_settings,
             ];
 
             return View::make('moderator.cpp.videos.fileupload', $data);
@@ -1014,6 +1018,8 @@ class CPPAdminVideosController extends Controller
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
 
+        $compress_image_settings = CompressImage::first();
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $settings = Setting::first();
 
@@ -1094,6 +1100,7 @@ class CPPAdminVideosController extends Controller
 
                 'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
                 ->where('videos.id',$id)->first(),
+                'compress_image_settings' => $compress_image_settings,
             ];
 
             return View::make('moderator.cpp.videos.create_edit', $data);

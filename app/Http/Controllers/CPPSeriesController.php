@@ -62,6 +62,7 @@ use App\Livestream;
 use App\ModeratorSubscription;
 use App\Audio;
 use App\SiteTheme;
+use App\CompressImage;
 
 class CPPSeriesController extends Controller
 {
@@ -481,6 +482,8 @@ class CPPSeriesController extends Controller
         $results = Episode::all();
         $settings = Setting::first();
 
+        $compress_image_settings = CompressImage::first();
+
         //$episode = Episode::all();
         $seasons = SeriesSeason::where('series_id', '=', $id)->where('uploaded_by', 'CPP')
             ->with('episodes')
@@ -505,6 +508,7 @@ class CPPSeriesController extends Controller
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')
                 ->toArray() ,
             'InappPurchase' => InappPurchase::all() ,
+            'compress_image_settings' => $compress_image_settings,
         );
 
         return View::make('moderator.cpp.series.create_edit', $data);
@@ -1303,6 +1307,8 @@ class CPPSeriesController extends Controller
         $user = Session::get('user');
         $user_id = $user->id;
 
+        $compress_image_settings = CompressImage::first();
+
         if($this->enable_moderator_Monetization == 1){
 
             $ModeratorSubscription = ModeratorSubscription::where('user_id', '=', $user_id)->count(); 
@@ -1354,6 +1360,7 @@ class CPPSeriesController extends Controller
             'age_categories' => AgeCategory::all() ,
             'settings' => Setting::first() ,
             'InappPurchase' => InappPurchase::all() ,
+            'compress_image_settings' => $compress_image_settings,
 
         );
 
@@ -1590,6 +1597,9 @@ class CPPSeriesController extends Controller
     public function edit_episode($id)
     {
         $episodes = Episode::find($id);
+
+        $compress_image_settings = CompressImage::first();
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Episode ' . $episodes->title,
             'episodes' => $episodes,
@@ -1598,6 +1608,7 @@ class CPPSeriesController extends Controller
             // 'admin_user' => Auth::user(),
             'age_categories' => AgeCategory::all() ,
             'settings' => Setting::first() ,
+            'compress_image_settings' => $compress_image_settings,
 
         );
 
