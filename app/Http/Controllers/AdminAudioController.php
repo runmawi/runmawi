@@ -55,7 +55,7 @@ use App\ModeratorsUser as ModeratorsUser;
 use File;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Channel;
-
+use App\CompressImage;
 
 class AdminAudioController extends Controller
 {
@@ -210,6 +210,7 @@ class AdminAudioController extends Controller
             }else{ 
                 $dropzone_url =  URL::to('admin/uploadAudio');
             }
+            $compress_image_settings = CompressImage::first();
 
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
@@ -227,6 +228,7 @@ class AdminAudioController extends Controller
             'languages_id' => [],
             'InappPurchase' => InappPurchase::all(),
             'dropzone_url' => $dropzone_url,
+            'compress_image_settings' => $compress_image_settings,
             );
          
         return View::make('admin.audios.create_edit', $data);
@@ -445,6 +447,8 @@ class AdminAudioController extends Controller
                 if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin") {
                     
                     $audio = Audio::find($id);
+                    $compress_image_settings = CompressImage::first();
+
                     $data = [
                         'headline' => '<i class="fa fa-edit"></i> Edit Audio',
                         'audio' => $audio,
@@ -461,6 +465,7 @@ class AdminAudioController extends Controller
                         'category_id' => CategoryAudio::where('audio_id', $id)->pluck('category_id')->toArray(),
                         'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
                         'InappPurchase' => InappPurchase::all(),
+                        'compress_image_settings' => $compress_image_settings,
                     ];
 
                     return View::make('admin.audios.edit', $data);
