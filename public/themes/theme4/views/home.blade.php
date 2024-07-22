@@ -67,9 +67,9 @@
 
       @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
          @if (optional($admin_advertistment_banners)->top_image_url )
-            <div class="col-sm-9 mx-auto ">
+            {{-- <div class="col-sm-9 mx-auto ">
                <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
-            </div>
+            </div> --}}
          @endif
 
          @if (optional($admin_advertistment_banners)->top_script_url )

@@ -1019,10 +1019,15 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
             <div class="container-fluid pl-3">
                <div class="row">
                         
-                  <?php if($theme->header_top_position == 1): ?>
-                     <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" data-src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
-                     </div>
+                  <?php if( optional($admin_advertistment_banners)->top_banner_status == 1 ): ?>
+                     <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
+                        <div class="col-sm-9 mx-auto header_top_position_img">
+                           <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
+                        </div>
+                     <?php endif ;?>
+                     <?php if (optional($admin_advertistment_banners)->top_script_url ): ?>
+                           <script src="<?= optional($admin_advertistment_banners)->top_script_url ?>"></script>
+                     <?php endif ;?>
                   <?php endif ;?>
 
                   <div class="col-sm-12">
