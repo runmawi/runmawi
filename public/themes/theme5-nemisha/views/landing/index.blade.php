@@ -69,6 +69,8 @@
     <link rel="preload" href="https://cdn.plyr.io/3.7.3/plyr.css" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -1291,7 +1293,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="100%" height="100%" alt="v1">
+                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555px" heiht="343px" alt="v1">
                     </div>
                 </div>
             </div>
@@ -1346,7 +1348,7 @@
                                         <a class="{{ 'nav-link' . ' ' . 'series-category-key-id-' . ($key + 1) }}"
                                             id="pills-profile-tab-{{ $key + 1 }}" data-toggle="pill"
                                             data-category-id={{ $category->id }} onclick="Series_Category(this)"
-                                            aria-controls="pills-profile" aria-selected="false" aria-role="Explore Tab">
+                                            aria-controls="pills-profile" aria-selected="false" aria-role={{ $category->name }} >
                                             {{ $category->name }}
                                         </a>
                                     </li>
