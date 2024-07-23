@@ -167,6 +167,57 @@ class PageListController extends Controller
             return abort(404);
         }
     }
+    public function Live_Stream_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $live_category_pagelist = $FrontEndQueryController->LiveStream();
+            $live_category_paginate = $this->paginateCollection($live_category_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'live_category_pagelist' => $live_category_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+            );
+        
+            return Theme::view('Page-List.live-category', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Audio_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $audio_list_pagelist = $FrontEndQueryController->latest_audios();
+            $audio_list_paginate = $this->paginateCollection($audio_list_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'audio_list_pagelist' => $audio_list_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+            );
+        
+            return Theme::view('Page-List.audio-list', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
 
     public function deconstruct()
     {

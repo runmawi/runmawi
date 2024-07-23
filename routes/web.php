@@ -297,7 +297,10 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
     Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
     Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
+    Route::get('Live_categories', 'PageListController@Live_Stream_list')->name('pagelist.live-category_list');
+    Route::get('Audio_list', 'PageListController@Audio_list')->name('pagelist.audio_list');
 
+    
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
 
