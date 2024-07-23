@@ -2034,6 +2034,11 @@ $('#error_video_Category').hide();
             .catch( error => {
                 console.error( error );
             } );
+         ClassicEditor
+            .create( document.querySelector( '#trailer-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
 
    CKEDITOR.replace( 'trailer-ckeditor', {
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
