@@ -36,6 +36,7 @@
                                             <th>{{ _('roku')}}</th>
                                             <th>{{ _('lg')}}</th>
                                             <th>{{ _('samsung')}}</th>
+                                            <th>{{ _('Fire Tv')}}</th>
                                             <th>{{ _('Action') }}</th>
                                         </tr>
                                     </thead>
@@ -51,6 +52,7 @@
                                                 <td>{{ $ads_variable->roku ?? ' -' }}</td>
                                                 <td>{{ $ads_variable->lg ?? ' -' }}</td>
                                                 <td>{{ $ads_variable->samsung ?? ' -' }}</td>
+                                                <td>{{ $ads_variable->firetv ?? ' -' }}</td>
                                                 <td>
                                                     <a class="iq-bg-success edit_variable" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
                                                         data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_variable->id }}"><img class="ply"
@@ -108,7 +110,10 @@
 
                         <label>{{ _('Samsung')}}</label>
                         <input type="text" name="samsung" id="samsung" value="" class="form-control" placeholder="Enter the Samsung">
-                            
+                         
+                        <label>{{ _('Fire Tv')}}</label>
+                        <input type="text" name="firetv" id="firetv" value="" class="form-control" placeholder="Enter the fire tv">
+                         
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                     </div>
@@ -159,6 +164,7 @@
                         $('#roku').val(data.data.roku);
                         $('#Lg').val(data.data.lg);
                         $('#samsung').val(data.data.samsung);
+                        $('#firetv').val(data.data.firetv);
                         $('#url').val('variable-update/' + id);
                     })
                 });

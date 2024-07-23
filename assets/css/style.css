@@ -765,7 +765,7 @@ video{object-fit:fill}
 @media (min-width:1499px) {
 .container{max-width:1266px}
 #home-slider h1.slider-text{margin:30px 0}
-#home-slider p{margin:32px 0}
+/* #home-slider p{margin:32px 0} */
 }
 @media only screen and (min-width:1200px) and (max-width:1366px) {
 .search:focus,.search:hover{width:220px!important}
@@ -1011,7 +1011,7 @@ h2.main-title {font-size: 1.3em;font-weight: 500;}
         animation: fadeIn .6s ease-in-out;
         opacity: 1;
     }
-    .flickity-slider .block-description .playTrailer{height: 0;}
+    .flickity-slider .block-description .playTrailer, .block-description .playTrailer{height: 0;}
     .block-description p.desc-name{font-size: 12px;-webkit-line-clamp: 3;line-height: 1.4;}
     .movie-time span.position-relative:before {
         content: "";

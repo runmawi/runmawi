@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
 
 <head>
@@ -37,7 +37,7 @@
 
     <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
 
-    <link rel="preload" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp" alt="logo" width="140" height="60">
+    <link rel="preload" fetchpriority="high" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +48,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" as="style" fetchpriority="high" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
     <link  rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>"  as="style" fetchpriority="high" />
@@ -68,6 +69,8 @@
     <link rel="preload" href="https://cdn.plyr.io/3.7.3/plyr.css" as="style" fetchpriority="high" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -76,6 +79,8 @@
     <!-- Include jQuery library -->
     <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
 
 
     <style>
@@ -1226,7 +1231,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <img class="lazy land-logo" data-src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140" height="60">
+                <img class="land-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" alt="logo" width="140px" height="60px">
                
                 <div class="collapse justify-content-end" id="navbarSupportedContent">
                     <a type="button" class="btn btn-outline-danger bp my-2 mr-2 my-sm-0" href="{{ route('login') }}">Sign In </a>
@@ -1288,7 +1293,7 @@
                     </div>
 
                     <div class="col-lg-6 imk">
-                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555" heiht="343" alt="v1">
+                        <img class="img-lan lazyload" src="<?php echo URL::to('/assets/img/v1.webp'); ?>" width="555px" heiht="343px" alt="v1">
                     </div>
                 </div>
             </div>
@@ -1343,7 +1348,7 @@
                                         <a class="{{ 'nav-link' . ' ' . 'series-category-key-id-' . ($key + 1) }}"
                                             id="pills-profile-tab-{{ $key + 1 }}" data-toggle="pill"
                                             data-category-id={{ $category->id }} onclick="Series_Category(this)"
-                                            aria-controls="pills-profile" aria-selected="false">
+                                            aria-controls="pills-profile" aria-selected="false" aria-role={{ $category->name }} >
                                             {{ $category->name }}
                                         </a>
                                     </li>
@@ -1615,7 +1620,7 @@
                                 <div class="col-lg-6 pa">
                                     <div></div>
                                     <div class=" lan">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3" width:"5%" height="5%">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.webp'); ?>" alt="v3" width="15%" height="15%">
                                         <h5 class="benefits">User Feedback and Interaction</h5>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
@@ -1625,7 +1630,7 @@
                                 <div class="col-lg-6 p-0">
                                     <div></div>
                                     <div class="lan ">
-                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4" width:"5%" height="5%">
+                                        <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.webp'); ?>" alt="v4" width="12%" height="18%">
                                         <h4 class="benefits" style="font-weight:400 !important;font-size 18px;">Aggregated User generated content</h5>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
@@ -1633,7 +1638,7 @@
                                 </div>
 
                                 <div class=" col-lg-6 rated mt-3">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5" width:"5%" height="5%">
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.webp'); ?>" alt="v5" width="14%" height="12%">
                                     <h3 class="benefits" style="font-size 23px !important; font-weight:400 !important">Curated multiformat<br> training content</h5>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
                                         social, solitary, verbal and logical.</p>
@@ -1836,7 +1841,6 @@
 
         </section>
 
-        <link rel="preload" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" as="stylesheet" fetchpriority="high" />
          <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> 
         <script>
             function toggleMute() {

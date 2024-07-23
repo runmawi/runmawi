@@ -2,39 +2,65 @@
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
 ?>
-<html>
+<html lang="en-US">
 <head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="description" content="Nemisa TV">
+<meta name="csrf-token" content="{{ csrf_token() }}">   
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Login | <?php echo $settings->website_name ; ?></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css')?>" rel="stylesheet">
+      <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css')?>" as="style">
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css')?>">
       <!-- Typography CSS -->
-      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
+        <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" as="style">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
-      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+        <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" as="style">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
+        
+        <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" as="style">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+        
+        <link rel="preload" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" as="style">
         <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
 
         <link rel="preload" as="image" href="https://nemisatv.co.za/assets/img/nem-b.webp" alt="header-logo" width="100%" height="100%">
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
+
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" as="style">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
         
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-    </script>
-            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
-    </script>
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" as="script">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map" as="script">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map"></script>
+
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" as="style">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+        <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" as="script">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+        <link rel="preload" href="https://unpkg.com/sweetalert/dist/sweetalert.min.js" as="script">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
 <style>
     .navbar-collapse{
@@ -266,7 +292,7 @@ line-height: 55px;
     align-items: center;">
     
     
-<div class="position-relative pad"  >
+<div class="position-relative pad">
 <div class="fixe">
      <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">NEMISA TV</span></h1>
     <div class="row m-0 p-0 justify-content-center">
@@ -338,10 +364,10 @@ line-height: 55px;
                         </div> 
                             <div class="position-relative">
                                  <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeSlash-icon"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeShow-icon"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                             </div>
                                  </div>
@@ -438,9 +464,12 @@ line-height: 55px;
 @php
     include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp
-
+<link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                    <script src="jquery-3.5.1.min.js"></script>
+
+<link rel="preload" href="jquery-3.5.1.min.js" as="script">
+<script src="jquery-3.5.1.min.js"></script>
+
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
@@ -483,21 +512,31 @@ line-height: 55px;
 </body>
 
       <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
-      <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
-      <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
-      <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
-      <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
-      <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
-      <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
-      <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
+        <link rel="preload" href="assets/js/jquery-3.4.1.min.js" as="script">
+        <script src="assets/js/jquery-3.4.1.min.js"></script>
+
+        <link rel="preload" href="assets/js/popper.min.js" as="script">
+        <script src="assets/js/popper.min.js"></script>
+        <!-- Bootstrap JS -->
+        <link rel="preload" href="assets/js/bootstrap.min.js" as="script">
+        <script src="assets/js/bootstrap.min.js"></script>
+        <!-- Slick JS -->
+        <link rel="preload" href="assets/js/slick.min.js" as="script">
+        <script src="assets/js/slick.min.js"></script>
+        <!-- owl carousel Js -->
+        <link rel="preload" href="assets/js/owl.carousel.min.js" as="script">
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <!-- select2 Js -->
+        <link rel="preload" href="assets/js/select2.min.js" as="script">
+        <script src="assets/js/select2.min.js"></script>
+        <!-- Magnific Popup-->
+        <link rel="preload" href="assets/js/jquery.magnific-popup.min.js" as="script">
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <!-- Slick Animation-->
+        <link rel="preload" href="assets/js/slick-animation.min.js" as="script">
+        <script src="assets/js/slick-animation.min.js"></script>
+        <!-- Custom JS-->
+        <link rel="preload" href="assets/js/custom.js" as="script">
+        <script src="assets/js/custom.js"></script>
 
 </html>
