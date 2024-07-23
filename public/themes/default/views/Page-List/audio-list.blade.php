@@ -25,7 +25,7 @@
                                         <div class="border-bg">
                                            <div class="img-box">
                                                  <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}">
-                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/audios/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}">
                                                  </a>   
                                            </div>
                                         </div>
@@ -48,7 +48,7 @@
                                 <div class="col-md-12 text-center mt-4"
                                     style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
                                     <p>
-                                    <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                                    <h3 class="text-center">{{ __('No Audio Available') }}</h3>
                                 </div>
                             @endforelse
                         </ul>
@@ -62,7 +62,7 @@
                     <div class="col-md-12 text-center mt-4"
                         style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
                         <p>
-                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                        <h3 class="text-center">{{ __('No Audio Available') }}</h3>
                     </div>
                 @endif
             </div>
