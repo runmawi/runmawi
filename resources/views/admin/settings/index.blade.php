@@ -2500,12 +2500,14 @@ border-radius: 0px 4px 4px 0px;
 
 	</script>
 
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+
     <script>
-    CKEDITOR.replace( 'summary-ckeditor', {
-        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
+     ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
     </script>
 
 {{-- validate --}}
