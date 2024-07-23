@@ -613,7 +613,7 @@ data: {
                         placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                         </div>
                         <div class="col-12 form-group">
-                                <textarea   rows="5" class="form-control mt-2" name="details" 
+                                <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
                             placeholder="Link , and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
                             </div>
                                 </div>
@@ -1504,13 +1504,24 @@ $(document).ready(function(){
 
 	</script>
 
-<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 
 <script>
-CKEDITOR.replace( 'summary-ckeditor', {
-    filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-    filebrowserUploadMethod: 'form'
-});
+        ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            ClassicEditor
+            .create( document.querySelector( '#links-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            ClassicEditor
+            .create( document.querySelector( '#trailer-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
 </script>
 
 <script>

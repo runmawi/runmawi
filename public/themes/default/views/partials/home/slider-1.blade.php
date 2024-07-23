@@ -52,8 +52,12 @@
                                 </a>
                             @else
                                 <!-- Video Title -->
+                                @php
+                                    $title = str_replace('<br>',' ',$videos->title);
+                                    $decode_title = strip_tags(html_entity_decode($title));
+                                @endphp
                                 <h1 class="text-white">
-                                    {{ strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title }}
+                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
                                 </h1>
                             @endif
 
