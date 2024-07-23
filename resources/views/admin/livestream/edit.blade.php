@@ -167,11 +167,24 @@ border-radius: 0px 4px 4px 0px;
                 <div class="mt-3">
                             <div class="">
                                 <label class="m-0">Live Stream Image Cover</label>
-                                <p class="p1">Select the Live Stream image (9:16 Ratio or 1080 X 1920px):</p>
+                                @php 
+                                    $width = $compress_image_settings->width_validation_live;
+                                    $heigth = $compress_image_settings->height_validation_live
+                                @endphp
+                                @if($width !== null && $heigth !== null)
+                                    <p class="p1">{{ ("Select the Live Stream image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                                @else
+                                    <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                @endif
 
                                 <div class="panel-body">
                                 <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/*"/>
-                                </div>
+                                <span>
+                                    <p id="live_image_error_msg" style="color:red !important; display:none;">
+                                        * Please upload an image with the correct dimensions.
+                                    </p>
+                                </span>    
+                            </div>
                             </div>
 
                             <div class="mt-2 text-center">
@@ -187,11 +200,24 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row mt-3">
                             <div class="">
                                 <label class="m-0">Player Image Cover</label>
-                                <p class="p1">Select the Live Stream image (1920X1080px or 16:9 ratio):</p>
+                                @php 
+                                    $player_width = $compress_image_settings->live_player_img_width;
+                                    $player_heigth = $compress_image_settings->live_player_img_height
+                                @endphp
+                                @if($player_width !== null && $player_heigth !== null)
+                                    <p class="p1">{{ ("Select the Live Stream image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                                @else
+                                    <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                @endif
 
                                 <div class="panel-body">
                                 <input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/*" />
-                                </div>
+                                <span>
+                                    <p id="live_player_image_error_msg" style="color:red !important; display:none;">
+                                        * Please upload an image with the correct dimensions.
+                                    </p>
+                                </span>     
+                            </div>
                             </div>
 
                             <div class="mt-2 text-center">
@@ -1208,26 +1234,26 @@ $(document).ready(function(){
             }
         });
 
-        $('#live_stream_tv_image').change(function() {
+        // $('#live_stream_tv_image').change(function() {
 
-            $('#live_stream_tv_image').removeData('imageWidth');
-            $('#live_stream_tv_image').removeData('imageHeight');
-            $('#live_stream_tv_image').removeData('imageratio');
+        //     $('#live_stream_tv_image').removeData('imageWidth');
+        //     $('#live_stream_tv_image').removeData('imageHeight');
+        //     $('#live_stream_tv_image').removeData('imageratio');
 
-            var file = this.files[0];
-            var tmpImg = new Image();
+        //     var file = this.files[0];
+        //     var tmpImg = new Image();
 
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
+        //     tmpImg.src=window.URL.createObjectURL( file ); 
+        //     tmpImg.onload = function() {
+        //         width = tmpImg.naturalWidth,
+        //         height = tmpImg.naturalHeight;
+		// 		ratio =  Number(width/height).toFixed(2) ;
                 
-                $('#live_stream_tv_image').data('imageWidth', width);
-                $('#live_stream_tv_image').data('imageHeight', height);
-                $('#live_stream_tv_image').data('imageratio', ratio);
-            }
-        });
+        //         $('#live_stream_tv_image').data('imageWidth', width);
+        //         $('#live_stream_tv_image').data('imageHeight', height);
+        //         $('#live_stream_tv_image').data('imageratio', ratio);
+        //     }
+        // });
 
 
 
@@ -1566,6 +1592,68 @@ $(document).ready(function(){
 	}
 
 	</script>
+
+    {{-- image validation --}}
+
+    <script>
+        document.getElementById('image').addEventListener('change', function() {
+            var file = this.files[0];
+            if (file) {
+                var img = new Image();
+                img.onload = function() {
+                    var width = img.width;
+                    var height = img.height;
+                    console.log(width);
+                    console.log(height);
+                    
+                    var validWidth = {{ $compress_image_settings->width_validation_live }};
+                    var validHeight = {{ $compress_image_settings->height_validation_live }};
+                    console.log(validWidth);
+                    console.log(validHeight);
+
+                    if (width !== validWidth || height !== validHeight) {
+                        document.getElementById('live_image_error_msg').style.display = 'block';
+                        $('.pull-right').prop('disabled', true);
+                        document.getElementById('live_image_error_msg').innerText = 
+                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                    } else {
+                        document.getElementById('live_image_error_msg').style.display = 'none';
+                        $('.pull-right').prop('disabled', false);
+                    }
+                };
+                img.src = URL.createObjectURL(file);
+            }
+        });
+
+        document.getElementById('player_image').addEventListener('change', function() {
+            var file = this.files[0];
+            if (file) {
+                var img = new Image();
+                img.onload = function() {
+                    var width = img.width;
+                    var height = img.height;
+                    console.log(width);
+                    console.log(height);
+                    
+                    var validWidth = {{ $compress_image_settings->live_player_img_width }};
+                    var validHeight = {{ $compress_image_settings->live_player_img_height }};
+                    console.log(validWidth);
+                    console.log(validHeight);
+
+                    if (width !== validWidth || height !== validHeight) {
+                        document.getElementById('live_player_image_error_msg').style.display = 'block';
+                        $('.pull-right').prop('disabled', true);
+                        document.getElementById('live_player_image_error_msg').innerText = 
+                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                    } else {
+                        document.getElementById('live_player_image_error_msg').style.display = 'none';
+                        $('.pull-right').prop('disabled', false);
+                    }
+                };
+                img.src = URL.createObjectURL(file);
+            }
+        });
+    </script>
 
 <script>
 	$(document).ready(function(){

@@ -163,11 +163,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     <div class="col-sm-6">
                         <div id="ImagesContainer" class="gridContainer mt-3"></div>
                         <label class="m-1">Episode Image Cover</label>
-                        <p class="p1">Select the episodes image (9:16 ratio or 1080 X 1920px )</p>
-
+                        @php 
+                            $width = $compress_image_settings->width_validation_episode;
+                            $heigth = $compress_image_settings->height_validation_episode
+                        @endphp
+                        @if($width !== null && $heigth !== null)
+                            <p class="p1">{{ ("Select the episodes image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                        @else
+                            <p class="p1">{{ "Select the episodes image ( 9:16 Ratio or 1080X1920px)"}}:</p> 
+                        @endif
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="image" id="image" />
+                            <input type="file" multiple="true" class="form-group" name="image" id="episode_image" />
 
+                            <span>
+                                <p id="season_image_error_msg" style="color:red !important; display:none;">
+                                    * Please upload an image with the correct dimensions.
+                                </p>
+                            </span>
                             @if(!empty($episodes->image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->image }}" class="episodes-img" width="200" />
                             @endif
@@ -177,11 +189,25 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     <div class="col-sm-6">
                          <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p>
+                        @php 
+                            $player_width = $compress_image_settings->episode_player_img_width;
+                            $player_heigth = $compress_image_settings->episode_player_img_height;
+                        @endphp
+                        @if($player_width !== null && $player_heigth !== null)
+                            <p class="p1">{{ ("Select the episodes image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                        @else
+                            <p class="p1">{{ "Select the episodes image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                        @endif
+                        {{-- <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p> --}}
 
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
 
+                            <span>
+                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                    * Please upload an image with the correct dimensions.
+                                </p>
+                            </span>
                             @if(!empty($episodes->player_image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
                             @endif
@@ -733,6 +759,68 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
+        // image validation
+        <script>
+            document.getElementById('episode_image').addEventListener('change', function() {
+                var file = this.files[0];
+                if (file) {
+                    var img = new Image();
+                    img.onload = function() {
+                        var width = img.width;
+                        var height = img.height;
+                        console.log(width);
+                        console.log(height);
+                        
+                        var validWidth = {{ $compress_image_settings->width_validation_episode }};
+                        var validHeight = {{ $compress_image_settings->height_validation_episode }};
+                        console.log(validWidth);
+                        console.log(validHeight);
+
+                        if (width !== validWidth || height !== validHeight) {
+                            document.getElementById('season_image_error_msg').style.display = 'block';
+                            $('.pull-right').prop('disabled', true);
+                            document.getElementById('season_image_error_msg').innerText = 
+                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                        } else {
+                            document.getElementById('season_image_error_msg').style.display = 'none';
+                            $('.pull-right').prop('disabled', false);
+                        }
+                    };
+                    img.src = URL.createObjectURL(file);
+                }
+            });
+
+            document.getElementById('player_image').addEventListener('change', function() {
+                var file = this.files[0];
+                if (file) {
+                    var img = new Image();
+                    img.onload = function() {
+                        var width = img.width;
+                        var height = img.height;
+                        console.log(width);
+                        console.log(height);
+                        
+                        var validWidth = {{ $compress_image_settings->episode_player_img_width }};
+                        var validHeight = {{ $compress_image_settings->episode_player_img_height }};
+                        console.log(validWidth);
+                        console.log(validHeight);
+
+                        if (width !== validWidth || height !== validHeight) {
+                            document.getElementById('season_thum_image_error_msg').style.display = 'block';
+                            $('.pull-right').prop('disabled', true);
+                            document.getElementById('season_thum_image_error_msg').innerText = 
+                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                        } else {
+                            document.getElementById('season_thum_image_error_msg').style.display = 'none';
+                            $('.pull-right').prop('disabled', false);
+                        }
+                    };
+                    img.src = URL.createObjectURL(file);
+                }
+            });
+        </script>
+
 
         <script>
 

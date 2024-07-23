@@ -37,6 +37,9 @@ $uppercase =  ucfirst($request_url);
       <link rel="preload" href="assets/css/responsive.css" as="style"> 
       <link rel="stylesheet" href="assets/css/responsive.css" />
 
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map" as="script">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js.map"></script>
+
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" as="script"> 
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" as="style"> 
       <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" as="script"> 
