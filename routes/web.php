@@ -2343,6 +2343,12 @@ Route::group(['middleware' => []], function () {
     Route::get('/PaydunyaCancelSubscriptions', 'PaydunyaPaymentController@PaydunyaCancelSubscriptions')->name('PaydunyaCancelSubscriptions');
 });
 
+
+// Recurly Payment
+Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
+    Route::get('checkout-page', 'RecurlyPaymentController@checkout_page')->name('Recurly.checkout_page');
+});
+
 // Reset Password
 
 Route::get('/Reset-Password', 'PasswordForgetController@Reset_Password')->name('Reset_Password');
