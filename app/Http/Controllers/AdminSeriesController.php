@@ -1664,7 +1664,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series_id);
         $episodes = Episode::where('series_id' ,'=', $series_id)
         ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
-
+        $compress_image_settings = CompressImage::first();
 
         $StorageSetting = StorageSetting::first();
         // dd($StorageSetting);
@@ -1771,6 +1771,7 @@ class AdminSeriesController extends Controller
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => SiteTheme::first(),
+                'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('admin.series.season_edit', $data);
