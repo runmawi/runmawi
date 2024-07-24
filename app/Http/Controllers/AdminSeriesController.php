@@ -2877,7 +2877,7 @@ class AdminSeriesController extends Controller
         $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
         if($enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
-                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data);
+                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data,$season_id);
             }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
                 $value["error"] = 3;
                 return $value ;
@@ -4443,7 +4443,7 @@ class AdminSeriesController extends Controller
     }
 
     
-    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data){
+    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data,$season_id){
 
         // Bunny Cdn get Videos 
     
@@ -4590,6 +4590,7 @@ class AdminSeriesController extends Controller
                 $Episode->tv_image = default_horizontal_image();
                 $Episode->player_image = default_horizontal_image();
                 $Episode->user_id = Auth::user()->id;
+                $Episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
                 $Episode->save();
 
                 $Episode_id = $Episode->id;
