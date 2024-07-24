@@ -33,7 +33,7 @@
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
-            // var controlBar = player.controlBar;
+            var controlBar = player.controlBar;
             // console.log("controlbar",controlBar);
             if(!isMobile){
                 controlBar.addChild('subtitlesButton');

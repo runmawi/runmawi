@@ -1,4 +1,4 @@
-{{-- latest viewed audios --}}
+<!-- {{-- latest viewed audios --}}
 @php
 
    // latest viewed Videos
@@ -115,7 +115,7 @@
         </div>
     </section>
 
-@endif
+@endif -->
 
 <!-- 
 <script>
