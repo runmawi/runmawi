@@ -17,7 +17,6 @@
       overflow: hidden;
       margin: 10px 100px; 
       border-radius: 10px;
-      background-color: #ED563C;
    }
    #optionradio {color: #000;}
    #video_upload {margin-top: 5%;}
@@ -185,13 +184,20 @@
           margin: 10px;
           border-radius: 10px;
           padding: 10px;
-         background-color: #ED563C;}
+      }
    }
+
+   .ugc-buttons {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+   }
+
 </style>
 <div id=" content_videopage" class="content-page">
    <div class="container-fluid p-0" id="content_videopage">
       <div class="admin-section-title">
-         <div class="iq-card">
+         <div class="">
             <div class="row">
                
                @if (Session::has('message'))
@@ -208,10 +214,10 @@
              
             </div>
             <div class="row">
-               <div class="col-md-12">
+               <div class="col-md-12 ">
                   <!-- M3u8 Video --> 
-                  <div id="m3u8_url" style="">
-                     <div class="new-audio-file mt-3">
+                  <div id="m3u8_url" class="ugc-buttons" style="">
+                     <div class="new-audio-file">
                         <label for="embed_code"><label>m3u8 URL:</label></label>
                         <input type="text" class="video-form-control" style="border-radius: 7px;" name="m3u8_video_url" id="m3u8_video_url" value="" />
                      </div>
@@ -220,19 +226,19 @@
                      </div>
                   </div>
                   <!-- Embedded Video -->        
-                  <div id="embedvideo" style="">
-                     <div class="new-audio-file mt-3">
+                  <div id="embedvideo" class="ugc-buttons">
+                     <div class="new-audio-file">
                         <label for="embed_code">Embed URL:</label>
                         <p class="p1">Example URL Format : ( https://www.youtube.com/embed/*xxxxxxxxx*/) ) </p>
-                        <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+                        <input type="text" class="video-form-control" name="embed_code" id="embed_code" value="" />
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
                      </div>
                   </div>
                   
-                                    <!-- BunnyCDN Video -->        
-                  <div id="bunnycdnvideo" style="">
+                  <!-- BunnyCDN Video -->        
+                  <div id="bunnycdnvideo">
                      <div class="new-audio-file mt-3">
                         <label for="bunny_cdn_linked_video">BunnyCDN URL:</label>
                         <!-- videolibrary -->
@@ -254,17 +260,17 @@
                      </div>
                   </div>
                   <!-- MP4 Video -->        
-                  <div id="video_mp4" style="">
-                     <div class="new-audio-file mt-3" >
+                  <div id="video_mp4" class="ugc-buttons" >
+                     <div class="new-audio-file" >
                         <label for="mp4_url"><label>Mp4 File URL:</label></label>
-                        <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                        <input type="text" class="video-form-control" name="mp4_url" id="mp4_url" value="" />
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_mp4">Submit</button>
                      </div>
                   </div>
                   <!-- Video upload -->   
-                  <div id="video_upload" style="">
+                  <div id="video_upload" >
                      @if(@$theme_settings->enable_bunny_cdn == 1)
                         
                         <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
@@ -284,11 +290,6 @@
                            <h3 class="card-title upload-ui text-black pt-5 font-weight-bold">Upload Your Own Content</h3>
                            <!-- Dropzone --> 
                            <form action="{{ $post_dropzone_url }}" method="post" class="dropzone "></form>
-                           <div class="row justify-content-center">
-                                 <div class="col-md-9 text-center">
-                                    <p class="c1">Trailers Can Be Uploaded From Video Edit Screen</p>
-                                 </div>
-                           </div>
                         </div>
 
                        <!-- Dropzone template -->
@@ -334,14 +335,14 @@
                   <div class="text-center" style="margin-top: 30px;">
                      <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
                   </div>
-                  <input type="hidden" id="embed_url" value="<?php echo URL::to('/admin/embededcode');?>">
-                  <input type="hidden" id="mp4url" value="<?php echo URL::to('/admin/mp4url');?>">
-                  <input type="hidden" id="m3u8url" value="<?php echo URL::to('/admin/m3u8url');?>">
+                  <input type="hidden" id="embed_url" value="<?php echo URL::to('ugc/embededcode');?>">
+                  <input type="hidden" id="mp4url" value="<?php echo URL::to('ugc/mp4url');?>">
+                  <input type="hidden" id="m3u8url" value="<?php echo URL::to('ugc/m3u8url');?>">
                </div>
-               <hr />
+
             </div>
 
-               <div class="col-md-12 text-right">
+               <div class="col-md-12 text-right" style="background-color: #fff; padding:5px 10px; border-radius:10px; " >
                   <div id="optionradio"  >
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
@@ -442,11 +443,11 @@
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
          
-         	$("#video_upload").addClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#bunny_cdn_video").removeClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
+         	// $("#video_upload").addClass('collapse');
+         	// $("#video_mp4").removeClass('collapse');
+         	// $("#embed_video").removeClass('collapse');
+         	// $("#bunny_cdn_video").removeClass('collapse');
+         	// $("#m3u8").removeClass('m3u8');
          
          
          })
@@ -457,11 +458,11 @@
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
          
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").addClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#bunny_cdn_video").removeClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
+         	// $("#video_upload").removeClass('collapse');
+         	// $("#video_mp4").addClass('collapse');
+         	// $("#embed_video").removeClass('collapse');
+         	// $("#bunny_cdn_video").removeClass('collapse');
+         	// $("#m3u8").removeClass('m3u8');
          
          
          })
@@ -472,11 +473,11 @@
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
          
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	//$("#embed_video").addClass('collapse');
-         	$("#bunny_cdn_video").removeClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
+         	// $("#video_upload").removeClass('collapse');
+         	// $("#video_mp4").removeClass('collapse');
+         	// //$("#embed_video").addClass('collapse');
+         	// $("#bunny_cdn_video").removeClass('collapse');
+         	// $("#m3u8").removeClass('m3u8');
          
          
          })
@@ -487,11 +488,11 @@
          	$('#m3u8_url').show();
          	$('#bunnycdnvideo').hide();
 
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#bunny_cdn_video").removeClass('collapse');
-         	$("#m3u8").addClass('m3u8');
+         	// $("#video_upload").removeClass('collapse');
+         	// $("#video_mp4").removeClass('collapse');
+         	// $("#embed_video").removeClass('collapse');
+         	// $("#bunny_cdn_video").removeClass('collapse');
+         	// $("#m3u8").addClass('m3u8');
          
          })
 
@@ -503,11 +504,11 @@
                $('#m3u8_url').hide();
                $('#bunnycdnvideo').show();
 
-               $("#video_upload").removeClass('collapse');
-               $("#video_mp4").removeClass('collapse');
-               $("#embed_video").removeClass('collapse');
-               // $("#bunny_cdn_video").removeClass('collapse');
-               $("#m3u8").addClass('m3u8');
+               // $("#video_upload").removeClass('collapse');
+               // $("#video_mp4").removeClass('collapse');
+               // $("#embed_video").removeClass('collapse');
+               // // $("#bunny_cdn_video").removeClass('collapse');
+               // $("#m3u8").addClass('m3u8');
             })
          });
          
@@ -632,6 +633,7 @@
    <style>
       .p1{
       font-size: 12px;
+      color: black !important;
       }
       .select2-selection__rendered{
       background-color: #f7f7f7!important;
@@ -850,29 +852,44 @@
                               
                            </div> --}}
 
-                           <div class="col-sm-6 form-group">
-                              <div id="ImagesContainer" class="gridContainer mt-3"></div>
-                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
-                              <input type="file" name="image" id="image" >
-                              <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
-                              @if(!empty($video->image) && ($video->image) != null)
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
-                              @endif
-                           </div>
+                           {{-- <div class="col-sm-6 form-group">
+                              <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
+                               <label class="mb-1">Add Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                               <input type="file" name="player_image" id="player_image" >
+                               <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
+                               @if(!empty($video->player_image))
+                               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
+                               @endif
+                            </div> --}}
+
+                            <div class="row">
+                              <div class="col-sm-6 form-group">
+                                 {{-- <div id="ImagesContainer" class="gridContainer mt-3"></div> --}}
+                                 <label class="mb-1">Add Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
+                                 <input type="file" name="image" id="image" >
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
+                                 @if(!empty($video->image) && ($video->image) != null)
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
+                                 @endif
+                              </div>
+                           </div>      
+
+                           
+                           @if(isset($video->id))
+                           <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
+                           @endif
+   
+                           <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                           <input type="hidden" id="video_id" name="video_id" value="">
+                           <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                           <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                           <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
 
                         </div>
-                        <input type="button" name="next" class="next action-button" id="next2" value="Next" />
+
+                        <button type="submit" style="margin-right: 10px;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+                        {{-- <input type="button" name="next" class="next action-button" id="next2" value="Next" /> --}}
                      </fieldset>
-
-                    
-
-              {{-- Upload Image & Trailer --}}
-
-               
-
-                              {{-- ADS Management --}}
-                  @include('admin.videos.fileupload_ads_fieldset'); 
-
                </form>
             </div>
          </div>
@@ -1044,6 +1061,8 @@
         width:100%;
         background-color: #c9c8c888 ;
         border:none;
+        padding: 5px 10px;
+        border-radius: 7px;
     }
 
 </style>
@@ -1241,51 +1260,51 @@
 <script>
 
 
-         // validation for slug
+// validation for slug
 
-// $(document).ready(function(){
+$(document).ready(function(){
 
-//       $('#image_error_msg').hide();
-//       $('#player_image_error_msg,#tv_image_image_error_msg').hide();
+      $('#image_error_msg').hide();
+      $('#player_image_error_msg,#tv_image_image_error_msg').hide();
 
-//       $('#slug_error').hide();
-//       $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
+      $('#slug_error').hide();
+      $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
 
-//          var title = $('#title').val();
-//          var slug_name=title.replace(/ /g,"_");
+         var title = $('#title').val();
+         var slug_name=title.replace(/ /g,"_");
 
-//          if($('#slug').val().length == 0 ){
-//             var slug = $('#slug').val(slug_name);
-//          }else{
-//             var slug = $('#slug').val();
-//          }
+         if($('#slug').val().length == 0 ){
+            var slug = $('#slug').val(slug_name);
+         }else{
+            var slug = $('#slug').val();
+         }
       
-//          $.ajax({
-//          type: "POST", 
-//          dataType: "json", 
-//          url: "{{ url('admin/video_slug_validate') }}",
-//                data: {
-//                   _token  : "{{csrf_token()}}" ,
-//                   slug : slug,
-//                   type : "create",
-//                   video_id: null,
-//          },
-//          success: function(data) {
-//                console.log(data.message);
-//                if(data.message == "true"){
+         $.ajax({
+         type: "POST", 
+         dataType: "json", 
+         url: "{{ url('admin/video_slug_validate') }}",
+               data: {
+                  _token  : "{{csrf_token()}}" ,
+                  slug : slug,
+                  type : "create",
+                  video_id: null,
+         },
+         success: function(data) {
+               console.log(data.message);
+               if(data.message == "true"){
                   
-//                   $('#next2').attr('disabled','disabled');
-//                   $('#slug_error').show();
-//                }
-//                else if(data.message = "false"){
-//                   $('#next2').removeAttr('disabled');
-//                   $('#slug_error').hide();
+                  $('#next2').attr('disabled','disabled');
+                  $('#slug_error').show();
+               }
+               else if(data.message = "false"){
+                  $('#next2').removeAttr('disabled');
+                  $('#slug_error').hide();
 
-//                }
-//             },
-//          });
-//       })
-// });
+               }
+            },
+         });
+      })
+});
 
   
 // $(document).ready(function($){

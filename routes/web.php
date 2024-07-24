@@ -2765,9 +2765,20 @@ Route::get('/testpage', function () {
 
 // User Generated Content
 Route::get('ugc-create', 'UGCController@create');
-// Route::get('formdesign', 'UGCController@formdesign');
-// Route::post('/ugc/fileupdate', ['before' => 'demo', 'uses' => 'UGCController@ugcfileupdate']);
-// Route::post('ugc/uploadFile', 'UGCController@uploadFile');
+Route::get('videos/{slug}', 'UGCController@PlayUGCVideos')->name('play_ugc_videos');
+Route::post('/ugc/fileupdate', ['before' => 'demo', 'uses' => 'UGCController@ugcfileupdate']);
+Route::post('ugc/uploadFile', 'UGCController@uploadFile');
+Route::post('ugc/AWSUploadFile', 'UGCController@AWSUploadFile');
+Route::post('ugc/mp4url', 'UGCController@Mp4url');
+Route::post('ugc/m3u8url', 'UGCController@m3u8url');
+Route::post('ugc/embededcode', 'UGCController@Embededcode');
+Route::post('ugc/submit-ugcabout', 'UGCController@SubmitUGCAbout');
+Route::post('ugc/submit-ugcfacebook', 'UGCController@SubmitUGCFacebook');
+Route::post('ugc/submit-ugcinstagram', 'UGCController@SubmitUGCInstagram');
+Route::post('ugc/submit-ugctwitter', 'UGCController@SubmitUGCTwitter');
 
-// Route::post('/videos/fileupdate', ['before' => 'demo', 'uses' => 'AdminVideosController@fileupdate']);
-// Route::post('/videos/store', ['before' => 'demo', 'uses' => 'AdminVideosController@store']);
+// UGC management admin
+Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');
+Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcvideos_index');
+Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
+Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
