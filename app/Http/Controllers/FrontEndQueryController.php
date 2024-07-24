@@ -30,6 +30,8 @@ use App\Video;
 use App\Series;
 use App\Artist;
 use App\Audio;
+use App\Channel;
+use App\ModeratorsUser;
 use App\Slider;
 use App\User;
 use Carbon\Carbon;
@@ -772,5 +774,17 @@ class FrontEndQueryController extends Controller
         }
 
         return $preference_language_query;
+    }
+
+    public function Channel_Partner()
+    {
+        $Channel_Partner = Channel::where('status',1)->limit(15)->get();
+        return $Channel_Partner ;
+    }
+
+    public function content_Partner()
+    {
+        $content_Partner = ModeratorsUser::where('status',1)->limit(15)->get();
+        return $content_Partner ;
     }
 }
