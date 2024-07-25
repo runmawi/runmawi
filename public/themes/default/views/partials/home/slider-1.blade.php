@@ -39,11 +39,11 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
+        <div class="s-bg-1" style="  background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 45%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" >
+                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" > 
 
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                                 <!-- Video thumbnail image -->
@@ -72,15 +72,15 @@
                                     </p>
 
                                     @if(strlen($description) > 300)
-                                        <button class="des-more-less-btns p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
-                                        <button class="des-more-less-btns p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                        <button class="text-primary des-more-less-btns p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="text-primary des-more-less-btns p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
                                     @endif
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}" class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('WATCH') }}
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
 
                                 @php 
