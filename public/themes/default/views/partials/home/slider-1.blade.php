@@ -56,7 +56,7 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h1 class="text-white">
+                                <h1 class="text-white" style="width:80%">
                                     {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
                                 </h1>
                             @endif
@@ -72,8 +72,8 @@
                                     </p>
 
                                     @if(strlen($description) > 300)
-                                        <button class="des-more-less-btns p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
-                                        <button class="des-more-less-btns p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                        <button class="text-primary des-more-less-btns p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="text-primary des-more-less-btns p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
                                     @endif
                                 </div>
                             </div>
