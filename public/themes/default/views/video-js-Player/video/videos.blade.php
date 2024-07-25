@@ -194,4 +194,5 @@
     /* .staticback-btn{display:none;} */
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .custom-skip-backward-button .custom-skip-forward-button{font-size: 45px;color: white;}
+    .vjs-text-track-display div{font-size: 24px !important;background-color: transparent !important;}
 </style>
