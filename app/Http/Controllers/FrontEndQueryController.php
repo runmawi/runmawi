@@ -778,6 +778,118 @@ class FrontEndQueryController extends Controller
         return $preference_language_query;
     }
 
+    public function Video_Based_Category()
+    {
+        // Using the same properties as in the constructor
+        $check_Kidmode = $this->check_Kidmode;
+        $videos_expiry_date_status = $this->videos_expiry_date_status;
+        $getfeching = $this->getfeching;
+
+        $categories = VideoCategory::query()
+            ->limit(15)
+            ->whereHas('category_videos', function ($query) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $query->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $query->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+            ->with(['category_videos' => function ($videos) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'player_image', 'description', 'videos.trailer', 'videos.trailer_type', 'videos.expiry_date', 'responsive_image', 'responsive_player_image', 'responsive_tv_image')
+                    ->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $videos->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $videos->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $videos->whereBetween('videos.age_restrict', [0, 12]);
+                }
+
+                $videos->latest('videos.created_at')->limit(15)->get();
+            }])
+            ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+            ->where('video_categories.in_home', 1)
+            ->whereHas('category_videos', function ($query) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $query->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $query->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+            ->orderBy('video_categories.order')
+            ->get()
+            ->map(function ($category) {
+                $category->category_videos->map(function ($video) {
+                    $video->image_url = URL::to('/public/uploads/images/' . $video->image);
+                    $video->Player_image_url = URL::to('/public/uploads/images/' . $video->player_image);
+                    return $video;
+                });
+                $category->source = "category_videos";
+                return $category;
+            });
+
+        return $categories;
+    }
+
+    public function latestViewedVideos()
+    {
+        $check_Kidmode = $this->check_Kidmode;
+
+        if (!Auth::guest()) {
+            $data = RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('recent_views.user_id', Auth::user()->id)
+                ->groupBy('recent_views.video_id');
+
+            if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                $data = $data->whereNotIn('videos.id', $this->blockVideos);
+            }
+
+            if ($this->videos_expiry_date_status == 1) {
+                $data = $data->whereNull('expiry_date')->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+            }
+
+            if ($check_Kidmode == 1) {
+                $data = $data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
+            }
+
+            $data = $data->limit(15)->get();
+
+            return $data;
+        } else {
+            return collect(); // Return an empty collection if the user is not authenticated
+        }
+    }
+
     public function Channel_Partner()
     {
         $Channel_Partner = Channel::where('status',1)->limit(15)->get();
