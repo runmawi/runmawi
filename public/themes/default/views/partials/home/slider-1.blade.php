@@ -56,9 +56,9 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <div class="text-white banner-title">
+                                <h1 class="text-white">
                                     {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
-                                </div>
+                                </h1>
                             @endif
 
                             <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
