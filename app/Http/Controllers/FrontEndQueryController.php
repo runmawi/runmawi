@@ -31,6 +31,8 @@ use App\Series;
 use App\Artist;
 use App\Audio;
 use App\Channel;
+// use App\Watchlater;
+// use App\Wishlist;
 use App\ModeratorsUser;
 use App\Slider;
 use App\User;
@@ -787,4 +789,23 @@ class FrontEndQueryController extends Controller
         $content_Partner = ModeratorsUser::where('status',1)->limit(15)->get();
         return $content_Partner ;
     }
+
+    // public function watchLater() {
+    //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //                                 'expiry_date','active','status','draft')
+    //                                 ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater_data);
+    //     return $Watchlater;
+    // }
+
+    // public function wishlist() {
+    //     $Wishlist_data = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     // $Wishlist = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //     //                                 'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //     //                                 'expiry_date','active','status','draft')
+
+    //     // ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist_data);
+    //     return $Wishlist_data;
+    // }
 }
