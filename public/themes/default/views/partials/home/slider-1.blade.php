@@ -39,11 +39,11 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
+        <div class="s-bg-1" style="  background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 45%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" >
+                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" > 
 
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                                 <!-- Video thumbnail image -->
@@ -56,9 +56,9 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h1 class="text-white" style="width:80%">
+                                <div class="text-white banner-title">
                                     {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
-                                </h1>
+                                </div>
                             @endif
 
                             <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
@@ -80,7 +80,7 @@
 
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}" class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('WATCH') }}
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
 
                                 @php 
