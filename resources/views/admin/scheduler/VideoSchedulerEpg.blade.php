@@ -362,7 +362,17 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                     <h4 class="card-title">Scheduler :</h4>
                 </div>
             </div>
-             
+            <br>
+            <br>
+            <form id="schedulerForm" action="{{ URL::to('admin/epg-generate-scheduler-xml/')  }}" method="post"> 
+                    <div class="float-right" style="position: relative; margin-top: -25px;">
+                        <input type="hidden" id="epg_channel_id" name="epg_channel_id" value="">
+                        <input type="hidden" id="epg_time_zone" name="epg_time_zone" value="">
+                        <input type="hidden" id="epg_date_choose" name="epg_date_choose" value="">
+				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="submit" id="GenerateXmlJson" class="form-control btn btn-primary" value="Generate XML & Json">
+                    </div>
+                </form>
 
                 <div class="clear"></div>
                 <br>
@@ -656,6 +666,21 @@ a.btn.btn-default{border: 1px solid rgba(0, 0, 0, 0.4);border-top: none;}
 </style>
 
 <script>
+
+    
+    $(document).ready(function() {
+        $('#schedulerForm').on('submit', function(event) {
+
+            $('#epg_channel_id').val($('#channe_id').val());  
+            $('#epg_time_zone').val($('#time_zone_id').val());    
+            $('#epg_date_choose').val($('.date').val());      
+            
+            console.log('Channel ID:', $('#epg_channel_id').val());
+            console.log('Time Zone:', $('#epg_time_zone').val());
+            console.log('Date:', $('#epg_date_choose').val());
+        });
+    });
+
     var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
     // var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
 
