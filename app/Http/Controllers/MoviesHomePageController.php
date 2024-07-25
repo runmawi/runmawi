@@ -15,6 +15,8 @@ use App\HomeSetting;
 use App\BlockVideo;
 use App\Video;
 use App\User;
+use App\Geofencing;
+use App\CompressImage;
 use Theme;
 
 class MoviesHomePageController extends Controller
@@ -38,30 +40,81 @@ class MoviesHomePageController extends Controller
              return $next($request);
         });
 
-        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($this->Theme);
+        $this->HomeSetting = HomeSetting::first();
+        Theme::uses($this->HomeSetting->theme_choosen);
+
+        // $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        // Theme::uses($this->Theme);
+        
     }
 
     public function index()
     {
         try {
 
+            $default_vertical_image_url = default_vertical_image_url();
+            $default_horizontal_image_url = default_horizontal_image_url();
+            $getfeching = Geofencing::first();
+
+            $FrontEndQueryController = new FrontEndQueryController();
+
+            $all_latest_videos = $FrontEndQueryController->Latest_videos();
+
+            $latest_videos_ppv = $all_latest_videos->filter(function ($video) {
+                return $video->access == 'ppv';
+            });
+
+            $all_featured_videos = $FrontEndQueryController->featured_videos();
+            $featured_videos_ppv = $all_featured_videos->filter(function ($video) {
+                return $video->access == 'ppv';
+            });
+
+            $all_latestViewedVideos = $FrontEndQueryController->latestViewedVideos();
+            $latestViewedVideos_ppv = $all_latestViewedVideos->filter(function ($video) {
+                return $video->access == 'ppv';
+            });
+
+            $all_video_based_category = $FrontEndQueryController->Video_Based_Category();
+            $all_video_based_category_ppv = $all_video_based_category->map(function ($category) {
+                $category->category_videos = $category->category_videos->filter(function ($video) {
+                    return $video->access == 'ppv';
+                });
+                return $category;
+            });
+
+            $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
+                return $value === '1' || $value === 1;  
+            })->keys()->toArray(); 
+            $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc')->get();
+
             $data = array(
-                'latest_video'      => $this->latest_videos(),
+                'latest_video'      => $latest_videos_ppv,
+                'latestViewedVideos'      => $latestViewedVideos_ppv,
                 'parentCategories'   => $this->VideoCategory(),
                 'category_videos'    => $this->category_videos(),
-                'featured_videos'    => $this->Featured_videos(),
+                'featured_videos'    => $featured_videos_ppv,
+                'video_based_category'    => $all_video_based_category_ppv,
+                'video_categories'    => $FrontEndQueryController->genre_video_display() ,
                 'order_settings_list' => OrderHomeSetting::get(), 
+                'order_settings'      => $order_settings , 
+                'default_vertical_image_url'   => $default_vertical_image_url,
+                'default_horizontal_image_url' => $default_horizontal_image_url,
+                'home_settings'       => $this->HomeSetting ,
+                'current_theme'     => $this->HomeSetting->theme_choosen,
+                'getfeching'          => $getfeching ,
+                'videos_expiry_date_status'    => videos_expiry_date_status(),
+                'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                 'Slider_array_data' => array( 
                                         'video_banners'   =>  Video::where('active',1)->where('status', 1)->where('draft',1)->where('banner',1)->latest()->get(),
                                        ),
             );
+            // dd($order_settings);
 
             return Theme::view('Movies-Home-Page.index', $data);
 
         } catch (\Throwable $th) {
 
-            // return $th->getMessage();
+            return $th->getMessage();
 
             return abort(404);
         }
