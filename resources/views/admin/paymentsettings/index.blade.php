@@ -557,12 +557,85 @@
                             <br><br>
                         @endif
 
+                                    {{-- recurly --}}
+
+                        @if(!empty($recurly_payment_setting))
+
+                            <p><h3>Recurly Payment</h3></p>
+                        
+                            <div class="row">
+                        
+                                <div class="col-md-6">
+                        
+                                    <label for="">Payment Mode</label>
+                        
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">Disable</div>
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input type="checkbox"  {{ $recurly_payment_setting->recurly_status ?? $recurly_payment_setting->recurly_status == 1 ? "checked" : null}}  name="recurly_status" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        <div style="color:green;">Enable</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label for="">Recurly Mode</label>
+
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ $recurly_payment_setting->live_mode ?? $recurly_payment_setting->live_mode == 1 ? "checked" : null }} name="recurly_live_mode" id="recurly_live_mode">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div style="color:green;">ON</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+                        
+                                <div class="col-md-6">
+                                    <div class="panel-title"> Recurly official Docs(<a href="https://recurly.com/" target="_blank"> https://recurly.com/ </a>)</div>
+                                    <label>Name:</label> 
+                                    <input type="text" class="form-control" name="recurly_label" id="recurly_label" placeholder="Recurly Name" value="@if(!empty($recurly_payment_setting->recurly_label)){{ $recurly_payment_setting->recurly_label }}@endif" />
+                                </div>
+
+                                <div class="col-md-6"></div>
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label> Test Recurly Public Key: </label> 
+                                    <input type="text" class="form-control" name="recurly_test_public_key"  placeholder="Recurly Test Public Key" value="@if( !empty($recurly_payment_setting->recurly_test_public_key ) && Auth::user()->role != 'demo'){{ $recurly_payment_setting->recurly_test_public_key }}@endif"  />
+                                </div>
+                                <br>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Test Recurly Private Key: </label> 
+                                    <input type="text" class="form-control" name="recurly_test_private_key"  placeholder="Recurly Test Private Key" value="@if( !empty($recurly_payment_setting->recurly_test_private_key ) && Auth::user()->role != 'demo'){{ $recurly_payment_setting->recurly_test_private_key }}@endif"  />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Live Recurly Public Key: </label> 
+                                    <input type="text" class="form-control" name="recurly_live_public_key"  placeholder="Recurly Live Public Key" value="@if( !empty($recurly_payment_setting->recurly_live_public_key ) && Auth::user()->role != 'demo'){{ $recurly_payment_setting->recurly_test_public_key }}@endif"  />
+                                </div>
+                                <br>
+                        
+                                <div class="col-md-6 mt-3">
+                                    <label> Live Recurly Private Key: </label> 
+                                    <input type="text" class="form-control" name="recurly_live_private_key"  placeholder="Recurly Live Publish Key" value="@if(!empty($recurly_payment_setting->recurly_live_private_key) && Auth::user()->role != 'demo'){{ $recurly_payment_setting->recurly_live_private_key }}@endif" />
+                                </div>
+                            </div> 
+                            <br><br>
+                        @endif
+
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         
                         <div class="panel-body mt-3" >
                             <input type="submit" value="Update Payment Settings" class="btn btn-primary " />
                         </div>
-
                     </form>
                 </div>
             </div>
