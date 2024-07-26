@@ -101,6 +101,7 @@ use App\LiveStream;
 use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
 use App\CompressImage;
+use App\EPGSchedulerData;
 
 class AdminVideosController extends Controller
 {
