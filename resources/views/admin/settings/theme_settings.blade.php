@@ -415,21 +415,6 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <label>{{ ucfirst(('Toggle Player')) }} </label>
-
-                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
-                                <div style="color:#006AFF;"> Player 1 <span> (Default)</span>  </div>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="choose_player"  type="checkbox" @if( $settings->choose_player == "1") checked  @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div style="color:green;"> Player 2 (Only for Videos) </div>
-                            </div>
-                        </div>
-
                         
                     </div> 
 
