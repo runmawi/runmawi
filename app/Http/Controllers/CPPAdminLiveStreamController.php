@@ -34,6 +34,7 @@ use App\Video;
 use App\ModeratorSubscription;
 use App\SiteTheme;
 use Mail;
+use App\CompressImage;
 
 class CPPAdminLiveStreamController extends Controller
 {
@@ -96,6 +97,7 @@ class CPPAdminLiveStreamController extends Controller
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             $user = Session::get('user'); 
             $user_id = $user->id;
+            $compress_image_settings = CompressImage::first();
 
             if($this->enable_moderator_Monetization == 1){
 
@@ -154,6 +156,7 @@ class CPPAdminLiveStreamController extends Controller
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
                 'InappPurchase' => InappPurchase::all(),
+                'compress_image_settings' => $compress_image_settings,
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
         }else{
@@ -546,7 +549,8 @@ class CPPAdminLiveStreamController extends Controller
        $Stream_error =Session::get('Stream_error');
        $Rtmp_url = Session::get('Rtmp_url');
        $title = Session::get('title');
-        
+       $compress_image_settings = CompressImage::first();
+
 
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
@@ -567,6 +571,7 @@ class CPPAdminLiveStreamController extends Controller
             'title' => $title ? $title : null,
             'Rtmp_urls' => RTMP::all(),
             'InappPurchase' => InappPurchase::all(),
+            'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 

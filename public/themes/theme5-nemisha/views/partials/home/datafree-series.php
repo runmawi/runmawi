@@ -15,12 +15,12 @@
     <a class="see" href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($series)) :
                          foreach($series as $category_series):
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/play_series'.'/' . $category_series->slug ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
@@ -91,11 +91,11 @@
                             <?php } ?>
                         </div>
 
-        </li>
+        </div>
 
         <?php endforeach; 
-                                   endif; ?>
-    </ul>
+    endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 

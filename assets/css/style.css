@@ -82,7 +82,7 @@ h1{font-weight:500}
 #home-slider li{position:relative}
 .slider-description{position:absolute;top:15%;left:80px}
 #home-slider h1.slider-text{font-size:50px;margin:15px 0}
-#home-slider p{margin:5px 0;width:75%;color:#fff;font-size:14px}
+#home-slider p{margin:5px 0;width:75%;color:#bbb7b7;font-size:13px;}
 
 
 #home-slider .s-bg-1{width:100%;background-size:contain!important; background-position: right !important;background-repeat:no-repeat !important;position:relative;z-index:1}
@@ -158,7 +158,7 @@ li.slide-item .block-description .parallax-ratting span{font-size:12px}
 .slick-vertical li.slick-slide.slick-current.slick-active{transition:all .45s ease 0}
 .slick-vertical .slick-slide{margin-bottom:18px}
 .slick-vertical li.slick-slide:last-child{margin-bottom:0!important}
-.bd{border-radius:4px!important;background-color:transparent!important;font-weight:600;border:1px solid #fff;color:#fff!important;font-size:14px}
+.bd{border-radius:4px!important;background-color:transparent!important;font-weight:600;border:1px solid #fff;color:#fff!important;font-size:15px}
 .slick-dots li{margin:0 2px}
 a:not([href]):not([tabindex]):focus,a:not([href]):not([tabindex]):hover{color:inherit;text-decoration:none;cursor:pointer}
 .menu-item:hover{border-bottom:2px solid #fff;font-weight:400}
@@ -765,7 +765,7 @@ video{object-fit:fill}
 @media (min-width:1499px) {
 .container{max-width:1266px}
 #home-slider h1.slider-text{margin:30px 0}
-#home-slider p{margin:32px 0}
+/* #home-slider p{margin:32px 0} */
 }
 @media only screen and (min-width:1200px) and (max-width:1366px) {
 .search:focus,.search:hover{width:220px!important}
@@ -1035,12 +1035,16 @@ h2.main-title {font-size: 1.3em;font-weight: 500;}
     max-height: 100px; /* Initial max height, adjust as needed */
     transition: max-height 0.5s ease;
 }
-.des-more-less-btns{border: none;
+.des-more-less-btns{
+    border: none;
     background: transparent;
-    color: #ff0000;
+    /* color: #ff0000; */
     cursor: pointer;
-    margin-bottom: 10px;}
-    .video_title_images{width: 50%;}
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.video_title_images{width: 50%;}
 
 h2.main-title {font-size: 1.3em;font-weight: 500;}
 

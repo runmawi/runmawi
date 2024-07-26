@@ -45,8 +45,8 @@
                                         <td>{{ $audio->views  }}<img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></td>   
                                         
                                         <td>
-                                        <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/cpp/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                        <!-- <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="View" href="{{ URL::to('/cpp/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a> -->
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('/cpp/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"

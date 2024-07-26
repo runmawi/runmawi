@@ -55,6 +55,9 @@ use App\SeriesNetwork;
 use App\CompressImage;
 use App\ThumbnailSetting;
 use App\OrderHomeSetting;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
 
 class TvshowsController extends Controller
 {
@@ -76,12 +79,28 @@ class TvshowsController extends Controller
         $cityName = $geoip->getcity();
 
         $this->countryName = $countryName;
+        
 
         $this->videos_per_page = $settings->videos_per_page;
 
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
     }
+
+    public function paginateCollection(Collection $collection, $perPage)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        return new LengthAwarePaginator(
+            $currentPageItems,
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+    }
+
 
     /**
      * Show the application dashboard.
@@ -1435,12 +1454,22 @@ class TvshowsController extends Controller
 
                 return $item;
             })->first();
-            
-            $data = array( 'series_data' => $series_data );
 
-            return Theme::view('partials.home.SeriesNetworks',$data);
-
+            if ($series_data) {
+                $series_data_collection = collect([$series_data]);
+                $series_networks_paginate = $this->paginateCollection(collect($series_data['Series_depends_Networks']), $this->videos_per_page);
+    
+                $data = array(
+                    'series_data' => $series_data,
+                    'series_networks_pagelist' => $series_networks_paginate,
+                );
+    
+                return Theme::view('partials.home.SeriesNetworks', $data);
+            } else {
+                throw new \Exception('Series data not found');
+            }
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }

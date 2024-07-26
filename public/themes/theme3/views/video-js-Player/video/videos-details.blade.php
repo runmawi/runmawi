@@ -34,8 +34,8 @@
     <style>
         #my-video_ima-ad-container div{ overflow:hidden;}
         #my-video{ position:relative; }
-        .staticback-btn{display:none;}
-        .container-fluid:hover .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer;font-size: 25px; }
+        /* .staticback-btn{display:none;} */
+        .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer;font-size: 25px; }
         .vpageSection .backdrop-img {
             height: calc(100vh - 148px);
             overflow: hidden;

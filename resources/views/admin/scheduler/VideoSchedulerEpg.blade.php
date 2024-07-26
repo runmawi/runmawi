@@ -14,6 +14,19 @@
 
     <style>
 
+        .hidden-item {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, height 0.5s ease;
+            padding: 0 !important;
+        }
+
+        .visible-item {
+            opacity: 1;
+            height: auto;
+            transition: opacity 0.5s ease, height 0.5s ease;
+        }
 
     .drag-container {
         text-align: center;
@@ -349,7 +362,17 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                     <h4 class="card-title">Scheduler :</h4>
                 </div>
             </div>
-             
+            <br>
+            <br>
+            <form id="schedulerForm" action="{{ URL::to('admin/epg-generate-scheduler-xml/')  }}" method="post"> 
+                    <div class="float-right" style="position: relative; margin-top: -25px;">
+                        <input type="hidden" id="epg_channel_id" name="epg_channel_id" value="">
+                        <input type="hidden" id="epg_time_zone" name="epg_time_zone" value="">
+                        <input type="hidden" id="epg_date_choose" name="epg_date_choose" value="">
+				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="submit" id="GenerateXmlJson" class="form-control btn btn-primary" value="Generate XML & Json">
+                    </div>
+                </form>
 
                 <div class="clear"></div>
                 <br>
@@ -457,7 +480,7 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
 
                                 
                                 <label for="rescheduleDate">Choose Date to Re-Schedule:</label>
-                                <input type="text" id="Scheduler_date" class="re-schedule-date form-control" value="{{ date('m-d-Y') }}">
+                                <input type="text" id="Scheduler_date" class="re-schedule-date form-control" >
                                 <input type="hidden" id="channel_Id">
                                 <input type="hidden" id="Scheduler_id">
                             </div>
@@ -471,21 +494,22 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                     <!-- codepen -->
                     <div class="container mt-4">
                         <div class="row">
-                            <div class="col-md-3 p-0">
+                            <div class="col-md-5 p-0">
                                 <div id="modules">
                                     @foreach(@$VideoCollection as $value)
-                                        <div class="drag d-flex justify-content-between" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
+                                        <div class="drag d-flex justify-content-between searchItems" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
                                             <span class="d-flex overflow-hidden">
-                                                <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
+                                                <img class="drag-img" src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                                                 <a class="btn btn-default">{{ $value->title }}</a>
                                             </span>
-                                            <p style="margin-top:auto; margin-bottom:auto;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
-                                        </div>
+                                            <p style="margin-top:auto; margin-bottom:auto;display:none;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
+                                            <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
+                                            </div>
                                     @endforeach
                                 </div>
                             </div>
 
-                            <div class="col-md-9 p-0">
+                            <div class="col-md-7 p-0">
                                 <div id="dropzone"></div>
                             </div>
                         </div>
@@ -562,10 +586,15 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
     background: #eee;
     margin-bottom: 20px;
     z-index: 1;
-    max-height: 250px;
+    max-height: 320px;
     overflow-y: auto;
     overflow-x:hidden;
+    height:100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* gap: 16px; */
 }
+
 
 #dropzone {
   padding: 10px;
@@ -573,7 +602,7 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   min-height: 100px;
   margin-bottom: 0;
   z-index: 0;
-  height:250px;
+  height:320px;
   overflow-y: auto;
 }
 
@@ -589,8 +618,9 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   cursor: pointer;
   margin-bottom: 0;
   padding: 5px 10px;
-  border-radisu: 3px;
+  border-radius: 3px;
   position: relative;
+  height:140px;
 }
 
 .drop-item .remove {
@@ -599,18 +629,25 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   right: 4px;
 }
 .drop-item img{
-    width:25px;
+    width:100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
 }
-.drag.ui-draggable.ui-draggable-handle img{
+/* .drag.ui-draggable.ui-draggable-handle img{
     width: 30px;
     height: 30px;
-}
+} */
 a.btn.btn-default {
     text-overflow: ellipsis;
     overflow: hidden;
 }
 summary{
     display:block;
+    text-overflow: ellipsis;
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 details{
     margin-left:10px;
@@ -622,11 +659,30 @@ details{
 .col-md-3.p-0{
     padding: 0 5px !important;
 }
+span.d-flex.overflow-hidden{flex-direction: column;border-radius: 5px;}
+.drag-img{width:180px;height:100px;object-fit: cover;border-top-left-radius: 5px;border-top-right-radius:5px;}
+a.btn.btn-default{border: 1px solid rgba(0, 0, 0, 0.4);border-top: none;}
+.drag.d-flex.justify-content-between.searchItems.ui-draggable.ui-draggable-handle{width:180px;padding:10px;}
 </style>
 
 <script>
+
+    
+    $(document).ready(function() {
+        $('#schedulerForm').on('submit', function(event) {
+
+            $('#epg_channel_id').val($('#channe_id').val());  
+            $('#epg_time_zone').val($('#time_zone_id').val());    
+            $('#epg_date_choose').val($('.date').val());      
+            
+            console.log('Channel ID:', $('#epg_channel_id').val());
+            console.log('Time Zone:', $('#epg_time_zone').val());
+            console.log('Date:', $('#epg_date_choose').val());
+        });
+    });
+
     var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
-    var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
+    // var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
 
   $(".drag").draggable({
     appendTo: "body",
@@ -643,6 +699,7 @@ $("#dropzone").droppable({
     var sourceTitle = ui.draggable.data('title');
     var sourceDuration = ui.draggable.data('duration');
     dropepg(videoId, sourceType);
+
 
     // Extract image source from the draggable element
     var imgSrc = ui.draggable.find('img').attr('src');
@@ -737,8 +794,12 @@ $("#dropzone").droppable({
                         channe_id: $('#channe_id').val(),
                 },        
                 success: function(value){
+                    if ($.fn.DataTable.isDataTable('#schedule_videos_table')) {
+                        $('#schedule_videos_table').DataTable().clear().destroy();
+                    }
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
+
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching Channel details:', error);
@@ -946,10 +1007,10 @@ $("#dropzone").droppable({
 // $(document).ready(function () {
 
         // $('#filterDropdown').hide();
-        $('.filterButton').click(function(){ 
+        // $('.filterButton').click(function(){ 
             // alert();
             // $('#filterDropdown').toggle();
-        });
+        // });
 
 //         // Function to filter items based on the selected filter option
 //         function filterItems(filterValue) {
@@ -981,28 +1042,28 @@ $("#dropzone").droppable({
 //         }
 
 //         // Event listener for the dropdown change
-        $('#filterDropdown').on('change', function () {
-            var filterValue = $(this).val();
-            filterItems(filterValue);
-        });
-        function filterItems(filterValue) {
+                $('#filterDropdown').on('change', function () {
+                    var filterValue = $(this).val();
+                    filterItems(filterValue);
+                });
 
-            if(filterValue == 'all'){
-                location.reload();                            
-            }
-            
-            searchTerm = filterValue.toLowerCase();
-        
-            $('.draggable').each(function () {
-                var itemText = $(this).find('input[type="hidden"]').val().toLowerCase();
-                if (itemText.includes(searchTerm)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+                function filterItems(filterValue) {
+                    if (filterValue == 'all') {
+                        $('.drag').removeClass('hidden-item').addClass('visible-item'); // Show all items if 'all' is selected
+                    } else {
+                        var searchTerm = filterValue.toLowerCase();
+                        
+                        $('.drag').each(function () {
+                            var itemType = $(this).data('socure_type').toString().toLowerCase();
+                            if (itemType === searchTerm) {
+                                $(this).removeClass('hidden-item').addClass('visible-item');
+                            } else {
+                                $(this).removeClass('visible-item').addClass('hidden-item');
+                            }
+                        });
+                    }
                 }
-            });
 
-        }
 
 //         // Initial filtering based on the default selected option
 //         filterItems($('#filterDropdown').val());
@@ -1026,13 +1087,25 @@ $("#dropzone").droppable({
         }
 
         // Event listener for the search input
-        $('#searchInput').on('input', function () {
-            var searchTerm = $(this).val();
-            filterItems(searchTerm);
+        // $('#searchInput').on('input', function () {
+        //     var searchTerm = $(this).val();
+        //     filterItems(searchTerm);
+        // });
+    });
+   
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        var searchItems = document.querySelectorAll('.searchItems');
+
+        searchItems.forEach(function(item) {
+            var title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(query)) {
+                item.style.setProperty('display', 'flex', 'important');
+            } else {
+                item.style.setProperty('display', 'none', 'important');
+            }
         });
     });
-
-
         // Calculate the date for one day ahead
         var currentDate = new Date();
             currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
@@ -1040,7 +1113,8 @@ $("#dropzone").droppable({
             // Initialize the datepicker with the formatted date
             $('.re-schedule-date').datepicker({
                 format: 'm-dd-yyyy',
-                autoclose: true
+                autoclose: true,
+                minDate: 1,
             }).datepicker('setDate', currentDate);
 
 

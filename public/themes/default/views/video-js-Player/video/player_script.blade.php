@@ -24,12 +24,28 @@
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
-                    'subtitlesButton': {},
-                    'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},    
-                    // 'audioTrackButton': {}               
+                    'fullscreenToggle': {},
+                    // 'audioTrackButton': {},
                 },
                 pictureInPictureToggle: true,
+            },
+        }); 
+
+        player.on('loadedmetadata', function(){
+            var isMobile = window.innerWidth <= 768;
+            var controlBar = player.controlBar;
+            // console.log("controlbar",controlBar);
+            if(!isMobile){
+                controlBar.addChild('subtitlesButton');
+                controlBar.addChild('playbackRateMenuButton');
+            }
+            else{
+                controlBar.addChild('settingsMenuButton', {
+                    entries: [
+                        'subtitlesButton',
+                        'playbackRateMenuButton',
+                    ]
+                });
             }
         });
 
@@ -194,12 +210,12 @@
         });
 
         //Watermark
-        player.ready(function() {
-            var watermark = document.createElement('div');
-            watermark.className = 'vjs-watermark';
-            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
-            player.el().appendChild(watermark);
-        });
+        // player.ready(function() {
+        //     var watermark = document.createElement('div');
+        //     watermark.className = 'vjs-watermark';
+        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+        //     player.el().appendChild(watermark);
+        // });
 
         // Advertisement
 

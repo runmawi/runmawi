@@ -160,10 +160,23 @@
                    
                                         <div class="">
                                             <label class="m-0">Live Stream Image Cover</label>
-                                            <p class="p1">Select the Live stream  image ( 9:16 Ratio or 1080X1920px ):</p>
+                                            @php 
+                                                $width = $compress_image_settings->width_validation_live;
+                                                $heigth = $compress_image_settings->height_validation_live
+                                            @endphp
+                                            @if($width !== null && $heigth !== null)
+                                                <p class="p1">{{ ("Select the Live Stream image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                                            @else
+                                                <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                            @endif
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/*"/>
+                                                <span>
+                                                    <p id="live_image_error_msg" style="color:red !important; display:none;">
+                                                        * Please upload an image with the correct dimensions.
+                                                    </p>
+                                                </span> 
                                             </div>
                                         </div>
 
@@ -180,10 +193,23 @@
                     <div class="row mt-3">
                                         <div class="">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the Live stream  image( 16:9 Ratio or 1920X1080px ):</p>
+                                            @php 
+                                                $player_width = $compress_image_settings->live_player_img_width;
+                                                $player_heigth = $compress_image_settings->live_player_img_height
+                                            @endphp
+                                            @if($player_width !== null && $player_heigth !== null)
+                                                <p class="p1">{{ ("Select the Live Stream image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                                            @else
+                                                <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                            @endif
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/*"/>
+                                                <span>
+                                                    <p id="live_player_image_error_msg" style="color:red !important; display:none;">
+                                                        * Please upload an image with the correct dimensions.
+                                                    </p>
+                                                </span> 
                                             </div>
                                         </div>
 
@@ -820,7 +846,7 @@
                     
                     <input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
                     <div class="d-flex justify-content-end">
-                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary" /></div>
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary add_video_btn" /></div>
                 </form>
 
                 <div class="clear"></div>
@@ -900,6 +926,70 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+
+{{-- image validation --}}
+
+<script>
+    document.getElementById('image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+                console.log(width);
+                console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->width_validation_live }};
+                var validHeight = {{ $compress_image_settings->height_validation_live }};
+                console.log(validWidth);
+                console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('live_image_error_msg').style.display = 'block';
+                    $('.add_video_btn').prop('disabled', true);
+                    document.getElementById('live_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('live_image_error_msg').style.display = 'none';
+                    $('.add_video_btn').prop('disabled', false);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+    document.getElementById('player_image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+                console.log(width);
+                console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->live_player_img_width }};
+                var validHeight = {{ $compress_image_settings->live_player_img_height }};
+                console.log(validWidth);
+                console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('live_player_image_error_msg').style.display = 'block';
+                    $('.add_video_btn').prop('disabled', true);
+                    document.getElementById('live_player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('live_player_image_error_msg').style.display = 'none';
+                    $('.add_video_btn').prop('disabled', false);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+</script>
+
 
 <script type="text/javascript">
 

@@ -73,6 +73,7 @@ use Theme;
 use DateTime;
 use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
+use App\EPGSchedulerData;
 
 class ChannelController extends Controller
 {
