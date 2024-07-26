@@ -125,7 +125,8 @@ p.welcome_p {
 				<button class="tablinks" onclick="screen(event, 'Splash')" id="defaultOpen">Splash Screen</button>
 				<button class="tablinks" onclick="screen(event, 'Welcome')">Welcome Screen</button>
 				<button class="tablinks" onclick="screen(event, 'device_version')">Device Version</button>
-			</div>
+				<button class="tablinks" onclick="screen(event, 'tv_splash_screen')">TV Splash Screen</button>
+				</div>
 		</div>
 
 					{{-- Splash screen --}}
@@ -229,6 +230,119 @@ p.welcome_p {
 			</div>
 		</form>
 	</div>
+
+
+	{{-- TV Splash screen --}}
+		<div class="col-md-12 mob_screens" id="tv_splash_screen" >
+			<div class="row">
+				<div class="col-md-8">
+					<label for="" align="left"  style="font-weight: 600;">TV Splash Screen</label>
+				</div>
+				<div class="col-md-4">
+					<a href="javascript:;" onclick="jQuery('#tv-splash-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+				</div>
+			</div>
+		
+			<div class="sign-in-from" >
+			<div class="row data">
+								{{-- TV Splash Screen --}}
+
+					@forelse ($tv_splash_screen as $key => $AndroidTv_splash_screen)
+						<div class="tv_splash_image" style="padding: 20px;">
+							<div class="">
+								<img src="{{ URL::to('/') . '/public/uploads/settings/' . $AndroidTv_splash_screen->AndroidTv_splash_screen }}" style="max-height:100px" />
+							</div>
+
+							<span> {{ 'Android TV' }} {{ $key + 1 }}  </span>
+
+							<div class="action" align="right">
+								<a href="{{ route('TV_Splash_edit', ['id' => $AndroidTv_splash_screen->id  ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+								<a href="{{ route('TV_Splash_destroy', ['id' => $AndroidTv_splash_screen->id  ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					@empty  
+							<p> No Splash Screen Available </p>
+					@endforelse
+
+								{{-- LG Splash Screen --}}
+
+					@forelse ($tv_splash_screen as $key => $LG_splash_screen)
+						<div class="splash_image" style="padding: 20px;">
+							<div class="">
+								<img src="{{ URL::to('/') . '/public/uploads/settings/' . $LG_splash_screen->LG_splash_screen }}" style="max-height:100px" />
+							</div>
+
+							<span> {{ 'LG Splash'  }}  {{ $key + 1 }} </span>
+
+							<div class="action" align="right">
+								<a href="{{ route('TV_Splash_edit', ['id' => $LG_splash_screen->id ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+								<a href="{{ route('TV_Splash_destroy', ['id' => $LG_splash_screen->id  ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					@empty  
+					@endforelse
+
+					
+					{{-- RokuTV Splash Screen --}}
+
+						@forelse ($tv_splash_screen as $key => $RokuTV_splash_screen)
+							<div class="splash_image" style="padding: 20px;">
+								<div class="">
+									<img src="{{ URL::to('/') . '/public/uploads/settings/' . $RokuTV_splash_screen->RokuTV_splash_screen }}" style="max-height:100px" />
+								</div>
+
+								<span> {{ 'RokuTV Splash'  }}  {{ $key + 1 }} </span>
+
+								<div class="action" align="right">
+									<a href="{{ route('TV_Splash_edit', ['id' => $RokuTV_splash_screen->id ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+									<a href="{{ route('TV_Splash_destroy', ['id' => $RokuTV_splash_screen->id  ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+								</div>
+							</div>
+						@empty  
+						@endforelse
+
+
+
+				{{-- Samsung Splash Screen --}}
+
+				@forelse ($tv_splash_screen as $key => $Samsung_splash_screen)
+					<div class="splash_image" style="padding: 20px;">
+						<div class="">
+							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $Samsung_splash_screen->Samsung_splash_screen }}" style="max-height:100px" />
+						</div>
+
+						<span> {{ 'Samsung Splash'  }}  {{ $key + 1 }} </span>
+
+						<div class="action" align="right">
+							<a href="{{ route('TV_Splash_edit', ['id' => $Samsung_splash_screen->id ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+							<a href="{{ route('TV_Splash_destroy', ['id' => $Samsung_splash_screen->id  ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+					</div>
+				@empty  
+				@endforelse
+
+
+				{{-- Firetv Splash Screen --}}
+
+				@forelse ($tv_splash_screen as $key => $Firetv_splash_screen)
+					<div class="splash_image" style="padding: 20px;">
+						<div class="">
+							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $Firetv_splash_screen->Firetv_splash_screen }}" style="max-height:100px" />
+						</div>
+
+						<span> {{ 'Firetv Splash'  }}  {{ $key + 1 }} </span>
+
+						<div class="action" align="right">
+							<a href="{{ route('TV_Splash_edit', ['id' => $Firetv_splash_screen->id  ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+							<a href="{{ route('TV_Splash_destroy', ['id' => $Firetv_splash_screen->id  ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+					</div>
+				@empty  
+				@endforelse
+
+			</div>
+		</div>
+		
 </div>
 
 
@@ -311,6 +425,66 @@ p.welcome_p {
 </div>
 <!-- End New Splash  Modal -->
 
+
+
+
+
+<!-- Add New Splash  Modal -->
+<div class="modal fade" id="tv-splash-new">
+	<div class="modal-dialog">
+		<div class="modal-content">
+				@if ($errors->any())
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif    
+
+			<div class="modal-header">
+				<h4 class="modal-title">New TV Splash Screen</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			
+			<div class="modal-body p-3">
+				<form id="Splash" accept-charset="UTF-8" action="{{ URL::to('admin/tv_splash_screen/store') }}" method="post" enctype="multipart/form-data">
+					<div class="control-group">
+						<label for="theme_image">Android Splash Screen <span> (TV) </span></label>
+						<input type="file" name="AndroidTv_splash_screen" id="AndroidTv_splash_screen" required >
+					</div>
+
+					<div class="control-group">
+						<label for="theme_image"> LG Splash Screen <span> (TV) </span></label>
+						<input type="file" name="LG_splash_screen" id="LG_splash_screen"  required>
+					</div>
+
+					<div class="control-group">
+						<label for="theme_image"> RokuTV Splash Screen <span> (TV) </span></label>
+						<input type="file" name="RokuTV_splash_screen" id="RokuTV_splash_screen"  required>
+					</div>
+
+					<div class="control-group">
+						<label for="theme_image"> Samsung Splash Screen <span> (TV) </span></label>
+						<input type="file" name="Samsung_splash_screen" id="Samsung_splash_screen"  required>
+					</div>
+
+					<div class="control-group">
+						<label for="theme_image"> Firetv Splash Screen <span> (TV) </span></label>
+						<input type="file" name="Firetv_splash_screen" id="Firetv_splash_screen"  required>
+					</div>
+
+					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 	<div class="clear"></div>
 
