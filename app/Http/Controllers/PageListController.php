@@ -413,10 +413,6 @@ class PageListController extends Controller
         }
     }
 
-    public function epg_list()
-    {
-        
-    }
 
     public function deconstruct()
     {
