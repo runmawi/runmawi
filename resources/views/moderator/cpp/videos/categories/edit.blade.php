@@ -4,7 +4,7 @@
 @section('content')
 <style>
     .form-control {
-    background-color: var(--iq-body-bg);
+    /* background-color: var(--iq-body-bg); */
     border: 1px solid transparent;
     height: 46px;
     position: relative;

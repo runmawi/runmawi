@@ -9,6 +9,11 @@
     .iq-card{
         padding: 15px;
     }
+
+	body.dark .table-bordered td, .table-bordered th {
+		color: #0f0c0ce6 !important; 
+	}
+
 </style>
 @section('content')
 <div id="content-page" class="content-page">
@@ -44,7 +49,7 @@
 
 	<div class="gallery-env" style="padding:15px;">
         <div class="row">
-	<table class="table table-bordered genres-table">
+	<table class="table table-bordered genres-table" >
 		<tr class="table-header">
 			<th>Page</th>
 			<th>URL</th>
