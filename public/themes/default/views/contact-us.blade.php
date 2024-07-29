@@ -12,14 +12,7 @@
         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
     @endif
 
-    @if(count($errors) > 0)
-        @foreach( $errors->all() as $message )
-            <div class="alert alert-danger display-hide" id="successMessage" >
-                <button id="successMessage" class="close" data-close="alert"></button>
-                <span>{{ $message }}</span>
-            </div>
-        @endforeach
-    @endif
+    
 
 <div id="content-page" class="content-page">
          <div class="container-fluid">
@@ -41,6 +34,11 @@
                         <div class="form-group">
                             <label for="name" class="col-form-label text-md-right">{{ __('Full Name') }}</label>
                             <input type="text" class="form-control @error('fullname') is-invalid @enderror" name="fullname" value="{{ isset(Auth::user()->firstname) ? Auth::user()->firstname : '' }} {{ isset(Auth::user()->lastname) ? Auth::user()->lastname : '' }}"  autocomplete="Fullname" autofocus>
+                            @error('fullname')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                     
@@ -48,6 +46,11 @@
                         <div class="form-group">
                             <label for="email" class="col-form-label text-md-right">{{ __('Email Address') }}</label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset(Auth::user()->email) ? Auth::user()->email : '' }}"  autocomplete="email" autofocus>
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -57,13 +60,23 @@
                         <div class="form-group">
                             <label for="name" class="col-form-label text-md-right">{{ __('Phone Number') }}</label>
                             <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ isset(Auth::user()->phone_number) ? Auth::user()->phone_number : '' }}"  autocomplete="phone_number" autofocus>
+                            @error('phone_number')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="name" class="col-form-label text-md-right">{{ __('Subject') }}</label>
-                            <input type="text" class="form-control @error('subject') is-invalid @enderror" name="subject"  id="subject" autofocus>
+                            <input type="text" class="form-control @error('subject') is-invalid @enderror" name="subject" id="subject" autofocus>
+                            @error('subject')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -73,6 +86,11 @@
                         <div class="form-group">
                             <label for="password" class="col-form-label text-md-right">{{ __('Message') }}</label>
                             <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" ></textarea>
+                            @error('message')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
 
@@ -137,28 +155,26 @@
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
 
 <script>
-$(document).ready(function () {
-    $('#contact_us_form').validate({
-        rules: {
-            fullname: "required",
-            email: "required",
-            subject: "required",
-            message: "required",
-            phone_number: "required",
-
-        },
-        messages: {
-            fullname: "This field is required",
-            email: "This field is required",
-            subject: "This field is required",
-            message: "This field is required",
-            phone_number: "This field is required",
-        },
-
-        submitHandler: function (form) {
-            form.submit();
-        },
+    $(document).ready(function () {
+        $('#contact_us_form').validate({
+            rules: {
+                fullname: "required",
+                email: "required",
+                subject: "required",
+                message: "required",
+                phone_number: "required",
+            },
+            messages: {
+                fullname: "This field is required",
+                email: "This field is required",
+                subject: "This field is required",
+                message: "This field is required",
+                phone_number: "This field is required",
+            },
+            submitHandler: function (form) {
+                form.submit();
+            },
+        });
     });
-});
 
 </script>
