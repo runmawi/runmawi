@@ -112,7 +112,7 @@
    </title>
 
    <meta name="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;}
+      if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
@@ -135,7 +135,7 @@
    />
 
    <meta itemprop="description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;}
+      if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
@@ -168,7 +168,7 @@
    >
 
    <meta name="twitter:description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;}
+      if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
@@ -205,7 +205,7 @@
    />
 
    <meta property="og:description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;}
+      if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
