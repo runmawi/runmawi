@@ -18,7 +18,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid w-100" alt="">
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $Most_watched_countries->title; ?>">
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" data-play="hover">
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -41,7 +41,9 @@
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/> </a>
+                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" aria-label="MostWatchedCountry"> 
+                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/> 
+                        </a>
                         <div>
                             <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
                         </div>

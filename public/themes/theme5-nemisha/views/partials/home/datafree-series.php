@@ -15,20 +15,20 @@
     <a class="see" href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($series)) :
                          foreach($series as $category_series):
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/play_series'.'/' . $category_series->slug ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                    <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
-                                        class="img-fluid w-100" alt=""> 
-                            </a>
+                        <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
+                                    class="img-fluid w-100 h-100" alt="<?php echo $category_series->title; ?>"> 
+                        </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                     <?php  if(!empty($category_series->ppv_price)){?>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="block-description">
                             <div class="hover-buttons">
-                                <a type="button" class="text-white btn-cl" href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>">
+                                <a type="button" class="text-white btn-cl" href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="DataFree-Series">
                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/>
                                 </a>                       
                             </div>
@@ -91,11 +91,11 @@
                             <?php } ?>
                         </div>
 
-        </li>
+        </div>
 
         <?php endforeach; 
-                                   endif; ?>
-    </ul>
+    endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 

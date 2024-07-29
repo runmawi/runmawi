@@ -26,7 +26,10 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
 <!-- video-js Script  -->
 
-<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<!-- Video.js IMA plugin newly added-->
+<script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.6.4/dist/videojs.ads.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.8.0/dist/videojs.ima.min.js"></script>
 <script src="<?= asset('public/themes/theme4/assets/js/video-js/video.min.js') ?>"></script>
 <script src="<?= asset('public/themes/theme4/assets/js/video-js/videojs-contrib-quality-levels.js') ?>"></script>
 <script src="<?= asset('public/themes/theme4/assets/js/video-js/videojs-http-source-selector.js') ?>"></script>
@@ -61,9 +64,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .slick-next{right:0;}
     .slick-prev{left:10px;}
     @media only screen and (max-width: 600px) {
-    .custom-skip-forward-button, .custom-skip-backward-button {
-        top: 46% !important;
-    }
+        .custom-skip-forward-button, .custom-skip-backward-button {
+            top: 46% !important;
+        }
     }
 
 </style>
@@ -103,7 +106,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
-                            muted="muted" preload="yes" autoplay="autoplay"
+                            preload="yes" autoplay="autoplay"
                             poster="<?= $episode_details->Player_thumbnail ?>">
                             <source src="<?= $episode_details->Episode_url ?>"
                                 type="<?= $episode_details->Episode_player_type ?>">
@@ -1065,14 +1068,14 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         var duration = <?php echo json_encode($free_content_duration); ?>;
         var access = <?php echo json_encode($user_access); ?>;
         var Auth = <?php echo json_encode($Auth); ?>;
-        var pause = document.getElementById("videoPlayer");
+        var pause = document.getElementById("episode-player");
 
         pause.addEventListener('timeupdate', function() {
             if (Auth != false) {
                 if (access == 'guest' && duration !== null) {
                     if (pause.currentTime >= duration) {
                         pause.pause();
-                        $("video#videoPlayer").hide();
+                        $("video#episode-player").hide();
                         $(".free_content").show();
                     }
                 }

@@ -30,14 +30,14 @@ if(count($latest_video) > 0) : ?>
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100"
-                                alt="l-img">
+                            <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100 h-50"
+                            alt="<?php echo $watchlater_video->title; ?>">
                         </a>
                     </div>
                 </div>
 
                 <div class="block-description">
-                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>">
+                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="VideoCategory">
                         <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%" height="10%" />
                     </a>
                 </div>

@@ -1051,7 +1051,7 @@ class AdminAdvertiserController extends Controller
                 $inputs += ['bottom_image_url' =>  null ];
             }
             
-            if( $request->bottom_ads_banners_type == "top_script_url" ){
+            if( $request->top_ads_banners_type == "top_script_url" ){
 
                 $inputs += ['top_image_url' =>  null ];
             }
@@ -1248,6 +1248,7 @@ class AdminAdvertiserController extends Controller
                     "roku" => $request->roku,
                     "Lg" => $request->Lg,
                     "samsung" => $request->samsung,
+                    "firetv" => $request->firetv,
                 );
 
                 Adsvariables::create($data);
@@ -1281,6 +1282,7 @@ class AdminAdvertiserController extends Controller
             "roku" => $request->roku,
             "Lg" => $request->Lg,
             "samsung" => $request->samsung,
+            "firetv" => $request->firetv,
         );
 
         $Adsvariables = Adsvariables::find($id)->update($data);

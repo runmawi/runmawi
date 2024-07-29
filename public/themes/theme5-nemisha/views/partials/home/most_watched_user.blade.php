@@ -9,11 +9,11 @@
                 ?>
 
         <div class="slide-item">
-            <a href="<?php echo URL::to('home') ?>">
+            <a href="<?php echo URL::to('home') ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="videos">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $watchlater_video->title; ?>">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -36,7 +36,7 @@
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> 
+                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="MostWatched-Videos"> 
                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"/> 
                         </a>
                     </div>

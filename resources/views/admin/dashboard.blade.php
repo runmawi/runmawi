@@ -106,6 +106,48 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalSeriescount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                                Serie's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalEpisodescount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                                Episode's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           {{-- <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalLivestreamcount() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                                Live stream's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div> --}}
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
                                        <div class="iq-user-box "><p class="">{{ currency_symbol() }}  {{ TotalRevenue() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
@@ -124,6 +166,34 @@
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
                                           Monthly Revenue
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ currency_symbol() }}  {{ TotalWeeklyRevenue() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                          Weekly Revenue
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ currency_symbol() }}  {{ TotalDailyRevenue() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                          Daily Revenue
                                           </p>
                                        </div>
                                     </div>

@@ -66,6 +66,7 @@ use App\VideoExtractedImages;
 use App\SiteTheme;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
+use App\CompressImage;
 
 
 class AdminSeriesController extends Controller
@@ -186,7 +187,7 @@ class AdminSeriesController extends Controller
 
             return View::make('admin.expired_storage', $data);
         }else{
-
+            $compress_image_settings = CompressImage::first();
             $data = array(
                 'settings ' => $settings,
                 'headline' => '<i class="fa fa-plus-circle"></i> New Series',
@@ -203,7 +204,8 @@ class AdminSeriesController extends Controller
                 'series_networks_id' => [],
                 'InappPurchase' => InappPurchase::all(),
                 'SeriesNetwork' => SeriesNetwork::all(),
-                'Header_name' => "Edit TV Shows "
+                'Header_name' => "Edit TV Shows ",
+                'compress_image_settings' =>  $compress_image_settings
             );
 
            return View::make('admin.series.create_edit', $data);
@@ -516,6 +518,8 @@ class AdminSeriesController extends Controller
             $results = Episode::all();
             $settings  = Setting::first();
 
+            $compress_image_settings = CompressImage::first();
+
             //$episode = Episode::all();
             $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
@@ -538,7 +542,8 @@ class AdminSeriesController extends Controller
             'InappPurchase' => InappPurchase::all(),
             'SeriesNetwork' => SeriesNetwork::all(),
             'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
-            'Header_name' => "Edit TV Shows "
+            'Header_name' => "Edit TV Shows ",
+            'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -1304,10 +1309,12 @@ class AdminSeriesController extends Controller
         $season = SeriesSeason::where('id',$id)->first();
         $series = Series::where('id',$season->series_id)->first();
         // dd($season);
+        $compress_image_settings = CompressImage::first();
         $data =array(
             'season' => $season,
             'InappPurchase' => InappPurchase::all(),
             'series' => $series,
+            'compress_image_settings' => $compress_image_settings,
         );
 
         return View::make('admin/series/season/edit',$data);
@@ -1657,7 +1664,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series_id);
         $episodes = Episode::where('series_id' ,'=', $series_id)
         ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
-
+        $compress_image_settings = CompressImage::first();
 
         $StorageSetting = StorageSetting::first();
         // dd($StorageSetting);
@@ -1764,6 +1771,7 @@ class AdminSeriesController extends Controller
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => SiteTheme::first(),
+                'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -2122,7 +2130,7 @@ class AdminSeriesController extends Controller
                     $episodes->pre_post_ads =  null ;
                 }
 
-                $episode->mid_ads  =  $data['mid_ads'];
+                $episodes->mid_ads  =  $data['mid_ads'];
                 $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
             }
             else{
@@ -2338,6 +2346,8 @@ class AdminSeriesController extends Controller
 
         $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
+        $compress_image_settings = CompressImage::first();
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
                 'episodes' => $episodes,
@@ -2352,6 +2362,7 @@ class AdminSeriesController extends Controller
                 "subtitlescount" => $subtitlescount,
                 "ads_category" => Adscategory::all(),
                 "video_js_Advertisements" => $video_js_Advertisements ,
+                'compress_image_settings' => $compress_image_settings,
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -2866,7 +2877,7 @@ class AdminSeriesController extends Controller
         $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
         if($enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
-                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data);
+                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data,$season_id);
             }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
                 $value["error"] = 3;
                 return $value ;
@@ -4432,7 +4443,7 @@ class AdminSeriesController extends Controller
     }
 
     
-    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data){
+    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data,$season_id){
 
         // Bunny Cdn get Videos 
     
@@ -4579,6 +4590,7 @@ class AdminSeriesController extends Controller
                 $Episode->tv_image = default_horizontal_image();
                 $Episode->player_image = default_horizontal_image();
                 $Episode->user_id = Auth::user()->id;
+                $Episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
                 $Episode->save();
 
                 $Episode_id = $Episode->id;

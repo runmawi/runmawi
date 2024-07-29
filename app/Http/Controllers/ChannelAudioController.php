@@ -46,6 +46,7 @@ use App\EmailTemplate;
 use Mail;
 use App\SiteTheme;
 use App\ChannelSubscription;
+use App\CompressImage;
 
 class ChannelAudioController extends Controller
 {
@@ -139,6 +140,7 @@ class ChannelAudioController extends Controller
             }
 
             $settings = Setting::first();
+            $compress_image_settings = CompressImage::first();
 
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
@@ -154,6 +156,7 @@ class ChannelAudioController extends Controller
                 'languages_id' => [],
                 'settings' => $settings,
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
 
             );
             return View::make('channel.audios.create_edit', $data);
@@ -292,6 +295,8 @@ class ChannelAudioController extends Controller
 
                 $update_url->mp3_url = $data['mp3_url'];
 
+                $update_url->rating = $data['rating'];
+
                 $update_url->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
 
                 $update_url->save();
@@ -326,6 +331,7 @@ class ChannelAudioController extends Controller
             $user_id = $user->id;
             $audio = Audio::find($id);
             $settings = Setting::first();
+            $compress_image_settings = CompressImage::first();
 
             $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Audio',
@@ -345,6 +351,7 @@ class ChannelAudioController extends Controller
                     ->toArray() ,
                 'settings' => $settings,
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
             );
 
             return View::make('channel.audios.edit', $data);
@@ -472,6 +479,7 @@ class ChannelAudioController extends Controller
             $data['user_id'] = $user_id;
 
             $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
+            $audio->rating = $data['rating'];
             $audio->update($data);
             $audio->player_image = $player_image;
 

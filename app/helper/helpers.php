@@ -434,6 +434,22 @@ function TotalVideocount(){
     return  $video_count; 
 }
 
+function TotalSeriescount(){
+    $series_count = App\Series::count();
+    
+    return  $series_count; 
+}
+function TotalLivestreamcount(){
+    $live_count = App\LiveStream::count();
+    
+    return  $live_count; 
+}
+function TotalEpisodescount(){
+    $episodes_count = App\Episode::count();
+    
+    return  $episodes_count; 
+}
+
 function TotalSubscribercount(){
 
     $totalsubscribercount = App\Subscription::all()->count('id');
@@ -1049,6 +1065,48 @@ function TotalMonthlyRevenue(){
 
     return  $Total_Monthly_Revenue; 
 }
+
+            function TotalWeeklyRevenue()
+            {
+                // Get the current week number
+                $weekNumber = Carbon\Carbon::now()->weekOfYear;
+
+                // Calculate weekly PPV revenue
+                $Week_PPV_Revenue = App\PpvPurchase::whereYear('created_at', Carbon\Carbon::now()->year)
+                                                ->where('created_at', '>=', Carbon\Carbon::now()->startOfWeek())
+                                                ->where('created_at', '<=', Carbon\Carbon::now()->endOfWeek())
+                                                ->sum('total_amount');
+
+                // Calculate weekly Subscription revenue
+                $Week_Subscription_Revenue = App\Subscription::whereYear('created_at', Carbon\Carbon::now()->year)
+                                                            ->where('created_at', '>=', Carbon\Carbon::now()->startOfWeek())
+                                                            ->where('created_at', '<=', Carbon\Carbon::now()->endOfWeek())
+                                                            ->sum('price');
+
+                // Total weekly revenue
+                $Total_Weekly_Revenue = $Week_PPV_Revenue + $Week_Subscription_Revenue;
+
+                return $Total_Weekly_Revenue;
+            }
+
+            function TotalDailyRevenue()
+                    {
+                        // Get the current day
+                        $today = Carbon\Carbon::now()->toDateString();
+
+                        // Calculate daily PPV revenue
+                        $Day_PPV_Revenue = App\PpvPurchase::whereDate('created_at', $today)->sum('total_amount');
+
+                        // Calculate daily Subscription revenue
+                        $Day_Subscription_Revenue = App\Subscription::whereDate('created_at', $today)->sum('price');
+
+                        // Total daily revenue
+                        $Total_Daily_Revenue = $Day_PPV_Revenue + $Day_Subscription_Revenue;
+
+                        return $Total_Daily_Revenue;
+                    }
+
+
    
 function TotalUsers(){
 

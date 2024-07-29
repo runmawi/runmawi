@@ -668,6 +668,7 @@ img{max-width:100%;height: auto;}
   left: 2px;
   right: 2px;
   z-index: 0;
+  border-radius: 10px;
 }
 .channels-list .channel-row .video-list .item > div {
   display: block;
@@ -752,7 +753,7 @@ img{max-width:100%;height: auto;}
   -o-object-fit: cover;
   object-fit: cover;
 }
-#videoInfo, .series-based-network-dropdown {
+#videoInfo, .series-based-network-dropdown,.videos-based-network-dropdown {
   background-color: rgba(0, 0, 0, 0.15);
   z-index: 1;
   position: relative;

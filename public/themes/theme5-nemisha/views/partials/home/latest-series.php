@@ -33,17 +33,17 @@
     <?php  if(isset($latest_series)) :
       foreach($latest_series as $latest_serie): ?>
         <div class="slide-item">
-          <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
+          <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>" aria-label="videos">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $latest_serie->title; ?>">
               </div> </div>
               
               <div class="block-description">
                
                 <div class="hover-buttons d-flex">
-                  <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                  <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " aria-label="Latest-Series">
                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" alt="play"> 
                   </a>
                 </div>

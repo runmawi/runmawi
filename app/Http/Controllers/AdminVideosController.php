@@ -100,6 +100,8 @@ use App\Episode;
 use App\LiveStream;
 use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
+use App\CompressImage;
+use App\EPGSchedulerData;
 
 class AdminVideosController extends Controller
 {
@@ -1014,6 +1016,8 @@ class AdminVideosController extends Controller
                 }
                 $theme_settings = SiteTheme::first();
 
+                $compress_image_settings = CompressImage::first();
+
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
                 "post_route" => URL::to("admin/videos/fileupdate"),
@@ -1043,6 +1047,7 @@ class AdminVideosController extends Controller
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => $theme_settings ,
                 'advertisements_category' => Adscategory::get(),
+                'compress_image_settings' => $compress_image_settings,
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -1614,6 +1619,8 @@ class AdminVideosController extends Controller
 
             $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
 
+            $compress_image_settings = CompressImage::first();
+
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
                 "page"     => "Edit",
@@ -1663,6 +1670,7 @@ class AdminVideosController extends Controller
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 'admin_videos_ads'        => $admin_videos_ads ,
                 'advertisements_category' => Adscategory::get(),
+                'compress_image_settings' => $compress_image_settings,
             ];
 
             return View::make("admin.videos.create_edit", $data);

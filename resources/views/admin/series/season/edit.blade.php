@@ -40,11 +40,25 @@
 
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label class="m-0">Season Thumbnail </label>
-                        <p class="p1">(16:9 Ratio or 1080 X 1920px)</p>
-                        @if(!empty($season->image))
-                        <img src="{{  $season->image }}" class="movie-img" width="200" />
+                        @php 
+                            $player_width = $compress_image_settings->width_validation_season;
+                            $player_heigth = $compress_image_settings->height_validation_season;
+                        @endphp
+                        @if($player_width !== null && $player_heigth !== null)
+                            <p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                        @else
+                            <p class="p1">{{ "Select Season Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
                         @endif
-                        <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                        {{-- <p class="p1">(16:9 Ratio or 1080 X 1920px)</p> --}}
+                        @if(!empty($season->image))
+                            <img src="{{  $season->image }}" class="movie-img" width="200" />
+                        @endif
+                        <input type="file" multiple="true" class="form-control" name="image" id="season_image" />
+                        <span>
+                            <p id="season_image_error_msg" style="color:red !important; display:none;">
+                                * Please upload an image with the correct dimensions.
+                            </p>
+                        </span>
                     </div>
                     <!-- <div class="form-group">
                         <label>Season Landing Page MP4 URL </label><br>
@@ -192,6 +206,36 @@
                 $('.ErrorText').hide();
             }
         });
+
+        document.getElementById('season_image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var img = new Image();
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+                console.log(width);
+                console.log(height);
+                
+                var validWidth = {{ $compress_image_settings->width_validation_season }};
+                var validHeight = {{ $compress_image_settings->height_validation_season }};
+                console.log(validWidth);
+                console.log(validHeight);
+
+                if (width !== validWidth || height !== validHeight) {
+                    document.getElementById('season_image_error_msg').style.display = 'block';
+                    $('#submit-update-cat').prop('disabled', true);
+                    document.getElementById('season_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                } else {
+                    document.getElementById('season_image_error_msg').style.display = 'none';
+                    $('#submit-update-cat').prop('disabled', false);
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
 </script>
 <script src="<?= URL::to('/'). '/assets/css/vue.min.js';?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

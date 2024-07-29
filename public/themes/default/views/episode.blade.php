@@ -70,10 +70,15 @@
     .slick-next{right:0;}
     .slick-prev{left:10px;}
     @media only screen and (max-width: 600px) {
-    .custom-skip-forward-button, .custom-skip-backward-button {
-        /* right: 20%; */
-        top: 46% !important;
+        .custom-skip-forward-button, .custom-skip-backward-button {
+            /* right: 20%; */
+            top: 46% !important;
+        }
     }
+    @media screen and (max-width: 768px) {
+        .description{
+            margin-top: 5%;
+        }
     }
     </style>
 
@@ -368,7 +373,7 @@
                     @endif
                     @endif -->
             </div>
-            <div class="container-fluid">
+            <div class="container-fluid description">
                 <span class="text-white" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
                 <p class="mb-0" style="font-size: 80%;color: white;">
                     <?php

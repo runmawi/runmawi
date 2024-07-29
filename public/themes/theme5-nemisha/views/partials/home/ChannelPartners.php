@@ -31,16 +31,16 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">                 
+                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $channel->channel_name; ?>">                 
                 </div></div>
 
               <div class="block-description"></div>
-                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
+                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> " aria-label="Channel-Partner">
 
               <h6><?php echo __($channel->channel_name); ?></h6>
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> " >
+                  <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?>" aria-label="Channel-Partner" >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Channel
                   </a>

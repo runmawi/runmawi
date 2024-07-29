@@ -31,11 +31,11 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100" alt="content_user">                 
+                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100 h-50" alt="<?php echo $content_user->username; ?>">                 
               </div> </div>
 
               <div class="block-description"> </div>
-                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " aria-label="videos">
+                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " aria-label="ContentPartner">
 
               <h6><?php echo __($content_user->username); ?></h6>
                                <!-- </div> -->

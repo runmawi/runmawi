@@ -430,7 +430,7 @@ class HomeController extends Controller
                 'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
                 'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
                 'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
-
+                'Epg'                 => $FrontEndQueryController->Epg(), 
                 'current_page'      => 1,
                 'pagination_url' => '/videos',
                 'latest_series'     => $latest_series,
@@ -1151,7 +1151,7 @@ class HomeController extends Controller
                         'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
                         'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
                         'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
-
+                        'Epg'                 => $FrontEndQueryController->Epg(), 
                         'current_page'      => 1,
                         'latest_series'     => $latest_series,
                         'cnt_watching'      => $cnt_watching,
@@ -1170,6 +1170,7 @@ class HomeController extends Controller
                         'ppv_gobal_price'     => $ppv_gobal_price,
                         'suggested_videos'      => $trending_videos,
                         'video_categories'      => $genre_video_display  ,
+                        'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category() ,
                         'home_settings'         => $this->HomeSetting ,
                         'livetream'             => $livestreams ,
                         'audios'                => $latest_audios ,
@@ -1212,7 +1213,6 @@ class HomeController extends Controller
                             ];
                         }
                     }
-
                     return Theme::view('home', $data);
                 }
             }
@@ -1594,6 +1594,7 @@ class HomeController extends Controller
                     'videos'            => $FrontEndQueryController->Latest_videos(),
                     'latest_video'      => $FrontEndQueryController->Latest_videos(),
                     'latest_videos'     => $FrontEndQueryController->Latest_videos(),
+                    'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos(),
                     'trendings'         => $FrontEndQueryController->trending_videos(),
                     'trending_videos'   => $FrontEndQueryController->trending_videos(),
                     'suggested_videos'  => $FrontEndQueryController->trending_videos(),
@@ -1604,6 +1605,7 @@ class HomeController extends Controller
                     'genre_video_display' => $FrontEndQueryController->genre_video_display(),
                     'genres'              => $FrontEndQueryController->genre_video_display(),
                     'video_categories'    => $FrontEndQueryController->genre_video_display() ,
+                    'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category() ,
                     'albums'              => $FrontEndQueryController->AudioAlbums() ,
                     'latest_episode'      => $FrontEndQueryController->latest_episodes() , 
                     'livetream'              => $FrontEndQueryController->livestreams() ,
@@ -1630,6 +1632,7 @@ class HomeController extends Controller
                     'Most_watched_country'   =>  $FrontEndQueryController->Most_watched_videos_country(), 
                     'preference_genres'      => $FrontEndQueryController->preference_genres(),
                     'preference_Language'    => $FrontEndQueryController->preference_language(), 
+                    'Epg'                 => $FrontEndQueryController->Epg(), 
                 );
 
                 if ($this->HomeSetting->theme_choosen == "theme4" || "default") {

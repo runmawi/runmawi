@@ -30,12 +30,18 @@ use App\Video;
 use App\Series;
 use App\Artist;
 use App\Audio;
+use App\Channel;
+// use App\Watchlater;
+// use App\Wishlist;
+use App\ModeratorsUser;
 use App\Slider;
 use App\User;
 use Carbon\Carbon;
 use Theme;
 use Session;
 use DB;
+use App\AdminEPGChannel;
+use App\ChannelVideoScheduler;
 
 class FrontEndQueryController extends Controller
 {
@@ -773,4 +779,188 @@ class FrontEndQueryController extends Controller
 
         return $preference_language_query;
     }
+
+    public function Video_Based_Category()
+    {
+        // Using the same properties as in the constructor
+        $check_Kidmode = $this->check_Kidmode;
+        $videos_expiry_date_status = $this->videos_expiry_date_status;
+        $getfeching = $this->getfeching;
+
+        $categories = VideoCategory::query()
+            ->limit(15)
+            ->whereHas('category_videos', function ($query) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $query->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $query->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+            ->with(['category_videos' => function ($videos) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'player_image', 'description', 'videos.trailer', 'videos.trailer_type', 'videos.expiry_date', 'responsive_image', 'responsive_player_image', 'responsive_tv_image')
+                    ->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $videos->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $videos->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $videos->whereBetween('videos.age_restrict', [0, 12]);
+                }
+
+                $videos->latest('videos.created_at')->limit(15)->get();
+            }])
+            ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+            ->where('video_categories.in_home', 1)
+            ->whereHas('category_videos', function ($query) use ($check_Kidmode, $videos_expiry_date_status, $getfeching) {
+                $query->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1);
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', $this->blockVideos);
+                }
+
+                if ($videos_expiry_date_status == 1) {
+                    $query->whereNull('expiry_date')
+                        ->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+            ->orderBy('video_categories.order')
+            ->get()
+            ->map(function ($category) {
+                $category->category_videos->map(function ($video) {
+                    $video->image_url = URL::to('/public/uploads/images/' . $video->image);
+                    $video->Player_image_url = URL::to('/public/uploads/images/' . $video->player_image);
+                    return $video;
+                });
+                $category->source = "category_videos";
+                return $category;
+            });
+
+        return $categories;
+    }
+
+    public function latestViewedVideos()
+    {
+        $check_Kidmode = $this->check_Kidmode;
+
+        if (!Auth::guest()) {
+            $data = RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('recent_views.user_id', Auth::user()->id)
+                ->groupBy('recent_views.video_id');
+
+            if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
+                $data = $data->whereNotIn('videos.id', $this->blockVideos);
+            }
+
+            if ($this->videos_expiry_date_status == 1) {
+                $data = $data->whereNull('expiry_date')->orWhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+            }
+
+            if ($check_Kidmode == 1) {
+                $data = $data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
+            }
+
+            $data = $data->limit(15)->get();
+
+            return $data;
+        } else {
+            return collect(); // Return an empty collection if the user is not authenticated
+        }
+    }
+
+    public function Epg(){
+
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+        $carbon_current_time =  $carbon_now->format('H:i:s');
+        $carbon_today =  $carbon_now->format('n-j-Y');
+        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $epg_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                    
+                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                                                        
+                    $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                                ->limit(15)->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                                    $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                                                    $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                                    ->copy()->tz( $current_timezone );
+
+                                                                                    $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                                    ->copy()->tz( $current_timezone );
+
+                                                                                    if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                        $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                        $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                        $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                        return $item ;
+                                                                                    }
+
+                                                                                })->filter()->first();
+
+
+                    return $item;
+        });
+        return $epg_data;
+    }
+
+    public function Channel_Partner()
+    {
+        $Channel_Partner = Channel::where('status',1)->limit(15)->get();
+        return $Channel_Partner ;
+    }
+
+    public function content_Partner()
+    {
+        $content_Partner = ModeratorsUser::where('status',1)->limit(15)->get();
+        return $content_Partner ;
+    }
+
+    // public function watchLater() {
+    //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //                                 'expiry_date','active','status','draft')
+    //                                 ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater_data);
+    //     return $Watchlater;
+    // }
+
+    // public function wishlist() {
+    //     $Wishlist_data = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     // $Wishlist = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //     //                                 'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //     //                                 'expiry_date','active','status','draft')
+
+    //     // ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist_data);
+    //     return $Wishlist_data;
+    // }
 }

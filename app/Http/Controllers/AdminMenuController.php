@@ -61,9 +61,9 @@ class AdminMenuController extends Controller
            $data = array(
             'settings' => $settings,
             'responseBody' => $responseBody,
-    );
+            );
             return View::make('admin.expired_dashboard', $data);
-        }else if(check_storage_exist() == 0){
+            }else if(check_storage_exist() == 0){
             $settings = Setting::first();
 
             $data = array(
@@ -169,7 +169,7 @@ class AdminMenuController extends Controller
            $data = array(
             'settings' => $settings,
             'responseBody' => $responseBody,
-    );
+        );
             return View::make('admin.expired_dashboard', $data);
         }else if(check_storage_exist() == 0){
             $settings = Setting::first();

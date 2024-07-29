@@ -58,6 +58,7 @@ use App\EmailTemplate;
 use Mail;
 use App\SiteTheme;
 use App\ChannelSubscription;
+use App\CompressImage;
 
 class ChannelVideosController extends Controller
 {
@@ -651,6 +652,8 @@ class ChannelVideosController extends Controller
             }
 
             $settings = Setting::first();
+            $compress_image_settings = CompressImage::first();
+            
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('channel/videos/fileupdate') ,
@@ -668,6 +671,7 @@ class ChannelVideosController extends Controller
                 'video_artist' => [],
                 'ads' => Advertisement::where('status', '=', 1)->get() ,
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings' => $compress_image_settings,
             );
 
             return View::make('channel.videos.fileupload', $data);
@@ -1092,6 +1096,8 @@ class ChannelVideosController extends Controller
                 $all_related_videos = RelatedVideo::where("video_id", $id)
                     ->pluck("related_videos_id")
                     ->toArray();
+
+                $compress_image_settings = CompressImage::first();
         
                
         
@@ -1138,6 +1144,7 @@ class ChannelVideosController extends Controller
 
                 'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
                 ->where('videos.id',$id)->first(),
+                'compress_image_settings' => $compress_image_settings,
             );
 
             return View::make('channel.videos.create_edit', $data);

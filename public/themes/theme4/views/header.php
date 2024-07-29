@@ -10,6 +10,7 @@
       $button_bg_color = button_bg_color();
 
       $signin_header = $theme->signin_header;
+      $admin_advertistment_banners = App\AdminAdvertistmentBanners::first();
 
 
       if(!empty(Auth::User()->id)){
@@ -221,8 +222,8 @@
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin="anonymous">
+    <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
@@ -1019,11 +1020,17 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
             <div class="container-fluid pl-3">
                <div class="row">
                         
-                  <?php if($theme->header_top_position == 1): ?>
-                     <div class="col-sm-9 mx-auto header_top_position_img">
-                        <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" data-src="<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.webp') ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
-                     </div>
-                  <?php endif ;?>
+                  <?php if( optional($admin_advertistment_banners)->top_banner_status == 1 ): ?>
+                     <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
+                        <div class="col-sm-9 mx-auto header_top_position_img">
+                           <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
+                        </div>
+                     <?php endif ;?>
+                     
+                     <?php if (optional($admin_advertistment_banners)->top_script_url ): ?>
+                        <script src="<?= optional($admin_advertistment_banners)->top_script_url ?>"></script>
+                     <?php endif ;
+                  endif ;?>
 
                   <div class="col-sm-12">
 
