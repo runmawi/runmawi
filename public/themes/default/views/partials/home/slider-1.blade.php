@@ -72,8 +72,8 @@
                                     </p>
 
                                     @if(strlen($description) > 300)
-                                        <button class="text-primary des-more-less-btns p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
-                                        <button class="text-primary des-more-less-btns p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
                                     @endif
                                 </div>
                             </div>
