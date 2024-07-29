@@ -131,9 +131,10 @@ class RecurlyPaymentController extends Controller
 
             $subscription = $this->client->getSubscription($subscription_id);
 
-            $Sub_Startday  = Carbon::createFromTimestamp($subscription->getcurrentperiodstartedat())->toDateTimeString(); 
-            $Sub_Endday    = Carbon::createFromTimestamp($subscription->getcurrentperiodendsat())->toDateTimeString(); 
-            $trial_ends_at = Carbon::createFromTimestamp($subscription->getcurrentperiodendsat())->toDateTimeString(); 
+            $Sub_Startday  = Carbon::parse($subscription->getcurrentperiodstartedat())->format('Y-m-d H:i:s');
+            $Sub_Endday    = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
+            $trial_ends_at = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
+
 
             Subscription::create([
                 'user_id'        =>  $user_details->id,
@@ -219,7 +220,7 @@ class RecurlyPaymentController extends Controller
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'   => "false",
                 'redirect_url' => URL::to('/becomesubscriber'),
-                'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
+                'message'  => $th->getMessage(),
             );
         }
 

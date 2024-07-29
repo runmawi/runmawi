@@ -30,7 +30,7 @@
         let Successful_Payment_image = "<?php echo  $Successful_Payment_image ?>" ;
 
         let RedirectUrl = "<?php echo $URL; ?>";
-        let Status      = "{{ $status }}" ;
+        let Status      = {{ $status }} ;
         let message      = "{{ $message }}" ;
 
         if(Status == true){
@@ -40,7 +40,7 @@
                     iconHtml: '<img src="' + Successful_Payment_image + '" style="max-width: 200px; max-height: 150px;">',
 
                 title: 'Success.',
-                text: 'Payment done Successfully',
+                text: message,
                 timer: 30000,
                 allowOutsideClick: false})
                 .then(function() {
