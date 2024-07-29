@@ -303,6 +303,9 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Channel_Partner_list', 'PageListController@ChannelPartner_list')->name('pagelist.channelpartner_list');
     Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
     Route::get('epg_list', 'PageListController@epg_list')->name('pagelist.epg_list');
+    Route::get('Series_genre_list', 'PageListController@SeriesGenre_list')->name('pagelist.seriesgenre');
+    // Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
+    // Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
 
     
     // TV-shows

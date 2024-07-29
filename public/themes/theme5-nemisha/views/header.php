@@ -1514,10 +1514,10 @@
                                     </div>
                                 </div>
                                 <div class="mobile-more-menu">
-                                    <a href="javascript:void(0);" class="div.slide-item" id="dropdownMenuButton"
+                                    <button class="div.slide-item" id="dropdownMenuButton"
                                         data-toggle="div.slide-item" aria-haspopup="true" aria-expanded="false" aria-label="Drop-Down-Menu">
                                         <i class="ri-more-line"></i>
-                                    </a>
+                                </button>
                                     <div class="more-menu" aria-labelledby="dropdownMenuButton">
                                         <div class="navbar-right position-relative">
                                             <ul class="d-flex align-items-center justify-content-end list-inline m-0">
