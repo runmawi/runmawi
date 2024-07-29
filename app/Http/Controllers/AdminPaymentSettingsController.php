@@ -32,7 +32,7 @@ class AdminPaymentSettingsController extends Controller
 			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','Paystack')->first(),
 			'Cinet_payment_setting'    =>  PaymentSetting::where('payment_type','CinetPay')->first(),
 			'Paydunya_payment_setting' =>  PaymentSetting::where('payment_type','Paydunya')->first(),
-			'recurly_payment_setting' =>  PaymentSetting::where('payment_type','recurly')->first(),
+			'recurly_payment_setting' =>  PaymentSetting::where('payment_type','Recurly')->first(),
 		);
 
 		return View::make('admin.paymentsettings.index', $data);
@@ -334,7 +334,7 @@ class AdminPaymentSettingsController extends Controller
 
 		// Paydunya 
 
-	$recurly_payment_setting =  PaymentSetting::where('payment_type','recurly')->first();
+	$recurly_payment_setting =  PaymentSetting::where('payment_type','Recurly')->first();
 
 	if($recurly_payment_setting != null){
 
@@ -344,7 +344,7 @@ class AdminPaymentSettingsController extends Controller
 		$recurly_payment_setting->recurly_test_private_key  = $request['recurly_test_private_key'] ;
 		$recurly_payment_setting->recurly_live_public_key   = $request['recurly_live_public_key'] ;
 		$recurly_payment_setting->recurly_live_private_key  = $request['recurly_live_private_key'] ;
-		$recurly_payment_setting->payment_type 			    = "recurly";
+		$recurly_payment_setting->payment_type 			    = "Recurly";
 		$recurly_payment_setting->recurly_label 			= $request['recurly_label'] ;
         $recurly_payment_setting->save();
 	}
