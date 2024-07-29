@@ -302,7 +302,8 @@
       height: 100vh;
       width: 100vw;
       overflow: hidden;
-      background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+      /* background: linear-gradient(180deg, #040404 0%, #3D3D47 100%); */
+      background: #000;
       z-index: 9999;
       opacity: 1;
       transition: opacity .5s;
@@ -564,22 +565,24 @@
 
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
-      <div class="fullpage-loader">
+      <div id="loader" class="fullpage-loader">
          <div class="fullpage-loader__logo" style="text-align:center;" >
 
-            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
-
-            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
-
-            <?php }else { ?> 
-
-               <img src="<?php echo URL::to('public/uploads/settings/'. $settings->logo ); ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
-
+         
+         <?php if($theme->loader_format == 1 && !(is_null($theme->loader_video))){ ?>
+            <video id="my-video" class="video-js" autoplay muted preload="auto" data-setup='' loop style="width:300px;">
+               <source src="<?= URL::to('/public/uploads/settings/'.$theme->loader_video) ?>" type='video/mp4'>
+            </video>
+         <?php } else { ?> 
+            <?php if($theme_mode == "light" && !empty($theme->light_mode_logo)){ ?>
+               <img src="<?= URL::to('/public/uploads/settings/'. $theme->light_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+            <?php } elseif($theme_mode != "light" && !empty($theme->dark_mode_logo)){ ?> 
+               <img src="<?= URL::to('/public/uploads/settings/'. $theme->dark_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+            <?php } else { ?> 
+               <img src="<?= URL::to('/public/uploads/settings/'. $settings->logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
             <?php } ?>
+         <?php } ?>
+
  
          </div>
       </div>
