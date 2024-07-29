@@ -134,7 +134,7 @@ $system_settings = App\SystemSetting::find(1);
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                              {{ __('Become a Channel Partner') }}  <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">{{ __('Sign Up') }}</a> {{ __('Here!') }}
+                              {{ __('Become a Channel Partner') }}  <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">{{ __('Sign Up') }}</a> &nbsp; {{ __('Here!') }}
                               </div>                        
                            </div>
                      </form>
