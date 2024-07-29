@@ -76,9 +76,14 @@ class RecurlyPaymentController extends Controller
 
         } catch (\Throwable $th) {
 
-            $Error_msg = "Some errors occurred while subscribing. Please connect, Admin!";
-            $url = URL::to('/becomesubscriber');
-            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+            $respond = array(
+                'status'   => "false",
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'redirect_url' => URL::to('/becomesubscriber'),
+                'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
+            );
+
+            return Theme::view('Recurly.message',compact('respond'),$respond);
         }
     }
 
@@ -202,6 +207,7 @@ class RecurlyPaymentController extends Controller
             }
             
             $respond = array(
+                'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'  => 'true',
                 'redirect_url' => URL::to('/home'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
@@ -210,13 +216,14 @@ class RecurlyPaymentController extends Controller
         } catch (\Throwable $th) {
 
             $respond = array(
+                'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'   => "false",
                 'redirect_url' => URL::to('/becomesubscriber'),
                 'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
             );
         }
 
-        return Theme::view('stripe_payment.message',compact('respond'),$respond);
+        return Theme::view('Recurly.message',compact('respond'),$respond);
     }
 
     public function UpgradeSubscription(Request $request)

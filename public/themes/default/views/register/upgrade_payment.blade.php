@@ -760,7 +760,7 @@
 
                             {{-- Recurly --}}
                             <div class="col-md-12 Recurly_payment">
-                                <form action="{{ route('Recurly.checkout_page') }}" method="get">
+                                <form action="{{ route('Recurly.checkout_page') }}" method="post">
                                     @csrf
                                     <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
                                     <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
