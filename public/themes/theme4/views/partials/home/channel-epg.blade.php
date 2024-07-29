@@ -94,15 +94,45 @@
     }
 </style>
    
-@php
+@php    
 
     $current_timezone = current_timezone();
     $carbon_now = Carbon\Carbon::now( $current_timezone ); 
     $carbon_current_time =  $carbon_now->format('H:i:s');
     $carbon_today =  $carbon_now->format('n-j-Y');
 
-@endphp
+    $data =  App\AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                                                    
+                $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                            ->limit(15)->get()->map(function ($item) use ($carbon_now , $current_timezone) {
 
+                                                                                $TimeZone   = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                                                $converted_start_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                                ->copy()->tz( $current_timezone );
+
+                                                                                $converted_end_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                                ->copy()->tz( $current_timezone );
+
+                                                                                if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                    $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                    $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                    $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                    return $item ;
+                                                                                }
+
+                                                                            })->filter()->first();
+
+
+                return $item;
+    });
+
+@endphp 
+        
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
