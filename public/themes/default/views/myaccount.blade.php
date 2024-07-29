@@ -886,6 +886,21 @@ cursor: pointer;
                                     <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
                               </div>
                             @endif
+
+                            @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
+                              @if($payment_package != null && $payment_package->payment_gateway  ==  "Razorpay")
+                                 <a href="{{ route('RazorpayCancelSubscriptions') }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
+                              
+                              @elseif ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
+                                    <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
+                              
+                              @elseif ( $payment_package != null  && $payment_package->payment_gateway == "Recurly")
+                                 <a href="{{ route('Recurly.Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
+                              
+                              @elseif( $payment_package != null  && $payment_package->payment_gateway == "Stripe")
+                                 <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
+                              @endif
+                           @endif
                             
                         </div>
                         </div>
