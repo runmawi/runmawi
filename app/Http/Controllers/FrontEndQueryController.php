@@ -31,6 +31,8 @@ use App\Series;
 use App\Artist;
 use App\Audio;
 use App\Channel;
+// use App\Watchlater;
+// use App\Wishlist;
 use App\ModeratorsUser;
 use App\Slider;
 use App\User;
@@ -38,6 +40,8 @@ use Carbon\Carbon;
 use Theme;
 use Session;
 use DB;
+use App\AdminEPGChannel;
+use App\ChannelVideoScheduler;
 
 class FrontEndQueryController extends Controller
 {
@@ -888,6 +892,47 @@ class FrontEndQueryController extends Controller
         }
     }
 
+    public function Epg(){
+
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+        $carbon_current_time =  $carbon_now->format('H:i:s');
+        $carbon_today =  $carbon_now->format('n-j-Y');
+        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_horizontal_image_url = default_horizontal_image_url();
+
+        $epg_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                    
+                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                                                        
+                    $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                                ->limit(15)->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                                    $TimeZone   = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                                                    $converted_start_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                                    ->copy()->tz( $current_timezone );
+
+                                                                                    $converted_end_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                                    ->copy()->tz( $current_timezone );
+
+                                                                                    if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                        $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                        $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                        $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                        return $item ;
+                                                                                    }
+
+                                                                                })->filter()->first();
+
+
+                    return $item;
+        });
+        return $epg_data;
+    }
+
     public function Channel_Partner()
     {
         $Channel_Partner = Channel::where('status',1)->limit(15)->get();
@@ -899,4 +944,23 @@ class FrontEndQueryController extends Controller
         $content_Partner = ModeratorsUser::where('status',1)->limit(15)->get();
         return $content_Partner ;
     }
+
+    // public function watchLater() {
+    //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //                                 'expiry_date','active','status','draft')
+    //                                 ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater_data);
+    //     return $Watchlater;
+    // }
+
+    // public function wishlist() {
+    //     $Wishlist_data = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    //     // $Wishlist = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+    //     //                                 'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+    //     //                                 'expiry_date','active','status','draft')
+
+    //     // ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist_data);
+    //     return $Wishlist_data;
+    // }
 }

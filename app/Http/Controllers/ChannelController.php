@@ -342,8 +342,7 @@ class ChannelController extends Controller
     public function play_videos($slug)
     {
         try {
-        
-            if ( choosen_player() == 1 ){
+            if ( $this->Theme !== 'theme5-nemisha' ){
 
                 return $this->videos_details_jsplayer($slug);
             }

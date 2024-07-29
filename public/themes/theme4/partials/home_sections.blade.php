@@ -143,8 +143,8 @@
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', $homepage_array_data )->content() !!}
      @endif
      
-     @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )     
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', $homepage_array_data)->content() !!}
+     @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )    
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', array_merge($homepage_array_data, ['data' => $Epg]) )->content() !!}
      @endif
 
 @empty
