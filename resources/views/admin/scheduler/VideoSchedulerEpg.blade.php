@@ -19,6 +19,7 @@
             height: 0;
             overflow: hidden;
             transition: opacity 0.5s ease, height 0.5s ease;
+            padding: 0 !important;
         }
 
         .visible-item {
@@ -361,7 +362,17 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                     <h4 class="card-title">Scheduler :</h4>
                 </div>
             </div>
-             
+            <br>
+            <br>
+            <form id="schedulerForm" action="{{ URL::to('admin/epg-generate-scheduler-xml/')  }}" method="post"> 
+                    <div class="float-right" style="position: relative; margin-top: -25px;">
+                        <input type="hidden" id="epg_channel_id" name="epg_channel_id" value="">
+                        <input type="hidden" id="epg_time_zone" name="epg_time_zone" value="">
+                        <input type="hidden" id="epg_date_choose" name="epg_date_choose" value="">
+				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="submit" id="GenerateXmlJson" class="form-control btn btn-primary" value="Generate XML & Json">
+                    </div>
+                </form>
 
                 <div class="clear"></div>
                 <br>
@@ -483,22 +494,22 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
                     <!-- codepen -->
                     <div class="container mt-4">
                         <div class="row">
-                            <div class="col-md-3 p-0">
+                            <div class="col-md-5 p-0">
                                 <div id="modules">
                                     @foreach(@$VideoCollection as $value)
                                         <div class="drag d-flex justify-content-between searchItems" data-duration="{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}" data-title="{{ $value->title }}" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
                                             <span class="d-flex overflow-hidden">
-                                                <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
+                                                <img class="drag-img" src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100">
                                                 <a class="btn btn-default">{{ $value->title }}</a>
                                             </span>
-                                            <p style="margin-top:auto; margin-bottom:auto;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
+                                            <p style="margin-top:auto; margin-bottom:auto;display:none;">{{ $value->duration != null ? gmdate('H:i:s', $value->duration)  : null  }}</p>
                                             <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
                                             </div>
                                     @endforeach
                                 </div>
                             </div>
 
-                            <div class="col-md-9 p-0">
+                            <div class="col-md-7 p-0">
                                 <div id="dropzone"></div>
                             </div>
                         </div>
@@ -575,11 +586,15 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
     background: #eee;
     margin-bottom: 20px;
     z-index: 1;
-    max-height: 250px;
+    max-height: 320px;
     overflow-y: auto;
     overflow-x:hidden;
     height:100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* gap: 16px; */
 }
+
 
 #dropzone {
   padding: 10px;
@@ -587,7 +602,7 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   min-height: 100px;
   margin-bottom: 0;
   z-index: 0;
-  height:250px;
+  height:320px;
   overflow-y: auto;
 }
 
@@ -603,8 +618,9 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   cursor: pointer;
   margin-bottom: 0;
   padding: 5px 10px;
-  border-radisu: 3px;
+  border-radius: 3px;
   position: relative;
+  height:140px;
 }
 
 .drop-item .remove {
@@ -613,18 +629,25 @@ body.light input{color: <?php echo GetAdminLightText(); ?>;}
   right: 4px;
 }
 .drop-item img{
-    width:25px;
+    width:100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
 }
-.drag.ui-draggable.ui-draggable-handle img{
+/* .drag.ui-draggable.ui-draggable-handle img{
     width: 30px;
     height: 30px;
-}
+} */
 a.btn.btn-default {
     text-overflow: ellipsis;
     overflow: hidden;
 }
 summary{
     display:block;
+    text-overflow: ellipsis;
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 details{
     margin-left:10px;
@@ -636,9 +659,28 @@ details{
 .col-md-3.p-0{
     padding: 0 5px !important;
 }
+span.d-flex.overflow-hidden{flex-direction: column;border-radius: 5px;}
+.drag-img{width:180px;height:100px;object-fit: cover;border-top-left-radius: 5px;border-top-right-radius:5px;}
+a.btn.btn-default{border: 1px solid rgba(0, 0, 0, 0.4);border-top: none;}
+.drag.d-flex.justify-content-between.searchItems.ui-draggable.ui-draggable-handle{width:180px;padding:10px;}
 </style>
 
 <script>
+
+    
+    $(document).ready(function() {
+        $('#schedulerForm').on('submit', function(event) {
+
+            $('#epg_channel_id').val($('#channe_id').val());  
+            $('#epg_time_zone').val($('#time_zone_id').val());    
+            $('#epg_date_choose').val($('.date').val());      
+            
+            console.log('Channel ID:', $('#epg_channel_id').val());
+            console.log('Time Zone:', $('#epg_time_zone').val());
+            console.log('Date:', $('#epg_date_choose').val());
+        });
+    });
+
     var date = $('.date').datepicker({ dateFormat: 'm-d-yy' }).val();
     // var rescheduledate = $('.re-schedule-date').datepicker({ dateFormat: 'm-d-yy' }).val();
 
@@ -657,6 +699,7 @@ $("#dropzone").droppable({
     var sourceTitle = ui.draggable.data('title');
     var sourceDuration = ui.draggable.data('duration');
     dropepg(videoId, sourceType);
+
 
     // Extract image source from the draggable element
     var imgSrc = ui.draggable.find('img').attr('src');

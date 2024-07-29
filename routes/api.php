@@ -683,4 +683,6 @@ Route::group(
 
             Route::get('Ads-variables', 'ApiAuthController@Ads_variables'); 
 
+            Route::get('tv-splash-screen', 'ApiAuthController@tv_splash_screen'); 
+
         });

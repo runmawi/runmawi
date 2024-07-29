@@ -72,7 +72,7 @@
      @endif
      
      @if(  $item->video_name == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', ($homepage_array_data) )->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videos-based-categories', array_merge($homepage_array_data, ['data' => $Video_Based_Category]) )->content() !!}
      @endif
      
      @if(  $item->video_name == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
@@ -84,7 +84,7 @@
      @endif
      
      @if(  $item->video_name == 'latest_viewed_Videos' && $home_settings->latest_viewed_Videos == 1 ) {{-- Latest Viewed Videos --}}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Videos', ($homepage_array_data) )->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest_viewed_Videos', array_merge($homepage_array_data, ['data' => $latestViewedVideos]) )->content() !!}
      @endif
      
      @if(  $item->video_name == 'latest_viewed_Livestream' && $home_settings->latest_viewed_Livestream == 1 ) {{-- Latest Viewed Livestream    --}}
@@ -143,8 +143,8 @@
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', $homepage_array_data )->content() !!}
      @endif
      
-     @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )     
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', $homepage_array_data)->content() !!}
+     @if(   $item->video_name == 'EPG' && $home_settings->epg == 1 )    
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', array_merge($homepage_array_data, ['data' => $Epg]) )->content() !!}
      @endif
 
 @empty
