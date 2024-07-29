@@ -168,7 +168,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.albums-list', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -194,7 +194,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.live-category', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -221,7 +221,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.audio-list', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -248,7 +248,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.latest-series', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -275,7 +275,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.channel-partner', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -300,7 +300,34 @@ class PageListController extends Controller
             return Theme::view('Page-List.latest-viewed-audios', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+    public function epg_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $epg_pagelist = $FrontEndQueryController->Epg();
+            $epg_paginate = $this->paginateCollection($epg_pagelist, $this->videos_per_page);
+
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'epg_pagelist' => $epg_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.epg-list', $data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
