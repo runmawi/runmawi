@@ -125,7 +125,7 @@ entertainment.</p>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1" aria-label="face">
-                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="facebook"/>
+                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="facebook" />
                       </a>
                       <?php } ?>
 
@@ -295,12 +295,22 @@ function about(evt , id) {
                    );
 </script>
 
+<link rel="preload" href="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>" as="script">
 <script defer src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+
+<link rel="preload" href="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>" as="script">
+<script defer src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ 
+<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" as="script">
+<script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ 
+<link rel="preload" href="<?= URL::to('/'). '/assets/js/hls.min.js';?>" as="script">
+<script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+
+<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.js';?>" as="script">
+<script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
+
+<script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
  <!-- <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script> -->
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
@@ -414,4 +424,4 @@ document.addEventListener('readystatechange', (event) => {
 <?php } ?>
 
 </body>
-</html>
+</html>~

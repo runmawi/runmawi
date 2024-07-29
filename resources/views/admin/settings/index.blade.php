@@ -61,6 +61,7 @@ border-radius: 0px 4px 4px 0px;
         -webkit-appearance: none; 
         margin: 0; 
     }
+    .ppv_switvh span, .ppv_switvh label{display:none;}
 </style>
 @section('css')
 	<style type="text/css">
@@ -332,7 +333,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body">
                         <p class="p1">Hours :</p>
                         <div class="form-group">
-                            <div class="make-switch" data-on="success" data-off="warning">
+                            <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
 
                                 <input type="number" class="form-control" name="ppv_hours" id="ppv_hours"
                                     placeholder="# of pay Per view hours"
@@ -352,7 +353,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body">
                         <p class="p1">PPV / Movie Price (USD):</p>
                         <div class="form-group">
-                            <div class="make-switch" data-on="success" data-off="warning">
+                            <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
                                 <input type="text" class="form-control" name="ppv_price" id="ppv_price"
                                     placeholder="# of PPV Global Price"
                                     value="@if(!empty($settings->ppv_price)){{ $settings->ppv_price }}@endif" />
@@ -375,7 +376,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body">
                         <p class="p1">IOS Product Id :</p>
                         <div class="form-group">
-                            <div class="make-switch" data-on="success" data-off="warning">
+                            <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
                                 <input type="text" class="form-control" name="ios_product_id" id="ios_product_id"
                                     placeholder=""
                                     value="@if(!empty($settings->ios_product_id)){{ $settings->ios_product_id }}@endif" />
@@ -394,7 +395,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body">
                         <p class="p1">IOS Plan Price:</p>
                         <div class="form-group">
-                            <div class="make-switch" data-on="success" data-off="warning">
+                            <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
                                 <input type="text" class="form-control" name="ios_plan_price" id="ios_plan_price"
                                     placeholder="# of PPV Global IOS Price"
                                     value="@if(!empty($settings->ios_plan_price)){{ $settings->ios_plan_price }}@endif" />
@@ -417,7 +418,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <div class="make-switch" data-on="success" data-off="warning">
+                            <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
                                 <input type="text" class="form-control" name="expiry_time_started" id="expiry_time_started" placeholder="Set Expiry time (HH)"
                                     value="@if(!empty($settings->expiry_time_started)){{ $settings->expiry_time_started }}@endif" />
                             </div>
@@ -943,7 +944,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body" style="display: block;">
 
                         <p class="p1">Enter you're System Address:</p>
-                        <textarea id="summary-ckeditor" name="system_address" class="form-control"
+                        <textarea id="system_address" name="system_address" class="form-control"
                                 placeholder="Email System Address"
                                 value="@if(!empty($settings->system_address)){{ $settings->system_address }}@endif"><?php echo $settings->system_address; ?></textarea>
 
@@ -1665,13 +1666,13 @@ border-radius: 0px 4px 4px 0px;
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
             <div class="col-md-12">
                 <h5>Header Script CDN:</h5>
-                <textarea  rows="5" class="form-control" name="header_script"  
+                <textarea  rows="5" class="form-control" name="header_script"  id="header_script"
                     placeholder="Header Script">
                     @if(!empty($script->header_script)){{ $script->header_script }}@endif</textarea>
                     <!-- id="summaryheader" -->
             
                 <h5 class="mt-3">Footer Script CDN:</h5>
-                <textarea  rows="5" class="form-control" name="footer_script" 
+                <textarea  rows="5" class="form-control" name="footer_script" id="footer_script"
                     placeholder="Footer Script">@if(!empty($script->footer_script)){{ $script->footer_script }}@endif</textarea>
                     <!-- id="summaryfooter" -->
                    </div>
@@ -1896,23 +1897,34 @@ border-radius: 0px 4px 4px 0px;
         </div>
 
              </div></div></div></div></div>
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
     
     <script>
-    CKEDITOR.replace( 'summaryheader', {
-        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
-    CKEDITOR.replace( 'summaryfooter', {
-        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
+        ClassicEditor
+            .create( document.querySelector( '#header_script' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+        ClassicEditor
+            .create( document.querySelector( '#footer_script' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            ClassicEditor
+            .create( document.querySelector( '#system_address' ) )
+            .catch( error => {
+                console.error( error );
+            } );
     </script>
     
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
 		
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
@@ -1928,7 +1940,7 @@ border-radius: 0px 4px 4px 0px;
         $("#expiry_time_started").mask("00");
     })
 </script>
-	<script src="{{ '/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+	<script src="{{ URL::to('assets\admin\js\bootstrap-switch.min.js') }}"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
@@ -2500,15 +2512,6 @@ border-radius: 0px 4px 4px 0px;
 
 	</script>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
-
-    <script>
-     ClassicEditor
-            .create( document.querySelector( '#summary-ckeditor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
 
 {{-- validate --}}
 

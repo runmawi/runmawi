@@ -10,19 +10,19 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="featured-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $featured_videos)
-                                <li class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list featured-video">
+                                @foreach ($data as $key => $featured_videos)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
                                             @if ( $multiple_compress_image == 1)
                                                 <img class="img-fluid position-relative" alt="{{ $featured_videos->title }}" src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_image.' 640w') }},
                                                     {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_image.' 420w') }}" >
                                             @else
-                                                <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="Videos">
+                                                <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{ $featured_videos->title }}">
                                             @endif
                                         
                                             @if ($videos_expiry_date_status == 1 && optional($featured_videos)->expiry_date)
@@ -30,62 +30,41 @@
                                             @endif
 
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider featured-videos-slider" class="list-inline p-0 m-0 align-items-center featured-videos-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $featured_videos )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                                        <button class="drp-close">×</button>
+                        <div id="videoInfo" class="featured-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $featured_videos )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @if ($videos_expiry_date_status == 1 && optional($featured_videos)->expiry_date)
+                                            <ul class="vod-info">
+                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                            </ul>
+                                        @endif
 
-                                                        <div class="caption pl-4">
+                                        @if (optional($featured_videos)->description)
+                                            <div class="trending-dec">{{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode(optional($featured_videos)->description)), 500) }}</div>
+                                        @endif
 
-                                                            <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
-                                                                
-                                                            @if ($videos_expiry_date_status == 1 && optional($featured_videos)->expiry_date)
-                                                                <ul class="vod-info">
-                                                                    <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
-                                                                </ul>
-                                                            @endif
-
-                                                            @if (optional($featured_videos)->description)
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>
-                                                            @endif
-
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Trending-videoloop-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : $default_horizontal_image_url }}"
-                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$featured_videos->responsive_player_image.' 860w') }},
-                                                                    {{ URL::to('public/uploads/Tabletimages/'.$featured_videos->responsive_player_image.' 640w') }},
-                                                                    {{ URL::to('public/uploads/mobileimages/'.$featured_videos->responsive_player_image.' 420w') }}" >
-                                                            @else
-                                                                <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : $default_horizontal_image_url }}" alt="Videos">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Trending-videoloop-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,69 +121,50 @@
     </section>
 @endif
 
+
 <script>
-    
-    $( window ).on("load", function() {
-        $('.featured-videos-slider').hide();
+
+    var elem = document.querySelector('.featured-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
+    document.querySelectorAll('.featured-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.featured-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
 
-    $(document).ready(function() {
+            item.classList.add('current');
 
-        $('.featured-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.featured-videos-slider-nav',
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.featured-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.featured-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.featured-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.featured-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('featured-dropdown')[0].style.display = 'flex';
         });
-
-        $('.featured-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.featured-videos-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: true,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.featured-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.featured-videos-slider').show();
-        });
-
-        $('body').on('click', '.slick-arrow', function() {
-            $('.featured-videos-slider').hide();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.featured-videos-slider').hide();
-        });
+    });
+  
+  
+    $('body').on('click', '.drp-close', function() {
+        $('.featured-dropdown').hide();
     });
 </script>

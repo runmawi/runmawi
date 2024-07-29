@@ -249,7 +249,7 @@ class ChannelLiveCategoriesController extends Controller
         $package = $user_package->package;
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
-            $user = Session::get('user');
+            $user = Session::get('channel');
             $user_id = $user->id;
             LiveCategory::destroy($id);
 

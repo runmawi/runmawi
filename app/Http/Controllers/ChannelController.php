@@ -73,6 +73,7 @@ use Theme;
 use DateTime;
 use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
+use App\EPGSchedulerData;
 
 class ChannelController extends Controller
 {
@@ -341,8 +342,7 @@ class ChannelController extends Controller
     public function play_videos($slug)
     {
         try {
-        
-            if ( choosen_player() == 1 ){
+            if ( $this->Theme !== 'theme5-nemisha' ){
 
                 return $this->videos_details_jsplayer($slug);
             }

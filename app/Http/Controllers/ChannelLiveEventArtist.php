@@ -865,4 +865,19 @@ class ChannelLiveEventArtist extends Controller
         return Redirect::back()->with(array('message' => 'Live Event Artist Deleted Sucessfully!', 'note_type' => 'success') );; 
     }
     
+    
+    public function livevideo_slider_update(Request $request)
+    {
+        try {
+            $video = LiveEventArtist::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }
