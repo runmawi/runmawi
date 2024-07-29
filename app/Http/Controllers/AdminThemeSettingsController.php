@@ -202,6 +202,22 @@ class AdminThemeSettingsController extends Controller
             $file->move($path, $theme_settings->light_mode_logo);
         }
 
+        $loader_videos = $request->loader_video;
+
+        if ($loader_videos != '') {
+            //code for remove old file
+            if ($loader_videos != '' && $loader_videos != null) {
+                $file_old = $path . $loader_videos;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $loader_videos;
+            $theme_settings->loader_video = $file->getClientOriginalName();
+            $file->move($path, $theme_settings->loader_video);
+        }
+
         $theme_settings->signup_theme = !empty($data['signup_theme']) ? '1' : '0';
 
         $theme_settings->prevent_inspect = !empty($data['prevent_inspect']) ? '1' : '0';
@@ -209,6 +225,8 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->search_dropdown_setting = !empty($data['search_dropdown_setting']) ? '1' : '0';
 
         $theme_settings->loader_setting = !empty($data['loader_setting']) ? '1' : '0';
+
+        $theme_settings->loader_format = !empty($data['loader_format']) ? '1' : '0';
 
         $theme_settings->style_sheet_link = !empty($data['style_sheet_link']) ? $data['style_sheet_link'] : null;
 
