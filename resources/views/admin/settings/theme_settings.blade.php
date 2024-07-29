@@ -59,7 +59,7 @@ border-radius: 0px 4px 4px 0px;
 	</div>
 	<div class="clear"></div>
 
-<form action="{{ URL::to('/admin/theme_settings/save')}}" method="post" enctype="multipart/form-data">
+<form action="{{ URL::to('/admin/theme_settings/save')}}" method="post" enctype="multipart/form-data" id="theme_submit">
     
     @csrf
 		<div class="panel panel-primary" data-collapsed="0">
@@ -169,6 +169,14 @@ border-radius: 0px 4px 4px 0px;
                                     <input type="file" class="form-control ml-2"  name="light_mode_logo" value="" />   
                                 </div>
                                  <img class="mt-3 text-center"  src="{{ URL::to('/public/uploads/settings/'.$settings->light_mode_logo)}}">
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-5" id="loader_video_div" style="display:none;">
+                            <div class="col-sm-6" id="loader_videos">
+                                <div class="input-group color-picker">
+                                    <label class="mt-2">Loader Video</label>
+                                    <input type="file" class="form-control ml-2" name="loader_video" value="" />
+                                </div>
                             </div>
                         </div>
             </div> 
@@ -334,20 +342,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="row d-flex" >
 
-                        <div class="col-md-6">
-                            <label>{{ ucfirst(trans(' Enable Developer Tools')) }}</label>
-
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                                <div style="color:red;">Disable</div>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div style="color:green;">Enable</div>
-                            </div>
-                        </div>
+                        
 
                         <div class="col-md-6">
                             <label>{{ ucfirst(trans('Enable Loader')) }}</label>
@@ -363,18 +358,32 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Enable</div>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(trans('Loader Img/Video')) }}</label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Image</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="loader_format" class="loader_format" id="loader_format" type="checkbox" @if($settings->loader_format == "1") checked @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Video</div>
+                            </div>
+                        </div>
                     </div> 
                     <br>
 
                     <div class="row d-flex"> 
                         <div class="col-md-6">
-                            <label>{{ ucfirst(trans('enable search dropdown')) }}</label>
+                            <label>{{ ucfirst(trans(' Enable Developer Tools')) }}</label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                 <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                        <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
+                                        <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
@@ -414,24 +423,24 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Enable</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
-                            <label>{{ ucfirst(('Toggle Player')) }} </label>
+                            <label>{{ ucfirst(trans('enable search dropdown')) }}</label>
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
-                                <div style="color:#006AFF;"> Player 1 <span> (Default)</span>  </div>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                        <input name="choose_player"  type="checkbox" @if( $settings->choose_player == "1") checked  @endif >
+                                        <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                                <div style="color:green;"> Player 2 (Only for Videos) </div>
+                                <div style="color:green;">Enable</div>
                             </div>
                         </div>
 
                         
                     </div> 
+                    <br>
 
                     <div class="row d-flex"> 
                         
@@ -713,13 +722,40 @@ border-radius: 0px 4px 4px 0px;
                 </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
+                    <button type="submit" class="btn btn-primary " name="submit" id="save_settings"> Save Settings</button>
                 </div>
 </form>
     </div></div>
 </div>
 	<script src="<?= THEME_URL ?>/assets/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
+        function updateLoaderVideoVisibility() {
+            var loaderFormat = $('#loader_format').is(':checked');
+            if (loaderFormat) {
+                $('#loader_video_div').show();
+            } else {
+                $('#loader_video_div').hide();
+            }
+        }
+
+        $(document).ready(function() {
+            updateLoaderVideoVisibility();
+
+            $('#loader_format').on('click', function() {
+                updateLoaderVideoVisibility();
+            });
+        });
+        $('#theme_submit').on('submit', function(event) {
+
+                    if (!loaderFormat) {
+                        event.preventDefault(); 
+                        $('#save_settings').attr('disabled', 'disabled');
+                    } else {
+                        $('#save_settings').removeAttr('disabled');
+                    }
+                });
+
+
 	    var editor = ace.edit("custom_css");
 	    editor.setTheme("ace/theme/textmate");
 		editor.getSession().setMode("ace/mode/css");
@@ -740,6 +776,10 @@ border-radius: 0px 4px 4px 0px;
 		  textarea2.val(editor2.getSession().getValue());
 		});
 
+        
+
+        
+        
 	</script>
 
 @stop

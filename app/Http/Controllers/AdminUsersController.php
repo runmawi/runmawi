@@ -60,6 +60,7 @@ use App\Watchlater;
 use App\SiteTheme;
 use App\TVLoginCode;
 use App\Imports\UsersImport;
+use App\TVSplashScreen;
 
 class AdminUsersController extends Controller
 {
@@ -1036,11 +1037,13 @@ class AdminUsersController extends Controller
         $mobile_settings = MobileApp::get();
         $allCategories = MobileSlider::all();
         $welcome_screen = WelcomeScreen::all();
+        $tv_splash_screen = TVSplashScreen::all();
         $data = array(
             'admin_user' => Auth::user() ,
             'mobile_settings' => $mobile_settings,
             'allCategories' => $allCategories,
             'welcome_screen' => $welcome_screen,
+            'tv_splash_screen' => $tv_splash_screen,
         );
         return View::make('admin.mobile.index', $data);
     }
@@ -4727,4 +4730,223 @@ class AdminUsersController extends Controller
        return Redirect::back()->with(array('message' => 'Successfully Sent Mail','note_type' => 'success'));
     }
 
+    
+    public function TVSplashScreen(Request $request)
+    {
+
+        $input = $request->all();
+
+        $inputs = array();
+
+        
+        if($request->hasFile('AndroidTv_splash_screen')){
+
+            $file = $request->AndroidTv_splash_screen;
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'AndroidTv-image-'.time().'.'.$file->getClientOriginalExtension();
+            
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+               
+            $inputs +=  ['AndroidTv_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('LG_splash_screen')){
+
+            $file = $request->LG_splash_screen;
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'LG-splash-image-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['LG_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('RokuTV_splash_screen')){
+
+            $file = $request->RokuTV_splash_screen;
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'RokuTV-splash-image-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['RokuTV_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('Samsung_splash_screen')){
+
+            $file = $request->Samsung_splash_screen;
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'Samsung-splash-image-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['Samsung_splash_screen' => $filename ];
+        }
+
+
+        if($request->hasFile('Firetv_splash_screen')){
+
+            $file = $request->Firetv_splash_screen;
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'Firetv-splash-image-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['Firetv_splash_screen' => $filename ];
+        }
+
+        $TVSplashScreen = TVSplashScreen::create($inputs) ;
+
+        return Redirect::to('admin/mobileapp')->with(array(
+            'message' => 'Successfully Updated  Settings!',
+            'note_type' => 'success'
+        ));
+        
+    }
+
+    public function TV_Splash_edit(Request $request, $id )
+    {
+
+        $Splash = TVSplashScreen::where('id', $id)->first();
+        $allCategories = MobileSlider::all();
+
+        $data = array(
+            'admin_user' => Auth::user() ,
+            'Splash' => $Splash,
+            'allCategories' => $allCategories,
+        );
+
+        return View::make('admin.mobile.TVsplashEdit', $data);
+
+    }
+
+    public function TV_Splash_update(Request $request, $id)
+    {
+
+        $input = $request->all();
+
+        $splash_image = TVSplashScreen::findorfail($id);
+
+        $inputs = array();
+
+        if($request->hasFile('AndroidTv_splash_screen')){
+
+            if (File::exists(base_path('public/uploads/settings/'.$request->AndroidTv_splash_screen))) {
+
+                File::delete(base_path('public/uploads/settings/'.$request->AndroidTv_splash_screen));
+            }
+
+            $file = $request->AndroidTv_splash_screen;
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'Splash-image-'.time().'.'.$file->getClientOriginalExtension();
+        
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['AndroidTv_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('LG_splash_screen')){
+
+            if (File::exists(base_path('public/uploads/settings/'.$request->LG_splash_screen))) {
+
+                File::delete(base_path('public/uploads/settings/'.$request->LG_splash_screen));
+            }
+
+            $file = $request->LG_splash_screen;
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'Andriod-splash-image-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['LG_splash_screen' => $filename ];
+        }
+
+        
+        if($request->hasFile('RokuTV_splash_screen')){
+
+            if (File::exists(base_path('public/uploads/settings/'.$request->RokuTV_splash_screen))) {
+        
+                File::delete(base_path('public/uploads/settings/'.$request->RokuTV_splash_screen));
+            }
+            
+            $file = $request->RokuTV_splash_screen;
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'AndroidTv-splash-screen-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['RokuTV_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('Samsung_splash_screen')){
+
+            
+            if (File::exists(base_path('public/uploads/settings/'.$request->Samsung_splash_screen))) {
+        
+                File::delete(base_path('public/uploads/settings/'.$request->Samsung_splash_screen));
+            }
+            
+            $file = $request->Samsung_splash_screen;
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'LG-splash-screen-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['Samsung_splash_screen' => $filename ];
+        }
+
+        if($request->hasFile('Firetv_splash_screen')){
+
+            if (File::exists(base_path('public/uploads/settings/'.$request->Firetv_splash_screen))) {
+        
+                File::delete(base_path('public/uploads/settings/'.$request->Firetv_splash_screen));
+            }
+            
+
+            $file = $request->Firetv_splash_screen;
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename   = 'RokuTV-splash-screen-'.time().'.'.$file->getClientOriginalExtension();
+
+            in_array($extension, ['jpeg', 'jpg', 'png'])  ? Image::make($file)->save(base_path().'/public/uploads/settings/'.$filename ) : ($extension === 'gif' ? $file->move('public/uploads/settings', $filename)  : $file->move('public/uploads/settings', $filename)); 
+
+            $inputs +=  ['Firetv_splash_screen' => $filename ];
+        }
+
+        TVSplashScreen::where('id',$id)->update($inputs) ;
+
+        return Redirect::to('admin/mobileapp')
+            ->with(array(
+            'message' => 'Successfully updated!',
+            'note_type' => 'success'
+        ));
+    }
+
+    public function TV_Splash_destroy($id)
+    {
+ 
+        $Splash = TVSplashScreen::where('id',$id)->delete();
+
+        return Redirect::to('admin/mobileapp')
+            ->with(array(
+            'message' => 'Successfully deleted!',
+            'note_type' => 'success'
+        ));
+    }
+
+    
 }
