@@ -1806,6 +1806,7 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::get('/live-event-edit/{id}', 'ChannelLiveEventArtist@edit')->name('channel_live_event_edit');
     Route::post('/live-event-update/{id}', 'ChannelLiveEventArtist@update')->name('channel_live_event_update');
     Route::get('/live-event-destroy/{id}', 'ChannelLiveEventArtist@destroy')->name('channel_live_event_destroy');
+    Route::post('/livevideo_slider_update', 'ChannelLiveEventArtist@livevideo_slider_update');
 
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');

@@ -295,6 +295,8 @@ class ChannelAudioController extends Controller
 
                 $update_url->mp3_url = $data['mp3_url'];
 
+                $update_url->rating = $data['rating'];
+
                 $update_url->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
 
                 $update_url->save();
@@ -477,6 +479,7 @@ class ChannelAudioController extends Controller
             $data['user_id'] = $user_id;
 
             $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
+            $audio->rating = $data['rating'];
             $audio->update($data);
             $audio->player_image = $player_image;
 

@@ -41,7 +41,7 @@
                         @endforeach
                         @endif	
 
-                    <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
+                    <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit" onsubmit="return validateMobileNumber()">
                         @csrf
                         <div class="row container-fluid">
                         <div class="col-md-6" >
@@ -69,7 +69,8 @@
                             <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
                        
-                                <input id="mobile_number" type="number" class="form-control " name="mobile_number" value="{{ $moderators->mobile_number }}"  autocomplete="email">
+                                <input id="mobile_number" type="text" class="form-control " name="mobile_number" value="{{ $moderators->mobile_number }}"  autocomplete="email">
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                             </div>
                         </div>
                         <!-- <div class="col-md-6" style="width: 50%; float: left;">
@@ -175,6 +176,20 @@
                     //         }
                     //     });
                     // });
+
+                    
+                            function validateMobileNumber() {
+
+                            var mobileNumber = document.getElementById('mobile_number').value;
+
+                            if (mobileNumber.length !== 10 || !/^\d+$/.test(mobileNumber)) {
+                                alert("Please enter a valid 10-digit mobile number.");
+                                return false;
+                            }
+
+                            return true; 
+
+                            }
                     </script>
 
                     <script>
