@@ -227,13 +227,39 @@ class RecurlyPaymentController extends Controller
         return Theme::view('Recurly.message',compact('respond'),$respond);
     }
 
-    public function UpgradeSubscription(Request $request)
+    public function UpgradeSubscription($subscription_id)
     {
-        # code...
+       
     }
 
-    public function CancelSubscription(Request $request)
+    public function CancelSubscription($subscription_id)
     {
-        # code...
+        try {
+      
+            $subscription = $this->client->cancelSubscription($subscription_id);
+
+            $subscriptionId = User::where('id',Auth::user()->id)->where('payment_gateway','Recurly')->pluck('stripe_id')->first();
+
+            Subscription::where('stripe_id',$subscriptionId)->update([
+                'stripe_status' =>  'Cancelled',
+            ]);
+
+            User::where('id',Auth::user()->id )->update([
+                'payment_gateway' =>  null ,
+                'role'            => 'registered',
+                'stripe_id'       =>  null ,  
+                'payment_status'  =>   'Cancel' ,
+            ]);
+
+            $msg = 'Subscription Cancelled Successfully' ;
+            $url = URL::to('myprofile/');
+            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+            
+        } catch (\Throwable $th) {
+
+            $msg = 'Some Error occuring while Cancelling the Subscription, Please check this query with admin..';
+            $url = URL::to('myprofile/');
+            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+        }
     }
 }

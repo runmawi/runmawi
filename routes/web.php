@@ -2371,6 +2371,8 @@ Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
     
     Route::post('checkout-page', 'RecurlyPaymentController@checkout_page')->name('Recurly.checkout_page');
     Route::get('createSubscription', 'RecurlyPaymentController@createSubscription')->name('Recurly.subscription');
+    Route::get('subscription-cancel/{subscription_id}', 'RecurlyPaymentController@CancelSubscription')->name('Recurly.Subscription_cancel');
+
 });
 
 // Reset Password
