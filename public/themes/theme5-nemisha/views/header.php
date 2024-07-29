@@ -1517,7 +1517,7 @@
                                     <button class="div.slide-item" id="dropdownMenuButton"
                                         data-toggle="div.slide-item" aria-haspopup="true" aria-expanded="false" aria-label="Drop-Down-Menu">
                                         <i class="ri-more-line"></i>
-                                </button>
+                                    </button>
                                     <div class="more-menu" aria-labelledby="dropdownMenuButton">
                                         <div class="navbar-right position-relative">
                                             <ul class="d-flex align-items-center justify-content-end list-inline m-0">
@@ -2264,7 +2264,9 @@
                 });
             </script>
 
+            <link rel="preload" href="<?= URL::to('/') . '/assets/admin/dashassets/js/google_analytics_tracking_id.js' ?>" as="script">
             <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/google_analytics_tracking_id.js' ?>"></script>
+
             <script>
                 var mini = true;
 
@@ -2305,6 +2307,7 @@
             </script>
 
                        <!-- search validation -->
+        <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script">
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script>

@@ -910,12 +910,12 @@ class FrontEndQueryController extends Controller
                     $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
                                                                                 ->limit(15)->get()->map(function ($item) use ($carbon_now , $current_timezone) {
 
-                                                                                    $TimeZone   = App\TimeZone::where('id',$item->time_zone)->first();
+                                                                                    $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
 
-                                                                                    $converted_start_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                    $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
                                                                                                                                     ->copy()->tz( $current_timezone );
 
-                                                                                    $converted_end_time = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                    $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
                                                                                                                                     ->copy()->tz( $current_timezone );
 
                                                                                     if ($carbon_now->between($converted_start_time, $converted_end_time)) {
