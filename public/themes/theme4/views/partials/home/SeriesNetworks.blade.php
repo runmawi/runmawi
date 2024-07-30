@@ -310,7 +310,7 @@
                                                             <div class="col-lg-12">
                                                                 <div class="row">
                                                                     <div class="col-lg-6">
-                                                                        <img src="{{ $Series_Genre->image ?  URL::to('public/uploads/images/'.$Series_Genre->image) : default_vertical_image_url() }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                                                        <img src="{{ $Series_Genre->player_image ?  URL::to('public/uploads/images/'.$Series_Genre->player_image) : default_vertical_image_url() }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
                                                                     </div>
                                                                     <div class="col-lg-6">
                                                                         <div class="row">

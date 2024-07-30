@@ -94,15 +94,15 @@
     }
 </style>
    
-@php
+@php    
 
     $current_timezone = current_timezone();
     $carbon_now = Carbon\Carbon::now( $current_timezone ); 
     $carbon_current_time =  $carbon_now->format('H:i:s');
     $carbon_today =  $carbon_now->format('n-j-Y');
 
-@endphp
-
+@endphp 
+        
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">

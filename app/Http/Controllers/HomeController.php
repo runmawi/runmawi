@@ -430,7 +430,7 @@ class HomeController extends Controller
                 'live_event_banners' => $FrontEndQueryController->live_event_banners(), 
                 'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(), 
                 'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(), 
-
+                'Epg'                 => $FrontEndQueryController->Epg(), 
                 'current_page'      => 1,
                 'pagination_url' => '/videos',
                 'latest_series'     => $latest_series,
