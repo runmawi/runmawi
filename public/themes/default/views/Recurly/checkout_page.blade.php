@@ -10,10 +10,10 @@
 
 <div class="checkout-page">
     <header class="header">
-        <h1 class="mt-5"><img src="https://images.recurly.com/checkout-style/webnexs-1512514655-logo.png"
-                class="max-h-16 max-w-auto" alt="NemaTV Logo" style="width: 100px;"></h1>
+        <h1 class="mt-5"><img src="{{ front_end_logo() }}" class="max-h-16 max-w-auto" alt="Logo" style="width: 100px;"></h1>
+       
         <div class="lg:max-w-lg mx-auto lg:mx-0 lg:pr-8 mt-4">
-            <a class="backButton" href="history.back()">← Back </a>
+            <a class="backButton" href="{{ url()->previous() }}">← Back </a>
         </div>
     </header>
 
@@ -385,64 +385,85 @@
 
 <script>
 
-    const cardNumberInput = document.getElementById('cardNumber');
-
-    cardNumberInput.addEventListener('input', (event) => {
-
-        let value = event.target.value.replace(/\D/g, '');
-        if (value.length > 16) {
-            value = value.substring(0, 16);
-        }
-        value = value.match(/.{1,4}/g)?.join('-') ?? value;
-        event.target.value = value;
-
+    // Format card number
+    document.getElementById('cardNumber').addEventListener('input', (event) => {
+        let value = event.target.value.replace(/\D/g, '').substring(0, 16);
+        event.target.value = value.match(/.{1,4}/g)?.join('-') ?? value;
     });
 
-    const expmonthInput = document.getElementById('exp_month');
-
-    expmonthInput.addEventListener('input', (event) => {
+    // Format expiration month/year
+    document.getElementById('exp_month').addEventListener('input', (event) => {
         let value = event.target.value.replace(/\D/g, '');
+        if (value.length > 2) value = value.substring(0, 2) + '/' + value.substring(2, 6);
+        event.target.value = value.substring(0, 7);
+    });
+
+    // Card Validations
+    document.getElementById('my-form').addEventListener('submit', function(event) {
+        event.preventDefault();
         
-        if (value.length > 2) {
-            value = value.substring(0, 2) + '/' + value.substring(2);
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expMonth = document.querySelector('input[name="exp_month"]').value;
+        const cvc = document.querySelector('input[name="cvc"]').value;
+        const recurly_public_key = '{{ "$recurly_public_key" }}';
+
+        if (cardNumber.length < 19) {
+            alert('Card number must be 19 characters long.');
+            return;
+        }
+        
+        if (expMonth.length !== 7) {
+            alert('Expiration date must be 6 digits in MM/YYYY format.');
+            return;
+        }
+        
+        const month = parseInt(expMonth.slice(0, 2), 10); 
+        const year = parseInt(expMonth.slice(3, 7), 10); 
+
+        if (month < 1 || month > 12) {
+            alert('Expiration month must be between 01 and 12.');
+            return;
+        }
+        
+        const currentYear = new Date().getFullYear() ; 
+        const maxYear = currentYear + 20; 
+
+        if (year < currentYear || year > maxYear) {
+            alert(`Expiration year must be between ${currentYear} and ${maxYear}.`);
+            return;
+        }
+        
+        if (cvc.length < 3 || cvc.length > 4) {
+            alert('CVC must be 3 or 4 characters long.');
+            return;
+        }
+        
+        recurly.configure(recurly_public_key);
+
+        if (!recurly.validate.cardNumber(cardNumber)) {
+            alert('Invalid card number');
+            return;
         }
 
-        if (value.length > 7) {
-            value = value.substring(0, 7);
-        }
-
-        event.target.value = value;
+        // this.submit();
     });
 
-
-    // recurly.configure('ewr1-vqBCG3NdYAcm94MqtiVWlb');
-
-    // const elements = recurly.Elements();
-
-    // const cardElement = elements.CardElement({
-    //     inputType: 'mobileSelect',
-    //     style: {
-    //         fontSize: '1em',
-    //         placeholder: {
-    //             color: 'gray !important',
-    //             fontWeight: 'normal',
-    //             displayIcon: 'true',
-    //             content: {
-    //                 number: 'Card number',
-    //                 cvv: 'CVC',
-    //                 expiry: 'MM / YY'
-    //             }
-    //         },
-    //         invalid: {
-    //             fontColor: 'red'
-    //         }
-    //     }
-    // });
-    // cardElement.attach('#recurly-elements');
-
-   
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.add-gift').addEventListener('click', function(e) {
+            console.log("click");
+            e.preventDefault();
+            document.querySelector('.promo').style.display = 'block';
+            this.style.display = 'none';
+        });
+        document.querySelector('.apply-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.promo').style.display = 'none';
+            document.querySelector('.add-gift').style.display = 'block';
+        })
+    });
 </script>
 
 <style>
@@ -531,21 +552,5 @@
         display: none;
     }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('.add-gift').addEventListener('click', function(e) {
-            console.log("click");
-            e.preventDefault();
-            document.querySelector('.promo').style.display = 'block';
-            this.style.display = 'none';
-        });
-        document.querySelector('.apply-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector('.promo').style.display = 'none';
-            document.querySelector('.add-gift').style.display = 'block';
-        })
-    });
-</script>
 
 <?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>

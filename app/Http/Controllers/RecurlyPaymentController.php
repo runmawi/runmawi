@@ -67,6 +67,7 @@ class RecurlyPaymentController extends Controller
 
             $data = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
+                'recurly_public_key' => $this->recurly_public_key ,
                 'user_details'  => $user_details ,
                 'plan_details'  => $plan_details,
                 'Country_code'  => Country_Code(),
