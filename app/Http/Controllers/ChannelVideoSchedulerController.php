@@ -19,6 +19,7 @@ use App\OrderHomeSetting;
 use App\EPGSchedulerData;
 use View;
 use Theme;
+use Redirect;
 
 class ChannelVideoSchedulerController extends Controller
 {
@@ -166,7 +167,7 @@ class ChannelVideoSchedulerController extends Controller
 
         return Theme::view('video-js-Player.Channel-Video-Scheduler.Epgvideos', $data);
 
-        return Theme::view('video-js-Player.Channel-Video-Scheduler.videos', $data);
+        // return Theme::view('video-js-Player.Channel-Video-Scheduler.videos', $data);
     }
 
     public function page_list(Request $request)
