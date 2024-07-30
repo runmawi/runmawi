@@ -89,6 +89,7 @@ class RecurlyPaymentController extends Controller
 
     public function createSubscription(Request $request)
     {
+
         try {
 
             // users details
@@ -111,9 +112,9 @@ class RecurlyPaymentController extends Controller
                     "billing_info" => [
                         "first_name" =>  $request->first_name,
                         "last_name"  =>  $request->last_name,
-                        'number'     => $request->card_number,
-                        'month'      => '05',
-                        'year'       =>  '2025',
+                        'number'     =>  str_replace('-', '', $request->card_number),
+                        'month'      =>  explode('/', $request->exp_month)[0],
+                        'year'       =>  explode('/', $request->exp_month)[1],
                     ],
                 ],
                 "subscriptions" => [

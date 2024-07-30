@@ -41,7 +41,7 @@
 
                 title: 'Success.',
                 text: message,
-                timer: 30000,
+                timer: 15000,
                 allowOutsideClick: false})
                 .then(function() {
                     window.location = RedirectUrl;
@@ -53,7 +53,7 @@
             iconHtml: '<img src="' + fails_Payment_image + '" style="max-width: 200px; max-height: 150px;">',
             title: 'Oops...',
             text:  message ,
-            timer: 30000,
+            timer: 15000,
             allowOutsideClick: false})
             .then(function() {
                 window.location = RedirectUrl;

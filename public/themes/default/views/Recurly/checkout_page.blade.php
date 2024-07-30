@@ -28,14 +28,10 @@
             <div class="form-group">
                 <h5 class="mt-5 mb-3" for="card-details">Billing Information</h5>
                 <label class="form-label">Card Details <span class="text-red-500">&nbsp;*</span> </label>
-
                 <div class="col-md-12 row">
-
-                   
-
-                    <div class="col-md-6"><input  type="text" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" required class="form-control" name="card_number"  required></div>
-                    <div class="col-md-3"><input type="text" class="form-control" name="exp_month" placeholder="MM / YY"  required></div>
-                    <div class="col-md-3"><input type="text" class="form-control" name="cvc" placeholder="CVC"  required> </div>
+                    <div class="col-md-6"><input  type="text" inputmode="numeric" autocomplete="cc-number" minlength="19" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required class="form-control" name="card_number"  id="cardNumber" required></div>
+                    <div class="col-md-3"><input type="text" class="form-control" id="exp_month" name="exp_month" placeholder="MM / YYYY"  minlength="7" maxlength="7" required></div>
+                    <div class="col-md-3"><input type="text" inputmode="numeric"  class="form-control" name="cvc" placeholder="CVC"  minlength="3" maxlength="4" required> </div>
                 </div>
             </div>
 
@@ -388,6 +384,37 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
+
+    const cardNumberInput = document.getElementById('cardNumber');
+
+    cardNumberInput.addEventListener('input', (event) => {
+
+        let value = event.target.value.replace(/\D/g, '');
+        if (value.length > 16) {
+            value = value.substring(0, 16);
+        }
+        value = value.match(/.{1,4}/g)?.join('-') ?? value;
+        event.target.value = value;
+
+    });
+
+    const expmonthInput = document.getElementById('exp_month');
+
+    expmonthInput.addEventListener('input', (event) => {
+        let value = event.target.value.replace(/\D/g, '');
+        
+        if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2);
+        }
+
+        if (value.length > 7) {
+            value = value.substring(0, 7);
+        }
+
+        event.target.value = value;
+    });
+
+
     // recurly.configure('ewr1-vqBCG3NdYAcm94MqtiVWlb');
 
     // const elements = recurly.Elements();
@@ -413,23 +440,7 @@
     // });
     // cardElement.attach('#recurly-elements');
 
-    document.getElementById('my-form').addEventListener('submit', function(event) {
-        e.preventDefault(); 
-        
-        var formData = $(this).serialize();
-
-        $.ajax({
-            type: 'get', 
-            url: 'your-server-side-script.php', 
-            data: formData, // Serialized form data
-            success: function(response) {
-                console.log('Success:', response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    });
+   
 </script>
 
 </script>
