@@ -27,7 +27,7 @@
                     <div class="img-box">
                         <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
-                                    class="img-fluid w-100" alt=""> 
+                                    class="img-fluid w-100 h-100" alt="<?php echo $category_series->title; ?>"> 
                         </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

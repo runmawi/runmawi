@@ -214,55 +214,53 @@ border-radius: 0px 4px 4px 0px;
 </script>
 
 <script>
-	function update_video_banner(ele){
+function update_video_banner(ele) {
+    var video_id = $(ele).attr('data-video-id');
+    var status = '#video_' + video_id;
+    var video_Status = $(status).prop("checked");
+    var banner_status;
+    var check;
 
-	var video_id = $(ele).attr('data-video-id');
-	var status   = '#video_'+video_id;
-	var video_Status = $(status).prop("checked");
+    if (video_Status == true) {
+        banner_status = '1';
+        check = confirm("Are you sure you want to activate this slider?");
+    } else {
+        banner_status = '0';
+        check = confirm("Are you sure you want to remove this slider?");
+    }
 
-	if(video_Status == true){
-		  var banner_status  = '1';
-		  var check = confirm("Are you sure you want to active this slider?");  
+    if (check == true) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{{ url('channel/livevideo_slider_update') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                video_id: video_id,
+                banner_status: banner_status,
+            },
+            success: function (data) {
+                if (data.message == 'true') {
+                    // location.reload();
+                } else if (data.message == 'false') {
+                    swal.fire({
+                        title: 'Oops',
+                        text: 'Something went wrong!',
+                        allowOutsideClick: false,
+                        icon: 'error',
+                        title: 'Oops...',
+                    }).then(function () {
+                        location.href = '{{ URL::to('admin/ActiveSlider') }}';
+                    });
+                }
+            },
+        });
+    } else {
+        // Revert the checkbox state if the user cancels the action
+        $(status).prop('checked', !video_Status);
+    }
+}
 
-	}else{
-		  var banner_status  = '0';
-		  var check = confirm("Are you sure you want to remove this slider?");  
-	}
-
-
-	if(check == true){ 
-
-	   $.ajax({
-				type: "POST", 
-				dataType: "json", 
-				url: "{{ url('admin/livevideo_slider_update') }}",
-					  data: {
-						 _token  : "{{csrf_token()}}" ,
-						 video_id: video_id,
-						 banner_status: banner_status,
-				},
-				success: function(data) {
-					  if(data.message == 'true'){
-						//  location.reload();
-					  }
-					  else if(data.message == 'false'){
-						 swal.fire({
-						 title: 'Oops', 
-						 text: 'Something went wrong!', 
-						 allowOutsideClick:false,
-						 icon: 'error',
-						 title: 'Oops...',
-						 }).then(function() {
-							location.href = '{{ URL::to('admin/ActiveSlider') }}';
-						 });
-					  }
-				   },
-			 });
-	}else if(check == false){
-	   $(status).prop('checked', true);
-
-	}
-	}
 </script>
 	@stop
 

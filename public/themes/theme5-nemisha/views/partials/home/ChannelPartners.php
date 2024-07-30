@@ -31,7 +31,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">                 
+                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $channel->channel_name; ?>">                 
                 </div></div>
 
               <div class="block-description"></div>
