@@ -15,8 +15,8 @@
         </h5>
       <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="datafree-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($videos)) :
                          foreach($videos as $category_video): 
                            if (!empty($category_video->publish_time) && !empty($category_video->publish_time))
@@ -56,14 +56,14 @@
                            }
                             ?>
         <!-- .@$video->categories->name. -->
-        <div class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/') ?><?= '/category'.'/' . $category_video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100" alt=""> 
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                        class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $category_video->title; ?>"> 
                             </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -206,3 +206,18 @@
           }
       });
 </script>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.datafree-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
