@@ -104,132 +104,134 @@
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
-                                    
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
-                            @foreach ($live_videos as $livestream_videos)
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <div class="movie-slick position-relative">
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                
+                    @if ($live_videos->isNotEmpty())
+                        <div class="trending-contens sub_dropdown_image mt-3">
+                            <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
+                                @foreach ($live_videos as $key => $livestream_videos)                                        
+                                    <div class="network-image">
+                                        <div class="movie-sdivck position-relative">
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                            <div class="controls">        
+                                                <a href="{{ URL::to('live/'.$livestream_videos->slug) }}">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+                                                <nav>
+                                                    <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#live-cate-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                </nav>
+                                            </div>
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
-                            @foreach ($live_videos as $key => $livestream_videos )
-                                <li>
-                                    <div class="tranding-block position-relative trending-thumbnail-image"                                        >
-                                        <button class="drp-close">×</button>
-
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-
-                                                        <div class="caption pl-5">
-                                                                <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
-
-                                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                                                <ul class="vod-info">
-                                                                    <li><span></span> LIVE NOW</li>
-                                                                </ul>
-                                                            @elseif ($livestream_videos->publish_type == "publish_later")
-                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
-                                                            @endif
-
-                                                            <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ?  $livestream_videos->description : " No description Available" !!}</div>
-                                                        
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                    <!-- Modal -->
+                                    <div class="modal fade info_model" id="live-cate-{{ $key }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                            <div class="container">
+                                                <div class="modal-content" style="border:none; background:transparent;">
+                                                    <div class="modal-body">
+                                                        <div class="col-lg-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <img src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_vertical_image_url() }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                            <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                            <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
+                                                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    @if (optional($livestream_videos)->description)
+                                                                        <div class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->description) !!}</div>
+                                                                    @endif
+                                                                    <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
+                                                                        <i class="far fa-eye mr-2" aria-hidden="true"></i> {{ "View Content" }}
+                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="col-md-12 pagination justify-content-end">
+                                {!! $live_videos->links() !!}
+                            </div>
+
+                        </div>
+
+                    @else
+                        <div class="col-md-12 text-center mt-4" style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                            <p>
+                            <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 </div>
 
-<script>
-    
-    $( window ).on("load", function() {
-        $('.livestream-videos-slider').hide();
-    });
+<style>
 
-    $(document).ready(function() {
-
-        $('.livestream-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.livestream-videos-slider-nav',
-        });
-
-        $('.livestream-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            asNavFor: '.livestream-videos-slider',
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.livestream-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.livestream-videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.livestream-videos-slider').hide();
-        });
-    });
-</script>
+    div#trending-slider-nav{display: flex;
+        flex-wrap: wrap;}
+        .network-image{flex: 0 0 16.666%;max-width: 16.666%;}
+        .network-image img{width: 100%; height:auto;}
+        .movie-sdivck{padding:2px;}
+        #trending-slider-nav div.slick-slide{padding:2px;}
+        div#trending-slider-nav .slick-slide.slick-current .movie-sdivck.position-relative{border:2px solid red}
+        .sub_dropdown_image .network-image:hover .controls {
+        opacity: 1;
+        background-image: linear-gradient(0deg, black, transparent);
+        border: 2px solid #2578c0 !important;
+    }
+        .controls {
+            position: absolute;
+            padding: 4px;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 3;
+            opacity: 0;
+            -webkit-transition: all .15s ease;
+            transition: all .15s ease;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+        }
+        .controls nav {
+            position: absolute;
+            -webkit-box-align: end;
+            -ms-flex-align: end;
+            align-items: flex-end;
+            right: 4px;
+            top: 4px;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+        @media (max-width:1024px){
+            .modal-body{padding:0 !important;}
+        }
+        @media (max-width:768px){
+            .network-image{flex: 0 0 33.333%;max-width:33.333%;}
+        }
+        @media (max-width:500px){
+            .network-image{flex: 0 0 50%;max-width:50%;}
+        }
+    </style>
 
 @php
     include(public_path('themes/theme4/views/footer.blade.php'));
