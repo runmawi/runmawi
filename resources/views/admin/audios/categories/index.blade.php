@@ -254,6 +254,7 @@ border-radius: 0px 4px 4px 0px;
 				});
 		}else if(check == false){
 		$(status).prop('checked', true);
+		$(status).prop('checked', !category_Status);
 
 		}
 		}
