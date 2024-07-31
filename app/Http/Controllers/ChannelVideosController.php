@@ -1690,6 +1690,7 @@ class ChannelVideosController extends Controller
             $video->publish_status = $request['publish_status'];
             $video->publish_type = $publish_type;
             $video->publish_time = $data['publish_time'];
+            $video->featured = $data['featured'];
             $video->active = $active;
             $video->status = $status;
             $video->status = $status;
@@ -2385,6 +2386,7 @@ class ChannelVideosController extends Controller
             $video->enable = 1;
             $video->search_tags = $searchtags;
             $video->ios_ppv_price = $data['ios_ppv_price'];
+            $video->featured = $data['featured'];
 
             $video->update($data);
 
