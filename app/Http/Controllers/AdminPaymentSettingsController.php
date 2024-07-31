@@ -23,16 +23,16 @@ class AdminPaymentSettingsController extends Controller
 {
     public function index()
 	{
-
 		$data = array(
 			'admin_user' => Auth::user(),
 			'settings' => Setting::first(),
-			'payment_settings' => PaymentSetting::where('payment_type','=','Stripe')->first(),
-			'paypal_payment_settings'  => PaymentSetting::where('payment_type','=','PayPal')->first(),
-			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
-			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','=','Paystack')->first(),
-			'Cinet_payment_setting'    =>  PaymentSetting::where('payment_type','=','CinetPay')->first(),
-			'Paydunya_payment_setting' =>  PaymentSetting::where('payment_type','=','Paydunya')->first(),
+			'payment_settings' => PaymentSetting::where('payment_type','Stripe')->first(),
+			'paypal_payment_settings'  => PaymentSetting::where('payment_type','PayPal')->first(),
+			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','Razorpay')->first(),
+			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','Paystack')->first(),
+			'Cinet_payment_setting'    =>  PaymentSetting::where('payment_type','CinetPay')->first(),
+			'Paydunya_payment_setting' =>  PaymentSetting::where('payment_type','Paydunya')->first(),
+			'recurly_payment_setting' =>  PaymentSetting::where('payment_type','Recurly')->first(),
 		);
 
 		return View::make('admin.paymentsettings.index', $data);
@@ -330,6 +330,23 @@ class AdminPaymentSettingsController extends Controller
 		$Paydunya_payment_setting->payment_type 			= "Paydunya";
 		$Paydunya_payment_setting->paydunya_label 			= $request['paydunya_label'] ;
         $Paydunya_payment_setting->save();
+	}
+
+		// Paydunya 
+
+	$recurly_payment_setting =  PaymentSetting::where('payment_type','Recurly')->first();
+
+	if($recurly_payment_setting != null){
+
+		$recurly_payment_setting->recurly_status = empty($request['recurly_status']) ? 0 : 1 ;
+		$recurly_payment_setting->live_mode      = empty($request['recurly_live_mode']) ? 0 : 1 ;
+		$recurly_payment_setting->recurly_test_public_key   = $request['recurly_test_public_key'] ;
+		$recurly_payment_setting->recurly_test_private_key  = $request['recurly_test_private_key'] ;
+		$recurly_payment_setting->recurly_live_public_key   = $request['recurly_live_public_key'] ;
+		$recurly_payment_setting->recurly_live_private_key  = $request['recurly_live_private_key'] ;
+		$recurly_payment_setting->payment_type 			    = "Recurly";
+		$recurly_payment_setting->recurly_label 			= $request['recurly_label'] ;
+        $recurly_payment_setting->save();
 	}
 
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );
