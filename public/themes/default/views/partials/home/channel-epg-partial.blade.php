@@ -15,7 +15,7 @@
                     </div>
                 @empty
 
-                    <div role="tabpanel" class="tab-pane fade in active" >
+                    <div role="tabpanel" class="tab-pane fade in active p-0" >
                         <table class="table table-striped">
                             <tbody>
                                 <tr>

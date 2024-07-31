@@ -59,7 +59,7 @@
 </div>
 
 <div class="modal-footer">
-	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	<a href="{{ URL::to('/admin/subtitles/create') }}"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></a>
 	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
 </div>    </div>    </div>    </div>    </div>

@@ -1,18 +1,18 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h5 class="main-title"><a href="">Preference By language </a></h5>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-contens"> 
+        <div class="preference-language home-sec list-inline row p-0 mb-0">
         <?php  if(isset($preference_Language)) :
                     foreach($preference_Language as $preference_Languages): 
                 ?>
 
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid" alt=""> -->
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $preference_Languages->title; ?>">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" data-play="hover">
                                 <source src="<?php echo $preference_Languages->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -114,3 +114,18 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.preference-language');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

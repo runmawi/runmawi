@@ -5,17 +5,17 @@
     <h5 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">Continue Watching</a></h5>
     <a class="see" href="<?php echo URL::to('continue-watching-list') ?>">See All</a>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+<div class="continue-watching home-sec list-inline row p-0 mb-0">
         <?php  if(isset($cnt_watching)) :
                          foreach($cnt_watching as $cont_video): 
                           ?>
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <!-- block-images -->
                     <div class="img-box">
-                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="">
+                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100 h-50 flickity-lazyloaded" alt="">
                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4" />
                         </video>
@@ -161,3 +161,18 @@ $('.mywishlist').click(function(){
   });
 
 </script>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.continue-watching');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
