@@ -39,19 +39,19 @@
     </h5>
 </div>
 
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="latest-viewed-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($latest_view_videos)) :
                 foreach($latest_view_videos as $key => $latest_view_video):  ?>
 
-        <li class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('category/videos' . $latest_view_video->slug); ?>">
                 <div class="block-images position-relative">
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
-                            alt="">
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
+                            alt="<?php echo $latest_view_video->title; ?>">
 
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -143,11 +143,25 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php                     
             endforeach; 
             endif; 
         ?>
-    </ul>
+    </div>
 </div>
 <?php endif; ?>
+
+<script>
+    var elem = document.querySelector('.latest-viewed-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

@@ -50,16 +50,16 @@
                     </div>
                 </div>
 
-                <div class="favorites-contens">
-                    <ul class="category-page list-inline row p-0 mb-0">
+                <div class="favorites-contens"> 
+                    <div class="audio-category home-sec list-inline row p-0 mb-0">
                         <?php if(isset($AudioCategory)) {
                         foreach($AudioCategory as $Audio_Category){ ?>
-                        <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href="<?php echo URL::to('/audio/'.$Audio_Category->slug ) ?>">
+                        <div class="items col-sm-2 col-md-2 col-xs-12">
                                 <div class="block-images position-relative">
                                     <div class="img-box">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->image;  ?>"
-                                            class="img-fluid w-100" alt="">
+                                            class="img-fluid w-100 h-50 flickity-lazyloaded" 
+                                            alt="<?php echo $Audio_Category->title; ?>">
                                     </div>
 
                                     <div class="block-description">
@@ -81,10 +81,10 @@
                                     </div>
                                 </div>
                             </a>
-                        </li>
+                        </div>
 
                         <?php } } ?>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,4 +94,18 @@
 
 <?php
    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
-   ?>
+?>
+
+<script>
+    var elem = document.querySelector('.audio-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
