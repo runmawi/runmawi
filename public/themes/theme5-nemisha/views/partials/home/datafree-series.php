@@ -14,20 +14,20 @@
         </h5>
     <a class="see" href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>"> See All  </a>
 </div>
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="datafree-series home-sec list-inline row p-0 mb-0">
         <?php  if(isset($series)) :
                          foreach($series as $category_series):
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/') ?><?= '/play_series'.'/' . $category_series->slug ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('') ?><?= '/play_series/' . $category_series->slug ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
-                                    class="img-fluid w-100" alt=""> 
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"
+                                    class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $category_series->title; ?>"> 
                         </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -91,11 +91,11 @@
                             <?php } ?>
                         </div>
 
-        </li>
+        </div>
 
         <?php endforeach; 
-                                   endif; ?>
-    </ul>
+    endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 
@@ -138,3 +138,18 @@
           }
       });
 </script>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.datafree-series');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

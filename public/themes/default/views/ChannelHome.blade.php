@@ -146,6 +146,22 @@
             <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-albums", array_merge($homepage_array_data, ['data' => $albums]) )->content() !!}</div>
         @endif
 
+        @if( $item->video_name == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-videos-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-series-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-Audios-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-livestreams-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
     @empty
     
         <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">

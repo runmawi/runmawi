@@ -2,18 +2,18 @@
     <h5 class="main-title"><a href="<?php echo route('All_User_MostwatchedVideos') ?>">Your Most Watched Videos</a></h5>
     <a class="see" href="<?php echo route('All_User_MostwatchedVideos') ?>">See All</a>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="most-watched-user home-sec list-inline row p-0 mb-0">
         <?php  if(isset($most_watch_user)) :
                     foreach($most_watch_user as $watchlater_video): 
                 ?>
 
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('home') ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="videos">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $watchlater_video->title; ?>">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -114,3 +114,17 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.most-watched-user');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

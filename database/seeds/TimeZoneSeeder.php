@@ -5969,16 +5969,16 @@ class TimeZoneSeeder extends Seeder
             'utc_difference'=>'-08:00',
         ] );
             
-        Timezone::create( [
+        // Timezone::create( [
 
-            // 'id'=>543,
-            'time_zone'=>'US/Pacific-New',
-            'user_id'=>'1',
-            'created_at'=>'2023-12-31 13:44:01',
-            'updated_at'=>NULL,
-            'country_code'=>"",
-            'utc_difference'=>'-08:00',
-        ] );
+        //     // 'id'=>543,
+        //     'time_zone'=>'US/Pacific-New',
+        //     'user_id'=>'1',
+        //     'created_at'=>'2023-12-31 13:44:01',
+        //     'updated_at'=>NULL,
+        //     'country_code'=>"",
+        //     'utc_difference'=>'-08:00',
+        // ] );
             
         Timezone::create( [
 

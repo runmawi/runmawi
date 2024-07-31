@@ -297,7 +297,17 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
     Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
     Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
+    Route::get('Live_categories', 'PageListController@Live_Category_list')->name('pagelist.live-category_list');
+    Route::get('Audio_list', 'PageListController@Audio_list')->name('pagelist.audio_list');
+    Route::get('Series_list', 'PageListController@Series_list')->name('pagelist.series_list');
+    Route::get('Channel_Partner_list', 'PageListController@ChannelPartner_list')->name('pagelist.channelpartner_list');
+    Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
+    Route::get('epg_list', 'PageListController@epg_list')->name('pagelist.epg_list');
+    Route::get('Series_genre_list', 'PageListController@SeriesGenre_list')->name('pagelist.seriesgenre');
+    // Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
+    // Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
 
+    
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
 
@@ -557,6 +567,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
     Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
     Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
+
+
+    // TV Splash Screen
+       Route::post('/tv_splash_screen/store', 'AdminUsersController@TVSplashScreen');
+       Route::get('/tv_splash_screen/destroy/{id}', 'AdminUsersController@TV_Splash_destroy')->name('TV_Splash_destroy');
+       Route::get('/tv_splash_screen/edit/{id}', 'AdminUsersController@TV_Splash_edit')->name('TV_Splash_edit');
+       Route::post('/tv_splash_screen/update/{id}', 'AdminUsersController@TV_Splash_update')->name('TV_Splash_update');
 
     // Device version
     Route::get('/mobile_app/device_version', 'AdminUsersController@device_version')->name('mobile_app.device_version');
@@ -1154,6 +1171,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
         Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
         Route::get('/generate-scheduler-xml', 'AdminSiteVideoSchedulerController@generateSchedulerXml');
         Route::post('/default-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@DefaultgenerateSchedulerXml');
+        Route::post('/epg-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@EPGgenerateSchedulerXml');
 
     /*  Channel Videos Setting  */
 
@@ -1792,6 +1810,7 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::get('/live-event-edit/{id}', 'ChannelLiveEventArtist@edit')->name('channel_live_event_edit');
     Route::post('/live-event-update/{id}', 'ChannelLiveEventArtist@update')->name('channel_live_event_update');
     Route::get('/live-event-destroy/{id}', 'ChannelLiveEventArtist@destroy')->name('channel_live_event_destroy');
+    Route::post('/livevideo_slider_update', 'ChannelLiveEventArtist@livevideo_slider_update');
 
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');

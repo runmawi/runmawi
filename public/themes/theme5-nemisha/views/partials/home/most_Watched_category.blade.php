@@ -14,8 +14,8 @@
                 <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
             </a>
         </div>
-        <div class="favorites-contens">
-            <ul class="favorites-slider list-inline row p-0 mb-0">
+        <div class="favorites-contens"> 
+            <div class="most-watched-category home-sec list-inline row p-0 mb-0">
                 <?php  
                 if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
@@ -23,12 +23,12 @@
                        foreach($top_category_videos as $category_video):
                         
                         ?>
-                <li class="slide-item">
+                <li class="items">
                     <div class="block-images position-relative">
                         <!-- block-images -->
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>" aria-label="videos">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100" alt="">
+                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                        class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $category_video->title; ?>">
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4" />
                             </video>
@@ -149,3 +149,18 @@
         </div>
     </div>
 </div>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.most-watched-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

@@ -149,6 +149,7 @@ use App\TimeZone;
 use App\StorageSetting;
 use App\SeriesNetwork;
 use App\Adsvariables;
+use App\TVSplashScreen;
 
 
 class ApiAuthController extends Controller
@@ -24891,4 +24892,39 @@ public function SendVideoPushNotification(Request $request)
 
       return response()->json($response, 200);
     }
+
+
+    public function tv_splash_screen()
+    {
+        try {
+
+            $splash_screen = TVSplashScreen::latest()->get()->map(function ($item) {
+                    $item['AndroidTv_splash_screen'] = $item->AndroidTv_splash_screen != null ? URL::to('public/uploads/settings/'.$item->AndroidTv_splash_screen ) : default_vertical_image_url()  ;
+                    $item['LG_splash_screen'] = $item->LG_splash_screen != null ? URL::to('public/uploads/settings/'.$item->LG_splash_screen ) : default_vertical_image_url()  ;
+                    $item['RokuTV_splash_screen'] = $item->RokuTV_splash_screen != null ? URL::to('public/uploads/settings/'.$item->RokuTV_splash_screen ) : default_vertical_image_url()  ;
+                    $item['Samsung_splash_screen'] = $item->Samsung_splash_screen != null ? URL::to('public/uploads/settings/'.$item->Samsung_splash_screen ) : default_vertical_image_url()  ;
+                    $item['Firetv_splash_screen'] = $item->Firetv_splash_screen != null ? URL::to('public/uploads/settings/'.$item->Firetv_splash_screen ) : default_vertical_image_url()  ;
+
+                    return $item;
+           });
+
+            $data = array(
+                'status'  => true,
+                'message' => "Splash Screen data Retrieved Successfully" ,
+                'Total_count' => TVSplashScreen::count() ,
+                'splash_Screen' => $splash_screen,
+            );
+        }
+        catch (\Throwable $th) {
+
+            $data = array(
+                'status'  => false,
+                'message' => $th->getMessage() ,
+            );
+        }
+
+        return response()->json($data, 200);
+    }
+
+
 }

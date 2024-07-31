@@ -179,6 +179,11 @@ class ModeratorsUserController extends Controller
                     "email_id" =>"required|email|unique:moderators_users,email",
                     "password" => "min:6", 
                     "confirm_password" =>"required_with:password|same:password|min:6",
+                    "mobile_number" => [
+                        'required',
+                        'regex:/^\d{10}$/', // Ensures exactly 10 digits
+                        'size:10' // Ensures the length is exactly 10
+                    ],
                 ]);
 
                 if (!empty($request->confirm_password)) {

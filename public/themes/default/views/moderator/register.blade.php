@@ -73,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
                                 <div class="col-md-12 p-0">
                                     <div class="row">
                                         <div class="col-sm-5 ">
-                                            <select class="form-control" name="ccode" id="ccode" style="">
+                                            <select class="form-control" name="ccode" id="ccode" style="" required>
                                             <option>{{ __('Select Country') }}</option>
                                             @foreach($jsondata as $code)
                                             <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
@@ -187,6 +187,11 @@ $system_settings = App\SystemSetting::find(1);
       </div>
    </div>
  </section>
+
+@section('javascript')
+
+
+@stop
     
                        {{-- Footer --}}
     @php
