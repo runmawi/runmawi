@@ -28,16 +28,16 @@
   <?php } ?>
 
 </div>
-<div class="favorites-contens">
-  <divl class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="latest-series home-sec list-inline row p-0 mb-0">
     <?php  if(isset($latest_series)) :
       foreach($latest_series as $latest_serie): ?>
-        <div class="slide-item">
+        <div class="items">
           <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>" aria-label="videos">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $latest_serie->title; ?>">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $latest_serie->title; ?>">
               </div> </div>
               
               <div class="block-description">
@@ -82,3 +82,18 @@
   </div>
 </div>
 <?php  endif; ?>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.latest-series');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

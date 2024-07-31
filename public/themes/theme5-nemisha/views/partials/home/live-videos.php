@@ -24,8 +24,8 @@
 
 </div>
 
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="live-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($livetream)) :
                          foreach($livetream as $video): 
                             if (!empty($video->publish_time))
@@ -94,13 +94,13 @@
                               }
                             ?>
         <!-- .@$video->categories->name. -->
-        <div class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="" />
                         </a>
                         
                       <!-- PPV price -->
@@ -246,3 +246,18 @@
           }
       });
 </script>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.live-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

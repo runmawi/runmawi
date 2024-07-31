@@ -20,8 +20,8 @@
         <?php } ?>
     </div>
 
-    <div class="favorites-contens">
-        <div class="favorites-slider list-inline row p-0 mb-0">
+    <div class="favorites-contens"> 
+        <div class="latest-video home-sec list-inline row p-0 mb-0">
             <?php if(isset($latest_video)) : ?>
                 <?php foreach($latest_video as $watchlater_video): ?>
                     <?php
@@ -47,12 +47,12 @@
                     }
                     ?>
 
-                    <div class="slide-item">
+                    <div class="items">
                         <a href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug ?>" aria-label= "video">
                             <div class="block-images position-relative"> 
                                 <div class="img-box">
                                     <a href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image; ?>" class="img-fluid w-100 h-50" alt="<?php echo $watchlater_video->title; ?>">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image; ?>" class="img-fluid w-100 flickity-lazyloaded" alt="<?php echo $watchlater_video->title; ?>">
                                     </a>
 
                                     <!-- PPV price -->
@@ -165,39 +165,15 @@
     }
 </style>
 <script>
-    $('.mywishlist').click(function(){
-         var video_id = $(this).data('videoid');
-            if($(this).data('authenticated')){
-                $(this).toggleClass('active');
-                if($(this).hasClass('active')){
-                        $.ajax({
-                            url: "<?php echo URL::to('/mywishlist');?>",
-                            type: "POST",
-                            data: { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>'},
-                            dataType: "html",
-                            success: function(data) {
-                              if(data == "Added To Wishlist"){
-
-                                $('#'+video_id).text('') ;
-                                $('#'+video_id).text('Remove From Wishlist');
-                                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
-                              setTimeout(function() {
-                                $('.add_watch').slideUp('fast');
-                              }, 3000);
-                              }else{
-
-                                $('#'+video_id).text('') ;
-                                $('#'+video_id).text('Add To Wishlist');
-                                $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
-                              setTimeout(function() {
-                              $('.remove_watch').slideUp('fast');
-                              }, 3000);
-                              }
-                        }
-                    });
-                }
-            } else {
-              window.location = '<?= URL::to('login') ?>';
-          }
-      });
+     var elem = document.querySelector('.latest-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
 </script>
