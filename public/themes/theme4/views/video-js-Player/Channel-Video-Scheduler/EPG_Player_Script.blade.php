@@ -23,6 +23,7 @@
         var totalPausedTime = 0;
         player.on('pause', function() {
             pauseStartTime = new Date();
+            document.getElementById('no-video-message').style.display = 'none';
         });
 
         player.on('play', function() {
@@ -40,6 +41,11 @@
                 }
                 totalPausedTime = 0;
             }
+            document.getElementById('no-video-message').style.display = 'none';
+        });
+
+        player.on('ended', function() {
+            window.location.reload();
         });
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
