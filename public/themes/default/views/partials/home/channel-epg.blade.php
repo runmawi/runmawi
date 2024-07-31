@@ -1,11 +1,11 @@
    
 <style>
-    .time{
+    .time {
         width: 28%;
         font-size: 18px;
         height: 100%;
         background-color: rgba(129, 128, 128, 0.1);
-
+        color: #fff;
     }
     table.table tr {
         border-bottom: 1px solid rgba(255,255,255,0.5);
@@ -127,6 +127,60 @@
     .events-click{color:#fff;cursor: pointer;text-decoration:underline;}
     .tab-pane{height:100%;}
 
+    nav {
+        position: absolute;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        right: 4px;
+        top: 4px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .moreBTN {
+        color: #fff;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: rgba(51, 51, 51, 0.4);
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        font-size: calc(12px + 0.25vmin);
+        font-weight: 700;
+        -webkit-transition: all .2s ease;
+        transition: all .2s ease;
+        cursor: pointer;
+        outline: none;
+        line-height: 14px;
+    }
+    .moreBTN span {
+        width: 0;
+        margin-left: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        display: inline-block;
+    }
+    .moreBTN:hover {
+        background-color: #fff;
+        color: #000;
+    }
+    .moreBTN:hover span {
+        width: auto;
+        margin-left: 4px;
+    }
+
     @media (max-width:720px){
         .modal-body{padding:0 !important;}
         button.tabs__scroller.tabs__scroller--left.js-action--scroll-left{height:49px;}
@@ -234,6 +288,7 @@
                                           </div>
                                       </div>
                                       <div class="block-description">
+                                        <nav ><button class="moreBTN" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)"><i class="fas fa-info-circle"></i><span><?= __("View Events") ?></span></button></nav>
                                           <a class="playTrailer" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                             <img src="{{ $epg_channel_data->image_url }}" data-src="{{ $epg_channel_data->image_url }}" class="img-fluid w-100" alt="{{ $epg_channel_data->title }}"  width="300" height="200">
                                           </a>
@@ -241,10 +296,6 @@
                                               <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                                   <p class="epi-name text-left mt-2 m-0">{{ __($epg_channel_data->name) }}</p>
                                               </a>
-
-                                                <a type="button" class="events-click" tabindex="0" data-toggle="modal" data-target="<?= '#Home-epg-events-Modal-'.$key ?>" data-choosed-date="<?= $carbon_now->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>"  onclick="EPG_date_filter(this)">
-                                                    <?= __('View Events') ?>
-                                                </a>
 
                                               <a class="epi-name mt-2 mb-0 btn" href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -263,56 +314,54 @@
 
         {{-- Events Modal --}}
 
-       <!-- Events Modal -->
-        <?php foreach ($data as $key => $epg_channel_data) : ?>
-                <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                        <div class="container">
-                            <div class="modal-content" style="border:none;">
-                                <div class="modal-body" style="padding: 0 14rem;">
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="container m-0">
+        <?php foreach($data as $key => $epg_channel_data ) : ?>
+            <div class="modal fade info_model" id="<?= 'Home-epg-events-Modal-' . $key ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container m-0">
+                        <div class="modal-content" style="border:none;">
+                            <div class="modal-body" style="padding: 0 14rem;">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="container m-0">
 
-                                                <div class="row" style="margin-bottom:4%;">
-                                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                                        <h2 class="caption-h2"><?= optional($epg_channel_data)->name ?></h2>
-                                                    </div>
-
-                                                    <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
-                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
+                                            <div class="row" style="margin-bottom:4%;">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2"><?= optional($epg_channel_data)->name ?></h2>
                                                 </div>
 
-                                                <div class="panel panel-default">
-                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
-                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
-                                                    
-                                                    <ul class="nav nav-tabs m-0" role="tablist">
-                                                        <?php for ($i = 0; $i < 7; $i++): ?>
-                                                            <?php $epg_top_date = $carbon_now->copy()->addDays($i); ?>
-                                                            <li role="presentation" data-choosed-date="<?= $epg_top_date->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>" onclick="EPG_date_filter(this)">
-                                                                <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab"><?= $epg_top_date->format('d-m-y') ?></a>
-                                                            </li>
-                                                        <?php endfor; ?>
-                                                    </ul>
-
-                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                                <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
+                                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity:1;margin-top:0 !important; margin-right:0 !important;">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
+                                            </div>
 
-                                            
-                                                <?php
-                                                    echo Theme::uses('theme1')
-                                                        ->load('public/themes/theme1/views/partials/home/channel-epg-partial', [
-                                                            'order_settings_list' => $order_settings_list,
-                                                            'epg_channel_data' => $epg_channel_data,
-                                                            'EPG_date_filter_status' => 0
-                                                        ])->content();
-                                                ?>
+                                            <div class="panel panel-default">
+                                            <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
                                                 
-                                                </div>
+                                                <ul class="nav nav-tabs m-0" role="tablist">
+                                                    <?php for ($i = 0; $i < 7; $i++): ?>
+                                                        <?php $epg_top_date = $carbon_now->copy()->addDays($i); ?>
+                                                        <li role="presentation" data-choosed-date="<?= $epg_top_date->format('n-j-Y') ?>" data-channel-id="<?= $epg_channel_data->id ?>" onclick="EPG_date_filter(this)">
+                                                            <a href="#" aria-controls="tab" aria-label="date" role="tab" data-toggle="tab"><?= $epg_top_date->format('d-m-y') ?></a>
+                                                        </li>
+                                                    <?php endfor; ?>
+                                                </ul>
+
+                                                <button class="tabs__scroller tabs__scroller--right js-action--scroll-right"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
+
+                                        
+                                            <?php
+                                                echo Theme::uses('theme1')
+                                                    ->load('public/themes/theme1/views/partials/home/channel-epg-partial', [
+                                                        'order_settings_list' => $order_settings_list,
+                                                        'epg_channel_data' => $epg_channel_data,
+                                                        'EPG_date_filter_status' => 0
+                                                    ])->content();
+                                            ?>
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -321,7 +370,9 @@
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+       
 
     </section>
 @endif
