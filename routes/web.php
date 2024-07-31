@@ -492,6 +492,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
     Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber')->name('payment_becomeSubscriber');
+    Route::get('upgrade-subscriber', 'PaymentController@BecomeSubscriber')->name('payment_UpgradeSubscriber');
     Route::get('BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
     Route::get('transactiondetails', 'PaymentController@TransactionDetails');
 

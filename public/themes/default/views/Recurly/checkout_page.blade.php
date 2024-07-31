@@ -18,7 +18,7 @@
     </header>
 
     <section class="container d-flex justify-content-around">
-        <form class="mb-5" id='my-form' action="{{ route('Recurly.subscription') }}">
+        <form class="mb-5" id='my-form' action="{{ $payment_current_route_uri == "upgrade-subscriber" ? route('Recurly.UpgradeSubscription') : route('Recurly.subscription') }}">
             <div class="form-group">
                 <h5 class="mt-5 mb-3" for="email">Contact Information</h5>
                 <label class="form-label">Email <span class="text-red-500">&nbsp;*</span> </label>
@@ -302,15 +302,13 @@
                 <div class="row">
                     <div class="col">
                         <label class="form-label">Zip/Postal Code <span class="text-red-500">&nbsp;*</span> </label>
-                        <input type="text" class="form-control" name="postal_code" placeholder="Zip/Postal" required  >
+                        <input type="number"  class="form-control" name="postal_code"  pattern="[0-9\s]{13,19}" placeholder="Zip/Postal" required />
                     </div>
                 </div>
             </div>
 
             <input type="hidden" name="plan_code"  value="{{ $plan_details->getcode() }}">
             <input type="hidden" name="getCurrencies"  value="{{ $plan_details->getCurrencies()[0]->getcurrency() }}">
-
-
             
             <button type="submit" class="btn-block">Pay now</button>
         </form>
@@ -445,7 +443,7 @@
             return;
         }
 
-        // this.submit();
+        this.submit();
     });
 
 </script>
@@ -551,6 +549,18 @@
     .promo {
         display: none;
     }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
 </style>
 
 <?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>

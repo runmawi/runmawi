@@ -68,6 +68,7 @@ class RecurlyPaymentController extends Controller
             $data = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'recurly_public_key' => $this->recurly_public_key ,
+                'payment_current_route_uri'  => $request->payment_current_route_uri,
                 'user_details'  => $user_details ,
                 'plan_details'  => $plan_details,
                 'Country_code'  => Country_Code(),
@@ -232,15 +233,12 @@ class RecurlyPaymentController extends Controller
 
     public function UpgradeSubscription(Request $request)
     {
-        // try {
-     
-            $subscription_id = Auth::user()->stripe_id;
+        try {
 
-            $subscription_id = "vbmu25qkhm4a";
+            $subscription_id = Auth::user()->stripe_id;
             
             $change_create = [
-                // "plan_code" => 'Monthly-subscription',
-                "plan_code" => 'yearly-subscription',
+                "plan_code" => $request->plan_code,
                 "timeframe" => "now"
             ];
 
@@ -331,17 +329,17 @@ class RecurlyPaymentController extends Controller
                 'redirect_url' => URL::to('/home'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-        //     $respond = array(
-        //         'current_theme' => $this->HomeSetting->theme_choosen,
-        //         'status'   => "false",
-        //         'redirect_url' => URL::to('/becomesubscriber'),
-        //         'message'  => $th->getMessage(),
-        //     );
-        // }
+            $respond = array(
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'status'   => "false",
+                'redirect_url' => URL::to('/upgrade-subscriber'),
+                'message'  => $th->getMessage(),
+            );
+        }
 
-        // return Theme::view('Recurly.message',compact('respond'),$respond);
+        return Theme::view('Recurly.message',compact('respond'),$respond);
     }
 
     public function CancelSubscription($subscription_id)

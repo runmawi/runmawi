@@ -763,6 +763,7 @@
                                 <form action="{{ route('Recurly.checkout_page') }}" method="post">
                                     @csrf
                                     <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
+                                    <input type="hidden" id="payment_current_route_uri" name="payment_current_route_uri" value="{{ $payment_current_route_uri ?? '' }}">
                                     <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
                                         {{ __('Pay Now') }}
                                     </button>
