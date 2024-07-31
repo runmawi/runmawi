@@ -1,26 +1,26 @@
-@php include public_path('themes/theme4/views/header.php');  @endphp
+@php include public_path('themes/default/views/header.php');  @endphp
 {{-- video-js Style --}}
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-    <link href="{{ asset('public/themes/theme4/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
     <!-- <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    <link href="{{ asset('public/themes/theme4/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
-    <link href="{{ asset('public/themes/theme4/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
     <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
 
 {{-- video-js Script --}}
 
     <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs.ads.min.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs.ima.min.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ads.min.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ima.min.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
-    <script src="{{ asset('public/themes/theme4/assets/js/video-js/end-card.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
     <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
 
@@ -36,8 +36,8 @@
     </div>
 
 @php 
-    include public_path('themes/theme4/views/video-js-Player/Channel-Video-Scheduler/EPG_Player_Script.blade.php');
-    include public_path('themes/theme4/views/footer.blade.php'); 
+    include public_path('themes/default/views/video-js-Player/Channel-Video-Scheduler/EPG_Player_Script.blade.php');
+    include public_path('themes/default/views/footer.blade.php'); 
 @endphp
 
 
