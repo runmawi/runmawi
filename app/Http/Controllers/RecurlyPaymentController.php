@@ -133,10 +133,11 @@ class RecurlyPaymentController extends Controller
 
             $subscription = $this->client->getSubscription($subscription_id);
 
+            $plan_details =  $this->client->getPlan("code-".$subscription->getplan()->getcode());
+
             $Sub_Startday  = Carbon::parse($subscription->getcurrentperiodstartedat())->format('Y-m-d H:i:s');
             $Sub_Endday    = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
             $trial_ends_at = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
-
 
             Subscription::create([
                 'user_id'        =>  $user_details->id,
@@ -184,7 +185,7 @@ class RecurlyPaymentController extends Controller
                     'plan'          => ucfirst($plandetail->plans_name),
                     'price'         => $subscription->getunitamount(),
                     'plan_id'       => $subscription->getplan()->getcode() ,
-                    // 'billing_interval'  => $subscription['plan']['interval'] ,
+                    'billing_interval'  => $plan_details->getintervalunit()  ,
                     'next_billing'      => $nextPaymentAttemptDate,
                     'subscription_type' => 'recurring',
                 ), 
@@ -229,9 +230,118 @@ class RecurlyPaymentController extends Controller
         return Theme::view('Recurly.message',compact('respond'),$respond);
     }
 
-    public function UpgradeSubscription($subscription_id)
+    public function UpgradeSubscription(Request $request)
     {
-       
+        // try {
+     
+            $subscription_id = Auth::user()->stripe_id;
+
+            $subscription_id = "vbmu25qkhm4a";
+            
+            $change_create = [
+                // "plan_code" => 'Monthly-subscription',
+                "plan_code" => 'yearly-subscription',
+                "timeframe" => "now"
+            ];
+
+            $change = $this->client->createSubscriptionChange($subscription_id, $change_create);
+
+            $subscription = $this->client->getSubscription($change->getsubscriptionid());
+
+            $plan_details =  $this->client->getPlan("code-".$subscription->getplan()->getcode());
+
+            $Sub_Startday  = Carbon::parse($subscription->getcurrentperiodstartedat())->format('Y-m-d H:i:s');
+            $Sub_Endday    = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
+            $trial_ends_at = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
+
+            Subscription::create([
+                'user_id'        =>  $user_details->id,
+                'name'           =>  $subscription->getplan()->getcode(),
+                'price'          =>  $subscription->getunitamount(), 
+                'stripe_id'      =>  $subscription_id,
+                'stripe_status'  =>  $subscription->getState(),
+                'stripe_plan'    =>  $subscription->getplan()->getcode(),
+                'quantity'       =>  $subscription->getQuantity(),
+                'countryname'    =>  $request->country,
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Recurly',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+                'coupon_used'    =>  null,
+                'platform'       => 'WebSite',
+            ]);
+
+            $user_data = array(
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subscription_id,
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_type'          =>  'recurring',
+                'payment_status'        =>  $subscription->getState(),
+                'payment_gateway'       =>  'Recurly',
+                'coupon_used'           =>   null ,
+            );
+
+            User::where('id',$user_details->id)->update( $user_data );  
+            
+                // Mail
+            try {
+
+                $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+                $plandetail = SubscriptionPlan::where('plan_id',$subscription->getplan()->getcode())->first();
+
+                $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription->getcurrentperiodendsat() )->format('F jS, Y')  ;
+
+                \Mail::send('emails.subscriptionmail', array(
+
+                    'name'          => ucwords($user_details->username),
+                    'paymentMethod' => ucwords('recurring'),
+                    'plan'          => ucfirst($plandetail->plans_name),
+                    'price'         => $subscription->getunitamount(),
+                    'plan_id'       => $subscription->getplan()->getcode() ,
+                    'billing_interval'  => $plan_details->getintervalunit()  ,
+                    'next_billing'      => $nextPaymentAttemptDate,
+                    'subscription_type' => 'recurring',
+                ), 
+
+                function($message) use ($request,$user_details,$email_subject){
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($user_details->email, $user_details->username)->subject($email_subject);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Become Subscription';
+                $email_template = "23";
+                $user_id = $user_details->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            } catch (\Throwable $th) {
+
+                $email_log      = $th->getMessage();
+                $email_template = "23";
+                $user_id = $user_details->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+            }
+            
+            $respond = array(
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'status'  => 'true',
+                'redirect_url' => URL::to('/home'),
+                'message'   => 'Your Subscriber Payment done Successfully' ,
+            );
+        // } catch (\Throwable $th) {
+
+        //     $respond = array(
+        //         'current_theme' => $this->HomeSetting->theme_choosen,
+        //         'status'   => "false",
+        //         'redirect_url' => URL::to('/becomesubscriber'),
+        //         'message'  => $th->getMessage(),
+        //     );
+        // }
+
+        // return Theme::view('Recurly.message',compact('respond'),$respond);
     }
 
     public function CancelSubscription($subscription_id)
