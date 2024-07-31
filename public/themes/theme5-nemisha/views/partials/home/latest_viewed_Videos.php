@@ -50,7 +50,7 @@
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
                             alt="<?php echo $latest_view_video->title; ?>">
 
                         <!-- PPV price -->
