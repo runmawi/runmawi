@@ -191,6 +191,7 @@
 				});
 		}else if(check == false){
 		$(status).prop('checked', true);
+		$(status).prop('checked', !menu_Status);
 
 		}
 		}
