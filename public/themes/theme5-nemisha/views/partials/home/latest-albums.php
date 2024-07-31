@@ -5,16 +5,16 @@
     <!-- Albums -->
 </a></h5>      
 </div>
-<div class="favorites-contens">
-<div class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+   <div class="latest-albums home-sec list-inline row p-0 mb-0">
      <?php  if(isset($albums)) :
      foreach($albums as $album): ?>
-   <div class="slide-item">
+   <div class="items">
    <a href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="videos">
          <div class="block-images position-relative">
                              <!-- block-images -->
             <div class="img-box">
-            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100 h-50" alt="<?php echo $album->albumname; ?>">
+            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100 h-50 flickity-lazyloaded" alt="<?php echo $album->albumname; ?>">
             </div>  </div>
             <div class="block-description" >  </div>
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="Podcasts">
@@ -39,3 +39,17 @@
 </div>
 </div>
 <?php endif; ?>
+
+<script>
+    var elem = document.querySelector('.latest-albums');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

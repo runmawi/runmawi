@@ -125,7 +125,7 @@
 
 <script>
 
-  var elem = document.querySelector('.latest-video');
+    var elem = document.querySelector('.latest-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
