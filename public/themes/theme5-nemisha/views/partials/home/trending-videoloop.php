@@ -7,8 +7,8 @@
     <a class="see" href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"> See All  </a>
 
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+<div class="trending-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($featured_videos)) :
                       if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } foreach($featured_videos as $watchlater_video): 
@@ -48,12 +48,12 @@
                                 $publish_time = '';
                             }
                         ?>
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
-                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $watchlater_video->title; ?>">
                         <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                         </video> -->
@@ -212,4 +212,17 @@
             window.location = '<?= URL::to('login') ?>';
         }
     });
+
+    var elem = document.querySelector('.trending-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+
 </script>
