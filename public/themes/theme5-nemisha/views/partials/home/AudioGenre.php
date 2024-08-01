@@ -22,16 +22,16 @@
   </a>
   </h5>  
 </div>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="audio-genre home-sec list-inline row p-0 mb-0">
     <?php  if(isset($AudioCategory)) :
       foreach($AudioCategory as $Audio_Category): ?>
-        <li class="slide-item">
+        <div class="items">
           <a href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?>">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="AudioGenre">
 
               </div>
 
@@ -50,9 +50,23 @@
               </div>
             </div>
           </a>
-        </li>
+        </div>
       <?php endforeach; 
     endif; ?>
-  </ul>
+  </div>
 </div>
 <?php endif; ?>
+
+<script>
+    var elem = document.querySelector('.audio-genre');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

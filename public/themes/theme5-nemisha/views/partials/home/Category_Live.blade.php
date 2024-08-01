@@ -48,19 +48,18 @@
                     </div>
 
                     <div class="data">
-                        <div class="favorites-contens">
-                            <ul class="category-page list-inline  row p-0 mb-4">
+                    <div class="favorites-contens"> 
+                        <div class="category-live home-sec list-inline row p-0 mb-0">
 
                                 @if (count($Live_Category) > 0)
 
                                     @foreach ($Live_Category as $key => $LiveCategory)
-                                        <li class="slide-item col-6 col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
+                                        <div class="items col-6 col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                             <a href="{{ URL::to('live/' . $LiveCategory->slug) }} ">
                                                 <div class="block-images position-relative">
                                                     <div class="img-box">
-                                                        <img loading="lazy"
-                                                            data-src="{{ URL::to('public/uploads/images/' . $LiveCategory->image) }}"
-                                                            class="img-fluid" alt="" width="">
+                                                        <img src="{{ URL::to('public/uploads/images/' . $LiveCategory->image) }}"
+                                                            class="img-fluid w-100 h-50 flickity-lazyloaded" alt="Category Live">
                                                     </div>
                                                 </div>
 
@@ -153,7 +152,7 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
+                                        </div>
                                     @endforeach
                                 @elseif(count($Live_Category) == 0)
                                     <div class="col-md-12 text-center mt-4"
@@ -163,7 +162,7 @@
                                             Available</h2>
                                     </div>
                                 @endif
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,3 +175,17 @@
 @php
     include public_path('themes/theme5-nemisha/views/footer.blade.php');
 @endphp
+
+<script>
+    var elem = document.querySelector('.audio-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
