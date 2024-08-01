@@ -444,7 +444,7 @@ $settings = App\Setting::first();
                               </div>
 
                               <div class="col-lg-6 col-md-6 col-12">
-                                 <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
+                                 <a href="{{ route('payment_UpgradeSubscriber') }}" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
                               </div>
                            
                            @elseif( Auth::user()->role == "registered")
