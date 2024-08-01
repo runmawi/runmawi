@@ -7,18 +7,18 @@
     </h5>
     <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="most-watched-country home-sec list-inline row p-0 mb-0">
         <?php  if(isset($Most_watched_country)) :
                     foreach($Most_watched_country as $Most_watched_countries): 
                 ?>
 
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $Most_watched_countries->title; ?>">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $Most_watched_countries->title; ?>">
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" data-play="hover">
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -122,3 +122,17 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.most-watched-country');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

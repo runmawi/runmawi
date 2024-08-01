@@ -3,18 +3,18 @@
     <a class="see" href="<?php echo route('All_MostwatchedVideos') ?>">See All</a>
 
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="top-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($top_most_watched)) :
                 foreach($top_most_watched as $most_watched_video): 
             ?>
 
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('home') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid w-100" alt="">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="">
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
@@ -117,4 +117,19 @@
         </div>
         <?php endforeach; endif; ?>
     </div>
-</div>
+</div>7
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.top-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

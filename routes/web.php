@@ -492,6 +492,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
     Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber')->name('payment_becomeSubscriber');
+    Route::get('upgrade-subscriber', 'PaymentController@BecomeSubscriber')->name('payment_UpgradeSubscriber');
     Route::get('BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
     Route::get('transactiondetails', 'PaymentController@TransactionDetails');
 
@@ -2363,6 +2364,17 @@ Route::group(['middleware' => []], function () {
     Route::get('/Paydunya_SeriesSeason_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_SeriesSeason_Rent_payment_verify')->name('Paydunya_SeriesSeason_Rent_payment_verify');
 
     Route::get('/PaydunyaCancelSubscriptions', 'PaydunyaPaymentController@PaydunyaCancelSubscriptions')->name('PaydunyaCancelSubscriptions');
+});
+
+
+// Recurly Payment
+Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
+    
+    Route::post('checkout-page', 'RecurlyPaymentController@checkout_page')->name('Recurly.checkout_page');
+    Route::get('createSubscription', 'RecurlyPaymentController@createSubscription')->name('Recurly.subscription');
+    Route::get('subscription-cancel/{subscription_id}', 'RecurlyPaymentController@CancelSubscription')->name('Recurly.Subscription_cancel');
+    Route::get('upgrade-subscription', 'RecurlyPaymentController@UpgradeSubscription')->name('Recurly.UpgradeSubscription');
+
 });
 
 // Reset Password
