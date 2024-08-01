@@ -43,8 +43,8 @@
                     </h5>
                 </a>
             </div>
-            <div class="favorites-contens">
-                <ul class="favorites-slider list-inline  row p-0 mb-0">
+            <div class="favorites-contens"> 
+                <div class="audio-categoryloop home-sec list-inline row p-0 mb-0">
                     <?php if (!Auth::guest() && !empty($data['password_hash'])) {
                         $id = Auth::user()->id;
                     } else {
@@ -53,12 +53,12 @@
                     <?php  if(isset($audios)) :
                             foreach($audios as $audio): 
                         ?>
-                    <li class="slide-item">
+                    <div class="items">
                         <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="cate">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($audio->access == 'subscriber' ){ ?>
@@ -146,10 +146,10 @@
                                 </div>
                             </div>
                         </a>
-                    </li>
+                    </div>
                     <?php   endforeach;  endif; ?>
 
-                </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -198,4 +198,17 @@
             window.location = '<?= URL::to('login') ?>';
         }
     });
+
+    var elem = document.querySelector('.audio-categoryloop');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+
 </script>

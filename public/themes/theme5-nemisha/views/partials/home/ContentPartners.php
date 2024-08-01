@@ -22,16 +22,16 @@
   </a>
   </h5>  
 </div>
-<div class="favorites-contens">
-  <div class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="content-partner home-sec list-inline row p-0 mb-0">
     <?php  if(isset($ModeratorsUsers)) :
       foreach($ModeratorsUsers as $content_user): ?>
-        <div class="slide-item">
+        <div class="items">
           <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>" aria-label="videos">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100 h-50" alt="<?php echo $content_user->username; ?>">                 
+                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $content_user->username; ?>">                 
               </div> </div>
 
               <div class="block-description"> </div>
@@ -55,3 +55,18 @@
   </div>
 </div>
 <?php endif; ?>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.content-partner');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

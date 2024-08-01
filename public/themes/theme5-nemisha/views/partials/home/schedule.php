@@ -6,18 +6,18 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                      <h5 class="main-title"><a href="<?php if ($order_settings_list[10]->header_name) { echo URL::to('/').'/'.$order_settings_list[10]->url ;} else { echo "" ; } ?>">
                     <?php if ($order_settings_list[10]->header_name) { echo $order_settings_list[10]->header_name ;} else { echo "" ; } ?></a></h5>                      
                  </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                  <div class="favorites-contens"> 
+                     <div class="schedule home-sec list-inline row p-0 mb-0">
                          <?php  if(isset($VideoSchedules)) :
                          foreach($VideoSchedules as $Schedule): 
                           ?>
-                       <li class="slide-item">
+                       <div class="items">
                           <a href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
-                                   <img loading="lazy" data-src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100" alt=""></a>  
+                                   <img src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded" alt="<?php echo $Schedule->name; ?>"></a>  
                                 </div>
                                 <div class="block-description">
                                      <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
@@ -39,10 +39,24 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                               </div>
                               
                           </a>
-                       </li>
+                       </div>
                        <?php                     
                         endforeach; 
                                    endif; ?>
-                    </ul>
+                    </div>
                  </div>
                  <?php endif; ?>
+
+<script>
+    var elem = document.querySelector('.schedule');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

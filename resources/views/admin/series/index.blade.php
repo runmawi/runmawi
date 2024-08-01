@@ -212,6 +212,7 @@
 						});
 					} else if (check == false) {
 						$(status).prop('checked', true);
+						$(status).prop('checked', !video_Status);
 
 					}
 				}

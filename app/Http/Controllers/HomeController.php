@@ -482,7 +482,7 @@ class HomeController extends Controller
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
             );
 
-            if ( $this->HomeSetting->theme_choosen == "theme4" || "default") {
+            if ( $this->HomeSetting->theme_choosen == "theme4" || "default" || "theme5-nemisha") {
                 if($request->ajax()) {
                     return $data = [
                         "view" => Theme::watchPartial('home_sections', $data ),

@@ -7,18 +7,18 @@
             </a>
         </h5>  
 </div>
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="artist-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($artist)) :
                     foreach($artist as $artist_details): 
                 ?>
 
-        <li class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('artist-list') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 loading" alt=""> 
+                            <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $artist_details->artist_name; ?>"> 
                         </a>
                     </div>
                 </div>
@@ -36,9 +36,23 @@
                     <?php } ?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php endforeach; endif; ?>
-    </ul>
+    </div>
 </div>
 
 <?php } ?>
+
+<script>
+    var elem = document.querySelector('.artist-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
