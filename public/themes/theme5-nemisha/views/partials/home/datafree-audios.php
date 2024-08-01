@@ -14,20 +14,20 @@
         </h5>
      <a class="see" href="<?php echo URL::to('/audios/category/').'/'.$DataFreeAudioCategories->slug;?>"> See All  </a>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="datafree-audio home-sec list-inline row p-0 mb-0">
         <?php  if(isset($audio)) :
                          foreach($audio as $category_audio): 
                             ?>
         <!-- .@$video->categories->name. -->
-        <div class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/') ?><?= '/audio'.'/' . $category_audio->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                     <a href="<?php echo URL::to('/') ?><?= '/audio/' . $category_audio->slug ?>">
                                 <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_audio->image;  ?>"
-                                        class="img-fluid w-100" alt=""> 
+                                        class="img-fluid w-100 h-50 flickity-lazyloaded" alt="Datafree series"> 
                             </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
@@ -142,4 +142,17 @@
               window.location = '<?= URL::to('login') ?>';
           }
       });
+
+    var elem = document.querySelector('.datafree-audio');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+
 </script>

@@ -43,8 +43,8 @@
                     </h4>
                 </a>
             </div>
-            <div class="favorites-contens">
-                <ul class="favorites-slider list-inline  row p-0 mb-0">
+            <div class="favorites-contens"> 
+                <div class="series-categoryloop home-sec list-inline row p-0 mb-0">
                     <?php if (!Auth::guest() && !empty($data['password_hash'])) {
                         $id = Auth::user()->id;
                     } else {
@@ -53,12 +53,12 @@
                     <?php  if(isset($series)) :
                             foreach($series as $series_video): 
                         ?>
-                    <li class="slide-item">
+                    <div class="items">
                         <a href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100 h-50 flickity-lazylaoded" alt="<?php echo $series_video->title; ?>">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
@@ -147,10 +147,10 @@
                                 </div>
                             </div>
                         </a>
-                    </li>
+                    </div>
                     <?php   endforeach;  endif; ?>
 
-                </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -199,4 +199,17 @@
             window.location = '<?= URL::to('login') ?>';
         }
     });
+
+    var elem = document.querySelector('.series-categoryloop');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+
 </script>

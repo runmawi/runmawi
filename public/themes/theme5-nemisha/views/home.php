@@ -34,7 +34,8 @@
 
 <!-- MainContent -->
 
-<div class="main-content">
+<div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }}">
+
     <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
       <section id="iq-continue overflow-hidden">
          <div class="container-fluid ">
@@ -775,6 +776,29 @@
     $(".main-content , .main-header , .container-fluid").click(function() {
         $(".home-search").hide();
     });
+
+   var isFetching = false; 
+   var scrollFetch; 
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         console.log("scrolled");
+
+         if (page_url != null && !isFetching) {
+               isFetching = true; 
+               $.ajax({
+                  url: page_url,
+                  success: function (data) {
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  },
+               });
+         }
+      }, 100);
+   });
 </script>
 
 
