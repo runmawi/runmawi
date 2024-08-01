@@ -11,56 +11,44 @@
                         <h4 class="main-title"><a href="{{ $order_settings_list[6]->url ? URL::to($order_settings_list[6]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="albums-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $key => $albums)
-                                <li class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : $default_vertical_image_url }}" alt="album-img" class="img-fluid" >
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list latest-album">
+                                @foreach ($data as $key => $albums)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            <img src="{{ $albums->image ? URL::to('public/uploads/images/'.$albums->image) : $default_vertical_image_url }}" alt="{{ $albums->albumname}}" class="flickity-lazyloaded" >
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider albums-videos-slider" class="list-inline p-0 m-0 align-items-center albums-videos-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $albums )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                                        <button class="  drp-close">×</button>
+                        <div id="videoInfo" class="latest-album-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $albums)
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($albums)->albumname }}</h2>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption pl-4">
-                                                            <h2 class="caption-h2">{{ optional($albums)->albumname }}</h2>
+                                        @if (optional($albums)->description)
+                                            <div class="trending-dec">{{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode(optional($albums)->description)), 500) }}</div>
+                                        @endif
 
-                                                            @if (optional($albums)->description)
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($albums)->description) !!}</div>
-                                                            @endif
-
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('album/'.$albums->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-albums-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_horizontal_image_url }}" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('album/'.$albums->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-albums-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $albums->player_image ?  URL::to('public/uploads/images/'.$albums->player_image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +68,7 @@
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ optional($albums)->title }}</h2>
+                                                    <h2 class="caption-h2">{{ optional($albums)->albumname }}</h2>
 
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -112,64 +100,48 @@
 
 
 <script>
-    
-    $( window ).on("load", function() {
-        $('.albums-videos-slider').hide();
+
+    var elem = document.querySelector('.latest-album');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+    document.querySelectorAll('.latest-album .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.latest-album .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.latest-album-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.latest-album-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.latest-album-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.latest-album-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('latest-album-dropdown')[0].style.display = 'flex';
+        });
     });
 
-    $(document).ready(function() {
 
-        $('.albums-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.albums-videos-slider-nav',
-        });
-
-        $('.albums-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.albums-videos-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.albums-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.albums-videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.albums-videos-slider').hide();
-        });
+    $('body').on('click', '.drp-close', function() {
+        $('.latest-album-dropdown').hide();
     });
 </script>
