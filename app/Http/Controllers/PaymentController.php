@@ -646,6 +646,10 @@ public function RentPaypal(Request $request)
                     $user = User::find(Auth::user()->id);
                     $user->payment_status = 'Cancel';
                     $user->save();
+
+                    Subscription::where('stripe_id',$stripe_plan)->update([
+                      'stripe_status' =>  'Cancelled',
+                  ]);
                     
               } catch (\Throwable $th) {
 
