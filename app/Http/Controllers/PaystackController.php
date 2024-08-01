@@ -375,8 +375,6 @@ class PaystackController extends Controller
         $Paystack_Subscription_cancel = curl_exec($ch);
         $result = json_decode($Paystack_Subscription_cancel, true);
 
-        // dd( $result['message'] );
-
         Subscription::where('stripe_id',$subscription_id )->update([
             'stripe_status' =>  'Cancelled',
         ]);
