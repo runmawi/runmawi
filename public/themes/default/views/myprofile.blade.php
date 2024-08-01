@@ -436,23 +436,22 @@ $settings = App\Setting::first();
 
                         
                         <div class="row text-center">
+
                            @if(Auth::user()->role == "subscriber")
-                           <div class="col-lg-6 col-md-6 col-12">
-                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
-                           </div>
-                           <div class="col-lg-6 col-md-6 col-12">
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
-                           </div>
+
+                              <div class="col-lg-6 col-md-6 col-12">
+                                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                              </div>
+
+                              <div class="col-lg-6 col-md-6 col-12">
+                                 <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
+                              </div>
                            
-                           @elseif( Auth::user()->role == "admin")
-                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
-                           @else
-                           <div class="col-lg-6 col-md-6 col-12">
-                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
-                           </div>
-                           <div class="col-lg-6 col-md-6 col-12">
-                              <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('Become Subscriber') }} </a>
-                           </div>
+                           @elseif( Auth::user()->role == "registered")
+                                 
+                              <div class="col-lg-6 col-md-6 col-12">
+                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('Become Subscriber') }} </a>
+                              </div>
                            @endif
                         </div>
 
