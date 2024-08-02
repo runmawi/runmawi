@@ -117,6 +117,10 @@ class RecurlyPaymentController extends Controller
                         'number'     =>  str_replace('-', '', $request->card_number),
                         'month'      =>  explode('/', $request->exp_month)[0],
                         'year'       =>  explode('/', $request->exp_month)[1],
+                        'cvv'        => $request->cvc ,
+                        'address' => array(
+                            'postal_code' =>  $request->postal_code,
+                        ),
                     ],
                 ],
                 "subscriptions" => [

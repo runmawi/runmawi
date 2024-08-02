@@ -592,9 +592,9 @@ function Country_name(){
 function Country_Code(){
 
     try {
-        $countryName = \Location::get()->countryCode;
+        $Country_Code = \Location::get()->countryCode;
 
-        return $countryName ;
+        return $Country_Code ;
 
     } catch (\Throwable $th) {
         return 'Unknown' ;
