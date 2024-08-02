@@ -47,6 +47,12 @@ use Route;
 
 class PaymentController extends Controller
 {
+  public function __construct()
+  {
+    $this->HomeSetting = HomeSetting::first();
+    Theme::uses($this->HomeSetting->theme_choosen);
+  }
+
   public function index()
   {
     return View::make('stripe');
@@ -993,8 +999,11 @@ public function RentPaypal(Request $request)
                   $livepurchases =[]; 
               }
 
+
             return Theme::view('transactiondetails',
-                                [ 'subscriptions'=>$subscriptions,
+                                [ 
+                                  'current_theme' => $this->HomeSetting->theme_choosen,
+                                  'subscriptions'=>$subscriptions,
                                   'ppvcharse'=>$ppvcharses,
                                   'livepurchase'=>$livepurchases
                                 ]);
