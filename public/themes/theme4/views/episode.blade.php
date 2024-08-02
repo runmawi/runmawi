@@ -210,7 +210,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         </div>
                        
                     </div>
-            @endif
+                @endif
             @else
                 <?php dd('test'); ?>
                 <div id="subscribers_only"
