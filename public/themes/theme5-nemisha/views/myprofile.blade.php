@@ -346,37 +346,6 @@
         <!-- MainContent -->
         <section class="m-profile setting-wrapper pt-0">
             <div class="container">
-
-                <div class="row justify-content-center">
-                <img
-                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 40px;" alt="banner" >
-                </div>
-                <div class="row justify-content-start">
-                   <div>
-                    <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                    src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" alt="profile-bg" style="height: 80px; width: 80px;">
-                   </div>
-                   <div class="col" style="padding-top: 40px;" >
-                    <div>
-                    <h4>Karabo Mthembu</h4>
-                    </div>
-                    <div>
-                       <h5>Entertainmnt channel </h5>
-                    </div>
-                   </div>
-                </div>
-                <div class="row">
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Bio</button>
-                    </div>
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Videos</button>
-                    </div>
-                    <div class="p-1">
-                        <button style="border-radius:10px; padding: 0px 10px" >Playlist</button>
-                    </div>
-                </div>
-
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-5 sigk text-center">
                         <div class="d-flex justify-content-center">
