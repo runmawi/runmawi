@@ -217,8 +217,8 @@
     <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <!-- Typography CSS -->
-    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
-    <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/variable.css' ?>" />
+    <link rel="preload" href="<?= typography_link();?>" as="style"/>
+    <link rel="stylesheet" href="<?= typography_link();?>" />
     <!-- Style -->
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
@@ -232,11 +232,11 @@
 
 
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="prelaod" as="style" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
+    <!-- <link rel="prelaod" as="style" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"> -->
     <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="preload" as="style">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet"> -->
     <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="stylesheet">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
@@ -244,15 +244,14 @@
     <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>" as="style">
     <link rel="stylesheet" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>">
     <!--Flickity JavaScript -->
+    <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
-
-
     <!-- Responsive -->
-    <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
+    <!-- <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
     <link rel="preload" as="style" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
-    <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
+    <!-- <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
     <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
