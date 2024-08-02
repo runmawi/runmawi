@@ -1,171 +1,110 @@
-
-
 @php
-    include(public_path('themes/default/views/header.php'));
+    include public_path("themes/{$current_theme}/views/header.php");
 @endphp
 
-<div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
-    <div class="row justify-content-center page-height">	
-        	<div class="col-md-12 ">
-                
-			<div class="login-block ">
+<div class="container mt-4 mb-4"
+    style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
+    <div class="row justify-content-center page-height">
+        <div class="col-md-12 ">
+
+            <div class="login-block ">
 
                 <div class="d-flex justify-content-between">
-                    <h4 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h4>
-                    <a href="<?php echo URL::to('/myprofile') ?>">
-                    <button class="btn bd">{{ __('Back') }}</button></a>
+                    <h4 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i>{{ __('Transaction History') }}</h4>
+                    <a href="{{ URL::to('/myprofile') }}"><button class="btn bd">{{ __('Back') }}</button></a>
                 </div>
                 <hr>
-                <!-- <div class="bg-strip">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 style="color: black;">{{ __('Make payment') }}</h4>
-                        </div>
-                    </div>
-                    <div class="row mt-3 p-1" id="">
-                        <div class="col-sm-3 bg-white">
-                            <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
-                        </div>
-                        <div class="col-sm-3 bg-white ">
-                            <img src="{{ URL::to('/assets/img/apple.jpg') }}" width="" class="w-100 pt-4" >
-                        </div>
-                        <div class="col-sm-3 bg-white">
-                            <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >
-                        </div>
-                        <div class="col-sm-3">
-                            <img src="{{ URL::to('/assets/img/maste.jpg') }}" class="w-100" >
-                        </div>
-                    </div>
-                </div> -->
-                
-                <!-- <div class="mt-5">
-                    <table class="table table-bordered text-center">
-                            <thead class="thead-light ">
-                                <tr>
-                                <th scope="col">Status</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Payment type</th>
-                                <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <th scope="">Canceled</th>
-                                <td>$45.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by paypal</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">Approved</th>
-                                <td>$35.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by Applepay</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">Pending</th>
-                                <td>$25.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by Stripe</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                            </tbody>
-                            </table>
-                </div> -->
-                
-               <div class="mt-5">
-               <table class="table table-bordered text-center">
-                      <thead>
-                        <tr>
-                        <th scope="col">{{ __('Status') }}</th>
-                        <th scope="col">{{ __('Amount') }}</th>
-                        <th scope="col">{{ __('Date') }}</th>
-                        <th scope="col">{{ __('Payment type') }}</th>
-                        <!-- <th>Price</th>
-                        <th>days</th>
-                        <th>stripe id</th>
-                        <th>stripe status</th>
-                        <th>stripe plan</th>
-                        <th>quantity</th>
-                        <th>created_at</th>
-                        <th>updated_at</th> -->
-                        </tr>
-                      </thead>
-                  <?php  if(!empty($subscriptions)){ ?>
 
-                      <tbody>
+                <div class="mt-5">
 
-                            @foreach($subscriptions as $key => $subscription )
-                           <tr>
-                            <?php if($subscription->stripe_status == 'active'){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($subscription->stripe_status == 'inactive'){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                            <td>{{ $subscription->price }}</td>
-
-                            <!-- <td>{{ $subscription->days }}</td>
-                            <td>{{ $subscription->stripe_id }}</td>
-                            <td>{{ $subscription->stripe_status }}</td>
-                            <td>{{ $subscription->stripe_plan }}</td>
-                            <td>{{ $subscription->quantity}}</td> -->
-                            <td>{{ $subscription->created_at}}</td>
-                            <td>Card</td>
-
-                            <!-- <td>{{ $subscription->updated_at }}</td> -->
-                           </tr>
+                    <table id="transactiondetails" class="table-bordered text-center display">
+                        <thead>
+                            <tr>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Date') }}</th>
+                                <th>{{ __('Amount') }}</th>
+                                <th>{{ __('Payment type') }}</th>
+                                <th>{{ __('Payment In') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($subscriptions as $key => $subscription)
+                                <tr>
+                                    @if($subscription->stripe_status == 'active')
+                                        <td class="bg-success"> {{ 'Approved'}} </td>
+                                    @elseif($subscription->stripe_status == 'Cancelled')
+                                        <td class="bg-danger" style="background: #c62929 !important;" > {{ 'Cancelled' }} </td>
+                                    @else
+                                        <td class="bg-warning"> {{ 'Pending' }}></td>
+                                    @endif
+                                    <td>{{  Carbon\Carbon::parse( $subscription->created_at)->format('F jS, Y')  }}</td>
+                                    <td>{{ $subscription->price }}</td>
+                                    <td>Card</td>
+                                    <td>Subscriptions</td>
+                                </tr>
                             @endforeach
-                            
-                            <?php }if(!empty($ppvcharse)){ //dd('test');?>
-                                
-                            @foreach($ppvcharse as $key => $ppv )
-                           <tr>
-                            <?php if($ppv->status == 'active'){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($ppv->status == 'inactive'){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                            <td>{{ $ppv->total_amount }}</td>
-                            <td>{{ $ppv->created_at}}</td>
-                            <td>Card</td>
-                           </tr>
+
+                            @foreach ($ppvcharse as $key => $ppv)
+                                <tr>
+                                    @if($ppv->status == 'active')
+                                        <td class = "bg-success"> {{ 'Approved' }} </td>
+                                    @elseif($ppv->status == 'Cancelled')
+                                        <td class="bg-danger" style="background: #c62929 !important;" > {{ 'Cancelled' }} </td>
+                                    @else
+                                        <td class = "bg-warning"> {{ 'Pending' }}</td>
+                                    @endif
+
+                                    <td>{{ Carbon\Carbon::parse( $ppv->created_at)->format('F jS, Y') }}</td>
+                                    <td>{{ $ppv->total_amount }}</td>
+                                    <td>Card</td>
+                                    <td>PPV Purchase</td>
+                                </tr>
                             @endforeach
-                           <?php  }if(!empty($livepurchase)){ ?>
-                                
-                            @foreach($livepurchase as $key => $live )
-                           <tr>
-                            <?php if($live->status == 1){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($live->status == 2){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                            <td>{{ $live->amount }}</td>
-           
-                            <td>{{ $live->created_at}}</td>
-                            <td>{{ __('Card') }}</td>
-                           </tr>
+
+                            @foreach ($livepurchase as $key => $live)
+                                <tr>
+                                    @if($live->status == 1)
+                                        <td class = "bg-success"> {{ 'Approved' }}</td>
+                                    @elseif($live->status == 2)
+                                        <td class="bg-danger" style="background: #c62929 !important;" > {{ 'Cancelled' }} </td>
+                                    @else
+                                        <td class = "bg-warning"> {{ 'Pending' }}</td>
+                                    @endif
+                                    <td>{{  Carbon\Carbon::parse( $live->created_at)->format('F jS, Y') }}</td>
+                                    <td>{{ $live->amount }}</td>
+                                    <td>{{ __('Card') }}</td>
+                                    <td>PPV Purchase</td>
+                                </tr>
                             @endforeach
-                        <?php    } ?>
-                        
-                      </tbody>
-                    </table>
-                    </div> 
-                    </div> 
-		   <div class="clear"></div>
-                
+                        </tbody>
+                    </table> 
                 </div>
+            </div>
+            <div class="clear"></div>
         </div>
     </div>
 </div>
+</div>
 
-@php
-    include(public_path('themes/default/views/footer.blade.php'));
-@endphp
+@php include public_path("themes/{$current_theme}/views/footer.blade.php"); @endphp
+
+<link rel="stylesheet" href="//cdn.datatables.net/2.1.3/css/dataTables.dataTables.min.css">
+<script src="//cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    let table = new DataTable('#transactiondetails', {
+        responsive: true,
+        columnDefs: [
+            { className: 'dt-center', targets: '_all' } 
+        ]
+    });
+});
+
+</script>
+
+<style>
+    .dt-center {
+        text-align: center !important;
+    }
+</style>
