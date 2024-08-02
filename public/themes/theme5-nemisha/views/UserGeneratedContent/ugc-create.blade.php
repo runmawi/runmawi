@@ -342,7 +342,7 @@
 
             </div>
 
-               <div class="col-md-12 text-right" style="background-color: #fff; padding:5px 10px; border-radius:10px; " >
+               <div class="col-md-12 text-right" style="background-color: #fff; padding:5px 10px; marging:10px; border-radius:10px; " >
                   <div id="optionradio"  >
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
@@ -2497,8 +2497,5 @@ $(document).ready(function(){
 
 </script>
 
-@include('admin.videos.search_tag'); 
-
-@include('admin.videos.Ads_videos'); 
 
 @stop

@@ -945,6 +945,12 @@ class FrontEndQueryController extends Controller
         return $content_Partner ;
     }
 
+    public function UGCVideos()
+    {
+        $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
+        return $ugcvideos ;
+    }
+
     // public function watchLater() {
     //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
     //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',

@@ -11,6 +11,7 @@ use Mail;
 use View;
 use Theme;
 use getID3;
+use Session;
 use Exception;
 use ParseM3U8;
 use Validator;
@@ -18,6 +19,7 @@ use App\Artist;
 use App\Episode;
 use App\Playerui;
 use App\UGCVideo;
+use App\Wishlist;
 use App\SiteTheme;
 use Carbon\Carbon;
 use GeoIPLocation;
@@ -25,10 +27,12 @@ use App\BlockVideo;
 use App\LiveStream;
 use App\ReelsVideo;
 use App\Tag as Tag;
+use App\Watchlater;
 use FFMpeg\FFProbe;
 use App\Adscategory;
 use App\CountryCode;
 use App\HomeSetting;
+use App\LikeDislike;
 use App\Videoartist;
 use Aws\S3\S3Client;
 use App\RelatedVideo;
@@ -36,6 +40,7 @@ use App\Test as Test;
 use App\User as User;
 use App\AdminVideoAds;
 use App\CategoryVideo;
+use App\CompressImage;
 use App\EmailTemplate;
 use App\InappPurchase;
 use App\LanguageVideo;
@@ -332,28 +337,494 @@ class UGCController extends Controller
         );
     }
 
-    public function PlayUGCVideos($slug)
+
+    public function handleViewCount_ugc($vid)
     {
-        $user_id = Auth::user()->id;
-        $user_details = User::find($user_id);
-        $ugcvideo = UGCVideo::where('user_id', $user_details->id)->orderBy('created_at', 'DESC')->paginate(9);
-
-        $data = array(
-            'user' => $user_details,
-            'ugcvideos' => $ugcvideo,
-            // 'source_id'      => $ugcvideo->id ,
-            // 'CommentSection' => CommentSection::first(),
-        );
-
-
-
-        return Theme::view("UserGeneratedContent.videos", $data);
+        $ugcview = UGCVideo::find($vid);
+        $ugcview->views = $ugcview->views + 1;
+        $ugcview->save();
+        Session::put('viewed_ugc_videos.' . $vid, time());
     }
 
+    public function ugc_watchlater(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'ugc_video_id' => $request->video_id,
+                'type' => 'User Genrated Content',
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+            $watchlater_exist = Watchlater::where('ugc_video_id', $request->video_id)->where('type', 'User Genrated Content')
+            ->where(function ($query) use ($geoip) {
+                if (!Auth::guest()) {
+                    $query->where('user_id', Auth::user()->id);
+                } else {
+                    $query->where('users_ip_address', $geoip->getIP());
+                }
+            })->first();
+
+        
+            !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function ugc_wishlist(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'ugc_video_id' => $request->video_id,
+                'type' => 'User Genrated Content',
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+            $wishlist_exist = Wishlist::where('ugc_video_id', $request->video_id)->where('type', 'User Genrated Content')
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+        
+            !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function ugc_like(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'ugc_video_id' => $request->video_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'disliked'   => 0 ,
+            ];
+
+            $check_Like_exist = LikeDislike::where('ugc_video_id', $request->video_id)->where('liked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
+
+            
+            $Like_exist = LikeDislike::where('video_id', $request->video_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function ugc_dislike(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'ugc_video_id' => $request->video_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'liked'      => 0 ,
+            ];
+
+            $check_dislike_exist = LikeDislike::where('ugc_video_id', $request->video_id)->where('disliked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
+
+
+            $dislike_exists = LikeDislike::where('ugc_video_id', $request->video_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+        
+            !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
 
     
+    public function PlayUGCVideos( Request $request, $slug )
+    {
+        try {
+
+            $setting = Setting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $video_id = UGCVideo::where('slug',$slug)->latest()->pluck('id')->first();
+
+            // dd($video_id);
+
+            $videodetail = UGCVideo::where('id',$video_id)->latest()
+                                    ->get()->map(function ($item) use ( $video_id , $setting ,  $geoip )  {
+
+                $item['users_video_visibility_status']         = true ;
+                $item['users_video_visibility_redirect_url']   = route('play_ugc_videos',[ optional($item)->slug ]); 
+        
+                $item['image_url']        = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
+                $item['player_image_url'] = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+                $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+
+                $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
+                $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
+                $item['video_intro_end_time_seconds']    = $item->intro_end_time ? Carbon::parse($item->intro_end_time)->secondsSinceMidnight() : null ;
+
+                $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
+                $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
+                $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+                
+                $item['view_increment'] = $this->handleViewCount_ugc($video_id);
+                // Videos URL 
+
+                if ($item['users_video_visibility_status'] == true ) {
+
+                    switch (true) {
+
+                        case $item['type'] == "mp4_url":
+                        $item['videos_url'] =  $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                        break;
+
+                        case $item['type'] == "m3u8_url":
+                        $item['videos_url'] =  $item->m3u8_url.$adsvariable_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
+                        case $item['type'] == "embed":
+                        $item['videos_url'] =  $item->embed_code ;
+                        break;
+                        
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').$adsvariable_url;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+                        
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+                        $item['videos_url']   = $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                        break;
+
+                        case $item['type'] == " " && !is_null($item->transcoded_url) :
+                        $item['videos_url']   = $item->transcoded_url.$adsvariable_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+                        
+                        case $item['type'] == null :
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
+                        default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type'] = null ;
+                        break;
+                    }
+                } else {
+                    $item['videos_url']    = null ;
+                    $item['video_player_type'] = null ;
+                }
 
 
+                $item['watchlater_exist'] = Watchlater::where('ugc_video_id', $video_id)->where('type', 'User Generated Content')
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->first();
+
+
+                 $item['wishlist_exist'] = Wishlist::where('ugc_video_id', $video_id)->where('type', 'User Generated Content')
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->first();
+
+                $item['Like_exist'] = LikeDislike::where('ugc_video_id', $video_id)->where('liked',1)
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->latest()->first();
+
+                $item['dislike_exist'] = LikeDislike::where('ugc_video_id', $video_id)->where('disliked',1)
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->latest()->first();
+
+                return $item;
+            })->first();
+
+            // dd($videodetail);
+
+            // $videoURl = [];
+
+            // if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
+
+            //     $videoClip = Setting::get()->map(function ($item)  {
+            //             $item['videos_url']    =   URL::to('/storage/app/public/'.$item->video_clip);
+            //             $item['video_player_type']   =  'application/x-mpegURL' ;
+
+            //         return $item;
+            //     })->first();
+
+            //     $videodetailCollection = collect([$videodetail->toArray()]);
+                
+            //     $videoClipCollection = isset($videoClip) ?  collect([$videoClip->toArray()]) : collect([]);
+                
+            //     $videoURl = $videoClipCollection->merge($videodetailCollection);
+            // }           
+
+            // $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
+            //                                     ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+            //                                     ->where('movies_subtitles.movie_id', $video_id)
+            //                                     ->get();
+
+            // if (count($subtitles_name) > 0) {
+            //     foreach ($subtitles_name as $value) {
+            //         $subtitlesname[] = $value->language;
+            //     }
+            //     $subtitles = implode(', ', $subtitlesname);
+            // } else {
+            //     $subtitles = 'No Subtitles Added';
+            // }
+
+            // $subtitle = MoviesSubtitles::where('movie_id', '=', $video_id)->get();
+
+
+            // $category_id = CategoryVideo::where('video_id', $video_id)->get();
+            // $categoryvideo = CategoryVideo::where('video_id', $video_id)
+            //     ->pluck('category_id')
+            //     ->toArray();
+            // $languages_id = LanguageVideo::where('video_id', $video_id)
+            //     ->pluck('language_id')
+            //     ->toArray();
+
+            // Recomendeds And Endcard
+            // foreach ($category_id as $key => $value) {
+            //     $recomendeds = Video::select('videos.title', 'videos.slug','videos.image')
+            //         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            //         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            //         ->where('videos.id', '!=', $video_id)
+            //         ->where('videos.active',  1)
+            //         ->where('videos.status',  1)
+            //         ->where('videos.draft',  1)
+            //         ->groupBy('videos.id')
+            //         ->limit(10)
+            //         ->get();
+
+            //     $endcardvideo = Video::select('videos.title', 'videos.slug','videos.image')
+            //         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            //         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            //         ->where('videos.id', '!=', $video_id)
+            //         ->limit(5)
+            //         ->get();
+            // }
+
+            // if (!Auth::guest()) {
+            //     $latestRecentView = RecentView::where('user_id', '!=', Auth::user()->id)
+            //         ->distinct()
+            //         ->limit(30)
+            //         ->pluck('video_id');
+            //     if (count($latestRecentView) > 10) {
+            //         $latestviews = [];
+            //     } else {
+            //         $latestviews = Video::select('videos.title', 'videos.slug','videos.image')
+            //             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            //             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            //             ->whereIn('videos.id', $latestRecentView)
+            //             ->groupBy('videos.id')
+            //             ->get();
+            //     }
+            // } else {
+            //     $latestRecentView = [];
+            //     $latestviews = [];
+            //     $recomendeds = $recomendeds;
+            // }
+
+            // $related_videos = Video::select('videos.title', 'videos.slug','videos.image')
+            //     ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+            //     ->where('related_videos.video_id', '=', $video_id)
+            //     ->limit(5)
+            //     ->get();
+
+            // if (count($related_videos) > 0) {
+            //     $endcardvideo = $related_videos;
+            // } elseif (!empty($endcardvideo)) {
+            //     $endcardvideo = $endcardvideo;
+            // } else {
+            //     $endcardvideo = [];
+            // }
+
+            // if (count($latestviews) <= 15) {
+            //     if (!empty($recomendeds)) {
+            //         $recomended = Video::select('videos.title', 'videos.slug','videos.image')
+            //             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            //             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            //             ->where('videos.id', '!=', $video_id)
+            //             ->where('videos.active',  1)
+            //             ->where('videos.status',  1)
+            //             ->where('videos.draft',  1)
+            //             ->groupBy('videos.id')
+            //             ->limit(10)
+            //             ->get();
+            //     } else {
+            //         $recomended = [];
+            //     }
+            // } else {
+            //     $recomended = $latestviews;
+            // }
+
+            // if (!empty($recomended)) {
+            //     $recomended = $recomended;
+            // } else {
+            //     $recomended = [];
+            // }
+
+            
+            $user_id = Auth::user()->id;
+            $user_details = User::find($user_id);
+            $ugcvideo = UGCVideo::where('user_id', $user_details->id)
+                                ->where('active', 1)
+                                ->orderBy('created_at', 'DESC')->paginate(9);
+    
+            
+            $data = array(
+                'user' => $user_details,
+                'ugcvideos' => $ugcvideo,
+                'videodetail' => $videodetail ,
+                'CommentSection' => CommentSection::first(),
+                'source_id'      => $videodetail->id ,
+                'commentable_type' => 'play_ugc_videos',
+                // 'recomended' => $recomended ,
+                // 'videoURl' => $videoURl ,
+                // 'subtitles_name' => $subtitles ,
+                // 'subtitles' => $subtitle ,
+                // 'setting'   => $setting,
+                // 'adsvariable' =>  $adsvariables,
+                'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                    </svg>',
+                // 'currency'         => $currency,
+                // 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+            );
+
+
+            return Theme::view("UserGeneratedContent.videos", $data);
+
+        } catch (\Throwable $th) {
+            
+            dd($th->getMessage());
+            return abort(404);
+        }
+    }
+
+    
 
     public function filedelete($id)
     {
@@ -371,275 +842,275 @@ class UGCController extends Controller
         );
     }
     
-    public function live_search(Request $request)
-    {
-            if ($request->ajax()) {
-                $output = "";
-                $query = $request->get("query");
+    // public function live_search(Request $request)
+    // {
+    //         if ($request->ajax()) {
+    //             $output = "";
+    //             $query = $request->get("query");
     
-                $slug = URL::to("/category/videos");
-                $edit = URL::to("admin/videos/edit");
-                $editvideo = URL::to("admin/videos/editvideo");
-                $delete = URL::to("admin/videos/delete");
-                if ($query != "") {
-                    $data = Video::where("title", "LIKE", "%" . $query . "%")
-                        ->orderBy("created_at", "desc")
-                        ->paginate(9);
+    //             $slug = URL::to("/category/videos");
+    //             $edit = URL::to("admin/videos/edit");
+    //             $editvideo = URL::to("admin/videos/editvideo");
+    //             $delete = URL::to("admin/videos/delete");
+    //             if ($query != "") {
+    //                 $data = Video::where("title", "LIKE", "%" . $query . "%")
+    //                     ->orderBy("created_at", "desc")
+    //                     ->paginate(9);
     
-                    //  $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
-                    //  ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
-                    //  ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
-                    //  ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
-                    //  ->where('videos.title', 'like', '%'.$query.'%')
-                    //  ->paginate(9);
-                } else {
-                    // $data = Video::orderBy("created_at", "desc")
-                    // ->paginate(9);
-                    $data = [];
-                }
-                if (count($data) > 0) {
-                    $total_row = $data->count();
-                    if ($total_row > 0) {
-                        foreach ($data as $row) {
+    //                 //  $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
+    //                 //  ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+    //                 //  ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+    //                 //  ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+    //                 //  ->where('videos.title', 'like', '%'.$query.'%')
+    //                 //  ->paginate(9);
+    //             } else {
+    //                 // $data = Video::orderBy("created_at", "desc")
+    //                 // ->paginate(9);
+    //                 $data = [];
+    //             }
+    //             if (count($data) > 0) {
+    //                 $total_row = $data->count();
+    //                 if ($total_row > 0) {
+    //                     foreach ($data as $row) {
     
-                            if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
-                            elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
-                            elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
-                            elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
-                            else{ $type = ''; }
-                            if ($row->active == 0) {
-                                $active = "Pending";
-                                $class = "bg-warning";
-                            } elseif ($row->active == 1) {
-                                $active = "Approved";
-                                $class = "bg-success";
-                            } else {
-                                $active = "Rejected";
-                                $class = "bg-danger";
-                            }
-                            if($row->draft != null && $row->draft == 1 && $row->status != null && $row->status == 1 && $row->active != null && $row->active == 1){ 
-                                $style = "";
-                            } else{
-                                    $style = "opacity: 0.6; cursor: not-allowed;";
-                            }
-                            $username = @$row->cppuser->username
-                                ? "Upload By" . " " . @$row->cppuser->username
-                                : "Upload By Admin";
-                            $output .=
-                                '
-            <tr>
-            <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
-                     .
-                    '</td>
-            <td>' .
-                                $row->title .
-                                '</td>
-            <td>' .
-                                $row->rating .
-                                '</td>
-            <td>' .
-                                $username .
-                                '</td>
-            <td>' .
-                                $type .
-                                '</td>
-            <td>' .
-                                $row->access .
-                                '</td>
-            <td class="' .
-                                $class .
-                                '" style="font-weight:bold;">' .
-                                $active .
-                                '</td>
-             <td>' .
-                                $row->views .
-                                '</td>
+    //                         if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
+    //                         else{ $type = ''; }
+    //                         if ($row->active == 0) {
+    //                             $active = "Pending";
+    //                             $class = "bg-warning";
+    //                         } elseif ($row->active == 1) {
+    //                             $active = "Approved";
+    //                             $class = "bg-success";
+    //                         } else {
+    //                             $active = "Rejected";
+    //                             $class = "bg-danger";
+    //                         }
+    //                         if($row->draft != null && $row->draft == 1 && $row->status != null && $row->status == 1 && $row->active != null && $row->active == 1){ 
+    //                             $style = "";
+    //                         } else{
+    //                                 $style = "opacity: 0.6; cursor: not-allowed;";
+    //                         }
+    //                         $username = @$row->cppuser->username
+    //                             ? "Upload By" . " " . @$row->cppuser->username
+    //                             : "Upload By Admin";
+    //                         $output .=
+    //                             '
+    //         <tr>
+    //         <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
+    //                  .
+    //                 '</td>
+    //         <td>' .
+    //                             $row->title .
+    //                             '</td>
+    //         <td>' .
+    //                             $row->rating .
+    //                             '</td>
+    //         <td>' .
+    //                             $username .
+    //                             '</td>
+    //         <td>' .
+    //                             $type .
+    //                             '</td>
+    //         <td>' .
+    //                             $row->access .
+    //                             '</td>
+    //         <td class="' .
+    //                             $class .
+    //                             '" style="font-weight:bold;">' .
+    //                             $active .
+    //                             '</td>
+    //          <td>' .
+    //                             $row->views .
+    //                             '</td>
     
-             <td>' .
-                    '<label class="switch">'.
-                    '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
-                    '<span class="slider round"></span>'.
-                    '</label>'.
-                        '</td>
-             <td> ' .
-                                "<a class='iq-bg-warning' data-toggle='tooltip' style = .$style . data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
-            </a>" .
-                                '
-            ' .
-                                "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
-            </a>" .
-                                '
-                                ' .
-                                "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $editvideo/$row->id'><i class='ri-pencil-line'></i>
-            </a>" .
-                                '
-            ' .
-                                "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
-            </a>" .
-                                '
-            </td>
-            </tr>
-            ';
-                        }
-                    } else {
-                        $output = '
-           <tr>
-            <td align="center" colspan="5">No Data Found</td>
-           </tr>
-           ';
-                    }
-                    $data = [
-                        "table_data" => $output,
-                        "total_data" => $total_row,
-                    ];
-                    echo json_encode($data);
-                }
-            }
-    }
+    //          <td>' .
+    //                 '<label class="switch">'.
+    //                 '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
+    //                 '<span class="slider round"></span>'.
+    //                 '</label>'.
+    //                     '</td>
+    //          <td> ' .
+    //                             "<a class='iq-bg-warning' data-toggle='tooltip' style = .$style . data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+    //         </a>" .
+    //                             '
+    //         ' .
+    //                             "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+    //         </a>" .
+    //                             '
+    //                             ' .
+    //                             "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $editvideo/$row->id'><i class='ri-pencil-line'></i>
+    //         </a>" .
+    //                             '
+    //         ' .
+    //                             "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+    //         </a>" .
+    //                             '
+    //         </td>
+    //         </tr>
+    //         ';
+    //                     }
+    //                 } else {
+    //                     $output = '
+    //        <tr>
+    //         <td align="center" colspan="5">No Data Found</td>
+    //        </tr>
+    //        ';
+    //                 }
+    //                 $data = [
+    //                     "table_data" => $output,
+    //                     "total_data" => $total_row,
+    //                 ];
+    //                 echo json_encode($data);
+    //             }
+    //         }
+    // }
     
-    public function CPPVideos(Request $request)
-    {
-            if ($request->ajax()) {
-                $output = "";
-                $query = $request->get("query");
+    // public function CPPVideos(Request $request)
+    // {
+    //         if ($request->ajax()) {
+    //             $output = "";
+    //             $query = $request->get("query");
     
-                $slug = URL::to("/category/videos");
-                $edit = URL::to("admin/videos/edit");
-                $delete = URL::to("admin/videos/delete");
-                if ($query != "") {
-                    $data = Video::select(
-                        "videos.*",
-                        "moderators_users.username",
-                        "video_languages.name as languages_name",
-                        "video_categories.name as categories_name"
-                    )
-                        ->leftJoin(
-                            "video_languages",
-                            "video_languages.id",
-                            "=",
-                            "videos.language"
-                        )
-                        ->leftJoin(
-                            "video_categories",
-                            "video_categories.id",
-                            "=",
-                            "videos.video_category_id"
-                        )
-                        ->Join(
-                            "moderators_users",
-                            "moderators_users.id",
-                            "=",
-                            "videos.user_id"
-                        )
-                        ->paginate(9);
-                } else {
-                    $data = [];
-                }
-                if (count($data) > 0) {
-                    $total_row = $data->count();
-                    if ($total_row > 0) {
-                        foreach ($data as $row) {
+    //             $slug = URL::to("/category/videos");
+    //             $edit = URL::to("admin/videos/edit");
+    //             $delete = URL::to("admin/videos/delete");
+    //             if ($query != "") {
+    //                 $data = Video::select(
+    //                     "videos.*",
+    //                     "moderators_users.username",
+    //                     "video_languages.name as languages_name",
+    //                     "video_categories.name as categories_name"
+    //                 )
+    //                     ->leftJoin(
+    //                         "video_languages",
+    //                         "video_languages.id",
+    //                         "=",
+    //                         "videos.language"
+    //                     )
+    //                     ->leftJoin(
+    //                         "video_categories",
+    //                         "video_categories.id",
+    //                         "=",
+    //                         "videos.video_category_id"
+    //                     )
+    //                     ->Join(
+    //                         "moderators_users",
+    //                         "moderators_users.id",
+    //                         "=",
+    //                         "videos.user_id"
+    //                     )
+    //                     ->paginate(9);
+    //             } else {
+    //                 $data = [];
+    //             }
+    //             if (count($data) > 0) {
+    //                 $total_row = $data->count();
+    //                 if ($total_row > 0) {
+    //                     foreach ($data as $row) {
     
-                            if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
-                            elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
-                            elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
-                            elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
+    //                         if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
+    //                         elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
     
     
-                            if ($row->active == 0) {
-                                $active = "Pending";
-                                $class = "bg-warning";
-                            } elseif ($row->active == 1) {
-                                $active = "Approved";
-                                $class = "bg-success";
-                            } else {
-                                $active = "Rejected";
-                                $class = "bg-danger";
-                            }
-                            $output .=
-                                '
-            <tr>
-            <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
-            .
-           '</td>
-            <td>' .
-                                $row->title .
-                                '</td>
-            <td>' .
-                                $row->rating .
-                                '</td>
+    //                         if ($row->active == 0) {
+    //                             $active = "Pending";
+    //                             $class = "bg-warning";
+    //                         } elseif ($row->active == 1) {
+    //                             $active = "Approved";
+    //                             $class = "bg-success";
+    //                         } else {
+    //                             $active = "Rejected";
+    //                             $class = "bg-danger";
+    //                         }
+    //                         $output .=
+    //                             '
+    //         <tr>
+    //         <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
+    //         .
+    //        '</td>
+    //         <td>' .
+    //                             $row->title .
+    //                             '</td>
+    //         <td>' .
+    //                             $row->rating .
+    //                             '</td>
     
-            <td>' .
-                                $row->username .
-                                '</td>
-                <td>' .
-                    $type .
-                        '</td>
-                <td>' .
-                        $row->access .
-                        '</td>
-             <td class="' .
-                                $class .
-                                '" style="font-weight:bold;">' .
-                                $active .
-                                '</td>
+    //         <td>' .
+    //                             $row->username .
+    //                             '</td>
+    //             <td>' .
+    //                 $type .
+    //                     '</td>
+    //             <td>' .
+    //                     $row->access .
+    //                     '</td>
+    //          <td class="' .
+    //                             $class .
+    //                             '" style="font-weight:bold;">' .
+    //                             $active .
+    //                             '</td>
     
-             <td>' .
-                                $row->views .
-                                '</td>
-            <td>' .
-                '<label class="switch">'.
-                    '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
-                    '<span class="slider round"></span>'.
-                '</label>'.
-                        '</td>
-             <td> ' .
-                                "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
-            </a>" .
-                                '
-            ' .
-                                "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
-            </a>" .
-                                '
-            ' .
-                                "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
-            </a>" .
-                                '
-            </td>
-            </tr>
-            ';
-                        }
-                    } else {
-                        $output = '
-           <tr>
-            <td align="center" colspan="5">No Data Found</td>
-           </tr>
-           ';
-                    }
-                    $data = [
-                        "table_data" => $output,
-                        "total_data" => $total_row,
-                    ];
+    //          <td>' .
+    //                             $row->views .
+    //                             '</td>
+    //         <td>' .
+    //             '<label class="switch">'.
+    //                 '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
+    //                 '<span class="slider round"></span>'.
+    //             '</label>'.
+    //                     '</td>
+    //          <td> ' .
+    //                             "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+    //         </a>" .
+    //                             '
+    //         ' .
+    //                             "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+    //         </a>" .
+    //                             '
+    //         ' .
+    //                             "<a class='iq-bg-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Delete'  href=' $delete/$row->id'><i class='ri-delete-bin-line'></i>
+    //         </a>" .
+    //                             '
+    //         </td>
+    //         </tr>
+    //         ';
+    //                     }
+    //                 } else {
+    //                     $output = '
+    //        <tr>
+    //         <td align="center" colspan="5">No Data Found</td>
+    //        </tr>
+    //        ';
+    //                 }
+    //                 $data = [
+    //                     "table_data" => $output,
+    //                     "total_data" => $total_row,
+    //                 ];
     
-                    echo json_encode($data);
-                }
-            }
-    }
+    //                 echo json_encode($data);
+    //             }
+    //         }
+    // }
         // Image extraction function
-    private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
-    {
-                // Open the video file
-                $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
+    // private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
+    // {
+    //             // Open the video file
+    //             $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
     
-                // Set the time to capture the frame (in seconds)
-                // $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($timeInSeconds))
-                $video->filters()->clip(TimeCode::fromSeconds($timeInSeconds))
-                // $video->frame(TimeCode::fromSeconds($timeInSeconds))
-                ->export()
-                ->toDisk('local')
-                ->inFormat(new X264)
-                ->save($outputPath);
-    }
+    //             // Set the time to capture the frame (in seconds)
+    //             // $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($timeInSeconds))
+    //             $video->filters()->clip(TimeCode::fromSeconds($timeInSeconds))
+    //             // $video->frame(TimeCode::fromSeconds($timeInSeconds))
+    //             ->export()
+    //             ->toDisk('local')
+    //             ->inFormat(new X264)
+    //             ->save($outputPath);
+    // }
 
     public function uploadFile(Request $request)
     {
@@ -1750,52 +2221,54 @@ class UGCController extends Controller
                 }
                 
                 $settings = Setting::first();
-                $video = Video::find($id);
+                $video = UGCVideo::find($id);
                 
-                $ads_details = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
-                    ->where("ads_videos.video_id", $id)
-                    ->pluck("ads_id")
-                    ->first();
+                // $ads_details = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
+                //     ->where("ads_videos.video_id", $id)
+                //     ->pluck("ads_id")
+                //     ->first();
                 
-                $ads_rolls = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
-                    ->where("ads_videos.video_id", $id)
-                    ->pluck("ad_roll")
-                    ->first();
+                // $ads_rolls = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
+                //     ->where("ads_videos.video_id", $id)
+                //     ->pluck("ad_roll")
+                //     ->first();
                 
-                $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+                // $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
                 
                 $ads_category = Adscategory::get();
                 
-                $Reels_videos = Video::Join("reelsvideo", "reelsvideo.video_id", "=", "videos.id")
-                    ->where("videos.id", $id)
-                    ->get();
+                // $Reels_videos = UGCVideo::Join("reelsvideo", "reelsvideo.video_id", "=", "videos.id")
+                //     ->where("videos.id", $id)
+                //     ->get();
                 
-                $related_videos = Video::get();
-                $all_related_videos = RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray();
-                $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
-                    ->where(['movie_id' => $id])
-                    ->count();
+                $related_videos = UGCVideo::get();
+                // $all_related_videos = RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray();
+                // $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                //     ->where(['movie_id' => $id])
+                //     ->count();
                 
-                if ($subtitlescount > 0) {
-                    $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
-                        ->where(['movie_id' => $id])
-                        ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
-                } else {
-                    $subtitles = Subtitle::all();
-                }
+                // if ($subtitlescount > 0) {
+                //     $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                //         ->where(['movie_id' => $id])
+                //         ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
+                // } else {
+                //     $subtitles = Subtitle::all();
+                // }
     
-                // Video Js Ads-data
+                // // Video Js Ads-data
     
-                $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+                // $video_js_Advertisements = Advertisement::where('status',1)->get() ;
     
     
-                $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
+                // $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
+
+                $compress_image_settings = CompressImage::first();
     
                 $data = [
                     "headline" => '<i class="fa fa-edit"></i> Edit Video',
                     "page"     => "Edit",
                     "video"    => $video,
-                    "post_route"  => URL::to("admin/videos/update"),
+                    "post_route"  => URL::to("ugc/update"),
                     "button_text" => "Update Video",
                     "admin_user"  => Auth::user(),
                     "video_categories" => VideoCategory::all(),
@@ -1805,67 +2278,70 @@ class UGCController extends Controller
                     "languages" => Language::all(),
                     "artists" => Artist::all(),
                     "settings" => $settings,
-                    "related_videos" => Video::get(),
-                    "all_related_videos" => RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray(),
-                    "age_categories" => AgeCategory::get(),
-                    "countries" => CountryCode::all(),
-                    "video_artist" => Videoartist::where("video_id", $id)->pluck("artist_id")->toArray(),
-                    "category_id"  => CategoryVideo::where("video_id", $id)->pluck("category_id")->toArray(),
-                    "languages_id" => LanguageVideo::where("video_id", $id)->pluck("language_id")->toArray(),
-                    "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
-                    "Reels_videos" => $Reels_videos,
-                    "ads_paths" => $ads_details ? $ads_details : 0,
-                    "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
-                    "ads_category" => $ads_category,
-                    "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
-                    "InappPurchase" => InappPurchase::all(),
+                    "related_videos" => UGCVideo::get(),
+                    // "all_related_videos" => RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray(),
+                    // "age_categories" => AgeCategory::get(),
+                    // "countries" => CountryCode::all(),
+                    // "video_artist" => Videoartist::where("video_id", $id)->pluck("artist_id")->toArray(),
+                    // "category_id"  => CategoryVideo::where("video_id", $id)->pluck("category_id")->toArray(),
+                    // "languages_id" => LanguageVideo::where("video_id", $id)->pluck("language_id")->toArray(),
+                    // "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
+                    // "Reels_videos" => $Reels_videos,
+                    // "ads_paths" => $ads_details ? $ads_details : 0,
+                    // "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
+                    // "ads_category" => $ads_category,
+                    // "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
+                    // "InappPurchase" => InappPurchase::all(),
     
-                    'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
-                                    ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                                    ->where('videos.id',$id)->first(),
+                    // 'pre_ads'  => UGCVideo::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                    //                 ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                    //                 ->where('videos.id',$id)->first(),
         
-                    'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
-                                    ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                                    ->where('videos.id',$id)->first(),
+                    // 'mid_ads'  => UGCVideo::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                    //                 ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                    //                 ->where('videos.id',$id)->first(),
         
-                    'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
-                                    ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                                    ->where('videos.id',$id)->first(),
+                    // 'post_ads' => UGCVideo::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                    //                 ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                    //                 ->where('videos.id',$id)->first(),
         
-                    "ads_tag_urls" => Advertisement::where('status',1)->where('id',$video->ads_tag_url_id)->first(),
-                    "MoviesSubtitles" => $MoviesSubtitles ,
-                    "subtitlescount" => $subtitlescount,
-                    "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
-                    "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
-                    'video_js_Advertisements' => $video_js_Advertisements ,
-                    'admin_videos_ads'        => $admin_videos_ads ,
-                    'advertisements_category' => Adscategory::get(),
+                    // "ads_tag_urls" => Advertisement::where('status',1)->where('id',$video->ads_tag_url_id)->first(),
+                    // "MoviesSubtitles" => $MoviesSubtitles ,
+                    // "subtitlescount" => $subtitlescount,
+                    // "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
+                    // "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
+                    // 'video_js_Advertisements' => $video_js_Advertisements ,
+                    // 'admin_videos_ads'        => $admin_videos_ads ,
+                    // 'advertisements_category' => Adscategory::get(),
+                    'compress_image_settings' => $compress_image_settings,
                 ];
     
-                return View::make("admin.videos.create_edit", $data);
+                return Theme::view("UserGeneratedContent.ugc-edit", $data);
                 
             } catch (\Throwable $th) {
     
+                dd($th->getMessage());
                 return abort(404);  
             }
+
         }
         
-        public function subtitledestroy($id)
-        {
-            MoviesSubtitles::destroy($id);
+        // public function subtitledestroy($id)
+        // {
+        //     MoviesSubtitles::destroy($id);
     
-            return Redirect::back()->with([
-                "message" => "Successfully Updated Video!",
-                "note_type" => "success",
-            ]);
+        //     return Redirect::back()->with([
+        //         "message" => "Successfully Updated Video!",
+        //         "note_type" => "success",
+        //     ]);
     
-        }
-        /**
-         * Update the specified resource in storage.
-         *
-         * @param  int  $id
-         * @return Response
-         */
+        // }
+        // /**
+        //  * Update the specified resource in storage.
+        //  *
+        //  * @param  int  $id
+        //  * @return Response
+        //  */
         public function update(Request $request)
         {
     
@@ -1884,7 +2360,7 @@ class UGCController extends Controller
             $pack = $package->package;
             $settings = Setting::first();
     
-            $video = Video::findOrFail($id);
+            $video = UGCVideo::findOrFail($id);
             Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
     
             if ($request->slug == "") {
@@ -3122,7 +3598,8 @@ class UGCController extends Controller
     
             \LogActivity::addVideoUpdateLog("Update Video.", $video->id);
     
-            return Redirect::to("admin/videos/edit" . "/" . $id)->with([
+            dd('update');
+            return Redirect::to("ugc-edit" . "/" . $id)->with([
                 "message" => "Successfully Updated Video!",
                 "note_type" => "success",
             ]);
@@ -3259,15 +3736,13 @@ class UGCController extends Controller
             
             $id = $data['video_id'];
             $video = UGCVideo::findOrFail($id);
-            UGCVideo::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
+            // UGCVideo::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
     
             if (!empty($video->embed_code)) {
                 $embed_code = $video->embed_code;
             } else {
                 $embed_code = '';
             }
-    
-            $settings = Setting::where('ppv_status', '=', 1)->first();
     
             if ($request->slug == '') {
                 $data['slug'] = $this->createSlug($data['title']);
@@ -3416,10 +3891,10 @@ class UGCController extends Controller
     
             // Enable Video Title Thumbnail
     
-            $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0';
+            // $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0';
     
             // $video->trailer_type = $data['trailer_type'];
-            $StorageSetting = StorageSetting::first();
+            // $StorageSetting = StorageSetting::first();
             // dd($StorageSetting);
             // if ($StorageSetting->site_storage == 1) {
             //     if ($data['trailer_type'] == 'video_mp4') {
@@ -3709,7 +4184,7 @@ class UGCController extends Controller
                         Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
                         Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
                         
-                        $responsive_image = $image_filename;
+                        // $responsive_image = $image_filename;
     
                 }else{
     
@@ -3752,7 +4227,7 @@ class UGCController extends Controller
                 }
     
             }else{
-                $responsive_image = null;
+                // $responsive_image = null;
                 $responsive_player_image = null;
                 $responsive_tv_image = null;
             }
@@ -3763,27 +4238,27 @@ class UGCController extends Controller
             $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1;
-            $video->enable = 1;
-            $video->responsive_image = $responsive_image;
-            $video->responsive_player_image = $responsive_player_image;
-            $video->responsive_tv_image = $responsive_tv_image;
+            // $video->enable = 1;
+            // $video->responsive_image = $responsive_image;
+            // $video->responsive_player_image = $responsive_player_image;
+            // $video->responsive_tv_image = $responsive_tv_image;
     
             // Ads videos
-            if (!empty($data['ads_tag_url_id']) == null) {
-                $video->ads_tag_url_id = null;
-                $video->tag_url_ads_position = null;
-            }
+            // if (!empty($data['ads_tag_url_id']) == null) {
+            //     $video->ads_tag_url_id = null;
+            //     $video->tag_url_ads_position = null;
+            // }
     
-            if (!empty($data['ads_tag_url_id']) != null) {
-                $video->ads_tag_url_id = $data['ads_tag_url_id'];
-                $video->tag_url_ads_position = $data['tag_url_ads_position'];
-            }
+            // if (!empty($data['ads_tag_url_id']) != null) {
+            //     $video->ads_tag_url_id = $data['ads_tag_url_id'];
+            //     $video->tag_url_ads_position = $data['tag_url_ads_position'];
+            // }
     
-            if (!empty($data['default_ads'])) {
-                $video->default_ads = $data['default_ads'];
-            } else {
-                $video->default_ads = 0;
-            }
+            // if (!empty($data['default_ads'])) {
+            //     $video->default_ads = $data['default_ads'];
+            // } else {
+            //     $video->default_ads = 0;
+            // }
     
             $video->update($data);
     
@@ -3855,75 +4330,75 @@ class UGCController extends Controller
                 //     }
                 // }
     
-            if( !empty($request->ads_devices)){
+            // if( !empty($request->ads_devices)){
     
-                $Admin_Video_Ads_inputs = array(
+            //     $Admin_Video_Ads_inputs = array(
     
-                    'video_id' => $video->id ,
-                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
-                    'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
-                    'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
-                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+            //         'video_id' => $video->id ,
+            //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+            //         'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+            //         'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+            //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
     
-                    'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
-                    'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
-                    'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
-                    'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+            //         'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+            //         'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+            //         'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+            //         'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
     
-                    'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
-                    'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
-                    'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
-                    'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+            //         'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+            //         'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+            //         'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+            //         'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
     
-                    'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
-                    'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
-                    'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
-                    'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+            //         'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+            //         'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+            //         'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+            //         'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
     
-                    'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
-                    'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
-                    'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
-                    'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+            //         'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+            //         'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+            //         'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+            //         'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
     
-                    'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
-                    'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
-                    'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
-                    'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+            //         'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+            //         'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+            //         'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+            //         'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
     
-                    'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
-                    'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
-                    'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
-                    'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+            //         'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+            //         'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+            //         'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+            //         'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
     
-                    // plyr.io
+            //         // plyr.io
     
-                    'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
-                    'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+            //         'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+            //         'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
                     
-                    'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
-                    'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+            //         'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+            //         'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
     
-                    'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
-                    'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+            //         'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+            //         'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
     
-                    'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
-                    'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+            //         'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+            //         'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
     
-                    'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
-                    'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+            //         'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+            //         'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
     
-                    'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
-                    'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+            //         'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+            //         'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
                     
-                    'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
-                    'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+            //         'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+            //         'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
     
-                    'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
-                );
+            //         'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            //     );
     
-                AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
+            //     AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
                 
-            }
+            // }
     
             \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
     
@@ -4249,462 +4724,462 @@ class UGCController extends Controller
             }
         }
     
-        public function CPPVideosIndex()
-        {
-            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-                return redirect('/admin/restrict');
-            }
+        // public function CPPVideosIndex()
+        // {
+        //     if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        //         return redirect('/admin/restrict');
+        //     }
     
-            $user = User::where("id", 1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date("Y-m-d");
-            if ($current_date > $duedate) {
-                $client = new Client();
-                $url = "https://flicknexs.com/userapi/allplans";
-                $params = [
-                    "userid" => 0,
-                ];
+        //     $user = User::where("id", 1)->first();
+        //     $duedate = $user->package_ends;
+        //     $current_date = date("Y-m-d");
+        //     if ($current_date > $duedate) {
+        //         $client = new Client();
+        //         $url = "https://flicknexs.com/userapi/allplans";
+        //         $params = [
+        //             "userid" => 0,
+        //         ];
     
-                $headers = [
-                    "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
-                ];
-                $response = $client->request("post", $url, [
-                    "json" => $params,
-                    "headers" => $headers,
-                    "verify" => false,
-                ]);
+        //         $headers = [
+        //             "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+        //         ];
+        //         $response = $client->request("post", $url, [
+        //             "json" => $params,
+        //             "headers" => $headers,
+        //             "verify" => false,
+        //         ]);
     
-                $responseBody = json_decode($response->getBody());
-                $settings = Setting::first();
-                $data = [
-                    "settings" => $settings,
-                    "responseBody" => $responseBody,
-                ];
-                return View::make("admin.expired_dashboard", $data);
-            }else if(check_storage_exist() == 0){
-                $settings = Setting::first();
+        //         $responseBody = json_decode($response->getBody());
+        //         $settings = Setting::first();
+        //         $data = [
+        //             "settings" => $settings,
+        //             "responseBody" => $responseBody,
+        //         ];
+        //         return View::make("admin.expired_dashboard", $data);
+        //     }else if(check_storage_exist() == 0){
+        //         $settings = Setting::first();
     
-                $data = array(
-                    'settings' => $settings,
-                );
+        //         $data = array(
+        //             'settings' => $settings,
+        //         );
     
-                return View::make('admin.expired_storage', $data);
-            } else {
+        //         return View::make('admin.expired_storage', $data);
+        //     } else {
                 
-                $videos = Video::where("active", 1)->orWhere('active', '=', 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
+        //         $videos = Video::where("active", 1)->orWhere('active', '=', 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
     
-                $data = [ "videos" => $videos, ];
+        //         $data = [ "videos" => $videos, ];
     
-                return View("admin.videos.videoapproval.approval_index", $data);
-            }
-        }
-        public function CPPVideosApproval($id)
-        {
-            $video = Video::findOrFail($id);
-            $video->status = 1;
-            $video->active = 1;
-            $video->draft = 1;
-            $video->save();
+        //         return View("admin.videos.videoapproval.approval_index", $data);
+        //     }
+        // }
+        // public function CPPVideosApproval($id)
+        // {
+        //     $video = Video::findOrFail($id);
+        //     $video->status = 1;
+        //     $video->active = 1;
+        //     $video->draft = 1;
+        //     $video->save();
     
-            $settings = Setting::first();
-            $user_id = $video->user_id;
-            $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        //     $settings = Setting::first();
+        //     $user_id = $video->user_id;
+        //     $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
     
-            try {
+        //     try {
     
-                $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
-                $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
+        //         $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
+        //         $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
     
-                $data = array(
-                    'email_subject' => $email_subject,
-                );
+        //         $data = array(
+        //             'email_subject' => $email_subject,
+        //         );
     
-                // 
-                Mail::send('emails.CPP_Partner_Content_Approval', array(
-                    'Name'         => $ModeratorsUser->username,
-                    'ContentName'  =>  $video->title,
-                    'ContentPermalink' =>  URL::to('/category/videos/'.$video->slug),
-                    'website_name'     =>  GetWebsiteName(),
-                ), 
-                function($message) use ($data,$ModeratorsUser) {
-                    $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
-                });
+        //         // 
+        //         Mail::send('emails.CPP_Partner_Content_Approval', array(
+        //             'Name'         => $ModeratorsUser->username,
+        //             'ContentName'  =>  $video->title,
+        //             'ContentPermalink' =>  URL::to('/category/videos/'.$video->slug),
+        //             'website_name'     =>  GetWebsiteName(),
+        //         ), 
+        //         function($message) use ($data,$ModeratorsUser) {
+        //             $message->from(AdminMail(),GetWebsiteName());
+        //             $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
+        //         });
     
-                $email_log      = 'Mail Sent Successfully from Partner Content Approval Congratulations! {ContentName} is published Successfully!';
-                $email_template = "12";
-                $user_id = $id;
+        //         $email_log      = 'Mail Sent Successfully from Partner Content Approval Congratulations! {ContentName} is published Successfully!';
+        //         $email_template = "12";
+        //         $user_id = $id;
     
-                Email_sent_log($user_id,$email_log,$email_template);
+        //         Email_sent_log($user_id,$email_log,$email_template);
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $email_log = $th->getMessage();
-                $email_template = "12";
-                $user_id = $user_id;
+        //         $email_log = $th->getMessage();
+        //         $email_template = "12";
+        //         $user_id = $user_id;
     
-                Email_notsent_log($user_id, $email_log, $email_template);
-            }
+        //         Email_notsent_log($user_id, $email_log, $email_template);
+        //     }
     
-            return Redirect::back()->with("message","Your video will be available shortly after we process it");
-        }
+        //     return Redirect::back()->with("message","Your video will be available shortly after we process it");
+        // }
     
-        public function CPPVideosReject($id)
-        {
-            $video = Video::findOrFail($id);
-            $video->active = 2;
-            $video->save();
+        // public function CPPVideosReject($id)
+        // {
+        //     $video = Video::findOrFail($id);
+        //     $video->active = 2;
+        //     $video->save();
     
-            $settings = Setting::first();
-            $user_id = $video->user_id;
-            $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        //     $settings = Setting::first();
+        //     $user_id = $video->user_id;
+        //     $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
     
-            try {
+        //     try {
     
-                $email_template_subject =  EmailTemplate::where('id',13)->pluck('heading')->first() ;
-                $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
+        //         $email_template_subject =  EmailTemplate::where('id',13)->pluck('heading')->first() ;
+        //         $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
     
-                $data = array(
-                    'email_subject' => $email_subject,
-                );
+        //         $data = array(
+        //             'email_subject' => $email_subject,
+        //         );
     
-                Mail::send('emails.CPP_Partner_Content_Reject', array(
-                    'Name'     => $ModeratorsUser->username,
-                    'ContentName'  =>  $video->title,
-                    'website_name' =>  GetWebsiteName(),
-                ), 
-                function($message) use ($data,$ModeratorsUser) {
-                    $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
-                });
+        //         Mail::send('emails.CPP_Partner_Content_Reject', array(
+        //             'Name'     => $ModeratorsUser->username,
+        //             'ContentName'  =>  $video->title,
+        //             'website_name' =>  GetWebsiteName(),
+        //         ), 
+        //         function($message) use ($data,$ModeratorsUser) {
+        //             $message->from(AdminMail(),GetWebsiteName());
+        //             $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
+        //         });
     
-                $email_log      = 'Mail Sent Successfully from Partner content Reject!';
-                $email_template = "13";
-                $user_id = $id;
+        //         $email_log      = 'Mail Sent Successfully from Partner content Reject!';
+        //         $email_template = "13";
+        //         $user_id = $id;
     
-                Email_sent_log($user_id,$email_log,$email_template);
+        //         Email_sent_log($user_id,$email_log,$email_template);
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $email_log = $th->getMessage();
-                $email_template = "13";
-                $user_id = $user_id;
+        //         $email_log = $th->getMessage();
+        //         $email_template = "13";
+        //         $user_id = $user_id;
     
-                Email_notsent_log($user_id, $email_log, $email_template);
-            }
+        //         Email_notsent_log($user_id, $email_log, $email_template);
+        //     }
     
-            return Redirect::back()->with("message","Your video will be available shortly after we process it");
-        }
-        function get_processed_percentage($id)
-        {
-            return Video::where("id", "=", $id)->first();
-        }
-        public function purchaseVideocount(Request $request)
-        {
-            $data = $request->all();
-            $user_id = Auth::user()->id;
-            $video_id = $data["video_id"];
-            // view_count
-            $purchase = PpvPurchase::where("video_id", $video_id)
-                ->where("user_id", $user_id)
-                ->first();
-            if ($purchase->view_count == null || $purchase->view_count < 0) {
-                // print_r('1');exit;
-                $purchase->view_count = 1;
-                $purchase->save();
-                return 1;
-            } elseif ($purchase->view_count > 0) {
-                // print_r('2');exit;
-                return 2;
-            } else {
-                return 3;
-            }
-        }
+        //     return Redirect::back()->with("message","Your video will be available shortly after we process it");
+        // }
+        // function get_processed_percentage($id)
+        // {
+        //     return Video::where("id", "=", $id)->first();
+        // }
+        // public function purchaseVideocount(Request $request)
+        // {
+        //     $data = $request->all();
+        //     $user_id = Auth::user()->id;
+        //     $video_id = $data["video_id"];
+        //     // view_count
+        //     $purchase = PpvPurchase::where("video_id", $video_id)
+        //         ->where("user_id", $user_id)
+        //         ->first();
+        //     if ($purchase->view_count == null || $purchase->view_count < 0) {
+        //         // print_r('1');exit;
+        //         $purchase->view_count = 1;
+        //         $purchase->save();
+        //         return 1;
+        //     } elseif ($purchase->view_count > 0) {
+        //         // print_r('2');exit;
+        //         return 2;
+        //     } else {
+        //         return 3;
+        //     }
+        // }
     
-        public function editvideo($id)
-        {
+        // public function editvideo($id)
+        // {
     
-            if (!Auth::user()->role == "admin") {
-                return redirect("/home");
-            }
-            $settings = Setting::first();
+        //     if (!Auth::user()->role == "admin") {
+        //         return redirect("/home");
+        //     }
+        //     $settings = Setting::first();
     
-            $video = Video::find($id);
+        //     $video = Video::find($id);
     
-            $ads_details = AdsVideo::join(
-                "advertisements",
-                "advertisements.id",
-                "ads_videos.ads_id"
-            )
-                ->where("ads_videos.video_id", $id)
-                ->pluck("ads_id")
-                ->first();
+        //     $ads_details = AdsVideo::join(
+        //         "advertisements",
+        //         "advertisements.id",
+        //         "ads_videos.ads_id"
+        //     )
+        //         ->where("ads_videos.video_id", $id)
+        //         ->pluck("ads_id")
+        //         ->first();
     
-            $ads_rolls = AdsVideo::join(
-                "advertisements",
-                "advertisements.id",
-                "ads_videos.ads_id"
-            )
-                ->where("ads_videos.video_id", $id)
-                ->pluck("ad_roll")
-                ->first();
+        //     $ads_rolls = AdsVideo::join(
+        //         "advertisements",
+        //         "advertisements.id",
+        //         "ads_videos.ads_id"
+        //     )
+        //         ->where("ads_videos.video_id", $id)
+        //         ->pluck("ad_roll")
+        //         ->first();
     
-            $ads_category = Adscategory::get();
+        //     $ads_category = Adscategory::get();
     
-            $Reels_videos = Video::Join(
-                "reelsvideo",
-                "reelsvideo.video_id",
-                "=",
-                "videos.id"
-            )
-                ->where("videos.id", $id)
-                ->get();
+        //     $Reels_videos = Video::Join(
+        //         "reelsvideo",
+        //         "reelsvideo.video_id",
+        //         "=",
+        //         "videos.id"
+        //     )
+        //         ->where("videos.id", $id)
+        //         ->get();
     
-                $StorageSetting = StorageSetting::first();
-                if($StorageSetting->site_storage == 1){
-                    $dropzone_url =  URL::to('admin/uploadEditVideo');
-                }elseif($StorageSetting->aws_storage == 1){
-                    $dropzone_url =  URL::to('admin/AWSuploadEditVideo');
-                }else{ 
-                    $dropzone_url =  URL::to('admin/uploadEditVideo');
-                }
+        //         $StorageSetting = StorageSetting::first();
+        //         if($StorageSetting->site_storage == 1){
+        //             $dropzone_url =  URL::to('admin/uploadEditVideo');
+        //         }elseif($StorageSetting->aws_storage == 1){
+        //             $dropzone_url =  URL::to('admin/AWSuploadEditVideo');
+        //         }else{ 
+        //             $dropzone_url =  URL::to('admin/uploadEditVideo');
+        //         }
                 
-            $data = [
-                "headline" => '<i class="fa fa-edit"></i> Edit Video',
-                "video" => $video,
-                "post_route" => URL::to("admin/videos/update"),
-                "button_text" => "Update Video",
-                "admin_user" => Auth::user(),
-                "video_categories" => VideoCategory::all(),
-                "ads" => Advertisement::where("status", "=", 1)->get(),
-                "video_subtitle" => VideosSubtitle::all(),
-                "subtitles" => Subtitle::all(),
-                "languages" => Language::all(),
-                "artists" => Artist::all(),
-                "settings" => $settings,
-                "age_categories" => AgeCategory::all(),
-                "countries" => CountryCode::all(),
-                "video_artist" => Videoartist::where("video_id", $id)
-                    ->pluck("artist_id")
-                    ->toArray(),
-                "category_id" => CategoryVideo::where("video_id", $id)
-                    ->pluck("category_id")
-                    ->toArray(),
-                "languages_id" => LanguageVideo::where("video_id", $id)
-                    ->pluck("language_id")
-                    ->toArray(),
-                "page" => "Edit",
-                "Reels_videos" => $Reels_videos,
-                "ads_paths" => $ads_details ? $ads_details : 0,
-                "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
-                "ads_category" => $ads_category,
-                "dropzone_url" => $dropzone_url,
+        //     $data = [
+        //         "headline" => '<i class="fa fa-edit"></i> Edit Video',
+        //         "video" => $video,
+        //         "post_route" => URL::to("admin/videos/update"),
+        //         "button_text" => "Update Video",
+        //         "admin_user" => Auth::user(),
+        //         "video_categories" => VideoCategory::all(),
+        //         "ads" => Advertisement::where("status", "=", 1)->get(),
+        //         "video_subtitle" => VideosSubtitle::all(),
+        //         "subtitles" => Subtitle::all(),
+        //         "languages" => Language::all(),
+        //         "artists" => Artist::all(),
+        //         "settings" => $settings,
+        //         "age_categories" => AgeCategory::all(),
+        //         "countries" => CountryCode::all(),
+        //         "video_artist" => Videoartist::where("video_id", $id)
+        //             ->pluck("artist_id")
+        //             ->toArray(),
+        //         "category_id" => CategoryVideo::where("video_id", $id)
+        //             ->pluck("category_id")
+        //             ->toArray(),
+        //         "languages_id" => LanguageVideo::where("video_id", $id)
+        //             ->pluck("language_id")
+        //             ->toArray(),
+        //         "page" => "Edit",
+        //         "Reels_videos" => $Reels_videos,
+        //         "ads_paths" => $ads_details ? $ads_details : 0,
+        //         "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
+        //         "ads_category" => $ads_category,
+        //         "dropzone_url" => $dropzone_url,
     
-            ];
+        //     ];
     
-            return View::make("admin.videos.edit_video", $data);
-        }
+        //     return View::make("admin.videos.edit_video", $data);
+        // }
     
-        public function uploadEditVideo(Request $request)
-        {
-            $value = [];
-            $data = $request->all();
-            $id = $data["videoid"];
-            $video = Video::findOrFail($id);
+        // public function uploadEditVideo(Request $request)
+        // {
+        //     $value = [];
+        //     $data = $request->all();
+        //     $id = $data["videoid"];
+        //     $video = Video::findOrFail($id);
     
-            // echo "<pre>";
-            // print_r($video);exit();
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     // echo "<pre>";
+        //     // print_r($video);exit();
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
     
-            $path = public_path() . "/uploads/videos/";
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
     
-            if (
-                $mp4_url != "" &&
-                $pack != "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-                // $ffprobe = \FFMpeg\FFProbe::create();
-                // $disk = 'public';
-                // $data['duration'] = $ffprobe->streams($request->file)
-                // ->videos()
-                // ->first()
-                // ->get('duration');
+        //     if (
+        //         $mp4_url != "" &&
+        //         $pack != "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+        //         // $ffprobe = \FFMpeg\FFProbe::create();
+        //         // $disk = 'public';
+        //         // $data['duration'] = $ffprobe->streams($request->file)
+        //         // ->videos()
+        //         // ->first()
+        //         // ->get('duration');
     
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->file->getClientOriginalExtension();
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->file->getClientOriginalExtension();
     
-                $request->file->storeAs("public", $path);
-                $thumb_path = "public";
+        //         $request->file->storeAs("public", $path);
+        //         $thumb_path = "public";
     
-                // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+        //         // $this->build_video_thumbnail($request->file,$path, $data['slug']);
     
-                $original_name = $request->file->getClientOriginalName()
-                    ? $request->file->getClientOriginalName()
-                    : "";
-                //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
-                //  $str = explode(".mp4",$path);
-                //  $path =$str[0];
-                $storepath = URL::to("/storage/app/public/" . $path);
+        //         $original_name = $request->file->getClientOriginalName()
+        //             ? $request->file->getClientOriginalName()
+        //             : "";
+        //         //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+        //         //  $str = explode(".mp4",$path);
+        //         //  $path =$str[0];
+        //         $storepath = URL::to("/storage/app/public/" . $path);
     
-                //  Video duration
-                $getID3 = new getID3();
-                $Video_storepath = storage_path("app/public/" . $path);
-                $VideoInfo = $getID3->analyze($Video_storepath);
-                $Video_duration = $VideoInfo["playtime_seconds"];
+        //         //  Video duration
+        //         $getID3 = new getID3();
+        //         $Video_storepath = storage_path("app/public/" . $path);
+        //         $VideoInfo = $getID3->analyze($Video_storepath);
+        //         $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                // $video->draft = 0;
-                $video->duration = $Video_duration;
-                $video->save();
+        //         // $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         // $video->draft = 0;
+        //         $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                // return $value;
-                return redirect("/admin/videos");
+        //         // return $value;
+        //         return redirect("/admin/videos");
     
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1
-            ) {
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 1
+        //     ) {
                 
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->file->getClientOriginalExtension();
-                $request->file->storeAs("public", $path);
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->file->getClientOriginalExtension();
+        //         $request->file->storeAs("public", $path);
     
-                $original_name = $request->file->getClientOriginalName()
-                    ? $request->file->getClientOriginalName()
-                    : "";
+        //         $original_name = $request->file->getClientOriginalName()
+        //             ? $request->file->getClientOriginalName()
+        //             : "";
     
-                $storepath = URL::to("/storage/app/public/" . $path);
+        //         $storepath = URL::to("/storage/app/public/" . $path);
     
-                //  Video duration
-                $getID3 = new getID3();
-                $Video_storepath = storage_path("app/public/" . $path);
-                $VideoInfo = $getID3->analyze($Video_storepath);
-                $Video_duration = $VideoInfo["playtime_seconds"];
+        //         //  Video duration
+        //         $getID3 = new getID3();
+        //         $Video_storepath = storage_path("app/public/" . $path);
+        //         $VideoInfo = $getID3->analyze($Video_storepath);
+        //         $Video_duration = $VideoInfo["playtime_seconds"];
     
-                //  $video = new Video();
-                $video->disk = "public";
-                $video->status = 0;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->old_path_mp4 = $path;
-                $video->title = $file_folder_name;
-                $video->mp4_url = $storepath;
-                //  $video->draft = 0;
-                $video->type = "";
-                //  $video->image = 'default_image.jpg';
-                $video->duration = $Video_duration;
-                $video->user_id = Auth::user()->id;
-                $video->save();
+        //         //  $video = new Video();
+        //         $video->disk = "public";
+        //         $video->status = 0;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->old_path_mp4 = $path;
+        //         $video->title = $file_folder_name;
+        //         $video->mp4_url = $storepath;
+        //         //  $video->draft = 0;
+        //         $video->type = "";
+        //         //  $video->image = 'default_image.jpg';
+        //         $video->duration = $Video_duration;
+        //         $video->user_id = Auth::user()->id;
+        //         $video->save();
     
     
-                $Playerui = Playerui::first();
-                if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
-                    TranscodeVideo::dispatch($video);
-                }
-                // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                //     VideoClip::dispatch($video);
-                // }
-                else{
-                    if(Enable_4k_Conversion() == 1){
-                        Convert4kVideoForStreaming::dispatch($video);
-                    }else{
-                        ConvertVideoForStreaming::dispatch($video);
-                    }
-                }          
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $Playerui = Playerui::first();
+        //         if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+        //             TranscodeVideo::dispatch($video);
+        //         }
+        //         // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+        //         //     VideoClip::dispatch($video);
+        //         // }
+        //         else{
+        //             if(Enable_4k_Conversion() == 1){
+        //                 Convert4kVideoForStreaming::dispatch($video);
+        //             }else{
+        //                 ConvertVideoForStreaming::dispatch($video);
+        //             }
+        //         }          
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                return $value;
-                // return redirect("/admin/videos");
+        //         return $value;
+        //         // return redirect("/admin/videos");
     
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->file->getClientOriginalExtension();
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->file->getClientOriginalExtension();
     
-                $request->file->storeAs("public", $path);
-                $thumb_path = "public";
+        //         $request->file->storeAs("public", $path);
+        //         $thumb_path = "public";
     
-                $original_name = $request->file->getClientOriginalName()
-                    ? $request->file->getClientOriginalName()
-                    : "";
+        //         $original_name = $request->file->getClientOriginalName()
+        //             ? $request->file->getClientOriginalName()
+        //             : "";
     
-                $storepath = URL::to("/storage/app/public/" . $path);
+        //         $storepath = URL::to("/storage/app/public/" . $path);
     
-                //  Video duration
-                $getID3 = new getID3();
-                $Video_storepath = storage_path("app/public/" . $path);
-                $VideoInfo = $getID3->analyze($Video_storepath);
-                $Video_duration = $VideoInfo["playtime_seconds"];
+        //         //  Video duration
+        //         $getID3 = new getID3();
+        //         $Video_storepath = storage_path("app/public/" . $path);
+        //         $VideoInfo = $getID3->analyze($Video_storepath);
+        //         $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                // $video->draft = 0;
-                $video->duration = $Video_duration;
-                $video->save();
+        //         // $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         // $video->draft = 0;
+        //         $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                return $value;
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-                // return redirect("/admin/videos");
+        //         return $value;
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //         // return redirect("/admin/videos");
     
-            }
+        //     }
     
-            // return response()->json($value);
-        }
+        //     // return response()->json($value);
+        // }
     
         public function VideoBulk_delete(Request $request)
         {

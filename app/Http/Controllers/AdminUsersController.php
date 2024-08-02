@@ -1,66 +1,67 @@
 <?php
 namespace App\Http\Controllers;
 
-use \App\User as User;
-use \Redirect as Redirect;
-use Illuminate\Http\Request;
-use \App\MobileApp as MobileApp;
-use \App\MobileSlider as MobileSlider;
-use App\RecentView as RecentView;
-use App\Setting as Setting;
+use DB;
+use App;
 use URL;
 use Auth;
+use File;
 use Hash;
-use Illuminate\Support\Facades\Cache;
-use Image;
+use Mail;
 use View;
 use Flash;
-use App\Subscription as Subscription;
-use \App\Video as Video;
-use App\VideoCategory as VideoCategory;
-use \App\PpvVideo as PpvVideo;
-use \App\CountryCode as CountryCode;
-use App;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\UsersExport;
-use App\Http\Controllers\Controller;
+use Image;
+use Theme;
+use Session;
+use App\City;
+use DateTime;
+use Response;
+use App\State;
+use App\Region;
+use App\Devices;
+use App\Language;
+use App\UGCVideo;
+use App\UserLogs;
+use App\Wishlist;
+use App\SiteTheme;
 use Carbon\Carbon;
+use App\RegionView;
+use App\Watchlater;
+use App\HomeSetting;
+use App\PpvPurchase;
+use App\TVLoginCode;
+use App\LoggedDevice;
+use App\Multiprofile;
+use \App\User as User;
+use App\EmailTemplate;
+use App\WelcomeScreen;
+use GuzzleHttp\Client;
+use App\TVSplashScreen;
+use \App\Video as Video;
+use App\CurrencySetting;
+use App\ContinueWatching;
+use App\SubscriptionPlan;
+use \Redirect as Redirect;
+use App\ApprovalMailDevice;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use Jenssegers\Agent\Agent;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use Illuminate\Http\Request;
+use \App\PpvVideo as PpvVideo;
+use \App\MobileApp as MobileApp;
+use App\RecentView as RecentView;
+use \App\CountryCode as CountryCode;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Subscription as Subscription;
+use Illuminate\Support\Facades\Cache;
+use \App\MobileSlider as MobileSlider;
+use App\SystemSetting as SystemSetting;
+use App\VideoCategory as VideoCategory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use App\SystemSetting as SystemSetting;
-use DateTime;
-use Session;
-use DB;
-use Mail;
-use App\EmailTemplate;
-use App\UserLogs;
-use App\Region;
-use App\RegionView;
-use App\City;
-use App\State;
-use Illuminate\Support\Str;
-use App\LoggedDevice;
-use Jenssegers\Agent\Agent;
-use App\ApprovalMailDevice;
-use App\Language;
-use App\Multiprofile;
-use App\HomeSetting;
-use App\WelcomeScreen;
-use App\SubscriptionPlan;
-use App\Devices;
-use App\CurrencySetting;
-use App\PpvPurchase;
-use Theme;
-use Response;
-use File;
-use GuzzleHttp\Client;
-use App\ContinueWatching;
-use App\Wishlist;
-use App\Watchlater;
-use App\SiteTheme;
-use App\TVLoginCode;
-use App\Imports\UsersImport;
-use App\TVSplashScreen;
 
 class AdminUsersController extends Controller
 {
@@ -2975,6 +2976,39 @@ class AdminUsersController extends Controller
 
     }
 
+
+        public function handleViewCount_ugc($vid)
+    {
+        $ugcview = UGCVideo::find($vid);
+    
+        if (!$ugcview) {
+            return null;
+        }
+    
+        $ugcview->views = $ugcview->views + 1;
+        $ugcview->save();
+    
+        Session::put('viewed_ugc_videos.' . $vid, time());
+    
+        return $ugcview;
+    }
+
+
+    private function handleViewCounts($ugcvideos)
+    {
+        $updatedVideos = [];
+    
+        foreach ($ugcvideos as $ugcvideo) {
+            $updatedVideo = $this->handleViewCount_ugc($ugcvideo->id);
+            if ($updatedVideo) {
+                $updatedVideos[] = $updatedVideo;
+            }
+        }
+    
+        return $updatedVideos;
+    }
+
+
     public function myprofile()
     {
 
@@ -3106,10 +3140,29 @@ class AdminUsersController extends Controller
             }
 
 
+            // $ugcvideo_ids = UGCVideo::pluck('id');
+            
+            // $updatedVideos = [];
+
+            // foreach ($ugcvideo_ids as $ugcvideo_id) {
+            //     $viewcount = $this->handleViewCount_ugc($ugcvideo_id);
+            //     if ($viewcount) {
+            //         $updatedVideos[] = $viewcount; // Store the updated object
+            //     }
+            // }
+
+            $ugcvideo = UGCVideo::where('user_id', $user_details->id)
+            ->where('active', 1)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(9);
+            
+
 
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
+                'ugcvideos' => $ugcvideo,
+                'viewcount' =>  $updated_ugcvideos,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
                 'user' => $user_details,

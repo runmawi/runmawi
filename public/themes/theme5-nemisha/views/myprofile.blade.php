@@ -210,9 +210,8 @@
 
     .account {
         background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);
-        padding: 15px 10px;
+        padding:10px 15px;
         border-radius: 10px;
-        margin-top: 10px;
         color: #FFFFFF;
         font-size: 20px;
     }
@@ -264,6 +263,118 @@
         height: 200px;
         border-radius: 15px;
     }
+
+#submit_about {
+    color: green;
+}
+
+#submit_facebook {
+    color: green;
+}
+
+#submit_instagram {
+    color: green;
+}
+
+#submit_twitter {
+    color: green;
+}
+
+.video-form-control{
+        width:100%;
+        background-color: #c9c8c888 ;
+        border:none;
+        padding: 3px 10px;
+        border-radius: 7px;
+    }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .input-container textarea {
+            background-color: #848880;
+            color: white;
+            border-radius: 10px;
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: none;
+            resize: none;
+            font-size: 16px;
+        }
+
+        .input-container button {
+            position: absolute;
+            right: 10px; /* Aligns button to the right */
+            bottom: 10px; /* Aligns button to the bottom */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+         .input-container button:hover {
+            background-color: #45a049;
+        }
+
+        .ugc-social-media {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ugc-social-media textarea {
+            background-color:transparent;
+            color: white;
+            width: 100%;
+            border: none;
+            resize: none;
+            font-size: 16px;
+        }
+
+        .ugc-social-media button {
+            position: absolute;
+            right: 10px; /* Aligns button to the right */
+            bottom: 10px; /* Aligns button to the bottom */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ugc-social-media button:hover {
+            background-color: #45a049;
+        }
+
+        .ugc-actions {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+        }
+
+        .ugc-videos:hover .ugc-actions {
+            display: block;
+        }
 
     a.edit-button.Text-white{color:#fff !important;}
     body.light-theme .sigk{background: linear-gradient(180deg, rgba(220, 220, 220, 0.85) 0%, rgba(220, 220, 220, 0) 100%);}
@@ -393,25 +504,31 @@
         <!--<hr />-->
 
         <!-- MainContent -->
-    {{-- <section class="m-profile setting-wrapper pt-0">
+    <section class="m-profile setting-wrapper pt-0">
             <div class="container">
 
+                {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
+
                 <div class="row justify-content-center m-1">
-                <img
-                src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" >
+                    <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
+                        <img
+                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:200px; " alt="banner" >
+                    </a>
                 </div>
                 <div class="row justify-content-start mx-3">
-                   <div>
+                    <div >
+                    <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
                     <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                    src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" alt="profile-bg" style="height: 80px; width: 80px;">
-                   </div>
+                    src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+                    </a>
+                    </div>
                    <div class="col" style="padding-top: 40px;" >
                     <div>
-                    <h4>Karabo Mthembu</h4>
+                    <h4>{{$user->username}}</h4>
                     </div>
-                    <div>
+                    {{-- <div>
                        <h5>Entertainmnt channel </h5>
-                    </div>
+                    </div> --}}
                    </div>
                 </div>
                
@@ -425,194 +542,216 @@
                     <div class="col-12 pt-3">
                         <div>
                             <h2>About</h2>
-                            <p style="background-color:#848880; color:white; border-radius:10px; " class="mt-2 p-3" >
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
+
+                            <div class="input-container" style="position: relative" >
+                                <form>
+                                    <textarea id="ugc-about" name="ugc-about" value="" placeholder="Enter About You">{{ $user->ugc_about ? $user->ugc_about : '' }}</textarea>
+                                    <button id="submit_about" class="icon">&#10004;</button> 
+                                    <input type="hidden" id="ugcabout" value="{{ URL::to('ugc/submit-ugcabout') }}">
+                                    <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                </form>
+                            </div>
                         </div>
                         <div class="pt-4" >
                             <h2>Links</h2>
                             <div class="py-2">
                             <h5>Facebook</h5>
                             <p style="color: white">
-                            <a href="">facebook.com</a>
+                                <div class="ugc-social-media" style="position: relative" >
+                                    <form>
+                                        <textarea id="ugc-facebook" name="ugc-instagram" value="" placeholder="Enter About You" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
+                                        <button id="submit_facebook" class="icon">&#10004;</button> 
+                                        <input type="hidden" id="ugcfacebook" value="{{ URL::to('ugc/submit-ugcfacebook') }}">
+                                        <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                    </form>
+                                </div>
                             </p>
                             </div>
                             <div class="py-2">
                             <h5>Instagram</h5>
                             <p style="color: white">
-                            <a href="">instagram.com</a>
+                                <div class="ugc-social-media" style="position: relative" >
+                                    <form>
+                                        <textarea id="ugc-instagram" name="ugc-instagram" placeholder="Enter About You" rows="1" >{{ $user->ugc_instagram ? $user->ugc_instagram : '' }}</textarea>
+                                        <button id="submit_instagram" class="icon">&#10004;</button> 
+                                        <input type="hidden" id="ugcinstagram" value="{{ URL::to('ugc/submit-ugcinstagram') }}">
+                                        <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                    </form>
+                                </div>
                             </p>
                             </div>
                             <div class="py-2">
                             <h5>Twitter</h5>
                             <p style="color: white">
-                            <a href="">twitter.com</a>
+                                <div class="ugc-social-media" style="position: relative" >
+                                    <form>
+                                        <textarea id="ugc-twitter" name="ugc-twitter" placeholder="Enter About You" rows="1" >{{ $user->ugc_twitter ? $user->ugc_twitter : '' }}</textarea>
+                                        <button id="submit_twitter" class="icon">&#10004;</button> 
+                                        <input type="hidden" id="ugctwitter" value="{{ URL::to('ugc/submit-ugctwitter') }}">
+                                        <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                    </form>
+                                </div>
                             </p>
                             </div>
                         </div>
-                        <div class="pt-4" >
-                            <h2>Profile Details</h2>
-                            <div class="text-white pt-4">
-                            <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >nemisa.co.za</span></p> 
-                            </div>
-                            <div class=" text-white">
-                            <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >3 videos</span></p> 
-                            </div>
-                            <div class=" text-white">
-                            <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >15000 views</span></p> 
-                            </div>
-                            <div class=" text-white">
-                            <p style="font-weight: 600; font-size: 18px;" >Joined: <span style="font-weight: 100; font-size:15px;" >24 June 2020</span></p> 
-                            </div>
-                            <div class=" text-white">
-                            <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >South Africa</span></p> 
-                            </div>
-                            <div>
+                        <div class="row pt-4" >
+                            <div class="col-lg-6 col-md-12 mb-4"> 
+                                <h2>Profile Details</h2>
+                                <div class="text-white pt-4">
+                                <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >nemisa.com</span></p> 
+                                </div>
+                                <div class=" text-white">
+                                <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >3 videos</span></p> 
+                                </div>
+                                <div class=" text-white">
+                                <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >15000 views</span></p> 
+                                </div>
+                                <div class=" text-white">
+                                <p style="font-weight: 600; font-size: 18px;" >Joined: <span style="font-weight: 100; font-size:15px;" >24 June 2020</span></p> 
+                                </div>
+                                <div class=" text-white">
+                                <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >South Africa</span></p> 
+                                </div>
+                                <div>
                                 <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6 col-md-12 mb-4 mx-auto" > 
+                                    <h2>My Acount
+                                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i>
+                                            <span style="font-size:15px;" >Edit</span>
+                                        </a>
+                                    </h2>
+                                    <div class=" text-white pt-4">
+                                    <p style="font-weight: 600; font-size: 18px;">First Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;">User Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;">Email-id: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;">Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                        <p class="row">
+                                            <span class="col-lg-2 text-left" style="font-weight: 600; font-size: 18px;">Gender:</span>
+                                            <span class="col-lg-5 text-left"> 
+                                                <select class="form-control" id="gender" name="gender">
+                                                    <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
+                                                    <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
+                                                    <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
+                                                    <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                                                </select>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;">DOB: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span></p> 
+                                    </div>
                             </div>
                         </div>
     
                         
                     </div>
-
                 </div>
 
         <div id="ugc-tab-2" class="ugc-tab-content">
                   
             <div class="row mx-3">
+                @foreach ($ugcvideos as $eachugcvideos)
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href="" class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/deer-3275594_960_720.jpg" alt="" />
+                    
+                     <a href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
+                                <div class="ugc-videos" style="position: relative;" >
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
+                                    <div class="ugc-actions" >
+                                        <div style="border-radius: 7px; background-color:#ED563C; padding:2px 10px; " >
+                                            <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Meta"
+                                            data-original-title="Edit Meta" href="{{ URL::to('ugc-edit') . '/' . $eachugcvideos->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                </svg>
+                                            </a>
+                                            <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Video"
+                                            data-original-title="Edit Video" href="{{ URL::to('admin/videos/editvideo') . '/' . $eachugcvideos->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                </svg>
+                                            </a>
+                                            <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete Video"
+                                            data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $eachugcvideos->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/04/09/19/55/low-poly-3305284_960_720.jpg" alt="" />
-                                </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/04/06/13/46/poly-3295856_960_720.png" alt="" />
-                                </div>
+                    
 
                                 <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
+                                    <h6>{{$eachugcvideos->title}}</h6>
+                                    <p style="margin:5px 0px;">{{$user->name}}</p>
+                                    <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
+                                        | 90k Likes</p>
                                 </div>
                     </a>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/12/dog-3275593_960_720.jpg" alt="" />
-                                </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
+                @endforeach
+            </div>
+
+            <div class="mt-3 pull-right" >
+                {{ $ugcvideos->links() }}
             </div>
     
         </div>
 
         <div id="ugc-tab-3" class="ugc-tab-content">
             <div class="row mx-3">
+                @foreach ($ugcvideos as $eachugcvideos)
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                     <a href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
+                                <div class="ugc-videos">
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
+                                </div>
+                                <div class="text-white pt-3">
+                                    <h6>{{$eachugcvideos->title}}</h6>
+                                    <p style="margin:5px 0px;">{{$user->name}}</p>
+                                    <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
+                                        | 90k Likes</p>
+                                </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/12/dog-3275593_960_720.jpg" alt="" />
-                                </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/deer-3275594_960_720.jpg" alt="" />
-                                </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/04/09/19/55/low-poly-3305284_960_720.jpg" alt="" />
-                                </div>
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <a href=""  class="m-1">
-                                <div class="ugc-videos">
-                                    <img src="https://cdn.pixabay.com/photo/2018/04/06/13/46/poly-3295856_960_720.png" alt="" />
-                                </div>
-
-                                <div class="text-white pt-3">
-                                    <h6>My Videos Episode 1</h6>
-                                    <p style="margin:5px 0px;">Karobo Mthembu</p>
-                                    <p >2 Weeks Ago | 100k Views | 90k Likes</p>
-                                </div>
-                    </a>
-                </div>
-                
+            <div class="mt-3 pull-right" >
+                {{ $ugcvideos->links() }}
             </div>
         </div>
 
-              
 
         </div>
         </div>
 
 
-    </section> --}}
+    </section>
 
-    <div class="row justify-content-center">
+    {{-- <div class="row justify-content-center">
         <div class="col-lg-5 col-md-5 sigk text-center">
             <div class="d-flex justify-content-center">
 
-                {{-- message --}}
+               
                 @if (Session::has('message'))
                     <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                 @endif
-
-               <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
                 <div>
                     <h4 class="main-title mb-4 text-center">My Account</h4>
                 </div>
-               <!-- <div><a herf="" class="text-white">Done</a>
-                </div>-->
-
+        
             </div>
 
             <img class="rounded-circle img-fluid text-center mb-3 mt-4"
@@ -647,10 +786,10 @@
                     <span class="col-lg-4 text-left">Gender:</span>
                     <span class="col-lg-5 text-left"> 
                         <select class="form-control" id="gender" name="gender">
-                            <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
+                          @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif> 
                             <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                             <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                            <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                            @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif >
                         </select>
                     </span>
                 </p>
@@ -662,7 +801,7 @@
 
             </div>
         </div>
-    </div>
+    </div> --}}
     
     
                         <!-- Add New Modal -->
@@ -837,6 +976,143 @@
             <div class="clear"></div>
         </form>
     </div>
+
+    <div class="modal fade" id="ugc-profile-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Profile</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="new-ugc-form" enctype="multipart/form-data" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}"
+                        method="post">
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+
+                        <div class="form-group">
+                            <label> Username:</label>
+                            <input type="text" id="username" name="username"
+                                value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>"
+                                class="form-control" placeholder="username">
+                        </div>
+
+                        <div class="form-group">
+                        <label> Profile Image:</label>
+                            <input type="file" multiple="true" class="form-control"
+                                name="avatar" id="avatar" required />
+                        </div>
+        
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" style="padding: 9px 30px !important;" class="btn btn-primary"
+                        data-dismiss="modal">Close</button>
+                    <button type="button" style="padding: 9px 30px !important;" class="btn btn-primary"
+                        id="submit-new-ugc">Save changes</button>
+                </div>
+            </div>
+        </div>
+        <style>
+            .form-control {
+                background-color: #fff;
+                border: 1px solid transparent;
+                height: 45px;
+                position: relative;
+                color: #000000 !important;
+                font-size: 16px;
+                width: 100%;
+                -webkit-border-radius: 6px;
+                height: 45px;
+                border-radius: 4px;
+                font-family: 'futuraheavy';
+            }
+            .sign-in-page .form-control:focus, .m-profile .form-control:focus{
+                background: #fff!important;
+            }
+        </style>
+
+
+        <div class="clear"></div>
+        <form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8"
+            file="1" enctype="multipart/form-data">
+            <div class="well row">
+
+                <!--popup-->
+                <div class="form-popup " id="myForm"
+                    style="background:url(<?php echo URL::to('/') . '/assets/img/Landban.png'; ?>) no-repeat;	background-size: cover;padding:40px;display:none;">
+                    <div class="col-sm-4 details-back">
+                        <div class="row data-back">
+                            <div class="well-in col-sm-12 col-xs-12">
+                                <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button"
+                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
+                                        snap!</strong> <?= $errors->first('name') ?></div><?php endif; ?>
+                                <label for="username" class="lablecolor"><?= __('Username') ?></label>
+                                <input type="text" class="form-control" name="name" id="name"
+                                    value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
+                            </div>
+                            <div class="well-in col-sm-12 col-xs-12">
+                                <?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button"
+                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
+                                        snap!</strong> <?= $errors->first('email') ?></div><?php endif; ?>
+                                <label for="email"><?= __('Email') ?></label>
+                                <input type="text" class="form-control" name="email" id="email"
+                                    value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
+                            </div>
+                            <div class="well-in col-sm-12 col-xs-12">
+                                <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button"
+                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
+                                        snap!</strong> <?= $errors->first('name') ?></div><?php endif; ?>
+                                <label for="username" class="lablecolor"><?= __('Phone Number') ?></label>
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        {{-- <select name="ccode">
+                                            @foreach ($jsondata as $code)
+                                                <option value="{{ $code['dial_code'] }}" 
+                                                <?php 
+                                                    // if ($code['dial_code'] == $user->ccode) {
+                                                    //     echo "selected='selected'";
+                                                    // }
+                                                ?>
+                                                    {{ $code['name'] . ' (' . $code['dial_code'] . ')' }}</option>
+                                            @endforeach
+                                        </select> --}}
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" name="mobile" id="mobile"
+                                            value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="well-in col-sm-12 col-xs-12">
+                                <label for="password"><?= __('Password') ?> (leave empty to keep your original
+                                    password)</label>
+                                <input type="password" class="form-control" name="password" id="password" />
+                            </div>
+                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                            <div class="col-sm-12 col-xs-12 mt-3">
+                                <input type="submit" value="<?= __('Update Profile') ?>" class="btn btn-primary" />
+                                <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" id="subscribe">
+
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+
+
+
     </div>
 
     </div>
@@ -1205,6 +1481,23 @@ if (isset($page) && $page == 'admin-dashboard') {
     })
 </script>
 
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+
+
+        // Add New Category
+        $('#submit-new-ugc').click(function() {
+            $('#new-ugc-form').submit();
+        });
+    });
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+</script>
+
 <script>
 $(document).ready(function(){
 	
@@ -1220,3 +1513,185 @@ $(document).ready(function(){
 
 })
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+       });
+ 
+   document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('ugc-about');
+    const submitButton = document.getElementById('submit_about');
+
+    input.addEventListener('input', function() {
+        const value = this.value;
+        if (value.length > 0) {
+            submitButton.style.display = 'inline';
+        } else {
+            submitButton.style.display = 'none';
+        }
+    });
+
+    var ugcurl = $('#ugcabout').val();
+       $('#submit_about').click(function(){
+        const userId = $('#ugcuser_id').val(); // Get the user ID
+        // alert('about');
+        $.ajax({
+               url: ugcurl,
+               type: "post",
+               data: {
+                      _token: '{{ csrf_token() }}',
+                      user_id: userId,
+                      ugc_about: $('#ugc-about').val()
+                },        
+                success: function(value){
+                console.log(value);
+                
+               }
+           });
+       })
+
+
+
+    });
+
+</script>
+
+<script>
+
+    $.ajaxSetup({
+          headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           }
+        });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('ugc-facebook');
+    const submitButton = document.getElementById('submit_facebook');
+
+    input.addEventListener('input', function() {
+    const value = this.value;
+    if (value.length > 0) {
+        submitButton.style.display = 'inline';
+    } else {
+        submitButton.style.display = 'none';
+    }
+    });
+
+    var ugcurl = $('#ugcfacebook').val();
+    $('#submit_facebook').click(function(){
+    const userId = $('#ugcuser_id').val(); // Get the user ID
+    // alert('about');
+    $.ajax({
+           url: ugcurl,
+           type: "post",
+           data: {
+                  _token: '{{ csrf_token() }}',
+                  user_id: userId,
+                  ugc_facebook: $('#ugc-facebook').val()
+            },        
+            success: function(value){
+            console.log(value);
+            
+           }
+       });
+    })
+
+    });
+
+</script>
+
+
+<script>
+
+$.ajaxSetup({
+      headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+    });
+
+document.addEventListener('DOMContentLoaded', function() {
+const input = document.getElementById('ugc-instagram');
+const submitButton = document.getElementById('submit_instagram');
+
+input.addEventListener('input', function() {
+const value = this.value;
+if (value.length > 0) {
+    submitButton.style.display = 'inline';
+} else {
+    submitButton.style.display = 'none';
+}
+});
+
+var ugcurl = $('#ugcinstagram').val();
+$('#submit_instagram').click(function(){
+const userId = $('#ugcuser_id').val(); // Get the user ID
+// alert('about');
+$.ajax({
+       url: ugcurl,
+       type: "post",
+       data: {
+              _token: '{{ csrf_token() }}',
+              user_id: userId,
+              ugc_instagram: $('#ugc-instagram').val()
+        },        
+        success: function(value){
+        console.log(value);
+        
+       }
+   });
+})
+
+});
+
+</script>
+
+
+<script>
+
+$.ajaxSetup({
+      headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+    });
+
+document.addEventListener('DOMContentLoaded', function() {
+const input = document.getElementById('ugc-twitter');
+const submitButton = document.getElementById('submit_twitter');
+
+input.addEventListener('input', function() {
+const value = this.value;
+if (value.length > 0) {
+    submitButton.style.display = 'inline';
+} else {
+    submitButton.style.display = 'none';
+}
+});
+
+var ugcurl = $('#ugctwitter').val();
+$('#submit_twitter').click(function(){
+const userId = $('#ugcuser_id').val(); // Get the user ID
+// alert('about');
+$.ajax({
+       url: ugcurl,
+       type: "post",
+       data: {
+              _token: '{{ csrf_token() }}',
+              user_id: userId,
+              ugc_twitter: $('#ugc-twitter').val()
+        },        
+        success: function(value){
+        console.log(value);
+        
+       }
+   });
+})
+
+});
+
+</script>
+

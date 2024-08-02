@@ -44,6 +44,13 @@ class WebCommentController extends Controller
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
+        }
+
 
         $inputs = array(
             'user_id'   => Auth::user()->id ,

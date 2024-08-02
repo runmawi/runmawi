@@ -238,7 +238,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="stylesheet">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>\
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <!--Flickity CSS -->
     <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>" as="style">
@@ -1569,7 +1569,7 @@
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
                                 </div>
-                                <!-- <div class="bg-primary rounded-circle p-1">
+                                <div class="bg-primary rounded-circle p-1">
                                             <a href="<?php echo URL::to('ugc-create'); ?>" >
                                             <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <g>
@@ -1578,7 +1578,7 @@
                                             </g>
                                             </svg>
                                             </a>
-                                </div> -->
+                                </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
