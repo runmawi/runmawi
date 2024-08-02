@@ -52,7 +52,7 @@
                             <div class="block-images position-relative"> 
                                 <div class="img-box">
                                     <a href="<?php echo URL::to('category') . '/videos/' . $watchlater_video->slug ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image; ?>" class="img-fluid w-100 flickity-lazyloaded" alt="<?php echo $watchlater_video->title; ?>">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image; ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $watchlater_video->title; ?>">
                                     </a>
 
                                     <!-- PPV price -->
