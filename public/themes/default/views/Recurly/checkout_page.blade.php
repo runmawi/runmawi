@@ -10,9 +10,9 @@
 
 <div class="checkout-page">
     <header class="header">
-        <h1 class="mt-5"><img src="{{ front_end_logo() }}" class="max-h-16 max-w-auto" alt="Logo" style="width: 100px;"></h1>
+        <h1 class="mt-1"><img src="{{ front_end_logo() }}" class="max-h-16 max-w-auto" alt="Logo" style="width: 100px;"></h1>
        
-        <div class="lg:max-w-lg mx-auto lg:mx-0 lg:pr-8 mt-4">
+        <div class="lg:max-w-lg mx-auto lg:mx-0 lg:pr-8 mt-1">
             <a class="backButton" href="{{ url()->previous() }}">← Back </a>
         </div>
     </header>
@@ -20,15 +20,15 @@
     <section class="container d-flex justify-content-around">
         <form class="mb-5" id='my-form' action="{{ $payment_current_route_uri == "upgrade-subscriber" ? route('Recurly.UpgradeSubscription') : route('Recurly.subscription') }}">
             <div class="form-group">
-                <h5 class="mt-5 mb-3" for="email">Contact Information</h5>
+                <h5 class="mt-1 mb-3" for="email">Contact Information</h5>
                 <label class="form-label">Email <span class="text-red-500">&nbsp;*</span> </label>
                 <input type="email" class="form-control" id="email" placeholder="Email" value={{ @($user_details->email) }} required readonly>
             </div>
 
             <div class="form-group">
-                <h5 class="mt-5 mb-3" for="card-details">Billing Information</h5>
+                <h5 class="mt-1 mb-3" for="card-details">Billing Information</h5>
                 <label class="form-label">Card Details <span class="text-red-500">&nbsp;*</span> </label>
-                <div class="col-md-12 row">
+                <div class="col-md-12 row p-0">
                     <div class="col-md-6"><input  type="text" inputmode="numeric" autocomplete="cc-number" minlength="19" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required class="form-control" name="card_number"  id="cardNumber" required></div>
                     <div class="col-md-3"><input type="text" class="form-control" id="exp_month" name="exp_month" placeholder="MM / YYYY"  minlength="7" maxlength="7" required></div>
                     <div class="col-md-3"><input type="text" inputmode="numeric"  class="form-control" name="cvc" placeholder="CVC"  minlength="3" maxlength="4" required> </div>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="form-group">
-                <h5 class="mt-5 mb-3">Billing Address</h5>
+                <h5 class="mt-1 mb-3">Billing Address</h5>
                 <label class="form-label">Country <span class="text-red-500">&nbsp;*</span> </label>
                 <select class="form-control" required name="country">
                     <option value="AF" {{ $Country_code == "AF" ? 'selected' : '' }}>Afghanistan</option>
