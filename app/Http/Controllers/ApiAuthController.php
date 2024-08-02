@@ -13897,11 +13897,25 @@ public function QRCodeMobileLogout(Request $request)
 
   public function All_Homepage(Request $request)
   {
+    try {
+   
       $user_id = $request->user_id;
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id );
 
-      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->get()->toArray();
+      if (1 == 0) {
+
+        $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->paginate(3);
+      
+        $OrderHomeSettings_list = OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting)->orderBy('order_id', 'asc')->paginate(3)->toArray();
+       
+        $OrderHomeSettings_list['data'] = array_map(function($item) {
+                                                return $item['video_name'];
+                                            }, $OrderHomeSettings_list['data']);
+      }else{
+        $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->get()->toArray();
+        $OrderHomeSettings_list =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->pluck('video_name');
+      }
 
       $result = array();
 
@@ -14229,11 +14243,22 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status' => 'true',
-        'lists'   => OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->pluck('video_name'),
+        'status_code' => 200,
+        'message' => Str::title("retrieved the homepage sections data successfully!!"),
+        'lists'   => $OrderHomeSettings_list,
         'Home_page' => $result,
       );
+         
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+        );
+      }
   
-      return response()->json($response, 200);
+      return response()->json($response, $response['status_code']);
   }
 
   private  function All_Homepage_homesetting( $user_id ){
@@ -15228,6 +15253,8 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['Player_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['title'] = $item->name;
 
           // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
           //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
@@ -15625,6 +15652,8 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['Player_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['title'] = $item->name;
           $item['source'] = 'Series_Networks';
 
           $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',

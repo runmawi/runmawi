@@ -588,6 +588,7 @@
         $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
         $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
         $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
+        $recurly_payment_settings = App\PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
 
         // lable
         $stripe_lable = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
@@ -596,7 +597,8 @@
         $Razorpay_lable = App\PaymentSetting::where('payment_type', 'Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
         $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
         $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
-        
+        $recurly_label = App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() ? App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() : "Recurly";
+
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
 
     @endphp
@@ -626,7 +628,7 @@
                                 <!-- Stripe -->
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                         <label class=" ml-2"> <p>{{ $stripe_lable }} </p> </label>
                                     </div>
                                 @endif
@@ -668,6 +670,14 @@
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
                                         <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
+                                    </div>
+                                @endif
+
+                                    {{-- Recurly --}}
+                                @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" checked>
+                                        <label class=" ml-2"> <p>{{ __($recurly_label) }} </p></label> 
                                     </div>
                                 @endif
                             </div>
@@ -762,6 +772,17 @@
                                     <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
                                         {{ __('Pay Now') }}
                                     </button>
+                                </div>
+
+                                {{-- Recurly --}}
+                                <div class="col-md-12 Recurly_payment">
+                                    <form action="{{ route('Recurly.checkout_page') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
+                                        <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
+                                            {{ __('Pay Now') }}
+                                        </button>
+                                    </form>
                                 </div>
 
                                 <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
@@ -1124,10 +1145,10 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
             $('.Summary').empty();
 
-            $(".payment_gateway").trigger("click")
+            // $(".payment_gateway").trigger("click")
 
             if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
                 $('.stripe_payment').show();
@@ -1149,13 +1170,17 @@
                 $('.Paydunya_payment').show();
             }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "Recurly") {
+                $('.Recurly_payment').show();
+            }
+
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
                 $('.Summary').empty();
 
                 let payment_gateway = $('input[name="payment_gateway"]:checked').val();
@@ -1180,6 +1205,10 @@
 
                     $('.Paydunya_payment').show();
 
+                }
+                else if (payment_gateway == "Recurly") {
+
+                    $('.Recurly_payment').show();
                 }
             });
         });
