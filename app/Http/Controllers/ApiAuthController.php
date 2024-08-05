@@ -8461,32 +8461,54 @@ public function LocationCheck(Request $request){
 
   public function Episode_addfavorite(Request $request){
 
-    $user_id = $request->user_id;
-    $episode_id = $request->episode_id;
+    try {
+      
+      $user_id = $request->user_id;
+      $episode_id = $request->episode_id;
 
-    if (!empty($episode_id)) {
-        $count = Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->count();
+      if(is_null($episode_id) || is_null($user_id)){
 
-        if ($count > 0) {
-            Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
+        $response = [
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => 'Validation error - Required episode_id,user_id'
+        ];
 
-            $response = [
-                'status' => 'false',
-                'message' => 'Removed From Your Favorite'
-            ];
+        return response()->json($response, $response['status_code']);
 
-        } else {
-            $data = ['user_id' => $user_id, 'episode_id' => $episode_id];
-            Favorite::insert($data);
+      }
 
-            $response = [
-                'status' => 'true',
-                'message' => 'Added to Your Favorite'
-            ];
-        }
+      $count = Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->count();
+
+      if ($count > 0) {
+          Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
+
+          $response = [
+              'status' => 'true',
+              'status_code' => 200,
+              'message' => 'Removed From Your Favorite'
+          ];
+
+      } else {
+          $data = ['user_id' => $user_id, 'episode_id' => $episode_id];
+          Favorite::insert($data);
+
+          $response = [
+              'status' => 'true',
+              'status_code' => 200,
+              'message' => 'Added to Your Favorite'
+          ];
+      }
+    } catch (\Throwable $th) {
+
+      $response = [
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => 'Added to Your Favorite'
+      ];
     }
 
-    return response()->json($response, 200);
+    return response()->json($response, $response['status_code']);
   }
 
   public function Episode_addwishlist(Request $request)
