@@ -20,13 +20,13 @@
     <section class="container d-flex justify-content-around">
         <form class="mb-5" id='my-form' action="{{ $payment_current_route_uri == "upgrade-subscriber" ? route('Recurly.UpgradeSubscription') : route('Recurly.subscription') }}">
             <div class="form-group">
-                <h5 class="mt-1 mb-3" for="email">Contact Information</h5>
+                <h5 class="mt-1 mb-2" for="email">Contact Information</h5>
                 <label class="form-label">Email <span class="text-red-500">&nbsp;*</span> </label>
                 <input type="email" class="form-control" id="email" placeholder="Email" value={{ @($user_details->email) }} required readonly>
             </div>
 
             <div class="form-group">
-                <h5 class="mt-1 mb-3" for="card-details">Billing Information</h5>
+                <h5 class="mt-1 mb-2" for="card-details">Billing Information</h5>
                 <label class="form-label">Card Details <span class="text-red-500">&nbsp;*</span> </label>
                 <div class="col-md-12 row p-0">
                     <div class="col-md-6"><input  type="text" inputmode="numeric" autocomplete="cc-number" minlength="19" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required class="form-control" name="card_number"  id="cardNumber" required></div>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="form-group">
-                <h5 class="mt-1 mb-3">Billing Address</h5>
+                <h5 class="mt-1 mb-2">Billing Address</h5>
                 <label class="form-label">Country <span class="text-red-500">&nbsp;*</span> </label>
                 <select class="form-control" required name="country">
                     <option value="AF" {{ $Country_code == "AF" ? 'selected' : '' }}>Afghanistan</option>
@@ -473,7 +473,7 @@
 
     .header {
         margin-bottom: 15px;
-        margin-left: 15%;
+        margin-left: 12%;
     }
 
     .order-summary {
