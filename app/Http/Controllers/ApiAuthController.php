@@ -290,8 +290,8 @@ class ApiAuthController extends Controller
         $user = User::where('email', $request->get('email'))->first();
         $username = User::where('username', $request->get('username'))->where('username', '!=', null)->first();
 
-        if ($user === null && $username === null) {
-
+        if ($user === null ) {
+          // && $username === null
               $user = new User($user_data);
               $user->ccode = $user_data['ccode'];
               $user->mobile = $user_data['mobile'];
@@ -354,8 +354,8 @@ class ApiAuthController extends Controller
                 $response = array('status'=>'false','message' => 'Email id Already Exists');
                 return response()->json($response, 200);
               }else{
-                $response = array('status'=>'false','message' => 'Username Already Exists');
-                return response()->json($response, 200);
+                // $response = array('status'=>'false','message' => 'Username Already Exists');
+                // return response()->json($response, 200);
               }
         }
 
@@ -1163,47 +1163,68 @@ class ApiAuthController extends Controller
 
   public function resetpassword(Request $request)
   {
-    $user_email = $request->email;
-    $user = User::where('email', $user_email)->count();
+    try {
 
+      $user_email = $request->email;
+      $user = User::where('email', $user_email)->count();
 
-    if($user > 0){
+      if($user > 0){
 
-      $verification_code = mt_rand(1000, 9999);
-      $email = $user_email;
+        $verification_code = mt_rand(1000, 9999);
 
-      try {
-        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
-          $message->to($email)->subject('Verify your email address');
-        });
+        try {
 
-      } catch (\Throwable $th) {
-        //throw $th;
+          Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
+            $message->to($user_email)->subject('Verify your email address');
+          });
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status_code' => 400 ,
+            'status'    =>'false',
+            'message'   => $th->getMessage(),
+            'email'     => $user_email,
+          );
+
+          return response()->json($response, $response['status_code']);
+        }
+
+        $data = DB::table('password_resets')->where('email', $user_email)->first();
+
+        $input_array = array(
+          'email' =>  $user_email, 
+          'verification_code' => $verification_code,
+        );
+
+        if(empty($data)){
+            DB::table('password_resets')->insert( $input_array );
+
+        }else{
+            DB::table('password_resets')->where('email', $user_email)->update($input_array);
+        }
       }
 
-                $data = DB::table('password_resets')->where('email', $user_email)->first();
+      $response = array(
+        'status_code' => 200 ,
+        'status'    =>'true',
+        'message'   => 'verification email sent successfully',
+        'email'     => $user_email,
+        'verification_code'=> !empty($verification_code) ?? $verification_code,
+      );
 
-                if(empty($data)){
-                    DB::table('password_resets')->insert(['email' => $user_email, 'verification_code' => $verification_code]);
+    } catch (\Throwable $th) {
 
-                }else{
-                    DB::table('password_resets')->where('email', $user_email)->update(['verification_code' => $verification_code]);
-                }
-                $response = array(
-                    'status'=>'true',
-                    'email' => $user_email,
-                    'verification_code'=>$verification_code
-                );
-            }else{
-                $response = array(
-                    'status'=>'false',
-                    'message'=>'Invalid email'
-                );
+      $response = array(
+        'status_code' => 400 ,
+        'status'      =>'false',
+        'message'=> $th->getMessage(),
+      );
     }
-    return response()->json($response, 200);
+
+    return response()->json($response, $response['status_code']);
 
   }
-
 
      public function ViewStripe(Request $request){
 
@@ -1251,7 +1272,7 @@ class ApiAuthController extends Controller
         'message'=>'Invalid Verification code.'
       );
     }
-    return response()->json($response, 200);
+      return response()->json($response, 200);
   }
 
 
