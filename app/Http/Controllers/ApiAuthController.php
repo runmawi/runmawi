@@ -354,8 +354,8 @@ class ApiAuthController extends Controller
                 $response = array('status'=>'false','message' => 'Email id Already Exists');
                 return response()->json($response, 200);
               }else{
-                $response = array('status'=>'false','message' => 'Username Already Exists');
-                return response()->json($response, 200);
+                // $response = array('status'=>'false','message' => 'Username Already Exists');
+                // return response()->json($response, 200);
               }
         }
 
