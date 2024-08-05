@@ -2,16 +2,16 @@
   <h4 class="main-title">Free Content Videos</h4>                      
 </div>
 
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="free-content home-sec list-inline row p-0 mb-0">
     <?php  if(isset($free_Contents)) :
     					 foreach($free_Contents as $key => $free_Content) { ?>
-        <li class="slide-item">
+        <div class="items">
           <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $free_Content->series_title; ?>">
                 
               </div></div>
               <div class="block-description">
@@ -35,8 +35,22 @@
 
             </div>
           </a>
-        </li>
+        </div>
       <?php  } 
     endif; ?>
-  </ul>
+  </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.free-content');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

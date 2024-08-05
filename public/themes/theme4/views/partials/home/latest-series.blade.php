@@ -26,88 +26,69 @@
                         </h4>                   
                      </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-4 row align-items-center"  >
-                            @foreach ($data as $series_key => $latest_series)
-                                <li class="slick-slide" data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}" class="img-fluid lazy w-100" alt="latest_series">
+                     <div id="tv-networks" class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list latest-series-video" data-flickity>
+                                @foreach ($data as $key => $latest_series)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series">
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $latest_series )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image">
-                                        <button class="drp-close">×</button>
-
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-
-                                                        <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($latest_series)->title }}</h2>
-
-                                                            @if (optional($latest_series)->description)
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($latest_series)->description) !!}</div>
-                                                            @endif
-
-                                                            <div class="d-flex align-items-center text-white text-detail">
-                                                                {{ App\SeriesSeason::where('series_id',$latest_series->id)->count() . " Seasons" }}  
-                                                                {{ App\Episode::where('series_id',$latest_series->id)->count() . " Episodes" }}                 
-                                                            </div>
-
-
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('play_series/'.$latest_series->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="trending-contens sub_dropdown_image mt-3">
-                                                            <ul id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'latest-series-depends-episode-slider-'.$key .' pl-4 m-0'}}">
-                                                                @foreach ($latest_series->Series_depends_episodes as $episode_key => $episode_details )
-                                                                    <li class="slick-slide">
-                                                                        <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
-                                                                            <div class=" position-relative">
-                                                                                <img src="{{ $episode_details->image_url }}" class="img-fluid lazy" alt="series">
-                                                                                <div class="controls">
-                                                                                    <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
-                                                                                        <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                                                    </a>
-
-                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-                                                                                    
-                                                                                    <p class="trending-dec" >
-                                                                                        {{ " S".$episode_details->season_id ." E".$episode_details->episode_order  }} 
-                                                                                        {!! (strip_tags(substr(optional($episode_details)->episode_description, 0, 50))) !!}
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : $default_horizontal_image_url }}" alt="latest_series">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                        <div id="videoInfo" class="series-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:block;">
+                                @foreach ($data as $key => $latest_series )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($latest_series)->title }}</h2>
+                                        @if (optional($latest_series)->description)
+                                            <div class="trending-dec">{!! html_entity_decode( optional($latest_series)->description) !!}</div>
+                                        @endif
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('play_series/'.$latest_series->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
+                                                {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : $default_horizontal_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+
+                                    <div id="{{ 'trending-slider-nav' }}" class="{{ 'series-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
+                                        @foreach ($latest_series->Series_depends_episodes as $episode_key => $episode_details )
+                                            <div class="depends-row">
+                                                <div class="depend-items">
+                                                <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
+                                                    <div class=" position-relative">
+                                                        <img src="{{ $episode_details->image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                            
+                                                            <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
+                                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                            </a>
+
+                                                            <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                            
+                                                            <p class="trending-dec" >
+                                                                {{ " S".$episode_details->season_id ." E".$episode_details->episode_order  }} 
+                                                                {!! (strip_tags(substr(optional($episode_details)->episode_description, 0, 150))) !!}
+                                                            </p>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,7 +100,7 @@
         @foreach ($data as $key => $latest_series )
 
             @foreach ($latest_series->Series_depends_episodes as $episode_key => $episode_details )
-                <div class="modal fade info_model" id="{{ 'Latest-series-Modal-'.$key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade info_model" id="{{ 'Home-latest-series-Modal-'.$key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                         <div class="container">
                             <div class="modal-content" style="border:none; background:transparent;">
@@ -163,105 +144,68 @@
 
 
 <script>
+
+    var elem = document.querySelector('.latest-series-video');
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: true,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyload:true,
+        });
+        document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
     
-    $( window ).on("load", function() {
-        $('.series-slider').hide();
-    });
-
-    $(document).ready(function() {
-
-        $('.series-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.series-slider-nav',
-        });
-
-        $('.series-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.series-slider',
-            dots: false,
-            arrows: true,
-            centerMode:false,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: true,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('body').on('click', '.slick-arrow', function() {
-            $('.livestream-videos-slider').hide();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.series-slider').hide();
-        });
-    });
-
+            this.classList.add('current');
     
-    function series_slider_nav(ele){
-
-        $( ".drp-close" ).trigger( "click" );
-        $('.series-slider').show();
-
-        var category_key_id = $(ele).attr('data-series-id');
-
-        $('.latest-series-depends-episode-slider-' + category_key_id).slick({
-            dots: false,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 6,
-            slidesToScroll: 4,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
+            var index = this.getAttribute('data-index');
+    
+            document.querySelectorAll('.series-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.series-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+    
+            // Hide all sliders
+            document.querySelectorAll('.series-dropdown .series-depends-slider').forEach(function(slider) {
+                slider.style.display = 'none';
+            });
+    
+                    
+            var selectedSlider = document.querySelector('.series-dropdown .series-depends-slider[data-index="' + index + '"]');
+                if (selectedSlider) {
+                    selectedSlider.style.display = 'block';
+                    setTimeout(function() { // Ensure the element is visible before initializing Flickity
+                        var flkty = new Flickity(selectedSlider, {
+                            cellAlign: 'left',
+                            contain: true,
+                            groupCells: true,
+                            adaptiveHeight: true,
+                            pageDots: false,
+                        });
+                    }, 0);
+                }
+    
+            var selectedCaption = document.querySelector('.series-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.series-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+    
+            document.getElementsByClassName('series-dropdown')[0].style.display = 'flex';
         });
-    }
-
-</script>
+    });
+    
+    $('body').on('click', '.drp-close', function() {
+        $('.series-dropdown').hide();
+    });
+    </script>
+    

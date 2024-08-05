@@ -23,7 +23,8 @@ Route::group(
     ],
     function () {
 
-        Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
+        Route::addRoute(['GET', 'POST'], 'All_Homepage', 'ApiAuthController@All_Homepage');
+
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
         Route::post('Network_depends_series', 'ApiAuthController@Network_depends_series');
 

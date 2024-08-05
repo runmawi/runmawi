@@ -337,6 +337,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
 .dz-error-mark g{fill:#FF0000;}
 .dz-success-mark path{fill:#008000;}
 .ck.ck-powered-by {display: none;}
+.ck p{text-transform: none;}
 </style>
 
 </head>

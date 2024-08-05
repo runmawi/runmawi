@@ -1163,47 +1163,68 @@ class ApiAuthController extends Controller
 
   public function resetpassword(Request $request)
   {
-    $user_email = $request->email;
-    $user = User::where('email', $user_email)->count();
+    try {
 
+      $user_email = $request->email;
+      $user = User::where('email', $user_email)->count();
 
-    if($user > 0){
+      if($user > 0){
 
-      $verification_code = mt_rand(1000, 9999);
-      $email = $user_email;
+        $verification_code = mt_rand(1000, 9999);
 
-      try {
-        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
-          $message->to($email)->subject('Verify your email address');
-        });
+        try {
 
-      } catch (\Throwable $th) {
-        //throw $th;
+          Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
+            $message->to($user_email)->subject('Verify your email address');
+          });
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status_code' => 400 ,
+            'status'    =>'false',
+            'message'   => $th->getMessage(),
+            'email'     => $user_email,
+          );
+
+          return response()->json($response, $response['status_code']);
+        }
+
+        $data = DB::table('password_resets')->where('email', $user_email)->first();
+
+        $input_array = array(
+          'email' =>  $user_email, 
+          'verification_code' => $verification_code,
+        );
+
+        if(empty($data)){
+            DB::table('password_resets')->insert( $input_array );
+
+        }else{
+            DB::table('password_resets')->where('email', $user_email)->update($input_array);
+        }
       }
 
-                $data = DB::table('password_resets')->where('email', $user_email)->first();
+      $response = array(
+        'status_code' => 200 ,
+        'status'    =>'true',
+        'message'   => 'verification email sent successfully',
+        'email'     => $user_email,
+        'verification_code'=> !empty($verification_code) ?? $verification_code,
+      );
 
-                if(empty($data)){
-                    DB::table('password_resets')->insert(['email' => $user_email, 'verification_code' => $verification_code]);
+    } catch (\Throwable $th) {
 
-                }else{
-                    DB::table('password_resets')->where('email', $user_email)->update(['verification_code' => $verification_code]);
-                }
-                $response = array(
-                    'status'=>'true',
-                    'email' => $user_email,
-                    'verification_code'=>$verification_code
-                );
-            }else{
-                $response = array(
-                    'status'=>'false',
-                    'message'=>'Invalid email'
-                );
+      $response = array(
+        'status_code' => 400 ,
+        'status'      =>'false',
+        'message'=> $th->getMessage(),
+      );
     }
-    return response()->json($response, 200);
+
+    return response()->json($response, $response['status_code']);
 
   }
-
 
      public function ViewStripe(Request $request){
 
@@ -1251,7 +1272,7 @@ class ApiAuthController extends Controller
         'message'=>'Invalid Verification code.'
       );
     }
-    return response()->json($response, 200);
+      return response()->json($response, 200);
   }
 
 
@@ -8461,32 +8482,54 @@ public function LocationCheck(Request $request){
 
   public function Episode_addfavorite(Request $request){
 
-    $user_id = $request->user_id;
-    $episode_id = $request->episode_id;
+    try {
+      
+      $user_id = $request->user_id;
+      $episode_id = $request->episode_id;
 
-    if (!empty($episode_id)) {
-        $count = Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->count();
+      if(is_null($episode_id) || is_null($user_id)){
 
-        if ($count > 0) {
-            Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
+        $response = [
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => 'Validation error - Required episode_id,user_id'
+        ];
 
-            $response = [
-                'status' => 'false',
-                'message' => 'Removed From Your Favorite'
-            ];
+        return response()->json($response, $response['status_code']);
 
-        } else {
-            $data = ['user_id' => $user_id, 'episode_id' => $episode_id];
-            Favorite::insert($data);
+      }
 
-            $response = [
-                'status' => 'true',
-                'message' => 'Added to Your Favorite'
-            ];
-        }
+      $count = Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->count();
+
+      if ($count > 0) {
+          Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
+
+          $response = [
+              'status' => 'true',
+              'status_code' => 200,
+              'message' => 'Removed From Your Favorite'
+          ];
+
+      } else {
+          $data = ['user_id' => $user_id, 'episode_id' => $episode_id];
+          Favorite::insert($data);
+
+          $response = [
+              'status' => 'true',
+              'status_code' => 200,
+              'message' => 'Added to Your Favorite'
+          ];
+      }
+    } catch (\Throwable $th) {
+
+      $response = [
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => 'Added to Your Favorite'
+      ];
     }
 
-    return response()->json($response, 200);
+    return response()->json($response, $response['status_code']);
   }
 
   public function Episode_addwishlist(Request $request)
@@ -13897,11 +13940,25 @@ public function QRCodeMobileLogout(Request $request)
 
   public function All_Homepage(Request $request)
   {
+    try {
+   
       $user_id = $request->user_id;
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id );
 
-      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->get()->toArray();
+      if (1 == 0) {
+
+        $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->paginate(3);
+      
+        $OrderHomeSettings_list = OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting)->orderBy('order_id', 'asc')->paginate(3)->toArray();
+       
+        $OrderHomeSettings_list['data'] = array_map(function($item) {
+                                                return $item['video_name'];
+                                            }, $OrderHomeSettings_list['data']);
+      }else{
+        $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->get()->toArray();
+        $OrderHomeSettings_list =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->pluck('video_name');
+      }
 
       $result = array();
 
@@ -14229,11 +14286,22 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status' => 'true',
-        'lists'   => OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->pluck('video_name'),
+        'status_code' => 200,
+        'message' => Str::title("retrieved the homepage sections data successfully!!"),
+        'lists'   => $OrderHomeSettings_list,
         'Home_page' => $result,
       );
+         
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+        );
+      }
   
-      return response()->json($response, 200);
+      return response()->json($response, $response['status_code']);
   }
 
   private  function All_Homepage_homesetting( $user_id ){
@@ -15228,6 +15296,8 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['Player_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['title'] = $item->name;
 
           // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
           //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
@@ -15625,6 +15695,8 @@ public function QRCodeMobileLogout(Request $request)
         $data = SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['Player_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+          $item['title'] = $item->name;
           $item['source'] = 'Series_Networks';
 
           $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',

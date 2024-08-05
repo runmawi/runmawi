@@ -339,27 +339,44 @@
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12">
+                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" > 
 
-                            <!-- Video thumbnail image -->
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
+                                <!-- Video thumbnail image -->
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}">
                                     <img src="{{ url('public/uploads/images/' . $videos->video_title_image) }}" class="video_title_images" alt="{{ $videos->title }}">
                                 </a>
-                            <!-- Video Title -->
                             @else
-                                <h1 class="text-white" data-animation-in="fadeInLeft" data-delay-in="0.6">
-                                    {{ strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title }}
+                                <!-- Video Title -->
+                                @php
+                                    $title = str_replace('<br>',' ',$videos->title);
+                                    $decode_title = strip_tags(html_entity_decode($title));
+                                @endphp
+                                <h1 class="text-white">
+                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
                                 </h1>
                             @endif
 
-                            <p class="desc" data-animation-in="fadeInUp" data-delay-in="1.2" style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color: #fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                                {{ __($videos->description) }}
-                            </p>
+                            <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
+                                @php
+                                    $description = __(strip_tags(html_entity_decode($videos->description)));
+                                @endphp
 
-                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                <div class="video-banner">
+                                    <p class="desc" id="description-{{ $key }}" class="description-text">
+                                        {{ $description }}
+                                    </p>
+
+                                    @if(strlen($description) > 300)
+                                        <button class="des-more-less-btns text-primary p-0" id="read-more-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-less-btn-{{ $key }}" onclick="toggleReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}" class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('WATCH') }}
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
 
                                 @php 

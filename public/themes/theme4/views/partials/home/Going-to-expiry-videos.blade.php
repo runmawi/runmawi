@@ -47,64 +47,52 @@
                         {{-- <h4 class="main-title"><a href="{{ $order_settings_list[33]->url ? URL::to($order_settings_list[33]->url) : null }} ">{{ 'View all' }}</a></h4> --}}
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="Going_to_expiry_videos-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $Going_to_expiry_videos)
-                                <li class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : $default_vertical_image_url }}" class="img-fluid position-relative w-100" alt="expiry_videos">
-                                            <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span>
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list expiry-video">
+                                @foreach ($data as $key => $Going_to_expiry_videos)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            <img src="{{ $Going_to_expiry_videos->image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$Going_to_expiry_videos->title}}">
+                                            @if(!empty($Going_to_expiry_videos->expiry_date))
+                                                <div><span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;" class="p-tag">{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</span></div>
+                                            @endif
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider Going_to_expiry_videos-slider" class="list-inline p-0 m-0 align-items-center Going_to_expiry_videos-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $Going_to_expiry_videos )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                                        <button class="drp-close">×</button>
+                        <div id="videoInfo" class="expiry-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $Going_to_expiry_videos )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @if ( $videos_expiry_date_status == 1 && optional($Going_to_expiry_videos)->expiry_date)
+                                            <ul class="vod-info">
+                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                            </ul>
+                                        @endif
 
-                                                    <div class="caption pl-4">
+                                        @if (optional($Going_to_expiry_videos)->description)
+                                            <div class="trending-dec">{!! html_entity_decode( optional($Going_to_expiry_videos)->description) !!}</div>
+                                        @endif
 
-                                                        <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
-                                                        
-                                                        @if ( $videos_expiry_date_status == 1 && optional($Going_to_expiry_videos)->expiry_date)
-                                                            <ul class="vod-info">
-                                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
-                                                            </ul>
-                                                        @endif
-
-                                                        @if (optional($Going_to_expiry_videos)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode( optional($Going_to_expiry_videos)->description) !!}</div>
-                                                        @endif
-
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Going_to_expiry_videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            <img  src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" alt="expiry_videos">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('category/videos/'.$Going_to_expiry_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Going_to_expiry_videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $Going_to_expiry_videos->player_image ?  URL::to('public/uploads/images/'.$Going_to_expiry_videos->player_image) : $default_horizontal_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -154,64 +142,48 @@
 @endif
 
 <script>
-    
-    $( window ).on("load", function() {
-        $('.Going_to_expiry_videos-slider').hide();
+
+    var elem = document.querySelector('.expiry-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+    document.querySelectorAll('.expiry-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.expiry-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.expiry-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.expiry-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.expiry-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.expiry-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('expiry-dropdown')[0].style.display = 'flex';
+        });
     });
 
-    $(document).ready(function() {
 
-        $('.Going_to_expiry_videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.Going_to_expiry_videos-slider-nav',
-        });
-
-        $('.Going_to_expiry_videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.Going_to_expiry_videos-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.Going_to_expiry_videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.Going_to_expiry_videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.Going_to_expiry_videos-slider').hide();
-        });
+    $('body').on('click', '.drp-close', function() {
+        $('.expiry-dropdown').hide();
     });
 </script>

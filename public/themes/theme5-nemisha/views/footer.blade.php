@@ -170,7 +170,7 @@ entertainment.</p>
   </div>
 
     <div class="container-fluid">
-        <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
+        <p class="mb-0 text-center font-size-14 text-body" style="color: #2DB8B8 !important;">
           <?php
                     // CMS Pages
             $cmspages = App\Page::where('active', 1)->get();

@@ -7,19 +7,19 @@ if(count($latest_video) > 0) : ?>
                     <?php if ($order_settings_list[12]->header_name) { echo $order_settings_list[12]->header_name ;} else { echo "" ; } ?>
                     </a></h5>                      
                  </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                  <div class="favorites-contens"> 
+                     <div class="liveCategory home-sec list-inline row p-0 mb-0">
                          <?php  
                         $parentCategories = App\LiveCategory::orderBy('order','ASC')->get();
                          if(isset($parentCategories)) :
                          foreach($parentCategories as $Categories): ?>
-                       <li class="slide-item">
+                       <div class="items">
                           <a href="<?php echo URL::to('/live/category/').'/'.$Categories->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to('/live/category/').'/'.$Categories->slug ?>">
-                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded" alt="l-img">
                                     </a>  
                                 </div>
                                 <div class="block-description">
@@ -44,13 +44,25 @@ if(count($latest_video) > 0) : ?>
                               </div>
                               
                           </a>
-                       </li>
+                       </div>
                        <?php                     
                         endforeach; 
                                    endif; ?>
-                    </ul>
+                    </div>
                  </div>
                  <?php endif; ?>
 
 
+<script>
+    var elem = document.querySelector('.liveCategory');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
 </script>

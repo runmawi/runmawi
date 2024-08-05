@@ -95,7 +95,7 @@
                             ?>
         <!-- .@$video->categories->name. -->
         <div class="items">
-            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
