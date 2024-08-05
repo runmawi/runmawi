@@ -37,7 +37,7 @@
                                 <div class="block-description" > </div>
                                            
                                    <div class="hover-buttons">
-                                   <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                                   <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>" alt="<?php echo $audio->title; ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
                </a>
                <!-- <div class="d-flex align-items-center justify-content-between">

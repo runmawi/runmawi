@@ -49,7 +49,7 @@ Import CSS
 Font
 -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
-@font-face { font-family: 'Helvetica Neue Regular'; src: url(../fonts/helvetica/HelveticaNeueBold.woff) format('woff'); }
+@font-face { font-family: 'Helvetica Neue Regular'; src: url(../fonts/helvetica/HelveticaNeueBold.woff) format('woff');font-display: swap; }
 
 /*---------------------------------------------------------------------
 General

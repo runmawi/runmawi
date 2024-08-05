@@ -20,7 +20,7 @@
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="Podcasts">
                </a>                         
                <div class="hover-buttons">
-               <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
+               <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" alt="<?php echo $album->albumname; ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
                </a>
                 <div class="d-flex align-items-center justify-content-between">
