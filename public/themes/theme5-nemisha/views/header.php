@@ -217,8 +217,8 @@
     <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <!-- Typography CSS -->
-    <!-- <link rel="preload" href="<?= typography_link();?>" as="style"/>
-    <link rel="stylesheet" href="<?= typography_link();?>" /> -->
+    <link rel="preload" href="<?= typography_link();?>" as="style"/>
+    <link rel="stylesheet" href="<?= typography_link();?>" />
     <!-- Style -->
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
