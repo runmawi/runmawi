@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class UGCVideo extends Model
@@ -21,5 +22,10 @@ class UGCVideo extends Model
 		'video_js_pre_position_ads','video_js_post_position_ads','video_js_mid_position_ads_category',
 		'video_js_mid_advertisement_sequence_time','today_top_video'
 	);
+
+	public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

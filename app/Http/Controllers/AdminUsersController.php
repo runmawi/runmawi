@@ -3157,12 +3157,14 @@ class AdminUsersController extends Controller
             ->paginate(9);
             
 
-
+            $updated_ugcvideos =  $this->handleViewCounts($ugcvideo);
+            $totalViews = $user_details->ugcVideos()->sum('views');
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
                 'ugcvideos' => $ugcvideo,
                 'viewcount' =>  $updated_ugcvideos,
+                'totalViews' => $totalViews,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
                 'user' => $user_details,

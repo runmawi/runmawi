@@ -791,8 +791,7 @@
                         @endforeach
                      </select>
                   </div> --}}
-               </div>
-
+            
                {{-- <div class="row">
                   <div class="col-sm-6 form-group mt-3">
                      <label class="m-0">User Access</label>
@@ -832,38 +831,7 @@
                      </div>
                </div> --}}
 
-               <div class="row">
-                   <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                       <?php if($settings->ppv_status == 1){ ?>
-                            <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
-                            <input type="checkbox" name="global_ppv" id="global_ppv"  {{$video->global_ppv == '1' ? 'checked' : ''}}  />
-                       <?php } else{ ?>
-                            <div class="global_ppv_status">
-                                <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
-                                <input type="checkbox" name="global_ppv" id="global_ppv" {{$video->global_ppv == '1' ? 'checked' : ''}}   />
-                            </div>
-                       <?php } ?>
-                   </div>
-
-
-                   <div id="ppv_options" style="display: none;">
-                     <input type="radio" name="ppv_option" id="ppv_gobal_price" value="1" {{ ($video->ppv_option == 1)? "checked" : "" }}>
-                     <label for="ppv_gobal_price">Set Global Price</label><br>
-                     <input type="radio" name="ppv_option" id="global_ppv_price" value="2" {{ ($video->ppv_option == 2)? "checked" : "checked" }}>
-                     <label for="global_ppv_price">Get Settings Global Price</label>
-                  </div>
-
-                  <div id="price_input_container" class="col-sm-6 form-group mt-3" style="display: none;">
-                     <label for="ppv_price">Enter Global Price:</label>
-                     <input type="text" class="form-control" name="set_gobal_ppv_price" id="set_gobal_ppv_price" placeholder="Enter price" value="{{ $video->ppv_price  }}">
-                  </div>
-
-                   <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                  <label for="">  Search Tags</label>
-                     <input type="text" id="tag-input1" class="tagged form-control1" data-removeBtn="true" name="searchtags" >
-                     <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
-                  </div>
-               </div>
+         
 
             
                   {{-- <div class="row">
@@ -993,140 +961,6 @@
                           </div>
 
                         </div>
-
-                        {{-- Video TV Thumbnail --}}
-
-                        <div class="row">
-                           <div class="col-sm-6 form-group">
-                              <div id="VideoTVImagesContainer" class="gridContainer mt-3"></div>
-                              <label class="mb-1">  Video TV Thumbnail  </label><br>
-                              <input type="file" name="video_tv_image" id="video_tv_image" >
-                              <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920 X 1080 pixels dimension or 16:9 ratio </p></span>
-                              @if(!empty($video->video_tv_image))
-                                 <div class="col-sm-8 p-0">
-                                    <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_tv_image }}" class="video-img w-100 mt-1" />
-                                 </div>
-                              @endif
-                           </div>
-                        </div>
-
-
-                                          {{-- Video Title Thumbnail --}}
-                        <div class="row">
-                           <div class="col-sm-6 form-group">
-                              <label class="mb-1"> Video Title Thumbnail </label><br>
-                              <input type="file" name="video_title_image" id="video_title_image" >
-                              @if(!empty($video->video_title_image))
-                                 <div class="col-sm-8 p-0">
-                                    <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_title_image }}" class="video-img w-100 mt-1" />
-                                 </div>
-                              @endif
-                           </div>
-
-                           <div class="col-sm-6 form-group">
-                              <label class="mb-1">Enable Video Title Thumbnail </label><br>
-                              <div class="mt-1">
-                                 <label class="switch">
-                                    <input name="enable_video_title_image" class="" id="enable_video_title_image" type="checkbox" @if( $video->enable_video_title_image == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                 </label>
-                              </div>
-                           </div>
-                        </div>
-                  
-                      <div class="row">
-
-                        <div class="col-7">
-                           <h2 class="fs-title">Trailer Upload:</h2>
-                        </div>
-
-                        <div class="col-sm-6">
-                           <label class="m-0">Video Trailer Type:</label>
-                           <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
-                              <option   value="null"> Select the Video Trailer Type </option>
-                              <option  @if( $video->trailer_type == 'video_mp4' || $video->trailer_type == 'm3u8' ) {{ 'selected' }} @endif value="video_mp4" >Video Upload</option>
-                              <!-- <option {{ $video->trailer_type == 'video_mp4' ? 'selected' : '' }}  value="video_mp4"> Video Upload </option> -->
-                              <option @if( $video->trailer_type == 'm3u8_url' ) {{ 'selected' }} @endif   value="m3u8_url">  m3u8 Url </option>
-                              <option @if( $video->trailer_type == 'mp4_url' ) {{ 'selected' }} @endif    value="mp4_url">   mp4 Url</option>
-                              <option @if( $video->trailer_type == 'embed_url' ) {{ 'selected' }} @endif  value="embed_url">  Embed Code</option>
-                           </select>
-                        </div>
-                     </div>
-
-                        <div class="row trailer_m3u8_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0"> Trailer m3u8 Url :</label>
-                              <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'm3u8_url' ){{ $video->trailer }}@endif">
-                              @if($video->trailer_type !=null && $video->trailer_type == "m3u8_url" )
-                                 <video id="videoPlayer1" width="560" height="315" controls>
-                                    <source src="{{ $video->trailer }}" type="application/x-mpegURL">
-                                 </video>
-                              @endif
-
-                           </div>
-                        </div>
-
-                    
-                        <div class="row trailer_mp4_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0"> Trailer mp4 Url :</label>
-                              <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'mp4_url' ){{ $video->trailer }}@endif">
-
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'mp4_url'  )
-                                 <video width="560" height="315" controls>
-                                    <source src="{{ $video->trailer }}" type="video/mp4" />
-                                 </video>
-                              @endif
-                           </div>
-                        </div>
-
-                        <div class="row trailer_embed_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0">Trailer Embed Code :</label>
-                              <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'embed_url' ){{ $video->trailer }}@endif">
-
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'embed_url' )
-                                 <iframe width="560" height="315"  src="{{ $video->trailer }}" frameborder="0" allowfullscreen></iframe>
-                              @endif
-
-                           </div>
-                        </div>
-
-
-                     <div class="row trailer_video_upload">
-                           <div class="col-sm-8 form-group">
-                              <label class="m-0">Upload Trailer :</label><br />
-                              <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
-                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
-                                  <p style="font-size: 14px !important;">Drop and drag the video file</p>
-                              </div>
-                              <!-- <span id="remove" class="danger">Remove</span> -->
-                          </div>
-                          <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                <span id="remove" class="danger">Remove</span> -->
-                           <div class="col-sm-8 mt-5 form-group">
-                              <!--<p>Upload Trailer video</p>-->
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
-                              <video width="200" height="200" controls>
-                                  <source src="{{ $video->trailer }}" type="video/mp4" />
-                              </video>
-                              @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
-                              <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
-                            <source type="application/x-mpegURL" src="{{ $video->trailer }}">
-                              </video>
-                              @endif
-                          </div>
-                     </div>
-
-                     <div class="row">
-                        <div class="col-sm-8  form-group">
-                           <label class="m-0">Trailer Description:</label>
-                           <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
-                              placeholder="Description">@if(!empty($video->trailer_description)){{ ($video->trailer_description) }}@endif
-                           </textarea>
-                        </div>
-                     </div>
-
                   </div>
                   <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />

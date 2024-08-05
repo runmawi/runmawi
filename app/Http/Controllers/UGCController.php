@@ -338,13 +338,6 @@ class UGCController extends Controller
     }
 
 
-    public function handleViewCount_ugc($vid)
-    {
-        $ugcview = UGCVideo::find($vid);
-        $ugcview->views = $ugcview->views + 1;
-        $ugcview->save();
-        Session::put('viewed_ugc_videos.' . $vid, time());
-    }
 
     public function ugc_watchlater(Request $request)
     {
@@ -537,6 +530,63 @@ class UGCController extends Controller
         return response()->json(['data' => $response]); 
     }
 
+    public function ugc_subscribe()
+    {
+        $user = Auth::user();
+        $user->subscribed = !$user->subscribed;
+        $user->save();
+
+        return response()->json(['subscribed' => $user->subscribed]);
+    }
+
+
+    public function handleViewCount_ugc($vid)
+    {
+        $ugcview = UGCVideo::find($vid);
+    
+        if (!$ugcview) {
+            return null;
+        }
+    
+        $ugcview->views = $ugcview->views + 1;
+        $ugcview->save();
+    
+        Session::put('viewed_ugc_videos.' . $vid, time());
+    
+        return $ugcview;
+    }
+
+
+    private function handleViewCounts($ugcvideos)
+    {
+        $updatedVideos = [];
+    
+        foreach ($ugcvideos as $ugcvideo) {
+            $updatedVideo = $this->handleViewCount_ugc($ugcvideo->id);
+            if ($updatedVideo) {
+                $updatedVideos[] = $updatedVideo;
+            }
+        }
+    
+        return $updatedVideos;
+    }
+
+
+    public function showugcprofile($userId)
+    {
+        $user = User::findOrFail($userId);
+       
+        $ugcvideos = UGCVideo::where('user_id', $user->id)
+        ->where('active', 1)
+        ->orderBy('created_at', 'DESC')
+        ->paginate(9);
+        
+        $viewcount =  $this->handleViewCounts($ugcvideos);
+
+        $totalViews = $user->ugcVideos()->sum('views');
+
+        return Theme::view("UserGeneratedContent.showugcprofile", compact('user', 'ugcvideos', 'viewcount','totalViews'));
+    }
     
     public function PlayUGCVideos( Request $request, $slug )
     {
@@ -788,15 +838,23 @@ class UGCController extends Controller
             
             $user_id = Auth::user()->id;
             $user_details = User::find($user_id);
-            $ugcvideo = UGCVideo::where('user_id', $user_details->id)
-                                ->where('active', 1)
-                                ->orderBy('created_at', 'DESC')->paginate(9);
-    
+            $ugcvideo = UGCVideo::where('active', 1)->orderBy('created_at', 'DESC')->paginate(9);
+            
+            $user = $videodetail->user;
+
+            $isSubscribed = $user->subscribed;
+        
+            // if ($isSubscribed) {
+            //     $subscriptionsCount = $user->ugcVideos()->count();
+            // } else {
+            //     $subscriptionsCount = 0;
+            // }
             
             $data = array(
                 'user' => $user_details,
                 'ugcvideos' => $ugcvideo,
                 'videodetail' => $videodetail ,
+                // 'subscriptionsCount' => $subscriptionsCount,
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_ugc_videos',
@@ -824,7 +882,39 @@ class UGCController extends Controller
         }
     }
 
-    
+    public function subscribe(Request $request)
+    {
+        // Retrieve the user and subscriber objects
+        $user = User::find($request->user_id);
+        $subscriber = User::find($request->subscriber_id);
+
+        // Check if the user and subscriber objects are found
+        if (!$user || !$subscriber) {
+            return response()->json(['success' => false, 'message' => 'User or Subscriber not found'], 404);
+        }
+
+        // Proceed with subscription logic
+        if (!$user->subscribers->contains($subscriber)) {
+            $user->subscribers()->attach($subscriber);
+        }
+
+        return response()->json(['success' => true, 'count' => $user->subscribers()->count()]);
+    }
+
+    public function unsubscribe(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $subscriber = User::find($request->subscriber_id);
+
+        // Check if the subscriber relationship exists
+        if ($user->subscribers->contains($subscriber)) {
+            $user->subscribers()->detach($subscriber);
+        }
+
+        // Return the updated subscriber count
+        return response()->json(['success' => true, 'count' => $user->subscribers()->count()]);
+    }
+
 
     public function filedelete($id)
     {
@@ -2037,7 +2127,7 @@ class UGCController extends Controller
         {
             try {
             
-                $videos = Video::find($id);
+                $videos = UGCVideo::find($id);
     
                 $image_name_WithoutExtension     = substr($videos->image, 0, strrpos($videos->image, '.'));
                 $ply_image_name_WithoutExtension = substr($videos->player_image, 0, strrpos($videos->player_image, '.'));
@@ -2188,21 +2278,21 @@ class UGCController extends Controller
                         // Video Destroy
                 \LogActivity::addVideodeleteLog("Deleted Video.", $id);
     
-                Videoartist::where('video_id', $id)->delete();
-                RelatedVideo::where('video_id', $id)->delete();
-                LanguageVideo::where('video_id', $id)->delete();
-                Blockvideo::where('video_id', $id)->delete();
-                ReelsVideo::where("video_id", $id)->delete();
-                PlayerAnalytic::where("videoid", $id)->delete();
-                CategoryVideo::where("video_id", $id)->delete();
-                PlayerSeekTimeAnalytic::where("video_id", $id)->delete();
-                VideoPlaylist::where("video_id", $id)->delete();
-                Video::destroy($id);
+                // Videoartist::where('video_id', $id)->delete();
+                // RelatedVideo::where('video_id', $id)->delete();
+                // LanguageVideo::where('video_id', $id)->delete();
+                // Blockvideo::where('video_id', $id)->delete();
+                // ReelsVideo::where("video_id", $id)->delete();
+                // PlayerAnalytic::where("videoid", $id)->delete();
+                // CategoryVideo::where("video_id", $id)->delete();
+                // PlayerSeekTimeAnalytic::where("video_id", $id)->delete();
+                // VideoPlaylist::where("video_id", $id)->delete();
+                UGCVideo::destroy($id);
     
                 // VideoResolution::where('video_id', '=', $id)->delete();
                 // VideoSubtitle::where('video_id', '=', $id)->delete();
     
-                return Redirect::to("admin/videos")->with([
+                return Redirect::to("myprofile")->with([
                     "message" => "Successfully Deleted Video",
                     "note_type" => "success",
                 ]);
@@ -11198,201 +11288,5 @@ class UGCController extends Controller
     
         }
     
-        public function combinevideo(Request $request){
-            try {
-                // Array of video URLs
-                    $m3u8Urls = [
-                        'https://localhost/flicknexs/storage/app/public/Gs6LJZ0PTl3ynjn3.m3u8',
-                        'https://localhost/flicknexs/storage/app/public/B5Lh9CdVSPoe5QTN.m3u8',
-                    ];
-                    // 'https://localhost/flicknexs/storage/app/public/GOM8pKrjNNCLGACc.mp4',
-                    // 'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
-    
-        // Create a master playlist file (M3U8)
-        $masterPlaylistPath = 'master_playlist.m3u8';
-    
-        // Generate the content for the master playlist
-        $masterPlaylistContent = "#EXTM3U\n";
-    
-        // Add each M3U8 URL to the master playlist
-        foreach ($m3u8Urls as $index => $m3u8Url) {
-            $masterPlaylistContent .= "#EXT-X-STREAM-INF:BANDWIDTH=1000000,RESOLUTION=640x360,CODECS=\"mp4a.40.2,avc1.64001f\"\n";
-            $masterPlaylistContent .= $m3u8Url . "\n";
-        }
-    
-        // Save the master playlist file
-        Storage::disk('local')->put($masterPlaylistPath, $masterPlaylistContent);
-    
-        // Optionally, serve the master playlist using Laravel
-        return response()->file(storage_path("app/{$masterPlaylistPath}"));
-    
-                        // Save the master playlist file
-                        // file_put_contents($masterPlaylistPath, $masterPlaylistContent);
-    
-                        // // Optionally, serve the master playlist using Laravel
-                        // return response()->file($masterPlaylistPath);
-                    
-            } catch (\Throwable $th) {
-                throw $th;
-            }
-        }
-    
-    
-        private  function UploadVideoBunnyCDNStream(  $storage_settings,$libraryid,$mp4_url){
-        // Bunny Cdn get Videos 
-    
-        $storage_settings = StorageSetting::first();
-    
-        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-        && !empty($storage_settings->bunny_cdn_access_key) ){
-            
-            $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
-            
-            $ch = curl_init();
-            
-            $options = array(
-                CURLOPT_URL => $libraryurl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                    'Content-Type: application/json',
-                ),
-            );
-            
-            curl_setopt_array($ch, $options);
-            
-            $response = curl_exec($ch);
-            $librarys = json_decode($response, true);
-            curl_close($ch);
-    
-        }else{
-            $librarys = [];
-    
-        }
-        if(count($librarys) > 0){
-            foreach($librarys as $key => $value){
-                if( $value['Id'] == $libraryid){
-                    $library_id = $value['Id'];
-                    $library_ApiKey = $value['ApiKey']; 
-                    $library_PullZoneId = $value['PullZoneId']; 
-                    break;
-                }else{
-                    $library_id = null;
-                    $library_ApiKey = null; 
-                    $library_PullZoneId = null; 
-                }
-            }
-        }else{
-            $library_id = null;
-            $library_ApiKey = null; 
-            $library_PullZoneId = null; 
-        }
-        
-        if($library_id != null && $library_ApiKey != null){
-    
-            $client = new \GuzzleHttp\Client();
-            
-            $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
-                'headers' => [
-                    'AccessKey' => $storage_settings->bunny_cdn_access_key,
-                    'accept' => 'application/json',
-                ],
-            ]);
-    
-            $PullZoneData = json_decode($PullZone->getBody()->getContents());
-    
-                if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
-                    $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
-                }else{
-                    $PullZoneURl = null;
-                }    
-            }
-            
-            $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename =  str_replace(' ', '_',$file_name);
-    
-            // Step 1: Create the video entry in the library
-            try {
-                $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
-                    'json' => ['title' => $filename], // Use 'json' directly to set headers and body
-                    'headers' => [
-                        'AccessKey' => $library_ApiKey,
-                        'Accept' => 'application/json',
-                    ]
-                ]);
-            
-                $responseData = json_decode($response->getBody(), true);
-                $guid = $responseData['guid'];
-            } catch (RequestException $e) {
-                echo "Error creating video entry: " . $e->getMessage();
-                exit;
-            }
-            
-            // Step 2: Upload the video file
-    
-            try {
-    
-                $context = stream_context_create([
-                    'ssl' => [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                    ],
-                ]);
-                // Fetch video file content using file_get_contents with SSL context
-                $videoData = file_get_contents($mp4_url, false, $context);
-                
-                $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
-                    'headers' => [
-                        'AccessKey' => $library_ApiKey,
-                        'Content-Type' => 'video/mp4' 
-                    ],
-                    'body' => $videoData 
-                ]);
-    
-                $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $videoUrl;
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $guid;
-                // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
-    
-                $responseuploaded = json_decode($response->getBody(), true);
-                $statusCode = $responseuploaded['statusCode'];
-    
-            } catch (RequestException $e) {
-                echo "Error uploading video: " . $e->getMessage();
-                exit;
-            }
-            $value = [];
-            if($statusCode == 200){
-                
-                $video = new Video();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->title = $file_name;
-                $video->m3u8_url = $videoUrl;
-                $video->type = "m3u8_url";
-                $video->draft = 1;
-                $video->active = 0;
-                $video->image = default_vertical_image();
-                $video->video_tv_image = default_horizontal_image();
-                $video->player_image = default_horizontal_image();
-                $video->user_id = Auth::user()->id;
-                $video->save();
-    
-                $video_id = $video->id;
-    
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $file_name;
-    
-                \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
-                return $value ;
-            }else{
-                $value["success"] = 2;
-                \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
-                return $value ;
-            }
-        }   
+      
 }

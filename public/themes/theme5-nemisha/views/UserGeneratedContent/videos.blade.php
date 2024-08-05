@@ -7,9 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
-    <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
-    <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    {{-- <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" > --}}
+    {{-- <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" /> --}}
 
 
     {{-- video-js Script --}}
@@ -17,14 +17,14 @@
     <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script> --}}
     <script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
-    <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script> --}}
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
-    <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+    {{-- <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script> --}}
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    {{-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> --}}
 
 <style>
    .ugc-videos img{
@@ -115,7 +115,7 @@
 
         .my-video.vjs-fluid {
         padding-top: 0 !important;
-        /* height: 100vh; */
+        height: 100vh;
     }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
@@ -129,7 +129,7 @@
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8  ">
         <div class="mx-3 my-2"> 
         <div>
-            <div class="container-fluid p-0" style="position:relative">
+            <div class="container-fluid p-0" style="position:relative; padding-top:500px;">
 
                 @if ( $videodetail->users_video_visibility_status)
         
@@ -226,7 +226,7 @@
             </div>
            
             @php 
-            include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_script_file.blade.php');
+            // include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_script_file.blade.php');
             // include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_ads.blade.php');
             // include public_path('themes/theme5-nemisha/views/footer.blade.php'); 
             @endphp
@@ -299,20 +299,38 @@
 
     <div class="row justify-content-start mx-3">
         <div >
+            <a href="{{ route('profile.show', $videodetail->user->id) }}" class="m-1">
         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+        src="<?= $videodetail->user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $videodetail->user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="comment" style="height: 80px; width: 80px;">
+            </a>
         </div>
        <div class="col" style="padding-top: 40px;" >
         <div>
-        <h4>{{$user->username}}</h4>
+        <h4>{{$videodetail->user->username}}</h4>
         </div>
-        {{-- <div>
-           <h5>Entertainmnt channel </h5>
-        </div> --}}
+        <div class="py-2" >
+            @if($videodetail->user->subscribers->count() == 0 )
+               <h6>No Subscribers</h6>
+            @elseif($videodetail->user->subscribers->count() == 1 )
+               <h6>1 Member Subscribed</h6>
+            @else
+            <h6>
+                <span class="subscriber-count"> {{ $videodetail->user->subscribers->count() }} </span> Members Subscribed
+            </h6>
+            @endif
+        </div>
        </div>
     </div>
     <div class="mx-3" >
-        <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-subscriber" >Subscribe</button>
+        <button  id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber" onclick="toggleSubscription(this)" style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; " >
+           Subscribe
+        </button>
+      
+
+        {{-- <button id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}"  class="btn-inactive" onclick="toggleSubscription(this)">
+            Subscribe
+        </button> --}}
+        {{-- <p>Subscribers: <span class="subscriber-count">{{ $videodetail->user->subscribers->count() }}</span></p> --}}
     </div>
   
 
@@ -393,7 +411,7 @@
                          </div>
                          <div class="text-white pt-3">
                              <h6>{{$eachugcvideos->title}}</h6>
-                             <p style="margin:5px 0px;">{{$user->name}}</p>
+                             <p style="margin:5px 0px;">{{$eachugcvideos->user->username}}</p>
                              <p>        
                                 {{ $eachugcvideos->created_at->diffForHumans() }} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} Views | 90k Likes
                             </p>
@@ -409,6 +427,124 @@
 @php
 include public_path('themes/theme5-nemisha/views/footer.blade.php');
 @endphp
+
+{{-- <script>
+    let video_url = "<?php echo $videodetail->videos_url; ?>";
+    // let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
+    // let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
+
+    const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+    const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+    var remainingDuration = false;
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        var player = videojs('my-video', { // Video Js Player 
+            aspectRatio: '16:9',
+            fill: true,
+            playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+            fluid: true,
+            controlBar: {
+                volumePanel: { inline: false },
+                children: {
+                    'playToggle': {},
+                    // 'currentTimeDisplay': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'fullscreenToggle': {},
+                    // 'audioTrackButton': {},
+                },
+                pictureInPictureToggle: true,
+            },
+        }); 
+
+        player.on('loadedmetadata', function(){
+            var isMobile = window.innerWidth <= 768;
+            // var controlBar = player.controlBar;
+            // console.log("controlbar",controlBar);
+            if(!isMobile){
+                controlBar.addChild('subtitlesButton');
+                controlBar.addChild('playbackRateMenuButton');
+            }
+            else{
+                controlBar.addChild('settingsMenuButton', {
+                    entries: [
+                        'subtitlesButton',
+                        'playbackRateMenuButton',
+                    ]
+                });
+            }
+        });
+
+        // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ 
+            displayCurrentQuality: true,
+        });
+
+        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const backButton = document.querySelector('.staticback-btn');
+        var hovered = false;
+        console.log("remainingDuration",remainingDuration);
+
+        skipForwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        skipBackwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
+
+        player.on('userinactive', () => {
+
+            skipForwardButton.addEventListener('mouseenter',handleHover);
+            skipBackwardButton.addEventListener('mouseenter',handleHover);
+            
+            skipForwardButton.addEventListener('mouseleave',handleHover);
+            skipBackwardButton.addEventListener('mouseleave',handleHover);
+
+            function handleHover(event) {
+                const element = event.target;
+                if (event.type === 'mouseenter') {
+                    // console.log("hovered");
+                    hovered = true;
+                    skipButton = true;
+                } else if (event.type === 'mouseleave') {
+                    // console.log("not hovered");
+                    hovered = false;
+                    skipButton = false;
+                }
+            }
+
+            // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                if(hovered == false && remainingDuration == false){
+                    skipForwardButton.style.display = 'none';
+                    skipBackwardButton.style.display = 'none';
+                    playPauseButton.style.display = 'none';
+                }
+                backButton.style.display = 'none';
+            }
+        });
+
+        player.on('useractive', () => {
+        // Show the Play pause, skip forward and backward buttons when the user becomes active
+            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.display = 'block';
+                    skipBackwardButton.style.display = 'block';
+                    playPauseButton.style.display = 'block';
+                    backButton.style.display = 'block';
+                }
+            }
+        });
+
+    });
+</script> --}}  
+
 
 <script>
     $('#like').click(function(){
@@ -580,8 +716,88 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
     // console.log(media_path);
     // console.log(path);
     }
-    
+
 </script>
+
+<script>
+      // Define CSRF token directly
+      const csrfToken = '{{ csrf_token() }}';
+
+    // AJAX setup
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }
+    });
+
+    function toggleSubscription(ele) {
+    let userId = $(ele).data('user-id');
+    let subscriberId = $(ele).data('subscriber-id');
+    let isSubscribed = $(ele).hasClass('btn-active');
+
+    let url = isSubscribed ? '{{ route('unsubscribe') }}' : '{{ route('subscribe') }}';
+    let action = isSubscribed ? 'unsubscribe' : 'subscribe';
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            "_token": csrfToken,
+            user_id: userId,
+            subscriber_id: subscriberId
+        },
+        success: function(response) {
+            if (response.success) {
+                const messageClass = isSubscribed ? 'alert-danger' : 'alert-success';
+                const message = isSubscribed ? 'Unsubscribed successfully!' : 'Subscribed successfully!';
+                
+                const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
+                
+                $('.subscriber-count').text(response.count);
+                $('#message-note').html(messageNote).slideDown('fast');
+                
+                setTimeout(function() {
+                    $('#message-note').slideUp('fast');
+                }, 2000);
+
+                // Toggle button state
+                if (isSubscribed) {
+                    $(ele).removeClass('btn-active').addClass('btn-inactive').text('Subscribe');
+                } else {
+                    $(ele).removeClass('btn-inactive').addClass('btn-active').text('Unsubscribe');
+                }
+            }
+        }
+    });
+}
+</script>
+
+{{-- <script>
+    
+    function toggleSubscription() {
+        $.ajax({
+            url: '{{ route('ugc_subscribe') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.subscribed) {
+                    $('#subscribe-button').text('Unsubscribe');
+                    $('#subscription-message').text('You are now subscribed!').show().fadeOut(3000);
+                } else {
+                    $('#subscribe-button').text('Subscribe');
+                    $('#subscription-message').text('You are now unsubscribed!').show().fadeOut(3000);
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+
+</script> --}}
 
 @php
  include public_path('themes/theme5-nemisha/views/UserGeneratedContent/videos-details-script-file.blade.php');
