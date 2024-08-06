@@ -105,8 +105,8 @@ https://flickity.metafizzy.co
   
   .flickity-prev-next-button .flickity-button-icon {
     position: absolute;
-    left: 20%;
-    bottom: 30px;
+    left: 20%; 
+    bottom: 50px !important;
     width: 60%;
     height: 60%;
   }

@@ -4,17 +4,19 @@
     ->latest()
     ->get(); ?>
 
+<?php $user = Auth::user()->first() ?>
+
 <div class="">
     <h4><?= $comment_loop->count() ?> Comment</h4>
 </div>
 
-<div class="row align-items-center">
-
-    <div class="col-1 d-flex align-items-center">
-    <img class="mr-3" src="" width="50px" alt="user image" style="border-radius: 30px;">
+<div class="row pt-3">
+    <div class="col-1 d-none d-md-block">
+        <img class="rounded-circle"
+        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 70px; width: 70px;">
     </div>
 
-    <div class="col-11 ">
+    <div class="col-12 col-md-11">
     <?php 
     if( !Auth::guest() ){
         include public_path('themes/theme5-nemisha/views/ugc-comments/commentbox.blade.php'); 

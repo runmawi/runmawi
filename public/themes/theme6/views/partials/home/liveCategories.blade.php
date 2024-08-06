@@ -1,14 +1,14 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ optional($order_settings_list[12])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ 'view all' }}</a></h4>
+                        <h4 class="main-title text-primary"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
