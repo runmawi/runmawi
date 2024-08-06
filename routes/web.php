@@ -2797,6 +2797,8 @@ Route::get('/testpage', function () {
 // User Generated Content
 Route::get('ugc-create', 'UGCController@create');
 Route::get('ugc-edit/{id}', 'UGCController@edit');
+Route::get('ugc-editvideo/{id}', 'UGCController@editvideo');
+Route::post('ugc-update', ['before' => 'demo', 'uses' => 'UGCController@update']);
 Route::get('ugc-delete/{id}', ['before' => 'demo', 'uses' => 'UGCController@destroy']);
 Route::get('ugc/video-player/{slug}', 'UGCController@PlayUGCVideos')->name('play_ugc_videos');
 Route::post('/ugc/fileupdate', ['before' => 'demo', 'uses' => 'UGCController@ugcfileupdate']);
