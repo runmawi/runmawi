@@ -32,18 +32,25 @@
                                                 <h5> {{ strlen($featured_videos->title) > 17 ? substr($featured_videos->title, 0, 18) . '...' : $featured_videos->title }}
 
                                                     <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                        {{-- <div class="badge badge-secondary p-1 mr-2">
                                                             {{ optional($featured_videos)->age_restrict . '+' }}
-                                                        </div>
+                                                        </div> --}}
                                                         <span class="text-white">
-                                                            {{ $featured_videos->duration !=null ? Carbon\CarbonInterval::seconds($featured_videos->duration)->cascade()->format('%im %ss') : null }}
+                                                            @if($featured_videos->duration != null)
+                                                                @php
+                                                                    $duration = Carbon\CarbonInterval::seconds($featured_videos->duration)->cascade();
+                                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                    $minutes = $duration->format('%imin');
+                                                                @endphp
+                                                                {{ $hours }}{{ $minutes }}
+                                                            @endif
                                                         </span>
                                                     </div>
 
                                                     <div class="hover-buttons">
                                                         <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}" class="btn btn-hover"
                                                             tabindex="0">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Play Now')}}
                                                         </a>
                                                     </div>
                                             </div>

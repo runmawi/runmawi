@@ -43,12 +43,19 @@ if (Auth::guest() != true) {
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($latest_view_episode)->age_restrict.'+' }}
-                                                    </div>
+                                                    </div> --}}
 
                                                     <span class="text-white">
-                                                        {{ $latest_view_episode->duration != null ? gmdate('H:i:s', $latest_view_episode->duration) : null }}
+                                                        @if($latest_view_episode->duration != null)
+                                                            @php
+                                                                $duration = Carbon\CarbonInterval::seconds($latest_view_episode->duration)->cascade();
+                                                                $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                $minutes = $duration->format('%imin');
+                                                            @endphp
+                                                            {{ $hours }}{{ $minutes }}
+                                                        @endif
                                                     </span>
                                                 </div>
 
@@ -63,7 +70,7 @@ if (Auth::guest() != true) {
 
                                             {{-- WatchLater & wishlist --}}
 
-                                        @php
+                                        {{-- @php
                                             $inputs = [
                                                 'source_id'     => $latest_view_episode->id ,
                                                 'type'          => null,  
@@ -72,7 +79,7 @@ if (Auth::guest() != true) {
                                             ];
                                         @endphp
 
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
                     
                                     </div>
                                 </li>

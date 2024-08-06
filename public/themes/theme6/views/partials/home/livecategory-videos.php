@@ -76,29 +76,35 @@ $currency = App\CurrencySetting::first();
                                             <p> <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>   </p>
                                             <div class="movie-time d-flex align-items-center my-2">
 
-                                                <div class="badge badge-secondary p-1 mr-2">
+                                                <!-- <div class="badge badge-secondary p-1 mr-2">
                                                     <?php echo $category_video->age_restrict.' '.'+' ?>
-                                                </div>
+                                                </div> -->
 
                                                 <span class="text-white">
-                                                    <?= gmdate('H:i:s', $category_video->duration); ?>
+                                                    <?php if ($category_video->duration != null): 
+                                                        $duration = Carbon\CarbonInterval::seconds($category_video->duration)->cascade();
+                                                        $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                        $minutes = $duration->format('%imin');
+                                                        echo $hours . ' ' . $minutes;
+                                                    endif; ?>
+
                                                 </span>
                                             </div>
 
                                             <div class="hover-buttons">
                                                 <span class="btn btn-hover">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                    Play Now
+                                                   <?= (' Play Now') ?>
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="block-social-info">
+                                        <!-- <div class="block-social-info">
                                             <ul class="list-inline p-0 m-0 music-play-lists">
                                                 {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
                                                 <li><span><i class="ri-heart-fill"></i></span></li>
                                                 <li><span><i class="ri-add-line"></i></span></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </a>
                             </li>
