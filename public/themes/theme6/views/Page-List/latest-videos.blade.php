@@ -57,20 +57,6 @@
                                                 </div>
                                             </div>
                                         </a>
-
-                                                {{-- WatchLater & wishlist --}}
-
-                                        {{-- @php
-                                            $inputs = [
-                                                'source_id'     => $latest_video->id ,
-                                                'type'          => 'channel',  // for videos - channel
-                                                'wishlist_where_column'    => 'video_id',
-                                                'watchlater_where_column'  => 'video_id',
-                                            ];
-                                        @endphp
-
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
-
                                     </div>
                                 </li>
                             @empty
