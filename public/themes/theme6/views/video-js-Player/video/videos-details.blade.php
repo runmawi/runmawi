@@ -54,7 +54,6 @@
                 
                 </ul>
             </div>
-
             <div class="content">
                 <div class="left">
                     <span class=" lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">

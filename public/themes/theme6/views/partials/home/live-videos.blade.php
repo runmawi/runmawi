@@ -1,7 +1,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
@@ -45,7 +45,7 @@
 
                                             {{-- WatchLater & wishlist --}}
 
-                                            @php
+                                            {{-- @php
                                                 $inputs = [
                                                     'source_id'     => $livestream_videos->id ,
                                                     'type'          => null ,
@@ -54,7 +54,7 @@
                                                 ];
                                             @endphp
 
-                                            {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                            {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
 
                                     </div>
                                 </li>

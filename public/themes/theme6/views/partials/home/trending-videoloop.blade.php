@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-topten">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -26,7 +26,7 @@
                                         <div class="block-images position-relative">
                                             <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
                                                 <img src="{{ URL::to('public/uploads/images/' . $featured_videos->image) }}"
-                                                    class="img-fluid w-100" alt="">
+                                                    class="img-fluid w-100" alt="{{$featured_videos->title}}">
                                             </a>
                                             <div class="block-description">
                                                 <h5> {{ strlen($featured_videos->title) > 17 ? substr($featured_videos->title, 0, 18) . '...' : $featured_videos->title }}

@@ -27,7 +27,7 @@
         border-top: 0px !important;
     }
 </style>
-<div class="container-fluid overflow-hidden">
+<div class="container overflow-hidden">
 <div class="row">
 <div class="col-sm-12 ">
     <div class="iq-main-header d-flex align-items-center justify-content-between">

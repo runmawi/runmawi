@@ -42,6 +42,8 @@ use Session;
 use DB;
 use App\AdminEPGChannel;
 use App\ChannelVideoScheduler;
+use App\CategoryVideo;
+use App\Videoartist;
 
 class FrontEndQueryController extends Controller
 {
@@ -488,8 +490,17 @@ class FrontEndQueryController extends Controller
             });
         }
     
-        $video_banner = $video_banner->latest()->limit(15)->get();
+        $video_banner = $video_banner->latest()->limit(15)->get()->map(function ($item) {
 
+            $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                        ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                        ->where('video_id', $item->id)->get() ;
+
+            $item['artists']    =  Videoartist::select('video_id','artist_id','artists.*')
+                                                    ->join('artists','artists.id','=','video_artists.artist_id')
+                                                    ->where('video_id', $item->id)->get();
+            return $item;
+        });
         return $video_banner ;
     }
  

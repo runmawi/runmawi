@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -9,7 +9,7 @@
                                 {{ !empty($category->home_genre) ?  $category->home_genre : $category->name }}
                             </a>
                         </h4>
-                        <h4 class="main-title"><a
+                        <h4 class="main-title text-primary"><a
                                 href="{{  URL::to('/series/category/' . $category->slug ) }} ">
                                 {{ 'view all' }}
                             </a>
