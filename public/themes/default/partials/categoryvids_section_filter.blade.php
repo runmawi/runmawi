@@ -32,6 +32,9 @@
     body.light-theme input{
         color: <?php echo GetLightText(); ?> !important;
     }
+    @media (max-width:1200px){
+        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){width: 100% !important;}
+    }
 
 </style>
 
@@ -46,7 +49,7 @@
         </select>
     </div> --}}
 
-    <div class="col-md-2  col-sm-4 mb-1">
+    <div class="col-lg-2 col-md-3 col-3 mb-1 p-0">
         <select class="selectpicker " multiple title="Age" name="age[]" id="age" data-live-search="true">
             @foreach ($categoryVideos['age_categories'] as $age)
                 <option value="{{ $age->age }}">{{ $age->slug }}</option>
@@ -54,7 +57,7 @@
         </select>
     </div>
 
-    <div class="col-md-2  col-sm-4 mb-1">
+    <div class="col-lg-2 col-md-3 col-3 mb-1 p-0">
         <select class="selectpicker " multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -70,7 +73,7 @@
     </div>
 
 
-    <div class="col-md-2 mb-1">
+    <div class="col-lg-2 col-md-4 col-3 mb-1 p-0">
         <select class="selectpicker " multiple title="Newly added First" id="sorting" name="sorting"
             data-live-search="true">
             <option value="latest_videos">  {{ __('Latest Videos') }}</option>
@@ -79,7 +82,7 @@
 
     <input type="hidden" id="category_id" value={{ $category_id }} name="category_id">
 
-    <div class="col-md-1 text-right p-0" id="mob1">
+    <div class="col-lg-1 col-md-2 col-2 text-right p-0" id="mob1">
         <button type="submit" class="btn btn-primary filter">  {{ __('Filter') }}</button>
     </div>
 </div>
