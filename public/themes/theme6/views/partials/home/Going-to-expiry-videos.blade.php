@@ -73,12 +73,19 @@
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($Going_to_expiry_videos)->age_restrict.'+' }}
-                                                    </div>
+                                                    </div> --}}
 
                                                     <span class="text-white">
-                                                        {{ $Going_to_expiry_videos->duration != null ? gmdate('H:i:s', $Going_to_expiry_videos->duration) : null }}
+                                                        @if($Going_to_expiry_videos->duration != null)
+                                                            @php
+                                                                $duration = Carbon\CarbonInterval::seconds($Going_to_expiry_videos->duration)->cascade();
+                                                                $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                $minutes = $duration->format('%imin');
+                                                            @endphp
+                                                            {{ $hours }}{{ $minutes }}
+                                                        @endif
                                                     </span>
                                                 </div>
 
@@ -93,7 +100,7 @@
 
                                                 {{-- WatchLater & wishlist --}}
 
-                                        @php
+                                        {{-- @php
                                             $inputs = [
                                                 'source_id'     => $Going_to_expiry_videos->id ,
                                                 'type'          => 'channel',  // for videos - channel
@@ -102,7 +109,7 @@
                                             ];
                                         @endphp
 
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
 
                                     </div>
                                 </li>

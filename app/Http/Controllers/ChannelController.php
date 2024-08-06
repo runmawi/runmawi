@@ -335,6 +335,7 @@ class ChannelController extends Controller
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
 
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
