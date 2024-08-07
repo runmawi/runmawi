@@ -5,11 +5,12 @@
           <div class="row">
               <div class="col-sm-12 ">
 
-                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                      <h4 class="main-title">{{ __('Featured Episodes') }}</h4>
-                      <h2 class="main-title"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View All') }}</a>
-                    </h2>
-                  </div>
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title">{{ __('Featured Episodes') }}</h4>
+                        @if($settings->homepage_views_all_button_status == 1)
+                            <h4 class="main-title"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View All') }}</a> </h4>
+                        @endif
+                    </div>
 
                     <div class="favorites-contens">
                         <div class="featured-episodes home-sec list-inline row p-0 mb-0">
