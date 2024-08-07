@@ -335,6 +335,7 @@ class ChannelController extends Controller
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
 
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -342,10 +343,7 @@ class ChannelController extends Controller
     public function play_videos($slug)
     {
         try {
-            // if ( $this->Theme !== 'theme5-nemisha' ){
-
-            //     return $this->videos_details_jsplayer($slug);
-            // }
+                return $this->videos_details_jsplayer($slug);
 
             $settings = Setting::first();
             if ($settings->access_free == 0 && Auth::guest())

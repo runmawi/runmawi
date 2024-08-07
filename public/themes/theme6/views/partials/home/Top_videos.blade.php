@@ -1,7 +1,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
@@ -26,9 +26,9 @@
                                                 </p>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($videos)->age_restrict.'+' }}
-                                                    </div>
+                                                    </div> --}}
 
                                                     <span class="text-white">
                                                         {{ $videos->duration != null ? gmdate('H:i:s', $videos->duration) : null }}
@@ -46,7 +46,7 @@
 
                                         {{-- WatchLater & wishlist --}}
 
-                                        @php
+                                        {{-- @php
                                             $inputs = [
                                                 'source_id'     => $videos->id ,
                                                 'type'          => 'channel',  // for videos - channel
@@ -55,7 +55,7 @@
                                             ];
                                         @endphp
 
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
 
                                     </div>
                                 </li>

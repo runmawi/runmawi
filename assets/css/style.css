@@ -735,6 +735,8 @@ a{text-decoration:none!important}
 .sign-in-page-data h3{color:#cdcece;font-size:30px}
 .btn-primary{background-color:#45c5e1!important}
 .row-data{flex-wrap:wrap!important}
+li.slide-item.col-sm-2.col-md-2.col-xs-12{width: 50%;}
+
 }
 .form-group h5{font-size:16px}
 .p-tag2{color:#fff!important;position:absolute;bottom:0;background:rgba(0,0,0,0.7);padding:7px;font-size:14px;border-radius:3px;font-family:"HelveticaNeue-CondensedBold","HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;border-top:none;border-left:none;width:100%}
@@ -784,6 +786,7 @@ li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-ac
 li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active:hover .block-images{transform:scale3d(1.3,1.3,1) translate3d(-12%,0,0) perspective(500px)}
 .video-container{height:100%}
 #home-slider .slick-bg{height:100%}
+.navbar{flex-direction: row;}
 }
 @media(max-width:991px) {
 video{object-fit:fill}
@@ -870,7 +873,7 @@ header#main-header{position:static}
 #home-slider p{font-size:15px!important}
 .h-100{height:100%!important;padding:0 0 0 10px !important;height:300px}
 h1{font-size:18px!important}
-h6{font-size:14px!important;font-family:'futuramedium'!important}
+/* h6{font-size:14px!important;font-family:'futuramedium'!important} */
 video{object-fit:contain!important}
 #main{margin-left:0!important}
 .pad{padding:0!important}
@@ -924,6 +927,8 @@ header .navbar ul li.menu-item a:hover{color:#fff}
 }
 @media (max-width:768px) {
     .flickity-slider .items{width:33.333% !important;}
+    li.slide-item.col-sm-2.col-md-2.col-xs-12{width: 33.333%;}
+    .pagelist .row{margin-right: 0 !important;margin-left: 0 !important;}
 }
 @media (max-width:564px) {
 .channel_contentpr .row{flex-wrap:unset}
@@ -933,6 +938,7 @@ header .navbar ul li.menu-item a:hover{color:#fff}
     .flickity-slider .items{width:50% !important;}
     #home-slider p{max-height: 65px;}
     #home-slider .s-bg-1{background-size:cover !important ;height: 250px;}
+    li.slide-item.col-sm-2.col-md-2.col-xs-12{width: 50%;}
 }
 
 @media screen and (max-width: 500px) {
