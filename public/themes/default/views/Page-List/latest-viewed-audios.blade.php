@@ -24,7 +24,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
+    <section id="iq-favorites" class="pagelist">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">

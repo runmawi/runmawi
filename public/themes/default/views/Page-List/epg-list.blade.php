@@ -3,7 +3,7 @@
     include public_path("themes/{$current_theme}/views/header.php");
 @endphp
 
-<section id="iq-favorites">
+<section id="iq-favorites" class="pagelist">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
