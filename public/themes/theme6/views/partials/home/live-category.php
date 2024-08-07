@@ -1,5 +1,5 @@
 
-<div class="container-fluid overflow-hidden">
+<div class="container overflow-hidden">
     <div class="row">
         <div class="col-sm-12 ">
             

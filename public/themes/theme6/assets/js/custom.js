@@ -216,42 +216,31 @@ Index Of Script
 			]
 		});
 		jQuery('#top-ten-slider-nav').slick({
-			slidesToShow: 6,
+			slidesToShow: 3,
 			slidesToScroll: 1,
 			asNavFor: '#top-ten-slider',
 			dots: false,
 			arrows: true,
 			infinite: true,
-			vertical: true,
+			vertical:true,
 			verticalSwiping: true,
 			centerMode: false,
-			nextArrow: '<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
-			prevArrow: '<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
-			focusOnSelect: false,
-			responsive: [
+			nextArrow:'<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
+			prevArrow:'<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
+			focusOnSelect: true,
+			responsive: [		    
 				{
-					breakpoint: 1024,
-					settings: {
-						slidesToShow: 5,
-						slidesToScroll: 1,
-						infinite: true,
-						dots: true,
-					}
+				breakpoint: 1200,
+				settings: {
+					slidesToShow: 2,
+				}
 				},
 				{
 					breakpoint: 600,
 					settings: {
-						slidesToShow: 5,
-						slidesToScroll: 1,
+						asNavFor: false,
 					}
 				},
-				{
-					breakpoint: 480,
-					settings: {
-						slidesToShow: 5,
-						slidesToScroll: 1,
-					}
-				}
 			]
 		});
 		

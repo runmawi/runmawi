@@ -11,8 +11,18 @@
 
 ?>
 
+<style>
+    ul.f-link.list-unstyled.mb-0 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .block-space .col-lg-6.col-md-6:nth-child(n+2):nth-child(-n+3) {
+        display: none;
+    }
+</style>
 <footer class="mb-0">
-    <div class="container-fluid">
+    <div class="container">
         <div class="block-space">
             <div class="row">
                 <?php
@@ -23,18 +33,19 @@
                         ->get();
                 ?>
 
-                    <div class="col-lg-3 col-md-4">
+                    <div class="col-lg-6 col-md-6">
                         <ul class="f-link list-unstyled mb-0">
                             <?php foreach ($footerLinks as $key => $footerLink) { ?>
                                 <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
                             <?php } ?>
                         </ul>
+                        <p class="font-size-14 mt-3 footer-desc"><?='All Rights Reserved. All videos and shows on this platform are trademarks of ' . $settings->website_name . ' and all related images and content are the property of ' . $settings->website_name . ' Inc. Duplication and copy of this is strictly prohibited. All rights reserved.'?></p>
                     </div>
                 <?php } ?>
 
-                <div class="col-lg-3 col-md-12 r-mt-15 p-1">
+                <div class="col-lg-3 col-md-12 r-mt-15">
+                    <p>Follow Us:</p>
                     <div class="d-flex">
-
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
                                 <i class="ri-instagram-fill"></i>
@@ -91,16 +102,18 @@
                             </a>
                         <?php } ?>
                     </div>
-                    
+                </div>
+                <div class="col-lg-3">
+                    <p>On Playstore</p>
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
-                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps1.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->ios_url)) { ?>
-                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.png'); ?>" /></a>
+                            <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/apps.webp'); ?>" /></a>
                         <?php } ?>
                         <?php if (!empty($app_settings->android_tv)) { ?>
-                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.png'); ?>" /></a>
+                            <a href="<?= $app_settings->android_tv ?>"><img class="" height="60" width="100" src="<?= URL::to('/assets/img/and.webp'); ?>" /></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -109,7 +122,7 @@
             </div>
         </div>
     </div>
-    <div class="copyright py-2">
+    <div class="copyright py-2 d-none">
         <div class="container-fluid">
             <p class="mb-0 text-center font-size-14 text-body">
                 <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved

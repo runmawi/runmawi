@@ -7,8 +7,8 @@
     <section id="home" class="iq-main-slider p-0">
         <div id="home-slider" class="slider m-0 p-0">
             @foreach ($video_banners as $item)
-                <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
-                    <div class="container-fluid position-relative h-100">
+                <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');background-size:contain;background-repeat: no-repeat;background-position: right;" >
+                    <div class="container position-relative h-100">
                         <div class="slider-inner h-100">
                             <div class="row align-items-center  h-100">
                                 <div class="col-xl-6 col-lg-12 col-md-12">
@@ -75,7 +75,7 @@
 <div class="main-content">
     @if (!empty($lang_videos) && $lang_videos->isNotEmpty())
         <section id="iq-favorites">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                         
@@ -102,13 +102,22 @@
                                                     <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}</h6>
 
                                                     <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
-                                                        <span class="text-white"> {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }} </span>
+                                                        {{-- <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div> --}}
+                                                        <span class="text-white">
+                                                            @if($item->duration != null)
+                                                            @php
+                                                                $duration = Carbon\CarbonInterval::seconds($item->duration)->cascade();
+                                                                $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                $minutes = $duration->format('%imin');
+                                                            @endphp
+                                                            {{ $hours }}{{ $minutes }}
+                                                        @endif
+                                                        </span>
                                                     </div>
 
                                                     <div class="hover-buttons">
                                                         <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
+                                                            {{ __('Play Now')}}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -129,7 +138,7 @@
     @if (!empty($Most_watched_country) && $Most_watched_country->isNotEmpty())
 
         <section id="iq-favorites">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
 
                                     {{-- Section Header Title --}}
@@ -159,14 +168,21 @@
                                                         </div>
 
                                                         <span class="text-white">
-                                                            {{ $item->duration != null ? gmdate('H:i:s', $item->duration) : null }}
+                                                            @if($item->duration != null)
+                                                                @php
+                                                                    $duration = Carbon\CarbonInterval::seconds($item->duration)->cascade();
+                                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                    $minutes = $duration->format('%imin');
+                                                                @endphp
+                                                                {{ $hours }}{{ $minutes }}
+                                                            @endif
                                                         </span>
                                                     </div>
 
                                                     <div class="hover-buttons">
                                                         <span class="btn btn-hover">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
+                                                            {{ __('Play Now')}}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -258,7 +274,7 @@
     @if (!empty($top_most_watched) && $top_most_watched->isNotEmpty())
 
         <section id="iq-favorites">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
 
                                     {{-- Section Header Title --}}
@@ -287,13 +303,20 @@
                                                     <div class="movie-time d-flex align-items-center my-2">
                                                         <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
                                                         <span class="text-white">
-                                                            {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
+                                                            @if($item->duration != null)
+                                                                @php
+                                                                    $duration = Carbon\CarbonInterval::seconds($item->duration)->cascade();
+                                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                    $minutes = $duration->format('%imin');
+                                                                @endphp
+                                                                {{ $hours }}{{ $minutes }}
+                                                            @endif
                                                         </span>
                                                     </div>
 
                                                     <div class="hover-buttons">
                                                         <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
+                                                            {{ __('Play Now')}}
                                                         </span>
                                                     </div>
                                                 </div>

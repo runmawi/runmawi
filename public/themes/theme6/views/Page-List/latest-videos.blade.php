@@ -1,20 +1,25 @@
-@if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+@php
+    include public_path("themes/theme6/views/header.php");
+@endphp
 
-                    {{-- Header --}}
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4>
-                        <h4 class="main-title text-primary"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ 'view all' }}</a></h4>
-                    </div>
+<section id="iq-favorites">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-12 page-height">
+
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h4 class="main-title fira-sans-condensed-regular">
+                            {{ $order_settings_list[1]->header_name ? __($order_settings_list[1]->header_name) : '' }}
+                    </h4>  
+                </div>
+
+                @if (($latest_videos_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $latest_video)
-                                <li class="slide-item">
+                        <ul class="category-page list-inline row p-0 mb-0">
+                            @forelse($latest_videos_pagelist as $key => $latest_video)
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <div class="block-images position-relative">
                                         
                                         <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
@@ -52,27 +57,31 @@
                                                 </div>
                                             </div>
                                         </a>
-
-                                                {{-- WatchLater & wishlist --}}
-
-                                        {{-- @php
-                                            $inputs = [
-                                                'source_id'     => $latest_video->id ,
-                                                'type'          => 'channel',  // for videos - channel
-                                                'wishlist_where_column'    => 'video_id',
-                                                'watchlater_where_column'  => 'video_id',
-                                            ];
-                                        @endphp
-
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
-
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <div class="col-md-12 text-center mt-4"
+                                    style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                    <p>
+                                    <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                                </div>
+                            @endforelse
                         </ul>
+
+                        <div class="col-md-12 pagination justify-content-end">
+                            {!! $latest_videos_pagelist->links() !!}
+                        </div>
+
                     </div>
-                </div>
+                @else
+                    <div class="col-md-12 text-center mt-4"
+                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p>
+                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                    </div>
+                @endif
             </div>
         </div>
-    </section>
-@endif
+    </div>
+</section>
+<?php include public_path("themes/theme6/views/footer.blade.php"); ?>

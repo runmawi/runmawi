@@ -1,13 +1,13 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a
                                 href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ optional($order_settings_list[4])->header_name }}</a>
                         </h4>
-                        <h4 class="main-title"><a
+                        <h4 class="main-title text-primary"><a
                                 href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'view all' }}</a>
                         </h4>
                     </div>
@@ -34,7 +34,7 @@
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                        {{ __('Play Now')}}
                                                     </span>
                                                 </div>
                                             </div>

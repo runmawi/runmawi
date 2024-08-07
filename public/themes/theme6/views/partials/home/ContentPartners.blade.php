@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
