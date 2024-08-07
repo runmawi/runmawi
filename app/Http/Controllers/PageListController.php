@@ -283,27 +283,31 @@ class PageListController extends Controller
     public function LatestViewedAudio_list()
     {
         try {
+             
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
-
+            
+            $latestViewed_audio_pagelist = $FrontEndQueryController->latestViewedAudio();
             $latestViewed_audio_paginate = $this->paginateCollection($latestViewed_audio_pagelist, $this->videos_per_page);
 
             $data = array(
                 'current_theme' => $this->current_theme ,
                 'currency'      => CurrencySetting::first(),
-                'order_settings_list' => $order_settings_list,
                 'latestViewed_audio_pagelist' => $latestViewed_audio_paginate,
+                'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
             );
-
-            return Theme::view('Page-List.latest-viewed-audios', $data);
+        
+            return Theme::view('Page-List.latest_viewed_audios', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
+
+    
     public function epg_list()
     {
         try {
@@ -406,6 +410,114 @@ class PageListController extends Controller
             );
         
             return Theme::view('Page-List.wishlist', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function AudioGenre_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $audiogenre_pagelist = $FrontEndQueryController->AudioCategory();
+            $audiogenre_paginate = $this->paginateCollection($audiogenre_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'audiogenre_pagelist' => $audiogenre_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.audioGenre', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function LatestViewedEpisode_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $latest_viewed_episode_pagelist = $FrontEndQueryController->latestViewedEpisode();
+            $latest_viewed_episode_paginate = $this->paginateCollection($latest_viewed_episode_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'latest_viewed_episode_pagelist' => $latest_viewed_episode_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.latest_viewed_Episode', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function LatestViewedLive_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $latest_viewed_live_pagelist = $FrontEndQueryController->latestViewedLive();
+            $latest_viewed_live_paginate = $this->paginateCollection($latest_viewed_live_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'latest_viewed_live_pagelist' => $latest_viewed_live_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.latest_viewed_live', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function LatestViewedVideo_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $latest_viewed_video_pagelist = $FrontEndQueryController->latestViewedVideo();
+            $latest_viewed_video_paginate = $this->paginateCollection($latest_viewed_video_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'latest_viewed_video_pagelist' => $latest_viewed_video_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.latest_viewed_video', $data);
 
         } catch (\Throwable $th) {
             return $th->getMessage();

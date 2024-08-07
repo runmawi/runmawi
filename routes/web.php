@@ -304,8 +304,12 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
     Route::get('epg_list', 'PageListController@epg_list')->name('pagelist.epg_list');
     Route::get('Series_genre_list', 'PageListController@SeriesGenre_list')->name('pagelist.seriesgenre');
-    // Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
-    // Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
+    Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('audio_genre_list', 'PageListController@AudioGenre_list')->name('pagelist.audiogenre');
+    Route::get('latest_viewed_episode_list', 'PageListController@LatestViewedEpisode_list')->name('pagelist.latestviewed-episode');
+    Route::get('latest_viewed_live_list', 'PageListController@LatestViewedLive_list')->name('pagelist.latestviewed-live');
+    Route::get('latest_viewed_video_list', 'PageListController@LatestViewedVideo_list')->name('pagelist.latestviewed-video');
 
     
     // TV-shows
