@@ -1,20 +1,25 @@
-@if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+@php
+    include public_path("themes/{$current_theme}/views/header.php");
+@endphp
 
-                    {{-- Header --}}
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ optional($order_settings_list[3])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ 'View all' }}</a></h4>
-                    </div>
+<section id="iq-favorites" class="pagelist">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 page-height">
+
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h4 class="main-title fira-sans-condensed-regular">
+                            {{ $order_settings_list[3]->header_name ? __($order_settings_list[3]->header_name) : '' }}
+                    </h4>  
+                </div>
+
+                @if (($live_list_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $livestream_videos)
-                                <li class="slide-item">
+                        <ul class="category-page list-inline row p-0 mb-0">
+                            @forelse($live_list_pagelist as $key => $livestream_videos)
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <div class="block-images position-relative">
                                         <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
 
@@ -66,11 +71,29 @@
 
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <div class="col-md-12 text-center mt-4"
+                                    style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                    <p>
+                                    <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                                </div>
+                            @endforelse
                         </ul>
+
+                        <div class="col-md-12 pagination justify-content-end">
+                            {!! $live_list_pagelist->links() !!}
+                        </div>
+
                     </div>
-                </div>
+                @else
+                    <div class="col-md-12 text-center mt-4"
+                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p>
+                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                    </div>
+                @endif
             </div>
         </div>
-    </section>
-@endif
+    </div>
+</section>
+<?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>

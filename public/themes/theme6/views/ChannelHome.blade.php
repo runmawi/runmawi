@@ -1,6 +1,6 @@
 <!-- Header Start -->
 <?php
-include public_path('themes/default/views/header.php');
+include public_path('themes/theme6/views/header.php');
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
 $order_settings_list = App\OrderHomeSetting::get();
@@ -15,7 +15,36 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .lkn{
         cursor: pointer;
     }
+    .nav-tabs {border: 0;margin-top: 20px;text-align: center;}
+    .channel_nav .nav-tabs>li {padding: 5px !important;}
+    .nav-tabs .nav-item {
+    margin-bottom: -2px;
+    font-family: 'Roboto', sans-serif;
+}
+.channel_nav .nav-link.active {
+    border-bottom: none !important;
+    background-color: red !important;
+    color: #fff !important;
+}
+.channel_nav .nav-link {
+    padding: 5px 15px;
+    background-color: #fff;
+    border-bottom: none !important;
+    border-radius: 5px;
+    color: #000 !important;
+    text-transform: capitalize;
+}
+.tab-pane .nav-link {
+    margin: 5px;
+    max-width: 175px;
+    padding: 6px 15px;
+    text-align: center;
+}
+.Live_Categorynav {
+    display: flex;
+}
 </style>
+
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
@@ -35,7 +64,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     background-blend-mode: multiply;">
 </section>
 @endif
-<div class="container-fluid">
+<div class="container">
     <div class="position-relative">
         <div class="channel-img">
             @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
@@ -48,12 +77,12 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </div>
 
 <section class="mt-5 mb-5">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row ">
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
+                        include(public_path('themes/theme6/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
             </div>
@@ -87,70 +116,72 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     </div>
 </section>
 <section class="channel_nav">
-    <div class="container-fluid">
+   <div class="container">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
-  </li>
-  <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
-  </li>
+        <li class="nav-item Allnav">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
+        </li>
+        <li class="nav-item videonav">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
+        </li>
         <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
-  </li>
-  <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
-  </li>
-         <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
-      
-      <div class=" Video_Categorynav ">
-                            @foreach ($VideoCategory as $key => $videos_category)
-                                <div>
-                                <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
-                                    data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
-                                    href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                    aria-selected="false"><?php echo $videos_category->name; ?></a>
-</div>
-                                    @endforeach 
-                        </div></div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($VideoCategory as $key => $videos_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $videos_category->name; ?></a>
-                            <?php }  ?>
-      
-                        </div></div>
-  <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
-     
-      <div class="Audio_Categorynav d-flex">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
-
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
-                                href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div></div>
-    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
-     
-      <div class="Live_Categorynav">
-                            <?php foreach ($LiveCategory as $key => $live_category) { ?>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div>
-</div></div>
+            <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="false">Live Stream</a>
+        </li>
+        <li class="nav-item seriesnav">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
+        </li>
+        <li class="nav-item audionav">
+            <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="Audios" aria-selected="false">Audios</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="Video_Categorynav">
+                @foreach ($VideoCategory as $key => $videos_category)
+                    <div>
+                        <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                           data-category-id="{{ $videos_category->id }}" onclick="Videos_Category(this)"
+                           href="#pills-kids" role="tab" aria-controls="pills-kids"
+                           aria-selected="false">{{ $videos_category->name }}
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="Series_Categorynav">
+                @foreach ($SeriesGenre as $key => $series_category)
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                       data-category-id="{{ $series_category->id }}" onclick="Series_Category(this)"
+                       href="#pills-kids" role="tab" aria-controls="pills-kids"
+                       aria-selected="false">{{ $series_category->name }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
+        <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab">
+            <div class="Audio_Categorynav d-flex">
+                @foreach ($AudioCategory as $key => $audios_category)
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                       data-category-id="{{ $audios_category->id }}" onclick="Audios_Category(this)"
+                       href="#pills-kids" role="tab" aria-controls="pills-kids"
+                       aria-selected="false">{{ $audios_category->name }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
+        <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab">
+            <div class="Live_Categorynav">
+                @foreach ($LiveCategory as $key => $live_category)
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                       data-category-id="{{ $live_category->id }}" onclick="Live_Category(this)"
+                       href="#pills-kids" role="tab" aria-controls="pills-kids"
+                       aria-selected="false">{{ $live_category->name }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </div>
    
 </section>
@@ -220,81 +251,97 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
    
 </section>-->
 
+@php 
 
-<div class='channel_home'>
-    <?php 
-if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
-      if(count($latest_video) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <?php include public_path('themes/default/views/partials/home/latest-videos.php');  ?>
-                </div>
-            </div>
+    $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
+                                'multiple_compress_image' => $multiple_compress_image, 
+                                'videos_expiry_date_status' => $videos_expiry_date_status,
+                                'getfeching' => $getfeching,
+                                'settings' => $settings,
+                                'ThumbnailSetting' => $ThumbnailSetting,
+                                'currency' => App\CurrencySetting::first(),
+                                'default_vertical_image_url' => $default_vertical_image_url,
+                                'default_horizontal_image_url' => $default_horizontal_image_url,
+                            ];
+@endphp
+
+<div class='channel_home' >
+     
+    @forelse ($order_settings as $key => $item)
+        
+        @if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1') {{-- latest videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-videos", array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/trending-videoloop", array_merge($homepage_array_data, ['data' => $featured_videos]) )->content() !!} </div>
+        @endif     
+
+
+        
+        @if(  $item->video_name == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}} 
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/videoCategories",  array_merge($homepage_array_data, ['data' => $genre_video_display]) )->content() !!}</div>
+        @endif
+
+        @if(  $item->video_name == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/artist-videos",  array_merge($homepage_array_data) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'series' && $home_settings->series == 1 )        {{-- series  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-series", array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!} </div>
+        @endif
+
+        @if ( $item->video_name == 'series' && $home_settings->series == 1) {{-- latest-series  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/featured-episodes", array_merge($homepage_array_data, ['data' => $featured_episodes]) )->content() !!} </div>
+        @endif
+
+        @if ( $item->video_name == 'series' && $home_settings->series == 1 ) {{-- featured-episodes  --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/Latest-episodes", array_merge($homepage_array_data, ['data' => $latest_episode]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}</div>
+        @endif
+        
+        @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live Artist videos --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/live-videos", array_merge($homepage_array_data, ['data' => $artist_live_event]) )->content() !!}</div>
+        @endif
+        
+        @if(  $item->video_name == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}} 
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/liveCategories", array_merge($homepage_array_data, ['data' => $LiveCategory]) )->content() !!} </div>
+        @endif
+
+        @if(  $item->video_name == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-audios", array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}</div>
+        @endif
+
+        @if(  $item->video_name == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-albums", array_merge($homepage_array_data, ['data' => $albums]) )->content() !!}</div>
+        @endif
+
+        @if( $item->video_name == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-videos-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-series-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-Audios-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+        @if(  $item->video_name == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
+            {!! Theme::uses($current_theme)->load("public/themes/theme6/views/partials/home/channel-livestreams-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+        @endif
+
+    @empty
+    
+        <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
+            <h4 class="main-title mb-4 ">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
+            <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
         </div>
-    </section>
-    <?php }  ?>
-
-    <?php 
-      if(count($livetream) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/live-videos.php');
-                    ?>
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
-
-
-    <?php 
-      if(count($latest_series) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/latest-series.php');
-                    ?>
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php }  ?>
-
-
-    <?php 
-      if(count($audios) > 0 ){
-      
-       ?>
-    <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/default/views/partials/home/latest-audios.php');
-                    ?>
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php } }else{ ?>
-    <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">Home</a>
-    </div>
-    <?php   } ?>
+    @endforelse
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -433,5 +480,5 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
 
 <?php
-    include public_path('themes/default/views/footer.blade.php');
+    include public_path('themes/theme6/views/footer.blade.php');
 ?>

@@ -19,7 +19,7 @@
                                         <div class="block-images position-relative">
                                           
                                             <div class="img-box">
-                                                <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $channel->channel_logo ? $channel->channel_logo : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">
