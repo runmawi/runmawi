@@ -14998,7 +14998,6 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_Document_Category($homepage_input_array){
 
     $Document_Category_status = $homepage_input_array['MobileHomeSetting']->Document_Category;
-    $homepage_geofencing = $homepage_input_array['Geofencing'];
 
       if( $Document_Category_status == null || $Document_Category_status == 0 ): 
 
@@ -15030,7 +15029,6 @@ public function QRCodeMobileLogout(Request $request)
 
     $Recommendation_status = $homepage_input_array['MobileHomeSetting']->Recommended_videos_site;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-
 
       if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
@@ -15073,7 +15071,6 @@ public function QRCodeMobileLogout(Request $request)
     $Recommendation_status = $homepage_input_array['MobileHomeSetting']->Recommended_videos_users;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
 
-
       if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
           $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
@@ -15114,7 +15111,6 @@ public function QRCodeMobileLogout(Request $request)
     $Recommendation_status = $homepage_input_array['MobileHomeSetting']->Recommended_videos_Country;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
 
-
     if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
         $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
@@ -15154,7 +15150,6 @@ public function QRCodeMobileLogout(Request $request)
     $category_videos_status = $homepage_input_array['MobileHomeSetting']->category_videos;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
 
-
     if( $category_videos_status == null || $category_videos_status == 0 ): 
 
         $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
@@ -15163,7 +15158,7 @@ public function QRCodeMobileLogout(Request $request)
         $check_Kidmode = 0 ;
 
         $data = VideoCategory::query()
-        ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+        ->whereHas('category_videos', function ($query) use ($check_Kidmode,$homepage_geofencing) {
             $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
     
             if ( $homepage_geofencing != null &&  $homepage_geofencing->geofencing == 'ON') {
@@ -15175,7 +15170,7 @@ public function QRCodeMobileLogout(Request $request)
             }
         })
 
-        ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+        ->with(['category_videos' => function ($videos) use ($check_Kidmode,$homepage_geofencing) {
             $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
                 ->where('videos.active', 1)
                 ->where('videos.status', 1)
@@ -15193,7 +15188,7 @@ public function QRCodeMobileLogout(Request $request)
         }])
         ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
         ->where('video_categories.in_home', 1)
-        ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+        ->whereHas('category_videos', function ($query) use ($check_Kidmode,$homepage_geofencing) {
             $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
     
             if ( $homepage_geofencing != null &&  $homepage_geofencing->geofencing == 'ON') {
@@ -15205,9 +15200,10 @@ public function QRCodeMobileLogout(Request $request)
             }
         })
         ->orderBy('video_categories.order')
+        ->limit($homepage_input_array['limit'])
         ->get()
         ->map(function ($category) {
-            $category->category_videos->limit($homepage_input_array['limit'])->map(function ($video) {
+            $category->category_videos->map(function ($video) {
                 $video->image_url = URL::to('/public/uploads/images/'.$video->image);
                 $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
                 $video->description  = $video->description ;
@@ -15227,7 +15223,6 @@ public function QRCodeMobileLogout(Request $request)
 
     $live_category_status = $homepage_input_array['MobileHomeSetting']->live_category;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-
 
       if( $live_category_status == null || $live_category_status == 0 ): 
 
@@ -15271,7 +15266,6 @@ public function QRCodeMobileLogout(Request $request)
     $Audio_Genre_status = $homepage_input_array['MobileHomeSetting']->AudioGenre;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
 
-
       if( $Audio_Genre_status == null || $Audio_Genre_status == 0 ): 
 
           $data = array();      // Note - if the home-setting (Audio Genre status) is turned off in the admin panel
@@ -15295,7 +15289,6 @@ public function QRCodeMobileLogout(Request $request)
 
     $Audio_Genre_audios_status = $homepage_input_array['MobileHomeSetting']->AudioGenre_audios;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-
 
       if( $Audio_Genre_audios_status == null || $Audio_Genre_audios_status == 0 ): 
 
@@ -15338,7 +15331,6 @@ public function QRCodeMobileLogout(Request $request)
     $Homepage_Series_Networks_status = $homepage_input_array['MobileHomeSetting']->Series_Networks;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
 
-
     if( $Homepage_Series_Networks_status == null || $Homepage_Series_Networks_status == 0 ): 
 
         $data = array();      // Note - if the home-setting (Series Networks status) is turned off in the admin panel
@@ -15380,7 +15372,6 @@ public function QRCodeMobileLogout(Request $request)
 
     $Homepage_Series_based_on_Networks_status = $homepage_input_array['MobileHomeSetting']->Series_based_on_Networks;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-
 
     if( $Homepage_Series_based_on_Networks_status == null || $Homepage_Series_based_on_Networks_status == 0 ): 
 
