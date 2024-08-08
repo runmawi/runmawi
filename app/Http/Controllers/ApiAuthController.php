@@ -5891,30 +5891,24 @@ return response()->json($response, 200);
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
     $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
     $series_description = Series::where('id',$seriesid)->pluck('description')->first();
-    // print_r($seasonlist);exit();
+  
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
-    if(!empty($seriesimage)){
-      $image = URL::to('/').'/public/uploads/images/'.$seriesimage;
-    }else{
-      $image = '';
-    }
-    // print_r($image);exit();
+
+    $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : " ";
 
     foreach ($seasonlist as $key => $season) {
+
       $seasonid = $season['id'];
       $season_access = $season['access'];
-      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
-        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+
+      $episodes= Episode::where('season_id',$seasonid)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
+        $item['image'] = URL::to('public/uploads/images/'.$item->image);
         $item['episode_id'] =$item->id;
-        if($item->type == 'm3u8'){
-        $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
-        }else{
-          $item['transcoded_url'] = '';
-        }
+        $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
-        $item['render_site_url'] = URL::to('/').'/episode/'.$series_slug.'/'.$item->slug;
+        $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
         return $item;
-      });;
+      });
 
       if(count($episodes) > 0){
         $msg = 'success';
@@ -5929,7 +5923,6 @@ return response()->json($response, 200);
         "series_description"   => $series_description,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
-        // "settings"   => $settings,
         "series_image" => $image,
         "season_id"   => $seasonid,
         "message" => $msg,
