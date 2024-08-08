@@ -31,6 +31,9 @@ class AddUgcBioToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('ugc_about');
+            $table->dropColumn('ugc_facebook')->nullable();
+            $table->dropColumn('ugc_instagram')->nullable();
+            $table->dropColumn('ugc_twitter')->nullable();
         });
     }
 }

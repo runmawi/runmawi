@@ -94,9 +94,9 @@ border-radius: 0px 4px 4px 0px;
                         <button class="btn btn-primary"  id="submit_mp4">Submit</button>
                      </div>
                   </div>
-                  <input type="hidden" id="embed_url" value="<?php echo URL::to('/admin/UpdateEmbededcode');?>">
-                  <input type="hidden" id="mp4url" value="<?php echo URL::to('/admin/Updatemp4url');?>">
-                  <input type="hidden" id="m3u8url" value="<?php echo URL::to('/admin/Updatem3u8url');?>">
+                  <input type="hidden" id="embed_url" value="<?php echo URL::to('ugc/updateembededcode');?>">
+                  <input type="hidden" id="mp4url" value="<?php echo URL::to('ugc/updatemp4url');?>">
+                  <input type="hidden" id="m3u8url" value="<?php echo URL::to('ugc/updatem3u8url');?>">
 
                   <div class='content' id="video_upload">
                 <!-- Dropzone -->

@@ -2799,19 +2799,27 @@ Route::get('/testpage', function () {
 Route::get('ugc-create', 'UGCController@create');
 Route::get('ugc-edit/{id}', 'UGCController@edit');
 Route::get('ugc-editvideo/{id}', 'UGCController@editvideo');
-Route::post('ugc-update', ['before' => 'demo', 'uses' => 'UGCController@update']);
+Route::post('ugc/uploadEditUGCVideo', 'UGCController@uploadEditUGCVideo');
+Route::post('ugc/update', ['before' => 'demo', 'uses' => 'UGCController@update']);
 Route::get('ugc-delete/{id}', ['before' => 'demo', 'uses' => 'UGCController@destroy']);
 Route::get('ugc/video-player/{slug}', 'UGCController@PlayUGCVideos')->name('play_ugc_videos');
 Route::post('/ugc/fileupdate', ['before' => 'demo', 'uses' => 'UGCController@ugcfileupdate']);
 Route::post('ugc/uploadFile', 'UGCController@uploadFile');
 Route::post('ugc/AWSUploadFile', 'UGCController@AWSUploadFile');
 Route::post('ugc/mp4url', 'UGCController@Mp4url');
+Route::post('ugc/updatemp4url', 'UGCController@Updatemp4url');
 Route::post('ugc/m3u8url', 'UGCController@m3u8url');
+Route::post('ugc/updatem3u8url', 'UGCController@Updatem3u8url');
 Route::post('ugc/embededcode', 'UGCController@Embededcode');
+Route::post('ugc/updateembededcode', 'UGCController@UpdateEmbededcode');
 Route::post('ugc/submit-ugcabout', 'UGCController@SubmitUGCAbout');
 Route::post('ugc/submit-ugcfacebook', 'UGCController@SubmitUGCFacebook');
 Route::post('ugc/submit-ugcinstagram', 'UGCController@SubmitUGCInstagram');
 Route::post('ugc/submit-ugctwitter', 'UGCController@SubmitUGCTwitter');
+// Route::post('comment/like/{id}', 'WebCommentController@likeComment')->name('comment.like');
+// Route::post('comment/dislike/{id}', 'WebCommentController@dislikeComment')->name('comment.dislike');
+Route::post('/comments/{id}/like', 'WebCommentController@like')->name('comments.like');
+Route::post('/comments/{id}/dislike', 'WebCommentController@dislike')->name('comments.dislike');
 
 Route::post('ugc_watchlater', 'UGCController@ugc_watchlater')->name('ugc_watchlater');
 Route::post('ugc_wishlist', 'UGCController@ugc_wishlist')->name('ugc_wishlist');

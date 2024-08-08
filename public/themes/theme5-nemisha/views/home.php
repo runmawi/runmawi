@@ -96,7 +96,7 @@
 
      <!-- User Generated Content -->
       
-     <!-- <?php if(count($Most_watched_country) > 0){ ?>
+     <?php if(count($ugc_videos) > 0){ ?>
          <section id="iq-favorites">
             <div class="container-fluid overflow-hidden">
                   <div class="row">
@@ -106,7 +106,7 @@
                   </div>
             </div>
          </section>
-    <?php } ?> -->
+    <?php } ?>
 
     <!-- Preference By Genres -->
     <?php 

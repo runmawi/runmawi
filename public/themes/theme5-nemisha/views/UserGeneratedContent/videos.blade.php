@@ -270,16 +270,16 @@
     
                     <li>
                     <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
-                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
+                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>Like
                     </span>
                     </li>
                     <li>
                     <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
-                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
+                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>Dislike
                     </span>
                     </li>
                     <li>
-                    <span><a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
+                    <span><a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>Copy</span>
                     </li>
                     <input type="hidden" value="181" id="videoid">    <input type="hidden" value="1" id="user_id">                                   
                  </ul>
@@ -305,6 +305,7 @@
             </a>
         </div>
        <div class="col" style="padding-top: 40px;" >
+        <a href="{{ route('profile.show', $videodetail->user->id) }}">
         <div>
         <h4>{{$videodetail->user->username}}</h4>
         </div>
@@ -319,13 +320,15 @@
             </h6>
             @endif
         </div>
+        </a>
        </div>
     </div>
     <div class="mx-3" >
+        @if( auth()->user()->id != $videodetail->user->id  )
         <button  id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber" onclick="toggleSubscription(this)" style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; " >
            Subscribe
         </button>
-      
+        @endif
 
         {{-- <button id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}"  class="btn-inactive" onclick="toggleSubscription(this)">
             Subscribe

@@ -1,4 +1,4 @@
-<?php $comment_loop = App\WebComment::where('source_id', $source_id)->where('approved',1)
+<?php $comment_loop = App\WebComment::where('source_id', $source_id)
     ->where('commentable_type', $commentable_type)
     ->whereNull('child_id')
     ->latest()
@@ -37,6 +37,12 @@
 
         <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= $comment->comment ?></div>
 
+        <button class="like-button" data-id="<?php echo $comment->id; ?>">Like</button>
+        <span id="likes-count-<?php echo $comment->id; ?>"><?php echo $comment->likes; ?></span>
+
+        <button class="dislike-button" data-id="<?php echo $comment->id; ?>">Dislike</button>
+        <span id="dislikes-count-<?php echo $comment->id; ?>"><?php echo $comment->dislikes; ?></span>
+        
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
                 <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
@@ -116,3 +122,39 @@
         }, 5000);
     });
 </script>
+<script>
+    $(document).ready(function() {
+        $('.like-button').on('click', function() {
+    var commentId = $(this).data('id');
+    console.log('Button clicked. Comment ID:', commentId); // Debugging line
+    $.ajax({
+        url: '/comments/' + commentId + '/like',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            console.log('Success response:', response); // Debugging line
+            $('#likes-count-' + commentId).text(response.likes);
+        },
+        error: function(xhr) {
+            console.log('Error:', xhr.responseText); // Debugging line
+        }
+        });
+    });
+    
+        $('.dislike-button').on('click', function() {
+            var commentId = $(this).data('id');
+            $.ajax({
+                url: '/comments/' + commentId + '/dislike',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    $('#dislikes-count-' + commentId).text(response.dislikes);
+                }
+            });
+        });
+    });
+    </script>

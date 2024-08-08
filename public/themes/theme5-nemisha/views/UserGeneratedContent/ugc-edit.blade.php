@@ -1,4 +1,7 @@
-@extends('admin.master')
+@php
+    include public_path('themes/theme5-nemisha/views/header.php');
+@endphp
+
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
@@ -312,6 +315,7 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0  mb-2">
          <div class="px-0  pb-0  mb-3 col-md-12">
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+               @csrf 
                <!-- progressbar -->
                <ul id="progressbar">
                   @if($video->processed_low >= 100   && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "embed")
@@ -460,13 +464,13 @@
                         <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
                       placeholder="Description">@if(!empty($video->description)){{ ($video->description) }}@endif</textarea>
                    </div>
-                   <div class="col-12 form-group">
+                   {{-- <div class="col-12 form-group">
                         <label class="m-0">Links &amp; Details</label>
                         <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
                       placeholder="Link and details">@if(!empty($video->details)){{ ($video->details) }}@endif</textarea>
-                   </div>
+                   </div> --}}
                </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-sm-4 form-group mt-3">
                         <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
                         <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif" placeholder="HH:MM:SS">
@@ -543,18 +547,78 @@
                         <label class="">Publish Time</label>
                         <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
-                </div>
+                </div> --}}
 
-               @if (videos_expiry_date_status() == 1)
+               {{-- @if (videos_expiry_date_status() == 1)
                   <div class="row">
                      <div class="col-sm-4 form-group mt-3" id="">
                         <label class="">Expiry Date & Time</label>
                         <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
                      </div>
                   </div>     
-               @endif
+               @endif --}}
 
-               </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               <div class="row">
+                  <div class="col-7">
+                        <h2 class="fs-title">Image Upload:</h2>
+                  </div>
+                  <div class="col-5"></div>
+               </div>
+
+               <div class="row">
+                  <div class="col-sm-6 form-group">
+                     {{-- <div id="VideoImagesContainer" class="gridContainer mt-3"></div> --}}
+                     @php 
+                        $width = $compress_image_settings->width_validation_videos;
+                        $heigth = $compress_image_settings->height_validation_videos;
+                     @endphp
+                     @if($width !== null && $heigth !== null)
+                        <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                     @else
+                        <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                     @endif
+                     <input type="file" name="image" id="image" />
+                     <span>
+                         <p id="video_image_error_msg" style="color:red !important; display:none;">
+                             * Please upload an image with the correct dimensions.
+                         </p>
+                     </span>
+                     @if(!empty($video->image) && ($video->image) != null )
+                     <div class="col-sm-8 p-0">
+                         <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
+                     </div>
+                     @endif
+                 </div>
+                 
+                 <div class="col-sm-6 form-group">
+                     {{-- <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div> --}}
+                     @php 
+                        $player_width = $compress_image_settings->width_validation_player_img;
+                        $player_heigth = $compress_image_settings->height_validation_player_img;
+                     @endphp
+                     @if($player_width !== null && $player_heigth !== null)
+                        <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                     @else
+                        <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
+                     @endif
+                     <div class="panel-body">
+                        <input type="file" name="player_image" id="player_image" />
+                        <span>
+                           <p id="player_image_error_msg" style="color:red !important; display:none;">
+                              * Please upload an image with the correct dimensions.
+                           </p>
+                        </span>
+                        @if(!empty($video->player_image))
+                        <div class="col-sm-8 p-0">
+                           <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100 mt-1" />
+                        </div>
+                        @endif
+                     </div>
+                 </div>
+
+               </div>
+
+               {{-- <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button> --}}
                <button type="submit" style = "float: right;
     margin: 10px 5px 10px 0px;
     vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
@@ -562,14 +626,14 @@
                </fieldset>
                <fieldset class="Next3" id="videocategory_data">
                <div class="form-card">
-               <div class="row">
+               {{-- <div class="row">
                <div class="col-7">
                <h2 class="fs-title">Video Category:</h2>
                </div>
                <div class="col-5">
                <!-- <h2 class="steps">Step 2 - 4</h2> -->
                </div>
-               </div>
+               </div> --}}
                <div class="row">
                {{-- <div class="col-sm-6 form-group" >
                <label class="m-0">Select Video Category :</label>
@@ -585,7 +649,7 @@
                </select>
                <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span>
                </div> --}}
-               <div class="col-sm-6 form-group" >                               
+               {{-- <div class="col-sm-6 form-group" >                               
                <div class="panel panel-primary" data-collapsed="0"> 
                <div class="panel-heading"> 
                <div class="panel-title">
@@ -596,20 +660,9 @@
                </div>
                </div> 
 
-                  {{-- <div class="panel-body" style="display: block;"> 
-                     <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                        @foreach($artists as $artist)
-                           @if(in_array($artist->id, $video_artist))
-                              <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
-                           @else
-                              <option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
-                           @endif 
-                        @endforeach
-                     </select>
-                  </div>  --}}
                   
                </div>
-               </div>
+               </div> --}}
                </div>
                <div class="row">
                {{-- <div class="col-sm-6 form-group">
@@ -627,7 +680,7 @@
                <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
 
                </div>  --}}
-               <div class="col-sm-4 form-group">
+               {{-- <div class="col-sm-4 form-group">
                     <label class="m-0">E-Paper: <small>(Upload your PDF file)</small> </label>
                     <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" >
                    @if(!empty($video->pdf_files))
@@ -636,7 +689,7 @@
                             {{'Download file'}}
                         </span>
                    @endif
-               </div>
+               </div> --}}
                {{-- <div class="col-sm-6 form-group">
                <label class="m-0">Choose Playlist:</label>
                   <select class="form-control js-example-basic-multiple playlists" id="playlist" name="playlist[]" style="width: 100%;" multiple="multiple">
@@ -675,18 +728,18 @@
                      @endif
                   </div> --}}
 
-                  <div class="col-sm-6 form-group">
+                  {{-- <div class="col-sm-6 form-group">
                      <label class="m-0">Reels Thumbnail: <small>(9:16 Ratio or 720X1080px)</small></label>
                      <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
 
                         @if($video->reels_thumbnail != null )
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
                         @endif
-                  </div>
+                  </div> --}}
                     </div>
 
             
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-sm-6 form-group">
                     <label class="m-0">URL Link <small>( Please Enter Link with https )</small></label>
                     <input type="text" class="form-control" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" />
@@ -696,8 +749,8 @@
                     <label class="m-0">URL Start Time <small>( HH:MM:SS )</small></label>
                     <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" />
                 </div>
-            </div>
-                <hr />
+            </div> --}}
+                {{-- <hr />
                <div class="row">    
                <div class="panel panel-primary" data-collapsed="0"> 
                <div class="panel-heading"> 
@@ -716,21 +769,7 @@
                <div class="col-sm-6 form-group" style="float: left;">
                <div class="align-items-center" style="clear:both;" >
                <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-               <?php //dd($movies_subtitles->sub_language); ?>
-               {{-- @if(@$subtitlescount > 0)
-                  @foreach($MoviesSubtitles as $movies_subtitles)
 
-                     @if(@$movies_subtitles->sub_language == $subtitle->language)
-
-                     Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
-                     &nbsp;&nbsp;&nbsp;
-                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                        data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/subtitle/delete') . '/' . $movies_subtitles->id }}">
-                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                  @endif
-
-                  @endforeach
-               @endif --}}
 
                <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
                <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
@@ -740,7 +779,7 @@
                @endforeach
                </div> 
                </div>
-               </div>
+               </div> --}}
                </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> 
                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                <button type="submit" class="btn btn-primary" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
@@ -850,7 +889,7 @@
                   </div> --}}
 
             
-                   <div class="row">
+                   {{-- <div class="row">
                        <div class="col-sm-6 "> 
                            <div class="panel panel-primary" data-collapsed="0"> 
                                <div class="panel-heading"> 
@@ -891,7 +930,7 @@
                                </div> 
                            </div>
                        </div>
-                   </div>
+                   </div> --}}
                 </div> 
 
                             <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
@@ -911,7 +950,7 @@
 
                         <div class="row">
                            <div class="col-sm-6 form-group">
-                              <div id="VideoImagesContainer" class="gridContainer mt-3"></div>
+                              {{-- <div id="VideoImagesContainer" class="gridContainer mt-3"></div> --}}
                               @php 
                                  $width = $compress_image_settings->width_validation_videos;
                                  $heigth = $compress_image_settings->height_validation_videos;
@@ -935,7 +974,7 @@
                           </div>
                           
                           <div class="col-sm-6 form-group">
-                              <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div>
+                              {{-- <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div> --}}
                               @php 
                                  $player_width = $compress_image_settings->width_validation_player_img;
                                  $player_heigth = $compress_image_settings->height_validation_player_img;
@@ -965,9 +1004,12 @@
                   <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                   <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
+                     
+                  <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
+                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
               </fieldset>
-              
-                           {{-- ADS Management --}}
+           
+                  {{-- ADS Management --}}
                   {{-- @include('admin.videos.create_edit_ads_fieldset');  --}}
             </form>
          </div>
@@ -1178,127 +1220,8 @@
 </style>
 
 <script>
-   $(document).ready(function() {
-      $('#error_ppv_price').hide();
-        // Function to check the price input and update button states
-        function checkPriceInput() {
-            var priceInput = $('#price').val().trim();
-            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
+ 
 
-            if (!priceInput && !isGlobalPPVChecked) {
-                $('#error_ppv_price').show();
-                $('#nextppv').attr('disabled', 'disabled');
-                $('#submit_button').attr('disabled', 'disabled');
-            } else {
-                $('#error_ppv_price').hide();
-                $('#nextppv').removeAttr('disabled');
-                $('#submit_button').removeAttr('disabled');
-            }
-        }
-
-        // Event handler for global PPV checkbox change
-        $('#global_ppv').change(function() {
-            var isChecked = $(this).is(':checked');
-            if (isChecked) {
-                $('#error_ppv_price').hide();
-                $('#nextppv').removeAttr('disabled');
-                $('#submit_button').removeAttr('disabled');
-                $('#price').off('focusout keyup change', checkPriceInput); // Disable price input validation
-            } else {
-                checkPriceInput();
-                $('#price').on('focusout keyup change', checkPriceInput); // Enable price input validation
-            }
-        });
-
-        // Event handler for access change
-        $('#access').change(function() {
-            if ($(this).val() == 'ppv') {
-                $('#price').on('focusout keyup change', checkPriceInput);
-                $('#global_ppv').on('change', checkPriceInput);
-                $('#msform').on('submit', function(event) {
-                    var priceInput = $('#price').val().trim();
-                    var isGlobalPPVChecked = $('#global_ppv').is(':checked');
-
-                    if (!priceInput && !isGlobalPPVChecked) {
-                        event.preventDefault(); // Prevent form submission
-                        $('#error_ppv_price').show();
-                        $('#price').hide();
-                        $('#nextppv').attr('disabled', 'disabled');
-                        $('#submit_button').attr('disabled', 'disabled');
-                    } else {
-                        $('#error_ppv_price').hide();
-                        $('#nextppv').removeAttr('disabled');
-                        $('#submit_button').removeAttr('disabled');
-                    }
-                });
-            } else {
-                $('#price').off('focusout keyup change', checkPriceInput);
-                $('#global_ppv').off('change', checkPriceInput);
-                $('#msform').off('submit');
-                $('#error_ppv_price').hide();
-                $('#nextppv').removeAttr('disabled');
-                $('#submit_button').removeAttr('disabled');
-            }
-        });
-
-        // Event handler for the "Next" button click
-        $('#nextppv').click(function(event) {
-            event.preventDefault(); // Prevent form submission
-            var priceInput = $('#price').val().trim();
-            var isGlobalPPVChecked = $('#global_ppv').is(':checked');
-
-            if (!priceInput && !isGlobalPPVChecked) {
-                $('#error_ppv_price').show();
-                $(this).attr('disabled', 'disabled');
-                $('#submit_button').attr('disabled', 'disabled');
-            } else {
-                $('#error_ppv_price').hide();
-                $(this).removeAttr('disabled');
-                $('#submit_button').removeAttr('disabled');
-            }
-        });
-
-        $('#access').trigger('change');
-    });
-
-document.addEventListener('DOMContentLoaded', function () {
-    var globalPpvCheckbox = document.getElementById('global_ppv');
-    var ppvOptionsDiv = document.getElementById('ppv_options');
-    var priceInputContainer = document.getElementById('price_input_container');
-    var ppvGlobalPriceRadio = document.getElementById('ppv_gobal_price');
-    var globalPpvPriceRadio = document.getElementById('global_ppv_price');
-    var ppvPriceInput = document.getElementById('set_gobal_ppv_price');
-
-    // Show/hide the radio buttons based on the initial state of the checkbox
-    ppvOptionsDiv.style.display = globalPpvCheckbox.checked ? 'block' : 'none';
-
-    // Show the price input container if ppv_price is not empty
-    if (ppvPriceInput.value.trim() !== '') {
-        priceInputContainer.style.display = 'block';
-        ppvGlobalPriceRadio.checked = true;
-    }
-
-    // Add an event listener to the checkbox to show/hide the radio buttons
-    globalPpvCheckbox.addEventListener('change', function () {
-        ppvOptionsDiv.style.display = this.checked ? 'block' : 'none';
-        // Hide the price input when checkbox is unchecked
-        if (!this.checked) {
-            priceInputContainer.style.display = 'none';
-        }
-    });
-
-    // Add an event listener to the "Set Global Price" radio button
-    ppvGlobalPriceRadio.addEventListener('change', function () {
-        priceInputContainer.style.display = this.checked ? 'block' : 'none';
-    });
-
-    // Hide the price input container if "Add Global Price" is selected
-    globalPpvPriceRadio.addEventListener('change', function () {
-        if (this.checked) {
-            priceInputContainer.style.display = 'none';
-        }
-    });
-});
    $(document).ready(function(){
    
    var current_fs, next_fs, previous_fs; //fieldsets
@@ -1441,151 +1364,12 @@ $(document).ready(function(){
    })
 });
 
-
-$(document).ready(function($){
-   // validation Skip 
-      $('#error_intro_start_time').hide();
-      $('#error_intro_end_time').hide();
-      $('#error_skip_intro_time').hide();
-      $('#player_image_error_msg,#tv_image_image_error_msg').hide();
-      $('#image_error_msg').hide();
-
-      
-
-   $('#intro_start_time').on('keyup keypress change', function(event) {
-          $('#error_intro_start_time').hide();
-
-      if($('#skip_intro').val() == ""){
-         $('#error_skip_intro_time').show();
-         $('#error_intro_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#skip_intro').val() != "" && $('#skip_intro').val() <= $('#intro_start_time').val() ){
-
-            $("#error_skip_intro_time").empty();
-            $("#error_skip_intro_time").append("Skip intro time always greater than intro Start time");
-            $('#error_skip_intro_time').show();
-            $('#error_intro_end_time').show();
-            $('#error_intro_start_time').hide();
-
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_intro_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-
-   $('#skip_intro').on('keyup keypress change', function(event) {
-      if($('#intro_start_time').val() == ""){
-         $('#error_intro_start_time').show();
-         $('#error_intro_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#intro_start_time').val() != "" && $('#skip_intro').val() <= $('#intro_start_time').val() ){
-            $("#error_skip_intro_time").empty();
-            $("#error_skip_intro_time").append("Skip intro time always lesser than intro Start time ");
-            $('#error_skip_intro_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_intro_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#intro_end_time').on('keyup keypress change', function(event) {
-
-      if($('#intro_start_time').val() == ""){
-         $('#error_intro_start_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#intro_start_time').val() != "" && $('#intro_start_time').val() >= $('#intro_end_time').val() ){
-            $("#error_intro_end_time").empty();
-            $("#error_intro_end_time").append("End recap time always greater than recap start time ");
-            $('#error_intro_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else if($('#intro_start_time').val() != "" && $('#skip_intro').val() <= $('#intro_end_time').val() ){
-            $("#error_intro_end_time").empty();
-            $("#error_intro_end_time").append("End intro time always lesser than Skip intro time ");
-            $('#error_intro_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_intro_end_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-   
-// video category
-$('#error_video_Category').hide();
-   $('#error_language').hide();
-
-   $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
-
-   if( $('.languages').val() == null || $('#video_category_id').val() == null ){
-
-      if($('.languages').val() == null){
-         $('#error_language').show();
-      }else{
-         $('#error_language').hide();
-      }
-
-      if($('#video_category_id').val() == null){
-         $('#error_video_Category').show();
-      }else{
-         $('#error_video_Category').hide();
-      }
-      
-      $('#next3').attr('disabled','disabled');
-   }  
-   else{
-      $('#error_language').hide();
-      $('#error_video_Category').hide();
-
-      $('#next3').removeAttr('disabled');
-   }
-
-});
-
-
-  
-});
-
-   // $('#intro_start_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
 </script>
 
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
-<script type="text/javascript">
-
-   $(document).ready(function($){
-      $('#duration').mask("00:00:00");
-      $('#intro_start_time').mask("00:00:00");
-      $('#intro_end_time').mask("00:00:00");
-      $('#recap_start_time').mask("00:00:00");
-      $('#recap_end_time').mask("00:00:00");
-      $('#skip_intro').mask("00:00:00");
-      $('#skip_recap').mask("00:00:00");
-      $('#url_linktym').mask("00:00:00");
-      $("#free_duration").mask("00:00:00");
-
-      $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
-      $("#andriod_mid_sequence_time").mask("00:00:00");
-      $("#ios_mid_sequence_time").mask("00:00:00");
-      $("#tv_mid_sequence_time").mask("00:00:00");
-      $("#samsung_mid_sequence_time").mask("00:00:00");
-      $("#lg_mid_sequence_time").mask("00:00:00");
-      $("#roku_mid_sequence_time").mask("00:00:00");
-   });
-</script>
 
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -1839,134 +1623,6 @@ $('#error_video_Category').hide();
       $('.js-example-basic-single').select2();
    });
 
-   $(document).ready(function() {
-
-      $('.ads_devices').select2();
-
-      $('.ads_devices').on('change', function() {
-         var selectedValues = $(this).val();
-         
-         $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
-         
-         selectedValues.forEach(function(value) {
-               switch(value) {
-                  case 'website':
-                     $('.website-ads-button').show();
-                     break;
-                  case 'android':
-                     $('.Andriod-ads-button').show();
-                     break;
-                  case 'IOS':
-                     $('.IOS-ads-button').show();
-                     break;
-                  case 'TV':
-                     $('.TV-ads-button').show();
-                     break;
-                  case 'roku':
-                     $('.Roku-ads-button').show();
-                     break;
-                  case 'lg':
-                     $('.LG-ads-button').show();
-                     break;
-                  case 'samsung':
-                     $('.Samsung-ads-button').show();
-                     break;
-                     
-                     
-                  // Add cases for other devices if needed
-                  default:
-                     break;
-               }
-         });
-      });
-   });
-
-
-   
-   $('#publishlater').hide();
-   
-   $(document).ready(function(){
-   
-   
-   
-   $('#publishlater').hide();
-   $('#publish_now').click(function(){
-   	// alert($('#publish_now').val());
-   	$('#publishlater').hide();
-   });
-   $('#publish_later').click(function(){
-   	// alert($('#publish_later').val());
-   	$('#publishlater').show();
-   });
-   
-   if($("#publish_now").val() == 'publish_now'){
-   $('#publishlater').show();
-   }else if($("#publish_later").val() == 'publish_later'){
-   	$('#publishlater').hide();		
-   }
-   });
-   
-   
-   $(document).ready(function(){
-   
-      
-   	$("#type").change(function(){
-   		if($(this).val() == 'file'){
-   			$('.new-video-file').show();
-   			$('.new-video-embed').show();
-   
-   		} else if($(this).val() == 'embed'){ 
-   			$('.new-video-file').hide();
-   			$('.new-video-embed').show();
-   
-   		}else{
-   			$('.new-video-file').hide();
-   			$('.new-video-embed').hide();
-   			
-   		}
-   	});
-          $(document).ready(function(){
-      // $('#ppv_price').hide();
-      if($("#access").val() == 'ppv'){
-   			$('#ppv_price').show();
-   			$('#global_ppv_status').show();
-   
-   
-   		}else{
-   			$('#ppv_price').hide();		
-   			$('#global_ppv_status').hide();				
-   
-   		}
-      
-   	$("#access").change(function(){
-   		if($(this).val() == 'ppv'){
-   			$('#ppv_price').show();
-   			$('#global_ppv_status').hide();
-   
-   		}else{
-   			$('#ppv_price').hide();		
-   			$('#global_ppv_status').show();				
-   
-   		}
-   	});
-      });
-   
-   // alert();
-   
-   
-   
-   	tinymce.init({
-   		relative_urls: false,
-   	    selector: '#details',
-   	    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
-   	    plugins: [
-   	         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
-   	         "save table contextmenu directionality emoticons template paste textcolor code"
-   	   ],
-   	   menubar:false,
-   	 });
-   
-   });
    
    
    
@@ -2210,98 +1866,7 @@ $('#error_video_Category').hide();
    }
 
 
-   
-   $(document).ready(function(){
-         $('.trailer_video_upload').hide();
-         $('.trailer_m3u8_url').hide();
-         $('.trailer_mp4_url').hide();
-         $('.trailer_embed_url').hide();
 
-      var trailer_types = <?php echo json_encode($video['trailer_type']); ?>;
-
-      if( trailer_types == 'video_mp4'){
-         $('.trailer_video_upload').show();
-
-      }else if(trailer_types == 'm3u8_url'){
-         $('.trailer_m3u8_url').show();
-
-      }else if(trailer_types == 'mp4_url'){
-         $('.trailer_mp4_url').show();
-      }
-      else if(trailer_types == 'embed_url'){
-         $('.trailer_embed_url').show();
-      }
-
-
-      var trailer_type = $('.trailer_type').val();
-
-      if(trailer_type == 'video_mp4' ){
-   $('.trailer_video_upload').show();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'm3u8_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').show();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'mp4_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').show();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'embed_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').show();
-}
-else if(trailer_type == 'null' ){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').hide();
-         }      
-$(".trailer_type").change(function(){
-var trailer_type = $('.trailer_type').val();
-
-if(trailer_type == 'video_mp4' ){
-   $('.trailer_video_upload').show();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'm3u8_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').show();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'mp4_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').show();
-   $('.trailer_embed_url').hide();
-}
-else if(trailer_type == 'embed_url'){
-   $('.trailer_video_upload').hide();
-   $('.trailer_m3u8_url').hide();
-   $('.trailer_mp4_url').hide();
-   $('.trailer_embed_url').show();
-}
-else if(trailer_type == 'null' ){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').hide();
-         }
-});
-
-
-});
 
 
 </script>

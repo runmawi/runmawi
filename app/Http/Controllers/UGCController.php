@@ -244,6 +244,7 @@ class UGCController extends Controller
             return View("admin.ugc_videos.ugc_videos_index",$data);
         }
     }
+
     public function UGCVideosApproval($id)
     {
         //    echo "<pre>";
@@ -336,8 +337,6 @@ class UGCController extends Controller
             "Your video will be available shortly after we process it"
         );
     }
-
-
 
     public function ugc_watchlater(Request $request)
     {
@@ -630,7 +629,7 @@ class UGCController extends Controller
                         break;
 
                         case $item['type'] == "m3u8_url":
-                        $item['videos_url'] =  $item->m3u8_url.$adsvariable_url ;
+                        $item['videos_url'] =  $item->m3u8_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
@@ -639,7 +638,7 @@ class UGCController extends Controller
                         break;
                         
                         case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').$adsvariable_url;
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
@@ -649,12 +648,12 @@ class UGCController extends Controller
                         break;
 
                         case $item['type'] == " " && !is_null($item->transcoded_url) :
-                        $item['videos_url']   = $item->transcoded_url.$adsvariable_url ;
+                        $item['videos_url']   = $item->transcoded_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
                         
                         case $item['type'] == null :
-                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
+                        $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
 
@@ -916,21 +915,21 @@ class UGCController extends Controller
     }
 
 
-    public function filedelete($id)
-    {
-        $video = Video::findOrFail($id);
-        $filename = $video->path . ".mp4";
-        $path = storage_path("app/public/" . $filename);
+    // public function filedelete($id)
+    // {
+    //     $video = Video::findOrFail($id);
+    //     $filename = $video->path . ".mp4";
+    //     $path = storage_path("app/public/" . $filename);
 
-        if (file_exists($path)) {
-            unlink($path);
-        } else {
-        }
-        return Redirect::back()->with(
-            "message",
-            "Your video will be available shortly after we process it"
-        );
-    }
+    //     if (file_exists($path)) {
+    //         unlink($path);
+    //     } else {
+    //     }
+    //     return Redirect::back()->with(
+    //         "message",
+    //         "Your video will be available shortly after we process it"
+    //     );
+    // }
     
     // public function live_search(Request $request)
     // {
@@ -1211,7 +1210,7 @@ class UGCController extends Controller
             
             // Video Upload Limit (3 Limits)
     
-            // $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
+            // $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
             //                             ->whereYear('created_at',  $today->year)
             //                             ->whereMonth('created_at', $today->month)
             //                             ->count();
@@ -1298,7 +1297,7 @@ class UGCController extends Controller
                 $video->save();
     
                 $video_id = $video->id;
-                $video_title = Video::find($video_id);
+                $video_title = UGCVideo::find($video_id);
                 $title = $video_title->title;
     
                 $value["success"] = 1;
@@ -1789,339 +1788,1024 @@ class UGCController extends Controller
                 // return View::make('admin.videos.create_edit', $data);
             }
     }
+
+    public function ugcfileupdate(Request $request)
+    {
+        if (!Auth::user()->role == 'admin') {
+            return redirect('/home');
+        }
+
+    
+        $user_package = User::where('id', 1)->first();
+        $data = $request->all();
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+        ]);
+        
+        $id = $data['video_id'];
+        $video = UGCVideo::findOrFail($id);
+        // UGCVideo::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
+
+        if (!empty($video->embed_code)) {
+            $embed_code = $video->embed_code;
+        } else {
+            $embed_code = '';
+        }
+
+        if ($request->slug == '') {
+            $data['slug'] = $this->createSlug($data['title']);
+        } else {
+            $data['slug'] = $this->createSlug($data['slug']);
+        }
+        $image_path = public_path() . '/uploads/images/';
+
+        // Image
+        if ($request->hasFile('image')) {
+                $tinyimage = $request->file('image');
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+
+            }
+        }else{
+            $tiny_video_image = null;
+
+        }
+       
+        if ($request->hasFile('video_title_image')) {
+
+            $tinyvideo_title_image = $request->file('video_title_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+
+            }
+        }else{
+            $tiny_video_title_image = null;
+
+        }
+
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $video_image = 'pc-image-' . $image_filename;
+                $Mobile_image = 'Mobile-image-' . $image_filename;
+                $Tablet_image = 'Tablet-image-' . $image_filename;
+
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image, compress_image_resolution());
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image, compress_image_resolution());
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+
+                $video_image = 'pc-image-' . $image_filename;
+                $Mobile_image = 'Mobile-image-' . $image_filename;
+                $Tablet_image = 'Tablet-image-' . $image_filename;
+
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image);
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image);
+                Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image);
+            }
+
+            $data["image"] = $video_image;
+            $data["mobile_image"] = $Mobile_image;
+            $data["tablet_image"] = $Tablet_image;
+
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
+        } else {
+            // Default Image
+
+            $data["image"]  = default_vertical_image() ;
+            $data["mobile_image"] = default_vertical_image();
+            $data["tablet_image"] = default_vertical_image();
+
+        }
+
+        // Video Title Thumbnail
+
+        if ($request->hasFile('video_title_image')) {
+            $video_title_image = $request->video_title_image;
+
+            if (compress_image_enable() == 1) {
+                $video_title_image_format = time() . '.' . compress_image_format();
+                $video_title_image_filename = 'video-title-' . $video_title_image_format;
+                Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename, compress_image_resolution());
+            } else {
+                $video_title_image_format = time() . '.' . $video_title_image->getClientOriginalExtension();
+                $video_title_image_filename = 'video-title-' . $video_title_image_format;
+                Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename);
+            }
+
+            $video->video_title_image = $video_title_image_filename;
+        }
+
+        if (empty($data['active'])) {
+            $data['active'] = 0;
+        }
+
+        if (empty($data['webm_url'])) {
+            $data['webm_url'] = 0;
+        } else {
+            $data['webm_url'] = $data['webm_url'];
+        }
+
+        if (empty($data['ogg_url'])) {
+            $data['ogg_url'] = 0;
+        } else {
+            $data['ogg_url'] = $data['ogg_url'];
+        }
+
+        $package = User::where('id', 1)->first();
+        $pack = $package->package;
+
+        if (Auth::user()->role == 'admin') {
+            $data['status'] = 1;
+        }
+        $settings = Setting::first();
+
+        if (Auth::user()->role == 'admin' && $pack != 'Business') {
+            $data['status'] = 1;
+        } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 1) {
+            if ($video->processed_low < 100) {
+                $data['status'] = 0;
+            } else {
+                $data['status'] = 1;
+            }
+        } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 0) {
+            $data['status'] = 1;
+        } else {
+            $data['status'] = 1;
+        }
+
+        if (Auth::user()->role == 'admin' && Auth::user()->sub_admin == 1) {
+            $data['status'] = 0;
+        }
+
+        $path = public_path() . '/uploads/videos/';
+        $image_path = public_path() . '/uploads/images/';
+
+        // Enable Video Title Thumbnail
+
+        // $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0';
+
+        // $video->trailer_type = $data['trailer_type'];
+        // $StorageSetting = StorageSetting::first();
+        // dd($StorageSetting);
+        // if ($StorageSetting->site_storage == 1) {
+        //     if ($data['trailer_type'] == 'video_mp4') {
+        //         $settings = Setting::first();
+
+        //         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+        //             $settings = Setting::first();
+        //             // $resolution = explode(",",$settings->transcoding_resolution);
+        //             if ($settings->transcoding_resolution != null) {
+        //                 $convertresolution = [];
+        //                 $resolution = explode(',', $settings->transcoding_resolution);
+
+        //                 foreach ($resolution as $value) {
+        //                     if ($value == '240p') {
+        //                         $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
+        //                         array_push($convertresolution, $r_240p);
+        //                     }
+        //                     if ($value == '360p') {
+        //                         $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
+        //                         array_push($convertresolution, $r_360p);
+        //                     }
+        //                     if ($value == '480p') {
+        //                         $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+        //                         array_push($convertresolution, $r_480p);
+        //                     }
+        //                     if ($value == '720p') {
+        //                         $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
+        //                         array_push($convertresolution, $r_720p);
+        //                     }
+        //                     if ($value == '1080p') {
+        //                         $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
+        //                         array_push($convertresolution, $r_1080p);
+        //                     }
+        //                 }
+        //             }
+        //             $trailer = $data['trailer'];
+        //             $trailer_path = URL::to('storage/app/trailer/');
+        //             $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
+        //             $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
+
+        //             // $trailer_Video =
+        //             //     time() . "_" . $trailer->getClientOriginalName();
+        //             $trailer->move(storage_path('app/trailer/'), $trailer_Video);
+        //             $trailer_video_name = strtok($trailer_Video, '.');
+        //             $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
+        //             $storepath = URL::to('storage/app/trailer/');
+
+        //             $data['trailer'] = $M3u8_save_path;
+        //             $data['trailer_type'] = 'm3u8';
+        //         } else {
+        //             if ($trailer != '') {
+        //                 //code for remove old file
+        //                 if ($trailer != '' && $trailer != null) {
+        //                     $file_old = $path . $trailer;
+        //                     if (file_exists($file_old)) {
+        //                         unlink($file_old);
+        //                     }
+        //                 }
+        //                 //upload new file
+        //                 $randval = Str::random(16);
+        //                 $file = $trailer;
+        //                 $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
+        //                 $file->move($path, $trailer_vid);
+        //                 $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
+        //             } else {
+        //                 $data['trailer'] = $video->trailer;
+        //             }
+        //         }
+        //     } elseif ($data['trailer_type'] == 'm3u8_url') {
+        //         $data['trailer'] = $data['m3u8_trailer'];
+        //     } elseif ($data['trailer_type'] == 'mp4_url') {
+        //         $data['trailer'] = $data['mp4_trailer'];
+        //     } elseif ($data['trailer_type'] == 'embed_url') {
+        //         $data['trailer'] = $data['embed_trailer'];
+        //     }
+        // } elseif ($StorageSetting->aws_storage == 1 && !empty($data['trailer'])) {
+        //     if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+        //         $file = $request->file('trailer');
+        //         $file_folder_name = $file->getClientOriginalName();
+        //         $name_mp4 = $file->getClientOriginalName();
+        //         $newfile = explode('.mp4', $name_mp4);
+        //         // $name = $newfile[0].'.m3u8';
+        //         $name = $namem3u8 == null ? str_replace(' ', '_', 'S3' . $namem3u8) : str_replace(' ', '_', 'S3' . $namem3u8);
+        //         $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
+        //         $transcode_path = @$StorageSetting->aws_transcode_path . '/' . $name;
+        //         Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
+        //         $M3u8_path = $path . $filePath;
+        //         $M3u8_save_path = $path . $transcode_path;
+
+        //         $data['trailer'] = $M3u8_save_path;
+        //         $video->trailer_type = 'm3u8';
+        //         $data['trailer_type'] = 'm3u8';
+        //     } else {
+        //         $file = $request->file('trailer');
+        //         $file_folder_name = $file->getClientOriginalName();
+        //         $name = time() . $file->getClientOriginalName();
+        //         $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
+        //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
+        //         $trailer = $path . $filePath;
+        //         $data['trailer'] = $trailer;
+        //         $data['trailer_type'] = 'video_mp4';
+        //     }
+        // } else {
+        //     if ($data['trailer_type'] == 'video_mp4') {
+        //         $settings = Setting::first();
+
+        //         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+        //             $settings = Setting::first();
+        //             // $resolution = explode(",",$settings->transcoding_resolution);
+        //             if ($settings->transcoding_resolution != null) {
+        //                 $convertresolution = [];
+        //                 $resolution = explode(',', $settings->transcoding_resolution);
+        //                 foreach ($resolution as $value) {
+        //                     if ($value == '240p') {
+        //                         $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
+        //                         array_push($convertresolution, $r_240p);
+        //                     }
+        //                     if ($value == '360p') {
+        //                         $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
+        //                         array_push($convertresolution, $r_360p);
+        //                     }
+        //                     if ($value == '480p') {
+        //                         $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+        //                         array_push($convertresolution, $r_480p);
+        //                     }
+        //                     if ($value == '720p') {
+        //                         $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
+        //                         array_push($convertresolution, $r_720p);
+        //                     }
+        //                     if ($value == '1080p') {
+        //                         $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
+        //                         array_push($convertresolution, $r_1080p);
+        //                     }
+        //                 }
+        //             }
+        //             $trailer = $data['trailer'];
+        //             $trailer_path = URL::to('storage/app/trailer/');
+        //             $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
+        //             $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
+        //             // $trailer_Video =
+        //             //     time() . "_" . $trailer->getClientOriginalName();
+        //             $trailer->move(storage_path('app/trailer/'), $trailer_Video);
+        //             $trailer_video_name = strtok($trailer_Video, '.');
+        //             $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
+        //             $storepath = URL::to('storage/app/trailer/');
+
+        //             $data['trailer'] = $M3u8_save_path;
+        //             $data['trailer_type'] = 'm3u8';
+        //         } else {
+        //             if ($trailer != '') {
+        //                 //code for remove old file
+        //                 if ($trailer != '' && $trailer != null) {
+        //                     $file_old = $path . $trailer;
+        //                     if (file_exists($file_old)) {
+        //                         unlink($file_old);
+        //                     }
+        //                 }
+        //                 //upload new file
+        //                 $randval = Str::random(16);
+        //                 $file = $trailer;
+        //                 $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
+        //                 $file->move($path, $trailer_vid);
+        //                 $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
+        //             } else {
+        //                 $data['trailer'] = $video->trailer;
+        //             }
+        //         }
+        //     } elseif ($data['trailer_type'] == 'm3u8_url') {
+        //         $data['trailer'] = $data['m3u8_trailer'];
+        //     } elseif ($data['trailer_type'] == 'mp4_url') {
+        //         $data['trailer'] = $data['mp4_trailer'];
+        //     } elseif ($data['trailer_type'] == 'embed_url') {
+        //         $data['trailer'] = $data['embed_trailer'];
+        //     }
+        // }
+
+      
+
+        if (!empty($data['embed_code'])) {
+            $video->embed_code = $data['embed_code'];
+        } else {
+            $video->embed_code = '';
+        }
+    
+        if ($request->pdf_file != null) {
+            $pdf_files = time() . '.' . $request->pdf_file->extension();
+            $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+            $video->pdf_files = $pdf_files;
+        }
+
+       
+        // if ($reels_videos != null) {
+        //     foreach ($reels_videos as $Reel_Videos) {
+        //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
+        //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
+        //         $reelvideo_names = 'reels' . $reelvideo_name;
+
+        //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+        //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+        //         $shorts_name = 'shorts_'.$reelvideo_name; 
+        //         $videoPath = str_replace('\\', '/', $videoPath);
+        //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+        //         // Ensure the output directory exists
+        //         File::ensureDirectoryExists(dirname($outputPath));
+        //         // FFmpeg command to resize to 9:16 aspect ratio
+        //         $command = [
+        //             'ffmpeg',
+        //             '-y', // Add this option to force overwrite
+        //             '-i', $videoPath,
+        //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+        //             '-c:a', 'copy',
+        //             $outputPath,
+        //         ];
+        //         $process = new Process($command);
+
+        //         try {
+        //             $process->mustRun();
+        //             // return 'Video resized successfully!';
+        //         } catch (ProcessFailedException $exception) {
+        //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
+        //         }
+
+
+        //         $ffmpeg = \FFMpeg\FFMpeg::create();
+        //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
+        //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+        //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
+
+        //         unlink($reelvideo);
+
+        //         $Reels_videos = new ReelsVideo();
+        //         $Reels_videos->video_id = $video->id;
+        //         $Reels_videos->reels_videos = $shorts_name;
+        //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+        //         $Reels_videos->save();
+
+        //         $video->reels_thumbnail = default_vertical_image();
+        //     }
+        // }
+
+        //URL Link
+        $url_link = $request->url_link;
+
+        if ($url_link != null) {
+            $video->url_link = $url_link;
+        }
+
+        $url_linktym = $request->url_linktym;
+
+        if ($url_linktym != null) {
+            $StartParse = date_parse($request->url_linktym);
+            $startSec = $StartParse['hour'] * 60 * 60 + $StartParse['minute'] * 60 + $StartParse['second'];
+            $video->url_linktym = $url_linktym;
+            $video->url_linksec = $startSec;
+            $video->urlEnd_linksec = $startSec + 60;
+        }
+
+        if (compress_responsive_image_enable() == 1){
+
+                $mobileimages = public_path('/uploads/mobileimages');
+                $Tabletimages = public_path('/uploads/Tabletimages');
+                $PCimages = public_path('/uploads/PCimages');
+
+            if (!file_exists($mobileimages)) {
+                mkdir($mobileimages, 0755, true);
+            }
+
+            if (!file_exists($Tabletimages)) {
+                mkdir($Tabletimages, 0755, true);
+            }
+
+            if (!file_exists($PCimages)) {
+                mkdir($PCimages, 0755, true);
+            }
+
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+
+                    $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    $image_filename = $image_filename;
+
+                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    // $responsive_image = $image_filename;
+
+            }else{
+
+                $responsive_image = default_vertical_image(); 
+            }
+
+            if ($request->hasFile('player_image')) {
+
+                $player_image = $request->file('player_image');
+
+                    $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+
+                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $responsive_player_image = $player_image_filename;
+
+            }else{
+                $responsive_player_image = default_horizontal_image(); 
+            }
+
+
+            
+            if ($request->hasFile('video_tv_image')) {
+
+                $video_tv_image = $request->file('video_tv_image');
+
+                    $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+
+                    Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                    Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                    
+                    $responsive_tv_image = $video_tv_image_filename;
+
+            }else{
+
+                $responsive_tv_image = default_horizontal_image(); 
+            }
+
+        }else{
+            // $responsive_image = null;
+            $responsive_player_image = null;
+            $responsive_tv_image = null;
+        }
+
+
+        $video->description = $data['description'];
+       
+        $video->uploaded_by = Auth::user()->role;
+        $video->draft = 1;
+        $video->active = 1;
+        // $video->enable = 1;
+        // $video->responsive_image = $responsive_image;
+        // $video->responsive_player_image = $responsive_player_image;
+        // $video->responsive_tv_image = $responsive_tv_image;
+
+        // Ads videos
+        // if (!empty($data['ads_tag_url_id']) == null) {
+        //     $video->ads_tag_url_id = null;
+        //     $video->tag_url_ads_position = null;
+        // }
+
+        // if (!empty($data['ads_tag_url_id']) != null) {
+        //     $video->ads_tag_url_id = $data['ads_tag_url_id'];
+        //     $video->tag_url_ads_position = $data['tag_url_ads_position'];
+        // }
+
+        // if (!empty($data['default_ads'])) {
+        //     $video->default_ads = $data['default_ads'];
+        // } else {
+        //     $video->default_ads = 0;
+        // }
+
+        $video->update($data);
+
+
+        // if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
+        //     ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
+        // }
+        $video = UGCVideo::findOrFail($id);
+
+
+            // Define the convertTimeFormat function globally
+
+            function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
+                $formattedTime = gmdate("H:i:s", $totalSeconds);
+                $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                return "{$formattedTime},{$formattedMilliseconds}";
+            }
+
+            // if (!empty($files != "" && $files != null)) {
+            //     foreach ($files as $key => $val) {
+            //         if (!empty($files[$key])) {
+            //             $destinationPath = "public/uploads/subtitles/";
+
+            //             if (!file_exists($destinationPath)) {
+            //                 mkdir($destinationPath, 0755, true);
+            //             }
+
+            //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+            //             MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+
+            //             // Move uploaded file to destination path
+            //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+
+            //             // Read contents of the uploaded file
+            //             $contents = file_get_contents($destinationPath . $filename);
+
+            //             // Convert time format and add line numbers
+            //             $lineNumber = 0;
+            //             $convertedContents = preg_replace_callback(
+            //                 '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
+            //                 function ($matches) use (&$lineNumber) {
+            //                     // Increment line number for each match
+            //                     $lineNumber++;
+            //                     // Convert time format and return with the line number
+            //                     return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
+            //                 },
+            //                 $contents
+            //             );
+
+            //             // Store converted contents to a new file
+            //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+            //             if (!file_exists($newDestinationPath)) {
+            //                 mkdir($newDestinationPath, 0755, true);
+            //             }
+            //             file_put_contents($newDestinationPath . $filename, $convertedContents);
+
+            //             // Save subtitle data to database
+            //             $subtitle_data = [
+            //                 "movie_id" => $video->id,
+            //                 "shortcode" => $shortcodes[$key],
+            //                 "sub_language" => $languages[$key],
+            //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+            //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+            //             ];
+            //             $video_subtitle = MoviesSubtitles::create($subtitle_data);
+            //         }
+            //     }
+            // }
+
+        // if( !empty($request->ads_devices)){
+
+        //     $Admin_Video_Ads_inputs = array(
+
+        //         'video_id' => $video->id ,
+        //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+        //         'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+        //         'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+        //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+
+        //         'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+        //         'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+        //         'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+        //         'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+
+        //         'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+        //         'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+        //         'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+        //         'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+
+        //         'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+        //         'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+        //         'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+        //         'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+
+        //         'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+        //         'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+        //         'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+        //         'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+
+        //         'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+        //         'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+        //         'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+        //         'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+
+        //         'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+        //         'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+        //         'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+        //         'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+
+        //         // plyr.io
+
+        //         'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+        //         'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                
+        //         'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+        //         'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+
+        //         'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+        //         'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+
+        //         'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+        //         'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+
+        //         'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+        //         'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+
+        //         'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+        //         'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                
+        //         'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+        //         'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+
+        //         'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+        //     );
+
+        //     AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
+            
+        // }
+
+        \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
+
+        return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
+    }   
     
         /**
          * Store a newly created video in storage.
          *
          * @return Response
          */
-        public function store(Request $request)
-        {
-            $data = $request->all();
+        // public function store(Request $request)
+        // {
+        //     $data = $request->all();
     
-            $validatedData = $request->validate([
-                "title" => "required",
-            ]);
-            $image = isset($data["image"]) ? $data["image"] : "";
-            $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
-            $mp4_url = isset($data["video"]) ? $data["video"] : "";
-            $files = isset($data["subtitle_upload"])
-                ? $data["subtitle_upload"]
-                : "";
-            /* logo upload */
+        //     $validatedData = $request->validate([
+        //         "title" => "required",
+        //     ]);
+        //     $image = isset($data["image"]) ? $data["image"] : "";
+        //     $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
+        //     $mp4_url = isset($data["video"]) ? $data["video"] : "";
+        //     $files = isset($data["subtitle_upload"])
+        //         ? $data["subtitle_upload"]
+        //         : "";
+        //     /* logo upload */
     
-            $path = public_path() . "/uploads/videos/";
-            $image_path = public_path() . "/uploads/images/";
+        //     $path = public_path() . "/uploads/videos/";
+        //     $image_path = public_path() . "/uploads/images/";
     
-            $image = isset($data["image"]) ? $data["image"] : "";
-            $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
-            $mp4_url = isset($data["video"]) ? $data["video"] : "";
-            $files = isset($data["subtitle_upload"])
-                ? $data["subtitle_upload"]
-                : "";
-            /* logo upload */
+        //     $image = isset($data["image"]) ? $data["image"] : "";
+        //     $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
+        //     $mp4_url = isset($data["video"]) ? $data["video"] : "";
+        //     $files = isset($data["subtitle_upload"])
+        //         ? $data["subtitle_upload"]
+        //         : "";
+        //     /* logo upload */
     
-            $path = public_path() . "/uploads/videos/";
-            $image_path = public_path() . "/uploads/images/";
-            if (!empty($data["artists"])) {
-                $artistsdata = $data["artists"];
-                unset($data["artists"]);
-            }
-            if ($image != "") {
-                //code for remove old file
-                if ($image != "" && $image != null) {
-                    $file_old = $image_path . $image;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $image;
-                //   $data['image']  = $file->getClientOriginalName();
-                $data["image"] = str_replace(
-                    " ",
-                    "_",
-                    $file->getClientOriginalName()
-                );
+        //     $path = public_path() . "/uploads/videos/";
+        //     $image_path = public_path() . "/uploads/images/";
+        //     if (!empty($data["artists"])) {
+        //         $artistsdata = $data["artists"];
+        //         unset($data["artists"]);
+        //     }
+        //     if ($image != "") {
+        //         //code for remove old file
+        //         if ($image != "" && $image != null) {
+        //             $file_old = $image_path . $image;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $file = $image;
+        //         //   $data['image']  = $file->getClientOriginalName();
+        //         $data["image"] = str_replace(
+        //             " ",
+        //             "_",
+        //             $file->getClientOriginalName()
+        //         );
     
-                $file->move($image_path, $data["image"]);
-            } else {
-                $data["image"] = "default.jpg";
-            }
+        //         $file->move($image_path, $data["image"]);
+        //     } else {
+        //         $data["image"] = "default.jpg";
+        //     }
     
-            if ($request->slug != "") {
-                $data["slug"] = $this->createSlug($request->slug);
-            }
+        //     if ($request->slug != "") {
+        //         $data["slug"] = $this->createSlug($request->slug);
+        //     }
     
-            if ($request->slug == "") {
-                $data["slug"] = $this->createSlug($data["title"]);
-            }
+        //     if ($request->slug == "") {
+        //         $data["slug"] = $this->createSlug($data["title"]);
+        //     }
     
-            if ($trailer != "") {
-                //code for remove old file
-                if ($trailer != "" && $trailer != null) {
-                    $file_old = $path . $trailer;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $randval = Str::random(16);
-                $file = $trailer;
-                $trailer_vid =
-                    $randval . "." . $request->file("trailer")->extension();
-                $file->move($path, $trailer_vid);
-                $data["trailer"] =
-                    URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-            } else {
-                $data["trailer"] = "";
-            }
+        //     if ($trailer != "") {
+        //         //code for remove old file
+        //         if ($trailer != "" && $trailer != null) {
+        //             $file_old = $path . $trailer;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $randval = Str::random(16);
+        //         $file = $trailer;
+        //         $trailer_vid =
+        //             $randval . "." . $request->file("trailer")->extension();
+        //         $file->move($path, $trailer_vid);
+        //         $data["trailer"] =
+        //             URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+        //     } else {
+        //         $data["trailer"] = "";
+        //     }
     
-            //        print_r($data['mp4_url']);
-            //        exit;
+        //     //        print_r($data['mp4_url']);
+        //     //        exit;
     
-            // $tags = $data['tags'];
+        //     // $tags = $data['tags'];
     
-            $data["user_id"] = Auth::user()->id;
+        //     $data["user_id"] = Auth::user()->id;
     
-            //unset($data['tags']);
+        //     //unset($data['tags']);
     
-            if (empty($data["active"])) {
-                $data["active"] = 0;
-            }
+        //     if (empty($data["active"])) {
+        //         $data["active"] = 0;
+        //     }
     
-            if (empty($data["year"])) {
-                $data["year"] = 0;
-            } else {
-                $data["year"] = $data["year"];
-            }
+        //     if (empty($data["year"])) {
+        //         $data["year"] = 0;
+        //     } else {
+        //         $data["year"] = $data["year"];
+        //     }
     
-            if (empty($data["access"])) {
-                $data["access"] = 0;
-            } else {
-                $data["access"] = $data["access"];
-            }
+        //     if (empty($data["access"])) {
+        //         $data["access"] = 0;
+        //     } else {
+        //         $data["access"] = $data["access"];
+        //     }
     
-            if (empty($data["language"])) {
-                $data["language"] = 0;
-            } else {
-                $data["language"] = $data["language"];
-            }
+        //     if (empty($data["language"])) {
+        //         $data["language"] = 0;
+        //     } else {
+        //         $data["language"] = $data["language"];
+        //     }
     
-            if (!empty($data["embed_code"])) {
-                $data["embed_code"] = $data["embed_code"];
-            } else {
-                $data["embed_code"] = "";
-            }
+        //     if (!empty($data["embed_code"])) {
+        //         $data["embed_code"] = $data["embed_code"];
+        //     } else {
+        //         $data["embed_code"] = "";
+        //     }
     
-            if ($request->slug != "") {
-                $data["slug"] = $this->createSlug($request->slug);
-            }
+        //     if ($request->slug != "") {
+        //         $data["slug"] = $this->createSlug($request->slug);
+        //     }
     
-            if ($request->slug == "") {
-                $data["slug"] = $this->createSlug($data["title"]);
-            }
+        //     if ($request->slug == "") {
+        //         $data["slug"] = $this->createSlug($data["title"]);
+        //     }
     
-            if (empty($data["featured"])) {
-                $data["featured"] = 0;
-            }
+        //     // if (empty($data["featured"])) {
+        //     //     $data["featured"] = 0;
+        //     // }
     
-            if (empty($data["type"])) {
-                $data["type"] = "";
-            }
+        //     if (empty($data["type"])) {
+        //         $data["type"] = "";
+        //     }
     
-            if (empty($data["status"])) {
-                $data["status"] = 0;
-            }
+        //     if (empty($data["status"])) {
+        //         $data["status"] = 0;
+        //     }
     
-            if (empty($data["path"])) {
-                $data["path"] = 0;
-            }
+        //     if (empty($data["path"])) {
+        //         $data["path"] = 0;
+        //     }
     
-            if (Auth::user()->role == "admin" && Auth::user()->sub_admin == 0) {
-                $data["status"] = 1;
-            }
+        //     if (Auth::user()->role == "admin" && Auth::user()->sub_admin == 0) {
+        //         $data["status"] = 1;
+        //     }
     
-            if (Auth::user()->role == "admin" && Auth::user()->sub_admin == 1) {
-                $data["status"] = 0;
-            }
+        //     if (Auth::user()->role == "admin" && Auth::user()->sub_admin == 1) {
+        //         $data["status"] = 0;
+        //     }
     
-            if (isset($data["duration"])) {
-                //$str_time = $data
-                $str_time = preg_replace(
-                    "/^([\d]{1,2})\:([\d]{2})$/",
-                    "00:$1:$2",
-                    $data["duration"]
-                );
-                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
-                $data["duration"] = $time_seconds;
-            }
+        //     if (isset($data["duration"])) {
+        //         //$str_time = $data
+        //         $str_time = preg_replace(
+        //             "/^([\d]{1,2})\:([\d]{2})$/",
+        //             "00:$1:$2",
+        //             $data["duration"]
+        //         );
+        //         sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+        //         $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+        //         $data["duration"] = $time_seconds;
+        //     }
     
-            $data['video_js_pre_position_ads'] = $request->video_js_pre_position_ads ;
-            $data['video_js_post_position_ads'] = $request->video_js_pre_position_ads ;
-            $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
-            $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
-            $data['expiry_date'] = $request->expiry_date ;
+        //     $data['video_js_pre_position_ads'] = $request->video_js_pre_position_ads ;
+        //     $data['video_js_post_position_ads'] = $request->video_js_pre_position_ads ;
+        //     $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
+        //     $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
+        //     $data['expiry_date'] = $request->expiry_date ;
     
-            if (!empty($data["embed_code"])) {
-                $video = new Video();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->title = $data["title"];
-                $video->slug = $data["slug"];
-                $video->language = $data["language"];
-                $video->image = $data["image"];
-                $video->trailer = $data["trailer"];
-                $video->mp4_url = $path;
-                $video->type = $data["type"];
-                $video->access = $data["access"];
-                $video->embed_code = $data["embed_code"];
-                $video->video_category_id = $data["video_category_id"];
-                $video->details = $request->details;
-                $video->description = $request->description;
-                $video->user_id = Auth::user()->id;
-                $video->save();
-            }
+        //     if (!empty($data["embed_code"])) {
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->title = $data["title"];
+        //         $video->slug = $data["slug"];
+        //         $video->language = $data["language"];
+        //         $video->image = $data["image"];
+        //         $video->trailer = $data["trailer"];
+        //         $video->mp4_url = $path;
+        //         $video->type = $data["type"];
+        //         $video->access = $data["access"];
+        //         $video->embed_code = $data["embed_code"];
+        //         $video->video_category_id = $data["video_category_id"];
+        //         $video->details = $request->details;
+        //         $video->description = $request->description;
+        //         $video->user_id = Auth::user()->id;
+        //         $video->save();
+        //     }
     
-            if ($mp4_url != "") {
-                $ffprobe = \FFMpeg\FFProbe::create();
-                $disk = "public";
-                $data["duration"] = $ffprobe
-                    ->streams($request->video)
-                    ->videos()
-                    ->first()
-                    ->get("duration");
+        //     if ($mp4_url != "") {
+        //         $ffprobe = \FFMpeg\FFProbe::create();
+        //         $disk = "public";
+        //         $data["duration"] = $ffprobe
+        //             ->streams($request->video)
+        //             ->videos()
+        //             ->first()
+        //             ->get("duration");
     
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->video->getClientOriginalExtension();
-                $request->video->storeAs("public", $path);
-                $thumb_path = "public";
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->video->getClientOriginalExtension();
+        //         $request->video->storeAs("public", $path);
+        //         $thumb_path = "public";
     
-                $this->build_video_thumbnail($request->video, $path, $data["slug"]);
+        //         $this->build_video_thumbnail($request->video, $path, $data["slug"]);
     
-                $original_name = $request->video->getClientOriginalName()
-                    ? $request->video->getClientOriginalName()
-                    : "";
+        //         $original_name = $request->video->getClientOriginalName()
+        //             ? $request->video->getClientOriginalName()
+        //             : "";
     
-                $video = new Video();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->path = $rand;
-                $video->title = $data["title"];
-                $video->slug = $data["slug"];
-                $video->language = $data["language"];
-                $video->image = $data["image"];
-                $video->trailer = $data["trailer"];
-                $video->mp4_url = $path;
-                $video->type = $data["type"];
-                $video->access = $data["access"];
-                $video->video_category_id = $data["video_category_id"];
-                $video->details = $data["details"];
-                $video->duration = $data["duration"];
-                $video->description = $data["description"];
-                $video->user_id = Auth::user()->id;
-                $video->save();
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->original_name = "public";
+        //         $video->path = $rand;
+        //         $video->title = $data["title"];
+        //         $video->slug = $data["slug"];
+        //         $video->language = $data["language"];
+        //         $video->image = $data["image"];
+        //         $video->trailer = $data["trailer"];
+        //         $video->mp4_url = $path;
+        //         $video->type = $data["type"];
+        //         $video->access = $data["access"];
+        //         $video->video_category_id = $data["video_category_id"];
+        //         // $video->details = $data["details"];
+        //         $video->duration = $data["duration"];
+        //         $video->description = $data["description"];
+        //         $video->user_id = Auth::user()->id;
+        //         $video->save();
     
-                $lowBitrateFormat = (new X264(
-                    "libmp3lame",
-                    "libx264"
-                ))->setKiloBitrate(500);
-                $midBitrateFormat = (new X264(
-                    "libmp3lame",
-                    "libx264"
-                ))->setKiloBitrate(1500);
-                $highBitrateFormat = (new X264(
-                    "libmp3lame",
-                    "libx264"
-                ))->setKiloBitrate(3000);
-                $converted_name = ConvertVideoForStreaming::handle($path);
+        //         $lowBitrateFormat = (new X264(
+        //             "libmp3lame",
+        //             "libx264"
+        //         ))->setKiloBitrate(500);
+        //         $midBitrateFormat = (new X264(
+        //             "libmp3lame",
+        //             "libx264"
+        //         ))->setKiloBitrate(1500);
+        //         $highBitrateFormat = (new X264(
+        //             "libmp3lame",
+        //             "libx264"
+        //         ))->setKiloBitrate(3000);
+        //         $converted_name = ConvertVideoForStreaming::handle($path);
     
-                $Playerui = Playerui::first();
-                if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
-                    TranscodeVideo::dispatch($video);
-                }
-                // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                //     VideoClip::dispatch($video);
-                // }
-                else{
-                    if(Enable_4k_Conversion() == 1){
-                        Convert4kVideoForStreaming::dispatch($video);
-                    }else{
-                        ConvertVideoForStreaming::dispatch($video);
-                    }
-                }             
-            } else {
-                $video = Video::create($data);
-            }
+        //         $Playerui = Playerui::first();
+        //         if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+        //             TranscodeVideo::dispatch($video);
+        //         }
+        //         // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+        //         //     VideoClip::dispatch($video);
+        //         // }
+        //         else{
+        //             if(Enable_4k_Conversion() == 1){
+        //                 Convert4kVideoForStreaming::dispatch($video);
+        //             }else{
+        //                 ConvertVideoForStreaming::dispatch($video);
+        //             }
+        //         }             
+        //     } else {
+        //         $video = Video::create($data);
+        //     }
     
-            $shortcodes = $request["short_code"];
-            $languages = $request["sub_language"];
-            /* $languages =$request['language'];*/
-            /* $languages = $subtitle->language;*/
-            if (!empty($files != "" && $files != null)) {
-                /* if($request->hasFile('subtitle_upload'))
-            {
-                $vid = $movie->id;
-                $files = $request->file('subtitle_upload');
-        */
+        //     $shortcodes = $request["short_code"];
+        //     $languages = $request["sub_language"];
+        //     /* $languages =$request['language'];*/
+        //     /* $languages = $subtitle->language;*/
+        //     if (!empty($files != "" && $files != null)) {
+        //         /* if($request->hasFile('subtitle_upload'))
+        //     {
+        //         $vid = $movie->id;
+        //         $files = $request->file('subtitle_upload');
+        // */
     
-                foreach ($files as $key => $val) {
-                    if (!empty($files[$key])) {
-                        // $movie_sub = new MovieSubtitle;
-                        // $destinationPath ='public/uploads/subtitles/';
-                        // $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
-                        // $files[$key]->move($destinationPath, $filename);
-                        // $movie_sub->sub_language = $destinationPath.$filename;
-                        // $movie_sub->movie_id = $vid;
-                        // $movie_sub->shortcode = $shortcodes[$key];
-                        // $movie_sub->url = URL::to('/').'/public/uploads/subtitles/'.$filename;
-                        //  $subtitle_data['sub_language'] = $languages[$key];
-                        // $subtitle_data['shortcode'] = $shortcodes[$key];
-                        // $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename;
-                        //  $video_subtitle = VideoSubtitle::updateOrCreate(array('shortcode' => 'en','video_id' => $id), $subtitle_data);
-                        // $movie_subtitle = MovieSubtitle::create($subtitle_data);
-                        // $movie_sub->save();
-                        $destinationPath = "public/uploads/subtitles/";
-                        $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-                        $files[$key]->move($destinationPath, $filename);
-                        $subtitle_data["video_id"] = $video->id;
+        //         foreach ($files as $key => $val) {
+        //             if (!empty($files[$key])) {
+        //                 // $movie_sub = new MovieSubtitle;
+        //                 // $destinationPath ='public/uploads/subtitles/';
+        //                 // $filename = $movie->id. '-'.$shortcodes[$key].'.vtt';
+        //                 // $files[$key]->move($destinationPath, $filename);
+        //                 // $movie_sub->sub_language = $destinationPath.$filename;
+        //                 // $movie_sub->movie_id = $vid;
+        //                 // $movie_sub->shortcode = $shortcodes[$key];
+        //                 // $movie_sub->url = URL::to('/').'/public/uploads/subtitles/'.$filename;
+        //                 //  $subtitle_data['sub_language'] = $languages[$key];
+        //                 // $subtitle_data['shortcode'] = $shortcodes[$key];
+        //                 // $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename;
+        //                 //  $video_subtitle = VideoSubtitle::updateOrCreate(array('shortcode' => 'en','video_id' => $id), $subtitle_data);
+        //                 // $movie_subtitle = MovieSubtitle::create($subtitle_data);
+        //                 // $movie_sub->save();
+        //                 $destinationPath = "public/uploads/subtitles/";
+        //                 $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+        //                 $files[$key]->move($destinationPath, $filename);
+        //                 $subtitle_data["video_id"] = $video->id;
     
-                        $subtitle_data["sub_language"] = $languages[$key];
-                        $subtitle_data["shortcode"] = $shortcodes[$key];
-                        $subtitle_data["url"] =
-                            URL::to("/") . "/public/uploads/subtitles/" . $filename;
-                        $video_subtitle = VideosSubtitle::create($subtitle_data);
-                    }
-                }
-            }
+        //                 $subtitle_data["sub_language"] = $languages[$key];
+        //                 $subtitle_data["shortcode"] = $shortcodes[$key];
+        //                 $subtitle_data["url"] =
+        //                     URL::to("/") . "/public/uploads/subtitles/" . $filename;
+        //                 $video_subtitle = VideosSubtitle::create($subtitle_data);
+        //             }
+        //         }
+        //     }
     
-            if (!empty($artistsdata)) {
-                foreach ($artistsdata as $key => $value) {
-                    $artist = new Videoartist();
-                    $artist->video_id = $video->id;
-                    $artist->artist_id = $value;
-                    $artist->save();
-                }
-            }
-            /*Advertisement Video update starts*/
-            // if($data['ads_id'] != 0){
-            //         $ad_video = new AdsVideo;
-            //         $ad_video->video_id = $video->id;
-            //         $ad_video->ads_id = $data['ads_id'];
-            //         $ad_video->ad_roll = null;
-            //         $ad_video->save();
-            // }
-            /*Advertisement Video update ends*/
+        //     if (!empty($artistsdata)) {
+        //         foreach ($artistsdata as $key => $value) {
+        //             $artist = new Videoartist();
+        //             $artist->video_id = $video->id;
+        //             $artist->artist_id = $value;
+        //             $artist->save();
+        //         }
+        //     }
+        //     /*Advertisement Video update starts*/
+        //     // if($data['ads_id'] != 0){
+        //     //         $ad_video = new AdsVideo;
+        //     //         $ad_video->video_id = $video->id;
+        //     //         $ad_video->ads_id = $data['ads_id'];
+        //     //         $ad_video->ad_roll = null;
+        //     //         $ad_video->save();
+        //     // }
+        //     /*Advertisement Video update ends*/
     
-            return redirect("admin/videos")->with(
-                "message",
-                "Your video will be available shortly after we process it"
-            );
+        //     return redirect("admin/videos")->with(
+        //         "message",
+        //         "Your video will be available shortly after we process it"
+        //     );
     
-            //return Redirect::to('admin/videos')->with(array('note' => 'New Video Successfully Added!', 'note_type' => 'success') );
-        }
+        //     //return Redirect::to('admin/videos')->with(array('note' => 'New Video Successfully Added!', 'note_type' => 'success') );
+        // }
     
         public function destroy($id)
         {
@@ -2424,89 +3108,89 @@ class UGCController extends Controller
             }
             $settings = Setting::first();
     
-            $video = Video::find($id);
+            $video = UGCVideo::find($id);
     
-            $ads_details = AdsVideo::join(
-                "advertisements",
-                "advertisements.id",
-                "ads_videos.ads_id"
-            )
-                ->where("ads_videos.video_id", $id)
-                ->pluck("ads_id")
-                ->first();
+            // $ads_details = AdsVideo::join(
+            //     "advertisements",
+            //     "advertisements.id",
+            //     "ads_videos.ads_id"
+            // )
+            //     ->where("ads_videos.video_id", $id)
+            //     ->pluck("ads_id")
+            //     ->first();
     
-            $ads_rolls = AdsVideo::join(
-                "advertisements",
-                "advertisements.id",
-                "ads_videos.ads_id"
-            )
-                ->where("ads_videos.video_id", $id)
-                ->pluck("ad_roll")
-                ->first();
+            // $ads_rolls = AdsVideo::join(
+            //     "advertisements",
+            //     "advertisements.id",
+            //     "ads_videos.ads_id"
+            // )
+            //     ->where("ads_videos.video_id", $id)
+            //     ->pluck("ad_roll")
+            //     ->first();
     
-            $ads_category = Adscategory::get();
+            // $ads_category = Adscategory::get();
     
-            $Reels_videos = Video::Join(
-                "reelsvideo",
-                "reelsvideo.video_id",
-                "=",
-                "videos.id"
-            )
-                ->where("videos.id", $id)
-                ->get();
+            // $Reels_videos = Video::Join(
+            //     "reelsvideo",
+            //     "reelsvideo.video_id",
+            //     "=",
+            //     "videos.id"
+            // )
+            //     ->where("videos.id", $id)
+            //     ->get();
     
                 $StorageSetting = StorageSetting::first();
                 if($StorageSetting->site_storage == 1){
-                    $dropzone_url =  URL::to('admin/uploadEditVideo');
+                    $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }elseif($StorageSetting->aws_storage == 1){
                     $dropzone_url =  URL::to('admin/AWSuploadEditVideo');
                 }else{ 
-                    $dropzone_url =  URL::to('admin/uploadEditVideo');
+                    $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }
                 
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
                 "video" => $video,
-                "post_route" => URL::to("ugc-update"),
+                "post_route" => URL::to("ugc/update"),
                 "button_text" => "Update Video",
                 "admin_user" => Auth::user(),
-                "video_categories" => VideoCategory::all(),
-                "ads" => Advertisement::where("status", "=", 1)->get(),
-                "video_subtitle" => VideosSubtitle::all(),
-                "subtitles" => Subtitle::all(),
-                "languages" => Language::all(),
+                // "video_categories" => VideoCategory::all(),
+                // "ads" => Advertisement::where("status", "=", 1)->get(),
+                // "video_subtitle" => VideosSubtitle::all(),
+                // "subtitles" => Subtitle::all(),
+                // "languages" => Language::all(),
                 "artists" => Artist::all(),
                 "settings" => $settings,
-                "age_categories" => AgeCategory::all(),
-                "countries" => CountryCode::all(),
-                "video_artist" => Videoartist::where("video_id", $id)
-                    ->pluck("artist_id")
-                    ->toArray(),
-                "category_id" => CategoryVideo::where("video_id", $id)
-                    ->pluck("category_id")
-                    ->toArray(),
-                "languages_id" => LanguageVideo::where("video_id", $id)
-                    ->pluck("language_id")
-                    ->toArray(),
+                // "age_categories" => AgeCategory::all(),
+                // "countries" => CountryCode::all(),
+                // "video_artist" => Videoartist::where("video_id", $id)
+                //     ->pluck("artist_id")
+                //     ->toArray(),
+                // "category_id" => CategoryVideo::where("video_id", $id)
+                //     ->pluck("category_id")
+                //     ->toArray(),
+                // "languages_id" => LanguageVideo::where("video_id", $id)
+                //     ->pluck("language_id")
+                //     ->toArray(),
                 "page" => "Edit",
-                "Reels_videos" => $Reels_videos,
-                "ads_paths" => $ads_details ? $ads_details : 0,
-                "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
-                "ads_category" => $ads_category,
+                // "Reels_videos" => $Reels_videos,
+                // "ads_paths" => $ads_details ? $ads_details : 0,
+                // "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
+                // "ads_category" => $ads_category,
                 "dropzone_url" => $dropzone_url,
     
             ];
     
-            dd($data);
+            // dd($data);
             return Theme::view("UserGeneratedContent.ugc-editvideo", $data);
         }
 
-        public function uploadEditVideo(Request $request)
+        public function uploadEditUGCVideo(Request $request)
         {
             $value = [];
             $data = $request->all();
             $id = $data["videoid"];
-            $video = Video::findOrFail($id);
+            $video = UGCVideo::findOrFail($id);
     
             // echo "<pre>";
             // print_r($video);exit();
@@ -2560,14 +3244,14 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->title = $file_folder_name;
                 $video->original_name = "public";
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = "mp4_url";
-                // $video->draft = 0;
+                $video->draft = 0;
                 $video->duration = $Video_duration;
                 $video->save();
     
@@ -2605,7 +3289,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                //  $video = new Video();
+                 $video = new UGCVideo();
                 $video->disk = "public";
                 $video->status = 0;
                 $video->original_name = "public";
@@ -2614,7 +3298,7 @@ class UGCController extends Controller
                 $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
                 //  $video->draft = 0;
-                $video->type = "";
+                $video->type = "mp4_url";
                 //  $video->image = 'default_image.jpg';
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
@@ -2670,7 +3354,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->title = $file_folder_name;
                 $video->original_name = "public";
@@ -2682,7 +3366,7 @@ class UGCController extends Controller
                 $video->save();
     
                 $video_id = $video->id;
-                $video_title = Video::find($video_id);
+                $video_title = UGCVideo::find($video_id);
                 $title = $video_title->title;
     
                 $value["success"] = 1;
@@ -2889,7 +3573,7 @@ class UGCController extends Controller
     
             // Enable Video Title Thumbnail
     
-            $video->enable_video_title_image = $request->enable_video_title_image  ? "1" : "0";
+            // $video->enable_video_title_image = $request->enable_video_title_image  ? "1" : "0";
     
             // Trailer Update
     
@@ -2898,240 +3582,240 @@ class UGCController extends Controller
                 $video->trailer_type = $data["trailer_type"];
             }
     
-            $StorageSetting = StorageSetting::first();
+            // $StorageSetting = StorageSetting::first();
     
-            if($StorageSetting->site_storage == 1){
-                if (
-                    $trailer != "" &&
-                    $pack == "Business" &&
-                    $settings->transcoding_access == 1 &&
-                    $data["trailer_type"] == "video_mp4"
-                ) {
+            // if($StorageSetting->site_storage == 1){
+            //     if (
+            //         $trailer != "" &&
+            //         $pack == "Business" &&
+            //         $settings->transcoding_access == 1 &&
+            //         $data["trailer_type"] == "video_mp4"
+            //     ) {
     
-                    if ($settings->transcoding_resolution != null) {
-                        $convertresolution = [];
-                        $resolution = explode(",", $settings->transcoding_resolution);
-                        foreach ($resolution as $value) {
-                            if ($value == "240p") {
-                                $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
-                                array_push($convertresolution, $r_240p);
-                            }
-                            if ($value == "360p") {
-                                $r_360p = (new Representation())
-                                    ->setKiloBitrate(276)
-                                    ->setResize(640, 360);
-                                array_push($convertresolution, $r_360p);
-                            }
-                            if ($value == "480p") {
-                                $r_480p = (new Representation())
-                                    ->setKiloBitrate(750)
-                                    ->setResize(854, 480);
-                                array_push($convertresolution, $r_480p);
-                            }
-                            if ($value == "720p") {
-                                $r_720p = (new Representation())
-                                    ->setKiloBitrate(2048)
-                                    ->setResize(1280, 720);
-                                array_push($convertresolution, $r_720p);
-                            }
-                            if ($value == "1080p") {
-                                $r_1080p = (new Representation())
-                                    ->setKiloBitrate(4096)
-                                    ->setResize(1920, 1080);
-                                array_push($convertresolution, $r_1080p);
-                            }
-                        }
-                    }
-                    $trailer = $data["trailer"];
-                    $trailer_path = URL::to("storage/app/trailer/");
-                    $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
-                    $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                    $trailer->move(storage_path("app/trailer/"), $trailer_Video);
-                    $trailer_video_name = strtok($trailer_Video, ".");
-                    $M3u8_save_path =
-                        $trailer_path . "/" . $trailer_video_name . ".m3u8";
-                    $storepath = URL::to("storage/app/trailer/");
+            //         if ($settings->transcoding_resolution != null) {
+            //             $convertresolution = [];
+            //             $resolution = explode(",", $settings->transcoding_resolution);
+            //             foreach ($resolution as $value) {
+            //                 if ($value == "240p") {
+            //                     $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
+            //                     array_push($convertresolution, $r_240p);
+            //                 }
+            //                 if ($value == "360p") {
+            //                     $r_360p = (new Representation())
+            //                         ->setKiloBitrate(276)
+            //                         ->setResize(640, 360);
+            //                     array_push($convertresolution, $r_360p);
+            //                 }
+            //                 if ($value == "480p") {
+            //                     $r_480p = (new Representation())
+            //                         ->setKiloBitrate(750)
+            //                         ->setResize(854, 480);
+            //                     array_push($convertresolution, $r_480p);
+            //                 }
+            //                 if ($value == "720p") {
+            //                     $r_720p = (new Representation())
+            //                         ->setKiloBitrate(2048)
+            //                         ->setResize(1280, 720);
+            //                     array_push($convertresolution, $r_720p);
+            //                 }
+            //                 if ($value == "1080p") {
+            //                     $r_1080p = (new Representation())
+            //                         ->setKiloBitrate(4096)
+            //                         ->setResize(1920, 1080);
+            //                     array_push($convertresolution, $r_1080p);
+            //                 }
+            //             }
+            //         }
+            //         $trailer = $data["trailer"];
+            //         $trailer_path = URL::to("storage/app/trailer/");
+            //         $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+            //         $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+            //         $trailer->move(storage_path("app/trailer/"), $trailer_Video);
+            //         $trailer_video_name = strtok($trailer_Video, ".");
+            //         $M3u8_save_path =
+            //             $trailer_path . "/" . $trailer_video_name . ".m3u8";
+            //         $storepath = URL::to("storage/app/trailer/");
         
-                    $data["trailer"] = $M3u8_save_path;
-                    $video->trailer_type = "m3u8";
-                    $data["trailer_type"] = "m3u8";
-                } else {
+            //         $data["trailer"] = $M3u8_save_path;
+            //         $video->trailer_type = "m3u8";
+            //         $data["trailer_type"] = "m3u8";
+            //     } else {
                     
-                    if ($trailer != "" && $data["trailer_type"] == "video_mp4") {
-                        if (!empty($trailer)) {
-                            if ($trailer != "" && $trailer != null) {
-                                $file_old = $path . $trailer;
+            //         if ($trailer != "" && $data["trailer_type"] == "video_mp4") {
+            //             if (!empty($trailer)) {
+            //                 if ($trailer != "" && $trailer != null) {
+            //                     $file_old = $path . $trailer;
         
-                                if (file_exists($file_old)) {
-                                    unlink($file_old);
-                                }
-                            }
-                            //upload new file
-                            $randval = Str::random(16);
-                            $file = $trailer;
-                            $trailer_vid =
-                                $randval . "." . $request->file("trailer")->extension();
-                            $file->move($path, $trailer_vid);
+            //                     if (file_exists($file_old)) {
+            //                         unlink($file_old);
+            //                     }
+            //                 }
+            //                 //upload new file
+            //                 $randval = Str::random(16);
+            //                 $file = $trailer;
+            //                 $trailer_vid =
+            //                     $randval . "." . $request->file("trailer")->extension();
+            //                 $file->move($path, $trailer_vid);
         
-                            $data["trailer"] =
-                                URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-                            $video->trailer =
-                                URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-                        } else {
-                            $data["trailer"] = $video->trailer;
-                            $data["trailer_type"] = $video->trailer_type;
-                        }
-                    } elseif ($data["trailer_type"] == "m3u8_url") {
-                        $video->trailer = $data["m3u8_trailer"];
-                        $data["trailer"] = $data["m3u8_trailer"];
-                    } elseif ($data["trailer_type"] == "mp4_url") {
-                        $video->trailer = $data["mp4_trailer"];
-                        $data["trailer"] = $data["mp4_trailer"];
-                    } elseif ($data["trailer_type"] == "embed_url") {
-                        $video->trailer = $data["embed_trailer"];
-                        $data["trailer"] = $data["embed_trailer"];
-                    } else {
-                        $data["trailer"] = $video->trailer;
-                        $data["trailer_type"] = $video->trailer_type;
-                        // dd('test'.$video);
+            //                 $data["trailer"] =
+            //                     URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+            //                 $video->trailer =
+            //                     URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+            //             } else {
+            //                 $data["trailer"] = $video->trailer;
+            //                 $data["trailer_type"] = $video->trailer_type;
+            //             }
+            //         } elseif ($data["trailer_type"] == "m3u8_url") {
+            //             $video->trailer = $data["m3u8_trailer"];
+            //             $data["trailer"] = $data["m3u8_trailer"];
+            //         } elseif ($data["trailer_type"] == "mp4_url") {
+            //             $video->trailer = $data["mp4_trailer"];
+            //             $data["trailer"] = $data["mp4_trailer"];
+            //         } elseif ($data["trailer_type"] == "embed_url") {
+            //             $video->trailer = $data["embed_trailer"];
+            //             $data["trailer"] = $data["embed_trailer"];
+            //         } else {
+            //             $data["trailer"] = $video->trailer;
+            //             $data["trailer_type"] = $video->trailer_type;
+            //             // dd('test'.$video);
     
-                    }
-                    // $data['trailer'] = "";
-                }
+            //         }
+            //         // $data['trailer'] = "";
+            //     }
         
-            }elseif($StorageSetting->aws_storage == 1 && !empty($data["trailer"])){
-                if (
-                    $trailer != "" &&
-                    $pack == "Business" &&
-                    $settings->transcoding_access == 1 &&
-                    $data["trailer_type"] == "video_mp4"
-                ) {
+            // }elseif($StorageSetting->aws_storage == 1 && !empty($data["trailer"])){
+            //     if (
+            //         $trailer != "" &&
+            //         $pack == "Business" &&
+            //         $settings->transcoding_access == 1 &&
+            //         $data["trailer_type"] == "video_mp4"
+            //     ) {
     
-                    $file = $request->file('trailer');
-                    $file_folder_name =  $file->getClientOriginalName();
-                    $name_mp4 =  $file->getClientOriginalName();
-                    $newfile = explode(".mp4",$name_mp4);
-                    // $name = $newfile[0].'.m3u8';   
-                    $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
-                    $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
-                    $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                    Storage::disk('s3')->put($transcode_path, file_get_contents($file));
-                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                    $M3u8_path = $path.$filePath;
-                    $M3u8_save_path = $path.$transcode_path;
-                    $data["trailer"] = $M3u8_save_path;
-                    $video->trailer_type = "m3u8";
-                    $data["trailer_type"] = "m3u8";
+            //         $file = $request->file('trailer');
+            //         $file_folder_name =  $file->getClientOriginalName();
+            //         $name_mp4 =  $file->getClientOriginalName();
+            //         $newfile = explode(".mp4",$name_mp4);
+            //         // $name = $newfile[0].'.m3u8';   
+            //         $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+            //         $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+            //         $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+            //         Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+            //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            //         $M3u8_path = $path.$filePath;
+            //         $M3u8_save_path = $path.$transcode_path;
+            //         $data["trailer"] = $M3u8_save_path;
+            //         $video->trailer_type = "m3u8";
+            //         $data["trailer_type"] = "m3u8";
     
-                }else{
+            //     }else{
     
-                    $file = $request->file('trailer');
-                    $file_folder_name =  $file->getClientOriginalName();
-                    $name = time() . $file->getClientOriginalName();
-                    $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
-                    Storage::disk('s3')->put($filePath, file_get_contents($file));
-                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                    $trailer = $path.$filePath;
-                    $data["trailer"] = $trailer;
-                    $data["trailer_type"] = 'video_mp4';
-                }
-            }else{ 
-                if (
-                    $trailer != "" &&
-                    $pack == "Business" &&
-                    $settings->transcoding_access == 1 &&
-                    $data["trailer_type"] == "video_mp4"
-                ) {
-                    if ($settings->transcoding_resolution != null) {
-                        $convertresolution = [];
-                        $resolution = explode(",", $settings->transcoding_resolution);
-                        foreach ($resolution as $value) {
-                            if ($value == "240p") {
-                                $r_240p = (new Representation())
-                                    ->setKiloBitrate(150)
-                                    ->setResize(426, 240);
-                                array_push($convertresolution, $r_240p);
-                            }
-                            if ($value == "360p") {
-                                $r_360p = (new Representation())
-                                    ->setKiloBitrate(276)
-                                    ->setResize(640, 360);
-                                array_push($convertresolution, $r_360p);
-                            }
-                            if ($value == "480p") {
-                                $r_480p = (new Representation())
-                                    ->setKiloBitrate(750)
-                                    ->setResize(854, 480);
-                                array_push($convertresolution, $r_480p);
-                            }
-                            if ($value == "720p") {
-                                $r_720p = (new Representation())
-                                    ->setKiloBitrate(2048)
-                                    ->setResize(1280, 720);
-                                array_push($convertresolution, $r_720p);
-                            }
-                            if ($value == "1080p") {
-                                $r_1080p = (new Representation())
-                                    ->setKiloBitrate(4096)
-                                    ->setResize(1920, 1080);
-                                array_push($convertresolution, $r_1080p);
-                            }
-                        }
-                    }
-                    $trailer = $data["trailer"];
-                    $trailer_path = URL::to("storage/app/trailer/");
-                    $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
-                    $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-                    $trailer->move(storage_path("app/trailer/"), $trailer_Video);
-                    $trailer_video_name = strtok($trailer_Video, ".");
-                    $M3u8_save_path =
-                        $trailer_path . "/" . $trailer_video_name . ".m3u8";
-                    $storepath = URL::to("storage/app/trailer/");
+            //         $file = $request->file('trailer');
+            //         $file_folder_name =  $file->getClientOriginalName();
+            //         $name = time() . $file->getClientOriginalName();
+            //         $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+            //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+            //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            //         $trailer = $path.$filePath;
+            //         $data["trailer"] = $trailer;
+            //         $data["trailer_type"] = 'video_mp4';
+            //     }
+            // }else{ 
+            //     if (
+            //         $trailer != "" &&
+            //         $pack == "Business" &&
+            //         $settings->transcoding_access == 1 &&
+            //         $data["trailer_type"] == "video_mp4"
+            //     ) {
+            //         if ($settings->transcoding_resolution != null) {
+            //             $convertresolution = [];
+            //             $resolution = explode(",", $settings->transcoding_resolution);
+            //             foreach ($resolution as $value) {
+            //                 if ($value == "240p") {
+            //                     $r_240p = (new Representation())
+            //                         ->setKiloBitrate(150)
+            //                         ->setResize(426, 240);
+            //                     array_push($convertresolution, $r_240p);
+            //                 }
+            //                 if ($value == "360p") {
+            //                     $r_360p = (new Representation())
+            //                         ->setKiloBitrate(276)
+            //                         ->setResize(640, 360);
+            //                     array_push($convertresolution, $r_360p);
+            //                 }
+            //                 if ($value == "480p") {
+            //                     $r_480p = (new Representation())
+            //                         ->setKiloBitrate(750)
+            //                         ->setResize(854, 480);
+            //                     array_push($convertresolution, $r_480p);
+            //                 }
+            //                 if ($value == "720p") {
+            //                     $r_720p = (new Representation())
+            //                         ->setKiloBitrate(2048)
+            //                         ->setResize(1280, 720);
+            //                     array_push($convertresolution, $r_720p);
+            //                 }
+            //                 if ($value == "1080p") {
+            //                     $r_1080p = (new Representation())
+            //                         ->setKiloBitrate(4096)
+            //                         ->setResize(1920, 1080);
+            //                     array_push($convertresolution, $r_1080p);
+            //                 }
+            //             }
+            //         }
+            //         $trailer = $data["trailer"];
+            //         $trailer_path = URL::to("storage/app/trailer/");
+            //         $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+            //         $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+            //         $trailer->move(storage_path("app/trailer/"), $trailer_Video);
+            //         $trailer_video_name = strtok($trailer_Video, ".");
+            //         $M3u8_save_path =
+            //             $trailer_path . "/" . $trailer_video_name . ".m3u8";
+            //         $storepath = URL::to("storage/app/trailer/");
         
-                    $data["trailer"] = $M3u8_save_path;
-                    $video->trailer_type = "m3u8";
-                    $data["trailer_type"] = "m3u8";
-                } else {
-                    if ( $trailer != "" && $data["trailer_type"] == "video_mp4") {
-                        if (!empty($trailer)) {
-                            if ($trailer != "" && $trailer != null) {
-                                $file_old = $path . $trailer;
+            //         $data["trailer"] = $M3u8_save_path;
+            //         $video->trailer_type = "m3u8";
+            //         $data["trailer_type"] = "m3u8";
+            //     } else {
+            //         if ( $trailer != "" && $data["trailer_type"] == "video_mp4") {
+            //             if (!empty($trailer)) {
+            //                 if ($trailer != "" && $trailer != null) {
+            //                     $file_old = $path . $trailer;
         
-                                if (file_exists($file_old)) {
-                                    unlink($file_old);
-                                }
-                            }
-                            //upload new file
-                            $randval = Str::random(16);
-                            $file = $trailer;
-                            $trailer_vid =
-                                $randval . "." . $request->file("trailer")->extension();
-                            $file->move($path, $trailer_vid);
+            //                     if (file_exists($file_old)) {
+            //                         unlink($file_old);
+            //                     }
+            //                 }
+            //                 //upload new file
+            //                 $randval = Str::random(16);
+            //                 $file = $trailer;
+            //                 $trailer_vid =
+            //                     $randval . "." . $request->file("trailer")->extension();
+            //                 $file->move($path, $trailer_vid);
         
-                            $data["trailer"] =
-                                URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-                            $video->trailer =
-                                URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-                        } else {
-                            $data["trailer"] = $video->trailer;
-                            $data["trailer_type"] = $video->trailer_type;
+            //                 $data["trailer"] =
+            //                     URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+            //                 $video->trailer =
+            //                     URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+            //             } else {
+            //                 $data["trailer"] = $video->trailer;
+            //                 $data["trailer_type"] = $video->trailer_type;
     
-                        }
-                    } elseif ($data["trailer_type"] == "m3u8_url") {
-                        $video->trailer = $data["m3u8_trailer"];
-                        $data["trailer"] = $data["m3u8_trailer"];
-                    } elseif ($data["trailer_type"] == "mp4_url") {
-                        $video->trailer = $data["mp4_trailer"];
-                        $data["trailer"] = $data["mp4_trailer"];
-                    } elseif ($data["trailer_type"] == "embed_url") {
-                        $video->trailer = $data["embed_trailer"];
-                        $data["trailer"] = $data["embed_trailer"];
-                    } else {
-                        $data["trailer"] = $video->trailer;
-                        $data["trailer_type"] = $video->trailer_type;
-                    }
-                    }
-                }
+            //             }
+            //         } elseif ($data["trailer_type"] == "m3u8_url") {
+            //             $video->trailer = $data["m3u8_trailer"];
+            //             $data["trailer"] = $data["m3u8_trailer"];
+            //         } elseif ($data["trailer_type"] == "mp4_url") {
+            //             $video->trailer = $data["mp4_trailer"];
+            //             $data["trailer"] = $data["mp4_trailer"];
+            //         } elseif ($data["trailer_type"] == "embed_url") {
+            //             $video->trailer = $data["embed_trailer"];
+            //             $data["trailer"] = $data["embed_trailer"];
+            //         } else {
+            //             $data["trailer"] = $video->trailer;
+            //             $data["trailer_type"] = $video->trailer_type;
+            //         }
+            //         }
+            //     }
     
     
     
@@ -3187,17 +3871,17 @@ class UGCController extends Controller
                 $data["embed_code"] = null;
             }
     
-            if (empty($data["age_restrict"])) {
-                $data["age_restrict"] = 0;
-            } else {
-                $data["age_restrict"] = $data["age_restrict"];
-            }
+            // if (empty($data["age_restrict"])) {
+            //     $data["age_restrict"] = 0;
+            // } else {
+            //     $data["age_restrict"] = $data["age_restrict"];
+            // }
     
-            if (empty($data["featured"])) {
-                $featured = 0;
-            } else {
-                $featured = 1;
-            }
+            // if (empty($data["featured"])) {
+            //     $featured = 0;
+            // } else {
+            //     $featured = 1;
+            // }
     
             if (empty($data["active"])) {
                 $active = 0;
@@ -3385,52 +4069,52 @@ class UGCController extends Controller
             }
     
     
-            if($request->ppv_price == null && empty($data["global_ppv"]) ){
-                $video->global_ppv = null;
-                $data["ppv_price"] = null;
+            // if($request->ppv_price == null && empty($data["global_ppv"]) ){
+            //     $video->global_ppv = null;
+            //     $data["ppv_price"] = null;
     
-            }else if($request->ppv_price == null && empty($data["global_ppv"]) ){
-                $video->global_ppv = null;
-                $data["ppv_price"] = null;
-            }else{
+            // }else if($request->ppv_price == null && empty($data["global_ppv"]) ){
+            //     $video->global_ppv = null;
+            //     $data["ppv_price"] = null;
+            // }else{
     
-                if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
-                    $video->global_ppv = $data["global_ppv"];
-                    $data["ppv_price"] = $data["set_gobal_ppv_price"];
-                } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
-                    $video->global_ppv = $data["global_ppv"];
-                    $data["ppv_price"] = $settings->ppv_price;
-                } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
-                    $video->global_ppv = $data["global_ppv"];
-                    $data["ppv_price"] = $data["set_gobal_ppv_price"];
-                }  else if(!empty($data["global_ppv"])) {
-                    $video->global_ppv = $data["global_ppv"];
-                    $data["ppv_price"] = $settings->ppv_price;
-                }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
-                    $data["ppv_price"] = $request->ppv_price;
-                    $video->global_ppv = null;
-                }  else {
-                    $video->global_ppv = null;
-                    $data["ppv_price"] = null;
-                }
-            }
+            //     if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+            //         $video->global_ppv = $data["global_ppv"];
+            //         $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            //     } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+            //         $video->global_ppv = $data["global_ppv"];
+            //         $data["ppv_price"] = $settings->ppv_price;
+            //     } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+            //         $video->global_ppv = $data["global_ppv"];
+            //         $data["ppv_price"] = $data["set_gobal_ppv_price"];
+            //     }  else if(!empty($data["global_ppv"])) {
+            //         $video->global_ppv = $data["global_ppv"];
+            //         $data["ppv_price"] = $settings->ppv_price;
+            //     }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
+            //         $data["ppv_price"] = $request->ppv_price;
+            //         $video->global_ppv = null;
+            //     }  else {
+            //         $video->global_ppv = null;
+            //         $data["ppv_price"] = null;
+            //     }
+            // }
             // if (!empty($data["global_ppv"])) {
             //     $video->global_ppv = $data["global_ppv"];
             // } else {
             //     $video->global_ppv = null;
             // }
     
-            if (!empty($data["enable"])) {
-                $enable = $data["enable"];
-            } else {
-                $enable = 0;
-            }
+            // if (!empty($data["enable"])) {
+            //     $enable = $data["enable"];
+            // } else {
+            //     $enable = 0;
+            // }
     
-            if (!empty($data["banner"])) {
-                $banner = $data["banner"];
-            } else {
-                $banner = 0;
-            }
+            // if (!empty($data["banner"])) {
+            //     $banner = $data["banner"];
+            // } else {
+            //     $banner = 0;
+            // }
     
             if (!empty($data["embed_code"])) {
                 $embed_code = $data["embed_code"];
@@ -3460,34 +4144,34 @@ class UGCController extends Controller
             } else {
             }
     
-            if (empty($data["publish_type"])) {
-                $publish_type = 0;
-            } else {
-                $publish_type = $data["publish_type"];
-            }
+            // if (empty($data["publish_type"])) {
+            //     $publish_type = 0;
+            // } else {
+            //     $publish_type = $data["publish_type"];
+            // }
     
-            if (empty($data["publish_time"])) {
-                $publish_time = 0;
-            } else {
-                $publish_time = $data["publish_time"];
-            }
+            // if (empty($data["publish_time"])) {
+            //     $publish_time = 0;
+            // } else {
+            //     $publish_time = $data["publish_time"];
+            // }
     
-            if (!empty($data["Recommendation"])) {
-                $video->Recommendation = $data["Recommendation"];
-            }
+            // if (!empty($data["Recommendation"])) {
+            //     $video->Recommendation = $data["Recommendation"];
+            // }
     
-            if (empty($data["age_restrict"])) {
-                $video->age_restrict = $data["age_restrict"];
-            }
+            // if (empty($data["age_restrict"])) {
+            //     $video->age_restrict = $data["age_restrict"];
+            // }
     
-            if (!empty($data["details"])) {
-                $video->details = $data["details"];
-            }
-            if (!empty($data["details"])) {
-                $details = $data["details"];
-            } else {
-                $details = null;
-            }
+            // if (!empty($data["details"])) {
+            //     $video->details = $data["details"];
+            // }
+            // if (!empty($data["details"])) {
+            //     $details = $data["details"];
+            // } else {
+            //     $details = null;
+            // }
     
             if ($request->pdf_file != null) {
                 $pdf_files = time() . "." . $request->pdf_file->extension();
@@ -3495,89 +4179,89 @@ class UGCController extends Controller
                 $video->pdf_files = $pdf_files;
             }
     
-            // Reels videos
-            $reels_videos = $request->reels_videos;
+            // // Reels videos
+            // $reels_videos = $request->reels_videos;
     
-            if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
-                ReelsVideo::where("video_id", $video->id)->delete();
+            // if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+            //     ReelsVideo::where("video_id", $video->id)->delete();
     
-                foreach ($reels_videos as $Reel_Videos) {
-                    $reelvideo_name =
-                        time() . rand(1, 50) . "." . $Reel_Videos->extension();
-                    $reel_videos_slug = substr(
-                        $Reel_Videos->getClientOriginalName(),
-                        0,
-                        strpos($Reel_Videos->getClientOriginalName(), ".")
-                    );
+            //     foreach ($reels_videos as $Reel_Videos) {
+            //         $reelvideo_name =
+            //             time() . rand(1, 50) . "." . $Reel_Videos->extension();
+            //         $reel_videos_slug = substr(
+            //             $Reel_Videos->getClientOriginalName(),
+            //             0,
+            //             strpos($Reel_Videos->getClientOriginalName(), ".")
+            //         );
     
-                    $reelvideo_names = "reels" . $reelvideo_name;
+            //         $reelvideo_names = "reels" . $reelvideo_name;
     
                 
-                    $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+            //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
     
-                    $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
-                    $shorts_name = 'shorts_'.$reelvideo_name; 
-                    $videoPath = str_replace('\\', '/', $videoPath);
-                    $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
-                    // Ensure the output directory exists
-                    File::ensureDirectoryExists(dirname($outputPath));
-                    // FFmpeg command to resize to 9:16 aspect ratio
-                    $command = [
-                        'ffmpeg',
-                        '-y', // Add this option to force overwrite
-                        '-i', $videoPath,
-                        '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
-                        '-c:a', 'copy',
-                        $outputPath,
-                    ];
+            //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+            //         $shorts_name = 'shorts_'.$reelvideo_name; 
+            //         $videoPath = str_replace('\\', '/', $videoPath);
+            //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+            //         // Ensure the output directory exists
+            //         File::ensureDirectoryExists(dirname($outputPath));
+            //         // FFmpeg command to resize to 9:16 aspect ratio
+            //         $command = [
+            //             'ffmpeg',
+            //             '-y', // Add this option to force overwrite
+            //             '-i', $videoPath,
+            //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+            //             '-c:a', 'copy',
+            //             $outputPath,
+            //         ];
     
-                    $process = new Process($command);
+            //         $process = new Process($command);
     
-                    try {
-                        $process->mustRun();
-                        // return 'Video resized successfully!';
-                    } catch (ProcessFailedException $exception) {
-                        // Error message
-                        throw new \Exception('Error resizing video: ' . $exception->getMessage());
-                    }
+            //         try {
+            //             $process->mustRun();
+            //             // return 'Video resized successfully!';
+            //         } catch (ProcessFailedException $exception) {
+            //             // Error message
+            //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
+            //         }
     
-                    $Reels_videos = new ReelsVideo();
-                    $Reels_videos->video_id = $video->id;
-                    // $Reels_videos->reels_videos = $reelvideo_name;
-                    $Reels_videos->reels_videos = $shorts_name;
-                    $Reels_videos->reels_videos_slug = $reel_videos_slug;
-                    $Reels_videos->save();
+            //         $Reels_videos = new ReelsVideo();
+            //         $Reels_videos->video_id = $video->id;
+            //         // $Reels_videos->reels_videos = $reelvideo_name;
+            //         $Reels_videos->reels_videos = $shorts_name;
+            //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+            //         $Reels_videos->save();
     
-                    $video->reels_thumbnail = "default.jpg";
-                }
-            }else if($reels_videos != null){
-                ReelsVideo::where("video_id", $video->id)->delete();
+            //         $video->reels_thumbnail = "default.jpg";
+            //     }
+            // }else if($reels_videos != null){
+            //     ReelsVideo::where("video_id", $video->id)->delete();
     
-                foreach ($reels_videos as $Reel_Videos) {
-                    $reelvideo_name =
-                        time() . rand(1, 50) . "." . $Reel_Videos->extension();
-                    $reel_videos_slug = substr(
-                        $Reel_Videos->getClientOriginalName(),
-                        0,
-                        strpos($Reel_Videos->getClientOriginalName(), ".")
-                    );
+            //     foreach ($reels_videos as $Reel_Videos) {
+            //         $reelvideo_name =
+            //             time() . rand(1, 50) . "." . $Reel_Videos->extension();
+            //         $reel_videos_slug = substr(
+            //             $Reel_Videos->getClientOriginalName(),
+            //             0,
+            //             strpos($Reel_Videos->getClientOriginalName(), ".")
+            //         );
     
-                    $reelvideo_names = "reels" . $reelvideo_name;
-                    $reelvideo = $Reel_Videos->move(
-                        public_path("uploads/reelsVideos/shorts"),
-                        $reelvideo_name
-                    );
+            //         $reelvideo_names = "reels" . $reelvideo_name;
+            //         $reelvideo = $Reel_Videos->move(
+            //             public_path("uploads/reelsVideos/shorts"),
+            //             $reelvideo_name
+            //         );
     
-                    $Reels_videos = new ReelsVideo();
-                    $Reels_videos->video_id = $video->id;
-                    $Reels_videos->reels_videos = $reelvideo_name;
-                    // $Reels_videos->reels_videos = $shorts_name;
-                    $Reels_videos->reels_videos_slug = $reel_videos_slug;
-                    $Reels_videos->save();
+            //         $Reels_videos = new ReelsVideo();
+            //         $Reels_videos->video_id = $video->id;
+            //         $Reels_videos->reels_videos = $reelvideo_name;
+            //         // $Reels_videos->reels_videos = $shorts_name;
+            //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+            //         $Reels_videos->save();
     
-                    $video->reels_thumbnail = "default.jpg";
-                }
-            }
+            //         $video->reels_thumbnail = "default.jpg";
+            //     }
+            // }
             // dd($reelvideo_name);
             // Reels Thumbnail
             if (!empty($request->reels_thumbnail)) {
@@ -3607,11 +4291,11 @@ class UGCController extends Controller
                 $video->urlEnd_linksec = $startSec + 60;
             }
     
-            if (!empty($data["default_ads"])) {
-                $video->default_ads = $data["default_ads"];
-            } else {
-                $video->default_ads = 0;
-            }
+            // if (!empty($data["default_ads"])) {
+            //     $video->default_ads = $data["default_ads"];
+            // } else {
+            //     $video->default_ads = 0;
+            // }
     
             if (!empty($data["searchtags"])) {
                 $searchtags = $data["searchtags"];
@@ -3676,62 +4360,62 @@ class UGCController extends Controller
                 $video->video_title_image = $video_title_image_filename;
             }
                     // Ads videos
-            if(!empty($data["ads_tag_url_id"]) == null ){
-                $video->ads_tag_url_id = null;
-                $video->tag_url_ads_position = null;
-            }
+            // if(!empty($data["ads_tag_url_id"]) == null ){
+            //     $video->ads_tag_url_id = null;
+            //     $video->tag_url_ads_position = null;
+            // }
             
-            if(!empty($data["ads_tag_url_id"]) != null){
-                $video->ads_tag_url_id = $data["ads_tag_url_id"];
-                $video->tag_url_ads_position = $data["tag_url_ads_position"];
-            }
+            // if(!empty($data["ads_tag_url_id"]) != null){
+            //     $video->ads_tag_url_id = $data["ads_tag_url_id"];
+            //     $video->tag_url_ads_position = $data["tag_url_ads_position"];
+            // }
     
             if (isset($request->free_duration)) {
                 $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
                 $video->free_duration = $time_seconds;
             }
     
-            $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+            // $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
     
-            if ($data['access'] == "ppv") {
-                $video->ppv_price = $data["ppv_price"];
-            } else {
-                $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
-            }
+            // if ($data['access'] == "ppv") {
+            //     $video->ppv_price = $data["ppv_price"];
+            // } else {
+            //     $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
+            // }
         
             $video->mp4_url = $data["mp4_url"];
             $video->uploaded_by = $uploaded_by;
             $video->player_image = $players_image;
-            $video->details = $details;
+            // $video->details = $details;
             $video->m3u8_url = $m3u8_url;
             $video->mp4_url = $mp4_url;
             $video->embed_code = $embed_code;
-            $video->featured = $featured;
+            // $video->featured = $featured;
             $video->active = $active;
             $video->status = $status;
             $video->draft = $draft;
-            $video->banner = $banner;
+            // $video->banner = $banner;
             $video->type = $data["type"];
             $video->description = $data["description"];
-            $video->trailer_description = $data["trailer_description"];
-            $video->banner = $banner;
-            $video->enable = $enable;
-            $video->rating = $request->rating;
+            // $video->trailer_description = $data["trailer_description"];
+            // $video->banner = $banner;
+            // $video->enable = $enable;
+            // $video->rating = $request->rating;
             $video->search_tags = $searchtags;
-            $video->ios_ppv_price = $request->ios_ppv_price;
-            $video->video_js_pre_position_ads = $request->video_js_pre_position_ads;
-            $video->video_js_post_position_ads = $request->video_js_pre_position_ads;
-            $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
-            $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
-            $video->expiry_date = $request->expiry_date;
-            $video->today_top_video = $request->today_top_video;
-            $video->tiny_video_image = $tiny_video_image;
-            $video->tiny_player_image = $tiny_player_image;
-            $video->tiny_video_title_image = $tiny_video_title_image;
-            $video->responsive_image = $responsive_image;
-            $video->responsive_player_image = $responsive_player_image;
-            $video->responsive_tv_image = $responsive_tv_image;
-            $video->ppv_option = $request->ppv_option;
+            // $video->ios_ppv_price = $request->ios_ppv_price;
+            // $video->video_js_pre_position_ads = $request->video_js_pre_position_ads;
+            // $video->video_js_post_position_ads = $request->video_js_pre_position_ads;
+            // $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
+            // $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
+            // $video->expiry_date = $request->expiry_date;
+            // $video->today_top_video = $request->today_top_video;
+            // $video->tiny_video_image = $tiny_video_image;
+            // $video->tiny_player_image = $tiny_player_image;
+            // $video->tiny_video_title_image = $tiny_video_title_image;
+            // $video->responsive_image = $responsive_image;
+            // $video->responsive_player_image = $responsive_player_image;
+            // $video->responsive_tv_image = $responsive_tv_image;
+            // $video->ppv_option = $request->ppv_option;
     
             $video->save();
     
@@ -3750,63 +4434,63 @@ class UGCController extends Controller
             }
     
             // Related Video
-            if (!empty($data["related_videos"])) {
-                RelatedVideo::where("video_id", $video->id)->delete();
+            // if (!empty($data["related_videos"])) {
+            //     RelatedVideo::where("video_id", $video->id)->delete();
     
-                $related_videos = $data["related_videos"];
+            //     $related_videos = $data["related_videos"];
     
-                if (!empty($related_videos)) {
-                    foreach ($related_videos as $key => $vid) {
-                        // RelatedVideo::where('video_id', $video->id)->delete();
-                        $videos = Video::where("id", $vid)->get();
-                        foreach ($videos as $key => $val) {
-                            $RelatedVideo = new RelatedVideo();
-                            $RelatedVideo->video_id = $video->id;
-                            $RelatedVideo->user_id = Auth::user()->id;
-                            $RelatedVideo->related_videos_id = $val->id;
-                            $RelatedVideo->related_videos_title = $val->title;
-                            $RelatedVideo->save();
-                        }
-                    }
-                }
-            }
+            //     if (!empty($related_videos)) {
+            //         foreach ($related_videos as $key => $vid) {
+            //             // RelatedVideo::where('video_id', $video->id)->delete();
+            //             $videos = Video::where("id", $vid)->get();
+            //             foreach ($videos as $key => $val) {
+            //                 $RelatedVideo = new RelatedVideo();
+            //                 $RelatedVideo->video_id = $video->id;
+            //                 $RelatedVideo->user_id = Auth::user()->id;
+            //                 $RelatedVideo->related_videos_id = $val->id;
+            //                 $RelatedVideo->related_videos_title = $val->title;
+            //                 $RelatedVideo->save();
+            //             }
+            //         }
+            //     }
+            // }
     
-            if (!empty($data["artists"])) {
-                $artistsdata = $data["artists"];
-                unset($data["artists"]);
-                if (!empty($artistsdata)) {
-                    Videoartist::where("video_id", $video->id)->delete();
+            // if (!empty($data["artists"])) {
+            //     $artistsdata = $data["artists"];
+            //     unset($data["artists"]);
+            //     if (!empty($artistsdata)) {
+            //         Videoartist::where("video_id", $video->id)->delete();
     
-                    foreach ($artistsdata as $key => $value) {
-                        $artist = new Videoartist();
-                        $artist->video_id = $video->id;
-                        $artist->artist_id = $value;
-                        $artist->save();
-                        \LogActivity::addVideoArtistLog(
-                            "Updated Artist for Video.",
-                            $video->id,
-                            $value
-                        );
-                    }
-                }
-            } else {
-                Videoartist::where("video_id", $video->id)->delete();
-            }
+            //         foreach ($artistsdata as $key => $value) {
+            //             $artist = new Videoartist();
+            //             $artist->video_id = $video->id;
+            //             $artist->artist_id = $value;
+            //             $artist->save();
+            //             \LogActivity::addVideoArtistLog(
+            //                 "Updated Artist for Video.",
+            //                 $video->id,
+            //                 $value
+            //             );
+            //         }
+            //     }
+            // } else {
+            //     Videoartist::where("video_id", $video->id)->delete();
+            // }
     
-            if (!empty($data["searchtags"])) {
-                $searchtags = explode(",", $data["searchtags"]);
-                VideoSearchTag::where("video_id", $video->id)->delete();
+            // if (!empty($data["searchtags"])) {
+            //     $searchtags = explode(",", $data["searchtags"]);
+            //     VideoSearchTag::where("video_id", $video->id)->delete();
     
-                foreach ($searchtags as $key => $value) {
-                    $videosearchtags = new VideoSearchTag();
-                    $videosearchtags->user_id = Auth::User()->id;
-                    $videosearchtags->video_id = $video->id;
-                    $videosearchtags->search_tag = $value;
-                    $videosearchtags->save();
-                }
-            } else {
-                // $searchtags = null;
-            }
+            //     foreach ($searchtags as $key => $value) {
+            //         $videosearchtags = new VideoSearchTag();
+            //         $videosearchtags->user_id = Auth::User()->id;
+            //         $videosearchtags->video_id = $video->id;
+            //         $videosearchtags->search_tag = $value;
+            //         $videosearchtags->save();
+            //     }
+            // } else {
+            //     // $searchtags = null;
+            // }
     
     
             if (!empty($files != "" && $files != null)) {
@@ -3841,150 +4525,72 @@ class UGCController extends Controller
                     return "{$formattedTime},{$formattedMilliseconds}";
                 }
     
-                if (!empty($files != "" && $files != null)) {
-                    foreach ($files as $key => $val) {
-                        if (!empty($files[$key])) {
-                            $destinationPath = "public/uploads/subtitles/";
+                // if (!empty($files != "" && $files != null)) {
+                //     foreach ($files as $key => $val) {
+                //         if (!empty($files[$key])) {
+                //             $destinationPath = "public/uploads/subtitles/";
     
-                            if (!file_exists($destinationPath)) {
-                                mkdir($destinationPath, 0755, true);
-                            }
+                //             if (!file_exists($destinationPath)) {
+                //                 mkdir($destinationPath, 0755, true);
+                //             }
     
-                            $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+                //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
     
-                            MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+                //             MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
     
-                            // Move uploaded file to destination path
-                            move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+                //             // Move uploaded file to destination path
+                //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
     
-                            // Read contents of the uploaded file
-                            $contents = file_get_contents($destinationPath . $filename);
+                //             // Read contents of the uploaded file
+                //             $contents = file_get_contents($destinationPath . $filename);
     
-                            // Convert time format and add line numbers
-                            $lineNumber = 0;
-                            $convertedContents = preg_replace_callback(
-                                '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
-                                function ($matches) use (&$lineNumber) {
-                                    // Increment line number for each match
-                                    $lineNumber++;
-                                    // Convert time format and return with the line number
-                                    return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
-                                },
-                                $contents
-                            );
+                //             // Convert time format and add line numbers
+                //             $lineNumber = 0;
+                //             $convertedContents = preg_replace_callback(
+                //                 '/(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2})\.(\d{3})/',
+                //                 function ($matches) use (&$lineNumber) {
+                //                     // Increment line number for each match
+                //                     $lineNumber++;
+                //                     // Convert time format and return with the line number
+                //                     return "{$lineNumber}\n" . convertTimeFormat($matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat($matches[4], $matches[5], $matches[6]);
+                //                 },
+                //                 $contents
+                //             );
     
-                            // Store converted contents to a new file
-                            $newDestinationPath = "public/uploads/convertedsubtitles/";
-                            if (!file_exists($newDestinationPath)) {
-                                mkdir($newDestinationPath, 0755, true);
-                            }
-                            file_put_contents($newDestinationPath . $filename, $convertedContents);
+                //             // Store converted contents to a new file
+                //             $newDestinationPath = "public/uploads/convertedsubtitles/";
+                //             if (!file_exists($newDestinationPath)) {
+                //                 mkdir($newDestinationPath, 0755, true);
+                //             }
+                //             file_put_contents($newDestinationPath . $filename, $convertedContents);
     
-                            // Save subtitle data to database
-                            $subtitle_data = [
-                                "movie_id" => $video->id,
-                                "shortcode" => $shortcodes[$key],
-                                "sub_language" => $languages[$key],
-                                "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
-                                "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
-                            ];
-                            $video_subtitle = MoviesSubtitles::create($subtitle_data);
-                        }
-                    }
-                }
-    
-    
-            // Admin Video Ads inputs
-    
-            if( !empty($request->ads_devices)){
-    
-                $Admin_Video_Ads_inputs = array(
-    
-                    'video_id' => $video->id ,
-                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
-                    'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
-                    'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
-                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
-    
-                    'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
-                    'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
-                    'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
-                    'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
-    
-                    'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
-                    'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
-                    'ios_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
-                    'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
-    
-                    'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
-                    'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
-                    'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
-                    'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
-    
-                    'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
-                    'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
-                    'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
-                    'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
-    
-                    'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
-                    'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
-                    'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
-                    'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
-    
-                    'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
-                    'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
-                    'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
-                    'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
-    
-                    // plyr.io
-    
-                    'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
-                    'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
-                    
-                    'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
-                    'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
-    
-                    'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
-                    'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
-    
-                    'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
-                    'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
-    
-                    'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
-                    'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
-    
-                    'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
-                    'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
-                    
-                    'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
-                    'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
-    
-                    'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
-                );
-    
-                $AdminVideoAds = AdminVideoAds::where('video_id', $video->id )->first();
+                //             // Save subtitle data to database
+                //             $subtitle_data = [
+                //                 "movie_id" => $video->id,
+                //                 "shortcode" => $shortcodes[$key],
+                //                 "sub_language" => $languages[$key],
+                //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                //             ];
+                //             $video_subtitle = MoviesSubtitles::create($subtitle_data);
+                //         }
+                //     }
+                // }
     
     
-                is_null($AdminVideoAds) ? AdminVideoAds::create( $Admin_Video_Ads_inputs ) : AdminVideoAds::where('video_id',$video->id)->update( $Admin_Video_Ads_inputs) ;
-               
-            }else{
-    
-                AdminVideoAds::where('video_id',$video->id)->delete();
-            }
     
             \LogActivity::addVideoUpdateLog("Update Video.", $video->id);
     
-            dd('update');
             return Redirect::to("ugc-edit" . "/" . $id)->with([
                 "message" => "Successfully Updated Video!",
                 "note_type" => "success",
             ]);
         }
     
-        private function getCleanFileName($filename)
-        {
-            return preg_replace('/\\.[^.\\s]{3,4}$/', "", $filename) . ".mp4";
-        }
+        // private function getCleanFileName($filename)
+        // {
+        //     return preg_replace('/\\.[^.\\s]{3,4}$/', "", $filename) . ".mp4";
+        // }
     
         /* slug function for Video categoty */
     
@@ -4096,690 +4702,7 @@ class UGCController extends Controller
             }
         }
     
-        public function ugcfileupdate(Request $request)
-        {
-            if (!Auth::user()->role == 'admin') {
-                return redirect('/home');
-            }
-    
-        
-            $user_package = User::where('id', 1)->first();
-            $data = $request->all();
-    
-            $validatedData = $request->validate([
-                'title' => 'required|max:255',
-            ]);
-            
-            $id = $data['video_id'];
-            $video = UGCVideo::findOrFail($id);
-            // UGCVideo::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
-    
-            if (!empty($video->embed_code)) {
-                $embed_code = $video->embed_code;
-            } else {
-                $embed_code = '';
-            }
-    
-            if ($request->slug == '') {
-                $data['slug'] = $this->createSlug($data['title']);
-            } else {
-                $data['slug'] = $this->createSlug($data['slug']);
-            }
-            $image_path = public_path() . '/uploads/images/';
-    
-            // Image
-            if ($request->hasFile('image')) {
-                    $tinyimage = $request->file('image');
-                if (compress_image_enable() == 1) {
-                    $image_filename = time() . '.' . compress_image_format();
-                    $tiny_video_image = 'tiny-image-' . $image_filename;
-                    Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
-                } else {
-                    $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
-                    $tiny_video_image = 'tiny-image-' . $image_filename;
-                    Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
-    
-                }
-            }else{
-                $tiny_video_image = null;
-    
-            }
-           
-            if ($request->hasFile('video_title_image')) {
-    
-                $tinyvideo_title_image = $request->file('video_title_image');
-    
-                if (compress_image_enable() == 1) {
-                    $image_filename = time() . '.' . compress_image_format();
-                    $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
-                    Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
-                } else {
-                    $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
-                    $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
-                    Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
-    
-                }
-            }else{
-                $tiny_video_title_image = null;
-    
-            }
-    
-            if ($request->hasFile('image')) {
-                $file = $request->image;
-                if (compress_image_enable() == 1) {
-                    $image_filename = time() . '.' . compress_image_format();
-                    $video_image = 'pc-image-' . $image_filename;
-                    $Mobile_image = 'Mobile-image-' . $image_filename;
-                    $Tablet_image = 'Tablet-image-' . $image_filename;
-    
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image, compress_image_resolution());
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image, compress_image_resolution());
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image, compress_image_resolution());
-                } else {
-                    $image_filename = time() . '.' . $file->getClientOriginalExtension();
-    
-                    $video_image = 'pc-image-' . $image_filename;
-                    $Mobile_image = 'Mobile-image-' . $image_filename;
-                    $Tablet_image = 'Tablet-image-' . $image_filename;
-    
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image);
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image);
-                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image);
-                }
-    
-                $data["image"] = $video_image;
-                $data["mobile_image"] = $Mobile_image;
-                $data["tablet_image"] = $Tablet_image;
-    
-            }else if (!empty($request->video_image_url)) {
-                $data["image"] = $request->video_image_url;
-            } else {
-                // Default Image
-    
-                $data["image"]  = default_vertical_image() ;
-                $data["mobile_image"] = default_vertical_image();
-                $data["tablet_image"] = default_vertical_image();
-    
-            }
-    
-            // Video Title Thumbnail
-    
-            if ($request->hasFile('video_title_image')) {
-                $video_title_image = $request->video_title_image;
-    
-                if (compress_image_enable() == 1) {
-                    $video_title_image_format = time() . '.' . compress_image_format();
-                    $video_title_image_filename = 'video-title-' . $video_title_image_format;
-                    Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename, compress_image_resolution());
-                } else {
-                    $video_title_image_format = time() . '.' . $video_title_image->getClientOriginalExtension();
-                    $video_title_image_filename = 'video-title-' . $video_title_image_format;
-                    Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename);
-                }
-    
-                $video->video_title_image = $video_title_image_filename;
-            }
-    
-            if (empty($data['active'])) {
-                $data['active'] = 0;
-            }
-    
-            if (empty($data['webm_url'])) {
-                $data['webm_url'] = 0;
-            } else {
-                $data['webm_url'] = $data['webm_url'];
-            }
-    
-            if (empty($data['ogg_url'])) {
-                $data['ogg_url'] = 0;
-            } else {
-                $data['ogg_url'] = $data['ogg_url'];
-            }
-    
-            $package = User::where('id', 1)->first();
-            $pack = $package->package;
-    
-            if (Auth::user()->role == 'admin') {
-                $data['status'] = 1;
-            }
-            $settings = Setting::first();
-    
-            if (Auth::user()->role == 'admin' && $pack != 'Business') {
-                $data['status'] = 1;
-            } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 1) {
-                if ($video->processed_low < 100) {
-                    $data['status'] = 0;
-                } else {
-                    $data['status'] = 1;
-                }
-            } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 0) {
-                $data['status'] = 1;
-            } else {
-                $data['status'] = 1;
-            }
-    
-            if (Auth::user()->role == 'admin' && Auth::user()->sub_admin == 1) {
-                $data['status'] = 0;
-            }
-    
-            $path = public_path() . '/uploads/videos/';
-            $image_path = public_path() . '/uploads/images/';
-    
-            // Enable Video Title Thumbnail
-    
-            // $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0';
-    
-            // $video->trailer_type = $data['trailer_type'];
-            // $StorageSetting = StorageSetting::first();
-            // dd($StorageSetting);
-            // if ($StorageSetting->site_storage == 1) {
-            //     if ($data['trailer_type'] == 'video_mp4') {
-            //         $settings = Setting::first();
-    
-            //         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
-            //             $settings = Setting::first();
-            //             // $resolution = explode(",",$settings->transcoding_resolution);
-            //             if ($settings->transcoding_resolution != null) {
-            //                 $convertresolution = [];
-            //                 $resolution = explode(',', $settings->transcoding_resolution);
-    
-            //                 foreach ($resolution as $value) {
-            //                     if ($value == '240p') {
-            //                         $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
-            //                         array_push($convertresolution, $r_240p);
-            //                     }
-            //                     if ($value == '360p') {
-            //                         $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
-            //                         array_push($convertresolution, $r_360p);
-            //                     }
-            //                     if ($value == '480p') {
-            //                         $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
-            //                         array_push($convertresolution, $r_480p);
-            //                     }
-            //                     if ($value == '720p') {
-            //                         $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
-            //                         array_push($convertresolution, $r_720p);
-            //                     }
-            //                     if ($value == '1080p') {
-            //                         $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
-            //                         array_push($convertresolution, $r_1080p);
-            //                     }
-            //                 }
-            //             }
-            //             $trailer = $data['trailer'];
-            //             $trailer_path = URL::to('storage/app/trailer/');
-            //             $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
-            //             $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
-    
-            //             // $trailer_Video =
-            //             //     time() . "_" . $trailer->getClientOriginalName();
-            //             $trailer->move(storage_path('app/trailer/'), $trailer_Video);
-            //             $trailer_video_name = strtok($trailer_Video, '.');
-            //             $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-            //             $storepath = URL::to('storage/app/trailer/');
-    
-            //             $data['trailer'] = $M3u8_save_path;
-            //             $data['trailer_type'] = 'm3u8';
-            //         } else {
-            //             if ($trailer != '') {
-            //                 //code for remove old file
-            //                 if ($trailer != '' && $trailer != null) {
-            //                     $file_old = $path . $trailer;
-            //                     if (file_exists($file_old)) {
-            //                         unlink($file_old);
-            //                     }
-            //                 }
-            //                 //upload new file
-            //                 $randval = Str::random(16);
-            //                 $file = $trailer;
-            //                 $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
-            //                 $file->move($path, $trailer_vid);
-            //                 $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
-            //             } else {
-            //                 $data['trailer'] = $video->trailer;
-            //             }
-            //         }
-            //     } elseif ($data['trailer_type'] == 'm3u8_url') {
-            //         $data['trailer'] = $data['m3u8_trailer'];
-            //     } elseif ($data['trailer_type'] == 'mp4_url') {
-            //         $data['trailer'] = $data['mp4_trailer'];
-            //     } elseif ($data['trailer_type'] == 'embed_url') {
-            //         $data['trailer'] = $data['embed_trailer'];
-            //     }
-            // } elseif ($StorageSetting->aws_storage == 1 && !empty($data['trailer'])) {
-            //     if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
-            //         $file = $request->file('trailer');
-            //         $file_folder_name = $file->getClientOriginalName();
-            //         $name_mp4 = $file->getClientOriginalName();
-            //         $newfile = explode('.mp4', $name_mp4);
-            //         // $name = $newfile[0].'.m3u8';
-            //         $name = $namem3u8 == null ? str_replace(' ', '_', 'S3' . $namem3u8) : str_replace(' ', '_', 'S3' . $namem3u8);
-            //         $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
-            //         $transcode_path = @$StorageSetting->aws_transcode_path . '/' . $name;
-            //         Storage::disk('s3')->put($transcode_path, file_get_contents($file));
-            //         $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
-            //         $M3u8_path = $path . $filePath;
-            //         $M3u8_save_path = $path . $transcode_path;
-    
-            //         $data['trailer'] = $M3u8_save_path;
-            //         $video->trailer_type = 'm3u8';
-            //         $data['trailer_type'] = 'm3u8';
-            //     } else {
-            //         $file = $request->file('trailer');
-            //         $file_folder_name = $file->getClientOriginalName();
-            //         $name = time() . $file->getClientOriginalName();
-            //         $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
-            //         Storage::disk('s3')->put($filePath, file_get_contents($file));
-            //         $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
-            //         $trailer = $path . $filePath;
-            //         $data['trailer'] = $trailer;
-            //         $data['trailer_type'] = 'video_mp4';
-            //     }
-            // } else {
-            //     if ($data['trailer_type'] == 'video_mp4') {
-            //         $settings = Setting::first();
-    
-            //         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
-            //             $settings = Setting::first();
-            //             // $resolution = explode(",",$settings->transcoding_resolution);
-            //             if ($settings->transcoding_resolution != null) {
-            //                 $convertresolution = [];
-            //                 $resolution = explode(',', $settings->transcoding_resolution);
-            //                 foreach ($resolution as $value) {
-            //                     if ($value == '240p') {
-            //                         $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
-            //                         array_push($convertresolution, $r_240p);
-            //                     }
-            //                     if ($value == '360p') {
-            //                         $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
-            //                         array_push($convertresolution, $r_360p);
-            //                     }
-            //                     if ($value == '480p') {
-            //                         $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
-            //                         array_push($convertresolution, $r_480p);
-            //                     }
-            //                     if ($value == '720p') {
-            //                         $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
-            //                         array_push($convertresolution, $r_720p);
-            //                     }
-            //                     if ($value == '1080p') {
-            //                         $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
-            //                         array_push($convertresolution, $r_1080p);
-            //                     }
-            //                 }
-            //             }
-            //             $trailer = $data['trailer'];
-            //             $trailer_path = URL::to('storage/app/trailer/');
-            //             $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
-            //             $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
-            //             // $trailer_Video =
-            //             //     time() . "_" . $trailer->getClientOriginalName();
-            //             $trailer->move(storage_path('app/trailer/'), $trailer_Video);
-            //             $trailer_video_name = strtok($trailer_Video, '.');
-            //             $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-            //             $storepath = URL::to('storage/app/trailer/');
-    
-            //             $data['trailer'] = $M3u8_save_path;
-            //             $data['trailer_type'] = 'm3u8';
-            //         } else {
-            //             if ($trailer != '') {
-            //                 //code for remove old file
-            //                 if ($trailer != '' && $trailer != null) {
-            //                     $file_old = $path . $trailer;
-            //                     if (file_exists($file_old)) {
-            //                         unlink($file_old);
-            //                     }
-            //                 }
-            //                 //upload new file
-            //                 $randval = Str::random(16);
-            //                 $file = $trailer;
-            //                 $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
-            //                 $file->move($path, $trailer_vid);
-            //                 $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
-            //             } else {
-            //                 $data['trailer'] = $video->trailer;
-            //             }
-            //         }
-            //     } elseif ($data['trailer_type'] == 'm3u8_url') {
-            //         $data['trailer'] = $data['m3u8_trailer'];
-            //     } elseif ($data['trailer_type'] == 'mp4_url') {
-            //         $data['trailer'] = $data['mp4_trailer'];
-            //     } elseif ($data['trailer_type'] == 'embed_url') {
-            //         $data['trailer'] = $data['embed_trailer'];
-            //     }
-            // }
-    
-          
-    
-            if (!empty($data['embed_code'])) {
-                $video->embed_code = $data['embed_code'];
-            } else {
-                $video->embed_code = '';
-            }
-        
-            if ($request->pdf_file != null) {
-                $pdf_files = time() . '.' . $request->pdf_file->extension();
-                $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
-                $video->pdf_files = $pdf_files;
-            }
-    
-           
-            // if ($reels_videos != null) {
-            //     foreach ($reels_videos as $Reel_Videos) {
-            //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
-            //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
-            //         $reelvideo_names = 'reels' . $reelvideo_name;
-    
-            //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
-    
-            //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
-            //         $shorts_name = 'shorts_'.$reelvideo_name; 
-            //         $videoPath = str_replace('\\', '/', $videoPath);
-            //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
-            //         // Ensure the output directory exists
-            //         File::ensureDirectoryExists(dirname($outputPath));
-            //         // FFmpeg command to resize to 9:16 aspect ratio
-            //         $command = [
-            //             'ffmpeg',
-            //             '-y', // Add this option to force overwrite
-            //             '-i', $videoPath,
-            //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
-            //             '-c:a', 'copy',
-            //             $outputPath,
-            //         ];
-            //         $process = new Process($command);
-    
-            //         try {
-            //             $process->mustRun();
-            //             // return 'Video resized successfully!';
-            //         } catch (ProcessFailedException $exception) {
-            //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
-            //         }
-    
-    
-            //         $ffmpeg = \FFMpeg\FFMpeg::create();
-            //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
-            //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-            //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
-    
-            //         unlink($reelvideo);
-    
-            //         $Reels_videos = new ReelsVideo();
-            //         $Reels_videos->video_id = $video->id;
-            //         $Reels_videos->reels_videos = $shorts_name;
-            //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
-            //         $Reels_videos->save();
-    
-            //         $video->reels_thumbnail = default_vertical_image();
-            //     }
-            // }
-    
-            //URL Link
-            $url_link = $request->url_link;
-    
-            if ($url_link != null) {
-                $video->url_link = $url_link;
-            }
-    
-            $url_linktym = $request->url_linktym;
-    
-            if ($url_linktym != null) {
-                $StartParse = date_parse($request->url_linktym);
-                $startSec = $StartParse['hour'] * 60 * 60 + $StartParse['minute'] * 60 + $StartParse['second'];
-                $video->url_linktym = $url_linktym;
-                $video->url_linksec = $startSec;
-                $video->urlEnd_linksec = $startSec + 60;
-            }
-    
-            if (compress_responsive_image_enable() == 1){
-    
-                    $mobileimages = public_path('/uploads/mobileimages');
-                    $Tabletimages = public_path('/uploads/Tabletimages');
-                    $PCimages = public_path('/uploads/PCimages');
-    
-                if (!file_exists($mobileimages)) {
-                    mkdir($mobileimages, 0755, true);
-                }
-    
-                if (!file_exists($Tabletimages)) {
-                    mkdir($Tabletimages, 0755, true);
-                }
-    
-                if (!file_exists($PCimages)) {
-                    mkdir($PCimages, 0755, true);
-                }
-    
-                if ($request->hasFile('image')) {
-    
-                    $image = $request->file('image');
-    
-                        $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
-                        $image_filename = $image_filename;
-    
-                        Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
-                        Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
-                        Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
-                        
-                        // $responsive_image = $image_filename;
-    
-                }else{
-    
-                    $responsive_image = default_vertical_image(); 
-                }
-    
-                if ($request->hasFile('player_image')) {
-    
-                    $player_image = $request->file('player_image');
-    
-                        $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
-    
-                        Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
-                        Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
-                        Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
-                        
-                        $responsive_player_image = $player_image_filename;
-    
-                }else{
-                    $responsive_player_image = default_horizontal_image(); 
-                }
-    
-    
-                
-                if ($request->hasFile('video_tv_image')) {
-    
-                    $video_tv_image = $request->file('video_tv_image');
-    
-                        $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
-    
-                        Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
-                        Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
-                        Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
-                        
-                        $responsive_tv_image = $video_tv_image_filename;
-    
-                }else{
-    
-                    $responsive_tv_image = default_horizontal_image(); 
-                }
-    
-            }else{
-                // $responsive_image = null;
-                $responsive_player_image = null;
-                $responsive_tv_image = null;
-            }
-    
-    
-            $video->description = $data['description'];
-           
-            $video->uploaded_by = Auth::user()->role;
-            $video->draft = 1;
-            $video->active = 1;
-            // $video->enable = 1;
-            // $video->responsive_image = $responsive_image;
-            // $video->responsive_player_image = $responsive_player_image;
-            // $video->responsive_tv_image = $responsive_tv_image;
-    
-            // Ads videos
-            // if (!empty($data['ads_tag_url_id']) == null) {
-            //     $video->ads_tag_url_id = null;
-            //     $video->tag_url_ads_position = null;
-            // }
-    
-            // if (!empty($data['ads_tag_url_id']) != null) {
-            //     $video->ads_tag_url_id = $data['ads_tag_url_id'];
-            //     $video->tag_url_ads_position = $data['tag_url_ads_position'];
-            // }
-    
-            // if (!empty($data['default_ads'])) {
-            //     $video->default_ads = $data['default_ads'];
-            // } else {
-            //     $video->default_ads = 0;
-            // }
-    
-            $video->update($data);
-    
-    
-            // if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
-            //     ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
-            // }
-            $video = UGCVideo::findOrFail($id);
-
-    
-                // Define the convertTimeFormat function globally
-    
-                function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
-                    $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
-                    $formattedTime = gmdate("H:i:s", $totalSeconds);
-                    $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
-                    return "{$formattedTime},{$formattedMilliseconds}";
-                }
-    
-                // if (!empty($files != "" && $files != null)) {
-                //     foreach ($files as $key => $val) {
-                //         if (!empty($files[$key])) {
-                //             $destinationPath = "public/uploads/subtitles/";
-    
-                //             if (!file_exists($destinationPath)) {
-                //                 mkdir($destinationPath, 0755, true);
-                //             }
-    
-                //             $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
-    
-                //             MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
-    
-                //             // Move uploaded file to destination path
-                //             move_uploaded_file($val->getPathname(), $destinationPath . $filename);
-    
-                //             // Read contents of the uploaded file
-                //             $contents = file_get_contents($destinationPath . $filename);
-    
-                //             // Convert time format and add line numbers
-                //             $lineNumber = 0;
-                //             $convertedContents = preg_replace_callback(
-                //                 '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
-                //                 function ($matches) use (&$lineNumber) {
-                //                     // Increment line number for each match
-                //                     $lineNumber++;
-                //                     // Convert time format and return with the line number
-                //                     return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
-                //                 },
-                //                 $contents
-                //             );
-    
-                //             // Store converted contents to a new file
-                //             $newDestinationPath = "public/uploads/convertedsubtitles/";
-                //             if (!file_exists($newDestinationPath)) {
-                //                 mkdir($newDestinationPath, 0755, true);
-                //             }
-                //             file_put_contents($newDestinationPath . $filename, $convertedContents);
-    
-                //             // Save subtitle data to database
-                //             $subtitle_data = [
-                //                 "movie_id" => $video->id,
-                //                 "shortcode" => $shortcodes[$key],
-                //                 "sub_language" => $languages[$key],
-                //                 "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
-                //                 "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
-                //             ];
-                //             $video_subtitle = MoviesSubtitles::create($subtitle_data);
-                //         }
-                //     }
-                // }
-    
-            // if( !empty($request->ads_devices)){
-    
-            //     $Admin_Video_Ads_inputs = array(
-    
-            //         'video_id' => $video->id ,
-            //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
-            //         'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
-            //         'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
-            //         'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
-    
-            //         'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
-            //         'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
-            //         'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
-            //         'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
-    
-            //         'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
-            //         'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
-            //         'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
-            //         'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
-    
-            //         'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
-            //         'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
-            //         'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
-            //         'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
-    
-            //         'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
-            //         'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
-            //         'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
-            //         'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
-    
-            //         'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
-            //         'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
-            //         'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
-            //         'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
-    
-            //         'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
-            //         'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
-            //         'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
-            //         'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
-    
-            //         // plyr.io
-    
-            //         'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
-            //         'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
-                    
-            //         'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
-            //         'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
-    
-            //         'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
-            //         'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
-    
-            //         'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
-            //         'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
-    
-            //         'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
-            //         'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
-    
-            //         'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
-            //         'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
-                    
-            //         'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
-            //         'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
-    
-            //         'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
-            //     );
-    
-            //     AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
-                
-            // }
-    
-            \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
-    
-            return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
-        }   
+      
         public function Mp4url(Request $request)
         {
             $data = $request->all();
@@ -5040,7 +4963,7 @@ class UGCController extends Controller
     
                 if($extension == 'mp4'){
     
-                $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
                 $video->title = $data["bunny_cdn_linked_video"];
@@ -5066,7 +4989,7 @@ class UGCController extends Controller
             }elseif($extension == 'm3u8'){
     
     
-                $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
                 $video->title = $data["bunny_cdn_linked_video"];
@@ -5473,21 +5396,21 @@ class UGCController extends Controller
         //     // return response()->json($value);
         // }
     
-        public function VideoBulk_delete(Request $request)
-        {
-            try {
-                $video_id = $request->video_id;
-                Video::whereIn("id", explode(",", $video_id))->delete();
-                PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
-                CategoryVideo::whereIn("video_id", explode(",", $video_id))->delete();
-                PlayerSeekTimeAnalytic::whereIn("video_id", explode(",", $video_id))->delete();
-                VideoPlaylist::where("video_id", $id)->delete();
+        // public function VideoBulk_delete(Request $request)
+        // {
+        //     try {
+        //         $video_id = $request->video_id;
+        //         UGCVideo::whereIn("id", explode(",", $video_id))->delete();
+        //         PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
+        //         CategoryVideo::whereIn("video_id", explode(",", $video_id))->delete();
+        //         PlayerSeekTimeAnalytic::whereIn("video_id", explode(",", $video_id))->delete();
+        //         VideoPlaylist::where("video_id", $id)->delete();
     
-                return response()->json(["message" => "true"]);
-            } catch (\Throwable $th) {
-                return response()->json(["message" => "false"]);
-            }
-        }
+        //         return response()->json(["message" => "true"]);
+        //     } catch (\Throwable $th) {
+        //         return response()->json(["message" => "false"]);
+        //     }
+        // }
     
         public function Updatemp4url(Request $request)
         {
@@ -5522,7 +5445,7 @@ class UGCController extends Controller
                 $value["video_id"] = $video_id;
     
                 // return $value;
-                return redirect("/admin/videos");
+                return Theme::view("UserGeneratedContent.ugc-create");
     
             }
         }
@@ -5544,10 +5467,10 @@ class UGCController extends Controller
             }else{
     
             if (!empty($data["m3u8_url"])) {
-                // $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
-                // $video->title = $data['m3u8_url'];
+                $video->title = $data['m3u8_url'];
                 $video->m3u8_url = $data["m3u8_url"];
                 $video->type = "m3u8_url";
                 // $video->draft = 0;
@@ -5562,7 +5485,7 @@ class UGCController extends Controller
                 $value["video_id"] = $video_id;
     
                 // return $value;
-                return redirect("/admin/videos");
+                return Theme::view("UserGeneratedContent.ugc-create", $data);
     
             }
         }
@@ -5575,7 +5498,7 @@ class UGCController extends Controller
     
            
             $id = $data["videoid"];
-            $video = Video::findOrFail($id);
+            $video = UGCVideo::findOrFail($id);
             if(!empty($video) && $video->embed_code == $data["embed"]){
                 $value["success"] = 1;
                 $value["message"] = "Already Exits";
@@ -5601,5565 +5524,5567 @@ class UGCController extends Controller
                 $value["message"] = "URL Updated Successfully!";
                 $value["video_id"] = $video_id;
                 // return $value;
-                return redirect("/admin/videos");
+                return Theme::view("UserGeneratedContent.ugc-create", $data);
     
             }
         }
         }
     
-        public function video_slider_update(Request $request)
-        {
-            try {
-                $video = Video::where("id", $request->video_id)->update([
-                    "banner" => $request->banner_status,
-                ]);
+        // public function video_slider_update(Request $request)
+        // {
+        //     try {
+        //         $video = Video::where("id", $request->video_id)->update([
+        //             "banner" => $request->banner_status,
+        //         ]);
     
-                return response()->json(["message" => "true"]);
-            } catch (\Throwable $th) {
-                return response()->json(["message" => "false"]);
-            }
-        }
+        //         return response()->json(["message" => "true"]);
+        //     } catch (\Throwable $th) {
+        //         return response()->json(["message" => "false"]);
+        //     }
+        // }
     
-        public function video_slug_validate(Request $request)
-        {
-            $video_slug_validate = Video::where("slug", $request->slug)->count();
+        // public function video_slug_validate(Request $request)
+        // {
+        //     $video_slug_validate = Video::where("slug", $request->slug)->count();
     
-            if ($request->type == "create") {
-                $validate_status = $video_slug_validate > 0 ? "true" : "false";
-            } elseif ($request->type == "edit") {
-                $video_slug_count = Video::where("id", $request->video_id)
-                    ->where("slug", $request->slug)
-                    ->count();
+        //     if ($request->type == "create") {
+        //         $validate_status = $video_slug_validate > 0 ? "true" : "false";
+        //     } elseif ($request->type == "edit") {
+        //         $video_slug_count = Video::where("id", $request->video_id)
+        //             ->where("slug", $request->slug)
+        //             ->count();
     
-                if ($video_slug_count == 1) {
-                    $validate_status = $video_slug_validate > 1 ? "true" : "false";
-                } else {
-                    $validate_status = $video_slug_validate > 0 ? "true" : "false";
-                }
-            }
-            return response()->json(["message" => $validate_status]);
-        }
+        //         if ($video_slug_count == 1) {
+        //             $validate_status = $video_slug_validate > 1 ? "true" : "false";
+        //         } else {
+        //             $validate_status = $video_slug_validate > 0 ? "true" : "false";
+        //         }
+        //     }
+        //     return response()->json(["message" => $validate_status]);
+        // }
     
       
-        public function PurchasedVideoAnalytics()
-        {
-            $user =  User::where('id',1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date('Y-m-d');
-            if ($current_date > $duedate)
-            {
-              $client = new Client();
-              $url = "https://flicknexs.com/userapi/allplans";
-              $params = [
-                  'userid' => 0,
-              ];
+        // public function PurchasedVideoAnalytics()
+        // {
+        //     $user =  User::where('id',1)->first();
+        //     $duedate = $user->package_ends;
+        //     $current_date = date('Y-m-d');
+        //     if ($current_date > $duedate)
+        //     {
+        //       $client = new Client();
+        //       $url = "https://flicknexs.com/userapi/allplans";
+        //       $params = [
+        //           'userid' => 0,
+        //       ];
       
-              $headers = [
-                  'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-              ];
-              $response = $client->request('post', $url, [
-                  'json' => $params,
-                  'headers' => $headers,
-                  'verify'  => false,
-              ]);
+        //       $headers = [
+        //           'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        //       ];
+        //       $response = $client->request('post', $url, [
+        //           'json' => $params,
+        //           'headers' => $headers,
+        //           'verify'  => false,
+        //       ]);
       
-              $responseBody = json_decode($response->getBody());
-             $settings = Setting::first();
-             $data = array(
-              'settings' => $settings,
-              'responseBody' => $responseBody,
-      );
-                return view('admin.expired_dashboard', $data);
-            }else if(check_storage_exist() == 0){
-              $settings = Setting::first();
+        //       $responseBody = json_decode($response->getBody());
+        //      $settings = Setting::first();
+        //      $data = array(
+        //       'settings' => $settings,
+        //       'responseBody' => $responseBody,
+        //     );
+        //         return view('admin.expired_dashboard', $data);
+        //     }else if(check_storage_exist() == 0){
+        //       $settings = Setting::first();
     
-              $data = array(
-                  'settings' => $settings,
-              );
+        //       $data = array(
+        //           'settings' => $settings,
+        //       );
     
-              return View::make('admin.expired_storage', $data);
-          }else{
-                $user_package = User::where("id", 1)->first();
-                $package = $user_package->package;
-                if (
-                    (!empty($package) && $package == "Pro") ||
-                    (!empty($package) && $package == "Business")
-                ) {
-                    $settings = Setting::first();
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
+        //       return View::make('admin.expired_storage', $data);
+        //   }else{
+        //         $user_package = User::where("id", 1)->first();
+        //         $package = $user_package->package;
+        //         if (
+        //             (!empty($package) && $package == "Pro") ||
+        //             (!empty($package) && $package == "Business")
+        //         ) {
+        //             $settings = Setting::first();
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
     
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            // DB::raw(
-                            //     "sum(ppv_purchases.total_amount) as total_amount"
-                            // ),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
-                    // dd($total_content);
-                    $total_contentss = $total_content->groupBy("month_name");
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     // DB::raw(
+        //                     //     "sum(ppv_purchases.total_amount) as total_amount"
+        //                     // ),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
+        //             // dd($total_content);
+        //             $total_contentss = $total_content->groupBy("month_name");
     
-                    // dd($total_content);
+        //             // dd($total_content);
     
-                    $data = [
-                        "settings" => $settings,
-                        "total_content" => $total_content,
-                        "total_video_count" => count($total_content),
-                        "total_contentss" => $total_contentss,
-                        "currency" => CurrencySetting::first(),
-                    ];
-                    return view("admin.analytics.purchased_video_analytics", $data);
-                } else {
-                    return Redirect::to("/blocked");
-                }
-            }
-        }
+        //             $data = [
+        //                 "settings" => $settings,
+        //                 "total_content" => $total_content,
+        //                 "total_video_count" => count($total_content),
+        //                 "total_contentss" => $total_contentss,
+        //                 "currency" => CurrencySetting::first(),
+        //             ];
+        //             return view("admin.analytics.purchased_video_analytics", $data);
+        //         } else {
+        //             return Redirect::to("/blocked");
+        //         }
+        //     }
+        // }
     
-        public function PurchasedVideoStartDateRevenue(Request $request)
-        {
-            $user_package = User::where("id", 1)->first();
-            $package = $user_package->package;
-            if (
-                (!empty($package) && $package == "Pro") ||
-                (!empty($package) && $package == "Business")
-            ) {
-                $data = $request->all();
+        // public function PurchasedVideoStartDateRevenue(Request $request)
+        // {
+        //     $user_package = User::where("id", 1)->first();
+        //     $package = $user_package->package;
+        //     if (
+        //         (!empty($package) && $package == "Pro") ||
+        //         (!empty($package) && $package == "Business")
+        //     ) {
+        //         $data = $request->all();
     
-                $start_time = $data["start_time"];
-                $end_time = $data["end_time"];
-                if (!empty($start_time) && empty($end_time)) {
-                    $settings = Setting::first();
+        //         $start_time = $data["start_time"];
+        //         $end_time = $data["end_time"];
+        //         if (!empty($start_time) && empty($end_time)) {
+        //             $settings = Setting::first();
     
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
-                        ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
+        //                 ->whereDate("ppv_purchases.created_at", ">=", $start_time)
     
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            // DB::raw(
-                            //     "sum(ppv_purchases.total_amount) as total_amount"
-                            // ),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     // DB::raw(
+        //                     //     "sum(ppv_purchases.total_amount) as total_amount"
+        //                     // ),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
     
-                    // echo "<pre>";print_r($total_content);exit;
-                } else {
-                }
+        //             // echo "<pre>";print_r($total_content);exit;
+        //         } else {
+        //         }
     
-                $output = "";
-                $i = 1;
-                if (count($total_content) > 0) {
-                    $total_row = $total_content->count();
-                    if (!empty($total_content)) {
-                        $currency = CurrencySetting::first();
+        //         $output = "";
+        //         $i = 1;
+        //         if (count($total_content) > 0) {
+        //             $total_row = $total_content->count();
+        //             if (!empty($total_content)) {
+        //                 $currency = CurrencySetting::first();
     
-                        foreach ($total_content as $key => $row) {
-                            $video_url =
-                                URL::to("/category/videos") . "/" . $row->slug;
-                            $date = date_create($row->ppvcreated_at);
-                            $newDate = date_format($date, "d M Y");
+        //                 foreach ($total_content as $key => $row) {
+        //                     $video_url =
+        //                         URL::to("/category/videos") . "/" . $row->slug;
+        //                     $date = date_create($row->ppvcreated_at);
+        //                     $newDate = date_format($date, "d M Y");
     
-                            $output .=
-                                '
-                          <tr>
-                          <td>' .
-                                $i++ .
-                                '</td>
-                          <td>' .
-                                $row->username .
-                                '</td>
-                          <td>' .
-                                $row->email .
-                                '</td>    
-                          <td><a href="' .
-                                $video_url .
-                                '">' .
-                                $row->title .
-                                '</a></td> 
-                          <td>' .
-                                $row->slug .
-                                '</td>     
-                          <td>' .
-                                $currency->symbol .
-                                " " .
-                                $row->total_amount .
-                                '</td>    
-                          <td>' .
-                                $newDate .
-                                '</td>    
-                          </tr>
-                          ';
-                        }
-                    } else {
-                        $output = '
-                      <tr>
-                       <td align="center" colspan="5">No Data Found</td>
-                      </tr>
-                      ';
-                    }
-                    $value = [
-                        "table_data" => $output,
-                        "total_data" => $total_row,
-                        "total_content" => $total_content,
-                    ];
+        //                     $output .=
+        //                         '
+        //                   <tr>
+        //                   <td>' .
+        //                         $i++ .
+        //                         '</td>
+        //                   <td>' .
+        //                         $row->username .
+        //                         '</td>
+        //                   <td>' .
+        //                         $row->email .
+        //                         '</td>    
+        //                   <td><a href="' .
+        //                         $video_url .
+        //                         '">' .
+        //                         $row->title .
+        //                         '</a></td> 
+        //                   <td>' .
+        //                         $row->slug .
+        //                         '</td>     
+        //                   <td>' .
+        //                         $currency->symbol .
+        //                         " " .
+        //                         $row->total_amount .
+        //                         '</td>    
+        //                   <td>' .
+        //                         $newDate .
+        //                         '</td>    
+        //                   </tr>
+        //                   ';
+        //                 }
+        //             } else {
+        //                 $output = '
+        //               <tr>
+        //                <td align="center" colspan="5">No Data Found</td>
+        //               </tr>
+        //               ';
+        //             }
+        //             $value = [
+        //                 "table_data" => $output,
+        //                 "total_data" => $total_row,
+        //                 "total_content" => $total_content,
+        //             ];
     
-                    return $value;
-                }
-            } else {
-                return Redirect::to("/blocked");
-            }
-        }
+        //             return $value;
+        //         }
+        //     } else {
+        //         return Redirect::to("/blocked");
+        //     }
+        // }
     
-        public function PurchasedVideoEndDateRevenue(Request $request)
-        {
-            $user_package = User::where("id", 1)->first();
-            $package = $user_package->package;
-            if (
-                (!empty($package) && $package == "Pro") ||
-                (!empty($package) && $package == "Business")
-            ) {
-                $data = $request->all();
+        // public function PurchasedVideoEndDateRevenue(Request $request)
+        // {
+        //     $user_package = User::where("id", 1)->first();
+        //     $package = $user_package->package;
+        //     if (
+        //         (!empty($package) && $package == "Pro") ||
+        //         (!empty($package) && $package == "Business")
+        //     ) {
+        //         $data = $request->all();
     
-                $start_time = $data["start_time"];
-                $end_time = $data["end_time"];
+        //         $start_time = $data["start_time"];
+        //         $end_time = $data["end_time"];
     
-                if (!empty($start_time) && !empty($end_time)) {
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
-                        ->whereBetween("ppv_purchases.created_at", [
-                            $start_time,
-                            $end_time,
-                        ])
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
-                } else {
-                    $total_content = [];
-                }
+        //         if (!empty($start_time) && !empty($end_time)) {
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
+        //                 ->whereBetween("ppv_purchases.created_at", [
+        //                     $start_time,
+        //                     $end_time,
+        //                 ])
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
+        //         } else {
+        //             $total_content = [];
+        //         }
     
-                $output = "";
-                $i = 1;
-                if (count($total_content) > 0) {
-                    $total_row = $total_content->count();
-                    if (!empty($total_content)) {
-                        $currency = CurrencySetting::first();
+        //         $output = "";
+        //         $i = 1;
+        //         if (count($total_content) > 0) {
+        //             $total_row = $total_content->count();
+        //             if (!empty($total_content)) {
+        //                 $currency = CurrencySetting::first();
     
-                        foreach ($total_content as $key => $row) {
-                            $video_url =
-                                URL::to("/category/videos") . "/" . $row->slug;
-                            $date = date_create($row->ppvcreated_at);
-                            $newDate = date_format($date, "d M Y");
+        //                 foreach ($total_content as $key => $row) {
+        //                     $video_url =
+        //                         URL::to("/category/videos") . "/" . $row->slug;
+        //                     $date = date_create($row->ppvcreated_at);
+        //                     $newDate = date_format($date, "d M Y");
     
-                            $output .=
-                                '
-                          <tr>
-                          <td>' .
-                                $i++ .
-                                '</td>
-                          <td>' .
-                                $row->username .
-                                '</td>
-                          <td>' .
-                                $row->email .
-                                '</td>    
-                          <td>
-                          <a href="' .
-                                $video_url .
-                                '">' .
-                                $row->title .
-                                '</a>
-                                        </td>
-                          <td>' .
-                                $row->slug .
-                                '</td>           
-                          <td>' .
-                                $currency->symbol .
-                                " " .
-                                $row->total_amount .
-                                '</td>    
-                          <td>' .
-                                $newDate .
-                                '</td>    
-                          </tr>
-                          ';
-                        }
-                    } else {
-                        $output = '
-                      <tr>
-                       <td align="center" colspan="5">No Data Found</td>
-                      </tr>
-                      ';
-                    }
-                    $value = [
-                        "table_data" => $output,
-                        "total_data" => $total_row,
-                        "total_content" => $total_content,
-                    ];
+        //                     $output .=
+        //                         '
+        //                   <tr>
+        //                   <td>' .
+        //                         $i++ .
+        //                         '</td>
+        //                   <td>' .
+        //                         $row->username .
+        //                         '</td>
+        //                   <td>' .
+        //                         $row->email .
+        //                         '</td>    
+        //                   <td>
+        //                   <a href="' .
+        //                         $video_url .
+        //                         '">' .
+        //                         $row->title .
+        //                         '</a>
+        //                                 </td>
+        //                   <td>' .
+        //                         $row->slug .
+        //                         '</td>           
+        //                   <td>' .
+        //                         $currency->symbol .
+        //                         " " .
+        //                         $row->total_amount .
+        //                         '</td>    
+        //                   <td>' .
+        //                         $newDate .
+        //                         '</td>    
+        //                   </tr>
+        //                   ';
+        //                 }
+        //             } else {
+        //                 $output = '
+        //               <tr>
+        //                <td align="center" colspan="5">No Data Found</td>
+        //               </tr>
+        //               ';
+        //             }
+        //             $value = [
+        //                 "table_data" => $output,
+        //                 "total_data" => $total_row,
+        //                 "total_content" => $total_content,
+        //             ];
     
-                    return $value;
-                }
-            } else {
-                return Redirect::to("/blocked");
-            }
-        }
+        //             return $value;
+        //         }
+        //     } else {
+        //         return Redirect::to("/blocked");
+        //     }
+        // }
     
-        public function PurchasedVideoExportCsv(Request $request)
-        {
-            $user_package = User::where("id", 1)->first();
-            $package = $user_package->package;
-            if (
-                (!empty($package) && $package == "Pro") ||
-                (!empty($package) && $package == "Business")
-            ) {
-                $data = $request->all();
+        // public function PurchasedVideoExportCsv(Request $request)
+        // {
+        //     $user_package = User::where("id", 1)->first();
+        //     $package = $user_package->package;
+        //     if (
+        //         (!empty($package) && $package == "Pro") ||
+        //         (!empty($package) && $package == "Business")
+        //     ) {
+        //         $data = $request->all();
     
-                $start_time = $data["start_time"];
-                $end_time = $data["end_time"];
+        //         $start_time = $data["start_time"];
+        //         $end_time = $data["end_time"];
     
-                if (!empty($start_time) && empty($end_time)) {
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
-                        ->whereDate("videos.created_at", ">=", $start_time)
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
-                } elseif (!empty($start_time) && !empty($end_time)) {
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
-                        ->whereBetween("ppv_purchases.created_at", [
-                            $start_time,
-                            $end_time,
-                        ])
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
-                } else {
-                    $total_content = Video::join(
-                        "ppv_purchases",
-                        "ppv_purchases.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                        ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                        ->groupBy("ppv_purchases.id")
-                        ->get([
-                            \DB::raw("videos.*"),
-                            \DB::raw("users.username"),
-                            \DB::raw("users.email"),
-                            \DB::raw("ppv_purchases.total_amount"),
-                            \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                            \DB::raw("COUNT(*) as count"),
-                            \DB::raw(
-                                "MONTHNAME(ppv_purchases.created_at) as month_name"
-                            ),
-                        ]);
-                }
-                $file = "PurchasedVideoAnalytics.csv";
+        //         if (!empty($start_time) && empty($end_time)) {
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
+        //                 ->whereDate("videos.created_at", ">=", $start_time)
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
+        //         } elseif (!empty($start_time) && !empty($end_time)) {
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
+        //                 ->whereBetween("ppv_purchases.created_at", [
+        //                     $start_time,
+        //                     $end_time,
+        //                 ])
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
+        //         } else {
+        //             $total_content = Video::join(
+        //                 "ppv_purchases",
+        //                 "ppv_purchases.video_id",
+        //                 "=",
+        //                 "videos.id"
+        //             )
+        //                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
+        //                 ->groupBy("ppv_purchases.id")
+        //                 ->get([
+        //                     \DB::raw("videos.*"),
+        //                     \DB::raw("users.username"),
+        //                     \DB::raw("users.email"),
+        //                     \DB::raw("ppv_purchases.total_amount"),
+        //                     \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+        //                     \DB::raw("COUNT(*) as count"),
+        //                     \DB::raw(
+        //                         "MONTHNAME(ppv_purchases.created_at) as month_name"
+        //                     ),
+        //                 ]);
+        //         }
+        //         $file = "PurchasedVideoAnalytics.csv";
     
-                $headers = [
-                    "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
-                    "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-                    "Content-Disposition" => "attachment; filename=download.csv",
-                    "Expires" => "0",
-                    "Pragma" => "public",
-                ];
-                if (!File::exists(public_path() . "/uploads/csv")) {
-                    File::makeDirectory(public_path() . "/uploads/csv");
-                }
-                $filename = public_path("/uploads/csv/" . $file);
-                $handle = fopen($filename, "w");
-                fputcsv($handle, [
-                    "UserName",
-                    "Email",
-                    "Video Name",
-                    "Video Slug",
-                    "Amount",
-                    "Purchased ON",
-                ]);
-                if (count($total_content) > 0) {
-                    foreach ($total_content as $each_user) {
-                        $video_url =
-                            URL::to("/category/videos") . "/" . $each_user->slug;
-                        $date = date_create($each_user->ppvcreated_at);
-                        $newDate = date_format($date, "d M Y");
+        //         $headers = [
+        //             "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+        //             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+        //             "Content-Disposition" => "attachment; filename=download.csv",
+        //             "Expires" => "0",
+        //             "Pragma" => "public",
+        //         ];
+        //         if (!File::exists(public_path() . "/uploads/csv")) {
+        //             File::makeDirectory(public_path() . "/uploads/csv");
+        //         }
+        //         $filename = public_path("/uploads/csv/" . $file);
+        //         $handle = fopen($filename, "w");
+        //         fputcsv($handle, [
+        //             "UserName",
+        //             "Email",
+        //             "Video Name",
+        //             "Video Slug",
+        //             "Amount",
+        //             "Purchased ON",
+        //         ]);
+        //         if (count($total_content) > 0) {
+        //             foreach ($total_content as $each_user) {
+        //                 $video_url =
+        //                     URL::to("/category/videos") . "/" . $each_user->slug;
+        //                 $date = date_create($each_user->ppvcreated_at);
+        //                 $newDate = date_format($date, "d M Y");
     
-                        fputcsv($handle, [
-                            $each_user->username,
-                            $each_user->email,
-                            $each_user->title,
-                            $each_user->slug,
-                            $each_user->total_amount,
-                            $newDate,
-                        ]);
-                    }
-                }
+        //                 fputcsv($handle, [
+        //                     $each_user->username,
+        //                     $each_user->email,
+        //                     $each_user->title,
+        //                     $each_user->slug,
+        //                     $each_user->total_amount,
+        //                     $newDate,
+        //                 ]);
+        //             }
+        //         }
     
-                fclose($handle);
+        //         fclose($handle);
     
-                \Response::download($filename, "download.csv", $headers);
+        //         \Response::download($filename, "download.csv", $headers);
     
-                return $file;
-            } else {
-                return Redirect::to("/blocked");
-            }
-        }
+        //         return $file;
+        //     } else {
+        //         return Redirect::to("/blocked");
+        //     }
+        // }
     
-        public function ScheduleVideo(Request $request)
-        {
-            $VideoSchedules = VideoSchedules::get();
-            $settings = Setting::first();
-            $TimeZone = TimeZone::get();
+        // public function ScheduleVideo(Request $request)
+        // {
+        //     $VideoSchedules = VideoSchedules::get();
+        //     $settings = Setting::first();
+        //     $TimeZone = TimeZone::get();
     
-            $data = [
-                "settings" => $settings,
-                "VideoSchedules" => $VideoSchedules,
-                "TimeZone" => $TimeZone,
+        //     $data = [
+        //         "settings" => $settings,
+        //         "VideoSchedules" => $VideoSchedules,
+        //         "TimeZone" => $TimeZone,
     
-            ];
-            return view("admin.schedule.video_schedule", $data);
-        }
+        //     ];
+        //     return view("admin.schedule.video_schedule", $data);
+        // }
     
-        public function ScheduleStore(Request $request)
-        {
-            $data = $request->all();
+        // public function ScheduleStore(Request $request)
+        // {
+        //     $data = $request->all();
             
     
-            $image = isset($data["image"]) ? $data["image"] : "";
-            $player_image = isset($data["player_image"]) ? $data["player_image"] : "";
+        //     $image = isset($data["image"]) ? $data["image"] : "";
+        //     $player_image = isset($data["player_image"]) ? $data["player_image"] : "";
     
-            $path = public_path() . "/uploads/videos/";
-            $image_path = public_path() . "/uploads/images/";
-            $image_url = URL::to('public/uploads/images');
+        //     $path = public_path() . "/uploads/videos/";
+        //     $image_path = public_path() . "/uploads/images/";
+        //     $image_url = URL::to('public/uploads/images');
     
-            if ($image != "") {
-                //code for remove old file
-                if ($image != "" && $image != null) {
-                    $file_old = $image_path . $image;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $image;
-                $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+        //     if ($image != "") {
+        //         //code for remove old file
+        //         if ($image != "" && $image != null) {
+        //             $file_old = $image_path . $image;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $file = $image;
+        //         $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
     
-                $file->move($image_path, $image);
-            } else {
-                $image = "default.jpg";
-            }
+        //         $file->move($image_path, $image);
+        //     } else {
+        //         $image = "default.jpg";
+        //     }
     
     
-            if ($player_image != "") {
-                //code for remove old file
-                if ($player_image != "" && $player_image != null) {
-                    $file_old = $image_path . $player_image;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $player_image;
-                $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+        //     if ($player_image != "") {
+        //         //code for remove old file
+        //         if ($player_image != "" && $player_image != null) {
+        //             $file_old = $image_path . $player_image;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $file = $player_image;
+        //         $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
     
-                $file->move($image_path, $player_image);
-            } else {
-                $player_image = "default.jpg";
-            }
-            if(!empty($data['in_home'])){
-                $in_home = 1;
-            }else{
-                $in_home = 0;
-            }
-            if ( $request["name"] != '') {
-                $slug =  str_replace(' ', '_',  $request['name']);
-            } else {
-                $slug  = str_replace(' ', '_', $request['name']);
-            }
-            $Schedules = new VideoSchedules();
-            $Schedules->name = $request["name"];
-            $Schedules->slug = str_replace(' ', '_', $request['name']);
-            $Schedules->description = $request["description"];
-            $Schedules->image = $image;
-            $Schedules->player_image = $player_image;
-            $Schedules->in_home = $in_home;
-            $Schedules->user_id = Auth::user()->id;
-            $Schedules->save();
+        //         $file->move($image_path, $player_image);
+        //     } else {
+        //         $player_image = "default.jpg";
+        //     }
+        //     if(!empty($data['in_home'])){
+        //         $in_home = 1;
+        //     }else{
+        //         $in_home = 0;
+        //     }
+        //     if ( $request["name"] != '') {
+        //         $slug =  str_replace(' ', '_',  $request['name']);
+        //     } else {
+        //         $slug  = str_replace(' ', '_', $request['name']);
+        //     }
+        //     $Schedules = new VideoSchedules();
+        //     $Schedules->name = $request["name"];
+        //     $Schedules->slug = str_replace(' ', '_', $request['name']);
+        //     $Schedules->description = $request["description"];
+        //     $Schedules->image = $image;
+        //     $Schedules->player_image = $player_image;
+        //     $Schedules->in_home = $in_home;
+        //     $Schedules->user_id = Auth::user()->id;
+        //     $Schedules->save();
     
-            return Redirect::back()->with([
-                "note" => "You have been successfully Added New Schedules",
-                "note_type" => "success",
-            ]);
-        }
+        //     return Redirect::back()->with([
+        //         "note" => "You have been successfully Added New Schedules",
+        //         "note_type" => "success",
+        //     ]);
+        // }
     
-        public function ScheduleEdit($id)
-        {
-            $VideoSchedules = VideoSchedules::get();
-            $settings = Setting::first();
+        // public function ScheduleEdit($id)
+        // {
+        //     $VideoSchedules = VideoSchedules::get();
+        //     $settings = Setting::first();
     
-            $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+        //     $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
     
-            $data = [
-                "schedule" => $VideoSchedules,
-            ];
-            //    dd($VideoSchedules);
-            return view("admin.schedule.videoEdit_schedule", $data);
-        }
+        //     $data = [
+        //         "schedule" => $VideoSchedules,
+        //     ];
+        //     //    dd($VideoSchedules);
+        //     return view("admin.schedule.videoEdit_schedule", $data);
+        // }
     
-        public function ScheduleDelete($id)
-        {
+        // public function ScheduleDelete($id)
+        // {
     
-            SiteVideoScheduler::where('channe_id', $id)->delete();
-            DefaultSchedulerData::where('channe_id', $id)->delete();
-            VideoSchedules::where("id", $id)->delete();
+        //     SiteVideoScheduler::where('channe_id', $id)->delete();
+        //     DefaultSchedulerData::where('channe_id', $id)->delete();
+        //     VideoSchedules::where("id", $id)->delete();
     
-            return Redirect::back()->with([
-                "note" => "You have been successfully Added New Coupon",
-                "note_type" => "success",
-            ]);
-        }
+        //     return Redirect::back()->with([
+        //         "note" => "You have been successfully Added New Coupon",
+        //         "note_type" => "success",
+        //     ]);
+        // }
     
-        public function ScheduleUpdate(Request $request)
-        {
-            $input = $request->all();
-            $id = $request["id"];
-            $Schedules = VideoSchedules::find($id);
-            if(!empty($input['in_home'])){
-                $in_home = 1;
-            }else{
-                $in_home = 0;
-            }
-            // dd();
+        // public function ScheduleUpdate(Request $request)
+        // {
+        //     $input = $request->all();
+        //     $id = $request["id"];
+        //     $Schedules = VideoSchedules::find($id);
+        //     if(!empty($input['in_home'])){
+        //         $in_home = 1;
+        //     }else{
+        //         $in_home = 0;
+        //     }
+        //     // dd();
     
-            $image = isset($input["image"]) ? $input["image"] : "";
-            $player_image = isset($input["player_image"]) ? $input["player_image"] : "";
+        //     $image = isset($input["image"]) ? $input["image"] : "";
+        //     $player_image = isset($input["player_image"]) ? $input["player_image"] : "";
     
-            $path = public_path() . "/uploads/videos/";
-            $image_path = public_path() . "/uploads/images/";
-            $image_url = URL::to('public/uploads/images');
+        //     $path = public_path() . "/uploads/videos/";
+        //     $image_path = public_path() . "/uploads/images/";
+        //     $image_url = URL::to('public/uploads/images');
     
-            if ($image != "") {
-                //code for remove old file
-                if ($image != "" && $image != null) {
-                    $file_old = $image_path . $image;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $image;
-                $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+        //     if ($image != "") {
+        //         //code for remove old file
+        //         if ($image != "" && $image != null) {
+        //             $file_old = $image_path . $image;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $file = $image;
+        //         $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
     
-                $file->move($image_path, $image);
+        //         $file->move($image_path, $image);
     
-            // dd( $image);
+        //     // dd( $image);
     
-            } else {
-                $image = $Schedules->image;
-            }
-            if ($player_image != "") {
-                //code for remove old file
-                if ($player_image != "" && $player_image != null) {
-                    $file_old = $image_path . $player_image;
-                    if (file_exists($file_old)) {
-                        unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $player_image;
-                $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+        //     } else {
+        //         $image = $Schedules->image;
+        //     }
+        //     if ($player_image != "") {
+        //         //code for remove old file
+        //         if ($player_image != "" && $player_image != null) {
+        //             $file_old = $image_path . $player_image;
+        //             if (file_exists($file_old)) {
+        //                 unlink($file_old);
+        //             }
+        //         }
+        //         //upload new file
+        //         $file = $player_image;
+        //         $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
     
-                $file->move($image_path, $player_image);
-            } else {
-                $player_image = $Schedules->player_image;
-            }
-            if ( $request["name"] != '') {
-                $slug =  str_replace(' ', '_',  $request['name']);
-            } else {
-                $slug  = str_replace(' ', '_', $request['name']);
-            }
-            $Schedules->name = $request["name"];
-            $Schedules->slug = $slug;
-            $Schedules->description = $request["description"];
-            $Schedules->image = $image;
-            $Schedules->player_image = $player_image;
-            $Schedules->in_home = $in_home;
-            $Schedules->user_id = Auth::user()->id;
-            $Schedules->save();
+        //         $file->move($image_path, $player_image);
+        //     } else {
+        //         $player_image = $Schedules->player_image;
+        //     }
+        //     if ( $request["name"] != '') {
+        //         $slug =  str_replace(' ', '_',  $request['name']);
+        //     } else {
+        //         $slug  = str_replace(' ', '_', $request['name']);
+        //     }
+        //     $Schedules->name = $request["name"];
+        //     $Schedules->slug = $slug;
+        //     $Schedules->description = $request["description"];
+        //     $Schedules->image = $image;
+        //     $Schedules->player_image = $player_image;
+        //     $Schedules->in_home = $in_home;
+        //     $Schedules->user_id = Auth::user()->id;
+        //     $Schedules->save();
     
-            return Redirect::back()->with([
-                "note" => "You have been successfully Added New Coupon",
-                "note_type" => "success",
-            ]);
-        }
+        //     return Redirect::back()->with([
+        //         "note" => "You have been successfully Added New Coupon",
+        //         "note_type" => "success",
+        //     ]);
+        // }
     
-        public function ManageSchedule($id)
-        {
+        // public function ManageSchedule($id)
+        // {
     
-            $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+        //     $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
     
-                if($enable_default_timezone == 1){
+        //         if($enable_default_timezone == 1){
     
                     
-                    $Channels =  VideoSchedules::where('id',$id)->Select('id','name','slug')->get();
+        //             $Channels =  VideoSchedules::where('id',$id)->Select('id','name','slug')->get();
     
-                    // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
-                    $TimeZone = TimeZone::get();
+        //             // $TimeZone = TimeZone::whereIn('id',[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])->get();
+        //             $TimeZone = TimeZone::get();
     
-                    $default_time_zone = Setting::pluck('default_time_zone')->first();
+        //             $default_time_zone = Setting::pluck('default_time_zone')->first();
                     
-                    $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
+        //             $enable_default_timezone = SiteTheme::pluck('enable_default_timezone')->first();
                     
-                    $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
+        //             $utc_difference = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('utc_difference')->first()  : '' ;
                     
-                    $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
+        //             $time_zoneid = $enable_default_timezone == 1 ? TimeZone::where('time_zone',$default_time_zone)->pluck('id')->first()  : '' ;
                 
-                    $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
-                        $item['socure_type'] = 'Video';
-                        return $item;
-                    });
-                    $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
-                        $item['socure_type'] = 'Episode';
-                        return $item;
-                    });
-                    $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
-                        $item['socure_type'] = 'LiveStream';
-                        return $item;
-                    });
+        //             $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+        //                 $item['socure_type'] = 'Video';
+        //                 return $item;
+        //             });
+        //             $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+        //                 $item['socure_type'] = 'Episode';
+        //                 return $item;
+        //             });
+        //             $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+        //                 $item['socure_type'] = 'LiveStream';
+        //                 return $item;
+        //             });
     
-                    $mergedCollection = $videos
-                    ->concat($episodes)
-                    ->concat($livestreams)
-                    ->values();
-                    //   dd($mergedCollection);
+        //             $mergedCollection = $videos
+        //             ->concat($episodes)
+        //             ->concat($livestreams)
+        //             ->values();
+        //             //   dd($mergedCollection);
                     
-                    $perPage = 3; // Adjust the number based on your requirement
-                    $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
-                    $paginator = new LengthAwarePaginator(
-                        $mergedCollection->forPage($currentPage, $perPage),
-                        $mergedCollection->count(),
-                        $perPage,
-                        $currentPage
-                    );
+        //             $perPage = 3; // Adjust the number based on your requirement
+        //             $currentPage = request()->get('page', 1); // Get the current page from the request or default to 1
+        //             $paginator = new LengthAwarePaginator(
+        //                 $mergedCollection->forPage($currentPage, $perPage),
+        //                 $mergedCollection->count(),
+        //                 $perPage,
+        //                 $currentPage
+        //             );
                     
-                    $VideoSchedules = VideoSchedules::get();
-                    $settings = Setting::first();
+        //             $VideoSchedules = VideoSchedules::get();
+        //             $settings = Setting::first();
         
-                    $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+        //             $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
     
-                    $data = array(
+        //             $data = array(
                     
-                        'Channels' => $Channels  ,
-                        'TimeZone' => $TimeZone  ,
-                        'default_time_zone' => $default_time_zone  ,
-                        'enable_default_timezone' => $enable_default_timezone  ,
-                        'utc_difference' => $utc_difference  ,
-                        // 'VideoCollection' => $paginator  ,
-                        'time_zoneid' => $time_zoneid  ,
-                        'VideoCollection' => $mergedCollection  ,
-                        'VideoSchedules' => $VideoSchedules  ,
-                    );            
+        //                 'Channels' => $Channels  ,
+        //                 'TimeZone' => $TimeZone  ,
+        //                 'default_time_zone' => $default_time_zone  ,
+        //                 'enable_default_timezone' => $enable_default_timezone  ,
+        //                 'utc_difference' => $utc_difference  ,
+        //                 // 'VideoCollection' => $paginator  ,
+        //                 'time_zoneid' => $time_zoneid  ,
+        //                 'VideoCollection' => $mergedCollection  ,
+        //                 'VideoSchedules' => $VideoSchedules  ,
+        //             );            
     
-                return view("admin.schedule.VideoSchedulerEpg", $data);
+        //         return view("admin.schedule.VideoSchedulerEpg", $data);
     
-            }else{
+        //     }else{
     
-                $VideoSchedules = VideoSchedules::get();
-                $settings = Setting::first();
+        //         $VideoSchedules = VideoSchedules::get();
+        //         $settings = Setting::first();
     
-                $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
-                $TimeZone = TimeZone::get();
+        //         $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+        //         $TimeZone = TimeZone::get();
     
-                $data = [
-                    "schedule" => $VideoSchedules,
-                    "settings" => $settings,
-                    "TimeZone" => $TimeZone,
-                ];
-                //    dd($VideoSchedules);
-                return view("admin.schedule.manage_schedule", $data);
-            }
+        //         $data = [
+        //             "schedule" => $VideoSchedules,
+        //             "settings" => $settings,
+        //             "TimeZone" => $TimeZone,
+        //         ];
+        //         //    dd($VideoSchedules);
+        //         return view("admin.schedule.manage_schedule", $data);
+        //     }
     
-        }
+        // }
     
-        public function CalendarSchedule(Request $request)
-        {
-            $data = $request->all();
-            $id = $data["schedule_id"];
-            // dd($data);
-            $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
-            $Video = ScheduleVideos::get();
-            $Videos = [];
-            foreach($Video as $value){
-                $Videos = Video::where("title",'!=',$value->title)->get();
-            }
+        // public function CalendarSchedule(Request $request)
+        // {
+        //     $data = $request->all();
+        //     $id = $data["schedule_id"];
+        //     // dd($data);
+        //     $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+        //     $Video = ScheduleVideos::get();
+        //     $Videos = [];
+        //     foreach($Video as $value){
+        //         $Videos = Video::where("title",'!=',$value->title)->get();
+        //     }
     
-            if(count($Videos) > 0){
-               $Videos_list = $Videos ;
-            }else{
-                $Videos_list = Video::get(); 
-            }
+        //     if(count($Videos) > 0){
+        //        $Videos_list = $Videos ;
+        //     }else{
+        //         $Videos_list = Video::get(); 
+        //     }
     
-            $settings = Setting::first();
-            // dd($Videos);
+        //     $settings = Setting::first();
+        //     // dd($Videos);
     
-            $choosed_date =
-                $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //     $choosed_date =
+        //         $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-            $date = date_create($choosed_date);
-            $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //     $date = date_create($choosed_date);
+        //     $date_choose = date_format($date, "Y/m");
+        //     $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
             
-            $d = new \DateTime("now");
-            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            $now = $d->format("Y-m-d h:i:s a");
-            $current_time = date("A", strtotime($now));
+        //     $d = new \DateTime("now");
+        //     $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //     $now = $d->format("Y-m-d h:i:s a");
+        //     $current_time = date("A", strtotime($now));
     
-            date_default_timezone_set($settings->default_time_zone);
-            $now = date("Y-m-d h:i:s a", time());
-            $current_time = date("A", time());
+        //     date_default_timezone_set($settings->default_time_zone);
+        //     $now = date("Y-m-d h:i:s a", time());
+        //     $current_time = date("A", time());
     
-            // dd($date_choosed);
-            $ScheduledVideo = ScheduleVideos::where(
-                "shedule_date",
-                "=",
-                $date_choosed
-            )
-                ->orderBy("id", "desc")
-                ->get();
+        //     // dd($date_choosed);
+        //     $ScheduledVideo = ScheduleVideos::where(
+        //         "shedule_date",
+        //         "=",
+        //         $date_choosed
+        //     )
+        //         ->orderBy("id", "desc")
+        //         ->get();
     
-            $TimeZone = TimeZone::get();
-    
-    
-            $data = [
-                "schedule" => $VideoSchedules,
-                "settings" => $settings,
-                "Calendar" => $data,
-                "Video" => $Videos_list,
-                "ScheduledVideo" => $ScheduledVideo,
-                "current_time" => $current_time,
-                "TimeZone" => $TimeZone,
-            ];
-            //    dd($current_time);
-            return view("admin.schedule.schedule_videos", $data);
-        }
-    
-        public function ScheduleUploadFile(Request $request)
-        {
-            $value = [];
-            $data = $request->all();
-            // echo "<pre>";
-            // print_r($data);exit();
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
-    
-            $path = public_path() . "/uploads/videos/";
-    
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
-    
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
-    
-            $date = $data["date"];
-            $month = $data["month"];
-            $year = $data["year"];
-            $schedule_time = $data["schedule_time"];
-            $schedule_id = $data["schedule_id"];
-            $time_zone = $data["time_zone"];
+        //     $TimeZone = TimeZone::get();
     
     
-            if (!empty($schedule_time)) {
-                $choose_time = explode("to", $schedule_time);
-                if (count($choose_time) > 0) {
-                    $choose_start_time = $choose_time[0];
-                    $choose_end_time = $choose_time[1];
-                } else {
-                    $choose_start_time = "";
-                    $choose_end_time = "";
-                }
+        //     $data = [
+        //         "schedule" => $VideoSchedules,
+        //         "settings" => $settings,
+        //         "Calendar" => $data,
+        //         "Video" => $Videos_list,
+        //         "ScheduledVideo" => $ScheduledVideo,
+        //         "current_time" => $current_time,
+        //         "TimeZone" => $TimeZone,
+        //     ];
+        //     //    dd($current_time);
+        //     return view("admin.schedule.schedule_videos", $data);
+        // }
+    
+        // public function ScheduleUploadFile(Request $request)
+        // {
+        //     $value = [];
+        //     $data = $request->all();
+        //     // echo "<pre>";
+        //     // print_r($data);exit();
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
+    
+        //     $path = public_path() . "/uploads/videos/";
+    
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
+    
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
+    
+        //     $date = $data["date"];
+        //     $month = $data["month"];
+        //     $year = $data["year"];
+        //     $schedule_time = $data["schedule_time"];
+        //     $schedule_id = $data["schedule_id"];
+        //     $time_zone = $data["time_zone"];
+    
+    
+        //     if (!empty($schedule_time)) {
+        //         $choose_time = explode("to", $schedule_time);
+        //         if (count($choose_time) > 0) {
+        //             $choose_start_time = $choose_time[0];
+        //             $choose_end_time = $choose_time[1];
+        //         } else {
+        //             $choose_start_time = "";
+        //             $choose_end_time = "";
+        //         }
                 
-                // $d = new \DateTime("now");
-                // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                // $now = $d->format("Y-m-d h:i:s a");
-                // $current_time = date("h:i A", strtotime($now));
+        //         // $d = new \DateTime("now");
+        //         // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //         // $now = $d->format("Y-m-d h:i:s a");
+        //         // $current_time = date("h:i A", strtotime($now));
     
-                // date_default_timezone_set('Asia/Kolkata');
-                date_default_timezone_set($time_zone);
-                $now = date("Y-m-d h:i:s a", time());
-                $current_time = date("h:i A ", time());
+        //         // date_default_timezone_set('Asia/Kolkata');
+        //         date_default_timezone_set($time_zone);
+        //         $now = date("Y-m-d h:i:s a", time());
+        //         $current_time = date("h:i A ", time());
     
-                $Schedule_current_date = date("Y-m-d");
+        //         $Schedule_current_date = date("Y-m-d");
     
-                $schedule_id = $data["schedule_id"];
-                $choosed_date = $year . "-" . $month . "-" . $date;
+        //         $schedule_id = $data["schedule_id"];
+        //         $choosed_date = $year . "-" . $month . "-" . $date;
     
-                $date = date_create($choosed_date);
-                $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //         $date = date_create($choosed_date);
+        //         $date_choose = date_format($date, "Y/m");
+        //         $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
                 
-                $now = date("Y-m-d h:i:s a");
-                $current_time = date("h:i A");
+        //         $now = date("Y-m-d h:i:s a");
+        //         $current_time = date("h:i A");
     
-                $currentDate = date("Y/m/d");
+        //         $currentDate = date("Y/m/d");
     
-        //    echo "<pre>";
-        //     print_r($current_time);exit();
-                if($current_time < $choose_start_time && $currentDate == $date_choosed){
-                    $choose_current_time =  explode(":", date("h:i", strtotime($now)));
-                }else {
-                    $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
-                }
-                // dd($choose_current_time);
-                if($current_time < $choose_start_time && $currentDate == $date_choosed){
-                    $store_current_time =  date("h:i", strtotime($now));
-                }else {
-                    $store_current_time =  date("h:i", strtotime($choose_start_time));
-                }
-            }
-            // $choosed_date =
-            // $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        // //    echo "<pre>";
+        // //     print_r($current_time);exit();
+        //         if($current_time < $choose_start_time && $currentDate == $date_choosed){
+        //             $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+        //         }else {
+        //             $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+        //         }
+        //         // dd($choose_current_time);
+        //         if($current_time < $choose_start_time && $currentDate == $date_choosed){
+        //             $store_current_time =  date("h:i", strtotime($now));
+        //         }else {
+        //             $store_current_time =  date("h:i", strtotime($choose_start_time));
+        //         }
+        //     }
+        //     // $choosed_date =
+        //     // $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-            // $date = date_create($choosed_date);
-            // $date_choose = date_format($date, "Y/m");
-            // $date_choosed = $date_choose . "/" . $data["date"];
+        //     // $date = date_create($choosed_date);
+        //     // $date_choose = date_format($date, "Y/m");
+        //     // $date_choosed = $date_choose . "/" . $data["date"];
     
     
-            if ($mp4_url != "" && $pack != "Business") {
-                // print_r('1');exit();
-                $date = $data["date"];
-                $month = $data["month"];
-                $year = $data["year"];
-                $schedule_time = $data["schedule_time"];
-                // $choose_start_time = $data['choose_start_time'];
-                // $choose_end_time = $data['choose_end_time'];
-                if (!empty($schedule_time)) {
-                    $choose_time = explode("to", $schedule_time);
-                    // echo "<pre>";print_r($choose_time);exit;
-                    if (count($choose_time) > 0) {
-                        $choose_start_time = $choose_time[0];
-                        $choose_end_time = $choose_time[1];
-                    } else {
-                        $choose_start_time = "";
-                        $choose_end_time = "";
-                    }
+        //     if ($mp4_url != "" && $pack != "Business") {
+        //         // print_r('1');exit();
+        //         $date = $data["date"];
+        //         $month = $data["month"];
+        //         $year = $data["year"];
+        //         $schedule_time = $data["schedule_time"];
+        //         // $choose_start_time = $data['choose_start_time'];
+        //         // $choose_end_time = $data['choose_end_time'];
+        //         if (!empty($schedule_time)) {
+        //             $choose_time = explode("to", $schedule_time);
+        //             // echo "<pre>";print_r($choose_time);exit;
+        //             if (count($choose_time) > 0) {
+        //                 $choose_start_time = $choose_time[0];
+        //                 $choose_end_time = $choose_time[1];
+        //             } else {
+        //                 $choose_start_time = "";
+        //                 $choose_end_time = "";
+        //             }
     
-                    $Schedule_current_date = date("Y-m-d");
-                    $time_zone = $data["time_zone"];
+        //             $Schedule_current_date = date("Y-m-d");
+        //             $time_zone = $data["time_zone"];
     
-                    $schedule_id = $data["schedule_id"];
-                    $choosed_date = $year . "-" . $month . "-" . $date;
+        //             $schedule_id = $data["schedule_id"];
+        //             $choosed_date = $year . "-" . $month . "-" . $date;
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-                    // echo "<pre>";print_r($date_choosed);exit;
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //             // echo "<pre>";print_r($date_choosed);exit;
     
-                    $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
-                        ->where("shedule_date", "=", $date_choosed)
-                        ->whereBetween("choose_start_time", [
-                            $choose_start_time,
-                            $choose_end_time,
-                        ])
-                        ->orderBy("id", "desc")
-                        ->first();
+        //             $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
+        //                 ->where("shedule_date", "=", $date_choosed)
+        //                 ->whereBetween("choose_start_time", [
+        //                     $choose_start_time,
+        //                     $choose_end_time,
+        //                 ])
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
     
-                    $ScheduleVideos = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->first();
+        //             $ScheduleVideos = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
     
-                    $rand = Str::random(16);
-                    $path =
-                        $rand . "." . $request->file->getClientOriginalExtension();
+        //             $rand = Str::random(16);
+        //             $path =
+        //                 $rand . "." . $request->file->getClientOriginalExtension();
     
-                    $request->file->storeAs("public", $path);
-                    $thumb_path = "public";
-                    $original_name = $request->file->getClientOriginalName()
-                        ? $request->file->getClientOriginalName()
-                        : "";
-                    $storepath = URL::to("/storage/app/public/" . $path);
-                    //  Video duration
-                    $getID3 = new getID3();
-                    $Video_storepath = storage_path("app/public/" . $path);
-                    $VideoInfo = $getID3->analyze($Video_storepath);
-                    $Video_duration = $VideoInfo["playtime_seconds"];
+        //             $request->file->storeAs("public", $path);
+        //             $thumb_path = "public";
+        //             $original_name = $request->file->getClientOriginalName()
+        //                 ? $request->file->getClientOriginalName()
+        //                 : "";
+        //             $storepath = URL::to("/storage/app/public/" . $path);
+        //             //  Video duration
+        //             $getID3 = new getID3();
+        //             $Video_storepath = storage_path("app/public/" . $path);
+        //             $VideoInfo = $getID3->analyze($Video_storepath);
+        //             $Video_duration = $VideoInfo["playtime_seconds"];
     
-                    // DateTime();
-                    $current_date = $current_date = date("Y-m-d h:i:s a", time());
-                    $current_date = date("Y-m-d h:i:s");
-                    $daten = date("Y-m-d h:i:s ", time());
+        //             // DateTime();
+        //             $current_date = $current_date = date("Y-m-d h:i:s a", time());
+        //             $current_date = date("Y-m-d h:i:s");
+        //             $daten = date("Y-m-d h:i:s ", time());
     
-                    date_default_timezone_set($time_zone);
-                    $now = date("Y-m-d h:i:s a", time());
-                    $current_time = date("h:i A", time());
-                    // print_r($choosedtime_exitvideos);exit;
+        //             date_default_timezone_set($time_zone);
+        //             $now = date("Y-m-d h:i:s a", time());
+        //             $current_time = date("h:i A", time());
+        //             // print_r($choosedtime_exitvideos);exit;
     
-                    if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
-                        // print_r('ScheduleVideos');exit;
+        //             if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
+        //                 // print_r('ScheduleVideos');exit;
     
-                        $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
-                        $last_current_time = $ScheduleVideos->current_time;
-                        $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
+        //                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+        //                 $last_current_time = $ScheduleVideos->current_time;
+        //                 $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
     
-                        if ($last_shedule_endtime < $current_time) {
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
     
-                            // print_r($last_shedule_endtime);exit;
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                        } else {
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                     // print_r($last_shedule_endtime);exit;
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 } else {
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
     
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
     
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->starttime = $last_sheduled_endtime;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->starttime = $last_sheduled_endtime;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
     
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
     
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
     
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
     
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
     
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
     
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
     
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
     
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
     
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
     
-                        return $value;
-                    } elseif (
-                        !empty($ScheduleVideos) &&
-                        !empty($choosedtime_exitvideos)
-                    ) {
-                        // print_r($ScheduleVideos);exit;
-                        $last_shedule_endtime =
-                            $choosedtime_exitvideos->shedule_endtime;
-                        $last_current_time = $choosedtime_exitvideos->current_time;
-                        $last_sheduled_endtime =
-                            $choosedtime_exitvideos->sheduled_endtime;
+        //                 return $value;
+        //             } elseif (
+        //                 !empty($ScheduleVideos) &&
+        //                 !empty($choosedtime_exitvideos)
+        //             ) {
+        //                 // print_r($ScheduleVideos);exit;
+        //                 $last_shedule_endtime =
+        //                     $choosedtime_exitvideos->shedule_endtime;
+        //                 $last_current_time = $choosedtime_exitvideos->current_time;
+        //                 $last_sheduled_endtime =
+        //                     $choosedtime_exitvideos->sheduled_endtime;
     
-                        if ($last_shedule_endtime < $current_time) {
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
     
-                            // print_r($last_shedule_endtime);exit;
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                        } else {
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                     // print_r($last_shedule_endtime);exit;
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 } else {
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-                            // print_r($sheduled_endtime);exit;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+        //                     // print_r($sheduled_endtime);exit;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
     
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->status = 1;
-                        $video->time_zone  = $time_zone ;
-                        $video->save();
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->status = 1;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->save();
     
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
     
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
     
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
     
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
     
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
     
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
     
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
     
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
     
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
     
-                        return $value;
-                    } else {
-                        $time = $choose_current_time;
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
+        //                 return $value;
+        //             } else {
+        //                 $time = $choose_current_time;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
     
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime =
-                            $hours .
-                            ":" .
-                            $minutes .
-                            " " .
-                            date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
-                        $starttime = date("h:i A", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i ", strtotime($store_current_time));
-                        $time_zone = $data["time_zone"];
+        //                 $shedule_endtime =
+        //                     $hours .
+        //                     ":" .
+        //                     $minutes .
+        //                     " " .
+        //                     date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $starttime = date("h:i A", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+        //                 $time_zone = $data["time_zone"];
     
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->status = 1;
-                        $video->time_zone  = $time_zone ;
-                        $video->save();
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->status = 1;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->save();
     
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
     
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
     
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
     
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
     
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
     
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
     
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
     
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
     
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
     
-                        return $value;
-                    }
-                } else {
-                    return "Please Choose Time";
-                }
+        //                 return $value;
+        //             }
+        //         } else {
+        //             return "Please Choose Time";
+        //         }
                 
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1
-            ) {
-                $date = $data["date"];
-                $month = $data["month"];
-                $year = $data["year"];
-                $schedule_time = $data["schedule_time"];
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 1
+        //     ) {
+        //         $date = $data["date"];
+        //         $month = $data["month"];
+        //         $year = $data["year"];
+        //         $schedule_time = $data["schedule_time"];
     
-                if (!empty($schedule_time)) {
-                    $choose_time = explode("to", $schedule_time);
-                    if (count($choose_time) > 0) {
-                        $choose_start_time = $choose_time[0];
-                        $choose_end_time = $choose_time[1];
-                    } else {
-                        $choose_start_time = "";
-                        $choose_end_time = "";
-                    }
+        //         if (!empty($schedule_time)) {
+        //             $choose_time = explode("to", $schedule_time);
+        //             if (count($choose_time) > 0) {
+        //                 $choose_start_time = $choose_time[0];
+        //                 $choose_end_time = $choose_time[1];
+        //             } else {
+        //                 $choose_start_time = "";
+        //                 $choose_end_time = "";
+        //             }
                     
-                    // $d = new \DateTime("now");
-                    // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                    // $now = $d->format("Y-m-d h:i:s a");
-                    // $current_time = date("h:i A", strtotime($now));
-                    $time_zone = $data["time_zone"];
+        //             // $d = new \DateTime("now");
+        //             // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //             // $now = $d->format("Y-m-d h:i:s a");
+        //             // $current_time = date("h:i A", strtotime($now));
+        //             $time_zone = $data["time_zone"];
     
-                    date_default_timezone_set($time_zone);
-                    $now = date("Y-m-d h:i:s a", time());
-                    $current_time = date("h:i A", time());
+        //             date_default_timezone_set($time_zone);
+        //             $now = date("Y-m-d h:i:s a", time());
+        //             $current_time = date("h:i A", time());
     
-                    $Schedule_current_date = date("Y-m-d");
+        //             $Schedule_current_date = date("Y-m-d");
     
-                    $schedule_id = $data["schedule_id"];
-                    $choosed_date = $year . "-" . $month . "-" . $date;
+        //             $schedule_id = $data["schedule_id"];
+        //             $choosed_date = $year . "-" . $month . "-" . $date;
         
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
         
                     
-                    $now = date("Y-m-d h:i:s a");
-                    $current_time = date("h:i A");
+        //             $now = date("Y-m-d h:i:s a");
+        //             $current_time = date("h:i A");
         
-                    $currentDate = date("Y/m/d");
-    
-                    if($current_time < $choose_start_time && $currentDate == $date_choosed){
-                        $choose_current_time =  explode(":", date("h:i", strtotime($now)));
-                    }else {
-                        $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
-                    }
-    
-                    if($current_time < $choose_start_time && $currentDate == $date_choosed){
-                        $store_current_time =  date("h:i", strtotime($now));
-                    }else {
-                        $store_current_time =  date("h:i", strtotime($choose_start_time));
-                    }
-    
-                    // $Schedule_current_date = date("Y-m-d");
-    
-                    // $schedule_id = $data["schedule_id"];
-                    // $choosed_date = $year . "-" . $month . "-" . $date;
-    
-                    // $date = date_create($choosed_date);
-                    // $date_choose = date_format($date, "Y/m");
-                    // $date_choosed = $date_choose . "/" . $data["date"];
-                    // echo "<pre>";print_r($date_choosed);exit;
-    
-                    $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
-                        ->where("shedule_date", "=", $date_choosed)
-                        ->where("shedule_time", "=", $schedule_time)
-                        // ->whereBetween('choose_start_time',[$choose_start_time, $choose_end_time])
-                        ->orderBy("id", "desc")
-                        ->first();
-                    // echo "<pre>";print_r($choosedtime_exitvideos);exit;
-    
-                    $ScheduleVideos = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->first();
-    
-                    $rand = Str::random(16);
-                    $path =
-                        $rand . "." . $request->file->getClientOriginalExtension();
-    
-                    $request->file->storeAs("public", $path);
-                    $thumb_path = "public";
-                    $original_name = $request->file->getClientOriginalName()
-                        ? $request->file->getClientOriginalName()
-                        : "";
-                    $storepath = URL::to("/storage/app/public/" . $path);
-                    //  Video duration
-                    $getID3 = new getID3();
-                    $Video_storepath = storage_path("app/public/" . $path);
-                    $VideoInfo = $getID3->analyze($Video_storepath);
-                    $Video_duration = $VideoInfo["playtime_seconds"];
-    
-                    // DateTime();
-                    $current_date = $current_date = date("Y-m-d h:i:s a", time());
-                    $current_date = date("Y-m-d h:i:s");
-                    $daten = date("Y-m-d h:i:s ", time());
-                    // $d = new \DateTime("now");
-                    // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                    // $now = $d->format("Y-m-d h:i:s a");
-                    // $current_time = date("h:i A", strtotime($now));
-                    $time_zone = $data["time_zone"];
-    
-                    date_default_timezone_set($time_zone);
-                    $now = date("Y-m-d h:i:s a", time());
-                    $current_time = date("h:i A", time());
-    
-                    // print_r($choosedtime_exitvideos);exit;
-    
-                    if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
-                        // print_r('ScheduleVideos');exit;
-    
-                        $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
-                        $last_current_time = $ScheduleVideos->current_time;
-                        $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
-    
-                        if ($last_shedule_endtime < $current_time) {
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                            // print_r($last_shedule_endtime);exit;
-                        } else {
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->starttime = $last_sheduled_endtime;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->status = 1;
-                        $video->time_zone  = $time_zone ;
-                        $video->save();
-    
-                        VideoSchedule::dispatch($video);
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
-    
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    } elseif (
-                        !empty($ScheduleVideos) &&
-                        !empty($choosedtime_exitvideos)
-                    ) {
-                        // print_r('$ScheduleVideos');exit;
-                        $last_shedule_endtime =
-                            $choosedtime_exitvideos->shedule_endtime;
-                        $last_current_time = $choosedtime_exitvideos->current_time;
-                        $last_sheduled_endtime =
-                            $choosedtime_exitvideos->sheduled_endtime;
-    
-                        if ($last_shedule_endtime < $current_time) {
-                            // print_r('$ScheduleVideos');exit;
-    
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-    
-                            // print_r($last_shedule_endtime);exit;
-                        } else {
-                            // print_r('$last_sheduled_endtime');exit;
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-                            // print_r($sheduled_endtime);exit;
-    
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->status = 1;
-                        $video->time_zone  = $time_zone ;
-                        $video->save();
-    
-                        VideoSchedule::dispatch($video);
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
-    
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    } else {
-    
-                        // print_r('$else');exit;
-    
-                        $time = explode(":", date("h:i", strtotime($now)));
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
-    
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                        $shedule_endtime =
-                            $hours .
-                            ":" .
-                            $minutes .
-                            " " .
-                            date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->starttime = date("h:i", strtotime($now));
-                        $video->sheduled_starttime = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
-    
-                        VideoSchedule::dispatch($video);
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' . '#' .'</td>
-    
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    }
-                } else {
-                    return "Please Choose Time";
-                }
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-    
-                    // echo "<pre>";print_r($choose_time);exit;
-    
-                $date = $data["date"];
-                $month = $data["month"];
-                $year = $data["year"];
-                $schedule_time = $data["schedule_time"];
-                // $choose_start_time = $data['choose_start_time'];
-                // $choose_end_time = $data['choose_end_time'];
-                if (!empty($schedule_time)) {
-                    $choose_time = explode("to", $schedule_time);
-                    // echo "<pre>";print_r($choose_time);exit;
-                    if (count($choose_time) > 0) {
-                        $choose_start_time = $choose_time[0];
-                        $choose_end_time = $choose_time[1];
-                    } else {
-                        $choose_start_time = "";
-                        $choose_end_time = "";
-                    }
-    
-                    $Schedule_current_date = date("Y-m-d");
-    
-                    $schedule_id = $data["schedule_id"];
-                    $choosed_date = $year . "-" . $month . "-" . $date;
-    
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-                    // echo "<pre>";print_r($date_choosed);exit;
-    
-                    $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
-                        ->where("shedule_date", "=", $date_choosed)
-                        ->whereBetween("choose_start_time", [
-                            $choose_start_time,
-                            $choose_end_time,
-                        ])
-                        ->orderBy("id", "desc")
-                        ->first();
-                    // SELECT * FROM schedule_videos WHERE choose_start_time BETWEEN '01:30 PM' AND '02:30 PM';
-    
-                    // $ScheduleVideos = DB::table('schedule_videos')
-                    // ->select('*')
-                    // ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
-                    // ->orderBy('id', 'desc')->first();
-    
-                    // echo "<pre>";print_r($choosedtime_exitvideos);exit;
-    
-                    $ScheduleVideos = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->first();
-    
-                    $rand = Str::random(16);
-                    $path =
-                        $rand . "." . $request->file->getClientOriginalExtension();
-    
-                    $request->file->storeAs("public", $path);
-                    $thumb_path = "public";
-                    $original_name = $request->file->getClientOriginalName()
-                        ? $request->file->getClientOriginalName()
-                        : "";
-                    $storepath = URL::to("/storage/app/public/" . $path);
-                    //  Video duration
-                    $getID3 = new getID3();
-                    $Video_storepath = storage_path("app/public/" . $path);
-                    $VideoInfo = $getID3->analyze($Video_storepath);
-                    $Video_duration = $VideoInfo["playtime_seconds"];
-    
-                    // DateTime();
-                    $current_date = $current_date = date("Y-m-d h:i:s a", time());
-                    $current_date = date("Y-m-d h:i:s");
-                    $daten = date("Y-m-d h:i:s ", time());
-                    // $d = new \DateTime("now");
-                    // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                    // $now = $d->format("Y-m-d h:i:s a");
-                    // $current_time = date("h:i A", strtotime($now));
-                    $time_zone = $data["time_zone"];
-    
-                    date_default_timezone_set($time_zone);
-                    $now = date("Y-m-d h:i:s a", time());
-                    $current_time = date("h:i A", time());
-                    // print_r($choosedtime_exitvideos);exit;
-    
-                    if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
-                        // print_r('ScheduleVideos');exit;
-    
-                        $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
-                        $last_current_time = $ScheduleVideos->current_time;
-                        $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
-    
-                        if ($last_shedule_endtime < $current_time) {
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            // print_r($last_shedule_endtime);exit;
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                        } else {
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->starttime = $last_sheduled_endtime;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    } elseif (
-                        !empty($ScheduleVideos) &&
-                        !empty($choosedtime_exitvideos)
-                    ) {
-                        // print_r($ScheduleVideos);exit;
-                        $last_shedule_endtime =
-                            $choosedtime_exitvideos->shedule_endtime;
-                        $last_current_time = $choosedtime_exitvideos->current_time;
-                        $last_sheduled_endtime =
-                            $choosedtime_exitvideos->sheduled_endtime;
-    
-                        if ($last_shedule_endtime < $current_time) {
-                            $time = $choose_current_time;
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-    
-                            // print_r($last_shedule_endtime);exit;
-                            $starttime = date("h:i ", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                        } else {
-                            $time = explode(":", $last_sheduled_endtime);
-                            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                            $totalSecs = $minutes * 60;
-                            $sec = $totalSecs + $Video_duration;
-                            // $sec = 45784.249244444;
-                            $hour = floor($sec / 3600);
-                            $minute = floor(($sec / 60) % 60);
-                            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                            $shedule_endtime =
-                                $hours .
-                                ":" .
-                                $minutes .
-                                " " .
-                                date("A", strtotime($now));
-                            $sheduled_endtime = $hours . ":" . $minutes;
-                            // print_r($sheduled_endtime);exit;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    } else {
-                        $time = $choose_current_time;
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
-    
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-    
-                        $shedule_endtime =
-                            $hours .
-                            ":" .
-                            $minutes .
-                            " " .
-                            date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
-                        $starttime = date("h:i A", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i ", strtotime($store_current_time));
-                        $time_zone = $data["time_zone"];
-    
-                        $video = new ScheduleVideos();
-                        $video->title = $file_folder_name;
-                        $video->type = "mp4_url";
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $storepath;
-                        $video->path = $path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->duration = $Video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
-    
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
-    
-                        $choosed_date =
-                            $data["year"] .
-                            "-" .
-                            $data["month"] .
-                            "-" .
-                            $data["date"];
-    
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-                        // print_r($date_choosed);exit;
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-    
-                        $output = "";
-                        $i = 1;
-                        if (count($total_content) > 0) {
-                            $total_row = $total_content->count();
-                            if (!empty($total_content)) {
-                                $currency = CurrencySetting::first();
-    
-                                foreach ($total_content as $key => $row) {
-                                    $output .=
-                                        '
-                      <tr>
-                      <td>' .
-                                        $i++ .
-                                        '</td>
-                      <td>' .
-                                        $row->title .
-                                        '</td>
-                      <td>' .
-                                        $row->type .
-                                        '</td>  
-                      <td>' .
-                                        $row->shedule_date .
-                                        '</td>       
-                      <td>' .
-                                        $row->sheduled_starttime .
-                                        '</td>    
-    
-                      <td>' .
-                                        $row->shedule_endtime .
-                                        '</td>  
-    
-                      </tr>
-                      ';
-                                }
-                            } else {
-                                $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                            }
-                        }
-    
-                        $value["success"] = 1;
-                        $value["message"] = "Uploaded Successfully!";
-                        $value["video_id"] = $video_id;
-                        $value["video_title"] = $title;
-                        $value["table_data"] = $output;
-                        $value["total_data"] = $total_row;
-                        $value["total_content"] = $total_content;
-    
-                        return $value;
-                    }
-                } else {
-                    return "Please Choose Time";
-                }
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-            }
-    
-            // return response()->json($value);
-        }
-        public function IndexScheduledVideoss(Request $request)
-        {
-            if ($request->ajax()) {
-                $ScheduleVideos = ScheduleVideos::All();
-                return datatables()
-                    ->of($ScheduleVideos)
-                    ->addColumn("action", function ($row) {
-                        $html =
-                            '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
-                        $html .=
-                            '<button data-rowid="' .
-                            $row->id .
-                            '" class="btn btn-xs btn-danger btn-delete">Del</button>';
-                        return $html;
-                    })
-                    ->toJson();
-            }
-    
-            return view("admin.schedule.schedule_videos");
-        }
-    
-        public function IndexScheduledVideos(Request $request)
-        {
-            $ScheduleVideos = ScheduleVideos::orderBy("id", "desc")->get();
-    
-            $output = "";
-            $i = 1;
-            if (count($ScheduleVideos) > 0) {
-                $total_row = $ScheduleVideos->count();
-                if (!empty($ScheduleVideos)) {
-                    $currency = CurrencySetting::first();
-    
-                    foreach ($ScheduleVideos as $key => $row) {
-                        $output .=
-                            '
-                          <tr>
-                          <td>' .
-                            $i++ .
-                            '</td>
-                          <td>' .
-                            $row->title .
-                            '</td>
-                          <td>' .
-                            $row->type .
-                            '</td>  
-                          <td>' .
-                            $row->shedule_date .
-                            '</td>       
-                          <td>' .
-                            $row->sheduled_starttime .
-                            '</td>    
+        //             $currentDate = date("Y/m/d");
+    
+        //             if($current_time < $choose_start_time && $currentDate == $date_choosed){
+        //                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+        //             }else {
+        //                 $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+        //             }
+    
+        //             if($current_time < $choose_start_time && $currentDate == $date_choosed){
+        //                 $store_current_time =  date("h:i", strtotime($now));
+        //             }else {
+        //                 $store_current_time =  date("h:i", strtotime($choose_start_time));
+        //             }
+    
+        //             // $Schedule_current_date = date("Y-m-d");
+    
+        //             // $schedule_id = $data["schedule_id"];
+        //             // $choosed_date = $year . "-" . $month . "-" . $date;
+    
+        //             // $date = date_create($choosed_date);
+        //             // $date_choose = date_format($date, "Y/m");
+        //             // $date_choosed = $date_choose . "/" . $data["date"];
+        //             // echo "<pre>";print_r($date_choosed);exit;
+    
+        //             $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
+        //                 ->where("shedule_date", "=", $date_choosed)
+        //                 ->where("shedule_time", "=", $schedule_time)
+        //                 // ->whereBetween('choose_start_time',[$choose_start_time, $choose_end_time])
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
+        //             // echo "<pre>";print_r($choosedtime_exitvideos);exit;
+    
+        //             $ScheduleVideos = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
+    
+        //             $rand = Str::random(16);
+        //             $path =
+        //                 $rand . "." . $request->file->getClientOriginalExtension();
+    
+        //             $request->file->storeAs("public", $path);
+        //             $thumb_path = "public";
+        //             $original_name = $request->file->getClientOriginalName()
+        //                 ? $request->file->getClientOriginalName()
+        //                 : "";
+        //             $storepath = URL::to("/storage/app/public/" . $path);
+        //             //  Video duration
+        //             $getID3 = new getID3();
+        //             $Video_storepath = storage_path("app/public/" . $path);
+        //             $VideoInfo = $getID3->analyze($Video_storepath);
+        //             $Video_duration = $VideoInfo["playtime_seconds"];
+    
+        //             // DateTime();
+        //             $current_date = $current_date = date("Y-m-d h:i:s a", time());
+        //             $current_date = date("Y-m-d h:i:s");
+        //             $daten = date("Y-m-d h:i:s ", time());
+        //             // $d = new \DateTime("now");
+        //             // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //             // $now = $d->format("Y-m-d h:i:s a");
+        //             // $current_time = date("h:i A", strtotime($now));
+        //             $time_zone = $data["time_zone"];
+    
+        //             date_default_timezone_set($time_zone);
+        //             $now = date("Y-m-d h:i:s a", time());
+        //             $current_time = date("h:i A", time());
+    
+        //             // print_r($choosedtime_exitvideos);exit;
+    
+        //             if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
+        //                 // print_r('ScheduleVideos');exit;
+    
+        //                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+        //                 $last_current_time = $ScheduleVideos->current_time;
+        //                 $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
+    
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                     // print_r($last_shedule_endtime);exit;
+        //                 } else {
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->starttime = $last_sheduled_endtime;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->status = 1;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->save();
+    
+        //                 VideoSchedule::dispatch($video);
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
+    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             } elseif (
+        //                 !empty($ScheduleVideos) &&
+        //                 !empty($choosedtime_exitvideos)
+        //             ) {
+        //                 // print_r('$ScheduleVideos');exit;
+        //                 $last_shedule_endtime =
+        //                     $choosedtime_exitvideos->shedule_endtime;
+        //                 $last_current_time = $choosedtime_exitvideos->current_time;
+        //                 $last_sheduled_endtime =
+        //                     $choosedtime_exitvideos->sheduled_endtime;
+    
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     // print_r('$ScheduleVideos');exit;
+    
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+    
+        //                     // print_r($last_shedule_endtime);exit;
+        //                 } else {
+        //                     // print_r('$last_sheduled_endtime');exit;
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+        //                     // print_r($sheduled_endtime);exit;
+    
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->status = 1;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->save();
+    
+        //                 VideoSchedule::dispatch($video);
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
+    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             } else {
+    
+        //                 // print_r('$else');exit;
+    
+        //                 $time = explode(":", date("h:i", strtotime($now)));
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
+    
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                 $shedule_endtime =
+        //                     $hours .
+        //                     ":" .
+        //                     $minutes .
+        //                     " " .
+        //                     date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->starttime = date("h:i", strtotime($now));
+        //                 $video->sheduled_starttime = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
+    
+        //                 VideoSchedule::dispatch($video);
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' . '#' .'</td>
+    
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             }
+        //         } else {
+        //             return "Please Choose Time";
+        //         }
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+    
+        //             // echo "<pre>";print_r($choose_time);exit;
+    
+        //         $date = $data["date"];
+        //         $month = $data["month"];
+        //         $year = $data["year"];
+        //         $schedule_time = $data["schedule_time"];
+        //         // $choose_start_time = $data['choose_start_time'];
+        //         // $choose_end_time = $data['choose_end_time'];
+        //         if (!empty($schedule_time)) {
+        //             $choose_time = explode("to", $schedule_time);
+        //             // echo "<pre>";print_r($choose_time);exit;
+        //             if (count($choose_time) > 0) {
+        //                 $choose_start_time = $choose_time[0];
+        //                 $choose_end_time = $choose_time[1];
+        //             } else {
+        //                 $choose_start_time = "";
+        //                 $choose_end_time = "";
+        //             }
+    
+        //             $Schedule_current_date = date("Y-m-d");
+    
+        //             $schedule_id = $data["schedule_id"];
+        //             $choosed_date = $year . "-" . $month . "-" . $date;
+    
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //             // echo "<pre>";print_r($date_choosed);exit;
+    
+        //             $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
+        //                 ->where("shedule_date", "=", $date_choosed)
+        //                 ->whereBetween("choose_start_time", [
+        //                     $choose_start_time,
+        //                     $choose_end_time,
+        //                 ])
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
+        //             // SELECT * FROM schedule_videos WHERE choose_start_time BETWEEN '01:30 PM' AND '02:30 PM';
+    
+        //             // $ScheduleVideos = DB::table('schedule_videos')
+        //             // ->select('*')
+        //             // ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
+        //             // ->orderBy('id', 'desc')->first();
+    
+        //             // echo "<pre>";print_r($choosedtime_exitvideos);exit;
+    
+        //             $ScheduleVideos = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->first();
+    
+        //             $rand = Str::random(16);
+        //             $path =
+        //                 $rand . "." . $request->file->getClientOriginalExtension();
+    
+        //             $request->file->storeAs("public", $path);
+        //             $thumb_path = "public";
+        //             $original_name = $request->file->getClientOriginalName()
+        //                 ? $request->file->getClientOriginalName()
+        //                 : "";
+        //             $storepath = URL::to("/storage/app/public/" . $path);
+        //             //  Video duration
+        //             $getID3 = new getID3();
+        //             $Video_storepath = storage_path("app/public/" . $path);
+        //             $VideoInfo = $getID3->analyze($Video_storepath);
+        //             $Video_duration = $VideoInfo["playtime_seconds"];
+    
+        //             // DateTime();
+        //             $current_date = $current_date = date("Y-m-d h:i:s a", time());
+        //             $current_date = date("Y-m-d h:i:s");
+        //             $daten = date("Y-m-d h:i:s ", time());
+        //             // $d = new \DateTime("now");
+        //             // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //             // $now = $d->format("Y-m-d h:i:s a");
+        //             // $current_time = date("h:i A", strtotime($now));
+        //             $time_zone = $data["time_zone"];
+    
+        //             date_default_timezone_set($time_zone);
+        //             $now = date("Y-m-d h:i:s a", time());
+        //             $current_time = date("h:i A", time());
+        //             // print_r($choosedtime_exitvideos);exit;
+    
+        //             if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
+        //                 // print_r('ScheduleVideos');exit;
+    
+        //                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+        //                 $last_current_time = $ScheduleVideos->current_time;
+        //                 $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
+    
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     // print_r($last_shedule_endtime);exit;
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 } else {
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->starttime = $last_sheduled_endtime;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             } elseif (
+        //                 !empty($ScheduleVideos) &&
+        //                 !empty($choosedtime_exitvideos)
+        //             ) {
+        //                 // print_r($ScheduleVideos);exit;
+        //                 $last_shedule_endtime =
+        //                     $choosedtime_exitvideos->shedule_endtime;
+        //                 $last_current_time = $choosedtime_exitvideos->current_time;
+        //                 $last_sheduled_endtime =
+        //                     $choosedtime_exitvideos->sheduled_endtime;
+    
+        //                 if ($last_shedule_endtime < $current_time) {
+        //                     $time = $choose_current_time;
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+    
+        //                     // print_r($last_shedule_endtime);exit;
+        //                     $starttime = date("h:i ", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 } else {
+        //                     $time = explode(":", $last_sheduled_endtime);
+        //                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                     $totalSecs = $minutes * 60;
+        //                     $sec = $totalSecs + $Video_duration;
+        //                     // $sec = 45784.249244444;
+        //                     $hour = floor($sec / 3600);
+        //                     $minute = floor(($sec / 60) % 60);
+        //                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                     $shedule_endtime =
+        //                         $hours .
+        //                         ":" .
+        //                         $minutes .
+        //                         " " .
+        //                         date("A", strtotime($now));
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
+        //                     // print_r($sheduled_endtime);exit;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             } else {
+        //                 $time = $choose_current_time;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
+    
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+        //                 $shedule_endtime =
+        //                     $hours .
+        //                     ":" .
+        //                     $minutes .
+        //                     " " .
+        //                     date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $starttime = date("h:i A", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+        //                 $time_zone = $data["time_zone"];
+    
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $file_folder_name;
+        //                 $video->type = "mp4_url";
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $storepath;
+        //                 $video->path = $path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->duration = $Video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
+    
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
+    
+        //                 $choosed_date =
+        //                     $data["year"] .
+        //                     "-" .
+        //                     $data["month"] .
+        //                     "-" .
+        //                     $data["date"];
+    
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+    
+        //                 // print_r($date_choosed);exit;
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+    
+        //                 $output = "";
+        //                 $i = 1;
+        //                 if (count($total_content) > 0) {
+        //                     $total_row = $total_content->count();
+        //                     if (!empty($total_content)) {
+        //                         $currency = CurrencySetting::first();
+    
+        //                         foreach ($total_content as $key => $row) {
+        //                             $output .=
+        //                                 '
+        //               <tr>
+        //               <td>' .
+        //                                 $i++ .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->title .
+        //                                 '</td>
+        //               <td>' .
+        //                                 $row->type .
+        //                                 '</td>  
+        //               <td>' .
+        //                                 $row->shedule_date .
+        //                                 '</td>       
+        //               <td>' .
+        //                                 $row->sheduled_starttime .
+        //                                 '</td>    
+    
+        //               <td>' .
+        //                                 $row->shedule_endtime .
+        //                                 '</td>  
+    
+        //               </tr>
+        //               ';
+        //                         }
+        //                     } else {
+        //                         $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                     }
+        //                 }
+    
+        //                 $value["success"] = 1;
+        //                 $value["message"] = "Uploaded Successfully!";
+        //                 $value["video_id"] = $video_id;
+        //                 $value["video_title"] = $title;
+        //                 $value["table_data"] = $output;
+        //                 $value["total_data"] = $total_row;
+        //                 $value["total_content"] = $total_content;
+    
+        //                 return $value;
+        //             }
+        //         } else {
+        //             return "Please Choose Time";
+        //         }
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //     }
+    
+        //     // return response()->json($value);
+        // }
+
+        // public function IndexScheduledVideoss(Request $request)
+        // {
+        //     if ($request->ajax()) {
+        //         $ScheduleVideos = ScheduleVideos::All();
+        //         return datatables()
+        //             ->of($ScheduleVideos)
+        //             ->addColumn("action", function ($row) {
+        //                 $html =
+        //                     '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
+        //                 $html .=
+        //                     '<button data-rowid="' .
+        //                     $row->id .
+        //                     '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+        //                 return $html;
+        //             })
+        //             ->toJson();
+        //     }
+    
+        //     return view("admin.schedule.schedule_videos");
+        // }
+    
+        // public function IndexScheduledVideos(Request $request)
+        // {
+        //     $ScheduleVideos = ScheduleVideos::orderBy("id", "desc")->get();
+    
+        //     $output = "";
+        //     $i = 1;
+        //     if (count($ScheduleVideos) > 0) {
+        //         $total_row = $ScheduleVideos->count();
+        //         if (!empty($ScheduleVideos)) {
+        //             $currency = CurrencySetting::first();
+    
+        //             foreach ($ScheduleVideos as $key => $row) {
+        //                 $output .=
+        //                     '
+        //                   <tr>
+        //                   <td>' .
+        //                     $i++ .
+        //                     '</td>
+        //                   <td>' .
+        //                     $row->title .
+        //                     '</td>
+        //                   <td>' .
+        //                     $row->type .
+        //                     '</td>  
+        //                   <td>' .
+        //                     $row->shedule_date .
+        //                     '</td>       
+        //                   <td>' .
+        //                     $row->sheduled_starttime .
+        //                     '</td>    
      
-                          <td>' .
-                            $row->shedule_endtime .
-                            '</td>  
+        //                   <td>' .
+        //                     $row->shedule_endtime .
+        //                     '</td>  
        
-                          </tr>
-                          ';
-                    }
-                } else {
-                    $output = '
-                      <tr>
-                       <td align="center" colspan="5">No Data Found</td>
-                      </tr>
-                      ';
-                }
-                $value = [
-                    "table_data" => $output,
-                    "total_data" => $total_row,
-                    "total_content" => $ScheduleVideos,
-                ];
+        //                   </tr>
+        //                   ';
+        //             }
+        //         } else {
+        //             $output = '
+        //               <tr>
+        //                <td align="center" colspan="5">No Data Found</td>
+        //               </tr>
+        //               ';
+        //         }
+        //         $value = [
+        //             "table_data" => $output,
+        //             "total_data" => $total_row,
+        //             "total_content" => $ScheduleVideos,
+        //         ];
     
-                return $value;
-            }
-        }
+        //         return $value;
+        //     }
+        // }
     
-        public function calendarEvent(Request $request)
-        {
-            if ($request->ajax()) {
-                $data = VideoEvents::whereDate("start", ">=", $request->start)
-                    ->whereDate("end", "<=", $request->end)
-                    ->get(["id", "title", "start", "end"]);
-                return response()->json($data);
-            }
-            return view("admin.videos.video_calendar");
-        }
+        // public function calendarEvent(Request $request)
+        // {
+        //     if ($request->ajax()) {
+        //         $data = VideoEvents::whereDate("start", ">=", $request->start)
+        //             ->whereDate("end", "<=", $request->end)
+        //             ->get(["id", "title", "start", "end"]);
+        //         return response()->json($data);
+        //     }
+        //     return view("admin.videos.video_calendar");
+        // }
     
-        public function calendarEventsAjax(Request $request)
-        {
-            switch ($request->type) {
-                case "create":
-                    $event = VideoEvents::create([
-                        "title" => $request->title,
-                        "start" => $request->start,
-                        "end" => $request->end,
-                    ]);
+        // public function calendarEventsAjax(Request $request)
+        // {
+        //     switch ($request->type) {
+        //         case "create":
+        //             $event = VideoEvents::create([
+        //                 "title" => $request->title,
+        //                 "start" => $request->start,
+        //                 "end" => $request->end,
+        //             ]);
     
-                    return response()->json($event);
-                    break;
+        //             return response()->json($event);
+        //             break;
     
-                case "edit":
-                    $event = VideoEvents::find($request->id)->update([
-                        "title" => $request->title,
-                        "start" => $request->start,
-                        "end" => $request->end,
-                    ]);
+        //         case "edit":
+        //             $event = VideoEvents::find($request->id)->update([
+        //                 "title" => $request->title,
+        //                 "start" => $request->start,
+        //                 "end" => $request->end,
+        //             ]);
     
-                    return response()->json($event);
-                    break;
+        //             return response()->json($event);
+        //             break;
     
-                case "delete":
-                    $event = VideoEvents::find($request->id)->delete();
+        //         case "delete":
+        //             $event = VideoEvents::find($request->id)->delete();
     
-                    return response()->json($event);
-                    break;
+        //             return response()->json($event);
+        //             break;
     
-                default:
-                    # ...
-                    break;
-            }
-        }
+        //         default:
+        //             # ...
+        //             break;
+        //     }
+        // }
     
-        public function TestServerUpload(Request $request)
-        {
-            return view("admin.test_server_videos.index");
-        }
+        // public function TestServerUpload(Request $request)
+        // {
+        //     return view("admin.test_server_videos.index");
+        // }
     
-        public function TestServerFileUploads(Request $request)
-        {
-            $value = [];
-            $data = $request->all();
+        // public function TestServerFileUploads(Request $request)
+        // {
+        //     $value = [];
+        //     $data = $request->all();
     
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
     
-            $path = public_path() . "/uploads/videos/";
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
     
-            if ($mp4_url != "") {
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->file->getClientOriginalExtension();
+        //     if ($mp4_url != "") {
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->file->getClientOriginalExtension();
     
-                $request->file->storeAs("public", $path);
-                $thumb_path = "public";
+        //         $request->file->storeAs("public", $path);
+        //         $thumb_path = "public";
     
-                $original_name = $request->file->getClientOriginalName()
-                    ? $request->file->getClientOriginalName()
-                    : "";
+        //         $original_name = $request->file->getClientOriginalName()
+        //             ? $request->file->getClientOriginalName()
+        //             : "";
     
-                $storepath = URL::to("/storage/app/public/" . $path);
+        //         $storepath = URL::to("/storage/app/public/" . $path);
     
-                $video = new TestServerUploadVideo();
-                $video->title = $file_folder_name;
-                $video->video_url = $storepath;
-                $video->user_id = Auth::User()->id;
-                $video->save();
+        //         $video = new TestServerUploadVideo();
+        //         $video->title = $file_folder_name;
+        //         $video->video_url = $storepath;
+        //         $video->user_id = Auth::User()->id;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = TestServerUploadVideo::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = TestServerUploadVideo::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                return $value;
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-            }
-        }
+        //         return $value;
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //     }
+        // }
     
-        public function indexCPPPartner(Request $request)
-        {
-            $ModeratorsUser = ModeratorsUser::get();
-            $video = Video::where("uploaded_by", "!=", "CPP")
-                ->orWhere("uploaded_by", null)
-                ->get();
-            // dd($video);
+        // public function indexCPPPartner(Request $request)
+        // {
+        //     $ModeratorsUser = ModeratorsUser::get();
+        //     $video = Video::where("uploaded_by", "!=", "CPP")
+        //         ->orWhere("uploaded_by", null)
+        //         ->get();
+        //     // dd($video);
     
-            $data = [
-                "ModeratorsUser" => $ModeratorsUser,
-                "video" => $video,
-            ];
+        //     $data = [
+        //         "ModeratorsUser" => $ModeratorsUser,
+        //         "video" => $video,
+        //     ];
     
-            return view("admin.videos.move_videos.move_cpp_index", $data);
-        }
+        //     return view("admin.videos.move_videos.move_cpp_index", $data);
+        // }
     
-        public function MoveCPPPartner(Request $request)
-        {
-            $data = $request->all();
+        // public function MoveCPPPartner(Request $request)
+        // {
+        //     $data = $request->all();
     
-            $vid = $data["video_data"];
-            $cpp_id = $data["cpp_users"];
+        //     $vid = $data["video_data"];
+        //     $cpp_id = $data["cpp_users"];
     
-            $ModeratorsUser = ModeratorsUser::get();
-            $video = Video::where("id", $vid)->first();
-            $video->user_id = $cpp_id;
-            $video->uploaded_by = "CPP";
-            $video->save();
+        //     $ModeratorsUser = ModeratorsUser::get();
+        //     $video = Video::where("id", $vid)->first();
+        //     $video->user_id = $cpp_id;
+        //     $video->uploaded_by = "CPP";
+        //     $video->save();
     
-            // CPP
+        //     // CPP
     
-            return Redirect::back()->with(
-                "message",
-                "Your video moved to selected partner"
-            );
-        }
+        //     return Redirect::back()->with(
+        //         "message",
+        //         "Your video moved to selected partner"
+        //     );
+        // }
     
-        public function indexChannelPartner(Request $request)
-        {
-            $channel = Channel::get();
-            $video = Video::where("uploaded_by", "!=", "Channel")
-                ->orWhere("uploaded_by", null)
-                ->get();
+        // public function indexChannelPartner(Request $request)
+        // {
+        //     $channel = Channel::get();
+        //     $video = Video::where("uploaded_by", "!=", "Channel")
+        //         ->orWhere("uploaded_by", null)
+        //         ->get();
     
-            $data = [
-                "channel" => $channel,
-                "video" => $video,
-            ];
+        //     $data = [
+        //         "channel" => $channel,
+        //         "video" => $video,
+        //     ];
     
-            return view("admin.videos.move_videos.move_channel_video", $data);
-        }
+        //     return view("admin.videos.move_videos.move_channel_video", $data);
+        // }
     
-        public function MoveChannelPartner(Request $request)
-        {
-            $data = $request->all();
+        // public function MoveChannelPartner(Request $request)
+        // {
+        //     $data = $request->all();
     
-            $vid = $data["video_data"];
-            $channel_id = $data["channel_users"];
+        //     $vid = $data["video_data"];
+        //     $channel_id = $data["channel_users"];
     
-            $Channel = Channel::get();
-            $video = Video::where("id", $vid)->first();
-            $video->user_id = $channel_id;
-            $video->uploaded_by = "Channel";
-            $video->save();
+        //     $Channel = Channel::get();
+        //     $video = Video::where("id", $vid)->first();
+        //     $video->user_id = $channel_id;
+        //     $video->uploaded_by = "Channel";
+        //     $video->save();
     
-            return Redirect::back()->with(
-                "message",
-                "Your video moved to selected partner"
-            );
-        }
+        //     return Redirect::back()->with(
+        //         "message",
+        //         "Your video moved to selected partner"
+        //     );
+        // }
     
-        public function TestServerFileUpload(Request $request)
-        {
-            $value = [];
-            $data = $request->all();
+        // public function TestServerFileUpload(Request $request)
+        // {
+        //     $value = [];
+        //     $data = $request->all();
     
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
-            // dd($mp4_url );
-            $path = public_path() . "/uploads/videos/";
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     // dd($mp4_url );
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
     
-            if ($mp4_url != "") {
-                $rand = Str::random(16);
-                $path = $rand . "." . $request->file->getClientOriginalExtension();
+        //     if ($mp4_url != "") {
+        //         $rand = Str::random(16);
+        //         $path = $rand . "." . $request->file->getClientOriginalExtension();
     
-                $request->file->storeAs("public", $path);
-                $thumb_path = "public";
+        //         $request->file->storeAs("public", $path);
+        //         $thumb_path = "public";
     
-                $original_name = $request->file->getClientOriginalName()
-                    ? $request->file->getClientOriginalName()
-                    : "";
+        //         $original_name = $request->file->getClientOriginalName()
+        //             ? $request->file->getClientOriginalName()
+        //             : "";
     
-                $storepath = URL::to("/storage/app/public/" . $path);
+        //         $storepath = URL::to("/storage/app/public/" . $path);
     
-                $video = new TestServerUploadVideo();
-                $video->title = $file_folder_name;
-                $video->video_url = $storepath;
-                $video->user_id = Auth::User()->id;
-                $video->save();
+        //         $video = new TestServerUploadVideo();
+        //         $video->title = $file_folder_name;
+        //         $video->video_url = $storepath;
+        //         $video->user_id = Auth::User()->id;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = TestServerUploadVideo::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = TestServerUploadVideo::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                return Redirect::back()->with("message", "Uploaded Successfully!");
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return Redirect::back()->with("message", "File not uploaded");
-            }
-        }
+        //         return Redirect::back()->with("message", "Uploaded Successfully!");
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return Redirect::back()->with("message", "File not uploaded");
+        //     }
+        // }
     
-        public function ReScheduleOneDay(Request $request)
-        {
-            $data = $request->all();
+        // public function ReScheduleOneDay(Request $request)
+        // {
+        //     $data = $request->all();
     
-            $schedule_id = $data["schedule_id"];
-            $date = $data["date"];
-            $month = $data["month"];
-            $year = $data["year"];
+        //     $schedule_id = $data["schedule_id"];
+        //     $date = $data["date"];
+        //     $month = $data["month"];
+        //     $year = $data["year"];
     
-            $choosed_date = $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //     $choosed_date = $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-            $date = date_create($choosed_date);
-            $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //     $date = date_create($choosed_date);
+        //     $date_choose = date_format($date, "Y/m");
+        //     $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
         
-            $stop_date = date('Y-m-d', strtotime("+1 day", strtotime($date_choosed)));
-            $time_zone = $data["time_zone"];
+        //     $stop_date = date('Y-m-d', strtotime("+1 day", strtotime($date_choosed)));
+        //     $time_zone = $data["time_zone"];
     
-            date_default_timezone_set($time_zone);
-            $now = date("Y-m-d h:i:s a", time());
-            $current_time = date("h:i A", time());
-            $schedulevideo = ScheduleVideos::where("shedule_date",$date_choosed)->where("schedule_id", $schedule_id)->get();
-            $reschedulevideo = ScheduleVideos::where("shedule_date",$stop_date)->where("schedule_id", $schedule_id)->get();
+        //     date_default_timezone_set($time_zone);
+        //     $now = date("Y-m-d h:i:s a", time());
+        //     $current_time = date("h:i A", time());
+        //     $schedulevideo = ScheduleVideos::where("shedule_date",$date_choosed)->where("schedule_id", $schedule_id)->get();
+        //     $reschedulevideo = ScheduleVideos::where("shedule_date",$stop_date)->where("schedule_id", $schedule_id)->get();
       
     
-            if(count($reschedulevideo) > 0){
-                if(count($schedulevideo) == count($reschedulevideo)){
-                    $value["success"] = 2;
-                    $value["message"] = "Already Added";
-                    return $value;
-                }else{
-                    $aleady_reschedule =  DB::table('schedule_videos')                 
-                    ->where("shedule_date",$stop_date)
-                    ->where("schedule_id", $schedule_id)
-                    ->where("reschedule", 'one_day')
-                    ->get();
-                    foreach($aleady_reschedule as $schedule){ 
-                        ScheduleVideos::where("id", $schedule->id)->delete();
-                    }
+        //     if(count($reschedulevideo) > 0){
+        //         if(count($schedulevideo) == count($reschedulevideo)){
+        //             $value["success"] = 2;
+        //             $value["message"] = "Already Added";
+        //             return $value;
+        //         }else{
+        //             $aleady_reschedule =  DB::table('schedule_videos')                 
+        //             ->where("shedule_date",$stop_date)
+        //             ->where("schedule_id", $schedule_id)
+        //             ->where("reschedule", 'one_day')
+        //             ->get();
+        //             foreach($aleady_reschedule as $schedule){ 
+        //                 ScheduleVideos::where("id", $schedule->id)->delete();
+        //             }
                     
-                    $time_zone = $data["time_zone"];
+        //             $time_zone = $data["time_zone"];
     
-                    foreach($schedulevideo as $schedule){ 
+        //             foreach($schedulevideo as $schedule){ 
     
-                        $video = new ScheduleVideos();
+        //                 $video = new ScheduleVideos();
     
-                        $video->title = $schedule->title;
-                        $video->type = $schedule->type;
-                        $video->active = $schedule->active;
-                        $video->original_name = $schedule->original_name;
-                        $video->disk = $schedule->disk;
-                        $video->mp4_url = $schedule->mp4_url;
-                        $video->path = $schedule->path;
-                        $video->shedule_date = $stop_date;
-                        $video->shedule_time = $schedule->shedule_time;
-                        $video->shedule_endtime = $schedule->shedule_endtime;
-                        $video->sheduled_endtime = $schedule->sheduled_endtime;
-                        $video->current_time = $schedule->current_time;
-                        $video->starttime = $schedule->starttime;
-                        $video->sheduled_starttime = $schedule->sheduled_starttime;
-                        $video->video_order = $schedule->video_order;
-                        $video->schedule_id = $schedule->schedule_id;
-                        $video->duration = $schedule->duration;
-                        $video->choose_start_time = $schedule->choose_start_time;
-                        $video->choose_end_time = $schedule->choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = $schedule->status;
-                        $video->reschedule = 'one_day';
-                        $video->save();
-                    }
+        //                 $video->title = $schedule->title;
+        //                 $video->type = $schedule->type;
+        //                 $video->active = $schedule->active;
+        //                 $video->original_name = $schedule->original_name;
+        //                 $video->disk = $schedule->disk;
+        //                 $video->mp4_url = $schedule->mp4_url;
+        //                 $video->path = $schedule->path;
+        //                 $video->shedule_date = $stop_date;
+        //                 $video->shedule_time = $schedule->shedule_time;
+        //                 $video->shedule_endtime = $schedule->shedule_endtime;
+        //                 $video->sheduled_endtime = $schedule->sheduled_endtime;
+        //                 $video->current_time = $schedule->current_time;
+        //                 $video->starttime = $schedule->starttime;
+        //                 $video->sheduled_starttime = $schedule->sheduled_starttime;
+        //                 $video->video_order = $schedule->video_order;
+        //                 $video->schedule_id = $schedule->schedule_id;
+        //                 $video->duration = $schedule->duration;
+        //                 $video->choose_start_time = $schedule->choose_start_time;
+        //                 $video->choose_end_time = $schedule->choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = $schedule->status;
+        //                 $video->reschedule = 'one_day';
+        //                 $video->save();
+        //             }
     
-                    $value["success"] = 1;
-                    $value["message"] = "Added Successfully";
-                    return $value;
-                }
-            }else{
+        //             $value["success"] = 1;
+        //             $value["message"] = "Added Successfully";
+        //             return $value;
+        //         }
+        //     }else{
     
-                if(count($schedulevideo) > 0){
+        //         if(count($schedulevideo) > 0){
     
-                    $ReSchedule = new ReSchedule();
-                    $ReSchedule->schedule_id = $schedule_id;
-                    $ReSchedule->reschedule_date = $stop_date;
-                    $ReSchedule->scheduled_date = $date_choosed;
-                    $ReSchedule->scheduled_enddate = $stop_date;
-                    $ReSchedule->type = 'one_day';
-                    $ReSchedule->save();
-                    $time_zone = $data["time_zone"];
+        //             $ReSchedule = new ReSchedule();
+        //             $ReSchedule->schedule_id = $schedule_id;
+        //             $ReSchedule->reschedule_date = $stop_date;
+        //             $ReSchedule->scheduled_date = $date_choosed;
+        //             $ReSchedule->scheduled_enddate = $stop_date;
+        //             $ReSchedule->type = 'one_day';
+        //             $ReSchedule->save();
+        //             $time_zone = $data["time_zone"];
     
-                    foreach($schedulevideo as $schedule){ 
+        //             foreach($schedulevideo as $schedule){ 
     
-                        $video = new ScheduleVideos();
+        //                 $video = new ScheduleVideos();
     
-                        $video->title = $schedule->title;
-                        $video->type = $schedule->type;
-                        $video->active = $schedule->active;
-                        $video->original_name = $schedule->original_name;
-                        $video->disk = $schedule->disk;
-                        $video->mp4_url = $schedule->mp4_url;
-                        $video->path = $schedule->path;
-                        $video->shedule_date = $stop_date;
-                        $video->shedule_time = $schedule->shedule_time;
-                        $video->shedule_endtime = $schedule->shedule_endtime;
-                        $video->sheduled_endtime = $schedule->sheduled_endtime;
-                        $video->current_time = $schedule->current_time;
-                        $video->starttime = $schedule->starttime;
-                        $video->sheduled_starttime = $schedule->sheduled_starttime;
-                        $video->video_order = $schedule->video_order;
-                        $video->schedule_id = $schedule->schedule_id;
-                        $video->duration = $schedule->duration;
-                        $video->choose_start_time = $schedule->choose_start_time;
-                        $video->choose_end_time = $schedule->choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = $schedule->status;
-                        $video->reschedule = 'one_day';
-                        $video->save();
-                    }
+        //                 $video->title = $schedule->title;
+        //                 $video->type = $schedule->type;
+        //                 $video->active = $schedule->active;
+        //                 $video->original_name = $schedule->original_name;
+        //                 $video->disk = $schedule->disk;
+        //                 $video->mp4_url = $schedule->mp4_url;
+        //                 $video->path = $schedule->path;
+        //                 $video->shedule_date = $stop_date;
+        //                 $video->shedule_time = $schedule->shedule_time;
+        //                 $video->shedule_endtime = $schedule->shedule_endtime;
+        //                 $video->sheduled_endtime = $schedule->sheduled_endtime;
+        //                 $video->current_time = $schedule->current_time;
+        //                 $video->starttime = $schedule->starttime;
+        //                 $video->sheduled_starttime = $schedule->sheduled_starttime;
+        //                 $video->video_order = $schedule->video_order;
+        //                 $video->schedule_id = $schedule->schedule_id;
+        //                 $video->duration = $schedule->duration;
+        //                 $video->choose_start_time = $schedule->choose_start_time;
+        //                 $video->choose_end_time = $schedule->choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = $schedule->status;
+        //                 $video->reschedule = 'one_day';
+        //                 $video->save();
+        //             }
     
-                    $value["success"] = 1;
-                    $value["message"] = "Added Successfully";
-                    return $value;
-                }
+        //             $value["success"] = 1;
+        //             $value["message"] = "Added Successfully";
+        //             return $value;
+        //         }
                 
-                $value["success"] = 1;
-                $value["message"] = "No Video";
-                return $value;
+        //         $value["success"] = 1;
+        //         $value["message"] = "No Video";
+        //         return $value;
     
-            }
-    
-            
-        }
-    
-        public function ReScheduleWeek(Request $request)
-        {
-            $data = $request->all();
-    
-            $video_id = $data["video_id"];
-            $videochooed = Video::where("id", $video_id)->first();
-            $date = $data["date"];
-            $month = $data["month"];
-            $year = $data["year"];
-            $schedule_time = $data["schedule_time"];
-            $time_zone = $data["time_zone"];
-    
-    
-            date_default_timezone_set($time_zone);
-            $now = date("Y-m-d h:i:s a", time());
-            $current_time = date("h:i A", time());
+        //     }
     
             
-        }
+        // }
     
-        public function DragDropScheduledVideos(Request $request)
-        {
-        $data = $request->all();
+        // public function ReScheduleWeek(Request $request)
+        // {
+        //     $data = $request->all();
     
-        // Post Data By method 
-    
-        $video_id = $data["video_id"];            
-        $date = $data["date"];
-        $month = $data["month"];
-        $year = $data["year"];
-        $time_zone = $data["time_zone"];
-    
-        // Video Data and Video Duration
-    
-        $Video_data = Video::where("id", $video_id)->first();
-        if(!empty($Video_data) && $Video_data->type == "mp4_url" && empty($Video_data->duration)){
-            $ffprobe = \FFMpeg\FFProbe::create();
-            $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
-            $video_duration = explode(".", $duration)[0];
-        }elseif(!empty($Video_data) && $Video_data->type == "m3u8_url"){
-    
-            $m3u8_url = $Video_data->m3u8_url;
-                $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
-                $process = new Process($command);
-                    $process->mustRun();
-                    $duration = trim($process->getOutput());
-                    $video_duration = round($duration);
-    
-                if($duration == 'N/A'){
-                    $duration = 3600;
-                    $video_duration  = 3600;
-                }
-    
-        }else{
-            $video_duration = $Video_data->duration;
-        }
-    
-        // Default Time By Time Zone Based 
-    
-        date_default_timezone_set($time_zone);
-        $now = date("Y-m-d h:i:s a", time());
-        $current_time = date("h:i A", time());
-        // Date Choosed By user  Calendar
-    
-        $Schedule_current_date = date("Y-m-d");
-        $schedule_id = $data["schedule_id"];
-        $choosed_date = $year . "-" . $month . "-" . $date;
-        $date = date_create($choosed_date);
-        $date_choose = date_format($date, "Y/m");
-        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-        // print_r($date_choosed);
+        //     $video_id = $data["video_id"];
+        //     $videochooed = Video::where("id", $video_id)->first();
+        //     $date = $data["date"];
+        //     $month = $data["month"];
+        //     $year = $data["year"];
+        //     $schedule_time = $data["schedule_time"];
+        //     $time_zone = $data["time_zone"];
     
     
-        // schedule time Choosed By user
+        //     date_default_timezone_set($time_zone);
+        //     $now = date("Y-m-d h:i:s a", time());
+        //     $current_time = date("h:i A", time());
     
-        $schedule_time = $data["schedule_time"];
-    
-        if (!empty($schedule_time)) {
-            $choose_time = explode("to", $schedule_time);
-            if (count($choose_time) > 0) {
-                $choose_start_time = $choose_time[0];
-                $choose_end_time = $choose_time[1];
-            }else {
-                $choose_start_time = "";
-                $choose_end_time = "";
-            }
-        }
-    
-        $currentDate = date("Y/m/d");
-        $current_time = date("h:i A", time());
-    
-        if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
-            $choose_current_time =  explode(":", date("h:i", strtotime($now)));
-        }else {
-            $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
-        }
-    
-        if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
-            $store_current_time =  date("h:i A", strtotime($now));
-        }else {
-            $store_current_time =  date("h:i A", strtotime($choose_start_time));
-        }
-    
-    
-        $total_content = ScheduleVideos::where(
-            "shedule_date",
-            "=",
-            $date_choosed
-        )
-            ->orderBy("id", "desc")
-            ->get();
-        // print_r($total_content);exit;
-            // Scheduled Video Exits Check 
-    
-        $choosedtime_Scheduledvideo = ScheduleVideos::selectRaw("*")
-            ->where("shedule_date", "=", $date_choosed)
-            ->where("shedule_time", "=", $schedule_time)
-            ->orderBy("id", "desc")
-            ->first();
-    
-        $ScheduleVideos = ScheduleVideos::where(
-            "shedule_date",
-            "=",
-            $date_choosed
-        )
-        ->orderBy("id", "desc")
-        ->first();
-        // print_r($schedule_time);exit;
-    
-        if($schedule_time == '12:00 PM to 12:00 AM' && @$ScheduleVideos->shedule_endtime > '12:00 PM' && $currentDate == $date_choosed ){
             
-            $value["schedule_time"] = 'Today Slot Are Full';
+        // }
     
-        }else if($currentDate == $date_choosed){
+        // public function DragDropScheduledVideos(Request $request)
+        // {
+        //     $data = $request->all();
     
-        if (!empty($ScheduleVideos) && !empty($choosedtime_Scheduledvideo)) {
+        //     // Post Data By method 
+    
+        // $video_id = $data["video_id"];            
+        // $date = $data["date"];
+        // $month = $data["month"];
+        // $year = $data["year"];
+        // $time_zone = $data["time_zone"];
+    
+        // // Video Data and Video Duration
+    
+        // $Video_data = Video::where("id", $video_id)->first();
+        // if(!empty($Video_data) && $Video_data->type == "mp4_url" && empty($Video_data->duration)){
+        //     $ffprobe = \FFMpeg\FFProbe::create();
+        //     $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
+        //     $video_duration = explode(".", $duration)[0];
+        // }elseif(!empty($Video_data) && $Video_data->type == "m3u8_url"){
+    
+        //     $m3u8_url = $Video_data->m3u8_url;
+        //         $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+        //         $process = new Process($command);
+        //             $process->mustRun();
+        //             $duration = trim($process->getOutput());
+        //             $video_duration = round($duration);
+    
+        //         if($duration == 'N/A'){
+        //             $duration = 3600;
+        //             $video_duration  = 3600;
+        //         }
+    
+        // }else{
+        //     $video_duration = $Video_data->duration;
+        // }
+    
+        // // Default Time By Time Zone Based 
+    
+        // date_default_timezone_set($time_zone);
+        // $now = date("Y-m-d h:i:s a", time());
+        // $current_time = date("h:i A", time());
+        // // Date Choosed By user  Calendar
+    
+        // $Schedule_current_date = date("Y-m-d");
+        // $schedule_id = $data["schedule_id"];
+        // $choosed_date = $year . "-" . $month . "-" . $date;
+        // $date = date_create($choosed_date);
+        // $date_choose = date_format($date, "Y/m");
+        // $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        // // print_r($date_choosed);
+    
+    
+        // // schedule time Choosed By user
+    
+        // $schedule_time = $data["schedule_time"];
+    
+        // if (!empty($schedule_time)) {
+        //     $choose_time = explode("to", $schedule_time);
+        //     if (count($choose_time) > 0) {
+        //         $choose_start_time = $choose_time[0];
+        //         $choose_end_time = $choose_time[1];
+        //     }else {
+        //         $choose_start_time = "";
+        //         $choose_end_time = "";
+        //     }
+        // }
+    
+        // $currentDate = date("Y/m/d");
+        // $current_time = date("h:i A", time());
+    
+        // if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
+        //     $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+        // }else {
+        //     $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+        // }
+    
+        // if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
+        //     $store_current_time =  date("h:i A", strtotime($now));
+        // }else {
+        //     $store_current_time =  date("h:i A", strtotime($choose_start_time));
+        // }
+    
+    
+        // $total_content = ScheduleVideos::where(
+        //     "shedule_date",
+        //     "=",
+        //     $date_choosed
+        // )
+        //     ->orderBy("id", "desc")
+        //     ->get();
+        // // print_r($total_content);exit;
+        //     // Scheduled Video Exits Check 
+    
+        // $choosedtime_Scheduledvideo = ScheduleVideos::selectRaw("*")
+        //     ->where("shedule_date", "=", $date_choosed)
+        //     ->where("shedule_time", "=", $schedule_time)
+        //     ->orderBy("id", "desc")
+        //     ->first();
+    
+        // $ScheduleVideos = ScheduleVideos::where(
+        //     "shedule_date",
+        //     "=",
+        //     $date_choosed
+        // )
+        // ->orderBy("id", "desc")
+        // ->first();
+        // // print_r($schedule_time);exit;
+    
+        // if($schedule_time == '12:00 PM to 12:00 AM' && @$ScheduleVideos->shedule_endtime > '12:00 PM' && $currentDate == $date_choosed ){
             
-            $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
-            $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
+        //     $value["schedule_time"] = 'Today Slot Are Full';
     
-            // print_r($current_time);
-            // print_r($last_shedule_endtime);exit;
+        // }else if($currentDate == $date_choosed){
     
-             if($current_time > $last_shedule_endtime){
-                // echo'<pre>'; print_r('testnew');exit;     
+        // if (!empty($ScheduleVideos) && !empty($choosedtime_Scheduledvideo)) {
+            
+        //     $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
+        //     $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
     
-                $time = explode(":", $last_sheduled_endtime);
-                $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                $totalSecs = $minutes * 60;
-                $sec = $totalSecs + $video_duration;
-                // $sec = 45784.249244444;
-                $hour = floor($sec / 3600);
-                $minute = floor(($sec / 60) % 60);
-                $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //     // print_r($current_time);
+        //     // print_r($last_shedule_endtime);exit;
     
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
-                $sheduled_endtime = $hours . ":" . $minutes;
+        //      if($current_time > $last_shedule_endtime){
+        //         // echo'<pre>'; print_r('testnew');exit;     
     
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
-        //   print_r($last_shedule_endtime);
-        // //   print_r(date("A", strtotime($now)));
-        //     print_r($last_sheduled_endtime);exit;
+        //         $time = explode(":", $last_sheduled_endtime);
+        //         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //         $totalSecs = $minutes * 60;
+        //         $sec = $totalSecs + $video_duration;
+        //         // $sec = 45784.249244444;
+        //         $hour = floor($sec / 3600);
+        //         $minute = floor(($sec / 60) % 60);
+        //         $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //         $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                if($sheduled_endtime < '12:00 AM' && $last_shedule_endtime < '12:00 AM' 
-                && date("A", strtotime($now)) == 'AM'){
-                    $TimeFormat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
-                    $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+        //         $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //         $sheduled_endtime = $hours . ":" . $minutes;
     
-                    $current_zone_time = date("A", time());
-                    $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
-                    if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
-                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
-                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+        //         $starttime = $last_sheduled_endtime;
+        //         $sheduled_starttime = $last_shedule_endtime;
+        // //   print_r($last_shedule_endtime);
+        // // //   print_r(date("A", strtotime($now)));
+        // //     print_r($last_sheduled_endtime);exit;
+    
+        //         if($sheduled_endtime < '12:00 AM' && $last_shedule_endtime < '12:00 AM' 
+        //         && date("A", strtotime($now)) == 'AM'){
+        //             $TimeFormat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+        //             $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+    
+        //             $current_zone_time = date("A", time());
+        //             $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+        //             if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+        //             $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+        //                 $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
                                        
-                            $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+        //                     $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
     
-                            $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                    }else{
+        //                     $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //             }else{
                                                            
-                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+        //                 $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
     
-                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }
-                    // print_r($shedule_endtime);exit;
+        //                 $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }
+        //             // print_r($shedule_endtime);exit;
                     
-                    // $shedule_endtime =
-                    //     $hours .
-                    //     ":" .
-                    //     $minutes .
-                    //     " " .
-                    //     date("A", strtotime($now));
-                    // $sheduled_endtime = $hours . ":" . $minutes;
+        //             // $shedule_endtime =
+        //             //     $hours .
+        //             //     ":" .
+        //             //     $minutes .
+        //             //     " " .
+        //             //     date("A", strtotime($now));
+        //             // $sheduled_endtime = $hours . ":" . $minutes;
         
-                    // $starttime = date("h:i ", strtotime($store_current_time));
-                    // $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             // $starttime = date("h:i ", strtotime($store_current_time));
+        //             // $sheduled_starttime = date("h:i A", strtotime($store_current_time));
         
-                    }
-                    else{
+        //             }
+        //             else{
         
-                        $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
-                        $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+        //                 $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
+        //                 $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
     
-                        if(!empty($TimeFormat)){
+        //                 if(!empty($TimeFormat)){
             
-                            $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+        //                     $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
             
-                            $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                        }else{
-                            $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                     $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //                 }else{
+        //                     $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
             
-                            $sheduled_endtime = $hours . ":" . $minutes;
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
             
-                            $starttime = date("h:i", strtotime($store_current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                     $starttime = date("h:i", strtotime($store_current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($store_current_time));
         
-                        }
+        //                 }
             
-                    }
+        //             }
         
-             }elseif($current_time < $last_shedule_endtime){
+        //      }elseif($current_time < $last_shedule_endtime){
     
-                $time = explode(":", $last_sheduled_endtime);
-                $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                $totalSecs = $minutes * 60;
-                $sec = $totalSecs + $video_duration;
-                // $sec = 45784.249244444;
-                $hour = floor($sec / 3600);
-                $minute = floor(($sec / 60) % 60);
-                $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //         $time = explode(":", $last_sheduled_endtime);
+        //         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //         $totalSecs = $minutes * 60;
+        //         $sec = $totalSecs + $video_duration;
+        //         // $sec = 45784.249244444;
+        //         $hour = floor($sec / 3600);
+        //         $minute = floor(($sec / 60) % 60);
+        //         $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //         $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
-                $sheduled_endtime = $hours . ":" . $minutes;
+        //         $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //         $sheduled_endtime = $hours . ":" . $minutes;
     
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
+        //         $starttime = $last_sheduled_endtime;
+        //         $sheduled_starttime = $last_shedule_endtime;
     
-                $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
-                $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
-                // $time = explode(":", $sheduled_starttime);
-                // $sheduled_starttime = "03:00 PM";
+        //         $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
+        //         $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+        //         // $time = explode(":", $sheduled_starttime);
+        //         // $sheduled_starttime = "03:00 PM";
     
     
      
-                if(!empty($TimeFormat)){
+        //         if(!empty($TimeFormat)){
     
                     
-                    $current_zone_time = date("A", time());
-                    $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
-                    if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
-                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
-                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+        //             $current_zone_time = date("A", time());
+        //             $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+        //             if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+        //             $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+        //                 $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
                                        
-                            $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+        //                     $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
     
-                            $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                    }else{
+        //                     $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //             }else{
                                                            
-                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+        //                 $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
     
-                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }
+        //                 $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }
                     
     
     
-                }elseif(!empty($TimeFormatformat)){
+        //         }elseif(!empty($TimeFormatformat)){
           
-                    $current_zone_time = date("A", time());
-                    $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
-                    if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
-                        $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."AM";
-                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
-                        $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
-                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }
+        //             $current_zone_time = date("A", time());
+        //             $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+        //             if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+        //                 $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."AM";
+        //                 $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+        //                 $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+        //                 $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }
                     
     
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
                         
-                }else{
+        //         }else{
                    
                     
-                    $current_zone_time = date("A", time());
-                    $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+        //             $current_zone_time = date("A", time());
+        //             $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
                     
-                            $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
+        //                     $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
     
-                            $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
-                    }
+        //                     $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
+        //             }
     
     
     
         
-                $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
-                $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
-                $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
+        //         $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
+        //         $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
+        //         $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
     
-                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
-                $check = $checkshedule_endtime->between($startTime, $endTime);
-                // echo'<pre>'; print_r($check);    exit;
-                if(empty($check) && $check == null){
+        //         $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+        //         $check = $checkshedule_endtime->between($startTime, $endTime);
+        //         // echo'<pre>'; print_r($check);    exit;
+        //         if(empty($check) && $check == null){
                     
-                }elseif($sheduled_starttime >= "11:00 PM" && $shedule_endtime >= "12:00 PM"  ||  $sheduled_starttime_zone_time == "PM" && $shedule_endtime >= "12:00 PM" ){
-                    // echo'<pre>'; print_r($shedule_endtime);    exit;
+        //         }elseif($sheduled_starttime >= "11:00 PM" && $shedule_endtime >= "12:00 PM"  ||  $sheduled_starttime_zone_time == "PM" && $shedule_endtime >= "12:00 PM" ){
+        //             // echo'<pre>'; print_r($shedule_endtime);    exit;
         
-                        $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
-                        return $value;    
-                }
-                // elseif(!empty($check) && $check == 1 ){
-                // // echo'<pre>'; print_r($shedule_endtime);    exit;
+        //                 $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+        //                 return $value;    
+        //         }
+        //         // elseif(!empty($check) && $check == 1 ){
+        //         // // echo'<pre>'; print_r($shedule_endtime);    exit;
     
-                //     $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
-                //     return $value;    
-                // }
-                // echo'<pre>'; print_r('$check');    exit;
+        //         //     $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+        //         //     return $value;    
+        //         // }
+        //         // echo'<pre>'; print_r('$check');    exit;
     
     
                 
-            //     if($shedule_endtime->between($start, $end) ){
+        //     //     if($shedule_endtime->between($start, $end) ){
     
-            //     echo'<pre>'; print_r($shedule_endtime);    
-            // }else{
-            //     echo'<pre>'; print_r('$shedule_endtime');    
-            //     echo'<pre>'; print_r($shedule_endtime);    
+        //     //     echo'<pre>'; print_r($shedule_endtime);    
+        //     // }else{
+        //     //     echo'<pre>'; print_r('$shedule_endtime');    
+        //     //     echo'<pre>'; print_r($shedule_endtime);    
     
-            // }
-            //     exit; 
-             }else{
-                $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
-                $last_sheduled_endtime = @$ScheduleVideos->sheduled_endtime; // Just Time
-                $lastsheduleendtime =  explode(" ", $last_shedule_endtime);
-                if(count($lastsheduleendtime) > 0 && @$lastsheduleendtime[1] == 'PM'){
-                    $time = explode(":", $last_sheduled_endtime);
-                    $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                    $totalSecs = $minutes * 60;
-                    $sec = $totalSecs + $video_duration;
-                    $hour = floor($sec / 3600);
-                    $minute = floor(($sec / 60) % 60);
-                    $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                    $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //     // }
+        //     //     exit; 
+        //      }else{
+        //         $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
+        //         $last_sheduled_endtime = @$ScheduleVideos->sheduled_endtime; // Just Time
+        //         $lastsheduleendtime =  explode(" ", $last_shedule_endtime);
+        //         if(count($lastsheduleendtime) > 0 && @$lastsheduleendtime[1] == 'PM'){
+        //             $time = explode(":", $last_sheduled_endtime);
+        //             $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //             $totalSecs = $minutes * 60;
+        //             $sec = $totalSecs + $video_duration;
+        //             $hour = floor($sec / 3600);
+        //             $minute = floor(($sec / 60) % 60);
+        //             $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //             $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
         
-                    $shedule_endtime =
-                        $hours .
-                        ":" .
-                        $minutes .
-                        " " .
-                        $lastsheduleendtime[1];
-                    $sheduled_endtime = $hours . ":" . $minutes;
-                    $starttime = $last_sheduled_endtime;
-                    $sheduled_starttime = $last_shedule_endtime;
-                    if($last_shedule_endtime < $shedule_endtime){
-                        $value["schedule_time"] = 'Change the Slot time';
-                        return $value;
-                    }else{
+        //             $shedule_endtime =
+        //                 $hours .
+        //                 ":" .
+        //                 $minutes .
+        //                 " " .
+        //                 $lastsheduleendtime[1];
+        //             $sheduled_endtime = $hours . ":" . $minutes;
+        //             $starttime = $last_sheduled_endtime;
+        //             $sheduled_starttime = $last_shedule_endtime;
+        //             if($last_shedule_endtime < $shedule_endtime){
+        //                 $value["schedule_time"] = 'Change the Slot time';
+        //                 return $value;
+        //             }else{
     
-                    }
-                // echo'<pre>'; print_r($last_shedule_endtime);exit;     
+        //             }
+        //         // echo'<pre>'; print_r($last_shedule_endtime);exit;     
     
-                 }else{
-                        $time = $choose_current_time;
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $video_duration;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //          }else{
+        //                 $time = $choose_current_time;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $video_duration;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime =
-                            $hours .
-                            ":" .
-                            $minutes .
-                            " " .
-                            date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $shedule_endtime =
+        //                     $hours .
+        //                     ":" .
+        //                     $minutes .
+        //                     " " .
+        //                     date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = date("h:i ", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                    }
+        //                 $starttime = date("h:i ", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             }
     
-                // echo'<pre>'; print_r($sheduled_starttime);exit;     
+        //         // echo'<pre>'; print_r($sheduled_starttime);exit;     
     
-                if($shedule_endtime < '12:00 AM' && $last_sheduled_endtime < '12:00 AM' && date("A", strtotime($now)) == 'AM'){
+        //         if($shedule_endtime < '12:00 AM' && $last_sheduled_endtime < '12:00 AM' && date("A", strtotime($now)) == 'AM'){
     
-                $shedule_endtime =
-                    $hours .
-                    ":" .
-                    $minutes .
-                    " " .
-                    date("A", strtotime($now));
-                $sheduled_endtime = $hours . ":" . $minutes;
+        //         $shedule_endtime =
+        //             $hours .
+        //             ":" .
+        //             $minutes .
+        //             " " .
+        //             date("A", strtotime($now));
+        //         $sheduled_endtime = $hours . ":" . $minutes;
     
-                $starttime = date("h:i ", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //         $starttime = date("h:i ", strtotime($store_current_time));
+        //         $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
-                }else{
+        //         }else{
     
-                    $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
-                    if(!empty($TimeFormat)){
+        //             $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
+        //             if(!empty($TimeFormat)){
         
-                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+        //                 $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
         
-                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }else{
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                 $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }else{
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
         
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
         
-                        $starttime = date("h:i", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 $starttime = date("h:i", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
-                    }
+        //             }
         
-                }
-             }
-                $video = new ScheduleVideos();
-                $video->title = $Video_data->title;
-                $video->type = $Video_data->type;
-                $video->active = 1;
-                $video->original_name = "public";
-                $video->disk = "public";
-                $video->mp4_url = $Video_data->mp4_url;
-                $video->path = $Video_data->path;
-                $video->shedule_date = $date_choosed;
-                $video->shedule_time = $schedule_time;
-                $video->shedule_endtime = $shedule_endtime;
-                $video->sheduled_endtime = $sheduled_endtime;
-                $video->current_time = date("h:i A", strtotime($now));
-                $video->starttime = $starttime;
-                $video->sheduled_starttime = $sheduled_starttime;
-                $video->video_order = 1;
-                $video->schedule_id = $schedule_id;
-                $video->duration = $video_duration;
-                $video->choose_start_time = $choose_start_time;
-                $video->choose_end_time = $choose_end_time;
-                $video->time_zone  = $time_zone ;
-                $video->status = 1;
-                $video->save();
+        //         }
+        //      }
+        //         $video = new ScheduleVideos();
+        //         $video->title = $Video_data->title;
+        //         $video->type = $Video_data->type;
+        //         $video->active = 1;
+        //         $video->original_name = "public";
+        //         $video->disk = "public";
+        //         $video->mp4_url = $Video_data->mp4_url;
+        //         $video->path = $Video_data->path;
+        //         $video->shedule_date = $date_choosed;
+        //         $video->shedule_time = $schedule_time;
+        //         $video->shedule_endtime = $shedule_endtime;
+        //         $video->sheduled_endtime = $sheduled_endtime;
+        //         $video->current_time = date("h:i A", strtotime($now));
+        //         $video->starttime = $starttime;
+        //         $video->sheduled_starttime = $sheduled_starttime;
+        //         $video->video_order = 1;
+        //         $video->schedule_id = $schedule_id;
+        //         $video->duration = $video_duration;
+        //         $video->choose_start_time = $choose_start_time;
+        //         $video->choose_end_time = $choose_end_time;
+        //         $video->time_zone  = $time_zone ;
+        //         $video->status = 1;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = ScheduleVideos::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = ScheduleVideos::find($video_id);
+        //         $title = $video_title->title;
     
-                $choosed_date =
-                    $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //         $choosed_date =
+        //             $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                $date = date_create($choosed_date);
-                $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //         $date = date_create($choosed_date);
+        //         $date_choose = date_format($date, "Y/m");
+        //         $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
                 
     
-                $total_content = ScheduleVideos::where(
-                    "shedule_date",
-                    "=",
-                    $date_choosed
-                )
-                    ->orderBy("id", "desc")
-                    ->get();
+        //         $total_content = ScheduleVideos::where(
+        //             "shedule_date",
+        //             "=",
+        //             $date_choosed
+        //         )
+        //             ->orderBy("id", "desc")
+        //             ->get();
     
-        }else{
+        // }else{
     
-            // Time Format Calculation For video AM and PM Format 
+        //     // Time Format Calculation For video AM and PM Format 
     
-                $time = $choose_current_time;
-                $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                $totalSecs = $minutes * 60;
-                $sec = $totalSecs + $video_duration;
+        //         $time = $choose_current_time;
+        //         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //         $totalSecs = $minutes * 60;
+        //         $sec = $totalSecs + $video_duration;
     
-                $hour = floor($sec / 3600);
-                $minute = floor(($sec / 60) % 60);
-                $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //         $hour = floor($sec / 3600);
+        //         $minute = floor(($sec / 60) % 60);
+        //         $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //         $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                $TimeFormat = TimeFormat::where('hours',$hours)->first();
-                if(!empty($TimeFormat)){
+        //         $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //         if(!empty($TimeFormat)){
     
-                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
+        //             $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
     
-                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                    $starttime = date("h:i", strtotime($store_current_time));
-                    $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //             $starttime = date("h:i", strtotime($store_current_time));
+        //             $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
-                }else{
-                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //         }else{
+        //             $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
     
-                    $sheduled_endtime = $hours . ":" . $minutes;
+        //             $sheduled_endtime = $hours . ":" . $minutes;
     
-                    $starttime = date("h:i", strtotime($store_current_time));
-                    $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                }
-                    $time_zone = $data["time_zone"];
+        //             $starttime = date("h:i", strtotime($store_current_time));
+        //             $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //         }
+        //             $time_zone = $data["time_zone"];
                         
-                    $video = new ScheduleVideos();
-                    $video->title = $Video_data->title;
-                    $video->type = $Video_data->type;
-                    $video->active = 1;
-                    $video->original_name = "public";
-                    $video->disk = "public";
-                    $video->mp4_url = $Video_data->mp4_url;
-                    $video->path = $Video_data->path;
-                    $video->shedule_date = $date_choosed;
-                    $video->shedule_time = $schedule_time;
-                    $video->shedule_endtime = $shedule_endtime;
-                    $video->sheduled_endtime = $sheduled_endtime;
-                    $video->current_time = date("h:i A", strtotime($now));
-                    $video->starttime = $starttime;
-                    $video->sheduled_starttime = $sheduled_starttime;
-                    $video->video_order = 1;
-                    $video->schedule_id = $schedule_id;
-                    $video->duration = $video_duration;
-                    $video->choose_start_time = $choose_start_time;
-                    $video->choose_end_time = $choose_end_time;
-                    $video->time_zone  = $time_zone ;
-                    $video->status = 1;
-                    $video->save();
+        //             $video = new ScheduleVideos();
+        //             $video->title = $Video_data->title;
+        //             $video->type = $Video_data->type;
+        //             $video->active = 1;
+        //             $video->original_name = "public";
+        //             $video->disk = "public";
+        //             $video->mp4_url = $Video_data->mp4_url;
+        //             $video->path = $Video_data->path;
+        //             $video->shedule_date = $date_choosed;
+        //             $video->shedule_time = $schedule_time;
+        //             $video->shedule_endtime = $shedule_endtime;
+        //             $video->sheduled_endtime = $sheduled_endtime;
+        //             $video->current_time = date("h:i A", strtotime($now));
+        //             $video->starttime = $starttime;
+        //             $video->sheduled_starttime = $sheduled_starttime;
+        //             $video->video_order = 1;
+        //             $video->schedule_id = $schedule_id;
+        //             $video->duration = $video_duration;
+        //             $video->choose_start_time = $choose_start_time;
+        //             $video->choose_end_time = $choose_end_time;
+        //             $video->time_zone  = $time_zone ;
+        //             $video->status = 1;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = ScheduleVideos::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = ScheduleVideos::find($video_id);
+        //             $title = $video_title->title;
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
-            }
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
+        //     }
     
-        }else if($currentDate < $date_choosed){
+        // }else if($currentDate < $date_choosed){
     
-            // choose_end_time
-            $time = $choose_current_time;
+        //     // choose_end_time
+        //     $time = $choose_current_time;
     
-            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-            $totalSecs = $minutes * 60;
-            $sec = $totalSecs + $video_duration;
+        //     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //     $totalSecs = $minutes * 60;
+        //     $sec = $totalSecs + $video_duration;
     
-            $hour = floor($sec / 3600);
-            $minute = floor(($sec / 60) % 60);
-            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //     $hour = floor($sec / 3600);
+        //     $minute = floor(($sec / 60) % 60);
+        //     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-            $TimeFormat = TimeFormat::where('hours',$hours)->first();
-            if($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
-            // echo "<pre>" ; print_r($currentDate);
-            // echo "<pre>" ; print_r($date_choosed);
+        //     $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //     if($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
+        //     // echo "<pre>" ; print_r($currentDate);
+        //     // echo "<pre>" ; print_r($date_choosed);
     
-            // exit;
+        //     // exit;
                 
-            if(!empty($TimeFormat)){
+        //     if(!empty($TimeFormat)){
     
-                $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+        //         $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($choose_end_time));
     
-                $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                $starttime = date("h:i", strtotime($choose_end_time));
-                $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+        //         $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //         $starttime = date("h:i", strtotime($choose_end_time));
+        //         $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
     
-            }else{
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+        //     }else{
+        //         $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
     
-                $sheduled_endtime = $hours . ":" . $minutes;
+        //         $sheduled_endtime = $hours . ":" . $minutes;
     
-                $starttime = date("h:i", strtotime($choose_end_time));
-                $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
-            }
-                    $video = new ScheduleVideos();
-                    $video->title = $Video_data->title;
-                    $video->type = $Video_data->type;
-                    $video->active = 1;
-                    $video->original_name = "public";
-                    $video->disk = "public";
-                    $video->mp4_url = $Video_data->mp4_url;
-                    $video->path = $Video_data->path;
-                    $video->shedule_date = $date_choosed;
-                    $video->shedule_time = $schedule_time;
-                    $video->shedule_endtime = $shedule_endtime;
-                    $video->sheduled_endtime = $sheduled_endtime;
-                    $video->current_time = date("h:i A", strtotime($now));
-                    $video->starttime = $starttime;
-                    $video->sheduled_starttime = $sheduled_starttime;
-                    $video->video_order = 1;
-                    $video->schedule_id = $schedule_id;
-                    $video->duration = $video_duration;
-                    $video->choose_start_time = $choose_start_time;
-                    $video->choose_end_time = $choose_end_time;
-                    $video->time_zone  = $time_zone ;
-                    $video->status = 1;
-                    $video->save();
+        //         $starttime = date("h:i", strtotime($choose_end_time));
+        //         $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+        //     }
+        //             $video = new ScheduleVideos();
+        //             $video->title = $Video_data->title;
+        //             $video->type = $Video_data->type;
+        //             $video->active = 1;
+        //             $video->original_name = "public";
+        //             $video->disk = "public";
+        //             $video->mp4_url = $Video_data->mp4_url;
+        //             $video->path = $Video_data->path;
+        //             $video->shedule_date = $date_choosed;
+        //             $video->shedule_time = $schedule_time;
+        //             $video->shedule_endtime = $shedule_endtime;
+        //             $video->sheduled_endtime = $sheduled_endtime;
+        //             $video->current_time = date("h:i A", strtotime($now));
+        //             $video->starttime = $starttime;
+        //             $video->sheduled_starttime = $sheduled_starttime;
+        //             $video->video_order = 1;
+        //             $video->schedule_id = $schedule_id;
+        //             $video->duration = $video_duration;
+        //             $video->choose_start_time = $choose_start_time;
+        //             $video->choose_end_time = $choose_end_time;
+        //             $video->time_zone  = $time_zone ;
+        //             $video->status = 1;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = ScheduleVideos::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = ScheduleVideos::find($video_id);
+        //             $title = $video_title->title;
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
-            }elseif($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
-                // echo "<pre>" ; print_r($ScheduleVideos);exit;
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
+        //     }elseif($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
+        //         // echo "<pre>" ; print_r($ScheduleVideos);exit;
                     
-                if(!empty($TimeFormat)){
+        //         if(!empty($TimeFormat)){
         
-                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+        //             $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($choose_end_time));
         
-                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                    $starttime = date("h:i", strtotime($choose_end_time));
-                    $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+        //             $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //             $starttime = date("h:i", strtotime($choose_end_time));
+        //             $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
         
-                }else{
-                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+        //         }else{
+        //             $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
         
-                    $sheduled_endtime = $hours . ":" . $minutes;
+        //             $sheduled_endtime = $hours . ":" . $minutes;
         
-                    $starttime = date("h:i", strtotime($choose_end_time));
-                    $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
-                }
-                // print_r('testaa'); exit();
+        //             $starttime = date("h:i", strtotime($choose_end_time));
+        //             $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+        //         }
+        //         // print_r('testaa'); exit();
         
-                        $video = new ScheduleVideos();
-                        $video->title = $Video_data->title;
-                        $video->type = $Video_data->type;
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $Video_data->mp4_url;
-                        $video->path = $Video_data->path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->duration = $video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $Video_data->title;
+        //                 $video->type = $Video_data->type;
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $Video_data->mp4_url;
+        //                 $video->path = $Video_data->path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->duration = $video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
         
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
         
-                        $choosed_date =
-                            $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //                 $choosed_date =
+        //                     $data["year"] . "-" . $data["month"] . "-" . $data["date"];
         
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
                         
         
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-                }else{
-                // print_r('test'); exit();
-                    $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
-                    $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
-                    if($schedule_time == '12:00 PM to 12:00 AM' && $last_shedule_endtime < '12:00 AM' ){
-                        $time = explode(":", $last_sheduled_endtime);
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $video_duration;
-                        // $sec = 45784.249244444;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+        //         }else{
+        //         // print_r('test'); exit();
+        //             $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
+        //             $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
+        //             if($schedule_time == '12:00 PM to 12:00 AM' && $last_shedule_endtime < '12:00 AM' ){
+        //                 $time = explode(":", $last_sheduled_endtime);
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $video_duration;
+        //                 // $sec = 45784.249244444;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
     
-                        $video = new ScheduleVideos();
-                        $video->title = $Video_data->title;
-                        $video->type = $Video_data->type;
-                        $video->active = 1;
-                        $video->original_name = "public";
-                        $video->disk = "public";
-                        $video->mp4_url = $Video_data->mp4_url;
-                        $video->path = $Video_data->path;
-                        $video->shedule_date = $date_choosed;
-                        $video->shedule_time = $schedule_time;
-                        $video->shedule_endtime = $shedule_endtime;
-                        $video->sheduled_endtime = $sheduled_endtime;
-                        $video->current_time = date("h:i A", strtotime($now));
-                        $video->starttime = $starttime;
-                        $video->sheduled_starttime = $sheduled_starttime;
-                        $video->video_order = 1;
-                        $video->schedule_id = $schedule_id;
-                        $video->duration = $video_duration;
-                        $video->choose_start_time = $choose_start_time;
-                        $video->choose_end_time = $choose_end_time;
-                        $video->time_zone  = $time_zone ;
-                        $video->status = 1;
-                        $video->save();
+        //                 $video = new ScheduleVideos();
+        //                 $video->title = $Video_data->title;
+        //                 $video->type = $Video_data->type;
+        //                 $video->active = 1;
+        //                 $video->original_name = "public";
+        //                 $video->disk = "public";
+        //                 $video->mp4_url = $Video_data->mp4_url;
+        //                 $video->path = $Video_data->path;
+        //                 $video->shedule_date = $date_choosed;
+        //                 $video->shedule_time = $schedule_time;
+        //                 $video->shedule_endtime = $shedule_endtime;
+        //                 $video->sheduled_endtime = $sheduled_endtime;
+        //                 $video->current_time = date("h:i A", strtotime($now));
+        //                 $video->starttime = $starttime;
+        //                 $video->sheduled_starttime = $sheduled_starttime;
+        //                 $video->video_order = 1;
+        //                 $video->schedule_id = $schedule_id;
+        //                 $video->duration = $video_duration;
+        //                 $video->choose_start_time = $choose_start_time;
+        //                 $video->choose_end_time = $choose_end_time;
+        //                 $video->time_zone  = $time_zone ;
+        //                 $video->status = 1;
+        //                 $video->save();
     
-                        $video_id = $video->id;
-                        $video_title = ScheduleVideos::find($video_id);
-                        $title = $video_title->title;
+        //                 $video_id = $video->id;
+        //                 $video_title = ScheduleVideos::find($video_id);
+        //                 $title = $video_title->title;
     
-                        $choosed_date =
-                            $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //                 $choosed_date =
+        //                     $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                        $date = date_create($choosed_date);
-                        $date_choose = date_format($date, "Y/m");
-                        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //                 $date = date_create($choosed_date);
+        //                 $date_choose = date_format($date, "Y/m");
+        //                 $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
     
-                        $total_content = ScheduleVideos::where(
-                            "shedule_date",
-                            "=",
-                            $date_choosed
-                        )
-                            ->orderBy("id", "desc")
-                            ->get();
-                        }else{
+        //                 $total_content = ScheduleVideos::where(
+        //                     "shedule_date",
+        //                     "=",
+        //                     $date_choosed
+        //                 )
+        //                     ->orderBy("id", "desc")
+        //                     ->get();
+        //                 }else{
     
-            $value["schedule_time"] = 'Change the Slot time';
+        //     $value["schedule_time"] = 'Change the Slot time';
     
-                        }
+        //                 }
                 
-                    // print_r($shedule_endtime);
-                    // echo "<pre>";
-                    // print_r($sheduled_starttime);
+        //             // print_r($shedule_endtime);
+        //             // echo "<pre>";
+        //             // print_r($sheduled_starttime);
     
-                    // exit;
-                }
-            }
-            $total_content = ScheduleVideos::where(
-                "shedule_date",
-                "=",
-                $date_choosed
-            )->where('schedule_id', $schedule_id)
-                ->orderBy("id", "desc")
-                ->get();
-        $output = "";
-            $i = 1;
-            $delete = URL::to("admin/schedule/delete");
+        //             // exit;
+        //         }
+        //     }
+        //     $total_content = ScheduleVideos::where(
+        //         "shedule_date",
+        //         "=",
+        //         $date_choosed
+        //     )->where('schedule_id', $schedule_id)
+        //         ->orderBy("id", "desc")
+        //         ->get();
+        // $output = "";
+        //     $i = 1;
+        //     $delete = URL::to("admin/schedule/delete");
     
-            if (count($total_content) > 0) {
-                $total_row = $total_content->count();
-                if (!empty($total_content)) {
-                    $currency = CurrencySetting::first();
+        //     if (count($total_content) > 0) {
+        //         $total_row = $total_content->count();
+        //         if (!empty($total_content)) {
+        //             $currency = CurrencySetting::first();
     
-                    foreach ($total_content as $key => $row) {
-                        $output .=
-                                '
-                                <tr>
-                                <td>' . '#' .'</td>
+        //             foreach ($total_content as $key => $row) {
+        //                 $output .=
+        //                         '
+        //                         <tr>
+        //                         <td>' . '#' .'</td>
     
-                                <td>' .
-                                                $i++ .
-                                                '</td>
-                                <td>' .
-                                                $row->title .
-                                                '</td>
-                                <td>' .
-                                                $row->type .
-                                                '</td>  
-                                <td>' .
-                                                $row->shedule_date .
-                                                '</td>       
-                                <td>' .
-                                                $row->sheduled_starttime .
-                                                '</td>    
+        //                         <td>' .
+        //                                         $i++ .
+        //                                         '</td>
+        //                         <td>' .
+        //                                         $row->title .
+        //                                         '</td>
+        //                         <td>' .
+        //                                         $row->type .
+        //                                         '</td>  
+        //                         <td>' .
+        //                                         $row->shedule_date .
+        //                                         '</td>       
+        //                         <td>' .
+        //                                         $row->sheduled_starttime .
+        //                                         '</td>    
     
-                                <td>' .
-                                                $row->shedule_endtime .
-                                                '</td>  
+        //                         <td>' .
+        //                                         $row->shedule_endtime .
+        //                                         '</td>  
     
-                                </tr>
-                                ';
-                    }
-                } else {
-                    $output = '
-                        <tr>
-                        <td align="center" colspan="5">No Data Found</td>
-                        </tr>
-                        ';
-                }
-            }
+        //                         </tr>
+        //                         ';
+        //             }
+        //         } else {
+        //             $output = '
+        //                 <tr>
+        //                 <td align="center" colspan="5">No Data Found</td>
+        //                 </tr>
+        //                 ';
+        //         }
+        //     }
     
     
     
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = @$video_id;
-            $value["video_title"] = @$title;
-            $value["table_data"] = $output;
-            $value["total_data"] = @$total_row;
-            $value["total_content"] = $total_content;
+        //     $value["success"] = 1;
+        //     $value["message"] = "Uploaded Successfully!";
+        //     $value["video_id"] = @$video_id;
+        //     $value["video_title"] = @$title;
+        //     $value["table_data"] = $output;
+        //     $value["total_data"] = @$total_row;
+        //     $value["total_content"] = $total_content;
     
-            return $value;
+        //     return $value;
         
     
-        }
-        public function DragDropScheduledVideosOLD(Request $request)
-        {
-            $data = $request->all();
+        // }
+
+        // public function DragDropScheduledVideosOLD(Request $request)
+        // {
+        //     $data = $request->all();
     
-            $video_id = $data["video_id"];
-            $videochooed = Video::where("id", $video_id)->first();
-            $date = $data["date"];
-            $month = $data["month"];
-            $year = $data["year"];
-            $schedule_time = $data["schedule_time"];
-            $time_zone = $data["time_zone"];
+        //     $video_id = $data["video_id"];
+        //     $videochooed = Video::where("id", $video_id)->first();
+        //     $date = $data["date"];
+        //     $month = $data["month"];
+        //     $year = $data["year"];
+        //     $schedule_time = $data["schedule_time"];
+        //     $time_zone = $data["time_zone"];
     
-            date_default_timezone_set($time_zone);
-            $now = date("Y-m-d h:i:s a", time());
-            $current_time = date("h:i A", time());
-            // $date = date('m/d/Y h:i:s a', time());
-            // echo"<pre>";print_r($date);
-            // echo"<pre>";print_r($current_time );exit;
+        //     date_default_timezone_set($time_zone);
+        //     $now = date("Y-m-d h:i:s a", time());
+        //     $current_time = date("h:i A", time());
+        //     // $date = date('m/d/Y h:i:s a', time());
+        //     // echo"<pre>";print_r($date);
+        //     // echo"<pre>";print_r($current_time );exit;
             
-            if (!empty($schedule_time)) {
-                $choose_time = explode("to", $schedule_time);
-                if (count($choose_time) > 0) {
-                    $choose_start_time = $choose_time[0];
-                    $choose_end_time = $choose_time[1];
-                } else {
-                    $choose_start_time = "";
-                    $choose_end_time = "";
-                }
-                // $d = new \DateTime("now");
-                // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                // $now = $d->format("Y-m-d h:i:s a");
-                // $current_time = date("h:i A", strtotime($now));
-                // date_default_timezone_set('Asia/Kolkata');
-                date_default_timezone_set($time_zone);
-                $now = date("Y-m-d h:i:s a", time());
-                $current_time = date("h:i A", time());
+        //     if (!empty($schedule_time)) {
+        //         $choose_time = explode("to", $schedule_time);
+        //         if (count($choose_time) > 0) {
+        //             $choose_start_time = $choose_time[0];
+        //             $choose_end_time = $choose_time[1];
+        //         } else {
+        //             $choose_start_time = "";
+        //             $choose_end_time = "";
+        //         }
+        //         // $d = new \DateTime("now");
+        //         // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //         // $now = $d->format("Y-m-d h:i:s a");
+        //         // $current_time = date("h:i A", strtotime($now));
+        //         // date_default_timezone_set('Asia/Kolkata');
+        //         date_default_timezone_set($time_zone);
+        //         $now = date("Y-m-d h:i:s a", time());
+        //         $current_time = date("h:i A", time());
     
     
-                $Schedule_current_date = date("Y-m-d");
+        //         $Schedule_current_date = date("Y-m-d");
     
-                $schedule_id = $data["schedule_id"];
-                $choosed_date = $year . "-" . $month . "-" . $date;
+        //         $schedule_id = $data["schedule_id"];
+        //         $choosed_date = $year . "-" . $month . "-" . $date;
     
-                $date = date_create($choosed_date);
-                $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+        //         $date = date_create($choosed_date);
+        //         $date_choose = date_format($date, "Y/m");
+        //         $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
     
                 
-                $now = date("Y-m-d h:i:s a");
-                $current_time = date("h:i A");
+        //         $now = date("Y-m-d h:i:s a");
+        //         $current_time = date("h:i A");
     
-                $currentDate = date("Y/m/d");
+        //         $currentDate = date("Y/m/d");
     
-                if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
-                    $choose_current_time =  explode(":", date("h:i", strtotime($now)));
-                }else {
-                    $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
-                }
+        //         if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
+        //             $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+        //         }else {
+        //             $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+        //         }
     
-                if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
-                    $store_current_time =  date("h:i A", strtotime($now));
-                }else {
-                    $store_current_time =  date("h:i A", strtotime($choose_start_time));
-                }
+        //         if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
+        //             $store_current_time =  date("h:i A", strtotime($now));
+        //         }else {
+        //             $store_current_time =  date("h:i A", strtotime($choose_start_time));
+        //         }
     
-                // echo "<pre>";
-                // print_r($choose_start_time);
+        //         // echo "<pre>";
+        //         // print_r($choose_start_time);
     
-                // echo "<pre>";
-                // print_r($store_current_time);
+        //         // echo "<pre>";
+        //         // print_r($store_current_time);
     
-                // exit;
+        //         // exit;
     
-                $Schedule_current_date = date("Y-m-d");
+        //         $Schedule_current_date = date("Y-m-d");
     
-                // $schedule_id = $data["schedule_id"];
-                // $choosed_date = $year . "-" . $month . "-" . $date;
+        //         // $schedule_id = $data["schedule_id"];
+        //         // $choosed_date = $year . "-" . $month . "-" . $date;
     
-                // $date = date_create($choosed_date);
-                // $date_choose = date_format($date, "Y/m");
-                // $date_choosed = $date_choose . "/" . $data["date"];
+        //         // $date = date_create($choosed_date);
+        //         // $date_choose = date_format($date, "Y/m");
+        //         // $date_choosed = $date_choose . "/" . $data["date"];
     
-                $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
-                    ->where("shedule_date", "=", $date_choosed)
-                    ->where("shedule_time", "=", $schedule_time)
-                    ->orderBy("id", "desc")
-                    ->first();
+        //         $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
+        //             ->where("shedule_date", "=", $date_choosed)
+        //             ->where("shedule_time", "=", $schedule_time)
+        //             ->orderBy("id", "desc")
+        //             ->first();
     
-                $ScheduleVideos = ScheduleVideos::where(
-                    "shedule_date",
-                    "=",
-                    $date_choosed
-                )
-                    ->orderBy("id", "desc")
-                    ->first();
+        //         $ScheduleVideos = ScheduleVideos::where(
+        //             "shedule_date",
+        //             "=",
+        //             $date_choosed
+        //         )
+        //             ->orderBy("id", "desc")
+        //             ->first();
     
                 
-                if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
-                    $ffprobe = \FFMpeg\FFProbe::create();
-                    $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
-                    $video_duration = explode(".", $duration)[0];
-                }else{
-                    $video_duration = $videochooed->duration;
-                }
+        //         if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+        //             $ffprobe = \FFMpeg\FFProbe::create();
+        //             $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+        //             $video_duration = explode(".", $duration)[0];
+        //         }else{
+        //             $video_duration = $videochooed->duration;
+        //         }
     
     
-                // DateTime();
-                $current_date =  date("Y-m-d h:i:s a", time());
-                $current_date = date("Y-m-d h:i:s");
-                $daten = date("Y-m-d h:i:s ", time());
-                // $d = new \DateTime("now");
-                // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                // $now = $d->format("Y-m-d h:i:s a");
-                // $current_time = date("h:i A", strtotime($now));
-                $time_zone = $data["time_zone"];
+        //         // DateTime();
+        //         $current_date =  date("Y-m-d h:i:s a", time());
+        //         $current_date = date("Y-m-d h:i:s");
+        //         $daten = date("Y-m-d h:i:s ", time());
+        //         // $d = new \DateTime("now");
+        //         // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        //         // $now = $d->format("Y-m-d h:i:s a");
+        //         // $current_time = date("h:i A", strtotime($now));
+        //         $time_zone = $data["time_zone"];
     
-                // date_default_timezone_set('Asia/Kolkata');
-                date_default_timezone_set($time_zone);
-                $now = date("Y-m-d h:i:s a", time());
-                $current_time = date("h:i A", time());
+        //         // date_default_timezone_set('Asia/Kolkata');
+        //         date_default_timezone_set($time_zone);
+        //         $now = date("Y-m-d h:i:s a", time());
+        //         $current_time = date("h:i A", time());
     
-                // print_r($choose_current_time);exit;
+        //         // print_r($choose_current_time);exit;
     
-                if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
-                    // print_r('ScheduleVideos');exit;
+        //         if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
+        //             // print_r('ScheduleVideos');exit;
     
-                    $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
-                    $last_current_time = $ScheduleVideos->current_time;
-                    $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
+        //             $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+        //             $last_current_time = $ScheduleVideos->current_time;
+        //             $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
     
-                    if ($last_shedule_endtime < $current_time) {
-                        $time = $choose_current_time;
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $video_duration;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //             if ($last_shedule_endtime < $current_time) {
+        //                 $time = $choose_current_time;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $video_duration;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime =
-                            $hours .
-                            ":" .
-                            $minutes .
-                            " " .
-                            date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $shedule_endtime =
+        //                     $hours .
+        //                     ":" .
+        //                     $minutes .
+        //                     " " .
+        //                     date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = date("h:i ", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                    } else {
-                        $time = explode(":", $last_sheduled_endtime);
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $video_duration;
-                        // $sec = 45784.249244444;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 $starttime = date("h:i ", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             } else {
+        //                 $time = explode(":", $last_sheduled_endtime);
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $video_duration;
+        //                 // $sec = 45784.249244444;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
-                    }
-                    $time_zone = $data["time_zone"];
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
+        //             }
+        //             $time_zone = $data["time_zone"];
     
-                    $video = new ScheduleVideos();
-                    $video->title = $videochooed->title;
-                    $video->type = $videochooed->type;
-                    $video->active = 1;
-                    $video->original_name = "public";
-                    $video->disk = "public";
-                    $video->mp4_url = $videochooed->mp4_url;
-                    // $video->m3u8_url = $videochooed->m3u8_url;
-                    $video->path = $videochooed->path;
-                    $video->shedule_date = $date_choosed;
-                    $video->shedule_time = $schedule_time;
-                    $video->shedule_endtime = $shedule_endtime;
-                    $video->sheduled_endtime = $sheduled_endtime;
-                    $video->current_time = date("h:i A", strtotime($now));
-                    $video->video_order = 1;
-                    $video->schedule_id = $schedule_id;
-                    $video->starttime = $starttime;
-                    $video->sheduled_starttime = $sheduled_starttime;
-                    $video->starttime = $last_sheduled_endtime;
-                    $video->choose_start_time = $choose_start_time;
-                    $video->choose_end_time = $choose_end_time;
-                    $video->time_zone  = $time_zone ;
-                    $video->status = 1;
-                    $video->save();
+        //             $video = new ScheduleVideos();
+        //             $video->title = $videochooed->title;
+        //             $video->type = $videochooed->type;
+        //             $video->active = 1;
+        //             $video->original_name = "public";
+        //             $video->disk = "public";
+        //             $video->mp4_url = $videochooed->mp4_url;
+        //             // $video->m3u8_url = $videochooed->m3u8_url;
+        //             $video->path = $videochooed->path;
+        //             $video->shedule_date = $date_choosed;
+        //             $video->shedule_time = $schedule_time;
+        //             $video->shedule_endtime = $shedule_endtime;
+        //             $video->sheduled_endtime = $sheduled_endtime;
+        //             $video->current_time = date("h:i A", strtotime($now));
+        //             $video->video_order = 1;
+        //             $video->schedule_id = $schedule_id;
+        //             $video->starttime = $starttime;
+        //             $video->sheduled_starttime = $sheduled_starttime;
+        //             $video->starttime = $last_sheduled_endtime;
+        //             $video->choose_start_time = $choose_start_time;
+        //             $video->choose_end_time = $choose_end_time;
+        //             $video->time_zone  = $time_zone ;
+        //             $video->status = 1;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = ScheduleVideos::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = ScheduleVideos::find($video_id);
+        //             $title = $video_title->title;
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . $data["date"];
     
-                    // print_r($date_choosed);exit;
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
+        //             // print_r($date_choosed);exit;
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
     
-                    $output = "";
-                    $i = 1;
+        //             $output = "";
+        //             $i = 1;
     
-                    $delete = URL::to("admin/schedule/delete");
+        //             $delete = URL::to("admin/schedule/delete");
     
-                    if (count($total_content) > 0) {
-                        $total_row = $total_content->count();
-                        if (!empty($total_content)) {
-                            $currency = CurrencySetting::first();
+        //             if (count($total_content) > 0) {
+        //                 $total_row = $total_content->count();
+        //                 if (!empty($total_content)) {
+        //                     $currency = CurrencySetting::first();
     
-                            foreach ($total_content as $key => $row) {
-                                $output .=
-                                    '
-                      <tr>
-                      <td>' . '#' .'</td>
-                      <td>' .
-                                    $i++ .
-                                    '</td>
-                      <td>' .
-                                    $row->title .
-                                    '</td>
-                      <td>' .
-                                    $row->type .
-                                    '</td>  
-                      <td>' .
-                                    $row->shedule_date .
-                                    '</td>       
-                      <td>' .
-                                    $row->sheduled_starttime .
-                                    '</td>    
+        //                     foreach ($total_content as $key => $row) {
+        //                         $output .=
+        //                             '
+        //               <tr>
+        //               <td>' . '#' .'</td>
+        //               <td>' .
+        //                             $i++ .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->title .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->type .
+        //                             '</td>  
+        //               <td>' .
+        //                             $row->shedule_date .
+        //                             '</td>       
+        //               <td>' .
+        //                             $row->sheduled_starttime .
+        //                             '</td>    
     
-                      <td>' .
-                                    $row->shedule_endtime .
-                                    '</td>  
+        //               <td>' .
+        //                             $row->shedule_endtime .
+        //                             '</td>  
     
-                      </tr>
-                      ';
+        //               </tr>
+        //               ';
     
-                    }
-                        } else {
-                            $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                        }
-                    }
+        //             }
+        //                 } else {
+        //                     $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                 }
+        //             }
     
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $title;
-                    $value["table_data"] = $output;
-                    $value["total_data"] = $total_row;
-                    $value["total_content"] = $total_content;
+        //             $value["success"] = 1;
+        //             $value["message"] = "Uploaded Successfully!";
+        //             $value["video_id"] = $video_id;
+        //             $value["video_title"] = $title;
+        //             $value["table_data"] = $output;
+        //             $value["total_data"] = $total_row;
+        //             $value["total_content"] = $total_content;
     
-                    return $value;
-                } elseif (
-                    !empty($ScheduleVideos) &&
-                    !empty($choosedtime_exitvideos)
-                ) {
-                    // print_r('$ScheduleVideos');exit;
-                    if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
-                        $ffprobe = \FFMpeg\FFProbe::create();
-                        $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
-                        $Video_duration = explode(".", $duration)[0];
-                    }else{
-                        $Video_duration = $videochooed->duration;
-                    }
+        //             return $value;
+        //         } elseif (
+        //             !empty($ScheduleVideos) &&
+        //             !empty($choosedtime_exitvideos)
+        //         ) {
+        //             // print_r('$ScheduleVideos');exit;
+        //             if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+        //                 $ffprobe = \FFMpeg\FFProbe::create();
+        //                 $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+        //                 $Video_duration = explode(".", $duration)[0];
+        //             }else{
+        //                 $Video_duration = $videochooed->duration;
+        //             }
     
-                    // $Video_duration = $videochooed->duration;
-                    $last_shedule_endtime =
-                        $choosedtime_exitvideos->shedule_endtime;
-                    $last_current_time = $choosedtime_exitvideos->current_time;
-                    $last_sheduled_endtime =
-                        $choosedtime_exitvideos->sheduled_endtime;
-                        // print_r($last_shedule_endtime);
-                        // print_r($last_sheduled_endtime);exit;
+        //             // $Video_duration = $videochooed->duration;
+        //             $last_shedule_endtime =
+        //                 $choosedtime_exitvideos->shedule_endtime;
+        //             $last_current_time = $choosedtime_exitvideos->current_time;
+        //             $last_sheduled_endtime =
+        //                 $choosedtime_exitvideos->sheduled_endtime;
+        //                 // print_r($last_shedule_endtime);
+        //                 // print_r($last_sheduled_endtime);exit;
     
-                    if ($last_shedule_endtime < $current_time) {
-                        $time = $choose_current_time;
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //             if ($last_shedule_endtime < $current_time) {
+        //                 $time = $choose_current_time;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = date("h:i ", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                    } else {
+        //                 $starttime = date("h:i ", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             } else {
                         
-                        $time = explode(":", $last_sheduled_endtime);
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
-                        $TimeFormat = TimeFormat::where('hours',$hours)->first();
-                        if(!empty($TimeFormat)){
-                    // print_r('$ScheduleVideos');exit;
+        //                 $time = explode(":", $last_sheduled_endtime);
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //                 if(!empty($TimeFormat)){
+        //             // print_r('$ScheduleVideos');exit;
     
-                            $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+        //                     $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
     
-                            $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                     $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
         
-                            $starttime = $last_sheduled_endtime;
-                            $sheduled_starttime = $last_shedule_endtime;
+        //                     $starttime = $last_sheduled_endtime;
+        //                     $sheduled_starttime = $last_shedule_endtime;
     
-                        }else{
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                 }else{
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = $last_sheduled_endtime;
-                        $sheduled_starttime = $last_shedule_endtime;
+        //                 $starttime = $last_sheduled_endtime;
+        //                 $sheduled_starttime = $last_shedule_endtime;
     
-                        }
-                    }
-                    $time_zone = $data["time_zone"];
+        //                 }
+        //             }
+        //             $time_zone = $data["time_zone"];
     
-                    $video = new ScheduleVideos();
-                    $video->title = $videochooed->title;
-                    $video->type = $videochooed->type;
-                    $video->active = 1;
-                    $video->original_name = "public";
-                    $video->disk = "public";
-                    $video->mp4_url = $videochooed->mp4_url;
-                    // $video->m3u8_url = $videochooed->m3u8_url;
-                    $video->path = $videochooed->path;
-                    $video->shedule_date = $date_choosed;
-                    $video->shedule_time = $schedule_time;
-                    $video->shedule_endtime = $shedule_endtime;
-                    $video->sheduled_endtime = $sheduled_endtime;
-                    $video->current_time = date("h:i A", strtotime($now));
-                    $video->video_order = 1;
-                    $video->schedule_id = $schedule_id;
-                    $video->starttime = $starttime;
-                    $video->sheduled_starttime = $sheduled_starttime;
-                    $video->duration = $Video_duration;
-                    $video->choose_start_time = $choose_start_time;
-                    $video->choose_end_time = $choose_end_time;
-                    $video->time_zone  = $time_zone ;
-                    $video->status = 1;
-                    $video->save();
+        //             $video = new ScheduleVideos();
+        //             $video->title = $videochooed->title;
+        //             $video->type = $videochooed->type;
+        //             $video->active = 1;
+        //             $video->original_name = "public";
+        //             $video->disk = "public";
+        //             $video->mp4_url = $videochooed->mp4_url;
+        //             // $video->m3u8_url = $videochooed->m3u8_url;
+        //             $video->path = $videochooed->path;
+        //             $video->shedule_date = $date_choosed;
+        //             $video->shedule_time = $schedule_time;
+        //             $video->shedule_endtime = $shedule_endtime;
+        //             $video->sheduled_endtime = $sheduled_endtime;
+        //             $video->current_time = date("h:i A", strtotime($now));
+        //             $video->video_order = 1;
+        //             $video->schedule_id = $schedule_id;
+        //             $video->starttime = $starttime;
+        //             $video->sheduled_starttime = $sheduled_starttime;
+        //             $video->duration = $Video_duration;
+        //             $video->choose_start_time = $choose_start_time;
+        //             $video->choose_end_time = $choose_end_time;
+        //             $video->time_zone  = $time_zone ;
+        //             $video->status = 1;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = ScheduleVideos::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = ScheduleVideos::find($video_id);
+        //             $title = $video_title->title;
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . $data["date"];
     
-                    // print_r($date_choosed);exit;
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
+        //             // print_r($date_choosed);exit;
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
     
-                    $output = "";
-                    $i = 1;
-                    $delete = URL::to("admin/schedule/delete");
+        //             $output = "";
+        //             $i = 1;
+        //             $delete = URL::to("admin/schedule/delete");
     
-                    if (count($total_content) > 0) {
-                        $total_row = $total_content->count();
-                        if (!empty($total_content)) {
-                            $currency = CurrencySetting::first();
+        //             if (count($total_content) > 0) {
+        //                 $total_row = $total_content->count();
+        //                 if (!empty($total_content)) {
+        //                     $currency = CurrencySetting::first();
     
-                            foreach ($total_content as $key => $row) {
-                                $output .=
-                                    '
-                      <tr>
-                      <td>' . '#' .'</td>
+        //                     foreach ($total_content as $key => $row) {
+        //                         $output .=
+        //                             '
+        //               <tr>
+        //               <td>' . '#' .'</td>
     
-                      <td>' .
-                                    $i++ .
-                                    '</td>
-                      <td>' .
-                                    $row->title .
-                                    '</td>
-                      <td>' .
-                                    $row->type .
-                                    '</td>  
-                      <td>' .
-                                    $row->shedule_date .
-                                    '</td>       
-                      <td>' .
-                                    $row->sheduled_starttime .
-                                    '</td>    
+        //               <td>' .
+        //                             $i++ .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->title .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->type .
+        //                             '</td>  
+        //               <td>' .
+        //                             $row->shedule_date .
+        //                             '</td>       
+        //               <td>' .
+        //                             $row->sheduled_starttime .
+        //                             '</td>    
     
-                      <td>' .
-                                    $row->shedule_endtime .
-                                    '</td>  
+        //               <td>' .
+        //                             $row->shedule_endtime .
+        //                             '</td>  
     
-                      </tr>
-                      ';
-                            }
-                        } else {
-                            $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                        }
-                    }
+        //               </tr>
+        //               ';
+        //                     }
+        //                 } else {
+        //                     $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                 }
+        //             }
     
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $title;
-                    $value["table_data"] = $output;
-                    $value["total_data"] = $total_row;
-                    $value["total_content"] = $total_content;
+        //             $value["success"] = 1;
+        //             $value["message"] = "Uploaded Successfully!";
+        //             $value["video_id"] = $video_id;
+        //             $value["video_title"] = $title;
+        //             $value["table_data"] = $output;
+        //             $value["total_data"] = $total_row;
+        //             $value["total_content"] = $total_content;
     
-                    return $value;
-                } else {
+        //             return $value;
+        //         } else {
     
-                if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
-                    $ffprobe = \FFMpeg\FFProbe::create();
-                    $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
-                    $Video_duration = explode(".", $duration)[0];
-                }else{
-                    $Video_duration = $videochooed->duration;
-                }
-                if($current_time > $store_current_time){
+        //         if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+        //             $ffprobe = \FFMpeg\FFProbe::create();
+        //             $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+        //             $Video_duration = explode(".", $duration)[0];
+        //         }else{
+        //             $Video_duration = $videochooed->duration;
+        //         }
+        //         if($current_time > $store_current_time){
     
-                    $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
+        //             $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
     
-                    $time = $choose_current_time;
-                    // echo "<pre>"; print_r($choose_current_time);
+        //             $time = $choose_current_time;
+        //             // echo "<pre>"; print_r($choose_current_time);
     
-                    $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                    $totalSecs = $minutes * 60;
-                    $sec = $totalSecs + $Video_duration;
+        //             $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //             $totalSecs = $minutes * 60;
+        //             $sec = $totalSecs + $Video_duration;
     
-                    $hour = floor($sec / 3600);
-                    $minute = floor(($sec / 60) % 60);
-                    $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                    $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //             $hour = floor($sec / 3600);
+        //             $minute = floor(($sec / 60) % 60);
+        //             $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //             $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                    $TimeFormat = TimeFormat::where('hours',$hours)->first();
-                    if(!empty($TimeFormat)){
+        //             $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //             if(!empty($TimeFormat)){
     
-                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
+        //                 $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                        $starttime = date("h:i", strtotime($current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($current_time));
+        //                 $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                 $starttime = date("h:i", strtotime($current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($current_time));
     
-                    }else{
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //             }else{
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = date("h:i", strtotime($current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($current_time));
-                    }
-                }elseif($current_time < $store_current_time){
+        //                 $starttime = date("h:i", strtotime($current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($current_time));
+        //             }
+        //         }elseif($current_time < $store_current_time){
     
-                        $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
+        //                 $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
         
-                        $time = $choose_current_time;
-                        // echo "<pre>"; print_r($choose_current_time);
+        //                 $time = $choose_current_time;
+        //                 // echo "<pre>"; print_r($choose_current_time);
         
-                        $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                        $totalSecs = $minutes * 60;
-                        $sec = $totalSecs + $Video_duration;
+        //                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //                 $totalSecs = $minutes * 60;
+        //                 $sec = $totalSecs + $Video_duration;
         
-                        $hour = floor($sec / 3600);
-                        $minute = floor(($sec / 60) % 60);
-                        $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                        $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //                 $hour = floor($sec / 3600);
+        //                 $minute = floor(($sec / 60) % 60);
+        //                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
         
-                        $TimeFormat = TimeFormat::where('hours',$hours)->first();
-                        if(!empty($TimeFormat)){
+        //                 $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //                 if(!empty($TimeFormat)){
         
-                            $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
+        //                     $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
         
-                            $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                            $starttime = date("h:i", strtotime($current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($current_time));
+        //                     $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                     $starttime = date("h:i", strtotime($current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($current_time));
         
-                        }else{
-                            $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //                 }else{
+        //                     $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
         
-                            $sheduled_endtime = $hours . ":" . $minutes;
+        //                     $sheduled_endtime = $hours . ":" . $minutes;
         
-                            $starttime = date("h:i", strtotime($current_time));
-                            $sheduled_starttime = date("h:i A", strtotime($current_time));
-                        }
+        //                     $starttime = date("h:i", strtotime($current_time));
+        //                     $sheduled_starttime = date("h:i A", strtotime($current_time));
+        //                 }
        
-                    }
-                else{
+        //             }
+        //         else{
     
-                    // $Video_duration = $videochooed->duration;
-                    $time = $choose_current_time;
-                    $minutes = $time[0] * 60.0 + $time[1] * 1.0;
-                    $totalSecs = $minutes * 60;
-                    $sec = $totalSecs + $Video_duration;
+        //             // $Video_duration = $videochooed->duration;
+        //             $time = $choose_current_time;
+        //             $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+        //             $totalSecs = $minutes * 60;
+        //             $sec = $totalSecs + $Video_duration;
     
-                    $hour = floor($sec / 3600);
-                    $minute = floor(($sec / 60) % 60);
-                    $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
-                    $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+        //             $hour = floor($sec / 3600);
+        //             $minute = floor(($sec / 60) % 60);
+        //             $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+        //             $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
     
-                    $TimeFormat = TimeFormat::where('hours',$hours)->first();
-                    if(!empty($TimeFormat)){
+        //             $TimeFormat = TimeFormat::where('hours',$hours)->first();
+        //             if(!empty($TimeFormat)){
     
-                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
+        //                 $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                        $starttime = date("h:i", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //                 $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+        //                 $starttime = date("h:i", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
-                    }else{
-                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+        //             }else{
+        //                 $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
     
-                        $sheduled_endtime = $hours . ":" . $minutes;
+        //                 $sheduled_endtime = $hours . ":" . $minutes;
     
-                        $starttime = date("h:i", strtotime($store_current_time));
-                        $sheduled_starttime = date("h:i A", strtotime($store_current_time));
-                    }
-                    // echo "<pre>"; print_r($store_current_time);
+        //                 $starttime = date("h:i", strtotime($store_current_time));
+        //                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+        //             }
+        //             // echo "<pre>"; print_r($store_current_time);
                     
-                }
-                // exit();
-                    $time_zone = $data["time_zone"];
+        //         }
+        //         // exit();
+        //             $time_zone = $data["time_zone"];
              
-                    $video = new ScheduleVideos();
-                    $video->title = $videochooed->title;
-                    $video->type = $videochooed->type;
-                    $video->active = 1;
-                    $video->original_name = "public";
-                    $video->disk = "public";
-                    $video->mp4_url = $videochooed->mp4_url;
-                    // $video->m3u8_url = $videochooed->m3u8_url;
-                    $video->path = $videochooed->path;
-                    $video->shedule_date = $date_choosed;
-                    $video->shedule_time = $schedule_time;
-                    $video->shedule_endtime = $shedule_endtime;
-                    $video->sheduled_endtime = $sheduled_endtime;
-                    $video->current_time = date("h:i A", strtotime($now));
-                    $video->starttime = $starttime;
-                    $video->sheduled_starttime = $sheduled_starttime;
-                    $video->video_order = 1;
-                    $video->schedule_id = $schedule_id;
-                    $video->duration = $Video_duration;
-                    $video->choose_start_time = $choose_start_time;
-                    $video->choose_end_time = $choose_end_time;
-                    $video->time_zone  = $time_zone ;
-                    $video->status = 1;
-                    $video->save();
+        //             $video = new ScheduleVideos();
+        //             $video->title = $videochooed->title;
+        //             $video->type = $videochooed->type;
+        //             $video->active = 1;
+        //             $video->original_name = "public";
+        //             $video->disk = "public";
+        //             $video->mp4_url = $videochooed->mp4_url;
+        //             // $video->m3u8_url = $videochooed->m3u8_url;
+        //             $video->path = $videochooed->path;
+        //             $video->shedule_date = $date_choosed;
+        //             $video->shedule_time = $schedule_time;
+        //             $video->shedule_endtime = $shedule_endtime;
+        //             $video->sheduled_endtime = $sheduled_endtime;
+        //             $video->current_time = date("h:i A", strtotime($now));
+        //             $video->starttime = $starttime;
+        //             $video->sheduled_starttime = $sheduled_starttime;
+        //             $video->video_order = 1;
+        //             $video->schedule_id = $schedule_id;
+        //             $video->duration = $Video_duration;
+        //             $video->choose_start_time = $choose_start_time;
+        //             $video->choose_end_time = $choose_end_time;
+        //             $video->time_zone  = $time_zone ;
+        //             $video->status = 1;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = ScheduleVideos::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = ScheduleVideos::find($video_id);
+        //             $title = $video_title->title;
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . $data["date"];
     
-                    // print_r($date_choosed);exit;
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
+        //             // print_r($date_choosed);exit;
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
     
-                    $output = "";
-                    $i = 1;
-                    $delete = URL::to("admin/schedule/delete");
+        //             $output = "";
+        //             $i = 1;
+        //             $delete = URL::to("admin/schedule/delete");
     
-                    if (count($total_content) > 0) {
-                        $total_row = $total_content->count();
-                        if (!empty($total_content)) {
-                            $currency = CurrencySetting::first();
+        //             if (count($total_content) > 0) {
+        //                 $total_row = $total_content->count();
+        //                 if (!empty($total_content)) {
+        //                     $currency = CurrencySetting::first();
     
-                            foreach ($total_content as $key => $row) {
-                                $output .=
-                                    '
-                      <tr>
-                      <td>' . '#' .'</td>
+        //                     foreach ($total_content as $key => $row) {
+        //                         $output .=
+        //                             '
+        //               <tr>
+        //               <td>' . '#' .'</td>
     
-                      <td>' .
-                                    $i++ .
-                                    '</td>
-                      <td>' .
-                                    $row->title .
-                                    '</td>
-                      <td>' .
-                                    $row->type .
-                                    '</td>  
-                      <td>' .
-                                    $row->shedule_date .
-                                    '</td>       
-                      <td>' .
-                                    $row->sheduled_starttime .
-                                    '</td>    
+        //               <td>' .
+        //                             $i++ .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->title .
+        //                             '</td>
+        //               <td>' .
+        //                             $row->type .
+        //                             '</td>  
+        //               <td>' .
+        //                             $row->shedule_date .
+        //                             '</td>       
+        //               <td>' .
+        //                             $row->sheduled_starttime .
+        //                             '</td>    
     
-                      <td>' .
-                                    $row->shedule_endtime .
-                                    '</td>  
+        //               <td>' .
+        //                             $row->shedule_endtime .
+        //                             '</td>  
     
-                      </tr>
-                      ';
-                            }
-                        } else {
-                            $output = '
-                  <tr>
-                   <td align="center" colspan="5">No Data Found</td>
-                  </tr>
-                  ';
-                        }
-                    }
+        //               </tr>
+        //               ';
+        //                     }
+        //                 } else {
+        //                     $output = '
+        //           <tr>
+        //            <td align="center" colspan="5">No Data Found</td>
+        //           </tr>
+        //           ';
+        //                 }
+        //             }
     
-                    $choosed_date =
-                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        //             $choosed_date =
+        //                 $data["year"] . "-" . $data["month"] . "-" . $data["date"];
     
-                    $date = date_create($choosed_date);
-                    $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+        //             $date = date_create($choosed_date);
+        //             $date_choose = date_format($date, "Y/m");
+        //             $date_choosed = $date_choose . "/" . $data["date"];
     
-                    // print_r($date_choosed);exit;
-                    $total_content = ScheduleVideos::where(
-                        "shedule_date",
-                        "=",
-                        $date_choosed
-                    )
-                        ->orderBy("id", "desc")
-                        ->get();
+        //             // print_r($date_choosed);exit;
+        //             $total_content = ScheduleVideos::where(
+        //                 "shedule_date",
+        //                 "=",
+        //                 $date_choosed
+        //             )
+        //                 ->orderBy("id", "desc")
+        //                 ->get();
     
-                    $output = "";
-                    $i = 1;
-                    $delete = URL::to("admin/schedule/delete");
+        //             $output = "";
+        //             $i = 1;
+        //             $delete = URL::to("admin/schedule/delete");
     
-                    if (count($total_content) > 0) {
-                        $total_row = $total_content->count();
-                        if (!empty($total_content)) {
-                            $currency = CurrencySetting::first();
+        //             if (count($total_content) > 0) {
+        //                 $total_row = $total_content->count();
+        //                 if (!empty($total_content)) {
+        //                     $currency = CurrencySetting::first();
     
-                            foreach ($total_content as $key => $row) {
-                                $output .=
-                                    '
-                          <tr>
-                      <td>' . '#' .'</td>
+        //                     foreach ($total_content as $key => $row) {
+        //                         $output .=
+        //                             '
+        //                   <tr>
+        //               <td>' . '#' .'</td>
     
-                          <td>' .
-                                    $i++ .
-                                    '</td>
-                          <td>' .
-                                    $row->title .
-                                    '</td>
-                          <td>' .
-                                    $row->type .
-                                    '</td>  
-                          <td>' .
-                                    $row->shedule_date .
-                                    '</td>       
-                          <td>' .
-                                    $row->sheduled_starttime .
-                                    '</td>    
+        //                   <td>' .
+        //                             $i++ .
+        //                             '</td>
+        //                   <td>' .
+        //                             $row->title .
+        //                             '</td>
+        //                   <td>' .
+        //                             $row->type .
+        //                             '</td>  
+        //                   <td>' .
+        //                             $row->shedule_date .
+        //                             '</td>       
+        //                   <td>' .
+        //                             $row->sheduled_starttime .
+        //                             '</td>    
         
-                          <td>' .
-                                    $row->shedule_endtime .
-                                    '</td>  
+        //                   <td>' .
+        //                             $row->shedule_endtime .
+        //                             '</td>  
     
-                          </tr>
-                          ';
-                            }
-                        } else {
-                            $output = '
-                      <tr>
-                       <td align="center" colspan="5">No Data Found</td>
-                      </tr>
-                      ';
-                        }
-                    }
+        //                   </tr>
+        //                   ';
+        //                     }
+        //                 } else {
+        //                     $output = '
+        //               <tr>
+        //                <td align="center" colspan="5">No Data Found</td>
+        //               </tr>
+        //               ';
+        //                 }
+        //             }
     
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $title;
-                    $value["table_data"] = $output;
-                    $value["total_data"] = $total_row;
-                    $value["total_content"] = $total_content;
+        //             $value["success"] = 1;
+        //             $value["message"] = "Uploaded Successfully!";
+        //             $value["video_id"] = $video_id;
+        //             $value["video_title"] = $title;
+        //             $value["table_data"] = $output;
+        //             $value["total_data"] = $total_row;
+        //             $value["total_content"] = $total_content;
     
-                    return $value;
-                }
-            }
-        }
+        //             return $value;
+        //         }
+        //     }
+        // }
     
-        public function pre_videos_ads( Request $request )
-        {
-            try {
+        // public function pre_videos_ads( Request $request )
+        // {
+        //     try {
     
-                $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
-                                ->where('ads_upload_type','ads_video_upload')->where('ads_position','pre')
-                                ->where('status',1)->get();
+        //         $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+        //                         ->where('ads_upload_type','ads_video_upload')->where('ads_position','pre')
+        //                         ->where('status',1)->get();
     
-                $response = array(
-                    'status'  => true,
-                    'message' => 'Successfully Retrieve Pre Advertisement videos',
-                    'ads_videos'    => $Advertisement ,
-                );
+        //         $response = array(
+        //             'status'  => true,
+        //             'message' => 'Successfully Retrieve Pre Advertisement videos',
+        //             'ads_videos'    => $Advertisement ,
+        //         );
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $response = array(
-                    'status' => false,
-                    'message' =>  $th->getMessage()
-                );
-            }
-            return response()->json($response, 200);
-        }
+        //         $response = array(
+        //             'status' => false,
+        //             'message' =>  $th->getMessage()
+        //         );
+        //     }
+        //     return response()->json($response, 200);
+        // }
     
-        public function mid_videos_ads( Request $request )
-        {
-            try {
+        // public function mid_videos_ads( Request $request )
+        // {
+        //     try {
     
-                $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
-                                        ->where('ads_upload_type','ads_video_upload')
-                                        ->where('ads_position','mid')->where('status',1)
-                                        ->get();
+        //         $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+        //                                 ->where('ads_upload_type','ads_video_upload')
+        //                                 ->where('ads_position','mid')->where('status',1)
+        //                                 ->get();
     
-                $response = array(
-                    'status'  => true,
-                    'message' => 'Successfully Retrieve Mid Advertisement videos',
-                    'ads_videos'    => $Advertisement ,
-                );
+        //         $response = array(
+        //             'status'  => true,
+        //             'message' => 'Successfully Retrieve Mid Advertisement videos',
+        //             'ads_videos'    => $Advertisement ,
+        //         );
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $response = array(
-                    'status' => false,
-                    'message' =>  $th->getMessage()
-                );
-            }
-            return response()->json($response, 200);
-        }
+        //         $response = array(
+        //             'status' => false,
+        //             'message' =>  $th->getMessage()
+        //         );
+        //     }
+        //     return response()->json($response, 200);
+        // }
     
-        public function post_videos_ads( Request $request )
-        {
-            try {
+        // public function post_videos_ads( Request $request )
+        // {
+        //     try {
     
-                $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
-                                            ->where('ads_upload_type','ads_video_upload')
-                                            ->where('ads_position','post')->where('status',1)
-                                            ->get();
+        //         $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+        //                                     ->where('ads_upload_type','ads_video_upload')
+        //                                     ->where('ads_position','post')->where('status',1)
+        //                                     ->get();
     
-                $response = array(
-                    'status'  => true,
-                    'message' => 'Successfully Retrieve Post Advertisement videos',
-                    'ads_videos'    => $Advertisement ,
-                );
+        //         $response = array(
+        //             'status'  => true,
+        //             'message' => 'Successfully Retrieve Post Advertisement videos',
+        //             'ads_videos'    => $Advertisement ,
+        //         );
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $response = array(
-                    'status' => false,
-                    'message' =>  $th->getMessage()
-                );
-            }
-            return response()->json($response, 200);
-        }
+        //         $response = array(
+        //             'status' => false,
+        //             'message' =>  $th->getMessage()
+        //         );
+        //     }
+        //     return response()->json($response, 200);
+        // }
     
-        public function tag_url_ads(Request $request)
-        {
-            try {
+        // public function tag_url_ads(Request $request)
+        // {
+        //     try {
     
-                $Advertisement = Advertisement::where('status',1)
-                                            ->where('ads_position',$request->position)
-                                            ->get();
+        //         $Advertisement = Advertisement::where('status',1)
+        //                                     ->where('ads_position',$request->position)
+        //                                     ->get();
     
-                $response = array(
-                    'status'  => true,
-                    'message' => 'Successfully Retrieve Post Advertisement videos',
-                    'ads_videos'    => $Advertisement ,
-                );
+        //         $response = array(
+        //             'status'  => true,
+        //             'message' => 'Successfully Retrieve Post Advertisement videos',
+        //             'ads_videos'    => $Advertisement ,
+        //         );
     
-            } catch (\Throwable $th) {
+        //     } catch (\Throwable $th) {
     
-                $response = array(
-                    'status' => false,
-                    'message' =>  $th->getMessage()
-                );
-            }
-            return response()->json($response, 200);
-        }
+        //         $response = array(
+        //             'status' => false,
+        //             'message' =>  $th->getMessage()
+        //         );
+        //     }
+        //     return response()->json($response, 200);
+        // }
     
-        public function AWSUploadFileNEw(Request $request)
-        {
-            $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        // public function AWSUploadFileNEw(Request $request)
+        // {
+        //     $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
             
     
-            $StorageSetting = StorageSetting::first();
+        //     $StorageSetting = StorageSetting::first();
     
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            // Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
+        //     $file = $request->file('file');
+        //     $file_folder_name =  $file->getClientOriginalName();
+        //     $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //     $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //     // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //     $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //     $storepath = $path.$filePath;
     
-            $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+        //     $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
     
-            $path = $_FILES['file']['name'];
-            $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
-            $file_temp = $_FILES['file']['tmp_name'];
-            $file_type = $_FILES['file']['type'];
-            $upload_path = 'public/'.$name;
-            $bucket_name = 'inthesky';
-            $value = [];
-            $data = $request->all();
+        //     $path = $_FILES['file']['name'];
+        //     $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+        //     $file_temp = $_FILES['file']['tmp_name'];
+        //     $file_type = $_FILES['file']['type'];
+        //     $upload_path = 'public/'.$name;
+        //     $bucket_name = 'inthesky';
+        //     $value = [];
+        //     $data = $request->all();
     
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
     
-            $path = public_path() . "/uploads/videos/";
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
-            $StorageSetting = StorageSetting::first();
-            if ($mp4_url != "" && $pack != "Business") {
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
+        //     $StorageSetting = StorageSetting::first();
+        //     if ($mp4_url != "" && $pack != "Business") {
                 
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = '/public'.'/'. $name;
-                // Storage::disk('s3')->put($filePath, file_get_contents($file));
-                try {
-                    $s3->putObject(
-                        array(
-                            'Bucket' => 'inthesky',
-                            'Key' => $upload_path,
-                            'SourceFile' => $file_temp,
-                            'ContentType' => $file_type,
-                            'StorageClass' => 'STANDARD'
-                        )
-                    );
-                    echo "Uploaded $file_name to $bucket_name.\n";
-                } catch (Exception $exception) {
-                    echo "Failed to upload $file_name with error: " . $exception->getMessage();
-                }
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = '/public'.'/'. $name;
+        //         // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         try {
+        //             $s3->putObject(
+        //                 array(
+        //                     'Bucket' => 'inthesky',
+        //                     'Key' => $upload_path,
+        //                     'SourceFile' => $file_temp,
+        //                     'ContentType' => $file_type,
+        //                     'StorageClass' => 'STANDARD'
+        //                 )
+        //             );
+        //             echo "Uploaded $file_name to $bucket_name.\n";
+        //         } catch (Exception $exception) {
+        //             echo "Failed to upload $file_name with error: " . $exception->getMessage();
+        //         }
                 
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                // $getID3 = new getID3();
-                // $Video_storepath = $file;
-                // $VideoInfo = $getID3->analyze($Video_storepath);
-                // $Video_duration = $VideoInfo["playtime_seconds"];
+        //         // $getID3 = new getID3();
+        //         // $Video_storepath = $file;
+        //         // $VideoInfo = $getID3->analyze($Video_storepath);
+        //         // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                $video->draft = 1;
-                $video->status = 1;
-                $video->image = default_vertical_image();
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         $video->draft = 1;
+        //         $video->status = 1;
+        //         $video->image = default_vertical_image();
     
-                $PC_image_path = public_path("/uploads/images/default_image.jpg");
+        //         $PC_image_path = public_path("/uploads/images/default_image.jpg");
     
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
+        //         if (file_exists($PC_image_path)) {
+        //             $Mobile_image = "Mobile-default_image.jpg";
+        //             $Tablet_image = "Tablet-default_image.jpg";
     
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Mobile_image
+        //             );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Tablet_image
+        //             );
     
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
+        //             $video->mobile_image = $Mobile_image;
+        //             $video->tablet_image = $Tablet_image;
+        //         } else {
+        //             $video->mobile_image = default_vertical_image();
+        //             $video->tablet_image = default_vertical_image();
+        //         }
     
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+        //         \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
     
-                return $value;
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1
-            ) {
-                try {
-                    $file = $request->file('file');
-                    $file_folder_name =  $file->getClientOriginalName();
-                    $name_mp4 = $file->getClientOriginalName();
-                    $newfile = explode(".mp4",$name_mp4);
-                    $namem3u8 = $newfile[0].'.m3u8';   
-                    $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+        //         return $value;
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 1
+        //     ) {
+        //         try {
+        //             $file = $request->file('file');
+        //             $file_folder_name =  $file->getClientOriginalName();
+        //             $name_mp4 = $file->getClientOriginalName();
+        //             $newfile = explode(".mp4",$name_mp4);
+        //             $namem3u8 = $newfile[0].'.m3u8';   
+        //             $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
     
-                    $transcode_path = '/public '.'/'. $name;
-                    $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                    $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-                    // Storage::disk('s3')->put($transcode_path, file_get_contents($file));
-                    // print_r($name);exit;
+        //             $transcode_path = '/public '.'/'. $name;
+        //             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //             $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+        //             // Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+        //             // print_r($name);exit;
     
-                        $s3->putObject(
-                            array(
-                                'Bucket' => 'inthesky',
-                                'Key' => $upload_path,
-                                'SourceFile' => $file_temp,
-                                'ContentType' => $file_type,
-                                'StorageClass' => 'STANDARD'
-                            )
-                        );
+        //                 $s3->putObject(
+        //                     array(
+        //                         'Bucket' => 'inthesky',
+        //                         'Key' => $upload_path,
+        //                         'SourceFile' => $file_temp,
+        //                         'ContentType' => $file_type,
+        //                         'StorageClass' => 'STANDARD'
+        //                     )
+        //                 );
     
     
-                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                    $storepath = $path.$filePath_mp4;
-                    $m3u8_path = $path.$filePath;
-                    $transcode_path = $path.$transcode_path;
+        //             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //             $storepath = $path.$filePath_mp4;
+        //             $m3u8_path = $path.$filePath;
+        //             $transcode_path = $path.$transcode_path;
       
-                    // $getID3 = new getID3();
-                    // $Video_storepath = $file;
-                    // $VideoInfo = $getID3->analyze($Video_storepath);
-                    // $Video_duration = $VideoInfo["playtime_seconds"];
+        //             // $getID3 = new getID3();
+        //             // $Video_storepath = $file;
+        //             // $VideoInfo = $getID3->analyze($Video_storepath);
+        //             // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                    $video = new Video();
-                    $video->disk = "public";
-                    $video->status = 0;
-                    $video->original_name = "public";
-                    $video->path = $path;
-                    $video->title = $file_folder_name;
-                    $video->mp4_url = $storepath;
-                    $video->m3u8_url = $transcode_path;
-                    $video->type = "aws_m3u8";
-                    $video->draft = 1;
-                    $video->status = 1;
-                    $video->image = default_vertical_image();
+        //             $video = new Video();
+        //             $video->disk = "public";
+        //             $video->status = 0;
+        //             $video->original_name = "public";
+        //             $video->path = $path;
+        //             $video->title = $file_folder_name;
+        //             $video->mp4_url = $storepath;
+        //             $video->m3u8_url = $transcode_path;
+        //             $video->type = "aws_m3u8";
+        //             $video->draft = 1;
+        //             $video->status = 1;
+        //             $video->image = default_vertical_image();
     
-                    $PC_image_path = public_path(
-                        "/uploads/images/default_image.jpg"
-                    );
+        //             $PC_image_path = public_path(
+        //                 "/uploads/images/default_image.jpg"
+        //             );
     
-                    if (file_exists($PC_image_path)) {
-                        $Mobile_image = "Mobile-default_image.jpg";
-                        $Tablet_image = "Tablet-default_image.jpg";
+        //             if (file_exists($PC_image_path)) {
+        //                 $Mobile_image = "Mobile-default_image.jpg";
+        //                 $Tablet_image = "Tablet-default_image.jpg";
     
-                        Image::make($PC_image_path)->save(
-                            base_path() . "/public/uploads/images/" . $Mobile_image
-                        );
-                        Image::make($PC_image_path)->save(
-                            base_path() . "/public/uploads/images/" . $Tablet_image
-                        );
+        //                 Image::make($PC_image_path)->save(
+        //                     base_path() . "/public/uploads/images/" . $Mobile_image
+        //                 );
+        //                 Image::make($PC_image_path)->save(
+        //                     base_path() . "/public/uploads/images/" . $Tablet_image
+        //                 );
     
-                        $video->mobile_image = $Mobile_image;
-                        $video->tablet_image = $Tablet_image;
-                    } else {
-                        $video->mobile_image = default_vertical_image();
-                        $video->tablet_image = default_vertical_image();
-                    }
+        //                 $video->mobile_image = $Mobile_image;
+        //                 $video->tablet_image = $Tablet_image;
+        //             } else {
+        //                 $video->mobile_image = default_vertical_image();
+        //                 $video->tablet_image = default_vertical_image();
+        //             }
     
-                    // $video->duration = $Video_duration;
-                    $video->user_id = Auth::user()->id;
-                    $video->save();
+        //             // $video->duration = $Video_duration;
+        //             $video->user_id = Auth::user()->id;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = Video::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = Video::find($video_id);
+        //             $title = $video_title->title;
     
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $title;
+        //             $value["success"] = 1;
+        //             $value["message"] = "Uploaded Successfully!";
+        //             $value["video_id"] = $video_id;
+        //             $value["video_title"] = $title;
     
-                    \LogActivity::addVideoLog(
-                        "Added Uploaded M3U8  Video.",
-                        $video_id
-                    );
+        //             \LogActivity::addVideoLog(
+        //                 "Added Uploaded M3U8  Video.",
+        //                 $video_id
+        //             );
     
-                    return $value;
-                } catch (\Exception $e) {
-                    return response()->json(
-                        [
-                            "status" => "false",
-                            "Message" => "fails to upload ",
-                        ],
-                        200
-                    );
-                }
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                // $name = time() . $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = '/public/'. $name;
+        //             return $value;
+        //         } catch (\Exception $e) {
+        //             return response()->json(
+        //                 [
+        //                     "status" => "false",
+        //                     "Message" => "fails to upload ",
+        //                 ],
+        //                 200
+        //             );
+        //         }
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         // $name = time() . $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = '/public/'. $name;
     
-                // Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $s3->putObject(
-                    array(
-                        'Bucket' => 'inthesky',
-                        'Key' => $upload_path,
-                        'SourceFile' => $file_temp,
-                        'ContentType' => $file_type,
-                        'StorageClass' => 'STANDARD'
-                    )
-                );
+        //         // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $s3->putObject(
+        //             array(
+        //                 'Bucket' => 'inthesky',
+        //                 'Key' => $upload_path,
+        //                 'SourceFile' => $file_temp,
+        //                 'ContentType' => $file_type,
+        //                 'StorageClass' => 'STANDARD'
+        //             )
+        //         );
     
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                // $getID3 = new getID3();
-                // $Video_storepath = $file;
-                // $VideoInfo = $getID3->analyze($Video_storepath);
-                // $Video_duration = $VideoInfo["playtime_seconds"];
+        //         // $getID3 = new getID3();
+        //         // $Video_storepath = $file;
+        //         // $VideoInfo = $getID3->analyze($Video_storepath);
+        //         // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                $video->draft = 1;
-                $video->status = 1;
-                $video->image = default_vertical_image();
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         $video->draft = 1;
+        //         $video->status = 1;
+        //         $video->image = default_vertical_image();
     
-                $PC_image_path = public_path("/uploads/images/default_image.jpg");
+        //         $PC_image_path = public_path("/uploads/images/default_image.jpg");
     
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
+        //         if (file_exists($PC_image_path)) {
+        //             $Mobile_image = "Mobile-default_image.jpg";
+        //             $Tablet_image = "Tablet-default_image.jpg";
     
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Mobile_image
+        //             );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Tablet_image
+        //             );
     
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
+        //             $video->mobile_image = $Mobile_image;
+        //             $video->tablet_image = $Tablet_image;
+        //         } else {
+        //             $video->mobile_image = default_vertical_image();
+        //             $video->tablet_image = default_vertical_image();
+        //         }
     
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+        //         \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
     
-                return $value;
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-            }
+        //         return $value;
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //     }
     
-            // return response()->json($value);
-        }
+        //     // return response()->json($value);
+        // }
     
     
-        public function AWSUploadFile(Request $request)
-        {
-            $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        // public function AWSUploadFile(Request $request)
+        // {
+        //     $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
             
     
-            $StorageSetting = StorageSetting::first();
+        //     $StorageSetting = StorageSetting::first();
     
-            // $file = $request->file('file');
-            // $file_folder_name =  $file->getClientOriginalName();
-            // $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            // $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            // // Storage::disk('s3')->put($filePath, file_get_contents($file));
-            // $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            // $storepath = $path.$filePath;
+        //     // $file = $request->file('file');
+        //     // $file_folder_name =  $file->getClientOriginalName();
+        //     // $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //     // $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //     // // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //     // $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //     // $storepath = $path.$filePath;
     
-            // $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+        //     // $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
     
-            // $path = $_FILES['file']['name'];
-            // $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
-            // $file_temp = $_FILES['file']['tmp_name'];
-            // $file_type = $_FILES['file']['type'];
-            // $upload_path = $name;
-            // $bucket_name = 'inthesky';
-            // try {
-            //     $s3->putObject(
-            //         array(
-            //             'Bucket' => 'inthesky',
-            //             'Key' => $upload_path,
-            //             'SourceFile' => $file_temp,
-            //             'ContentType' => $file_type,
-            //             'StorageClass' => 'STANDARD'
-            //         )
-            //     );
-            //     echo "Uploaded $file_name to $bucket_name.\n";
-            // } catch (Exception $exception) {
-            //     echo "Failed to upload $file_name with error: " . $exception->getMessage();
-            //     exit("Please fix error with file upload before continuing.");
-            // }
+        //     // $path = $_FILES['file']['name'];
+        //     // $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+        //     // $file_temp = $_FILES['file']['tmp_name'];
+        //     // $file_type = $_FILES['file']['type'];
+        //     // $upload_path = $name;
+        //     // $bucket_name = 'inthesky';
+        //     // try {
+        //     //     $s3->putObject(
+        //     //         array(
+        //     //             'Bucket' => 'inthesky',
+        //     //             'Key' => $upload_path,
+        //     //             'SourceFile' => $file_temp,
+        //     //             'ContentType' => $file_type,
+        //     //             'StorageClass' => 'STANDARD'
+        //     //         )
+        //     //     );
+        //     //     echo "Uploaded $file_name to $bucket_name.\n";
+        //     // } catch (Exception $exception) {
+        //     //     echo "Failed to upload $file_name with error: " . $exception->getMessage();
+        //     //     exit("Please fix error with file upload before continuing.");
+        //     // }
             
     
-            // $bucket = 'inthesky';
-            // $keyname = $name;
+        //     // $bucket = 'inthesky';
+        //     // $keyname = $name;
                                     
-            // $s3 = new S3Client([
-            //     'version' => 'latest',
-            //     'region'  => 'ap-south-1'
-            // ]);
+        //     // $s3 = new S3Client([
+        //     //     'version' => 'latest',
+        //     //     'region'  => 'ap-south-1'
+        //     // ]);
              
-            // // Prepare the upload parameters.
-            // $uploader = new MultipartUploader($s3, $storepath, [
-            //     'bucket' => $bucket,
-            //     'key'    => $keyname
-            // ]);
+        //     // // Prepare the upload parameters.
+        //     // $uploader = new MultipartUploader($s3, $storepath, [
+        //     //     'bucket' => $bucket,
+        //     //     'key'    => $keyname
+        //     // ]);
             
-            // // Perform the upload.
-            // try {
-            //     $result = $uploader->upload();
-            //     echo "Upload complete: {$result['ObjectURL']}\n";
-            //     } catch (MultipartUploadException $e) {
-            //     echo $e->getMessage() . "\n";
-            // }
-            // exit;
-            $value = [];
-            $data = $request->all();
+        //     // // Perform the upload.
+        //     // try {
+        //     //     $result = $uploader->upload();
+        //     //     echo "Upload complete: {$result['ObjectURL']}\n";
+        //     //     } catch (MultipartUploadException $e) {
+        //     //     echo $e->getMessage() . "\n";
+        //     // }
+        //     // exit;
+        //     $value = [];
+        //     $data = $request->all();
     
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
     
-            $ffprobe =  \FFMpeg\FFProbe::create();
-            $duration = $ffprobe->format($mp4_url)->get('duration');
-            $Video_duration = explode(".", $duration)[0];
+        //     $ffprobe =  \FFMpeg\FFProbe::create();
+        //     $duration = $ffprobe->format($mp4_url)->get('duration');
+        //     $Video_duration = explode(".", $duration)[0];
     
-            $path = public_path() . "/uploads/videos/";
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
-            $StorageSetting = StorageSetting::first();
-            if ($mp4_url != "" && $pack != "Business") {
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
+        //     $StorageSetting = StorageSetting::first();
+        //     if ($mp4_url != "" && $pack != "Business") {
                 
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                // $getID3 = new getID3();
-                // $Video_storepath = $file;
-                // $VideoInfo = $getID3->analyze($Video_storepath);
-                // $Video_duration = $VideoInfo["playtime_seconds"];
+        //         // $getID3 = new getID3();
+        //         // $Video_storepath = $file;
+        //         // $VideoInfo = $getID3->analyze($Video_storepath);
+        //         // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->mp4_url = $storepath;
-                $video->duration = $Video_duration;
-                $video->type = "mp4_url";
-                $video->draft = 1;
-                $video->status = 1;
-                $video->image = default_vertical_image();
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->mp4_url = $storepath;
+        //         $video->duration = $Video_duration;
+        //         $video->type = "mp4_url";
+        //         $video->draft = 1;
+        //         $video->status = 1;
+        //         $video->image = default_vertical_image();
     
-                $PC_image_path = public_path("/uploads/images/default_image.jpg");
+        //         $PC_image_path = public_path("/uploads/images/default_image.jpg");
     
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
+        //         if (file_exists($PC_image_path)) {
+        //             $Mobile_image = "Mobile-default_image.jpg";
+        //             $Tablet_image = "Tablet-default_image.jpg";
     
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Mobile_image
+        //             );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Tablet_image
+        //             );
     
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
+        //             $video->mobile_image = $Mobile_image;
+        //             $video->tablet_image = $Tablet_image;
+        //         } else {
+        //             $video->mobile_image = default_vertical_image();
+        //             $video->tablet_image = default_vertical_image();
+        //         }
     
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+        //         \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
     
-                return $value;
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1
-            ) {
-                try {
-                    $file = $request->file('file');
-                    $file_folder_name =  $file->getClientOriginalName();
-                    $name_mp4 = $file->getClientOriginalName();
-                    $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
-                    $newfile = explode(".mp4",$name_mp4);
-                    $namem3u8 = $newfile[0].'.m3u8';   
-                    $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+        //         return $value;
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 1
+        //     ) {
+        //         try {
+        //             $file = $request->file('file');
+        //             $file_folder_name =  $file->getClientOriginalName();
+        //             $name_mp4 = $file->getClientOriginalName();
+        //             $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+        //             $newfile = explode(".mp4",$name_mp4);
+        //             $namem3u8 = $newfile[0].'.m3u8';   
+        //             $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
     
-                    $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                    $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
-                    $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                    $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-                    Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
-                    // print_r($name);exit;
-                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                    $storepath = $path.$filePath_mp4;
-                    $m3u8_path = $path.$filePath;
-                    $transcode_path = $path.$transcode_path;
+        //             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+        //             $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+        //             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //             $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+        //             Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+        //             // print_r($name);exit;
+        //             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //             $storepath = $path.$filePath_mp4;
+        //             $m3u8_path = $path.$filePath;
+        //             $transcode_path = $path.$transcode_path;
       
-                    // $getID3 = new getID3();
-                    // $Video_storepath = $file;
-                    // $VideoInfo = $getID3->analyze($Video_storepath);
-                    // $Video_duration = $VideoInfo["playtime_seconds"];
+        //             // $getID3 = new getID3();
+        //             // $Video_storepath = $file;
+        //             // $VideoInfo = $getID3->analyze($Video_storepath);
+        //             // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                    $video = new Video();
-                    $video->disk = "public";
-                    $video->status = 0;
-                    $video->original_name = "public";
-                    $video->path = $path;
-                    $video->duration = $Video_duration;
-                    $video->title = $file_folder_name;
-                    $video->mp4_url = $storepath;
-                    $video->m3u8_url = $transcode_path;
-                    $video->type = "aws_m3u8";
-                    $video->draft = 1;
-                    $video->status = 1;
-                    $video->image = default_vertical_image();
+        //             $video = new Video();
+        //             $video->disk = "public";
+        //             $video->status = 0;
+        //             $video->original_name = "public";
+        //             $video->path = $path;
+        //             $video->duration = $Video_duration;
+        //             $video->title = $file_folder_name;
+        //             $video->mp4_url = $storepath;
+        //             $video->m3u8_url = $transcode_path;
+        //             $video->type = "aws_m3u8";
+        //             $video->draft = 1;
+        //             $video->status = 1;
+        //             $video->image = default_vertical_image();
     
-                    $PC_image_path = public_path(
-                        "/uploads/images/default_image.jpg"
-                    );
+        //             $PC_image_path = public_path(
+        //                 "/uploads/images/default_image.jpg"
+        //             );
     
-                    if (file_exists($PC_image_path)) {
-                        $Mobile_image = "Mobile-default_image.jpg";
-                        $Tablet_image = "Tablet-default_image.jpg";
+        //             if (file_exists($PC_image_path)) {
+        //                 $Mobile_image = "Mobile-default_image.jpg";
+        //                 $Tablet_image = "Tablet-default_image.jpg";
     
-                        Image::make($PC_image_path)->save(
-                            base_path() . "/public/uploads/images/" . $Mobile_image
-                        );
-                        Image::make($PC_image_path)->save(
-                            base_path() . "/public/uploads/images/" . $Tablet_image
-                        );
+        //                 Image::make($PC_image_path)->save(
+        //                     base_path() . "/public/uploads/images/" . $Mobile_image
+        //                 );
+        //                 Image::make($PC_image_path)->save(
+        //                     base_path() . "/public/uploads/images/" . $Tablet_image
+        //                 );
     
-                        $video->mobile_image = $Mobile_image;
-                        $video->tablet_image = $Tablet_image;
-                    } else {
-                        $video->mobile_image = default_vertical_image();
-                        $video->tablet_image = default_vertical_image();
-                    }
+        //                 $video->mobile_image = $Mobile_image;
+        //                 $video->tablet_image = $Tablet_image;
+        //             } else {
+        //                 $video->mobile_image = default_vertical_image();
+        //                 $video->tablet_image = default_vertical_image();
+        //             }
     
-                    // $video->duration = $Video_duration;
-                    $video->user_id = Auth::user()->id;
-                    $video->save();
+        //             // $video->duration = $Video_duration;
+        //             $video->user_id = Auth::user()->id;
+        //             $video->save();
     
-                    $video_id = $video->id;
-                    $video_title = Video::find($video_id);
-                    $title = $video_title->title;
+        //             $video_id = $video->id;
+        //             $video_title = Video::find($video_id);
+        //             $title = $video_title->title;
     
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $title;
+        //             $value["success"] = 1;
+        //             $value["message"] = "Uploaded Successfully!";
+        //             $value["video_id"] = $video_id;
+        //             $value["video_title"] = $title;
     
-                    \LogActivity::addVideoLog(
-                        "Added Uploaded M3U8  Video.",
-                        $video_id
-                    );
+        //             \LogActivity::addVideoLog(
+        //                 "Added Uploaded M3U8  Video.",
+        //                 $video_id
+        //             );
     
-                    return $value;
-                } catch (\Exception $e) {
-                    return response()->json(
-                        [
-                            "status" => "false",
-                            "Message" => "fails to upload ",
-                        ],
-                        200
-                    );
-                }
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                // $name = time() . $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //             return $value;
+        //         } catch (\Exception $e) {
+        //             return response()->json(
+        //                 [
+        //                     "status" => "false",
+        //                     "Message" => "fails to upload ",
+        //                 ],
+        //                 200
+        //             );
+        //         }
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         // $name = time() . $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = $StorageSetting->aws_storage_path.'/'. $name;
     
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                // $getID3 = new getID3();
-                // $Video_storepath = $file;
-                // $VideoInfo = $getID3->analyze($Video_storepath);
-                // $Video_duration = $VideoInfo["playtime_seconds"];
+        //         // $getID3 = new getID3();
+        //         // $Video_storepath = $file;
+        //         // $VideoInfo = $getID3->analyze($Video_storepath);
+        //         // $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->duration = $Video_duration;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                $video->draft = 1;
-                $video->status = 1;
-                $video->image = default_vertical_image();
+        //         $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->duration = $Video_duration;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         $video->draft = 1;
+        //         $video->status = 1;
+        //         $video->image = default_vertical_image();
     
-                $PC_image_path = public_path("/uploads/images/default_image.jpg");
+        //         $PC_image_path = public_path("/uploads/images/default_image.jpg");
     
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
+        //         if (file_exists($PC_image_path)) {
+        //             $Mobile_image = "Mobile-default_image.jpg";
+        //             $Tablet_image = "Tablet-default_image.jpg";
     
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Mobile_image
+        //             );
+        //             Image::make($PC_image_path)->save(
+        //                 base_path() . "/public/uploads/images/" . $Tablet_image
+        //             );
     
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
+        //             $video->mobile_image = $Mobile_image;
+        //             $video->tablet_image = $Tablet_image;
+        //         } else {
+        //             $video->mobile_image = default_vertical_image();
+        //             $video->tablet_image = default_vertical_image();
+        //         }
     
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+        //         \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
     
-                return $value;
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-            }
+        //         return $value;
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //     }
     
-            // return response()->json($value);
-        }
+        //     // return response()->json($value);
+        // }
     
-        public function AWSuploadEditVideo(Request $request)
-        {
-            $value = [];
-            $data = $request->all();
-            $id = $data["videoid"];
-            $video = Video::findOrFail($id);
-            $StorageSetting = StorageSetting::first();
+        // public function AWSuploadEditVideo(Request $request)
+        // {
+        //     $value = [];
+        //     $data = $request->all();
+        //     $id = $data["videoid"];
+        //     $video = Video::findOrFail($id);
+        //     $StorageSetting = StorageSetting::first();
     
-            // echo "<pre>";
-            // print_r($video);exit();
-            $validator = Validator::make($request->all(), [
-                "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-            ]);
-            $mp4_url = isset($data["file"]) ? $data["file"] : "";
+        //     // echo "<pre>";
+        //     // print_r($video);exit();
+        //     $validator = Validator::make($request->all(), [
+        //         "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        //     ]);
+        //     $mp4_url = isset($data["file"]) ? $data["file"] : "";
     
-            $ffprobe =  \FFMpeg\FFProbe::create();
-            $duration = $ffprobe->format($mp4_url)->get('duration');
-            $Video_duration = explode(".", $duration)[0];
+        //     $ffprobe =  \FFMpeg\FFProbe::create();
+        //     $duration = $ffprobe->format($mp4_url)->get('duration');
+        //     $Video_duration = explode(".", $duration)[0];
             
-            $path = public_path() . "/uploads/videos/";
+        //     $path = public_path() . "/uploads/videos/";
     
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+        //     $file = $request->file->getClientOriginalName();
+        //     $newfile = explode(".mp4", $file);
+        //     $file_folder_name = $newfile[0];
     
-            $package = User::where("id", 1)->first();
-            $pack = $package->package;
-            $mp4_url = $data["file"];
-            $settings = Setting::first();
+        //     $package = User::where("id", 1)->first();
+        //     $pack = $package->package;
+        //     $mp4_url = $data["file"];
+        //     $settings = Setting::first();
     
-            if (
-                $mp4_url != "" &&
-                $pack != "Business" &&
-                $settings->transcoding_access == 0
-            ) {
+        //     if (
+        //         $mp4_url != "" &&
+        //         $pack != "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
     
                 
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                // $name = time() . $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         // $name = time() . $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                $file = $request->file->getClientOriginalName();
-                $newfile = explode(".mp4",$file);
-                $file_folder_name = $newfile[0];   
-                $file = $request->file('file');
+        //         $file = $request->file->getClientOriginalName();
+        //         $newfile = explode(".mp4",$file);
+        //         $file_folder_name = $newfile[0];   
+        //         $file = $request->file('file');
     
-                 //  Video duration 
-                //  $getID3 = new getID3();
-                //  $Video_storepath = $file;
-                //  $VideoInfo = $getID3->analyze($Video_storepath);
-                //  $Video_duration = $VideoInfo["playtime_seconds"];
+        //          //  Video duration 
+        //         //  $getID3 = new getID3();
+        //         //  $Video_storepath = $file;
+        //         //  $VideoInfo = $getID3->analyze($Video_storepath);
+        //         //  $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->duration = $Video_duration;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                // $video->draft = 0;
-                // $video->image = 'default_image.jpg';
+        //         // $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->duration = $Video_duration;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         // $video->draft = 0;
+        //         // $video->image = 'default_image.jpg';
     
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                // return $value;
-                return redirect("/admin/videos");
+        //         // return $value;
+        //         return redirect("/admin/videos");
     
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1
-            ) {
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                $name_mp4 = $file->getClientOriginalName();
-                $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
-                $newfile = explode(".mp4",$name_mp4);
-                $namem3u8 = $newfile[0].'.m3u8';   
-                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 1
+        //     ) {
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         $name_mp4 = $file->getClientOriginalName();
+        //         $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+        //         $newfile = explode(".mp4",$name_mp4);
+        //         $namem3u8 = $newfile[0].'.m3u8';   
+        //         $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
     
-                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
-                // print_r($name);exit;
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath_mp4;
-                $m3u8_path = $path.$filePath;
-                $transcode_path = $path.$transcode_path;
+        //         $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+        //         $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+        //         $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //         $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+        //         Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+        //         // print_r($name);exit;
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath_mp4;
+        //         $m3u8_path = $path.$filePath;
+        //         $transcode_path = $path.$transcode_path;
     
-                $file = $request->file->getClientOriginalName();
-                $newfile = explode(".mp4",$file);
-                $file_folder_name = $newfile[0];   
-                $file = $request->file('file');
+        //         $file = $request->file->getClientOriginalName();
+        //         $newfile = explode(".mp4",$file);
+        //         $file_folder_name = $newfile[0];   
+        //         $file = $request->file('file');
     
-                 //  Video duration 
-                //  $getID3 = new getID3();
-                //  $Video_storepath = $file;
-                //  $VideoInfo = $getID3->analyze($Video_storepath);
-                //  $Video_duration = $VideoInfo["playtime_seconds"];
+        //          //  Video duration 
+        //         //  $getID3 = new getID3();
+        //         //  $Video_storepath = $file;
+        //         //  $VideoInfo = $getID3->analyze($Video_storepath);
+        //         //  $Video_duration = $VideoInfo["playtime_seconds"];
     
-                //  $video = new Video();
-                $video->disk = "public";
-                $video->status = 0;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->duration = $Video_duration;
-                $video->title = $file_folder_name;
-                $video->mp4_url = $storepath;
-                //  $video->draft = 0;
-                // $video->type = "";
-                $video->m3u8_url = $transcode_path;
-                $video->type = "aws_m3u8";
-                //  $video->image = 'default_image.jpg';
-                // $video->duration = $Video_duration;
-                $video->user_id = Auth::user()->id;
-                $video->save();
+        //         //  $video = new Video();
+        //         $video->disk = "public";
+        //         $video->status = 0;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->duration = $Video_duration;
+        //         $video->title = $file_folder_name;
+        //         $video->mp4_url = $storepath;
+        //         //  $video->draft = 0;
+        //         // $video->type = "";
+        //         $video->m3u8_url = $transcode_path;
+        //         $video->type = "aws_m3u8";
+        //         //  $video->image = 'default_image.jpg';
+        //         // $video->duration = $Video_duration;
+        //         $video->user_id = Auth::user()->id;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                // return $value;
-                return redirect("/admin/videos");
+        //         // return $value;
+        //         return redirect("/admin/videos");
     
-            } elseif (
-                $mp4_url != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 0
-            ) {
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                // $name = time() . $file->getClientOriginalName();
-                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
+        //     } elseif (
+        //         $mp4_url != "" &&
+        //         $pack == "Business" &&
+        //         $settings->transcoding_access == 0
+        //     ) {
+        //         $file = $request->file('file');
+        //         $file_folder_name =  $file->getClientOriginalName();
+        //         // $name = time() . $file->getClientOriginalName();
+        //         $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        //         $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        //         Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        //         $storepath = $path.$filePath;
     
-                $file = $request->file->getClientOriginalName();
-                $newfile = explode(".mp4",$file);
-                $file_folder_name = $newfile[0];   
-                $file = $request->file('file');
+        //         $file = $request->file->getClientOriginalName();
+        //         $newfile = explode(".mp4",$file);
+        //         $file_folder_name = $newfile[0];   
+        //         $file = $request->file('file');
     
-                 //  Video duration 
-                //  $getID3 = new getID3();
-                //  $Video_storepath = $file;
-                //  $VideoInfo = $getID3->analyze($Video_storepath);
-                //  $Video_duration = $VideoInfo["playtime_seconds"];
+        //          //  Video duration 
+        //         //  $getID3 = new getID3();
+        //         //  $Video_storepath = $file;
+        //         //  $VideoInfo = $getID3->analyze($Video_storepath);
+        //         //  $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
-                $video->disk = "public";
-                $video->title = $file_folder_name;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->duration = $Video_duration;
-                $video->mp4_url = $storepath;
-                $video->type = "mp4_url";
-                // $video->draft = 0;
-                $video->image = default_vertical_image();
-                // $video->duration = $Video_duration;
-                $video->save();
+        //         // $video = new Video();
+        //         $video->disk = "public";
+        //         $video->title = $file_folder_name;
+        //         $video->original_name = "public";
+        //         $video->path = $path;
+        //         $video->duration = $Video_duration;
+        //         $video->mp4_url = $storepath;
+        //         $video->type = "mp4_url";
+        //         // $video->draft = 0;
+        //         $video->image = default_vertical_image();
+        //         // $video->duration = $Video_duration;
+        //         $video->save();
     
-                $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+        //         $video_id = $video->id;
+        //         $video_title = Video::find($video_id);
+        //         $title = $video_title->title;
     
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $video_id;
+        //         $value["video_title"] = $title;
     
-                // return $value;
-                return redirect("/admin/videos");
+        //         // return $value;
+        //         return redirect("/admin/videos");
     
-            } else {
-                $value["success"] = 2;
-                $value["message"] = "File not uploaded.";
-                return response()->json($value);
-            }
+        //     } else {
+        //         $value["success"] = 2;
+        //         $value["message"] = "File not uploaded.";
+        //         return response()->json($value);
+        //     }
     
-            // return response()->json($value);
-        }
+        //     // return response()->json($value);
+        // }
     
-        public function ScheduledVideoDelete($id)
-        {
-            // dd($id);
-            ScheduleVideos::where("id", $id)->delete();
-            $value["message"] = "File Deleted .";
-            return response()->json($value);
-            // return redirect::back();
+        // public function ScheduledVideoDelete($id)
+        // {
+        //     // dd($id);
+        //     ScheduleVideos::where("id", $id)->delete();
+        //     $value["message"] = "File Deleted .";
+        //     return response()->json($value);
+        //     // return redirect::back();
     
-        }
+        // }
     
-        public function ScheduleVideoBulk_delete(Request $request)
-        {
-            try {
-                $data = $request->all();
-                $video_id = $request->video_id;
-                ScheduleVideos::whereIn("id", explode(",", $video_id))->delete();
+        // public function ScheduleVideoBulk_delete(Request $request)
+        // {
+        //     try {
+        //         $data = $request->all();
+        //         $video_id = $request->video_id;
+        //         ScheduleVideos::whereIn("id", explode(",", $video_id))->delete();
     
-                $date = $data["date"];
-                $month = $data["month"];
-                $year = $data["year"];
-                $choosed_date = $year . "-" . $month . "-" . $date;
-                $date = date_create($choosed_date);
-                $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-    
-    
-                $total_content = ScheduleVideos::where(
-                    "shedule_date",
-                    "=",
-                    $date_choosed
-                )
-                    ->orderBy("id", "desc")
-                    ->get();
-    
-                $output = "";
-                $i = 1;
-    
-                $delete = URL::to("admin/schedule/delete");
-    
-                if (count($total_content) > 0) {
-                    $total_row = $total_content->count();
-                    if (!empty($total_content)) {
-                        $currency = CurrencySetting::first();
-    
-                        foreach ($total_content as $key => $row) {
-                            $output .=
-                                '
-                  <tr>
-                  <td>' . '#' .'</td>
-                  <td>' .
-                                $i++ .
-                                '</td>
-                  <td>' .
-                                $row->title .
-                                '</td>
-                  <td>' .
-                                $row->type .
-                                '</td>  
-                  <td>' .
-                                $row->shedule_date .
-                                '</td>       
-                  <td>' .
-                                $row->sheduled_starttime .
-                                '</td>    
-    
-                  <td>' .
-                                $row->shedule_endtime .
-                                '</td>  
-    
-                  </tr>
-                  ';
-    
-                }
-                    } else {
-                        $output = '
-              <tr>
-               <td align="center" colspan="5">No Data Found</td>
-              </tr>
-              ';
-                    }
-                }
-    
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["table_data"] = $output;
-                // $value["total_data"] = $total_row;
-                $value["total_content"] = $total_content;
-    
-                return $value;
+        //         $date = $data["date"];
+        //         $month = $data["month"];
+        //         $year = $data["year"];
+        //         $choosed_date = $year . "-" . $month . "-" . $date;
+        //         $date = date_create($choosed_date);
+        //         $date_choose = date_format($date, "Y/m");
+        //         $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
     
-                return response()->json(["message" => "true"]);
-            } catch (\Throwable $th) {
-                return response()->json(["message" => "false"]);
-            }
-        }
+        //         $total_content = ScheduleVideos::where(
+        //             "shedule_date",
+        //             "=",
+        //             $date_choosed
+        //         )
+        //             ->orderBy("id", "desc")
+        //             ->get();
+    
+        //         $output = "";
+        //         $i = 1;
+    
+        //         $delete = URL::to("admin/schedule/delete");
+    
+        //         if (count($total_content) > 0) {
+        //             $total_row = $total_content->count();
+        //             if (!empty($total_content)) {
+        //                 $currency = CurrencySetting::first();
+    
+        //                 foreach ($total_content as $key => $row) {
+        //                     $output .=
+        //                         '
+        //           <tr>
+        //           <td>' . '#' .'</td>
+        //           <td>' .
+        //                         $i++ .
+        //                         '</td>
+        //           <td>' .
+        //                         $row->title .
+        //                         '</td>
+        //           <td>' .
+        //                         $row->type .
+        //                         '</td>  
+        //           <td>' .
+        //                         $row->shedule_date .
+        //                         '</td>       
+        //           <td>' .
+        //                         $row->sheduled_starttime .
+        //                         '</td>    
+    
+        //           <td>' .
+        //                         $row->shedule_endtime .
+        //                         '</td>  
+    
+        //           </tr>
+        //           ';
+    
+        //         }
+        //             } else {
+        //                 $output = '
+        //       <tr>
+        //        <td align="center" colspan="5">No Data Found</td>
+        //       </tr>
+        //       ';
+        //             }
+        //         }
+    
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["table_data"] = $output;
+        //         // $value["total_data"] = $total_row;
+        //         $value["total_content"] = $total_content;
+    
+        //         return $value;
+    
+    
+        //         return response()->json(["message" => "true"]);
+        //     } catch (\Throwable $th) {
+        //         return response()->json(["message" => "false"]);
+        //     }
+        // }
     
     
         // public function combineM3U8toHLS() {
@@ -11230,88 +11155,88 @@ class UGCController extends Controller
     
         // }
     
-        public function combineM3U8(Request $request)
-        {
-            // Get the list of M3U8 URLs from the request
-            $m3u8Urls = $request->input('m3u8_urls');
+        // public function combineM3U8(Request $request)
+        // {
+        //     // Get the list of M3U8 URLs from the request
+        //     $m3u8Urls = $request->input('m3u8_urls');
     
-            $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
-                $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
-           return $item;
-         });
+        //     $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+        //         $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+        //    return $item;
+        //  });
     
-            // Create a new Guzzle HTTP client
-            $client = new Client();
+        //     // Create a new Guzzle HTTP client
+        //     $client = new Client();
     
-            // Initialize an empty array to store the contents of the M3U8 files
-            $m3u8Files = [];
+        //     // Initialize an empty array to store the contents of the M3U8 files
+        //     $m3u8Files = [];
     
-            foreach ($playlistUrls as $url) {
-                $response = $client->get($url->path);
-            // dd($response->getBody()->getContents());
+        //     foreach ($playlistUrls as $url) {
+        //         $response = $client->get($url->path);
+        //     // dd($response->getBody()->getContents());
     
-                $m3u8Files[] = $response->getBody()->getContents();
-            }
+        //         $m3u8Files[] = $response->getBody()->getContents();
+        //     }
     
-            // Combine the contents of the M3U8 files into a single string
-            $combinedM3U8 = implode("\n", $m3u8Files);
-    
-    
-            touch(storage_path('app/public/M3U8Test.m3u8'));
-    
-            $myfile =  fopen(storage_path('app/public/M3U8Test.m3u8'), "w");
-    
-            fwrite($myfile, $combinedM3U8);;
-    
-            fclose($myfile);
+        //     // Combine the contents of the M3U8 files into a single string
+        //     $combinedM3U8 = implode("\n", $m3u8Files);
     
     
-            // Return the combined M3U8 file as a response
-            return response($combinedM3U8, 200, [
-                'Content-Type' => 'application/vnd.apple.mpegurl',
-            ]);
+        //     touch(storage_path('app/public/M3U8Test.m3u8'));
+    
+        //     $myfile =  fopen(storage_path('app/public/M3U8Test.m3u8'), "w");
+    
+        //     fwrite($myfile, $combinedM3U8);;
+    
+        //     fclose($myfile);
+    
+    
+        //     // Return the combined M3U8 file as a response
+        //     return response($combinedM3U8, 200, [
+        //         'Content-Type' => 'application/vnd.apple.mpegurl',
+        //     ]);
     
             
-        }
+        // }
     
-        public function combineM3U8new(Request $request)
-        {
-            $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
-                $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
-           return $item;
-         });
+        // public function combineM3U8new(Request $request)
+        // {
+        //     $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+        //         $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+        //    return $item;
+        //  });
                 
-                // Define the output file name
-                $outputFile = 'mergedPlaylist.m3u8';
+        //         // Define the output file name
+        //         $outputFile = 'mergedPlaylist.m3u8';
                 
-                // Create a new FFmpeg instance
-                $ffmpeg = \FFMpeg\FFMpeg::create([
-                    'ffmpeg.binaries'  => 'H:/ffmpegtest/bin/ffmpeg.exe', // the path to the FFMpeg binary
-                    'ffprobe.binaries' => 'H:/ffmpegtest/bin/ffprobe.exe', // the path to the FFProbe binary
-                    'timeout'          => 0, // the timeout for the underlying process
-                    'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
-                ]);
-                // Loop through the URLs and load each M3U8 file into FFmpeg
-                $inputFiles = [];
-                foreach ($playlistUrls as $url) {
-                    // Download the M3U8 file from the URL and save it to a temporary file
-                    $tempFile = tempnam(storage_path('app/public/'), 'm3u8');
-                    file_put_contents($tempFile, file_get_contents($url->path));
+        //         // Create a new FFmpeg instance
+        //         $ffmpeg = \FFMpeg\FFMpeg::create([
+        //             'ffmpeg.binaries'  => 'H:/ffmpegtest/bin/ffmpeg.exe', // the path to the FFMpeg binary
+        //             'ffprobe.binaries' => 'H:/ffmpegtest/bin/ffprobe.exe', // the path to the FFProbe binary
+        //             'timeout'          => 0, // the timeout for the underlying process
+        //             'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
+        //         ]);
+        //         // Loop through the URLs and load each M3U8 file into FFmpeg
+        //         $inputFiles = [];
+        //         foreach ($playlistUrls as $url) {
+        //             // Download the M3U8 file from the URL and save it to a temporary file
+        //             $tempFile = tempnam(storage_path('app/public/'), 'm3u8');
+        //             file_put_contents($tempFile, file_get_contents($url->path));
                 
-                    // Load the M3U8 file into FFmpeg and add it to the input files array
-                    $inputFiles[] = $ffmpeg->formatFrom($tempFile)->fromFile($tempFile);
-                }
+        //             // Load the M3U8 file into FFmpeg and add it to the input files array
+        //             $inputFiles[] = $ffmpeg->formatFrom($tempFile)->fromFile($tempFile);
+        //         }
                 
-                // Merge the input files into a single output file
-                $concat = $ffmpeg->getFFMpegDriver()->newConcat();
-                foreach ($inputFiles as $inputFile) {
-                    $concat->addFile($inputFile->getPath());
-                }
-                $mergedFile = $concat->saveToFile($outputFile);
+        //         // Merge the input files into a single output file
+        //         $concat = $ffmpeg->getFFMpegDriver()->newConcat();
+        //         foreach ($inputFiles as $inputFile) {
+        //             $concat->addFile($inputFile->getPath());
+        //         }
+        //         $mergedFile = $concat->saveToFile($outputFile);
                 
-                // Output the contents of the merged M3U8 file
-                echo file_get_contents($outputFile);
-            }
+        //         // Output the contents of the merged M3U8 file
+        //         echo file_get_contents($outputFile);
+        //     }
     
     
             
@@ -11440,7 +11365,7 @@ class UGCController extends Controller
             if (!empty($data["bunny_cdn_linked_video"])) {
     
     
-                $video = new Video();
+                $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
                 $video->title = $data["bunny_cdn_linked_video"];
@@ -11466,29 +11391,29 @@ class UGCController extends Controller
             }
         }
     
+
         
-        
-        public function ExtractedImage(Request $request)
-        {
-            try {
-                // print_r($request->all());exit;
-                $value = [];
+        // public function ExtractedImage(Request $request)
+        // {
+        //     try {
+        //         // print_r($request->all());exit;
+        //         $value = [];
     
-                $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->where('socure_type','Video')->get();
+        //         $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->where('socure_type','Video')->get();
                
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $request->video_id;
-                $value["ExtractedImage"] = $ExtractedImage;
+        //         $value["success"] = 1;
+        //         $value["message"] = "Uploaded Successfully!";
+        //         $value["video_id"] = $request->video_id;
+        //         $value["ExtractedImage"] = $ExtractedImage;
     
     
-                return $value;
+        //         return $value;
     
-            } catch (\Throwable $th) {
-                throw $th;
-            }
+        //     } catch (\Throwable $th) {
+        //         throw $th;
+        //     }
     
-        }
+        // }
     
       
 }

@@ -1,6 +1,5 @@
 @php
     include public_path('themes/theme5-nemisha/views/header.php');
-    $settings = App\Setting::first();
 @endphp
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -332,7 +331,7 @@
                      </div>
                      
                   </div>
-                  <div class="text-center" style="margin-top: 30px;">
+                  <div class="text-center" style="margin: 20px;">
                      <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
                   </div>
                   <input type="hidden" id="embed_url" value="<?php echo URL::to('ugc/embededcode');?>">
@@ -852,29 +851,28 @@
                               
                            </div> --}}
 
-                           {{-- <div class="col-sm-6 form-group">
-                              <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
-                               <label class="mb-1">Add Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                               <input type="file" name="player_image" id="player_image" >
-                               <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
-                               @if(!empty($video->player_image))
-                               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
-                               @endif
-                            </div> --}}
 
                             <div class="row">
                               <div class="col-sm-6 form-group">
                                  {{-- <div id="ImagesContainer" class="gridContainer mt-3"></div> --}}
-                                 <label class="mb-1">Add Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
+                                 <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
                                  @if(!empty($video->image) && ($video->image) != null)
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
                                  @endif
                               </div>
+                              <div class="col-sm-6 form-group">
+                                 {{-- <div id="ajaxImagesContainer" class="gridContainer mt-3"></div> --}}
+                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                                  <input type="file" name="player_image" id="player_image" >
+                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
+                                  @if(!empty($video->player_image))
+                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
+                                  @endif
+                               </div>
                            </div>      
-
-                           
+       
                            @if(isset($video->id))
                            <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
                            @endif
@@ -887,7 +885,7 @@
 
                         </div>
 
-                        <button type="submit" style="margin-right: 10px;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+                        <button type="submit" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                         {{-- <input type="button" name="next" class="next action-button" id="next2" value="Next" /> --}}
                      </fieldset>
                </form>
@@ -1642,17 +1640,18 @@ $(document).ready(function(){
    
    	
 </script>
-<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 <script>
-   CKEDITOR.replace( 'summary-ckeditor', {
-       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-       filebrowserUploadMethod: 'form'
-   });
-
-   CKEDITOR.replace( 'links-ckeditor', {
-       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-       filebrowserUploadMethod: 'form'
-   });
+         ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+            ClassicEditor
+            .create( document.querySelector( '#links-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
 
    CKEDITOR.replace( 'trailer-ckeditor', {
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
@@ -1929,7 +1928,7 @@ $(document).ready(function(){
                     if (index === 0) {
                      ImagesContainer.click();
                      }
-
+                                                                                                                              
                     $('#ImagesContainer').append(ImagesContainer);
 
                     TVImagesContainer.click(function() {

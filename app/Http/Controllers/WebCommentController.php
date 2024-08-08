@@ -110,6 +110,12 @@ class WebCommentController extends Controller
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
+        }
 
         $inputs = array(
             'user_id'   => Auth::user()->id ,
@@ -149,7 +155,14 @@ class WebCommentController extends Controller
         }
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
+        } 
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
         }
+
 
         $inputs = array(
             'user_id'   => Auth::user()->id ,
@@ -168,4 +181,55 @@ class WebCommentController extends Controller
 
         return Redirect::back();
     }
+
+//     public function likeComment($id)
+// {
+//     $comment = WebComment::findOrFail($id);
+//     if ($comment) {
+//         $comment->increment('likes');
+//         return response()->json([
+//             'message' => 'Comment liked!',
+//             'likes' => $comment->likes
+//         ]);
+//     } else {
+//         return response()->json(['message' => 'Comment not found!'], 404);
+//     }
+// }
+
+// public function dislikeComment($id)
+// {
+//     $comment = WebComment::findOrFail($id);
+//     if ($comment) {
+//         $comment->increment('dislikes');
+//         return response()->json([
+//             'message' => 'Comment disliked!',
+//             'dislikes' => $comment->dislikes
+//         ]);
+//     } else {
+//         return response()->json(['message' => 'Comment not found!'], 404);
+//     }
+// }
+
+
+public function like($id)
+{
+    dd('test');
+    \Log::info('Like method called with ID: ' . $id);
+
+    $comment = WebComment::find($id);
+    if (!$comment) {
+        return response()->json(['error' => 'Comment not found'], 404);
+    }
+
+    $comment->increment('likes');
+    return response()->json(['likes' => $comment->likes]);
+}
+
+public function dislike($id)
+{
+    $comment = WebComment::findOrFail($id);
+    $comment->increment('dislikes');
+    return response()->json(['dislikes' => $comment->dislikes]);
+}
+
 }

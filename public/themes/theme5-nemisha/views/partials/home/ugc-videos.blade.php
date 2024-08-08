@@ -32,9 +32,11 @@
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <h6><?php  echo (strlen($ugc_video->title) > 17) ? substr($ugc_video->title,0,18).'...' : $ugc_video->title; ?></h6>
                     <?php } ?>
-
                 </div>
-                <div class="movie-time my-2">
+                <div class="py-1">
+                    <h6><?php  echo (strlen($ugc_video->user->username) > 17) ? substr($ugc_video->user->username,0,18).'...' : $ugc_video->user->username; ?></h6>
+                </div>
+                <div class="movie-time my-1">
                     <!-- Duration -->
                     <?php if($ThumbnailSetting->duration == 1) { ?>
                     <span class="text-white">

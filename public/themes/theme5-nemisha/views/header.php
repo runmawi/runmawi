@@ -1476,7 +1476,7 @@
                                         <button type="submit" class="btn  "
                                             style="">Visit Content Portal </button>
                                             <div class="">
-                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content1</a>
                                             </div>
                                     </form>
                                 </div>
@@ -1492,7 +1492,7 @@
                                         <button type="submit" class="btn "
                                             style="">Visit Channel Portal </button>
                                             <div class="">
-                                        <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content2</a>
                                         </div>
                                     </form>
                                 </div>
@@ -1590,7 +1590,7 @@
                                         <button type="submit" class="btn btn-primary"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
                                             <div class="">
-                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a>
                                             </div>
                                     </form>
                                 </div>
@@ -1803,7 +1803,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Manage Profile</h6>
+                                                                    <h6 class="mb-0 ">Manage Profile1</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1974,7 +1974,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Manage Profile</h6>
+                                                                    <h6 class="mb-0 ">Manage Profile2</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
