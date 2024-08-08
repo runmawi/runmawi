@@ -15298,6 +15298,8 @@ public function QRCodeMobileLogout(Request $request)
           $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
           $item['Player_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
           $item['title'] = $item->name;
+          $item['source']    = "Series_Networks";
+          $item['source_Name'] = "Series_Networks";
 
           // $item['series'] = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
           //                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
@@ -15766,9 +15768,7 @@ public function QRCodeMobileLogout(Request $request)
           $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
   
           $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-  
-
-  
+    
           $item['source'] = 'Series';
           return $item;
                                                               

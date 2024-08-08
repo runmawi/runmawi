@@ -273,7 +273,7 @@
             if (timeSinceLastMidroll >= midrollInterval && !midrollRequested) {
 
                 lastMidrollTime = currentTime;
-                // console.log("Midroll triggered");
+                console.log("Midroll triggered");
 
                 const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
 
@@ -324,7 +324,7 @@
                     adTagUrl: vastTagPostroll,
                 });
 
-                // console.log("Postroll ads requested");
+                console.log("Postroll ads requested");
             }
         });
 
