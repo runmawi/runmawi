@@ -928,6 +928,7 @@ header .navbar ul li.menu-item a:hover{color:#fff}
 @media (max-width:768px) {
     .flickity-slider .items{width:33.333% !important;}
     li.slide-item.col-sm-2.col-md-2.col-xs-12{width: 33.333%;}
+    .pagelist .row{margin-right: 0 !important;margin-left: 0 !important;}
 }
 @media (max-width:564px) {
 .channel_contentpr .row{flex-wrap:unset}

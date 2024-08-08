@@ -253,6 +253,33 @@ class PageListController extends Controller
         }
     }
 
+    public function Featured_episodes()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $featured_episodes_pagelist = $FrontEndQueryController->featured_episodes();
+            $featured_episodes_paginate = $this->paginateCollection($featured_episodes_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'featured_episodes_pagelist' => $featured_episodes_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.featured-episodes', $data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     public function ChannelPartner_list()
     {
         try {
