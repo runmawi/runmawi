@@ -310,6 +310,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('latest_viewed_episode_list', 'PageListController@LatestViewedEpisode_list')->name('pagelist.latestviewed-episode');
     Route::get('latest_viewed_live_list', 'PageListController@LatestViewedLive_list')->name('pagelist.latestviewed-live');
     Route::get('latest_viewed_video_list', 'PageListController@LatestViewedVideo_list')->name('pagelist.latestviewed-video');
+    Route::get('Featured_episodes', 'PageListController@Featured_episodes')->name('pagelist.Featured_episodes');
 
     
     // TV-shows
