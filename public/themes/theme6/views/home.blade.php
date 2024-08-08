@@ -168,7 +168,7 @@
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/schedule', [ 'data' => $VideoSchedules ,'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
-            @if( $item == 'Recommendation')  {{-- Recommendation --}}
+            @if( $item == 'Recommendation' && $home_settings->Recommendation == 1)  {{-- Recommendation --}}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Top_videos', ['data' => $top_most_watched, 'order_settings_list' => $order_settings_list ])->content() !!}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/most_watched_country', ['data' => $Most_watched_country, 'order_settings_list' => $order_settings_list ])->content() !!}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/most_watched_user', ['data' => $most_watch_user, 'order_settings_list' => $order_settings_list ])->content() !!}

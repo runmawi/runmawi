@@ -267,16 +267,19 @@ class ChannelHomeController extends Controller
     public function channel_category_videos(Request $request)
     {
 
-        $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
-         
-        $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+        $request->category_id = 1;
+        $VideoCategory = VideoCategory::find($request->category_id);
+        if ($VideoCategory !== null) {
+            $videosCategoryCollection = $VideoCategory->specific_category_videos;
+        } else {
+            $videosCategoryCollection = collect();
+        }
 
-        $data = array( 'videosCategory' => $videos_Category );
+        $videos_Category = $videosCategoryCollection->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $data = array( 'VideoCategory' => $videos_Category );
  
             return Theme::view('partials.channel.channel_category_videos', $data);
-            $theme = Theme::uses($this->Theme);
-
-            return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
     }
 
     public function channel_category_series(Request $request)
@@ -293,20 +296,22 @@ class ChannelHomeController extends Controller
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
     }
-
     public function channel_category_live(Request $request)
     {
-
-        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+        $LiveCategory = LiveCategory::find($request->category_id);
+        if ($LiveCategory !== null) {
+            $LiveCategoryCollection = $LiveCategory->specific_category_live;
+        } else {
+            $LiveCategoryCollection = collect();
+        }
         
-        $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
-
-        $data = array( 'LiveCategory' => $Live_Category );
-
+    
+        $Live_Category = $LiveCategoryCollection->where('user_id', $request->user_id)
+                                                ->where('uploaded_by', 'Channel')
+                                                ->all();
+    
+        $data = array('LiveCategory' => $Live_Category);
         return Theme::view('partials.channel.channel_category_live', $data);
-        $theme = Theme::uses($this->Theme);
-
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_live', $data)->render();
     }
 
     public function channel_category_audios(Request $request)
