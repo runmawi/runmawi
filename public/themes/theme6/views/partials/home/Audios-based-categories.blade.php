@@ -64,19 +64,26 @@
 
                                                     <div class="movie-time d-flex align-items-center my-2">
 
-                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                        {{-- <div class="badge badge-secondary p-1 mr-2">
                                                             {{ optional($audios_details)->age_restrict . '+' }}
-                                                        </div>
+                                                        </div> --}}
 
                                                         <span class="text-white">
-                                                            {{ $audios_details->duration != null ? gmdate('H:i:s', $audios_details->duration) : null }}
+                                                            @if($audios_details->duration != null)
+                                                                @php
+                                                                    $duration = Carbon\CarbonInterval::seconds($audios_details->duration)->cascade();
+                                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                    $minutes = $duration->format('%imin');
+                                                                @endphp
+                                                                {{ $hours }}{{ $minutes }}
+                                                            @endif
                                                         </span>
                                                     </div>
 
                                                     <div class="hover-buttons">
                                                         <span class="btn btn-hover">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
+                                                            {{ __('Play Now')}}
                                                         </span>
                                                     </div>
                                                 </div>
