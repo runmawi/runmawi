@@ -1349,7 +1349,7 @@
                                                 <?php if(Auth::guest()): ?>
                                                     <li class="nav-item nav-icon">
                                                         <!-- <img src="<?php echo URL::to('/') . '/public/uploads/avatars/lockscreen-user.png'; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                                        <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
+                                                        <!-- <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
                                                             <div class="media align-items-center">
                                                                 <div class="right-icon">
                                                                     <svg version="1.1" id="Layer_1"
@@ -1367,10 +1367,10 @@
                                                                     <h6 class="mb-0 ">Signin</h6>
                                                                 </div>
                                                             </div>
-                                                        </a>
+                                                        </a> -->
                                                     </li>
                                                     <li class="nav-item nav-icon">
-                                                        <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
+                                                        <!-- <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
                                                             <div class="media align-items-center">
                                                                 <div class="right-icon">
                                                                     <svg version="1.1" id="Layer_1"
@@ -1388,7 +1388,7 @@
                                                                     <h6 class="mb-0 ">Signup</h6>
                                                                 </div>
                                                             </div>
-                                                        </a>
+                                                        </a> -->
                                                     </li>
                                                 <?php endif; ?>
                                                 <?php if(!Auth::guest()){ ?>
@@ -1666,7 +1666,7 @@
                                         <?php if(Auth::guest()): ?>
                                             <li class="nav-item nav-icon">
                                                 <!-- <img src="<?php echo URL::to('/') . '/public/uploads/avatars/lockscreen-user.png'; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                                <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
+                                                <!-- <a href="<?php echo URL::to('login'); ?>" class="iq-sub-card">
                                                     <div class="media align-items-center">
                                                         <div class="right-icon">
                                                             <svg version="1.1" id="Layer_1"
@@ -1684,10 +1684,10 @@
                                                             <h6 class="mb-0 ">Signin</h6>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </a> -->
                                             </li>
                                             <li class="nav-item nav-icon">
-                                                <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
+                                                <!-- <a href="<?php echo URL::to('signup'); ?>" class="iq-sub-card">
                                                     <div class="media align-items-center">
                                                         <div class="right-icon">
                                                             <svg version="1.1" id="Layer_1"
@@ -1705,7 +1705,7 @@
                                                             <h6 class="mb-0 ">Signup</h6>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </a> -->
                                             </li>
                                         <?php else: ?>
                                         <li class="nav-item nav-icon">
