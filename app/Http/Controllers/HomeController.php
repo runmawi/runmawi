@@ -1620,7 +1620,7 @@ class HomeController extends Controller
                     'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
                     'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
                     'trending_audios'           => $FrontEndQueryController->trending_audios()->take(15),
-                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners()->take(15),
+                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
                     'sliders'            => $FrontEndQueryController->sliders(), 
                     'live_banner'        => $FrontEndQueryController->live_banners(),  
                     'video_banners'      => $FrontEndQueryController->video_banners(), 
