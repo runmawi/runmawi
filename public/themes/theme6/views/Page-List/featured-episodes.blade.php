@@ -1,20 +1,24 @@
 
-@if (!empty($data) && $data->isNotEmpty())
+@php
+    include public_path("themes/{$current_theme}/views/header.php");
+@endphp
 
-    <section id="iq-favorites">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+<section id="iq-favorites" class="pagelist">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-12 page-height">
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h4 class="main-title fira-sans-condensed-regular">
+                            {{ 'Featured Episodes' }}
+                    </h4>  
+                </div>
 
-                    {{-- Header --}}
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">{{ 'Latest Episodes' }}</a></h4>
-                    </div>
+                @if (($featured_episodes_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline">
-                            @foreach ($data as $key => $episode_details)
-                                <li class="slide-item">
+                        <ul class="category-page list-inline row p-0 mb-0">
+                            @forelse($featured_episodes_pagelist as $key => $episode_details)
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
@@ -24,11 +28,8 @@
                                                 <p> {{ strlen($episode_details->title) > 17 ? substr($episode_details->title, 0, 18) . '...' : $episode_details->title }}
                                                 </p>
                                                 <div class="movie-time d-flex align-items-center my-2">
-
-                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($episode_details)->age_restrict.'+' }}
-                                                    </div> --}}
-
+    
+    
                                                     <span class="text-white">
                                                         @if($episode_details->duration != null)
                                                             @php
@@ -40,7 +41,7 @@
                                                         @endif
                                                     </span>
                                                 </div>
-
+    
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -48,21 +49,32 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach
+                            @empty
+                                <div class="col-md-12 text-center mt-4"
+                                    style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                    <p>
+                                    <h3 class="text-center">{{ __('No Series Video Available') }}</h3>
+                                </div>
+                            @endforelse
                         </ul>
+
+                        <div class="col-md-12 pagination justify-content-end">
+                            {!! $featured_episodes_pagelist->links() !!}
+                        </div>
+
                     </div>
-                </div>
+                @else
+                    <div class="col-md-12 text-center mt-4"
+                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p>
+                        <h3 class="text-center">{{ __('No Series Video Available') }}</h3>
+                    </div>
+                @endif
             </div>
         </div>
-    </section>
-@endif
+    </div>
+</section>
+<?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>

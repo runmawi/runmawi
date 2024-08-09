@@ -71,7 +71,7 @@ $data = App\Series::where('active', '=', '1')
                         <h4 class="main-title"><a href="show-category.html">Trending</a></h4>
                     </div>
                     <div class="trending-contens slidebtns">
-                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center ">
+                        <ul id="trending-slider-nav" class="list-inline align-items-center ">
                             @foreach ($data as $series_details)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -83,7 +83,7 @@ $data = App\Series::where('active', '=', '1')
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
+                        <ul id="trending-slider" class="list-inline d-flex align-items-center">
                             @foreach ($data as $key => $series_details )
                                 <li>
                                     <div class="tranding-block position-relative"

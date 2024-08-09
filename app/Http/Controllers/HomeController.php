@@ -2558,6 +2558,8 @@ class HomeController extends Controller
     {
         try {
             
+            $FrontEndQueryController = new FrontEndQueryController();
+
             $LanguageVideo = LanguageVideo::where('language_id',$lanid)->groupBy('video_id')->pluck('video_id');
 
             $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
@@ -2612,18 +2614,20 @@ class HomeController extends Controller
                                         ->where('banner', '1')->latest()
                                         ->get() ;
 
+                                        
+
             $data = array(
                 'lang_videos' => $language_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'     => $top_most_watched ,
-                'video_banners'        => $video_banners ,
+                'video_banners'        => $FrontEndQueryController->video_banners(),
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first() 
             );
 
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
 
