@@ -52,7 +52,7 @@ include public_path('themes/theme6/views/header.php');
                 </div>
 
                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <ul class="favorites-slider list-inline">
                         @if (isset($SeriesGenre))
                             @foreach ($SeriesGenre as $Series_Genre)
                                 <li class="slide-item">
@@ -70,7 +70,7 @@ include public_path('themes/theme6/views/header.php');
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Visit Series
+                                                        {{ __('Visit Series')}}
                                                     </span>
                                                 </div>
                                             </div>
