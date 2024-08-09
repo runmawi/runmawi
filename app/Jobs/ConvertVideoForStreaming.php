@@ -95,6 +95,7 @@ class ConvertVideoForStreaming implements ShouldQueue
               ->open($video)
               ->exportForHLS()
               ->toDisk('public')
+              ->setAdditionalParameters(['-loglevel', 'debug'])
               ->onProgress(function ($percentage) {
                 $this->video->processed_low = $percentage; 
                 $this->video->save();
