@@ -13937,7 +13937,7 @@ public function QRCodeMobileLogout(Request $request)
    
       $user_id = $request->user_id;
 
-      $homepage_input_array = ['limit' => 15, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing()];
+      $homepage_input_array = ['limit' => 15, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing() , 'default_vertical_image_url' => default_vertical_image_url() , 'default_horizontal_image_url' => default_horizontal_image_url() ];
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 
@@ -14438,6 +14438,12 @@ public function QRCodeMobileLogout(Request $request)
 
     $latest_videos_status = $homepage_input_array['MobileHomeSetting']->latest_videos;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
+
+   
     $check_Kidmode        = 0 ;
 
     if( $latest_videos_status == null || $latest_videos_status == 0 ):
@@ -14459,10 +14465,10 @@ public function QRCodeMobileLogout(Request $request)
             $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
           }
 
-      $data = $data->latest()->limit( $homepage_input_array['limit'])->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-        $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-        $item['tv_image_url'] = URL::to('/public/uploads/images/'.$item->video_tv_image);
+      $data = $data->latest()->limit( $homepage_input_array['limit'])->get()->map(function ($item) use ( $homepage_default_image_url ) {
+        $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+        $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+        $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
         $item['description'] = $item->description ;
         $item['source']    = "Videos";
         return $item;
@@ -14478,7 +14484,10 @@ public function QRCodeMobileLogout(Request $request)
 
     $featured_videos_status = $homepage_input_array['MobileHomeSetting']->featured_videos;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
 
     $check_Kidmode        = 0 ;
 
@@ -14501,10 +14510,10 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
             }
         
-        $data = $data->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) {
-            $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-            $item['tv_image_url'] = URL::to('/public/uploads/images/'.$item->video_tv_image);
+        $data = $data->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) use ( $homepage_default_image_url ) {
+            $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+            $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+            $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
             $item['description'] = $item->description ;
             $item['source']    = "Videos";
             return $item;
@@ -14520,7 +14529,10 @@ public function QRCodeMobileLogout(Request $request)
 
     $live_stream_videos_status = $homepage_input_array['MobileHomeSetting']->live_videos;
     $homepage_geofencing = $homepage_input_array['Geofencing'];
-  
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
 
       if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
 
@@ -14531,10 +14543,10 @@ public function QRCodeMobileLogout(Request $request)
         $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating',
                                       'active', 'status','image','player_image','featured','description')
                               ->where('active',1)->where('status', 1)->latest()->limit($homepage_input_array['limit'])->get()
-                              ->map(function ($item) {
-                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                                  $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-                                  $item['tv_image_url'] = URL::to('/public/uploads/images/'.$item->Tv_live_image);
+                              ->map(function ($item) use ($homepage_default_image_url) {
+                                  $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                  $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+                                  $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $homepage_default_image_url['homepage_default_horizontal_image_url']  ;
                                   $item['description'] = $item->description ;
                                   $item['source']    = "Livestream";
                                   return $item;
@@ -14695,9 +14707,9 @@ public function QRCodeMobileLogout(Request $request)
        else:
 
          $data = Channel::where('status',1)->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) {
-                    $item['image_url'] = $item->channel_image != null ? $item->channel_image : URL::to('/public/uploads/images/'.default_horizontal_image()) ;
-                    $item['Player_image_url'] = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_vertical_image())  ;
-                    $item['tv_image_url']     = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_vertical_image())  ;     // Note - No TV Image
+                    $item['image_url'] = $item->channel_image != null ? $item->channel_image : URL::to('/public/uploads/images/'.default_vertical_image()) ;
+                    $item['Player_image_url'] = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_horizontal_image())  ;
+                    $item['tv_image_url']     = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_horizontal_image())  ;     // Note - No TV Image
                     $item['Channel_Logo_url'] = $item->channel_logo != null ? $item->channel_logo : URL::to('/public/uploads/images/'.default_vertical_image());
                     $item['description'] = null ;
                     $item['source']    = "Channel_Partner";
