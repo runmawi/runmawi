@@ -9,10 +9,13 @@
                 {{-- Header --}}
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title">{{ 'Featured Episodes' }}</a></h4>
+                    @if($settings->homepage_views_all_button_status == 1)
+                        <h4 class="main-title text-primary"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View All') }}</a> </h4>
+                    @endif
                 </div>
 
                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <ul class="favorites-slider list-inline">
                         @foreach ($data as $key => $episode_details)
                             <li class="slide-item">
                                 <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
@@ -25,28 +28,25 @@
                                             </p>
                                             <div class="movie-time d-flex align-items-center my-2">
 
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                    {{ optional($episode_details)->age_restrict.'+' }}
-                                                </div>
 
                                                 <span class="text-white">
-                                                    {{ $episode_details->duration != null ? gmdate('H:i:s', $episode_details->duration) : null }}
+                                                    @if($episode_details->duration != null)
+                                                        @php
+                                                            $duration = Carbon\CarbonInterval::seconds($episode_details->duration)->cascade();
+                                                            $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                            $minutes = $duration->format('%imin');
+                                                        @endphp
+                                                        {{ $hours }}{{ $minutes }}
+                                                    @endif
                                                 </span>
                                             </div>
 
                                             <div class="hover-buttons">
                                                 <span class="btn btn-hover">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                    Play Now
+                                                    {{ __('Play Now')}}
                                                 </span>
                                             </div>
-                                        </div>
-                                        <div class="block-social-info">
-                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                <li><span><i class="ri-heart-fill"></i></span></li>
-                                                <li><span><i class="ri-add-line"></i></span></li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </a>

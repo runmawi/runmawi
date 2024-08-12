@@ -68,7 +68,7 @@ $data->each(function ($category) {
                         </div>
 
                         <div class="favorites-contens">
-                            <div class="favorites-slider list-inline  row p-0 mb-0">
+                            <div class="favorites-slider list-inline">
                                 @php
                                     $id = !Auth::guest() && !empty($data['password_hash']) ? Auth::user()->id : 0;
                                 @endphp

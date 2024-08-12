@@ -300,12 +300,24 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Audio_list', 'PageListController@Audio_list')->name('pagelist.audio_list');
     Route::get('Series_list', 'PageListController@Series_list')->name('pagelist.series_list');
     Route::get('Channel_Partner_list', 'PageListController@ChannelPartner_list')->name('pagelist.channelpartner_list');
+    Route::get('Content_Partner_list', 'PageListController@ContentPartner_list')->name('pagelist.contentpartner_list');
     Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
     Route::get('epg_list', 'PageListController@epg_list')->name('pagelist.epg_list');
     Route::get('Series_genre_list', 'PageListController@SeriesGenre_list')->name('pagelist.seriesgenre');
+    Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
+    Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('audio_genre_list', 'PageListController@AudioGenre_list')->name('pagelist.audiogenre');
+    Route::get('latest_viewed_episode_list', 'PageListController@LatestViewedEpisode_list')->name('pagelist.latestviewed-episode');
+    Route::get('latest_viewed_live_list', 'PageListController@LatestViewedLive_list')->name('pagelist.latestviewed-live');
+    Route::get('latest_viewed_video_list', 'PageListController@LatestViewedVideo_list')->name('pagelist.latestviewed-video');
     Route::get('Featured_episodes', 'PageListController@Featured_episodes')->name('pagelist.Featured_episodes');
-    // Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
-    // Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('Video_based_categories', 'PageListController@VideoBasedCategories_list')->name('pagelist.video-based-categories');
+    Route::get('Most_watched_country_videos', 'PageListController@MostWatchedCountryVideos_list')->name('pagelist.most-watched-videos-country');
+    Route::get('Most_watched_users_videos', 'PageListController@MostWatchedUserVideos_list')->name('pagelist.most-watched-videos-users');
+    Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
+    // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
+    // Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    //Top most Watched Videos need to add
 
     
     // TV-shows

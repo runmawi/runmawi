@@ -1900,16 +1900,6 @@ border-radius: 0px 4px 4px 0px;
     <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
     
     <script>
-        ClassicEditor
-            .create( document.querySelector( '#header_script' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-        ClassicEditor
-            .create( document.querySelector( '#footer_script' ) )
-            .catch( error => {
-                console.error( error );
-            } );
             ClassicEditor
             .create( document.querySelector( '#summary-ckeditor' ) )
             .catch( error => {

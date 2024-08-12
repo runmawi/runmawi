@@ -31,8 +31,8 @@ use App\SeriesNetwork;
 use App\VideoCategory;
 use App\ModeratorsUser;
 use App\VideoSchedules;
-// use App\Watchlater;
-// use App\Wishlist;
+use App\Watchlater;
+use App\Wishlist;
 use App\AdminEPGChannel;
 use App\LiveEventArtist;
 use App\ThumbnailSetting;
@@ -963,22 +963,212 @@ class FrontEndQueryController extends Controller
         return $ugcvideos ;
     }
 
-    // public function watchLater() {
-    //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
-    //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-    //                                 'expiry_date','active','status','draft')
-    //                                 ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater_data);
-    //     return $Watchlater;
+    public function watchLater() {
+        if (!Auth::guest()) {
+   
+            $Watchlater = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+        
+            $check_Kidmode = 0 ;
+        
+            $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                            'expiry_date','active','status','draft')
+        
+            ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater);
+        
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+        
+            if( !Auth::guest() && $check_Kidmode == 1 )
+            {
+                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+            }
+        
+            $data = $data->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['source_type']        = "Videos" ;
+                return $item;
+            });
+        }else{
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function wishlist() {
+        if (!Auth::guest()) {
+    
+            $Wishlist = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    
+            $check_Kidmode = 0 ;
+    
+            $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                                            'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                            'expiry_date','active','status','draft')
+    
+            ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist);
+    
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+    
+            if( !Auth::guest() && $check_Kidmode == 1 )
+            {
+                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+            }
+    
+            $data = $data->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['source_type']        = "Videos" ;
+                return $item;
+            });
+        }else{
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function latestViewedEpisode() {
+        if (Auth::guest() != true) {
+            $data = RecentView::Select('episodes.*', 'episodes.slug as episode_slug', 'series.id', 'series.slug as series_slug', 'recent_views.episode_id', 'recent_views.user_id')
+                ->join('episodes', 'episodes.id', '=', 'recent_views.episode_id')
+                ->join('series', 'series.id', '=', 'episodes.series_id')
+                ->where('recent_views.user_id', Auth::user()->id)
+                ->groupBy('recent_views.episode_id')
+                ->get();
+        } else {
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function latestViewedAudio() {
+        if(Auth::guest() != true ){
+
+            $data =  RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
+                ->where('recent_views.user_id',Auth::user()->id)
+                ->groupBy('recent_views.audio_id');
+    
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    $data = $data  ->whereNotIn('audio.id',Block_audios());
+                }
+                $data = $data->limit(15)->get();
+       }
+       else
+       {
+            $data = array() ;
+       }
+       return $data;
+    }
+
+    public function latestViewedLive() {
+        if(Auth::guest() != true ){
+            $data =  RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
+                    ->where('recent_views.user_id',Auth::user()->id)
+                    ->groupBy('recent_views.live_id')
+                    ->limit(15)
+                    ->get();
+        }
+        else
+        {
+            $data = array() ;
+        }
+        return $data;
+    }
+
+    public function latestViewedVideo(){
+        $check_Kidmode = 0 ;
+
+        if(Auth::guest() != true ){
+
+            $data =  RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('recent_views.user_id',Auth::user()->id)
+                ->groupBy('recent_views.video_id');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    $data = $data  ->whereNotIn('videos.id',Block_videos());
+                }
+                
+                // if( $videos_expiry_date_status == 1 ){
+                //     $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                // }
+
+                if( !Auth::guest() && $check_Kidmode == 1 )
+                {
+                    $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+                }
+                
+                $data = $data->limit(15)->get();
+        }
+        else
+        {
+            $data = array() ;
+        }
+        return $data;
+    }
+
+    // public function continueWatching(){
+    //     if ($multiuser != null)
+    //     {
+    //         $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
+            
+    //         $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')
+    //                                 ->where('active', '1')->where('status', '1')
+    //                                 ->where('draft', '1')->where('type','!=','embed')
+    //                                 ->whereIn('id', $getcnt_watching)
+    //                                 ->limit(15)->get();
+    //     }
+    //     elseif (!Auth::guest())
+    //     {
+
+    //         $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
+
+    //         if ($continue_watching != null && $continue_watching->multiuser == null)
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+    //         else
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+    //                 ->where('multiuser', 'data')
+    //                 ->pluck('videoid')
+    //                 ->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+
+    //     }
+    //     else
+    //     {
+    //         $cnt_watching = '';
+    //     }
+
+    //     return $cnt_watching;
     // }
 
-    // public function wishlist() {
-    //     $Wishlist_data = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
-    //     // $Wishlist = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-    //     //                                 'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-    //     //                                 'expiry_date','active','status','draft')
-
-    //     // ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist_data);
-    //     return $Wishlist_data;
-    // }
 }

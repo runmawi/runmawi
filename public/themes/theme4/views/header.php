@@ -2028,7 +2028,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <div class="iq-card shadow-none m-0">
 
                                                 <?php if( Auth::guest() ) : ?>
-
+                                                   <?php if( $theme->signin_header == 1 ): ?>
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
                                                          <li class="nav-item nav-icon res-signin">
@@ -2054,6 +2054,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          </li>
 
                                                       </div>
+                                                      <?php endif; ?>
 
                                                    <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
                                                       

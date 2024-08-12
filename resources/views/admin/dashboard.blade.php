@@ -53,7 +53,7 @@
                                        <div class="iq-user-box "><p class="">{{ TotalUsers() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total  
-                                          User's
+                                          Users
                                           </p>
                                        </div>
                                     </div>
@@ -81,7 +81,7 @@
                                        <div class="iq-user-box "><p class="">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">
-                                           New Subscriber's
+                                           New Subscribers
                                           </p>
                                        </div>
                                     </div>
@@ -95,7 +95,7 @@
                                        <div class="iq-user-box "><p class="">{{ TotalVideocount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
-                                                Video's
+                                                Videos
                                           </p>
                                        </div>
                                     </div>
@@ -109,7 +109,7 @@
                                        <div class="iq-user-box "><p class="">{{ TotalSeriescount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
-                                                Serie's
+                                                Series
                                           </p>
                                        </div>
                                     </div>
@@ -123,27 +123,27 @@
                                        <div class="iq-user-box "><p class="">{{ TotalEpisodescount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
-                                                Episode's
+                                                Episodes
                                           </p>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                           {{-- <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box "><p class="">{{ TotalLivestreamcount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
-                                                Live stream's
+                                                Live streams
                                           </p>
                                        </div>
                                     </div>
                                  </div>
                               </div>
-                           </div> --}}
+                           </div>
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="">
                                  <div class="iq-card-body">
@@ -207,7 +207,7 @@
                                        <div class="iq-user-box"><p class="">{{  $total_visitors }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">  Total
-                                          Visitor's
+                                          Visitors
                                           </p>
                                        </div>
                                     </div>
