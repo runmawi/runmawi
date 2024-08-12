@@ -16,7 +16,7 @@
                         </h4>
                     </div>
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $series_details)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
@@ -38,7 +38,7 @@
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                        {{ __('Play Now')}}
                                                     </span>
                                                 </div>
                                             </div>

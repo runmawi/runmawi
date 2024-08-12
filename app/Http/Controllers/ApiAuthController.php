@@ -13937,7 +13937,7 @@ public function QRCodeMobileLogout(Request $request)
    
       $user_id = $request->user_id;
 
-      $homepage_input_array = ['limit' => 1, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing()];
+      $homepage_input_array = ['limit' => 15, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing()];
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 

@@ -1,6 +1,15 @@
-@php
-    include public_path("themes/{$current_theme}/views/header.php");
-@endphp
+
+<!-- Typography CSS  -->
+<link rel="preload" href="<?= typography_link();?>" as="style"/>
+<link rel="stylesheet" href="<?= typography_link();?>" />
+
+{{-- font --}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+   <!-- variable-boots-flick -->
+   <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
 
 <script src="https://js.recurly.com/v4/recurly.js"></script>
 <link href="https://js.recurly.com/v4/recurly.css" rel="stylesheet" type="text/css">
@@ -12,12 +21,12 @@
     <header class="header">
         <h1 class="mt-1"><img src="{{ front_end_logo() }}" class="max-h-16 max-w-auto" alt="Logo" style="width: 100px;"></h1>
        
-        <div class="lg:max-w-lg mx-auto lg:mx-0 lg:pr-8 mt-1">
-            <a class="backButton" href="{{ url()->previous() }}">← Back </a>
+        <div class="lg:max-w-lg mx-auto lg:mx-0 lg:pr-8 mt-4">
+            <a class="backButton d-flex align-items-center font-bold" href="{{ url()->previous() }}"><i class="fa fa-arrow-left" aria-hidden="true"></i><h5 class="pl-3">Back</h5></a>
         </div>
     </header>
 
-    <section class="container d-flex justify-content-around">
+    <section class="container d-flex justify-content-around mt-5">
         <form class="mb-5" id='my-form' action="{{ $payment_current_route_uri == "upgrade-subscriber" ? route('Recurly.UpgradeSubscription') : route('Recurly.subscription') }}">
             <div class="form-group">
                 <h5 class="mt-1 mb-2" for="email">Contact Information</h5>
@@ -25,7 +34,7 @@
                 <input type="email" class="form-control" id="email" placeholder="Email" value={{ @($user_details->email) }} required readonly>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-5">
                 <h5 class="mt-1 mb-2" for="card-details">Billing Information</h5>
                 <label class="form-label">Card Details <span class="text-red-500">&nbsp;*</span> </label>
                 <div class="col-md-12 row p-0">
@@ -35,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-5">
                 <h5 class="mt-1 mb-2">Billing Address</h5>
                 <label class="form-label">Country <span class="text-red-500">&nbsp;*</span> </label>
                 <select class="form-control" required name="country">
@@ -289,7 +298,7 @@
                     <option value="ZW" {{ $Country_code == "ZW" ? 'selected' : '' }}>Zimbabwe</option>
                 </select>
 
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col">
                         <label class="form-label"> First Name <span class="text-red-500">&nbsp;*</span> </label>
                         <input type="text" class="form-control" name="first_name" placeholder="First Name" value="{{ ($user_details->username) }}" readonly required>
@@ -299,7 +308,7 @@
                         <input type="text" class="form-control" name="last_name" placeholder="Last Name" required>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col">
                         <label class="form-label">Zip/Postal Code <span class="text-red-500">&nbsp;*</span> </label>
                         <input type="number"  class="form-control" name="postal_code"  pattern="[0-9\s]{13,19}" placeholder="Zip/Postal" required />
@@ -310,7 +319,7 @@
             <input type="hidden" name="plan_code"  value="{{ $plan_details->getcode() }}">
             <input type="hidden" name="getCurrencies"  value="{{ $plan_details->getCurrencies()[0]->getcurrency() }}">
             
-            <button type="submit" class="btn-block">Pay now</button>
+            <button type="submit" class="btn-block mt-5">Pay now</button>
         </form>
 
         <div class="order-summary mt-4 mb-5">
@@ -328,9 +337,9 @@
                     <li class="py-3 dark:border-slate-600 last:border-b-0 last:pb-0">
                         <div class="flex gap-x-2 d-flex justify-content-between" style="font-weight:600">
                             <div class="flex-auto">
-                                <span class="font-bold">{{ $plan_details->getname() }}</span>
+                                <span class="poppins-semibold">{{ $plan_details->getname() }}</span>
                             </div>
-                            <div class="flex-none font-bold"> {{ $plan_details->getCurrencies()[0]->getUnitAmount() ." ". $plan_details->getCurrencies()[0]->getcurrency()  .'/'. $plan_details->getIntervalunit() }}</div>
+                            <div class="flex-none poppins-semibold"> {{ $plan_details->getCurrencies()[0]->getUnitAmount() ." ". $plan_details->getCurrencies()[0]->getcurrency()  .'/'. $plan_details->getIntervalunit() }}</div>
                         </div>
                         <div class="basis-full">
                             <div class="mt-2 pl-4 border-l-2 border-gray-300 text-sm leading-6 text-checkout-subtle">
@@ -342,8 +351,8 @@
             <hr>
             <div class="pt-6">
                 <div class="grid grid-cols-2 items-start my-2 d-flex justify-content-between">
-                    <div class="text-right">Subtotal</div>
-                    <div> {{ $plan_details->getCurrencies()[0]->getUnitAmount() ." ".$plan_details->getCurrencies()[0]->getcurrency() }}</div>
+                    <div class="text-right poppins-semibold">Subtotal</div>
+                    <div class="poppins-semibold"> {{ $plan_details->getCurrencies()[0]->getUnitAmount() ." ".$plan_details->getCurrencies()[0]->getcurrency() }}</div>
                 </div>
 
                 {{-- <div class="coupons-card">
@@ -363,9 +372,9 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <div class="font-medium">Total</div>
+                    <div class="poppins-semibold">Total</div>
                     <div class="text-right">
-                        <span class="font-medium">{{  $plan_details->getCurrencies()[0]->getUnitAmount() ." ". $plan_details->getCurrencies()[0]->getcurrency() }}</span>
+                        <span class="font-medium poppins-semibold">{{  $plan_details->getCurrencies()[0]->getUnitAmount() ." ". $plan_details->getCurrencies()[0]->getcurrency() }}</span>
                     </div>
                 </div>
                 <p class="text-xs mt-5 text-checkout-subtle" style="font-size:0.7em">Subscription billing powered by
@@ -376,6 +385,129 @@
         </div>
     </section>
 </div>
+
+<style>
+    h1,h2,h3,h4,h5,h6,p,a,span,{font-family: "Poppins", sans-serif;}
+    .checkout-page {
+        background-color: #f8f9fa;
+        color: black !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .header {
+        margin-bottom: 15px;
+        margin-left: 8%;
+    }
+
+    .order-summary {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: 50%;
+        width: 30%;
+        color: black !important;
+    }
+
+    button {
+        background-color: rgb(91 38 102) !important;
+        color: white;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-control {
+        height: 35px !important;
+        border-radius: 5px;
+        border: 1px solid #D9D9D9 !important;
+        color: grey !important;
+        background-color: #F7F7F7 !important;
+
+    }
+    .poppins-semibold {
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    .form-label {
+        color: grey;
+    }
+
+    select,
+    option,
+    h3 {
+        color: black;
+    }
+
+    .text-red-500 {
+        color: red;
+    }
+
+    h5 {
+        font-weight: 500;
+        color: black;
+    }
+
+    #recurly-elements {
+        border: 1px solid #dbcfcf !important;
+        border-radius: 5px !important;
+    }
+
+    .recurly-element {
+        border: none;
+        padding: 0px 0px 0px 0px !important;
+        margin-top: 0 !important;
+        background-color: #f8f9fa !important;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .apply-button {
+        margin-top: 7px;
+        margin-left: 10px;
+        width: 50%;
+        height: 6vh;
+    }
+
+    .promo {
+        display: none;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+    .form-group.mt-5{margin-top: 2rem !important;}
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    /* footer */
+    footer, .home footer {
+        position: relative;
+        height: auto;
+        width: 100%;
+        background: linear-gradient(180deg, #282834 0%, #151517 127.69%);
+        color: #fff;
+    }
+
+    @media (max-width:720px){
+        section.container.d-flex.justify-content-around.mt-5{
+            display: block !important;
+        }
+        .order-summary{height: 100%; width: 100%;}
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -463,104 +595,3 @@
         })
     });
 </script>
-
-<style>
-    .checkout-page {
-        background-color: #f8f9fa;
-        color: black !important;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
-    }
-
-    .header {
-        margin-bottom: 15px;
-        margin-left: 12%;
-    }
-
-    .order-summary {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        height: 50%;
-        width: 30%;
-        color: black !important;
-    }
-
-    button {
-        background-color: rgb(91 38 102) !important;
-        color: white;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        padding: 5px;
-    }
-
-    .form-control {
-        height: 35px !important;
-        border-radius: 5px;
-        border: 1px solid #dbcfcf !important;
-        color: grey !important;
-    }
-
-    .form-label {
-        color: grey;
-    }
-
-    select,
-    option,
-    h3 {
-        color: black;
-    }
-
-    .text-red-500 {
-        color: red;
-    }
-
-    h5 {
-        font-weight: 500;
-        color: black;
-    }
-
-    #recurly-elements {
-        border: 1px solid #dbcfcf !important;
-        border-radius: 5px !important;
-    }
-
-    .recurly-element {
-        border: none;
-        padding: 0px 0px 0px 0px !important;
-        margin-top: 0 !important;
-        background-color: #f8f9fa !important;
-    }
-
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .apply-button {
-        margin-top: 7px;
-        margin-left: 10px;
-        width: 50%;
-        height: 6vh;
-    }
-
-    .promo {
-        display: none;
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    }
-
-    /* Firefox */
-    input[type=number] {
-    -moz-appearance: textfield;
-    }
-
-</style>
-
-<?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>
