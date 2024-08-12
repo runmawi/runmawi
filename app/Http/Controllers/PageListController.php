@@ -307,6 +307,33 @@ class PageListController extends Controller
         }
     }
 
+    public function ContentPartner_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $content_partner_pagelist = $FrontEndQueryController->content_Partner();
+            $content_partner_paginate = $this->paginateCollection($content_partner_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'content_partner_pagelist' => $content_partner_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.content-partner', $data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     public function LatestViewedAudio_list()
     {
         try {
@@ -545,6 +572,168 @@ class PageListController extends Controller
             );
         
             return Theme::view('Page-List.latest_viewed_video', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function VideoBasedCategories_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $video_based_category_pagelist = $FrontEndQueryController->Video_Based_Category();
+            $video_based_category_paginate = $this->paginateCollection($video_based_category_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'video_based_category_pagelist' => $video_based_category_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.video_based_categories', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function MostWatchedCountryVideos_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $most_watched_videos_country_pagelist = $FrontEndQueryController->Most_watched_videos_country();
+            $most_watched_videos_country_paginate = $this->paginateCollection($most_watched_videos_country_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'most_watched_videos_country_pagelist' => $most_watched_videos_country_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.most-watched-videos-country', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function MostWatchedUserVideos_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $most_watched_user_videos_pagelist = $FrontEndQueryController->Most_watched_videos_users();
+            $most_watched_user_videos_paginate = $this->paginateCollection($most_watched_user_videos_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'most_watched_user_videos_pagelist' => $most_watched_user_videos_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.most-watched-videos-user', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function MostWatchedVideoSite_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $most_watched_videos_site_pagelist = $FrontEndQueryController->Most_watched_videos_site();
+            $most_watched_videos_site_paginate = $this->paginateCollection($most_watched_videos_site_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'most_watched_videos_site_pagelist' => $most_watched_videos_site_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.most-watched-videos-site', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function ContinueWatching_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $continue_watching_pagelist = $FrontEndQueryController->continueWatching();
+            $continue_watching_paginate = $this->paginateCollection($continue_watching_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'continue_watching_pagelist' => $continue_watching_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.continue-watching-list', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Artist_list()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $artist_pagelist = $FrontEndQueryController->artist();
+            $artist_paginate = $this->paginateCollection($artist_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'artist_pagelist' => $artist_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+        return Theme::view('Page-List.artist-list', $data);
 
         } catch (\Throwable $th) {
             return $th->getMessage();

@@ -1106,4 +1106,62 @@ class FrontEndQueryController extends Controller
         }
         return $data;
     }
+
+    // public function continueWatching(){
+    //     if ($multiuser != null)
+    //     {
+    //         $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
+            
+    //         $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')
+    //                                 ->where('active', '1')->where('status', '1')
+    //                                 ->where('draft', '1')->where('type','!=','embed')
+    //                                 ->whereIn('id', $getcnt_watching)
+    //                                 ->limit(15)->get();
+    //     }
+    //     elseif (!Auth::guest())
+    //     {
+
+    //         $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
+
+    //         if ($continue_watching != null && $continue_watching->multiuser == null)
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+    //         else
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+    //                 ->where('multiuser', 'data')
+    //                 ->pluck('videoid')
+    //                 ->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+
+    //     }
+    //     else
+    //     {
+    //         $cnt_watching = '';
+    //     }
+
+    //     return $cnt_watching;
+    // }
+
 }
