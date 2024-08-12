@@ -1142,7 +1142,7 @@ class ApiAuthController extends Controller
       
       $count = User::where('email', $request->get('email'))->count();
       
-      $response = $count > 0 ? array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');    
+      $response = $count > 0 ? array('status_code' => 200 ,'message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');    
 
       return response()->json($response, 401);
 
@@ -22174,10 +22174,10 @@ public function TV_login(Request $request)
 } else {
   $count = User::where('email', '=', $request->get('email'))->count();
   if($count > 0){
-    $response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
+    $response = array('status_code' => 200 ,'message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
     return response()->json($response, 200);
   }else{
-    $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
+    $response = array('status_code' => 200 ,'message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
     return response()->json($response, 200);
   }
 }
