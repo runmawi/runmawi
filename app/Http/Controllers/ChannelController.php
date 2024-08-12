@@ -87,8 +87,8 @@ class ChannelController extends Controller
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
 
-        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($this->Theme);
+        $this->HomeSetting = HomeSetting::first();
+        Theme::uses($this->HomeSetting->theme_choosen);
     }
 
     public function index()
@@ -318,6 +318,8 @@ class ChannelController extends Controller
                     return $category;
                 });
 
+                $FrontEndQueryController = new FrontEndQueryController();
+
             $data = [
                 'currency'          => CurrencySetting::first(),
                 'category_title'    => $category_title,
@@ -328,10 +330,10 @@ class ChannelController extends Controller
                 'Episode_videos'    => $Episode_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'  => $top_most_watched ,
-                'video_banners'     => $video_banners ,
+                'video_banners'     => $FrontEndQueryController->video_banners(),
                 'video_categories'  => $video_categories ,
+                'current_theme'     => $this->HomeSetting->theme_choosen,
             ];
-
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
 
         } catch (\Throwable $th) {

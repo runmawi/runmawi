@@ -12,36 +12,23 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ( $data as $key => $videoCategories)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('artist-list') }}">
+                                    <a href="{{ url('/category/' . $videoCategories->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
                                                 <img src="{{ $videoCategories->image ?  URL::to('public/uploads/videocategory/'.$videoCategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <p> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</p>
-
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    {{-- <span class="text-white">
-                                                        {{ str_replace('_', ' ', ucwords($videoCategories->artist_type))  }}
-                                                    </span> --}}
-                                                    
-                                                </div>
-
+                                               
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                       Visit
+                                                       {{ __('Visit')}}
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                {{-- <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                                </ul> --}}
                                             </div>
                                         </div>
                                     </a>
