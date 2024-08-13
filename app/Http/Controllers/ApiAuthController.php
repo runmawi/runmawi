@@ -1144,7 +1144,7 @@ class ApiAuthController extends Controller
       
       $response = $count > 0 ? array('status_code' => 200 ,'message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');    
 
-      return response()->json($response, 401);
+      return response()->json($response, 200);
 
     }
 
@@ -1154,7 +1154,7 @@ class ApiAuthController extends Controller
       
       $response = $count > 0 ? array('message' => 'Incorrect Otp.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Mobile Number, please try again.', 'note_type' => 'error','status'=>'false');    
 
-      return response()->json($response, 401);
+      return response()->json($response, 200);
 
     }
 
