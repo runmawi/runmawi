@@ -1,7 +1,7 @@
 @extends('admin.master')
 @section('content')
 <?php
-    //   echo "<pre>";  
+    //   echo "<pre>";
     // print_r($moderators->user_role);
     // exit();
     ?>
@@ -35,9 +35,9 @@
 
 <div id="moderator-container">
 <!-- This is where -->
-	
+
 	<div class="moderator-section-title">
-		<h4><i class="entypo-globe"></i>Update Channel Partner</h4> 
+		<h4><i class="entypo-globe"></i>Update Channel Partner</h4>
         <hr>
 	</div>
 	<div class="clear"></div>
@@ -51,7 +51,7 @@
                         <span>{{ $message }}</span>
                         </div>
                         @endforeach
-                        @endif	
+                        @endif
 
                     <form method="POST" action="{{ URL::to('admin/channel/user/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
@@ -70,7 +70,7 @@
                         <div class="form-group row">
                             <label for="email" class=" col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-                            
+
                                 <input id="email" type="email" class="form-control " name="email" value="{{ $Channel->email }}"  autocomplete="email">
                             </div>
                         </div>
@@ -94,19 +94,19 @@
                         <div class="form-group row">
                             <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
-                       
+
                                 <input id="mobile_number" type="text" class="form-control " name="mobile_number" value="{{ $Channel->mobile_number }}"  autocomplete="email">
                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6" >
 
                         <div class="form-group row">
                         <label for="channel_about" class=" col-form-label text-md-right">{{ __('Channel About') }}</label>
 
-                           
-                               
+
+
                             <input id="channel_about" type="textarea" class="form-control" name="channel_about" value ="{{ $Channel->channel_about }}" autocomplete="channel_about">
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                         @endForeach
                                     @else
                                         No Record Found
-                                    @endif  
+                                    @endif
                                </select>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                         @endForeach
                                     @else
                                         No Record Found
-                                    @endif  
+                                    @endif
                                </select>
                             </div>
                         </div>
@@ -145,10 +145,10 @@
 
                         <div class="form-group row">
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Channel Logo') }}</label>
-                           
+
                                 <input id="channel_logo" type="file" class="form-control" id= "channel_logo" name="channel_logo"  value="DefaultImageName">
                                <p class="text" id= "error_picture"> </p>
-                      
+
                             </div>
                             @if(!empty($Channel->channel_logo)) i
                             <img class="w-50 mt-2 rounded" src="<?php echo  $Channel->channel_logo; ?>"  />
@@ -160,10 +160,10 @@
                         <div class="form-group row">
                         <label for="" >Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
-                       
+
                             </div>
                             @if(!empty($Channel->intro_video))
-                            <video  width="100" height="100" id="videoPlayer" class="" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' 
+                            <video  width="100" height="100" id="videoPlayer" class="" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
                             src="{{ $Channel->intro_video }}"  type="video/mp4" >
                             @endif
                         </div>
@@ -179,8 +179,8 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    
-                                        </div> 
+
+                                        </div>
                                 </div>
                                 </div>
                             </div>
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return false; // Ensure that the function exits
                 }
 
-               
+
             });
         });
 

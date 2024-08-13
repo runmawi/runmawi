@@ -693,11 +693,6 @@ class TvshowsController extends Controller
                             $item['Episode_player_type'] =  'application/x-mpegURL' ;
                         break;
         
-                        case $item['type'] == "bunny_cdn":
-                            $item['Episode_url'] =  $item->url    ;
-                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-
                         case $item['type'] == "aws_m3u8":
                           $item['Episode_url'] =  $item->path ;
                           $item['Episode_player_type'] =  'application/x-mpegURL' ;
