@@ -1,7 +1,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
 
                 <div class="col-sm-12 overflow-hidden">
@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $My_Playlist)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('playlist/' . $My_Playlist->slug) }}">

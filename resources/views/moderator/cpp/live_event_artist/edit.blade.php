@@ -643,7 +643,7 @@ border-radius: 0px 4px 4px 0px;
                         <button type="button" class="close restream_modal_close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <h4 class="modal-title text-center">Choose A Platfrom</h4>
+                        <h4 class="modal-title text-center">Choose A Platform</h4>
                         <div class="container mt-5">
 
                             <div class="row">

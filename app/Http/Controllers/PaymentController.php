@@ -16,6 +16,7 @@ use App\Plan as Plan;
 use App\PaypalPlan as PaypalPlan;
 use Hash;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Routing\Controller;
 use Image;
 use View;
 use DB;
@@ -42,16 +43,21 @@ use App\Channel;
 use CinetPay\CinetPay;
 use App\Audio;
 use App\CurrencySetting;
-
+use Route;
 
 class PaymentController extends Controller
 {
+  public function __construct()
+  {
+    $this->HomeSetting = HomeSetting::first();
+    Theme::uses($this->HomeSetting->theme_choosen);
+  }
+
   public function index()
   {
     return View::make('stripe');
 
   }
-
 
   public function store(Request $request)
   {
@@ -646,6 +652,10 @@ public function RentPaypal(Request $request)
                     $user = User::find(Auth::user()->id);
                     $user->payment_status = 'Cancel';
                     $user->save();
+
+                    Subscription::where('stripe_id',$stripe_plan)->update([
+                      'stripe_status' =>  'Cancelled',
+                  ]);
                     
               } catch (\Throwable $th) {
 
@@ -938,7 +948,13 @@ public function RentPaypal(Request $request)
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
-            return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout','intent_stripe']));
+            $payment_current_route_uri = Route::getCurrentRoute()->uri;
+
+            return Theme::view('register.upgrade_payment', compact(
+                                          ['plans_data_signup_checkout',
+                                          'intent_stripe',
+                                          'payment_current_route_uri']
+                                        ));
           
           }else{
                 return Theme::view('register.upgrade', ['intent' => $user->createSetupIntent(), compact('plans_data'),'plans_data' => $plans_data ,'devices' => $devices]);
@@ -983,8 +999,11 @@ public function RentPaypal(Request $request)
                   $livepurchases =[]; 
               }
 
+
             return Theme::view('transactiondetails',
-                                [ 'subscriptions'=>$subscriptions,
+                                [ 
+                                  'current_theme' => $this->HomeSetting->theme_choosen,
+                                  'subscriptions'=>$subscriptions,
                                   'ppvcharse'=>$ppvcharses,
                                   'livepurchase'=>$livepurchases
                                 ]);

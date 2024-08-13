@@ -21,16 +21,16 @@
   </a>
   </h4>  
 </div>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="playlist home-sec list-inline row p-0 mb-0">
     <?php  if(isset($AdminVideoPlaylist)) :
       foreach($AdminVideoPlaylist as $VideoPlaylist): ?>
-        <li class="slide-item">
+        <div class="items">
           <a href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
+              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $VideoPlaylist->name; ?>">
 
               </div>
 
@@ -49,8 +49,22 @@
               </div>
             </div>
           </a>
-        </li>
+        </div>
       <?php endforeach; 
     endif; ?>
-  </ul>
+  </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.playlist');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

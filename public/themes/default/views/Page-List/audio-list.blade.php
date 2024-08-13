@@ -2,15 +2,14 @@
 @php
     include public_path("themes/{$current_theme}/views/header.php");
 @endphp
-
-<section id="iq-favorites">
+<section id="iq-favorites" class="pagelist">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h2 class="main-title fira-sans-condensed-regular">
-                            {{ $order_settings_list[6]->header_name ? __($order_settings_list[6]->header_name) : '' }}
+                            {{ $order_settings_list[5]->header_name ? __($order_settings_list[5]->header_name) : '' }}
                     </h2>  
                 </div>
 

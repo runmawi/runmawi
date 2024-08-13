@@ -24,7 +24,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $key => $latest_view_video)
                                 <li class="slide-item">
                                     <div class="block-images position-relative">
@@ -48,19 +48,26 @@
                                                 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($latest_view_video)->age_restrict.'+' }}
-                                                    </div>
+                                                    </div> --}}
 
                                                     <span class="text-white">
-                                                        {{ $latest_view_video->duration != null ? gmdate('H:i:s', $latest_view_video->duration) : null }}
+                                                        @if($latest_view_video->duration != null)
+                                                            @php
+                                                                $duration = Carbon\CarbonInterval::seconds($latest_view_video->duration)->cascade();
+                                                                $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                $minutes = $duration->format('%imin');
+                                                            @endphp
+                                                            {{ $hours }}{{ $minutes }}
+                                                        @endif
                                                     </span>
                                                 </div>
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                        {{ __('Play Now')}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -68,7 +75,7 @@
 
                                             {{-- WatchLater & wishlist --}}
 
-                                        @php
+                                        {{-- @php
                                             $inputs = [
                                                 'source_id'     => $latest_view_video->id ,
                                                 'type'          => 'channel',  // for videos - channel
@@ -77,7 +84,7 @@
                                             ];
                                         @endphp
 
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
                                 
                                     </div>
                                 </li>

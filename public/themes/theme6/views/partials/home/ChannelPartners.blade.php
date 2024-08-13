@@ -1,7 +1,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
 
                 <div class="col-sm-12 overflow-hidden">
@@ -12,14 +12,14 @@
                     </div>
 
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $channel)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('channel/' . $channel->channel_slug) }}">
                                         <div class="block-images position-relative">
                                           
                                             <div class="img-box">
-                                                <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $channel->channel_logo ? $channel->channel_logo : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">

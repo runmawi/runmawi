@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52a7c72eb8a97fd02e5a6959ab2d68ff",
+    "content-hash": "6e59951a163adf4a99bb74ca0ce79a1f",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
@@ -8392,6 +8392,58 @@
                 "source": "https://github.com/Razorpay/razorpay-php"
             },
             "time": "2022-03-08T13:36:42+00:00"
+        },
+        {
+            "name": "recurly/recurly-client",
+            "version": "4.52.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recurly/recurly-client-php.git",
+                "reference": "afe13eb6e713f732717de2f68310cf6013c473fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recurly/recurly-client-php/zipball/afe13eb6e713f732717de2f68310cf6013c473fe",
+                "reference": "afe13eb6e713f732717de2f68310cf6013c473fe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.2.0",
+                "psr/log": "^1.1 || ^2.0 || ^3.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "phpcompatibility/php-compatibility": "^9.3",
+                "phpdocumentor/phpdocumentor": "~3.0.0",
+                "phpstan/phpstan": "^0.12.11",
+                "phpunit/phpunit": "^8",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/recurly.php"
+                ],
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The PHP client library for the Recurly API",
+            "homepage": "https://github.com/recurly/recurly-client-php",
+            "keywords": [
+                "pay",
+                "payments",
+                "recurly"
+            ],
+            "support": {
+                "issues": "https://github.com/recurly/recurly-client-php/issues",
+                "source": "https://github.com/recurly/recurly-client-php/tree/4.52.0"
+            },
+            "time": "2024-07-03T20:55:39+00:00"
         },
         {
             "name": "rmccue/requests",

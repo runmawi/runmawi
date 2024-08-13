@@ -5,18 +5,18 @@
 <?php
  endif;
 ?>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="featured-episode home-sec list-inline row p-0 mb-0">
     <?php  if(isset($featured_episodes)) :
     					 foreach($featured_episodes as $key => $latest_episode) {
         // foreach($latest_series as $latest_serie) { 
 ?>
-        <li class="slide-item">
+        <div class="items">
           <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="FeaturedEpisodes">
               
               </div>              </div>
               <div class="block-description">
@@ -38,9 +38,23 @@
                 </div>
             </div>
           </a>
-        </li>
+        </div>
       <?php  } 
       // }
     endif; ?>
-  </ul>
+  </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.featured-episode');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

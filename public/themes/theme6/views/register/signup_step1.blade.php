@@ -25,7 +25,7 @@ $theme = App\SiteTheme::first();
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
+    
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -192,9 +192,15 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0; 
 }
+.sign-user_card {
+    background-color: #111;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+.sign-in-from {padding: 21px;}
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section style="background: #000;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -207,34 +213,34 @@ input[type=number]::-webkit-outer-spin-button {
     // dd($SignupMenu);
 ?>
 
-<div class="container loginbackground">
+<div class="container loginbackground mt-0">
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+         <div class="col-sm-9 col-md-7 col-lg-5 text-center align-self-center">
 
                             {{-- recaptcha --}}
-                <div class="col-md-12">
-                    @if ($errors->has('g-recaptcha-response'))
-                        <span class="alert alert-danger display-hide" id="successMessage" >
-                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                        </span>
-                     @endif
-                </div>
+                    <div class="col-md-12">
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="alert alert-danger display-hide" id="successMessage" >
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+    
+                    <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                        <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:0.3rem;">  
+                    <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                        <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:0.3rem;">  
+                    <?php }else { ?> 
+                        <img class="apps" alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:0.3rem;"></div></div>
+                    <?php } ?>
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
 
                       <div align="center">
-                                      
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
-                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
-                            <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php } ?>
 
-                          <h3 class="mb-3 text-center">Sign Up</h3>
+                          <h4 class="mb-3 text-center"><?= 'Sign up to your '. $settings->website_name. ' account' ?></h4>
                       </div>
                       <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf

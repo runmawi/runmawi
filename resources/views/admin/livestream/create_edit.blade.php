@@ -445,7 +445,7 @@
                             <p class="p1">Live stream Ratings 10 out of 10</p>
 
                             <div class="panel-body">
-                                <select class="js-example-basic-multiple" style="width: 100%;" name="rating" id="rating" tags="true" onkeyup="NumAndTwoDecimals(event , this);" multiple="multiple">
+                                <select class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags="true" onkeyup="NumAndTwoDecimals(event , this);">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -1537,6 +1537,7 @@
 
     $(document).ready(function () {
         $(".js-example-basic-multiple").select2();
+        $('.js-example-basic-single').select2();
 
         $("#tags").tagsInput();
 

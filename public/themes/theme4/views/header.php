@@ -222,8 +222,8 @@
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin="anonymous">
+    <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
@@ -2028,7 +2028,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <div class="iq-card shadow-none m-0">
 
                                                 <?php if( Auth::guest() ) : ?>
-
+                                                   <?php if( $theme->signin_header == 1 ): ?>
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
                                                          <li class="nav-item nav-icon res-signin">
@@ -2054,6 +2054,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                          </li>
 
                                                       </div>
+                                                      <?php endif; ?>
 
                                                    <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
                                                       

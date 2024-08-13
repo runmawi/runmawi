@@ -37,18 +37,18 @@
 @if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $series_genre )
         <section id="iq-tvthrillers" class="s-margin">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
 
                           {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
-                            <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ 'view all' }}</a></h4>
+                            <h4 class="main-title text-primary"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ 'view all' }}</a></h4>
                         </div>
 
                         <div class="tvthrillers-contens">
-                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                            <ul class="favorites-slider list-inline">
                                 @foreach ($series_genre->category_series as $latest_series)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('play_series/'.$latest_series->slug) }}">
@@ -70,7 +70,7 @@
 
                                                     <div class="hover-buttons">
                                                         <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
+                                                            {{ __('Play Now')}}
                                                         </span>
                                                     </div>
                                                 </div>

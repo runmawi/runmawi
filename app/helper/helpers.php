@@ -589,6 +589,18 @@ function Country_name(){
     }
 }
 
+function Country_Code(){
+
+    try {
+        $Country_Code = \Location::get()->countryCode;
+
+        return $Country_Code ;
+
+    } catch (\Throwable $th) {
+        return 'Unknown' ;
+    }
+}
+
 function city_name(){
     
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();

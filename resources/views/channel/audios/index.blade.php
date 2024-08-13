@@ -29,8 +29,9 @@
                      </div>
                      <div class="iq-card-body">
                         <div class="table-view">
-                           <table class="data-tables table audio_table " style="width:100%">
-                              <thead>
+                       
+                              <table class="table text-center iq-card audio_table">
+                              <tr class="table-header r1">
                                  <tr>
                                     <th><label>Title</label></th>
                                     <th><label>Rating</label></th>
@@ -39,7 +40,6 @@
                                      <th><label>Status</label></th>
                                     <th><label>Action</label></th>
                                  </tr>
-                              </thead>
                               <tbody>
                               @foreach($audios as $audio)
                                  <tr>
@@ -62,12 +62,18 @@
                                     <td>
                                         {{ $audio->views }} <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
                                     </td>
-                                    <td>{{ $audio->rating }}</td>
+                                    <?php if($audio->draft == null){ ?>
+                                    <td > <p class = "bg-warning audio_active"><?php echo "Draft"; ?></p></td>
+                                             <?php }elseif($audio->draft == 1 && $audio->status == 1 && $audio->active == 1){ ?>
+                                    <td > <p class = "bg-success audio_active"><?php  echo "Published"; ?></p></td>
+                                             <?php }else{ ?>
+                                    <td> <p class = "bg-warning audio_active"><?php  echo "Draft"; ?></p></td>
+                                             <?php }?>
 
                                     <td>
                                        <div class=" align-items-center list-user-action">
-                                          <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/channel/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                          <!-- <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="View" href="{{ URL::to('/channel/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a> -->
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('/channel/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"

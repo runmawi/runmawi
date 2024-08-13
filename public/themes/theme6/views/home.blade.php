@@ -13,65 +13,32 @@
       </div>
    </div> --}}
 
-
-               <!-- Slider  -->
-      <?php 
-         
-         $check_Kidmode = 0;
-
-      $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
-
-         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
-         }
-
-         if ($check_Kidmode == 1) {
-            $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
-         }
-
-         if (videos_expiry_date_status() == 1) {
-            $video_banner = $video_banner->where(function ($query) {
-               $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-            });
-         }
-
-      $video_banner = $video_banner->latest()->limit(30)->get();
-
-         // Video Category Banner
-
-      $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
-
-      $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                 ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
-                                 ->where('videos.draft', 1)->where('videos.banner', 0);   
-
-                              if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-                                 $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
-                              }
-
-                              if ($check_Kidmode == 1) {
-                                 $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
-                              }
-
-                              if (videos_expiry_date_status() == 1) {
-                                 $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
-                                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-                                 });
-                              }
-
-      $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(30)->get();
-
-
-         $Slider_array_data = array(
-            'sliders'            => $sliders, 
-            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
-            'video_banners'      => $video_banner ,
-            'series_sliders'     => $series_sliders ,
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
-            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
-            'VideoCategory_banner' => $VideoCategory_banner ,
-         );    
-      ?>
+   @php 
+   
+   $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
+   $homepage_array_data = [ 
+                         'order_settings_list'      => $order_settings_list, 
+                         'multiple_compress_image'  => $multiple_compress_image, 
+                         'videos_expiry_date_status' => $videos_expiry_date_status,
+                         'default_vertical_image_url'   => $default_vertical_image_url,
+                         'default_horizontal_image_url' => $default_horizontal_image_url,
+                         'ThumbnailSetting' => $ThumbnailSetting,
+                         'getfeching' => $getfeching,
+                         'currency'   => $currency,
+                         'settings'   => $settings,
+                      ];
+                           
+     $Slider_array_data = array(
+         'sliders'               => $sliders, 
+         'live_banner'           => $live_banner, 
+         'video_banners'         => $video_banners, 
+         'series_sliders'        => $series_sliders, 
+         'live_event_banners'    => $live_event_banners, 
+         'Episode_sliders'       => $Episode_sliders, 
+         'VideoCategory_banner'  => $VideoCategory_banner, 
+     );   
+   
+   @endphp
 
       <section id="home" class="iq-main-slider p-0">
          
@@ -201,7 +168,7 @@
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/schedule', [ 'data' => $VideoSchedules ,'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
-            @if( $item == 'Recommendation')  {{-- Recommendation --}}
+            @if( $item == 'Recommendation' && $home_settings->Recommendation == 1)  {{-- Recommendation --}}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Top_videos', ['data' => $top_most_watched, 'order_settings_list' => $order_settings_list ])->content() !!}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/most_watched_country', ['data' => $Most_watched_country, 'order_settings_list' => $order_settings_list ])->content() !!}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/most_watched_user', ['data' => $most_watch_user, 'order_settings_list' => $order_settings_list ])->content() !!}

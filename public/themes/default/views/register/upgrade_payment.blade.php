@@ -552,6 +552,7 @@
         $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
         $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
         $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
+        $recurly_payment_settings = App\PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
 
         // label
         $stripe_label = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
@@ -560,6 +561,7 @@
         $Razorpay_label = App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
         $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
         $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
+        $recurly_label = App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() ? App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() : "Recurly";
         
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
     @endphp
@@ -639,6 +641,14 @@
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
                                         <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
+                                    </div>
+                                @endif
+
+                                      {{-- Recurly --}}
+                                @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
+                                        <label class=" ml-2"> <p>{{ __($recurly_label) }} </p></label> 
                                     </div>
                                 @endif
                             </div>
@@ -747,6 +757,19 @@
                                     {{ __('Pay Now') }}
                                 </button>
                             </div>
+
+                            {{-- Recurly --}}
+                            <div class="col-md-12 Recurly_payment">
+                                <form action="{{ route('Recurly.checkout_page') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
+                                    <input type="hidden" id="payment_current_route_uri" name="payment_current_route_uri" value="{{ $payment_current_route_uri ?? '' }}">
+                                    <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
+                                        {{ __('Pay Now') }}
+                                    </button>
+                                </form>
+                            </div>
+
                             <div class="d-flex justify-content-center" style="margin-right:auto;margin-left:auto;">
                                 <a class="btn bd  text-white mt-3" href="{{ URL::to('/home') }}">
                                     <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
@@ -767,7 +790,6 @@
     <input type="hidden" value="<?php echo DiscountPercentage(); ?>" id="discount_percentage" class="discount_percentage">
     <input type="hidden" value="<?php echo NewSubscriptionCoupon(); ?>" id="discount_status" class="discount_status">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
     <script>
         $(function() {
@@ -950,10 +972,10 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
             $('.Summary').empty();
 
-            $("#stripe_radio_button").attr('checked', true);
+            // $("#stripe_radio_button").attr('checked', true);
 
             if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
                 $('.stripe_payment').show();
@@ -975,13 +997,16 @@
                 $('.Paydunya_payment').show();
             }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "Recurly") {
+                $('.Recurly_payment').show();
+            }
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
                 
                 $('.Summary').empty();
 
@@ -1006,9 +1031,12 @@
                 } else if (payment_gateway == "Paydunya") {
 
                     $('.Paydunya_payment').show();
-
                 }
 
+                else if (payment_gateway == "Recurly") {
+
+                    $('.Recurly_payment').show();
+                }
                 
             });
         });
@@ -1222,8 +1250,6 @@
                     
                     success: function( data ){
 
-                        console.log( data );
-
                     if( data.status == true ){
                         window.location.href = data.authorization_url ;
                     }
@@ -1242,9 +1268,6 @@
         });
     </script>
 
-
-    @php
-        include public_path('themes/default/views/footer.blade.php');
-    @endphp
+    @php include public_path('themes/default/views/footer.blade.php'); @endphp
 
 @endsection

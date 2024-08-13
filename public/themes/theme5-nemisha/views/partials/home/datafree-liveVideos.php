@@ -14,8 +14,8 @@
         </h5>
     <a class="see" href="<?php echo URL::to('/live/category/').'/'.$DataFreeliveCategories->slug;?>"> See All  </a>
 </div>
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+  <div class="datafree-live home-sec list-inline row p-0 mb-0">
         <?php  if(isset($live_streams)) :
                          foreach($live_streams as $video): 
                             if (!empty($video->publish_time))
@@ -84,13 +84,13 @@
                               }
                             ?>
         <!-- .@$video->categories->name. -->
-        <li class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="datafree-live" />
                         </a>
                         
                       <!-- PPV price -->
@@ -193,10 +193,10 @@
                 </div>
                   
             </a>
-        </li>
+        </div>
         <?php endforeach; 
                                    endif; ?>
-    </ul>
+    </div>
 </div>
 <?php endif; ?>
 
@@ -238,4 +238,16 @@
               window.location = '<?= URL::to('login') ?>';
           }
       });
+
+    var elem = document.querySelector('.datafree-live');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
 </script>

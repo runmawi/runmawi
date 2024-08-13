@@ -18,20 +18,20 @@ if(count($latest_video) > 0) : ?>
             } ?>
         </a></h5>
 </div>
-<div class="favorites-contens">
-    <div class="favorites-slider list-inline  row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="video-category home-sec list-inline row p-0 mb-0">
         <?php  
                         $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
                          if(isset($parentCategories)) :
                          foreach($parentCategories as $Categories): ?>
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="videos">
-                            <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100"
-                                alt="l-img">
+                            <img src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded"
+                            alt="<?php echo $watchlater_video->title; ?>">
                         </a>
                     </div>
                 </div>
@@ -66,3 +66,18 @@ if(count($latest_video) > 0) : ?>
     </div>
 </div>
 <?php endif; ?>
+
+<!-- Flickity Slider -->
+<script>
+    var elem = document.querySelector('.video-category');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>

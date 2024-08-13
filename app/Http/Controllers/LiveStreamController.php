@@ -847,7 +847,7 @@ class LiveStreamController extends Controller
                 }
                 $live_videos =   $live_videos->whereNotIn('live_streams.id',$blockLiveStreams);
             }
-            $live_videos = $live_videos->orderBy('live_streams.created_at','desc')->get();
+            $live_videos = $live_videos->orderBy('live_streams.created_at', 'desc')->paginate($this->videos_per_page);
 
           }else{
             $parentCategories_id = '';
@@ -861,12 +861,12 @@ class LiveStreamController extends Controller
              $currency = CurrencySetting::first();
             
             $data = array(
-                    'currency'=> $currency,
-                    'ThumbnailSetting' => $ThumbnailSetting,
-                    'live_videos' => $live_videos,
-                    'parentCategories_name' => $parentCategories_name,
-                    'parentCategories'     => $parentCategories ,
-                );
+                'currency'              => $currency,
+                'ThumbnailSetting'      => $ThumbnailSetting,
+                'live_videos'           => $live_videos,
+                'parentCategories_name' => $parentCategories_name,
+                'parentCategories'      => $parentCategories,
+            );
            return Theme::view('livecategoryvids',$data);
             
         } 

@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -9,14 +9,14 @@
                                 {{ !empty($category->home_genre) ?  $category->home_genre : $category->name }}
                             </a>
                         </h4>
-                        <h4 class="main-title"><a
+                        <h4 class="main-title text-primary"><a
                                 href="{{  URL::to('/series/category/' . $category->slug ) }} ">
                                 {{ 'view all' }}
                             </a>
                         </h4>
                     </div>
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $series_details)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
@@ -38,7 +38,7 @@
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                        {{ __('Play Now')}}
                                                     </span>
                                                 </div>
                                             </div>

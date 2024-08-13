@@ -1184,7 +1184,12 @@ public function ChannelStore(Request $request)
     try {
 
         $input = $request->all();
-        $request->validate(['email' => 'required|email|unique:channels,email' ]);
+        $request->validate(['email' => 'required|email|unique:channels,email',     
+            "mobile_number" => [
+            'required',
+            'regex:/^\d{10}$/', // Ensures exactly 10 digits
+            'size:10' // Ensures the length is exactly 10
+        ], ]);
 
         $channel_roles = ChannelRoles::where('id',$input['channel_roles'])->first();
 

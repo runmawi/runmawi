@@ -32,19 +32,19 @@ if (Auth::guest() != true) {
     </h5>
 </div>
 
-<div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
+<div class="favorites-contens"> 
+    <div class="latest-viewed-episode home-sec list-inline row p-0 mb-0">
         <?php  if(isset($latest_view_episodes)) :
                 foreach($latest_view_episodes as $key => $latest_view_episode):  ?>
 
-        <li class="slide-item">
+        <div class="items">
             <a href="<?= URL::to('/episode' . '/' . $latest_view_episode->series_slug . '/' . $latest_view_episode->episode_slug); ?>">
                 <div class="block-images position-relative">
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>" class="img-fluid lazyload w-100"
-                            alt="">
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>" class="img-fluid lazyload w-100"
+                            alt="<?php echo $latest_view_episode->title; ?>">
                     </div>
                 </div>
 
@@ -93,10 +93,24 @@ if (Auth::guest() != true) {
                     <?php }?>
                 </div>
             </a>
-        </li>
+        </div>
         <?php                     
             endforeach; 
             endif; 
         ?>
-    </ul>
+    </div>
 </div>
+
+<script>
+    var elem = document.querySelector('.latest-viewed-episode');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

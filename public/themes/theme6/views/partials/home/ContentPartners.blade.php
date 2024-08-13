@@ -1,6 +1,6 @@
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -9,13 +9,13 @@
                         </h4>
                     </div>
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ($data as $CPP_details)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('contentpartner/' . $CPP_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src=" {{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : default_vertical_image_url() }}"
+                                                <img src="{{ $CPP_details->picture ? $CPP_details->picture : default_vertical_image_url() }}"
                                                     class="img-fluid" alt="">
                                             </div>
 

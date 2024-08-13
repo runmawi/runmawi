@@ -23,21 +23,21 @@
       <?php } ?>
 
       </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+      <div class="favorites-contens"> 
+         <div class="latest-audios home-sec list-inline row p-0 mb-0">
                          <?php  if(isset($audios)) :
                          foreach($audios as $audio): ?>
-                       <li class="slide-item">
+                       <div class="items">
                           <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom w-100" alt="">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom w-100 h-50 flickity-lazyloaded" alt="<?php echo $audio->title; ?>">
                                 </div> </div>
                                 <div class="block-description" > </div>
                                            
                                    <div class="hover-buttons">
-                                   <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                                   <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>" alt="<?php echo $audio->title; ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
                </a>
                <!-- <div class="d-flex align-items-center justify-content-between">
@@ -50,12 +50,26 @@
                               
                             
                           </a>
-                       </li>
+                       </div>
 
                         <?php endforeach; 
                                    endif; ?>
-                    </ul>
+                    </div>
                  </div>
 
                  <?php       endif; ?>
       
+
+<script>
+    var elem = document.querySelector('.latest-audios');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>

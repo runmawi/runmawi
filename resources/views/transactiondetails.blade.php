@@ -36,43 +36,6 @@
                 </div>
             </div>
                 
-                <!-- <div class="mt-5">
-                    <table class="table table-bordered text-center">
-                            <thead class="thead-light ">
-                                <tr>
-                                <th scope="col">Status</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Payment type</th>
-                                <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <th scope="">Canceled</th>
-                                <td>$45.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by paypal</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">Approved</th>
-                                <td>$35.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by Applepay</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">Pending</th>
-                                <td>$25.00</td>
-                                <td>30 November 2021</td>
-                                <td>Payment by Stripe</td>
-                                    <td><a class="btn1-st">Details</a></td>
-                                </tr>
-                            </tbody>
-                            </table>
-                </div> -->
-                
                <div class="mt-5">
                <table class="table table-bordered text-center">
                       <thead>
@@ -81,14 +44,6 @@
                         <th scope="col">Amount</th>
                         <th scope="col">Date</th>
                         <th scope="col">Payment type</th>
-                        <!-- <th>Price</th>
-                        <th>days</th>
-                        <th>stripe id</th>
-                        <th>stripe status</th>
-                        <th>stripe plan</th>
-                        <th>quantity</th>
-                        <th>created_at</th>
-                        <th>updated_at</th> -->
                         </tr>
                       </thead>
                   <?php  if(!empty($subscriptions)){ ?>
@@ -99,22 +54,16 @@
                            <tr>
                             <?php if($subscription->stripe_status == 'active'){ ?>
                             <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($subscription->stripe_status == 'inactive'){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
+                            <?php }elseif($subscription->stripe_status == 'Cancelled'){ ?>
+                                <td class = "bg-success"> <?php  echo "Cancelled"; ?></td>
                             <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
+                                <td class = "bg-warning"> <?php  echo "-"; ?></td>
                             <?php }?>
                             <td>{{ $subscription->price }}</td>
 
-                            <!-- <td>{{ $subscription->days }}</td>
-                            <td>{{ $subscription->stripe_id }}</td>
-                            <td>{{ $subscription->stripe_status }}</td>
-                            <td>{{ $subscription->stripe_plan }}</td>
-                            <td>{{ $subscription->quantity}}</td> -->
                             <td>{{ $subscription->created_at}}</td>
                             <td>Card</td>
 
-                            <!-- <td>{{ $subscription->updated_at }}</td> -->
                            </tr>
                             @endforeach
                             
