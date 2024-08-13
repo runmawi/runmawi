@@ -4275,97 +4275,195 @@ public function verifyandupdatepassword(Request $request)
 
       try {
 
-          $search_value = $request->search_value;
+          $settings = Setting::first();
 
-          $videos = Video::Select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-            ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-            ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-            ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-            ->where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->where('draft', '=', '1')
-            ->latest('videos.created_at')
-            ->groupBy('videos.id')
-            ->limit('10');
-
-            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
-            }
-
-            $videos = $videos->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/images/'.$item->image); ;
-              $item['source']    = "videos";
-              return $item;
-            });
+          $default_vertical_image_url = default_vertical_image_url();
+          $default_horizontal_image_url = default_horizontal_image_url();
           
+          $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
+                          ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                          ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
 
-          $livestreams = LiveStream::select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','livecategories.live_id','live_categories.name')
-                                ->Join('livecategories','livecategories.live_id','=','live_streams.id')
-                                ->Join('live_categories','live_categories.id','=','livecategories.category_id')
-                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('live_categories.name', 'LIKE', '%' . $search_value . '%')           
-                                ->where('live_streams.active', '=', '1')
-                                // ->where('status', '=', '1')
-                                ->limit('10')
-                                ->groupBy('live_streams.id')
-                                ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-                                  $item['source'] = "Livestream";
-                                  return $item;
-                                });
+                              ->when($settings->search_tags_status, function ($query) use ($request) {
+                                  return $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->search_value . '%');
+                              })
 
-          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured','mp3_url')
-                                ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
-                                ->where('active', '=', '1')
-                                ->where('status', '=', '1')
-                                ->limit('10')
-                                ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-                                  $item['source']    = "Audios";
-                                  return $item;
-                                });
-                               
+                              ->when($settings->search_title_status, function ($query) use ($request) {
+                                  return $query->orWhere('videos.title', 'LIKE', '%' . $request->search_value . '%');
+                              })
 
-          $episodes = Episode::Select('episodes.id','episodes.title','episodes.slug','episodes.rating','episodes.access','episodes.ppv_price','episodes.duration','episodes.rating','episodes.image','episodes.featured','series.id','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series','series.id','=','episodes.series_id')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
-                                ->where('episodes.active', '=', '1')
-                                ->where('episodes.status', '=', '1')
-                                ->groupBy('episodes.id')
-                                ->limit('10')
-                                ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('/public/uploads/image/'.$item->image);
-                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
-                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-                                  $item['source']    = "Episode";
-                                  return $item;
-                                }); 
+                              ->when($settings->search_category_status, function ($query) use ($request) {
+                                  return $query->orWhere('video_categories.name', 'LIKE', '%' . $request->search_value . '%');
+                              })
+
+                              ->when($settings->search_description_status, function ($query) use ($request) {
+                                  return $query->orWhere('videos.description', 'LIKE', '%' . $request->search_value . '%');
+                              })
+
+                              ->when($settings->search_details_status, function ($query) use ($request) {
+                                  return $query->orWhere('videos.details', 'LIKE', '%' . $request->search_value . '%');
+                              })
+
+                          ->where('active', 1)->where('status', 1)->where('draft', 1)
+                          ->orderBy('created_at', 'desc')->groupBy('videos.id')
+                          ->limit(10)
+
+                          ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
+                              return $query->whereNotIn('videos.id', Block_videos());
+                          })
+
+                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                            $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
+                            $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                            $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $default_horizontal_image_url;                            $item['source'] = "Livestream";
+                            return $item;
+                          });
 
 
-          $series = Series::Select('series.id','series.title','series.slug','series.access','series.active','series.ppv_status','series.featured','series.duration','series.image','series.embed_code','series.mp4_url','series.webm_url','series.ogg_url','series.url','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
-                                ->where('series.active', '=', '1')
-                                ->groupBy('series.id')
-                                ->limit('10')
-                                ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
-                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-                                  $item['source']    = "Series";
-                                  return $item;
-                                });   
+          $livestreams = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name','livecategories.category_id','live_categories.id')
+                          ->leftJoin('livecategories','livecategories.live_id','=','live_streams.id')
+                          ->leftJoin('live_categories','live_categories.id','=','livecategories.category_id')
+
+                          ->when($settings->search_tags_status, function ($query) use ($request) {
+                              return $query->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_title_status, function ($query) use ($request) {
+                              return $query ->orwhere('live_streams.title', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_description_status, function ($query) use ($request) {
+                              return $query->orwhere('live_streams.description', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_details_status, function ($query) use ($request) {
+                              return $query->orwhere('live_streams.details', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_category_status, function ($query) use ($request) {
+                              return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->search_value . '%');
+                          })
+                          ->where('live_streams.active', '=', '1')
+                          ->limit('10')
+                          ->groupBy('live_streams.id')
+                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                              $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
+                              $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                              $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url;               
+                              $item['source'] = "Livestream";
+                              return $item;
+                          }); 
+
+          $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
+                          ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
+                          ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
+                          
+
+                          ->when($settings->search_tags_status, function ($query) use ($request) {
+                              return $query->orwhere('search_tags', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_title_status, function ($query) use ($request) {
+                              return $query ->orwhere('title', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_description_status, function ($query) use ($request) {
+                              return $query->orwhere('description', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_details_status, function ($query) use ($request) {
+                              return $query->orwhere('details', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_category_status, function ($query) use ($request) {
+                              return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->where('audio.active', '1')->where('audio.status', '1')
+                          
+                      ->limit('10')
+                      ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                        $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
+                        $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                        $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;               
+                        $item['source']    = "Audios";
+                        return $item;
+                      }); 
+
+
+          $episodes = Episode::Select('episodes.*','series.id','series_categories.category_id')
+                          ->leftJoin('series','series.id','=','episodes.series_id')
+                          ->leftJoin('series_categories','series_categories.series_id','=','series.id')
+                          ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+
+                          ->when($settings->search_tags_status, function ($query) use ($request) {
+                              return $query->orwhere('episodes.search_tags', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_title_status, function ($query) use ($request) {
+                              return $query ->orwhere('episodes.title', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_description_status, function ($query) use ($request) {
+                              return $query->orwhere('episodes.episode_description', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_category_status, function ($query) use ($request) {
+                              return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->where('episodes.active', '=', '1')
+                          ->where('episodes.status', '=', '1')
+                          ->groupBy('episodes.id')
+                          ->limit('10')
+                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                              $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
+                              $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                              $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                              $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                              $item['source']    = "Episode";
+                              return $item;
+                          }); 
+                          
+          $series = Series::Select('series.*','series_categories.category_id')
+                          ->leftJoin('series_categories','series_categories.series_id','=','series.id')
+                          ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+
+                          
+                          ->when($settings->search_tags_status, function ($query) use ($request) {
+                              return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_title_status, function ($query) use ($request) {
+                              return $query ->orwhere('series.title', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_description_status, function ($query) use ($request) {
+                              return $query->orwhere('series.description', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_details_status, function ($query) use ($request) {
+                              return $query->orwhere('series.details', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->when($settings->search_category_status, function ($query) use ($request) {
+                              return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
+                          })
+
+                          ->orwhere('.search_tag', 'LIKE', '%' . $request->search_value . '%')
+                          ->orwhere('.title', 'LIKE', '%' . $request->search_value . '%')
+                          ->orwhere('.name', 'LIKE', '%' . $request->search_value . '%')   
+                          ->where('series.active', '=', '1')
+                          ->groupBy('series.id')
+                          ->limit('10')
+                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                              $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
+                              $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                              $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                              $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                              $item['source']    = "Series";
+                              return $item;
+                          });   
 
           $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
 
