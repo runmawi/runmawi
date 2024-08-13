@@ -273,7 +273,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb p-0">
@@ -494,7 +494,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>"
         value="<?= $episode->genre_id ?>">
     <br>
-    <div class="container-fluid series-details">
+    <div class="container series-details">
         <div id="series_title">
             <div class="">
                 <div class="row align-items-center justify-content-between">

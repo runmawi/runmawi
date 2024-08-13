@@ -338,79 +338,53 @@ class FrontEndQueryController extends Controller
     public function livestreams()
     {
         $current_timezone = current_timezone();
-
+    
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', 1)
                                         ->where('status', 1)
-                                        ->latest()
-                                        
                                         ->get();
     
-        $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-
-            $Current_time = Carbon::now($current_timezone);
-
+        $livestreams = $livestreams->map(function ($livestream) use ($current_timezone) {
+            $current_time = Carbon::now($current_timezone);
+    
             if ($livestream->publish_type === 'recurring_program') {
-        
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                $midnight = $convert_time->copy()->startOfDay();
-        
+                $convert_time = $current_time->copy()->timezone($recurring_timezone);
+    
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        $livestream->start_time = Carbon::parse($livestream->custom_start_program_time);
                         break;
                     case 'daily':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                        $livestream->start_time = $convert_time->copy()->setTimeFromTimeString($livestream->program_start_time);
                         break;
                     case 'weekly':
-                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                        $livestream->start_time = $convert_time->copy()->next($livestream->recurring_program_week_day)->setTimeFromTimeString($livestream->program_start_time);
                         break;
                     case 'monthly':
-                        $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                        $livestream->start_time = $convert_time->copy()->startOfMonth()->addDays($livestream->recurring_program_month_day - 1)->setTimeFromTimeString($livestream->program_start_time);
                         break;
                     default:
-                        $recurring_program_Status = false;
+                        $livestream->start_time = $convert_time;
                         break;
                 }
-
-                switch ($livestream->recurring_program) {
-                    case 'custom':
-                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                        break;
-                    case 'daily':
-                        $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    case 'weekly':
-                        $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    case 'monthly':
-                        $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    default:
-                        $recurring_program_live_animation = false;
-                        break;
-                }
-
-                $livestream->recurring_program_live_animation = $recurring_program_live_animation;
-        
-                return $recurring_program_Status;
+            } elseif ($livestream->publish_type === 'publish_later') {
+                $livestream->start_time = Carbon::parse($livestream->publish_time);
+            } else {
+                $livestream->start_time = $current_time;
             }
-
-            if( $livestream->publish_type === 'publish_later' ){
-
-                $publish_later_Status = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-
-                return $publish_later_Status;
-            }
-            return true;
+    
+            return $livestream;
         });
-
-        return $livestreams ;
+    
+        $sorted_livestreams = $livestreams->sortBy('start_time');
+    
+        return $sorted_livestreams;
     }
+    
 
     public function LiveCategory()
     {
