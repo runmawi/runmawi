@@ -117,6 +117,8 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="Stunt_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Stunt_Coordinator'){{ 'selected' }} @endif > {{ 'Stunt Coordinator' }} </option>
                                 <option value="VFX_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'VFX_Coordinator'){{ 'selected' }} @endif > {{ 'VFX Coordinator' }} </option>
                                 <option value="Writer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Writer'){{ 'selected' }} @endif > {{ 'Writer' }} </option>
+                                <option value="Contributor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Contributor'){{ 'selected' }} @endif > {{ 'Contributor' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Narrator'){{ 'selected' }} @endif > {{ 'Narrator' }} </option>
                             </select>
 
                         </div>

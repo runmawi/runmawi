@@ -210,12 +210,12 @@
         });
 
         //Watermark
-        // player.ready(function() {
-        //     var watermark = document.createElement('div');
-        //     watermark.className = 'vjs-watermark';
-        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
-        //     player.el().appendChild(watermark);
-        // });
+        player.ready(function() {
+            var watermark = document.createElement('div');
+            watermark.className = 'vjs-watermark';
+            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
+            player.el().appendChild(watermark);
+        });
 
         // Advertisement
 
@@ -418,11 +418,11 @@
     }
     .vjs-watermark {
         position: absolute;
-        width: 4%;
-        height: 7%;
-        top: 75%;
-        left: 88%;
-        opacity: 0.7;
+        width: 5%;
+        height: 5%;
+        top: 65%;
+        left: 90%;
+        opacity: 0.5;
         cursor: pointer;
     }
     .vjs-watermark:hover{
