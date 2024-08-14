@@ -1,7 +1,7 @@
 @extends('admin.master')
 @section('content')
 <?php
-    //   echo "<pre>";
+    //   echo "<pre>";  
     // print_r($moderators->user_role);
     // exit();
     ?>
@@ -30,9 +30,9 @@
 
 <div id="moderator-container">
 <!-- This is where -->
-
+	
 	<div class="moderator-section-title">
-		<h4><i class="entypo-globe"></i>Add Channel Partner</h4>
+		<h4><i class="entypo-globe"></i>Add Channel Partner</h4> 
 	</div>
 	<div class="clear"></div>
 	@if (Session::has('message'))
@@ -45,7 +45,7 @@
                         <span>{{ $message }}</span>
                         </div>
                         @endforeach
-                        @endif
+                        @endif	
 
                     <form method="POST" action="{{ URL::to('admin/channel/user/store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
@@ -61,7 +61,7 @@
                         <div class="form-group row">
                             <label for="email" class=" col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-
+                            
                                 <input id="email" type="email" class="form-control " name="email" value=""  autocomplete="email">
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                         <div class="form-group row">
                             <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
-
+                       
                                 <input id="mobile_number" type="text" class="form-control " name="mobile_number"  name="mobile_number" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" value="" >
                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                             </div>
@@ -95,8 +95,8 @@
                         <div class="form-group row">
                             <label for="channel_about" class=" col-form-label text-md-right">{{ __('Channel About') }}</label>
 
-
-
+                           
+                               
                             <input id="channel_about" type="textarea" class="form-control" name="channel_about" value ="" autocomplete="channel_about">
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                         @endForeach
                                     @else
                                         No Record Found
-                                    @endif
+                                    @endif  
                                </select>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                         @endForeach
                                     @else
                                         No Record Found
-                                    @endif
+                                    @endif  
                                </select>
                             </div>
                         </div>
@@ -134,10 +134,10 @@
 
                         <div class="form-group row">
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Channel Logo') }}</label>
-
+                           
                                 <input id="channel_logo" type="file" class="form-control" id= "channel_logo" name="channel_logo"  value="DefaultImageName">
                                <p class="text" id= "error_picture"> </p>
-
+                      
                             </div>
                         </div>
                         <div class="col-md-6" style="width: 50%; float: left;">
@@ -145,7 +145,7 @@
                         <div class="form-group row">
                                 <label for="" style="">Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
-
+                       
                             </div>
                         </div>
                     <br>
@@ -157,8 +157,8 @@
                                                 </div>
                                             </div>
                                         </form>
-
-                                        </div>
+                                    
+                                        </div> 
                                 </div>
                                 </div>
                             </div>
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return false; // Ensure that the function exits
                 }
 
-
+               
             });
         });
 

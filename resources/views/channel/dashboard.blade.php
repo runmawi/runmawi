@@ -24,6 +24,14 @@
    else {
       $visitor = $visitor_count;
    } 
+
+
+   $LoggedDevice = App\LoggedDevice::count(); 
+   $GuestLoggedDevice = App\GuestLoggedDevice::count();
+   $total_visitors = $LoggedDevice + $GuestLoggedDevice ;
+   $channel = Session::get('channel'); 
+   $total_videos = App\Video::where('user_id',@$channel->id)->where('uploaded_by','Channel')->count() ;
+
 ?>
 
 
@@ -52,7 +60,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="col-sm-6 col-lg-6 col-xl-3">
+                     <!-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex  justify-content-between align-items-center">
@@ -91,7 +99,7 @@
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> -->
                      <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
@@ -114,7 +122,9 @@
                      </div>
                   </div>
                   <div class="iq-card">
-
+                  <div class="iq-header-title">
+                           <h4 class="card-title">Top Category</h4>
+                        </div>
                   <div class="iq-card-body row align-items-center">
                         <div class="col-lg-7">
                            <div class="row list-unstyled mb-0 pb-0">
@@ -166,7 +176,7 @@
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-primary"></div>
+                                       <div class="iq-user-box bg-primary">{{ TotalSubscribercount() }}</div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total Subscriber's
                                           </p>
@@ -179,7 +189,7 @@
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-warning"></div>
+                                       <div class="iq-user-box bg-warning">{{ TotalNewSubscribercount() ? TotalNewSubscribercount() : 0 }}</div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">New
                                              Subscriber's
@@ -193,7 +203,7 @@
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-info"></div>
+                                       <div class="iq-user-box bg-info">{{ @$total_videos }}</div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total
                                                 Video's
@@ -207,7 +217,7 @@
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box bg-danger"></div>
+                                       <div class="iq-user-box bg-danger">{{ @$total_visitors }}</div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">Total <br>
                                           Visitor's

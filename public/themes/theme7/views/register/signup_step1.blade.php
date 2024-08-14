@@ -368,13 +368,13 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                                 </div>
                                 
                                 @endif
-                            
-                            
+                                
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
-                            <div class="col-md-12" style="postion:relative;">
-                                <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                <label id="fileLabel">Choose Profile Image</label>
-                                 </div>
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                        <!-- <label id="fileLabel">Choose Profile Image</label> -->
+                                    </div>
+                                   
                                  @endif
                            
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
