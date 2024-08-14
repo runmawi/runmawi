@@ -1265,8 +1265,6 @@ public function ChannelStore(Request $request)
             $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
             $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
             $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
-            $channel->password = Hash::make($request->password);
-            $channel->unhased_password = $request->password;
             $channel->status = 1;
             $channel->save();
 
@@ -1421,8 +1419,6 @@ public function ChannelUpdate(Request $request)
     $channel->role_id       = !empty($channel_roles) ? $channel_roles->id : 3;
     $channel->user_permission = !empty($channel_roles) ? $channel_roles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
     $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
-    $channel->password = Hash::make($request->password);
-    $channel->unhased_password = $request->password;
     $channel->save();
 
     return \Redirect::back()->with('message','Update User Profile');
