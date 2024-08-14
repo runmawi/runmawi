@@ -3,6 +3,7 @@
 namespace App;
 
 use App\User;
+use App\LikeDislike;
 use Illuminate\Database\Eloquent\Model;
 
 class UGCVideo extends Model
@@ -27,5 +28,10 @@ class UGCVideo extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+	public function likesDislikes()
+	{
+    	return $this->hasMany(LikeDislike::class, 'ugc_video_id');
+	}
 
 }

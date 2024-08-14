@@ -39,7 +39,6 @@
 
     .ugc-tab-content{
 		display: none;
-		padding: 15px;
 	}
 
 	.ugc-tab-content.ugc-current{
@@ -48,7 +47,7 @@
 
     .ugc-videos img{
         width: 100%;
-        height: 200px;
+        height: 150px;
         border-radius: 15px;
     }
 

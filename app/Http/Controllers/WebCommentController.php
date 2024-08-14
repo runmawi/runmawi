@@ -210,26 +210,27 @@ class WebCommentController extends Controller
 //     }
 // }
 
-
-public function like($id)
+public function like(Request $request, $commentId)
 {
-    dd('test');
-    \Log::info('Like method called with ID: ' . $id);
-
-    $comment = WebComment::find($id);
+    $comment = Comment::find($commentId);
     if (!$comment) {
-        return response()->json(['error' => 'Comment not found'], 404);
+        return response()->json(['message' => 'Comment not found'], 404);
     }
 
-    $comment->increment('likes');
-    return response()->json(['likes' => $comment->likes]);
-}
+    $isLike = $request->input('is_like');
+    
+    if ($isLike) {
+        $comment->likes_count++;
+    } else {
+        $comment->dislikes_count++;
+    }
 
-public function dislike($id)
-{
-    $comment = WebComment::findOrFail($id);
-    $comment->increment('dislikes');
-    return response()->json(['dislikes' => $comment->dislikes]);
+    $comment->save();
+
+    return response()->json([
+        'likes_count' => $comment->likes_count,
+        'dislikes_count' => $comment->dislikes_count
+    ]);
 }
 
 }

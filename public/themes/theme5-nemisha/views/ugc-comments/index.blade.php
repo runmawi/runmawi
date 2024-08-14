@@ -37,11 +37,10 @@
 
         <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= $comment->comment ?></div>
 
-        <button class="like-button" data-id="<?php echo $comment->id; ?>">Like</button>
-        <span id="likes-count-<?php echo $comment->id; ?>"><?php echo $comment->likes; ?></span>
-
-        <button class="dislike-button" data-id="<?php echo $comment->id; ?>">Dislike</button>
-        <span id="dislikes-count-<?php echo $comment->id; ?>"><?php echo $comment->dislikes; ?></span>
+            <button onclick="likeComment(<?= $comment->id ?>, true)">Like</button>
+            <span id="likes-count-<?= $comment->id ?>"><?= $comment->comment_like ?></span>
+            <button onclick="likeComment(<?= $comment->id ?>, false)">Dislike</button>
+            <span id="dislikes-count-<?= $comment->id ?>"><?= $comment->comment_dislike ?></span>
         
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
@@ -122,39 +121,25 @@
         }, 5000);
     });
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $(document).ready(function() {
-        $('.like-button').on('click', function() {
-    var commentId = $(this).data('id');
-    console.log('Button clicked. Comment ID:', commentId); // Debugging line
-    $.ajax({
-        url: '/comments/' + commentId + '/like',
-        type: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            console.log('Success response:', response); // Debugging line
-            $('#likes-count-' + commentId).text(response.likes);
-        },
-        error: function(xhr) {
-            console.log('Error:', xhr.responseText); // Debugging line
-        }
+    function likeComment(commentId, isLike) {
+        $.ajax({
+            url: '/comments/' + commentId + '/like',
+            type: 'POST',
+            data: {
+                is_like: isLike,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                $('#likes-count-' + commentId).text(response.likes_count);
+                $('#dislikes-count-' + commentId).text(response.dislikes_count);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
         });
-    });
-    
-        $('.dislike-button').on('click', function() {
-            var commentId = $(this).data('id');
-            $.ajax({
-                url: '/comments/' + commentId + '/dislike',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $('#dislikes-count-' + commentId).text(response.dislikes);
-                }
-            });
-        });
-    });
-    </script>
+    }
+</script>

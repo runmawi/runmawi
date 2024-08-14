@@ -77,7 +77,7 @@
 
      <!-- User Generated Content -->
       
-     <?php if(count($ugc_videos) > 0){ ?>
+     <!-- <?php if(count($ugc_videos) > 0){ ?>
          <section id="iq-favorites">
             <div class="container-fluid overflow-hidden">
                   <div class="row">
@@ -87,7 +87,7 @@
                   </div>
             </div>
          </section>
-    <?php } ?>
+    <?php } ?> -->
 
     <!-- Preference By Genres -->
       <?php if( $item->video_name == 'live_videos' && $home_settings->live_videos == 1 ): ?>

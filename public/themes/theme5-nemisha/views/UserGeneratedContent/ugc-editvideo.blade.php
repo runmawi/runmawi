@@ -1,5 +1,8 @@
-@extends('admin.master')
-@include('admin.favicon')
+@php
+    include public_path('themes/theme5-nemisha/views/header.php');
+@endphp
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,25 +35,35 @@ border-radius: 0px 4px 4px 0px;
 
     }
 
+    .file {
+        background: rgb(255 255 255 / 100%);
+        border-radius: 10px;
+        text-align: center;
+        margin: 0 auto;
+        /*width: 75%;*/
+        border: 2px dashed;
+    }
+
+    .ugc_edit{
+      margin: 40px 80px; 
+      border-radius: 10px;
+    }
+    .ugc_upload{
+      background-color: #fff; 
+      padding:5px 10px;
+      border-radius:10px; 
+      margin-top: 20px;
+    }
       </style>
   </head>
   <body>
-  @section('content')
-  
     <div id=" content_videopage" class="content-page">
-        <div class="mt-5 d-flex">
-            <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
-            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-            <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-            <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-            <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
-            <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
-        </div>
+       
                 <div class="container-fluid p-0" id="content_videopage">
                     <div class="admin-section-title">
-                        <div class="iq-card">
-                            <div class="row">
-                            @if (Session::has('message'))
+                        <div class="iq-card ugc_edit ">
+                           <div class="row">
+                                @if (Session::has('message'))
                                 <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                                 @endif
                                 @if(count($errors) > 0)
@@ -61,7 +74,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                                 @endforeach
                                 @endif
-                                </div>
+                           </div>
             <div class="row">
                <div class="col-md-12">
                   <!-- M3u8 Video --> 
@@ -98,13 +111,12 @@ border-radius: 0px 4px 4px 0px;
                   <input type="hidden" id="mp4url" value="<?php echo URL::to('ugc/updatemp4url');?>">
                   <input type="hidden" id="m3u8url" value="<?php echo URL::to('ugc/updatem3u8url');?>">
 
-                  <div class='content' id="video_upload">
-                <!-- Dropzone -->
-                <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
-                </form> 
-                </div> 
-             </div>
-             <div class="col-md-12 text-right">
+                  <div class='content file' id="video_upload">
+                        <h3 class="card-title upload-ui text-black pt-5 font-weight-bold">Upload Your Own Content</h3>
+                        <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' ></form> 
+                  </div> 
+               </div>
+               <div class="col-md-12 text-right ugc_upload">
                   <div id="optionradio"  >
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
@@ -112,9 +124,9 @@ border-radius: 0px 4px 4px 0px;
                      <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
                   </div>
                </div>
-        </div>
+            </div>
 
-        </div>
+         </div>
       </div>
    </div>
    </div>
@@ -316,4 +328,3 @@ border-radius: 0px 4px 4px 0px;
   </body>
 </html>
 
-@stop

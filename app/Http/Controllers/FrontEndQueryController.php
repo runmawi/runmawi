@@ -929,11 +929,11 @@ class FrontEndQueryController extends Controller
         return $content_Partner ;
     }
 
-    public function UGCVideos()
-    {
-        $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
-        return $ugcvideos ;
-    }
+    // public function UGCVideos()
+    // {
+    //     $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
+    //     return $ugcvideos ;
+    // }
 
     public function watchLater() {
         if (!Auth::guest()) {

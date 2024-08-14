@@ -33,94 +33,7 @@
     width: 100px;
    }
    
-   .form-control1 {
-	 display: block;
-	 width: 100%;
-	 font-size: 14px;
-	 height: 34px;
-	 padding: 4px 8px;
-	 margin-bottom: 15px;
-}
- *, *:before, *:after {
-	 box-sizing: border-box;
-}
- .tags-container {
-	 display: flex;
-	 flex-flow: row wrap;
-	 margin-bottom: 15px;
-	 width: 100%;
-	 min-height: 34px;
-	 padding: 2px 5px;
-	 font-size: 14px;
-	 line-height: 1.6;
-	 background-color: transparent;
-	 border: 1px solid #ccc;
-	 border-radius: 1px;
-	 overflow: hidden;
-	 word-wrap: break-word;
-	 box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
- input.tag-input {
-	 flex: 3;
-	 border: 0;
-	 outline: 0;
-}
- .tag {
-	 position: relative;
-	 margin: 2px 6px 2px 0;
-	 padding: 1px 20px 1px 8px;
-	 font-size: inherit;
-	 font-weight: 400;
-	 text-align: center;
-	 color: #fff;
-     height: 30px;
-     display: flex;
-     align-items: center;
-	 background-color: #000;
-	 border-radius: 30px;
-	 transition: background-color 0.3s ease;
-	 cursor: default;
-}
- .tag:first-child {
-	 margin-left: 0;
-}
- .tag--marked {
-	 background-color: #6fadd7;
-}
- .tag--exists {
-	 background-color: #edb5a1;
-	 animation: shake 1s linear;
-}
- .tag__name {
-	 margin-right: 3px;
-}
- .tag__name {
-	 margin-right: 3px;
-     color: #fff!important;
-}
- .tag__remove {
-	 position: absolute;
-	 right: 0;
-	 bottom: 0;
-	 width: 20px;
-	 height: 100%;
-	 padding: 0 0px;
-	 font-size: 16px;
-	 font-weight: 400;
-	 transition: opacity 0.3s ease;
-	border: none;
-	 cursor: pointer;
-	 border-radius: 30px;
-	 background-color: #000;
-	 color: #fff;
-	 
-}
- .tag__remove:hover {
-	 opacity: 1;
-}
- .tag__remove:focus {
-	 outline: 5px auto #fff;
-}
+
  @keyframes shake {
 	 0%, 100% {
 		 transform: translate3d(0, 0, 0);
@@ -131,39 +44,9 @@
 	 20%, 40%, 60%, 80% {
 		 transform: translate3d(5px, 0, 0);
 	}
-}
+ }
 
-	
-.tags-input-wrapper{
-    background: transparent;
-    padding: 10px;
-    border-radius: 4px;
-    max-width: 400px;
-    border: 1px solid #ccc
-}
-.tags-input-wrapper input{
-    border: none;
-    background: transparent;
-    outline: none;
-    width: 140px;
-    margin-left: 8px;
-}
-.tags-input-wrapper .tag{
-    display: inline-block;
-    background-color: #20222c;
-    color: white;
-    border-radius: 40px;
-    padding: 0px 3px 0px 7px;
-    margin-right: 5px;
-    margin-bottom:5px;
-    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
-}
-.tags-input-wrapper .tag a {
-    margin: 0 7px 3px;
-    display: inline-block;
-    cursor: pointer;
-} 
-.gridContainer{
+ .gridContainer{
    display: grid;
    grid-template-columns: repeat(5, calc(100% / 5));
 }
@@ -289,7 +172,7 @@
                            <h3 class="card-title upload-ui text-black pt-5 font-weight-bold">Upload Your Own Content</h3>
                            <!-- Dropzone --> 
                            <form action="{{ $post_dropzone_url }}" method="post" class="dropzone "></form>
-                        </div>
+                     </div>
 
                        <!-- Dropzone template -->
                      <div id="template" style="display: none;">
@@ -355,12 +238,12 @@
          </div>
           
       </div>
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+      {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
 
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
       <script>
 
          var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
@@ -377,9 +260,9 @@
                }
             });
 
-         $(document).ready(function() {
-            $('#bunny_cdn_linked_video').select2();
-         });
+         // $(document).ready(function() {
+         //    $('#bunny_cdn_linked_video').select2();
+         // });
 
          $(document).ready(function(){
 
@@ -440,15 +323,7 @@
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
-         	$('#bunnycdnvideo').hide();
-         
-         	// $("#video_upload").addClass('collapse');
-         	// $("#video_mp4").removeClass('collapse');
-         	// $("#embed_video").removeClass('collapse');
-         	// $("#bunny_cdn_video").removeClass('collapse');
-         	// $("#m3u8").removeClass('m3u8');
-         
-         
+         	$('#bunnycdnvideo').hide();      
          })
          $('#videomp4').click(function(){
          	$('#video_upload').hide();
@@ -456,14 +331,6 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
-         
-         	// $("#video_upload").removeClass('collapse');
-         	// $("#video_mp4").addClass('collapse');
-         	// $("#embed_video").removeClass('collapse');
-         	// $("#bunny_cdn_video").removeClass('collapse');
-         	// $("#m3u8").removeClass('m3u8');
-         
-         
          })
          $('#embed_video').click(function(){
          	$('#video_upload').hide();
@@ -471,14 +338,6 @@
          	$('#embedvideo').show();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
-         
-         	// $("#video_upload").removeClass('collapse');
-         	// $("#video_mp4").removeClass('collapse');
-         	// //$("#embed_video").addClass('collapse');
-         	// $("#bunny_cdn_video").removeClass('collapse');
-         	// $("#m3u8").removeClass('m3u8');
-         
-         
          })
          $('#m3u8').click(function(){
          	$('#video_upload').hide();
@@ -486,28 +345,15 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').show();
          	$('#bunnycdnvideo').hide();
-
-         	// $("#video_upload").removeClass('collapse');
-         	// $("#video_mp4").removeClass('collapse');
-         	// $("#embed_video").removeClass('collapse');
-         	// $("#bunny_cdn_video").removeClass('collapse');
-         	// $("#m3u8").addClass('m3u8');
-         
          })
 
-            $('#bunny_cdn_video').click(function(){
+         $('#bunny_cdn_video').click(function(){
 
-               $('#video_upload').hide();
-               $('#video_mp4').hide();
-               $('#embedvideo').hide();
-               $('#m3u8_url').hide();
-               $('#bunnycdnvideo').show();
-
-               // $("#video_upload").removeClass('collapse');
-               // $("#video_mp4").removeClass('collapse');
-               // $("#embed_video").removeClass('collapse');
-               // // $("#bunny_cdn_video").removeClass('collapse');
-               // $("#m3u8").addClass('m3u8');
+            $('#video_upload').hide();
+            $('#video_mp4').hide();
+            $('#embedvideo').hide();
+            $('#m3u8_url').hide();
+            $('#bunnycdnvideo').show();
             })
          });
          
@@ -1018,36 +864,6 @@
     color: gray;
     text-align: left
 }
-.progress {height:0.25rem !important;}
-#progressbar {
-    margin-bottom: 10px;
-    overflow: hidden;
-    color: black;
-    /* border: 1px solid #f5f5f5; /
-    border-radius: 5px;
-    box-shadow: 0px 0px 15px #e1e1e1; */
-}
-
-#progressbar li.active {
-    color: #000000!important; font-weight:500;
-}
-
-#progressbar li {
-    list-style-type: none;
-    font-size: 15px;
-    width: 16%;
-    float: left;
-    position: relative;
-    font-weight: 400;
-    background-color: white;
-    padding: 10px;
-    line-height: 19px;
-}
-
-
-.progress-bar {
-    background-color: #673AB7
-}
 
 .fit-image {
     width: 100%;
@@ -1067,185 +883,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-// $(document).ready(function() {
-//    $('#error_ppv_price').hide();
-
-//         // Function to check the price input and update button states
-//         function checkPriceInput() {
-//             var priceInput = $('#price').val().trim();
-//             var isGlobalPPVChecked = $('#global_ppv').is(':checked');
-
-//             if (!priceInput && !isGlobalPPVChecked) {
-//                 $('#error_ppv_price').show();
-//                 $('#nextppv').attr('disabled', 'disabled');
-//                 $('#submit_button').attr('disabled', 'disabled');
-//             } else {
-//                 $('#error_ppv_price').hide();
-//                 $('#nextppv').removeAttr('disabled');
-//                 $('#submit_button').removeAttr('disabled');
-//             }
-//         }
-
-//         // Event handler for global PPV checkbox change
-//         $('#global_ppv').change(function() {
-//             var isChecked = $(this).is(':checked');
-//             if (isChecked) {
-//                 $('#error_ppv_price').hide();
-//                 $('#nextppv').removeAttr('disabled');
-//                 $('#submit_button').removeAttr('disabled');
-//                 $('#price').off('focusout keyup change', checkPriceInput); // Disable price input validation
-//             } else {
-//                 checkPriceInput();
-//                 $('#price').on('focusout keyup change', checkPriceInput); // Enable price input validation
-//             }
-//         });
-
-//         // Event handler for access change
-//         $('#access').change(function() {
-//             if ($(this).val() == 'ppv') {
-//                 $('#price').on('focusout keyup change', checkPriceInput);
-//                 $('#global_ppv').on('change', checkPriceInput);
-//                 $('#msform').on('submit', function(event) {
-//                     var priceInput = $('#price').val().trim();
-//                     var isGlobalPPVChecked = $('#global_ppv').is(':checked');
-
-//                     if (!priceInput && !isGlobalPPVChecked) {
-//                         event.preventDefault(); // Prevent form submission
-//                         $('#error_ppv_price').show();
-//                         $('#nextppv').attr('disabled', 'disabled');
-//                         $('#submit_button').attr('disabled', 'disabled');
-//                     } else {
-//                         $('#error_ppv_price').hide();
-//                         $('#nextppv').removeAttr('disabled');
-//                         $('#submit_button').removeAttr('disabled');
-//                     }
-//                 });
-//             } else {
-//                 $('#price').off('focusout keyup change', checkPriceInput);
-//                 $('#global_ppv').off('change', checkPriceInput);
-//                 $('#msform').off('submit');
-//                 $('#error_ppv_price').hide();
-//                 $('#nextppv').removeAttr('disabled');
-//                 $('#submit_button').removeAttr('disabled');
-//             }
-//         });
-
-//         // Event handler for the "Next" button click
-//         $('#nextppv').click(function(event) {
-//             event.preventDefault(); // Prevent form submission
-//             var priceInput = $('#price').val().trim();
-//             var isGlobalPPVChecked = $('#global_ppv').is(':checked');
-
-//             if (!priceInput && !isGlobalPPVChecked) {
-//                 $('#error_ppv_price').show();
-//                 $(this).attr('disabled', 'disabled');
-//                 $('#submit_button').attr('disabled', 'disabled');
-//             } else {
-//                 $('#error_ppv_price').hide();
-//                 $(this).removeAttr('disabled');
-//                 $('#submit_button').removeAttr('disabled');
-//             }
-//         });
-
-//         $('#access').trigger('change');
-//     });
-
-   document.addEventListener('DOMContentLoaded', function () {
-        var globalPpvCheckbox = document.getElementById('global_ppv');
-        var ppvOptionsDiv = document.getElementById('ppv_options');
-        var priceInputContainer = document.getElementById('price_input_container');
-        var ppvGlobalPriceRadio = document.getElementById('ppv_gobal_price');
-
-        // Show/hide the radio buttons based on the initial state of the checkbox
-        ppvOptionsDiv.style.display = globalPpvCheckbox.checked ? 'block' : 'none';
-
-        // Add an event listener to the checkbox to show/hide the radio buttons
-        globalPpvCheckbox.addEventListener('change', function () {
-            ppvOptionsDiv.style.display = this.checked ? 'block' : 'none';
-            // Hide the price input when checkbox is unchecked
-            if (!this.checked) {
-                priceInputContainer.style.display = 'none';
-            }
-        });
-
-        // Add an event listener to the "Set Global Price" radio button
-        ppvGlobalPriceRadio.addEventListener('change', function () {
-            priceInputContainer.style.display = this.checked ? 'block' : 'none';
-        });
-
-        // Hide the price input container if "Add Global Price" is selected
-        var globalPpvPriceRadio = document.getElementById('global_ppv_price');
-        globalPpvPriceRadio.addEventListener('change', function () {
-            if (this.checked) {
-                priceInputContainer.style.display = 'none';
-            }
-        });
-    });
-
-    
-   $(document).ready(function(){
-   
-   var current_fs, next_fs, previous_fs; //fieldsets
-   var opacity;
-   var current = 1;
-   var steps = $("fieldset").length;
-   
-   $(".next").click(function(){
-   
-   current_fs = $(this).parent();
-   next_fs = $(this).parent().next();
-   
-
-   
-   //show the next fieldset
-   next_fs.show();
-   //hide the current fieldset with style
-   current_fs.animate({opacity: 0}, {
-   step: function(now) {
-   // for making fielset appear animation
-   opacity = 1 - now;
-   
-   current_fs.css({
-   'display': 'none',
-   'position': 'relative'
-   });
-   next_fs.css({'opacity': opacity});
-   },
-   duration: 500
-   });
-  
-   });
-   
-   $(".previous").click(function(){
-   
-   current_fs = $(this).parent();
-   previous_fs = $(this).parent().prev();
-   
-   //show the previous fieldset
-   previous_fs.show();
-   
-   //hide the current fieldset with style
-   current_fs.animate({opacity: 0}, {
-   step: function(now) {
-   // for making fielset appear animation
-   opacity = 1 - now;
-   
-   current_fs.css({
-   'display': 'none',
-   'position': 'relative'
-   });
-   previous_fs.css({'opacity': opacity});
-   },
-   duration: 500
-   });
-   });
-   
-
    $(".submit").click(function(){
    return false;
    })
-   
-   });
+
 </script>
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -1304,138 +945,12 @@ $(document).ready(function(){
       })
 });
 
-  
-// $(document).ready(function($){
-//    // validation Skip 
-//       $('#error_intro_start_time').hide();
-//       $('#error_intro_end_time').hide();
-//       $('#error_skip_intro_time').hide();
-      
-
-//    $('#intro_start_time').on('keyup keypress change', function(event) {
-//           $('#error_intro_start_time').hide();
-
-//       if($('#skip_intro').val() == ""){
-//          $('#error_skip_intro_time').show();
-//          $('#error_intro_end_time').show();
-//          $('#next2').attr('disabled','disabled');
-//       }
-//       else if($('#skip_intro').val() != "" && $('#skip_intro').val() <= $('#intro_start_time').val() ){
-
-//             $("#error_skip_intro_time").empty();
-//             $("#error_skip_intro_time").append("Skip intro time always greater than intro Start time");
-//             $('#error_skip_intro_time').show();
-//             $('#error_intro_end_time').show();
-//             $('#error_intro_start_time').hide();
-
-//             $('#next2').attr('disabled','disabled');
-//       }
-//       else{
-//          $('#error_skip_intro_time').hide();
-//             $('#next2').removeAttr('disabled');
-//       }
-//    });
-
-
-//    $('#skip_intro').on('keyup keypress change', function(event) {
-//       if($('#intro_start_time').val() == ""){
-//          $('#error_intro_start_time').show();
-//          $('#error_intro_end_time').show();
-//          $('#next2').attr('disabled','disabled');
-//       }
-//       else if($('#intro_start_time').val() != "" && $('#skip_intro').val() <= $('#intro_start_time').val() ){
-//             $("#error_skip_intro_time").empty();
-//             $("#error_skip_intro_time").append("Skip intro time always lesser than intro Start time ");
-//             $('#error_skip_intro_time').show();
-//             $('#next2').attr('disabled','disabled');
-//       }
-//       else{
-//          $('#error_skip_intro_time').hide();
-//             $('#next2').removeAttr('disabled');
-//       }
-//    });
-
-//    $('#intro_end_time').on('keyup keypress change', function(event) {
-
-//       if($('#intro_start_time').val() == ""){
-//          $('#error_intro_start_time').show();
-//          $('#next2').attr('disabled','disabled');
-//       }
-//       else if($('#intro_start_time').val() != "" && $('#intro_start_time').val() >= $('#intro_end_time').val() ){
-//             $("#error_intro_end_time").empty();
-//             $("#error_intro_end_time").append("End recap time always greater than recap start time ");
-//             $('#error_intro_end_time').show();
-//             $('#next2').attr('disabled','disabled');
-//       }
-//       else if($('#intro_start_time').val() != "" && $('#skip_intro').val() <= $('#intro_end_time').val() ){
-//             $("#error_intro_end_time").empty();
-//             $("#error_intro_end_time").append("End intro time always lesser than Skip intro time ");
-//             $('#error_intro_end_time').show();
-//             $('#next2').attr('disabled','disabled');
-//       }
-//       else{
-//          $('#error_intro_end_time').hide();
-//             $('#next2').removeAttr('disabled');
-//       }
-//    });
-
-
-//    // video category
-//    $('#error_video_Category').hide();
-//    $('#error_language').hide();
-
-//    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
-
-//    if( $('#language').val() == null || $('#video_category_id').val() == null ){
-
-//       if($('#language').val() == null){
-//          $('#error_language').show();
-//       }else{
-//          $('#error_language').hide();
-//       }
-
-//       if($('#video_category_id').val() == null){
-//          $('#error_video_Category').show();
-//       }else{
-//          $('#error_video_Category').hide();
-//       }
-      
-//       $('#next3').attr('disabled','disabled');
-//    }  
-//    else{
-//       $('#error_language').hide();
-//       $('#error_video_Category').hide();
-
-//       $('#next3').removeAttr('disabled');
-//    }
-
-// });
-
-  
-
-
-   // $('#intro_start_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#intro_end_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#recap_start_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#recap_end_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
+{{-- <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script> --}}
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
@@ -1462,158 +977,40 @@ $(document).ready(function(){
       $("#roku_mid_sequence_time").mask("00:00:00");
    });
 
-   $(document).ready(function() {
 
-      $('.ads_devices').select2();
-
-      $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
-
-      $('.ads_devices').on('change', function() {
-         var selectedValues = $(this).val();
-         
-         $('.website-ads-button, .Andriod-ads-button, .IOS-ads-button, .TV-ads-button, .Roku-ads-button, .LG-ads-button, .Samsung-ads-button').hide();
-         
-         selectedValues.forEach(function(value) {
-               switch(value) {
-                  case 'website':
-                     $('.website-ads-button').show();
-                     break;
-                  case 'android':
-                     $('.Andriod-ads-button').show();
-                     break;
-                  case 'IOS':
-                     $('.IOS-ads-button').show();
-                     break;
-                  case 'TV':
-                     $('.TV-ads-button').show();
-                     break;
-                  case 'roku':
-                     $('.Roku-ads-button').show();
-                     break;
-                  case 'lg':
-                     $('.LG-ads-button').show();
-                     break;
-                  case 'samsung':
-                     $('.Samsung-ads-button').show();
-                     break;
-                  default:
-                     break;
-               }
-         });
-      });
-   });
-   
-   
-    $(document).ready(function(){
-   $('#publishlater').hide();
-   
-       // $('#duration').mask('00:00:00');
-   
-   	$('#publish_now').click(function(){
-   		// alert($('#publish_now').val());
-   		$('#publishlater').hide();
-   	});
-   	$('#publish_later').click(function(){
-   		// alert($('#publish_later').val());
-   		$('#publishlater').show();
-   	});
-   
-   	if($("#publish_now").val() == 'publish_now'){
-   		$('#publishlater').hide();		
-   	}else if($("#publish_later").val() == 'publish_later'){
-           $('#publishlater').show();
-   	}
-   });
-   
-   
-   
-   
-   
-    $('#remove').hide();
-    
-   $(document).ready(function(){
-   $('#trailer').change(function(){
-   var remove = $('#trailer').val();
-   // alert(remove)
-   if(remove != ""){
-    $('#remove').show();
-   }else{
-    $('#remove').hide();
-   }     
-   $('#remove').click(function(){ 
-      $('#trailer').val("");
-    $('#remove').hide();
-   });
-   
-   });
-   });
-   
-   $(document).ready(function(){
-       $('#ppv_price').hide();
-       $('#global_ppv_status').hide();
+   	// $(document).ready(function(){
+      //  $('.js-example-basic-multiple').select2();
+      //  $('.js-example-basic-single').select2();
        
-   		$("#access").change(function(){
-   			if($(this).val() == 'ppv'){
-   				$('#ppv_price').show();
-   				$('#global_ppv_status').show();
+   	// 	$("#type").change(function(){
+   	// 		if($(this).val() == 'file'){
+   	// 			$('.new-video-file').show();
+   	// 			$('.new-video-embed').show();
    
-   			}else{
-   				$('#ppv_price').hide();		
-   				$('#global_ppv_status').hide();				
+   	// 		} else if($(this).val() == 'embed'){ 
+   	// 			$('.new-video-file').hide();
+   	// 			$('.new-video-embed').show();
    
-   			}
-   		});
-   });
-   
-   // $(document).ready(function(){
-   //     $('#global_ppv_status').hide();
-   // 		$("#access").change(function(){
-   // 			if($(this).val() == 'ppv'){
-   // 				$('#global_ppv_status').show();
-   
-   // 			}else{
-   // 				$('#global_ppv_status').hide();				
-   // 			}
-   // 		});
-   // });
-   
-   
-   
-   
-   
-   	$(document).ready(function(){
-       $('.js-example-basic-multiple').select2();
-       $('.js-example-basic-single').select2();
-       
-   		$("#type").change(function(){
-   			if($(this).val() == 'file'){
-   				$('.new-video-file').show();
-   				$('.new-video-embed').show();
-   
-   			} else if($(this).val() == 'embed'){ 
-   				$('.new-video-file').hide();
-   				$('.new-video-embed').show();
-   
-   			}else{
-   				$('.new-video-file').hide();
-   				$('.new-video-embed').hide();
+   	// 		}else{
+   	// 			$('.new-video-file').hide();
+   	// 			$('.new-video-embed').hide();
    				
-   			}
-   		});
+   	// 		}
+   	// 	});
    
    
-   		tinymce.init({
-   			relative_urls: false,
-   		    selector: '#details',
-   		    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
-   		    plugins: [
-   		         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
-   		         "save table contextmenu directionality emoticons template paste textcolor code"
-   		   ],
-   		   menubar:false,
-   		 });
+   	// 	tinymce.init({
+   	// 		relative_urls: false,
+   	// 	    selector: '#details',
+   	// 	    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
+   	// 	    plugins: [
+   	// 	         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
+   	// 	         "save table contextmenu directionality emoticons template paste textcolor code"
+   	// 	   ],
+   	// 	   menubar:false,
+   	// 	 });
    
-   	});
+   	// });
    
    	
    
@@ -1776,82 +1173,7 @@ $(document).ready(function(){
             }
         });
          
-   //   Dropzone.autoDiscover = false;
-   //   var myDropzone = new Dropzone(".dropzone",{ 
-   //     //   maxFilesize: 900,  // 3 mb
-   //       parallelUploads: 10,
-   //       maxFilesize: 150000000,
-   //       acceptedFiles: "video/mp4,video/x-m4v,video/*",
-   //   });
-   //   myDropzone.on("sending", function(file, xhr, formData) {
-   //      formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-   //      formData.append("_token", CSRF_TOKEN);
-   // //      checkUploadSpeed( 10, function ( speed, average ) {
-   // //      document.getElementById( 'speed' ).textContent = 'speed: ' + speed + 'kbs';
-   // //      document.getElementById( 'average' ).textContent = 'average: ' + average + 'kbs';
-   // //  } );
-   //     // console.log(value)
-   //     this.on("success", function(file, value) {
-   //       console.log(value.video_title);
-   //       if(value.success == 2){
-   //          swal("File not uploaded !");   
-   //          location.reload();
-   //       }if(value.error == 3){
-   //       console.log(value.error);
-   //          alert("File not uploaded Choose Library!");   
-   //          location.reload();
-   //       }else{
-   //          $('#Next').show();
-   //          $('#video_id').val(value.video_id);
-   //          $('#title').val(value.video_title);
-   //       }
-   //       });
-   
-   //   }); 
-   //   function checkUploadSpeed( iterations, update ) {
-   //      var average = 0,
-   //          index = 0,
-   //          timer = window.setInterval( check, 5000 ); //check every 5 seconds
-   //      check();
-
-   //      function check() {
-   //          var xhr = new XMLHttpRequest(),
-   //              url = '?cache=' + Math.floor( Math.random() * 10000 ), //random number prevents url caching
-   //              data = getRandomString( 1 ), //1 meg POST size handled by all servers
-   //              startTime,
-   //              speed = 0;
-   //          xhr.onreadystatechange = function ( event ) {
-   //              if( xhr.readyState == 4 ) {
-   //                  speed = Math.round( 1024 / ( ( new Date() - startTime ) / 1000 ) );
-   //                  average == 0 
-   //                      ? average = speed 
-   //                      : average = Math.round( ( average + speed ) / 2 );
-   //                  update( speed, average );
-   //                  index++;
-   //                  if( index == iterations ) {
-   //                      window.clearInterval( timer );
-   //                  };
-   //              };
-   //          };
-   //          xhr.open( 'POST', url, true );
-   //          startTime = new Date();
-   //          xhr.send( data );
-   //      };
-
-   //      function getRandomString( sizeInMb ) {
-   //          var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+`-=[]\{}|;':,./<>?", //random data prevents gzip effect
-   //              iterations = sizeInMb * 1024 * 1024, //get byte count
-   //              result = '';
-   //          for( var index = 0; index <div iterations; index++ ) {
-   //              result += chars.charAt( Math.floor( Math.random() * chars.length ) );
-   //          };     
-   //          return result;
-   //      };
-   //  };
-    
-
-   
-   
+ 
    $('#Next').click(function(){
    $('#video_upload').hide();
    $('#video_mp4').hide();
@@ -1873,7 +1195,7 @@ $(document).ready(function(){
             video_id: $('#video_id').val()
         },
         success: function(value) {
-            // console.log(value.ExtractedImage.length);
+             console.log(value.ExtractedImage.length);
 
             if (value && value.ExtractedImage.length > 0) {
                 $('#ajaxImagesContainer').empty();
@@ -1987,410 +1309,7 @@ $(document).ready(function(){
 </script>
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-<script>
-   $('form[id="video_form"]').validate({
-       ignore: [],
-   	rules: {
-   	  title : 'required',
-   	  image : 'required',
-         trailer : 'required',
-       //   video_country : 'required',
-         'video_category_id[]': {
-                   required: true
-               }
-   	},
-   	messages: {
-   	  title: 'This field is required',
-   	  image: 'This field is required',
-         trailer : 'This field is required',
-       //   video_country : 'This field is required',
-         video_category_id: {
-                   required: 'This field is required',
-               }
-   	},
-   	submitHandler: function(form) {
-   	  form.submit();
-   	}
-     });
 
-     $(document).ready(function(){
-
-         $('.trailer_video_upload').hide();
-         $('.trailer_m3u8_url').hide();
-         $('.trailer_mp4_url').hide();
-         $('.trailer_embed_url').hide();
-
-
-      $(".trailer_type").change(function(){
-         var trailer_type = $('.trailer_type').val();
-
-        
-         if(trailer_type == 'video_mp4' ){
-            $('.trailer_video_upload').show();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').hide();
-         }
-         else if(trailer_type == 'm3u8_url'){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').show();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').hide();
-         }
-         else if(trailer_type == 'mp4_url'){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').show();
-            $('.trailer_embed_url').hide();
-         }
-         else if(trailer_type == 'embed_url'){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').show();
-         }
-         else if(trailer_type == 'null' ){
-            $('.trailer_video_upload').hide();
-            $('.trailer_m3u8_url').hide();
-            $('.trailer_mp4_url').hide();
-            $('.trailer_embed_url').hide();
-         }
-      });
-      });
-   
-
-
-
-   // https://github.com/k-ivan/Tags
-
-(function() {
-
-'use strict';
-
-// Helpers
-function $$(selectors, context) {
-  return (typeof selectors === 'string') ? (context || document).querySelectorAll(selectors) : [selectors];
-}
-function $(selector, context) {
-  return (typeof selector === 'string') ? (context || document).querySelector(selector) : selector;
-}
-function create(tag, attr) {
-  var element = document.createElement(tag);
-  if(attr) {
-    for(var name in attr) {
-      if(element[name] !== undefined) {
-        element[name] = attr[name];
-      }
-    }
-  }
-  return element;
-}
-function whichTransitionEnd() {
-  var root = document.documentElement;
-  var transitions = {
-    'transition'       : 'transitionend',
-    'WebkitTransition' : 'webkitTransitionEnd',
-    'MozTransition'    : 'mozTransitionEnd',
-    'OTransition'      : 'oTransitionEnd otransitionend'
-  };
-
-  for(var t in transitions){
-    if(root.style[t] !== undefined){
-      return transitions[t];
-    }
-  }
-  return false;
-}
-function oneListener(el, type, fn, capture) {
-  capture = capture || false;
-  el.addEventListener(type, function handler(e) {
-    fn.call(this, e);
-    el.removeEventListener(e.type, handler, capture)
-  }, capture);
-}
-function hasClass(cls, el) {
-  return new RegExp('(^|\\s+)' + cls + '(\\s+|$)').test(el.className);
-}
-function addClass(cls, el) {
-  if( ! hasClass(cls, el) )
-    return el.className += (el.className === '') ? cls : ' ' + cls;
-}
-function removeClass(cls, el) {
-  el.className = el.className.replace(new RegExp('(^|\\s+)' + cls + '(\\s+|$)'), '');
-}
-function toggleClass(cls, el) {
-  ( ! hasClass(cls, el)) ? addClass(cls, el) : removeClass(cls, el);
-}
-
-function Tags(tag) {
-
-  var el = $(tag);
-
-  if(el.instance) return;
-  el.instance = this;
-
-  var type = el.type;
-  var transitionEnd = whichTransitionEnd();
-
-  var tagsArray = [];
-  var KEYS = {
-    ENTER: 13,
-    COMMA: 188,
-    BACK: 8
-  };
-  var isPressed = false;
-
-  var timer;
-  var wrap;
-  var field;
-
-  function init() {
-
-    // create and add wrapper
-    wrap = create('div', {
-      'className': 'tags-container',
-    });
-    field = create('input', {
-      'type': 'text',
-      'className': 'tag-input',
-      'placeholder': el.placeholder || ''
-    });
-
-    wrap.appendChild(field);
-
-    if(el.value.trim() !== '') {
-      hasTags();
-    }
-
-    el.type = 'hidden';
-    el.parentNode.insertBefore(wrap, el.nextSibling);
-
-    wrap.addEventListener('click', btnRemove, false);
-    wrap.addEventListener('keydown', keyHandler, false);
-    wrap.addEventListener('keyup', backHandler, false);
-  }
-
-  function hasTags() {
-    var arr = el.value.trim().split(',');
-    arr.forEach(function(item) {
-      item = item.trim();
-      if(~tagsArray.indexOf(item)) {
-        return;
-      }
-      var tag = createTag(item);
-      tagsArray.push(item);
-      wrap.insertBefore(tag, field);
-    });
-  }
-
-  function createTag(name) {
-    var tag = create('div', {
-      'className': 'tag',
-      'innerHTML': '<span class="tag__name">' + name + '</span>'+
-                   '<button class="tag__remove">&times;</button>'
-    });
-//       var tagName = create('span', {
-//         'className': 'tag__name',
-//         'textContent': name
-//       });
-//       var delBtn = create('button', {
-//         'className': 'tag__remove',
-//         'innerHTML': '&times;'
-//       });
-    
-//       tag.appendChild(tagName);
-//       tag.appendChild(delBtn);
-    return tag;
-  }
-
-  function btnRemove(e) {
-    e.preventDefault();
-    if(e.target.className === 'tag__remove') {
-      var tag  = e.target.parentNode;
-      var name = $('.tag__name', tag);
-      wrap.removeChild(tag);
-      tagsArray.splice(tagsArray.indexOf(name.textContent), 1);
-      el.value = tagsArray.join(',')
-    }
-    field.focus();
-  }
-
-  function keyHandler(e) {
-
-    if(e.target.tagName === 'INPUT' && e.target.className === 'tag-input') {
-
-      var target = e.target;
-      var code = e.which || e.keyCode;
-
-      if(field.previousSibling && code !== KEYS.BACK) {
-        removeClass('tag--marked', field.previousSibling);
-      }
-
-      var name = target.value.trim();
-
-      // if(code === KEYS.ENTER || code === KEYS.COMMA) {
-      if(code === KEYS.ENTER) {
-
-        target.blur();
-
-        addTag(name);
-
-        if(timer) clearTimeout(timer);
-        timer = setTimeout(function() { target.focus(); }, 10 );
-      }
-      else if(code === KEYS.BACK) {
-        if(e.target.value === '' && !isPressed) {
-          isPressed = true;
-          removeTag();
-        }
-      }
-    }
-  }
-  function backHandler(e) {
-    isPressed = false;
-  }
-
-  function addTag(name) {
-
-    // delete comma if comma exists
-    name = name.toString().replace(/,/g, '').trim();
-
-    if(name === '') return field.value = '';
-
-    if(~tagsArray.indexOf(name)) {
-
-      var exist = $$('.tag', wrap);
-
-      Array.prototype.forEach.call(exist, function(tag) {
-        if(tag.firstChild.textContent === name) {
-
-          addClass('tag--exists', tag);
-
-          if(transitionEnd) {
-            oneListener(tag, transitionEnd, function() {
-              removeClass('tag--exists', tag);
-            });
-          } else {
-            removeClass('tag--exists', tag);
-          }
-
-
-        }
-
-      });
-
-      return field.value = '';
-    }
-
-    var tag = createTag(name);
-    wrap.insertBefore(tag, field);
-    tagsArray.push(name);
-    field.value = '';
-    el.value += (el.value === '') ? name : ',' + name;
-  }
-
-  function removeTag() {
-    if(tagsArray.length === 0) return;
-
-    var tags = $$('.tag', wrap);
-    var tag = tags[tags.length - 1];
-
-    if( ! hasClass('tag--marked', tag) ) {
-      addClass('tag--marked', tag);
-      return;
-    }
-
-    tagsArray.pop();
-
-    wrap.removeChild(tag);
-
-    el.value = tagsArray.join(',');
-  }
-
-  init();
-
-  /* Public API */
-
-  this.getTags = function() {
-    return tagsArray;
-  }
-
-  this.clearTags = function() {
-    if(!el.instance) return;
-    tagsArray.length = 0;
-    el.value = '';
-    wrap.innerHTML = '';
-    wrap.appendChild(field);
-  }
-
-  this.addTags = function(name) {
-    if(!el.instance) return;
-    if(Array.isArray(name)) {
-      for(var i = 0, len = name.length; i < len; i++) {
-        addTag(name[i])
-      }
-    } else {
-      addTag(name);
-    }
-    return tagsArray;
-  }
-
-  this.destroy = function() {
-    if(!el.instance) return;
-
-    wrap.removeEventListener('click', btnRemove, false);
-    wrap.removeEventListener('keydown', keyHandler, false);
-    wrap.removeEventListener('keyup', keyHandler, false);
-
-    wrap.parentNode.removeChild(wrap);
-
-    tagsArray = null;
-    timer = null;
-    wrap = null;
-    field = null;
-    transitionEnd = null;
-
-    delete el.instance;
-    el.type = type;
-  }
-}
-
-window.Tags = Tags;
-
-})();
-
-// Use
-var tags = new Tags('.tagged');
-
-document.getElementById('get').addEventListener('click', function(e) {
-e.preventDefault();
-alert(tags.getTags());
-});
-document.getElementById('clear').addEventListener('click', function(e) {
-e.preventDefault();
-tags.clearTags();
-});
-document.getElementById('add').addEventListener('click', function(e) {
-e.preventDefault();
-tags.addTags('New');
-});
-document.getElementById('addArr').addEventListener('click', function(e) {
-e.preventDefault();
-tags.addTags(['Steam Machines', 'Nintendo Wii U', 'Shield Portable']);
-});
-document.getElementById('destroy').addEventListener('click', function(e) {
-e.preventDefault();
-if(this.textContent === 'destroy') {
-  tags.destroy();
-  this.textContent = 'reinit';
-} else {
-  this.textContent = 'destroy';
-  tags = new Tags('.tagged');
-}
-
-});
-
-</script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
@@ -2458,38 +1377,6 @@ $(document).ready(function(){
             $('#player_image_error_msg').show();
          }
       }
-   });
-
-   $('#video_tv_image').on('change', function(event) {
-
-         
-         $('#video_tv_image').removeData('imageWidth');
-         $('#video_tv_image').removeData('imageHeight');
-         $('#video_tv_image').removeData('imageratio');
-
-         var file = this.files[0];
-         var tmpImg = new Image();
-
-         tmpImg.src=window.URL.createObjectURL( file ); 
-         tmpImg.onload = function() {
-            width = tmpImg.naturalWidth,
-            height = tmpImg.naturalHeight;
-			   ratio =  Number(width/height).toFixed(2) ;
-            image_validation_status = "{{  image_validation_videos() }}" ;
-
-            $('#video_tv_image').data('imageWidth', width);
-            $('#video_tv_image').data('imageHeight', height);
-            $('#video_tv_image').data('imageratio', ratio);
-
-            if(  image_validation_status == "0" || ratio == '1.78' || width == '1920' && height == '1080' ){
-               $('.update_upload_img').removeAttr('disabled');
-               $('#tv_image_image_error_msg').hide();
-            }
-            else{
-               $('.update_upload_img').attr('disabled','disabled');
-               $('#tv_image_image_error_msg').show();
-            }
-         }
    });
 
 });

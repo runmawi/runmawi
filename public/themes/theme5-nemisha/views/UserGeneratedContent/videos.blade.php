@@ -1,5 +1,13 @@
 @php include public_path('themes/theme5-nemisha/views/header.php');  @endphp
 
+@php
+$isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
+@endphp
+
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
     {{-- video-js Style --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
     <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
@@ -82,11 +90,15 @@
 
     .ugc-subscriber{
         margin: 5px;
-        padding: 3px 30px;
+        /* padding: 3px 30px; */
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
+        background:#ED563C!important;
+        color: #fff!important;
+        padding: 5px 100px!important;
+        margin:0%; cursor:pointer;"
     }
 
     .ugc-description {
@@ -114,8 +126,7 @@
         }
 
         .my-video.vjs-fluid {
-        padding-top: 0 !important;
-        height: 100vh;
+        padding-top: 0px !important;
     }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
@@ -129,7 +140,7 @@
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8  ">
         <div class="mx-3 my-2"> 
         <div>
-            <div class="container-fluid p-0" style="position:relative; padding-top:500px;">
+            <div class="container-fluid p-0" style="position:relative;" >
 
                 @if ( $videodetail->users_video_visibility_status)
         
@@ -154,7 +165,7 @@
                         </button>  
         
                         <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
-                          style="border-radius:20px; height:50% !important; "   width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
+                            poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
                             autoplay>
                             <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
         
@@ -243,7 +254,7 @@
         </div>
         <div class="d-flex flex-column flex-lg-row justify-content-between" >
             <div class="d-flex align-items-center">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists d-flex justify-content-end" style="align-items: self-end;">
+                <ul class="list-inline p-0 share-icons music-play-lists d-flex justify-content-end" style="align-items: self-end;">
                     <li class="share">
                         <span data-toggle="modal"  data-video-id={{ $videodetail->id }}   onclick="video_watchlater(this)" >
                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
@@ -270,16 +281,16 @@
     
                     <li>
                     <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
-                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>Like
+                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
                     </span>
                     </li>
                     <li>
                     <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
-                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>Dislike
+                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
                     </span>
                     </li>
                     <li>
-                    <span><a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>Copy</span>
+                    <span><a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
                     </li>
                     <input type="hidden" value="181" id="videoid">    <input type="hidden" value="1" id="user_id">                                   
                  </ul>
@@ -287,11 +298,7 @@
 
             <div class="d-flex align-items-center text-white">
                 <div class="p-1" style="border-radius: 7px; line-height: 25px;  background-color: #848880;" >
-                                @if(isset($view_increment) && $view_increment == true )
-                                {{ ( $movie->views + 1) . " views" }}
-                                @else
-                                {{ $videodetail->views . " views" }} 
-                                @endif | 12k Liked |10 Disliked | {{ $videodetail->created_at->diffForHumans() }}
+                    {{ $videodetail->views . " views" }} | {{ $videodetail->like_count }} Liked | {{ $videodetail->dislike_count }} Disliked | {{ $videodetail->created_at->diffForHumans() }}
                 </div>
             </div>
         </div>
@@ -299,43 +306,51 @@
 
     <div class="row justify-content-start mx-3">
         <div >
-            <a href="{{ route('profile.show', $videodetail->user->id) }}" class="m-1">
+            <a  href="{{ route('profile.show', ['username' => $videodetail->user->username]) }}" class="m-1">
         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
         src="<?= $videodetail->user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $videodetail->user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="comment" style="height: 80px; width: 80px;">
             </a>
         </div>
        <div class="col" style="padding-top: 40px;" >
-        <a href="{{ route('profile.show', $videodetail->user->id) }}">
+        <a  href="{{ route('profile.show', ['username' => $videodetail->user->username]) }}" >
         <div>
         <h4>{{$videodetail->user->username}}</h4>
         </div>
         <div class="py-2" >
-            @if($videodetail->user->subscribers->count() == 0 )
+            @if($subscriber_count == 0 )
                <h6>No Subscribers</h6>
-            @elseif($videodetail->user->subscribers->count() == 1 )
+            @elseif($subscriber_count == 1 )
                <h6>1 Member Subscribed</h6>
             @else
             <h6>
-                <span class="subscriber-count"> {{ $videodetail->user->subscribers->count() }} </span> Members Subscribed
+                <span class="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
             </h6>
             @endif
         </div>
         </a>
        </div>
     </div>
-    <div class="mx-3" >
-        @if( auth()->user()->id != $videodetail->user->id  )
-        <button  id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber" onclick="toggleSubscription(this)" style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; " >
-           Subscribe
-        </button>
+    {{-- <div class="mx-3" >
+        @if( auth()->user()->id != $profileUser->id  )
+        <button
+        id="subscribe-toggle"
+        data-user-id="{{ $profileUser->id }}"
+        data-subscriber-id="{{ auth()->user()->id }}"
+        class="ugc-subscriber {{ $isSubscribed ? 'btn-active' : 'btn-inactive' }}"
+        onclick="toggleSubscription(this)"
+        style="background:#ED563C!important; color: #fff!important; padding: 5px 100px!important; margin:0%; cursor:pointer;"
+    >
+        {{ $isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
+    </button>
         @endif
 
-        {{-- <button id="subscribe-toggle" data-user-id={{$videodetail->user->id}} data-subscriber-id="{{ auth()->user()->id }}"  class="btn-inactive" onclick="toggleSubscription(this)">
-            Subscribe
-        </button> --}}
-        {{-- <p>Subscribers: <span class="subscriber-count">{{ $videodetail->user->subscribers->count() }}</span></p> --}}
+    </div> --}}
+
+    <div class="mx-3" >
+    <button id="subscribe-toggle" data-user-id="{{ $profileUser->id }}" data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber btn-inactive" onclick="toggleSubscription(this)">
+        Subscribe
+    </button>
     </div>
-  
 
     @if($videodetail->description)
     <div class="ugc-description m-3"  style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
@@ -390,7 +405,7 @@
                     <span><i class="ri-thumb-down-line" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1" id="dislike" data-authenticated="1"></i></span>
                 </li>
             </ul>
-        </div>
+        </div>l
     </div> --}}
 
     </div>
@@ -416,13 +431,13 @@
                              <h6>{{$eachugcvideos->title}}</h6>
                              <p style="margin:5px 0px;">{{$eachugcvideos->user->username}}</p>
                              <p>        
-                                {{ $eachugcvideos->created_at->diffForHumans() }} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} Views | 90k Likes
+                                {{ $eachugcvideos->created_at->diffForHumans() }} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} Views | {{$eachugcvideos->like_count}} likes
                             </p>
                          </div>
              </a>
          </div>
          @endforeach
-     </div>
+      </div>
    </div>
 </div>
 
@@ -431,7 +446,7 @@
 include public_path('themes/theme5-nemisha/views/footer.blade.php');
 @endphp
 
-{{-- <script>
+<script>
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     // let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     // let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
@@ -457,41 +472,22 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
                     'progressControl': {},
                     'remainingTimeDisplay': {},
                     'fullscreenToggle': {},
+                    'playbackRateMenuButton': {},
                     // 'audioTrackButton': {},
                 },
                 pictureInPictureToggle: true,
             },
         }); 
 
-        player.on('loadedmetadata', function(){
-            var isMobile = window.innerWidth <= 768;
-            // var controlBar = player.controlBar;
-            // console.log("controlbar",controlBar);
-            if(!isMobile){
-                controlBar.addChild('subtitlesButton');
-                controlBar.addChild('playbackRateMenuButton');
-            }
-            else{
-                controlBar.addChild('settingsMenuButton', {
-                    entries: [
-                        'subtitlesButton',
-                        'playbackRateMenuButton',
-                    ]
-                });
-            }
-        });
-
         // Hls Quality Selector - M3U8 
         player.hlsQualitySelector({ 
             displayCurrentQuality: true,
         });
 
-        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
-        console.log("remainingDuration",remainingDuration);
+        // console.log("remainingDuration",remainingDuration);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -546,7 +542,7 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
         });
 
     });
-</script> --}}  
+</script>
 
 
 <script>
@@ -723,56 +719,50 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
 </script>
 
 <script>
-      // Define CSRF token directly
-      const csrfToken = '{{ csrf_token() }}';
-
-    // AJAX setup
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        }
-    });
+    // Read CSRF token from meta tag
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     function toggleSubscription(ele) {
-    let userId = $(ele).data('user-id');
-    let subscriberId = $(ele).data('subscriber-id');
-    let isSubscribed = $(ele).hasClass('btn-active');
+        let userId = $(ele).data('user-id');
+        let subscriberId = $(ele).data('subscriber-id');
+        let isSubscribed = $(ele).hasClass('btn-active');
 
-    let url = isSubscribed ? '{{ route('unsubscribe') }}' : '{{ route('subscribe') }}';
-    let action = isSubscribed ? 'unsubscribe' : 'subscribe';
+        let url = isSubscribed ? '{{ route('unsubscribe') }}' : '{{ route('subscribe') }}';
 
-    $.ajax({
-        url: url,
-        method: 'post',
-        data: {
-            "_token": csrfToken,
-            user_id: userId,
-            subscriber_id: subscriberId
-        },
-        success: function(response) {
-            if (response.success) {
-                const messageClass = isSubscribed ? 'alert-danger' : 'alert-success';
-                const message = isSubscribed ? 'Unsubscribed successfully!' : 'Subscribed successfully!';
-                
-                const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
-                
-                $('.subscriber-count').text(response.count);
-                $('#message-note').html(messageNote).slideDown('fast');
-                
-                setTimeout(function() {
-                    $('#message-note').slideUp('fast');
-                }, 2000);
+        $.ajax({
+            url: url,
+            method: 'post',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                user_id: userId,
+                subscriber_id: subscriberId
+            },
+            success: function(response) {
+                if (response.success) {
+                    const messageClass = isSubscribed ? 'alert-danger' : 'alert-success';
+                    const message = isSubscribed ? 'Unsubscribed successfully!' : 'Subscribed successfully!';
+                    
+                    const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
+                    
+                    $('.subscriber-count').text(response.count);
+                    $('#message-note').html(messageNote).slideDown('fast');
+                    
+                    setTimeout(function() {
+                        $('#message-note').slideUp('fast');
+                    }, 2000);
 
-                // Toggle button state
-                if (isSubscribed) {
-                    $(ele).removeClass('btn-active').addClass('btn-inactive').text('Subscribe');
-                } else {
-                    $(ele).removeClass('btn-inactive').addClass('btn-active').text('Unsubscribe');
+                    // Toggle button state
+                    if (isSubscribed) {
+                        $(ele).removeClass('btn-active').addClass('btn-inactive').text('Subscribe');
+                    } else {
+                        $(ele).removeClass('btn-inactive').addClass('btn-active').text('Unsubscribe');
+                    }
                 }
             }
-        }
-    });
-}
+        });
+    }
 </script>
 
 {{-- <script>

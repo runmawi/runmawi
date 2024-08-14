@@ -46,6 +46,7 @@ border-radius: 0px 4px 4px 0px;
                                  <tr>
                                     <th>Title</th>
                                     <th>Video Uploaded By</th>
+                                    <th>User Name</th>
                                     <th>Video Type</th>
                                     <th>Uploaded Date</th>
                                     <th>Video Duration</th>
@@ -70,6 +71,7 @@ border-radius: 0px 4px 4px 0px;
                                        </div>
                                     </td>
                                     <td>{{ $video->uploaded_by }}</td>
+                                    <td>{{ $video->user ? $video->user->username : '' }}</td>
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->created_at }}</td>
                                     <td>{{ gmdate('H:i:s', $video->duration) }}</td>

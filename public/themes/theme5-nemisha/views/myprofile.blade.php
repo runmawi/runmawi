@@ -251,7 +251,6 @@
 
     .ugc-tab-content{
 		display: none;
-		padding: 15px;
 	}
 
 	.ugc-tab-content.ugc-current{
@@ -260,7 +259,7 @@
 
     .ugc-videos img{
         width: 100%;
-        height: 200px;
+        height: 150px;
         border-radius: 15px;
     }
 
@@ -616,6 +615,13 @@
                                     </div>
                                     <div>
                                     <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
+                                    </div>
+
+                                    <div class="shareprofile">
+                                        <div class="d-flex bg-white p-3"> 
+                                            <a href="" ><i class="ri-facebook-fill"></i></a>
+                                            <a href="" ><i class="ri-twitter-fill"></i></a>
+                                         </div>
                                     </div>
                                 </div>
                                 
@@ -1721,5 +1727,12 @@ $.ajax({
 
 });
 
+</script>
+
+<script>
+    $('.shareprofile').hide()
+    jQuery('.ugc-button').on('click',function(){
+    jQuery('.shareprofile').toggle();
+})    
 </script>
 

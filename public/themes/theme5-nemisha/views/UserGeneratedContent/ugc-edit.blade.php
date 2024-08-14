@@ -2,6 +2,7 @@
     include public_path('themes/theme5-nemisha/views/header.php');
 @endphp
 
+
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
@@ -219,43 +220,21 @@
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
-@section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://malsup.github.io/jquery.form.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
 <div id="content-page" class="content-page">
-    <div class="mt-5 d-flex">
-                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
-                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-                        <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
-                       <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
-                     </div>
 <div id="content-page" class="">
 <div class="container-fluid p-0">
 <div class="row">
 <div class="col-sm-12">
 <div class="iq-card">
-<div class="iq-card-header d-flex justify-content-between">
-   <div class="iq-header-title">
-      <h4 class="card-title">Add Video</h4>
-   </div>
-   <div class="d-flex justify-content-between">
-            <div>
-                <a href="{{ URL::to('category/videos') . '/' . $video->slug }}" target="_blank" class="btn btn-primary">
-                    <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
-                </a>
-            </div>
-        </div>
-           
-      
-</div>
+
 <br>
 
-@if($video->type == 'mp4_url')
+{{-- @if($video->type == 'mp4_url')
    <h5> Mp4: {{ $video->mp4_url }}</h5>
 
    @elseif ($video->type == 'm3u8_url')
@@ -270,7 +249,7 @@
    @elseif ($video->type == 'aws_m3u8') 
    <h5> Aws M3U8 : {{ @$video->m3u8_url }}</h5>
 
-@endif
+@endif --}}
                        
 
 @if($page == 'Edit' && $video->status == 0  && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
@@ -295,17 +274,15 @@
    @endforeach
 @endif
 
-
-<h5 class="p-1 mt-3 ml-3" style="font-weight: normal;">Video Info Details</h5>
 <?php 
  $filename = $video->path.'.mp4';
  $path = storage_path('app/public/'.$filename);
 ?>
-@if($video->processed_low >= 100 && $video->type == "")
+{{-- @if($video->processed_low >= 100 && $video->type == "")
    @if (file_exists($path))
       <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/videos/filedelete') . '/' . $video->id }}" style="margin-left: 85%;"><button class="btn btn-secondary" > Delete Original File</button></a>
    @endif
-@endif
+@endif --}}
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -316,46 +293,12 @@
          <div class="px-0  pb-0  mb-3 col-md-12">
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                @csrf 
-               <!-- progressbar -->
-               <ul id="progressbar">
-                  @if($video->processed_low >= 100   && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "embed")
-                  <li class="active" id="videot"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video</li>
-                  @endif
-                  <li class="" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
-                  <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
-                  <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
-                  <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
-                  <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management &amp; Transcoding</li>
-               </ul>
-               <div class="progress">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-               </div>
-               <br> <!-- fieldsets -->
+              
                @if($video->processed_low >= 100 && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "aws_m3u8" || $video->type == "embed")
 
                <fieldset id="player_data">
-                  <div class="form-card">
+                  <div>
                      <div class="row">
-                        <div class="col-6">
-                           <h2 class="fs-title p-0">Video Player</h2>
-                        </div>
-                        @if($video->access != 'ppv')
-                           @if($video->active == 1  && $video->status == 1 && !empty($video->publish_type) || $video->active == 0  && empty($video->publish_type) || $video->enable == 0 && empty($video->publish_type) || $video->status == 0 && empty($video->publish_type) )
-                        <div class="col-3">
-                            <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
-                            <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
-                            </div>
-
-                            <div class="col-3">
-                            <label for=""><h3 class="fs-title m-0">Social Share:</h3></label>
-                           <div class="share-box">
-                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
-                                 <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
-                              </div>
-                        </div>
-                           @endif
-                        @endif
-
                       <div id="video_container" class="fitvid col-sm-12" atyle="z-index: 9999;" >
                         @if($video->type == 'mp4_url')
                            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4">
@@ -391,14 +334,7 @@
                         @endif
                         </div>
                          </div>
-<!--
-                          <div class="col-6 text-center">
-                              <p>@if(!empty($video->title)){{ $video->title }}@endif</p>
-                              <p>@if(!empty($video->description)){{ ($video->description) }}@endif</p>
-                              <p>$video->title</p>
-                              <p>$video->title</p>
-                          </div>
--->
+                         
 
                       </div> 
                      <input type="button" name="next" class="next action-button" id="nextplayer" value="Next"  /> 
@@ -426,38 +362,7 @@
 
                   </div>
                </div>
-               <div class="row">
-                  
-         {{-- Age Restrict --}}
-                  {{-- <div class="col-sm-6 form-group">
-                     <label class="m-0">Age Restrict:</label>
-                     <select class="form-control" id="age_restrict" name="age_restrict">
-                        <option value="">Choose Age</option>
-                           @foreach($age_categories as $key => $age)
-                              <option value="{{ $age->age }}"  {{  ($video->age_restrict == $age->age ) ? 'selected' : '' }} > {{ $age->slug }}</option>
-                           @endforeach
-                     </select>
-                  </div> --}}
-
-               {{-- <div class="col-sm-6 form-group ">                                       
-                     <label class="m-0">Rating:</label>
-                     <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
-                     <select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
-                        <option value="1" {{ $video->rating == '1' ? 'selected':'' }} >1</option>
-                        <option value="2" {{ $video->rating == '2' ? 'selected':'' }} >2</option>
-                        <option value="3" {{ $video->rating == '3' ? 'selected':'' }} >3</option>
-                        <option value="4" {{ $video->rating == '4' ? 'selected':'' }} >4</option>
-                        <option value="5" {{ $video->rating == '5' ? 'selected':'' }} >5</option>
-                        <option value="6" {{ $video->rating == '6' ? 'selected':'' }} >6</option>
-                        <option value="7" {{ $video->rating == '7' ? 'selected':'' }} >7</option>
-                        <option value="8" {{ $video->rating == '8' ? 'selected':'' }} >8</option>
-                        <option value="9" {{ $video->rating == '9' ? 'selected':'' }} >9</option>
-                        <option value="10"{{ $video->rating == '10' ? 'selected':'' }} >10</option>
-                     </select>
-                  </div> --}}
-               </div>
-              
-               
+   
                <div class="row">
                    <div class="col-lg-12 form-group">
                         <label class="m-0">Video Description:</label>
@@ -470,94 +375,7 @@
                       placeholder="Link and details">@if(!empty($video->details)){{ ($video->details) }}@endif</textarea>
                    </div> --}}
                </div>
-                {{-- <div class="row">
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif" placeholder="HH:MM:SS">
-                        <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
-                     </div>
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" placeholder="HH:MM:SS" >
-                        <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
-                    </div>
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" placeholder="HH:MM:SS">
-                        <span><p id="error_intro_end_time" style="color:red !important; ">* Fill Intro End Time </p></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
-                        <span> <small> Recap Time Always Lesser than video duration </small> </span>
-                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif" placeholder="HH:MM:SS" >
-                     </div>
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label><br>
-                        <span> <small> Start Time Always Lesser Than End Time </small> </span>
-                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif" placeholder="HH:MM:SS" >
-                    </div>
-                    <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label><br> 
-                        <span> <small> Recap Time Always Greater than video duration </small> </span>
-                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" placeholder="HH:MM:SS">
-                    </div>
-                </div>
-
-                  <div class="row">
-                     <div class="col-sm-6 form-group">
-                        <label class="m-0">Video Duration:</label>
-                        <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-                     </div> 
-                     <div class="col-sm-6 form-group">
-                        <label class="m-0">Year:</label>
-                        <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
-                     </div>
-                  </div>
-
-                  <div class="row">
-
-                     <div class="col-sm-6">
-                        <label class="m-0"> Enable Free Duration <small>(Enable / Disable Free Duration)</small></label>                        
-                        <div class="panel-body">
-                            <div class="mt-1">
-                                <label class="switch">
-                                 <input name="free_duration_status"  id="free_duration_status" type="checkbox"  {{ !empty($video->free_duration_status) && $video->free_duration_status == 1 ? "checked" : null }} >
-                                 <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="col-sm-6 form-group">
-                        <label class="m-0"> Free Duration <small>Enter The Live Stream Free Duration In (HH : MM : SS)</small></label>
-                        <input type="text" class="form-control" placeholder="HH:MM:SS" name="free_duration" id="free_duration"  value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
-                     </div>
-                  </div>
-
-
-                <div class="row">
-                    <div class="col-sm-6 form-group mt-3" >
-                        <label class="mb-2" style="display:block;">Publish Type</label>
-                        <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
-                        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"{{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }} > Publish Later
-                    </div>
-                    <div class="col-sm-6 form-group mt-3" id="publishlater">
-                        <label class="">Publish Time</label>
-                        <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
-                    </div>
-                </div> --}}
-
-               {{-- @if (videos_expiry_date_status() == 1)
-                  <div class="row">
-                     <div class="col-sm-4 form-group mt-3" id="">
-                        <label class="">Expiry Date & Time</label>
-                        <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
-                     </div>
-                  </div>     
-               @endif --}}
-
+               
                <div class="row">
                   <div class="col-7">
                         <h2 class="fs-title">Image Upload:</h2>
@@ -575,7 +393,7 @@
                      @if($width !== null && $heigth !== null)
                         <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
                      @else
-                        <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                        <p class="p1"  style="color:black !important;">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
                      @endif
                      <input type="file" name="image" id="image" />
                      <span>
@@ -599,7 +417,7 @@
                      @if($player_width !== null && $player_heigth !== null)
                         <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                      @else
-                        <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
+                        <p class="p1" style="color:black !important;">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
                      @endif
                      <div class="panel-body">
                         <input type="file" name="player_image" id="player_image" />
@@ -617,400 +435,13 @@
                  </div>
 
                </div>
-
+               <div class="">
+               <button type="submit" style = "float: right; margin: 10px 5px 10px 0px; vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+               </div>
                {{-- <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button> --}}
-               <button type="submit" style = "float: right;
-    margin: 10px 5px 10px 0px;
-    vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
-               
-               </fieldset>
-               <fieldset class="Next3" id="videocategory_data">
-               <div class="form-card">
-               {{-- <div class="row">
-               <div class="col-7">
-               <h2 class="fs-title">Video Category:</h2>
-               </div>
-               <div class="col-5">
-               <!-- <h2 class="steps">Step 2 - 4</h2> -->
-               </div>
-               </div> --}}
-               <div class="row">
-               {{-- <div class="col-sm-6 form-group" >
-               <label class="m-0">Select Video Category :</label>
-               <select class="form-control js-example-basic-multiple"  name="video_category_id[]"  id="video_category_id" style="width: 100%;" multiple="multiple" >
-               @foreach($video_categories as $category)
-               @if(in_array($category->id, $category_id))
-               <option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
-               <!-- <option value="{{ $category->id }}" @if(!empty($video->video_category_id) && $video->video_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option> -->
-               @else
-               <option value="{{ $category->id }}">{{ $category->name }}</option>
-               @endif      
-               @endforeach
-               </select>
-               <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span>
-               </div> --}}
-               {{-- <div class="col-sm-6 form-group" >                               
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title">
-                   <label class="m-0">Cast and Crew :<small>( Add artists for the video below )</small></label> 
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
+            </div>
+            </fieldset>
 
-                  
-               </div>
-               </div> --}}
-               </div>
-               <div class="row">
-               {{-- <div class="col-sm-6 form-group">
-               <label class="m-0">Choose Language:</label>
-                  <select class="form-control js-example-basic-multiple languages" id="language" name="language[]" style="width: 100%;" multiple="multiple">
-                     <!-- <option selected disabled="">Choose Language</option> -->
-                     @foreach($languages as $language)
-                        @if(in_array($language->id, $languages_id))
-                           <option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
-                        @else
-                           <option value="{{ $language->id }}" >{{ $language->name }}</option>
-                        @endif 
-                     @endforeach
-                  </select>
-               <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
-
-               </div>  --}}
-               {{-- <div class="col-sm-4 form-group">
-                    <label class="m-0">E-Paper: <small>(Upload your PDF file)</small> </label>
-                    <input type="file" class="form-group" name="pdf_file" accept="application/pdf" id="" >
-                   @if(!empty($video->pdf_files))
-                        <span class='pdf_file' >
-                            <a href="{{ URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files }}" style="font-size:48px;" class="fa fa-file-pdf-o" width="" height="" download></a>
-                            {{'Download file'}}
-                        </span>
-                   @endif
-               </div> --}}
-               {{-- <div class="col-sm-6 form-group">
-               <label class="m-0">Choose Playlist:</label>
-                  <select class="form-control js-example-basic-multiple playlists" id="playlist" name="playlist[]" style="width: 100%;" multiple="multiple">
-                     @foreach($AdminVideoPlaylist as $Video_Playlist)
-                        @if(in_array($Video_Playlist->id, $Playlist_id))
-                           <option value="{{ $Video_Playlist->id }}" selected="true">{{ $Video_Playlist->title }}</option>
-                        @else
-                           <option value="{{ $Video_Playlist->id }}" >{{ $Video_Playlist->title }}</option>
-                        @endif 
-                     @endforeach
-                  </select>
-
-               </div>  --}}
-                  {{-- <div class="col-sm-6 form-group">
-                     <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
-                        <div class="d-flex justify-content-around align-items-center" style="width:60%;">
-                           <div style="color:red;">Decode Reels </div>
-                           <div class="mt-1">
-                                 <label class="switch">
-                                    <input name="enable_reel_conversion"  type="checkbox"  >
-                                    <span class="slider round"></span>
-                                 </label>
-                           </div>
-                           <div style="color:green;">Encode Reels </div>
-                        </div>
-                     <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
-
-                     @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
-                        <div class="d-flex">
-                              @foreach($Reels_videos as $reelsVideo)
-                                 <video width="200" height="200" controls style="padding: 6px;">
-                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/shorts/' . $reelsVideo->reels_videos }}" type="video/mp4">
-                                 </video>
-                              @endforeach
-                           </div>
-                     @endif
-                  </div> --}}
-
-                  {{-- <div class="col-sm-6 form-group">
-                     <label class="m-0">Reels Thumbnail: <small>(9:16 Ratio or 720X1080px)</small></label>
-                     <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
-
-                        @if($video->reels_thumbnail != null )
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
-                        @endif
-                  </div> --}}
-                    </div>
-
-            
-            {{-- <div class="row">
-                <div class="col-sm-6 form-group">
-                    <label class="m-0">URL Link <small>( Please Enter Link with https )</small></label>
-                    <input type="text" class="form-control" name="url_link" accept="" id="url_link" value="@if(!empty($video->url_link)){{ $video->url_link }}@endif" />
-                </div>
-            
-                <div class="col-sm-6 form-group">
-                    <label class="m-0">URL Start Time <small>( HH:MM:SS )</small></label>
-                    <input type="text" class="form-control" name="url_linktym" accept="" id="url_linktym" value="@if(!empty($video->url_linktym)){{ $video->url_linktym }}@endif" />
-                </div>
-            </div> --}}
-                {{-- <hr />
-               <div class="row">    
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt))
-               <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-               <i class="las la-exclamation-circle"></i>
-               </a>:</h3>
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
-               <div class="panel-body" style="display: block;"> 
-               @foreach($subtitles as $subtitle)
-
-               <div class="col-sm-6 form-group" style="float: left;">
-               <div class="align-items-center" style="clear:both;" >
-               <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-
-
-               <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
-               </div>
-               </div>
-               @endforeach
-               </div> 
-               </div>
-               </div> --}}
-               </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> 
-               <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               <button type="submit" class="btn btn-primary" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
-               </fieldset>
-               <fieldset id="video_access_data">
-               <div class="form-card">
-
-               {{-- <div class="row">
-                  <div class="col-7">
-                     <h2 class="fs-title">Video Access </h2>
-                  </div>
-               </div>  --}}
-
-               {{-- <div class="row">
-                  <div class="col-md-4">
-                     <label class="m-0">Recommendations</label>
-                     <input type="text" class="form-control" id="Recommendation " name="Recommendation" value="@if(!empty($video->Recommendation)){{ $video->Recommendation }}@endif">
-                  </div> 
-               </div> --}}
-
-               {{-- <div class="row">
-                   <div class="col-sm-12">
-                    <h2 class="fs-title">Geo-location for Videos</h2>
-               </div> --}}
-
-               <!-- {{-- Block country --}} -->
-               {{-- <div class="col-sm-6 form-group">
-                   <label class="m-0">Block Country</label>
-                     <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                     <option value="All">Select Country </option>
-                        @foreach($countries as $country)
-                           @if(in_array($country->country_name, $block_countries))
-                              <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
-                           @else
-                              <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
-                           @endif 
-                        @endforeach
-                     </select>
-               </div> --}}
-
-                  <!-- {{-- country --}} -->
-                  {{-- <div class="col-sm-6 form-group">
-                     <label class="m-0">Available Country</label>
-                     <select  name="video_country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                        <option value="All"> Select Country </option>
-                        @foreach($countries as $country) 
-                           <option value="{{ $country->country_name }}" @if( !empty(json_decode($video->country)) && in_array( $country->country_name, json_decode($video->country) ))selected='selected' @endif >{{ $country->country_name }}</option>
-                        @endforeach
-                     </select>
-                  </div> --}}
-            
-               {{-- <div class="row">
-                  <div class="col-sm-6 form-group mt-3">
-                     <label class="m-0">User Access</label>
-                     <select id="access" name="access"  class="form-control" >
-                        <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-
-                        <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber ( Must subscribe to watch )</option>
-
-                        <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users( Must register to watch )</option>   
-
-                        @if($settings->ppv_status == 1)
-                           <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-                        @else
-                           <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-                        @endif
-                        
-                     </select>
-                  </div> 
-               </div> --}}
-               
-                                          {{-- PPV Price --}}
-               {{-- <div class="row" id="ppv_price" >
-                     <div class="col-sm-6 form-group" >
-                        <label class="m-0">PPV Price:</label>
-                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                        <span id="error_ppv_price" style="color:red;">*Enter the PPV Price </span>
-                     </div>
-
-                     <div class="col-sm-6 form-group" >
-                        <label class="m-0">IOS PPV Price:</label>
-                           <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
-                              <option value= "" >Select IOS PPV Price: </option>
-                              @foreach($InappPurchase as $Inapp_Purchase)
-                                 <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
-                              @endforeach
-                           </select>
-                     </div>
-               </div> --}}
-
-         
-
-            
-                  {{-- <div class="row">
-                     <div class="col-sm-6 form-group" >
-                        <label class="m-0">Related Videos :</label>
-                        <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                           @foreach($related_videos as $related_video)
-                              @if(in_array($related_video->id, $all_related_videos))
-                                 <option value="{{ $related_video->id }}" selected="true">{{ $related_video->title }}</option>
-                              @else
-                                 <option value="{{ $related_video->id }}"  > {{ $related_video->title }}</option>
-                              @endif   
-                           @endforeach
-                        </select>
-                     </div>
-                  </div> --}}
-
-            
-                   {{-- <div class="row">
-                       <div class="col-sm-6 "> 
-                           <div class="panel panel-primary" data-collapsed="0"> 
-                               <div class="panel-heading"> 
-                                   <div class="panel-title">
-                                        <label class="m-0"><h3 class="fs-title">Status Settings</h3> </label>
-                                   </div> 
-                                   <div class="panel-options"> 
-                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-                                   </div>
-                               </div> 
-                               <div class="panel-body"> 
-                                   <div>
-                                        <label class="" for="featured">Enable this video as Featured:</label>
-                                        <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-                                   </div>
-
-                                   <div class="clear"></div>
-
-                                   <div>
-                                       <label class="" for="active">Enable this Video:</label>
-                                       <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
-                                   </div>
-
-                                    <div class="clear"></div>
-                                   <div>
-
-                                       <label class="" for="banner">Enable this Video as Slider:</label>
-                                       <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-                                   </div>
-                                   <div class="clear"></div>
-
-                                    <div>
-                                       <label class="" for="banner">Enable this Today Top Video :</label>
-                                       <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
-                                    </div>
-
-                                    <div class="clear"></div>
-                               </div> 
-                           </div>
-                       </div>
-                   </div> --}}
-                </div> 
-
-                            <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
-                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                            <button type="submit" class="btn btn-primary "style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
-  
-               </fieldset>
-
-               <fieldset id="upload_datas">
-                  <div class="form-card">
-                        <div class="row">
-                           <div class="col-7">
-                                 <h2 class="fs-title">Image Upload:</h2>
-                           </div>
-                           <div class="col-5"></div>
-                        </div>
-
-                        <div class="row">
-                           <div class="col-sm-6 form-group">
-                              {{-- <div id="VideoImagesContainer" class="gridContainer mt-3"></div> --}}
-                              @php 
-                                 $width = $compress_image_settings->width_validation_videos;
-                                 $heigth = $compress_image_settings->height_validation_videos;
-                              @endphp
-                              @if($width !== null && $heigth !== null)
-                                 <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
-                              @else
-                                 <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
-                              @endif
-                              <input type="file" name="image" id="image" />
-                              <span>
-                                  <p id="video_image_error_msg" style="color:red !important; display:none;">
-                                      * Please upload an image with the correct dimensions.
-                                  </p>
-                              </span>
-                              @if(!empty($video->image) && ($video->image) != null )
-                              <div class="col-sm-8 p-0">
-                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
-                              </div>
-                              @endif
-                          </div>
-                          
-                          <div class="col-sm-6 form-group">
-                              {{-- <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div> --}}
-                              @php 
-                                 $player_width = $compress_image_settings->width_validation_player_img;
-                                 $player_heigth = $compress_image_settings->height_validation_player_img;
-                              @endphp
-                              @if($player_width !== null && $player_heigth !== null)
-                                 <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
-                              @else
-                                 <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
-                              @endif
-                              <div class="panel-body">
-                                 <input type="file" name="player_image" id="player_image" />
-                                 <span>
-                                    <p id="player_image_error_msg" style="color:red !important; display:none;">
-                                       * Please upload an image with the correct dimensions.
-                                    </p>
-                                 </span>
-                                 @if(!empty($video->player_image))
-                                 <div class="col-sm-8 p-0">
-                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100 mt-1" />
-                                 </div>
-                                 @endif
-                              </div>
-                          </div>
-
-                        </div>
-                  </div>
-                  <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
-                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                  <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
-                     
-                  <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
-                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-              </fieldset>
-           
-                  {{-- ADS Management --}}
-                  {{-- @include('admin.videos.create_edit_ads_fieldset');  --}}
             </form>
          </div>
       </div>
@@ -1049,6 +480,9 @@
    }
    .form-card {
    text-align: left;
+   background-color: white;
+   padding: 50px;
+   border-radius:10px;
    }
    #msform fieldset:not(:first-of-type) {
    display: none;
@@ -1434,120 +868,6 @@ $(document).ready(function(){
 
    $(document).ready(function(){
 
-      $.ajax({
-        url: '{{ URL::to('admin/videos/extractedimage') }}',
-        type: "post",
-        data: {
-            _token: '{{ csrf_token() }}',
-            video_id : "{{ $video->id }}",
-        },
-        success: function(value) {
-            // console.log(value.ExtractedImage.length);
-
-            if (value && value.ExtractedImage.length > 0) {
-                $('#VideoImagesContainer').empty();
-                $('#VideoPlayerImagesContainer').empty();
-                var ExtractedImage = value.ExtractedImage;
-                var previouslySelectedElement = null;
-                var previouslySelectedVideoImag = null;
-                var previouslySelectedTVImage = null;
-
-                ExtractedImage.forEach(function(Image, index) {
-                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
-                    var VideoPlayerImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
-                    var VideoTVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
-
-                    imgElement.click(function() {
-                        $('.ajax-image').css('border', 'none');
-                        // Remove border from the previously selected image
-                        if (previouslySelectedElement) {
-                           previouslySelectedElement.css('border', 'none');
-                        }
-                        imgElement.css('border', '2px solid red');
-                        var clickedImageUrl = Image.image_path;
-
-                        var SelectedImageUrl = Image.image_original_name;
-                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
-                        previouslySelectedElement = $(this);
-
-                        $('#selectedImageUrlInput').val(SelectedImageUrl);
-                    });
-                                    // Default selection for the first image
-                     // if (index === 0) {
-                     //       imgElement.click();
-                     // }
-                    $('#VideoImagesContainer').append(imgElement);
-
-                    VideoPlayerImagesContainer.click(function() {
-                        $('.video-image').css('border', 'none');
-                        if (previouslySelectedVideoImag) {
-                           previouslySelectedVideoImag.css('border', 'none');
-                        }
-                        VideoPlayerImagesContainer.css('border', '2px solid red');
-                        
-                        var clickedImageUrl = Image.image_path;
-
-                        var VideoImageUrl = Image.image_original_name;
-                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
-                        previouslySelectedVideoImag = $(this);
-
-                        $('#videoImageUrlInput').val(VideoImageUrl);
-                    });
-
-                  //   if (index === 0) {
-                  //    VideoPlayerImagesContainer.click();
-                  //    }
-
-                    $('#VideoPlayerImagesContainer').append(VideoPlayerImagesContainer);
-
-                    VideoTVImagesContainer.click(function() {
-                        $('.tv-video-image').css('border', 'none');
-                        if (previouslySelectedTVImage) {
-                           previouslySelectedTVImage.css('border', 'none');
-                        }
-                        VideoTVImagesContainer.css('border', '2px solid red');
-                        
-                        var clickedImageUrl = Image.image_path;
-
-                        var TVImageUrl = Image.image_original_name;
-                        previouslySelectedTVImage = $(this);
-
-                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
-                  });
-
-                  // if (index === 0) {
-                  //    VideoTVImagesContainer.click();
-                  // }
-
-                  $('#VideoTVImagesContainer').append(VideoTVImagesContainer);
-
-
-                });
-            } else {
-                     var SelectedImageUrl = '';
-
-                     $('#selectedImageUrlInput').val(SelectedImageUrl);
-                    $('#videoImageUrlInput').val(SelectedImageUrl);
-                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-            }
-        },
-        error: function(error) {
-
-            var SelectedImageUrl = '';
-
-            $('#selectedImageUrlInput').val(SelectedImageUrl);
-            $('#videoImageUrlInput').val(SelectedImageUrl);
-            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
-            console.error(error);
-        }
-    });
-
-      // $('#player_data').hide();
-      // $('#slug_validate').hide();
-      // $('#videocategory_data').hide();
-      // $('#video_access_data').hide();
-      // $('#upload_datas').hide();
-      // $('#ads_data').hide();
 
    $('#videot').click(function(){
       $(".progress-bar").css({"width":"17%"});
@@ -2007,77 +1327,46 @@ $(document).ready(function(){
 
 <script>
    
-      // $('#image').on('change', function(event) {
+   $(document).ready(function(){
 
-      //       $('#image').removeData('imageWidth');
-      //       $('#image').removeData('imageHeight');
-      //       $('#image').removeData('imageratio');
+      $('#image').on('change', function(event) {
 
-      //       var file = this.files[0];
-      //       var tmpImg = new Image();
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
-      //       tmpImg.src=window.URL.createObjectURL( file ); 
-      //       tmpImg.onload = function() {
-      //           width = tmpImg.naturalWidth,
-      //           height = tmpImg.naturalHeight;
-		// 		    ratio =  Number(width/height).toFixed(2) ;
-      //           image_validation_status = "{{  image_validation_videos() }}" ;
+            var file = this.files[0];
+            var tmpImg = new Image();
 
-      //           $('#image').data('imageWidth', width);
-      //           $('#image').data('imageHeight', height);
-      //           $('#image').data('imageratio', ratio);
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+				    ratio =  Number(width/height).toFixed(2) ;
+                image_validation_status = "{{  image_validation_videos() }}" ;
 
-      //           if(  image_validation_status == "0" || ratio == '0.56'|| width == '1080' && height == '1920' ){
-      //             $('.update_upload_img').removeAttr('disabled');
-      //             $('#image_error_msg').hide();
-      //           }
-      //           else{
-      //             $('.update_upload_img').attr('disabled','disabled');
-      //             $('#image_error_msg').show();
-      //           }
-      //       }
-      //   });
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
+                if(  image_validation_status == "0" || ratio == '0.56'|| width == '1080' && height == '1920' ){
+                  $('.update_upload_img').removeAttr('disabled');
+                  $('#image_error_msg').hide();
+                }
+                else{
+                  $('.update_upload_img').attr('disabled','disabled');
+                  $('#image_error_msg').show();
+                }
+            }
+        });
 
         
-      // $('#player_image').on('change', function(event) {
+      $('#player_image').on('change', function(event) {
 
          
-      //    $('#player_image').removeData('imageWidth');
-      //    $('#player_image').removeData('imageHeight');
-      //    $('#player_image').removeData('imageratio');
-
-      //    var file = this.files[0];
-      //    var tmpImg = new Image();
-
-      //    tmpImg.src=window.URL.createObjectURL( file ); 
-      //    tmpImg.onload = function() {
-      //       width = tmpImg.naturalWidth,
-      //       height = tmpImg.naturalHeight;
-		// 	   ratio =  Number(width/height).toFixed(2) ;
-      //       image_validation_status = "{{  image_validation_videos() }}" ;
-
-      //       $('#player_image').data('imageWidth', width);
-      //       $('#player_image').data('imageHeight', height);
-      //       $('#player_image').data('imageratio', ratio);
-
-      //       if(  image_validation_status == "0" || ratio == '1.78' || width == '1280' && height == '720' ){
-      //          $('.update_upload_img').removeAttr('disabled');
-      //          $('#player_image_error_msg').hide();
-      //       }
-      //       else{
-      //          $('.update_upload_img').attr('disabled','disabled');
-      //          $('#player_image_error_msg').show();
-      //       }
-      //    }
-      // });
-
-
-      $('#video_tv_image').on('change', function(event) {
-
-         
-         $('#video_tv_image').removeData('imageWidth');
-         $('#video_tv_image').removeData('imageHeight');
-         $('#video_tv_image').removeData('imageratio');
+         $('#player_image').removeData('imageWidth');
+         $('#player_image').removeData('imageHeight');
+         $('#player_image').removeData('imageratio');
 
          var file = this.files[0];
          var tmpImg = new Image();
@@ -2089,217 +1378,24 @@ $(document).ready(function(){
 			   ratio =  Number(width/height).toFixed(2) ;
             image_validation_status = "{{  image_validation_videos() }}" ;
 
-            $('#video_tv_image').data('imageWidth', width);
-            $('#video_tv_image').data('imageHeight', height);
-            $('#video_tv_image').data('imageratio', ratio);
+            $('#player_image').data('imageWidth', width);
+            $('#player_image').data('imageHeight', height);
+            $('#player_image').data('imageratio', ratio);
 
-            if(  image_validation_status == "0" || ratio == '1.78' || width == '1920' && height == '1080' ){
+            if(  image_validation_status == "0" || ratio == '1.78' || width == '1280' && height == '720' ){
                $('.update_upload_img').removeAttr('disabled');
-               $('#tv_image_image_error_msg').hide();
+               $('#player_image_error_msg').hide();
             }
             else{
                $('.update_upload_img').attr('disabled','disabled');
-               $('#tv_image_image_error_msg').show();
+               $('#player_image_error_msg').show();
             }
          }
       });
 
-   </script>
-
-   <script>
-
-   (function() {
-
-        "use strict"
-
-        // Plugin Constructor
-        var TagsInput = function(opts) {
-            this.options = Object.assign(TagsInput.defaults, opts);
-            this.init();
-        }
-
-        // Initialize the plugin
-        TagsInput.prototype.init = function(opts) {
-            this.options = opts ? Object.assign(this.options, opts) : this.options;
-
-            if (this.initialized)
-                this.destroy();
-
-            if (!(this.orignal_input = document.getElementById(this.options.selector))) {
-                console.error("tags-input couldn't find an element with the specified ID");
-                return this;
-            }
-
-            this.arr = [];
-            this.wrapper = document.createElement('div');
-            this.input = document.createElement('input');
-            init(this);
-            initEvents(this);
-
-            this.initialized = true;
-            return this;
-        }
-
-        // Add Tags
-        TagsInput.prototype.addTag = function(string) {
-
-            if (this.anyErrors(string))
-                return;
-
-            this.arr.push(string);
-            var tagInput = this;
-
-            var tag = document.createElement('span');
-            tag.className = this.options.tagClass;
-            tag.innerText = string;
-
-            var closeIcon = document.createElement('a');
-            closeIcon.innerHTML = '&times;';
-
-            // delete the tag when icon is clicked
-            closeIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-                var tag = this.parentNode;
-
-                for (var i = 0; i < tagInput.wrapper.childNodes.length; i++) {
-                    if (tagInput.wrapper.childNodes[i] == tag)
-                        tagInput.deleteTag(tag, i);
-                }
-            })
-
-
-            tag.appendChild(closeIcon);
-            this.wrapper.insertBefore(tag, this.input);
-            this.orignal_input.value = this.arr.join(',');
-
-            return this;
-        }
-
-        // Delete Tags
-        TagsInput.prototype.deleteTag = function(tag, i) {
-            tag.remove();
-            this.arr.splice(i, 1);
-            this.orignal_input.value = this.arr.join(',');
-            return this;
-        }
-
-        // Make sure input string have no error with the plugin
-        TagsInput.prototype.anyErrors = function(string) {
-            if (this.options.max != null && this.arr.length >= this.options.max) {
-                console.log('max tags limit reached');
-                return true;
-            }
-
-            if (!this.options.duplicate && this.arr.indexOf(string) != -1) {
-                console.log('duplicate found " ' + string + ' " ')
-                return true;
-            }
-
-            return false;
-        }
-
-        // Add tags programmatically 
-        TagsInput.prototype.addData = function(array) {
-            var plugin = this;
-
-            array.forEach(function(string) {
-                plugin.addTag(string);
-            })
-            return this;
-        }
-
-        // Get the Input String
-        TagsInput.prototype.getInputString = function() {
-            return this.arr.join(',');
-        }
-
-        // destroy the plugin
-        TagsInput.prototype.destroy = function() {
-            this.orignal_input.removeAttribute('hidden');
-
-            delete this.orignal_input;
-            var self = this;
-
-            Object.keys(this).forEach(function(key) {
-                if (self[key] instanceof HTMLElement)
-                    self[key].remove();
-
-                if (key != 'options')
-                    delete self[key];
-            });
-
-            this.initialized = false;
-        }
-
-        // Private function to initialize the tag input plugin
-        function init(tags) {
-            tags.wrapper.append(tags.input);
-            tags.wrapper.classList.add(tags.options.wrapperClass);
-            tags.orignal_input.setAttribute('hidden', 'true');
-            tags.orignal_input.parentNode.insertBefore(tags.wrapper, tags.orignal_input);
-        }
-
-        // initialize the Events
-        function initEvents(tags) {
-            tags.wrapper.addEventListener('click', function() {
-                tags.input.focus();
-            });
-
-            tags.input.addEventListener('keydown', function(e) {
-                if (!!(~[9, 13, 188].indexOf(e.keyCode))) {
-                    e.preventDefault();
-                    var str = tags.input.value.trim();
-                    if (str == "") return;
-                    str.split(",").forEach(function(tag) {
-                        tags.addTag(tag.trim());
-                    });
-                    tags.input.value = "";
-                }
-
-            });
-        }
-
-
-        // Set All the Default Values
-        TagsInput.defaults = {
-            selector: '',
-            wrapperClass: 'tags-input-wrapper',
-            tagClass: 'tag',
-            max: null,
-            duplicate: false
-        }
-
-        window.TagsInput = TagsInput;
-
-    })();
-
-        
-    var tagInput1 = new TagsInput({
-        selector: 'tag-input1',
-        duplicate : false,
-        max : 10
-    });
-
-    var tagsdata = '<?= $video->search_tags ?>';
-	
-
-	if(tagsdata == ""){
-            tagInput1.addData([])
-    }
-    else{
-        var search_tag = "<?= $video->search_tags ?>";
-        var tagsArray = search_tag.split(',');
-
-        for (var i = 0; i < tagsArray.length; i++) {
-            tagInput1.addData([tagsArray[i]]);
-        }
-   }
-		
-
-   </script>
-
+   });
+</script>
 
 
 @section('javascript')
-@stop
 @stop
