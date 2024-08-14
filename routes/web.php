@@ -293,6 +293,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // Page List
     Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('channel/latest-videos/{slug}', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
     Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
     Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
     Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');

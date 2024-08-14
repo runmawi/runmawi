@@ -91,9 +91,9 @@
                                 'currency' => App\CurrencySetting::first(),
                                 'default_vertical_image_url' => $default_vertical_image_url,
                                 'default_horizontal_image_url' => $default_horizontal_image_url,
+                                'channel_partner_slug' => isset($channel_partner) ? $channel_partner->channel_slug : null,
                             ];
 @endphp
-
 <div class='channel_home' >
      
     @forelse ($order_settings as $key => $item)

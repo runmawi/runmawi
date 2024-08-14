@@ -14,6 +14,7 @@ use App\Video;
 use Theme;
 use App\OrderHomeSetting;
 use App\VideoCategory;
+use App\Channel;
 
 class PageListController extends Controller
 {
@@ -38,14 +39,20 @@ class PageListController extends Controller
         return $paginatedItems;
     }
 
-    public function Latest_videos()
+    public function Latest_videos($slug = null)
     {
         try {
+
+            $channel_partner_id = Channel::where('channel_slug',$slug)->pluck('id')->first(); 
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
             
-            $latest_videos_pagelist = $FrontEndQueryController->Latest_videos();
+            $latest_videos_pagelist = ($slug == null) ? $FrontEndQueryController->Latest_videos() : $FrontEndQueryController->latest_videos()->filter(function ($latest_videos) use ($channel_partner_id) {
+                if ( $latest_videos->user_id == $channel_partner_id && $latest_videos->uploaded_by == "Channel" ) {
+                    return $latest_videos;
+                }
+            });;
             $latest_videos_paginate = $this->paginateCollection($latest_videos_pagelist, $this->videos_per_page);
 
             $data = array(
@@ -60,7 +67,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.latest-videos', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }

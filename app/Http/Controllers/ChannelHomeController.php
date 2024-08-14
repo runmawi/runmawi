@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
@@ -75,7 +77,20 @@ class ChannelHomeController extends Controller
         $this->videos_per_page = $this->settings->videos_per_page;
 
         $this->HomeSetting = HomeSetting::first();
-        Theme::uses($this->HomeSetting->theme_choosen);
+
+        $this->current_theme = $this->HomeSetting->theme_choosen ;
+        Theme::uses($this->current_theme);
+
+    }
+
+    function paginateCollection(Collection $items, $perPage)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $items->count(), $perPage);
+        $paginatedItems->setPath(request()->url());
+
+        return $paginatedItems;
     }
     
     public function ChannelHome($slug)
@@ -239,6 +254,7 @@ class ChannelHomeController extends Controller
             return abort(404);
         }
     }
+
     public function ChannelList()
     {
         // if (Auth::guest() && !isset($data['user']))
