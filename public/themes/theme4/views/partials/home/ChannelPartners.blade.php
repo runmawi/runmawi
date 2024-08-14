@@ -93,7 +93,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-
+                                            
 
                                             @if (optional($channel)->description)
                                                 <div class="trending-dec mt-4">{!! html_entity_decode( optional($channel)->description) !!}</div>

@@ -755,11 +755,11 @@ section#iq-favorites {
         padding: 20px 0 !important;
     }
 
-div#fullDescription {
+/* div#fullDescription {
     max-height: 300px;
     overflow-y: scroll;
     scrollbar-width: none;
-}
+} */
 
 li.list-group-item a {
     background: transparent !important;
