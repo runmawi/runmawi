@@ -26,7 +26,7 @@
                                                     {{ URL::to('public/uploads/mobileimages/'.$CPP_details->responsive_image.' 420w') }}" >
                                             @else
                                                 <img src="{{ $CPP_details->picture ?$CPP_details->picture : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{ $CPP_details->title }}">
-                                            @endif 
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach

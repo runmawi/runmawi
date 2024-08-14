@@ -8,10 +8,7 @@ $data = App\LiveCategory::query()->limit(15)
     ->with([
         'category_livestream' => function ($live_stream_videos) {
             $live_stream_videos
-                ->select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type', 
-                        'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image', 
-                        'live_streams.description','live_streams.recurring_program','live_streams.program_start_time','live_streams.program_end_time','live_streams.recurring_timezone',
-                        'live_streams.custom_start_program_time','live_streams.recurring_timezone')
+                ->select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type', 'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image', 'live_streams.description')
                 ->where('live_streams.active', 1)
                 ->where('live_streams.status', 1)
                 ->latest('live_streams.created_at')
@@ -45,7 +42,7 @@ $data->each(function ($category) {
                 <div class="container-fluid pl-0">
                     <div class="row">
                         <div class="col-sm-12 overflow-hidden">
-                                            
+
                                             {{-- Header --}}
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
                                 <h4 class="main-title mar-left"><a
@@ -63,7 +60,7 @@ $data->each(function ($category) {
                                             <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                                 <div>
                                                     <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="livestream_videos" width="300" height="200">
-                                                    @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                    @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time)))
                                                         <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                                     @endif
                                                 </div>
@@ -79,13 +76,13 @@ $data->each(function ($category) {
                                             <div class="caption" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                                 <h2 class="caption-h2">{{ $livestream_videos->title }}</h2>
 
-                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time)))
                                                     <ul class="vod-info">
                                                         <li><span></span> LIVE NOW</li>
                                                     </ul>
                                                 @elseif ($livestream_videos->publish_type == "publish_later")
                                                     <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
-                                                
+
                                                 @elseif ( $livestream_videos->publish_type == "recurring_program" && $livestream_videos->recurring_program != "custom" )
                                                     <span class="trending"> {{ 'Live Streaming '. $livestream_videos->recurring_program ." from ". Carbon\Carbon::parse($livestream_videos->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($livestream_videos->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $livestream_videos->recurring_timezone)->pluck('time_zone')->first() }} </span>
 
@@ -98,7 +95,7 @@ $data->each(function ($category) {
                                                         <span class="trending">{{ ($livestream_videos->year != null && $livestream_videos->year != 0) ? $livestream_videos->year : null   }}</span>
                                                     </div>
                                                 @endif
-                                                                                                            
+
                                                 @if ( optional($livestream_videos)->description )
                                                     <p class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->description) !!}</p>
                                                 @endif
@@ -153,7 +150,7 @@ $data->each(function ($category) {
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    
+
 
                                                     @if (optional($livestream_videos)->description)
                                                         <div class="trending-dec mt-4">{!! html_entity_decode( optional($livestream_videos)->description) !!}</div>
@@ -188,36 +185,36 @@ $data->each(function ($category) {
             imagesLoaded: true,
             lazyload:true,
         });
-    
+
         elem.querySelectorAll('.item').forEach(function(item) {
             item.addEventListener('click', function() {
                 var sectionIndex = this.getAttribute('data-section-index');
                 var index = this.getAttribute('data-index');
-    
+
                 elem.querySelectorAll('.item').forEach(function(item) {
                     item.classList.remove('current');
                 });
                 this.classList.add('current');
-    
+
                 document.querySelectorAll('#liveCate-' + sectionIndex + ' .caption').forEach(function(caption) {
                     caption.style.display = 'none';
                 });
                 document.querySelectorAll('#liveCate-' + sectionIndex + ' .thumbnail').forEach(function(thumbnail) {
                     thumbnail.style.display = 'none';
                 });
-    
+
                 var selectedCaption = document.querySelector('#liveCate-' + sectionIndex + ' .caption[data-index="' + index + '"]');
                 var selectedThumbnail = document.querySelector('#liveCate-' + sectionIndex + ' .thumbnail[data-index="' + index + '"]');
                 if (selectedCaption && selectedThumbnail) {
                     selectedCaption.style.display = 'block';
                     selectedThumbnail.style.display = 'block';
                 }
-    
+
                 document.getElementById('liveCate-' + sectionIndex).style.display = 'flex';
             });
         });
     });
-    
+
     document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         closeButton.addEventListener('click', function() {
             var dropdown = this.closest('.videos-based-network-dropdown');
@@ -225,7 +222,7 @@ $data->each(function ($category) {
         });
     });
     </script>
-    
+
 
 <style>
 
@@ -239,18 +236,18 @@ $data->each(function ($category) {
         position:absolute;
         top:0;
     }
-    
+
     @keyframes pulse {
         0% {
             transform: scale(0.95);
             box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
         }
-    
+
         70% {
             transform: scale(1);
             box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
         }
-    
+
         100% {
             transform: scale(0.95);
             box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
