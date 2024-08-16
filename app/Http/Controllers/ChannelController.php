@@ -152,7 +152,7 @@ class ChannelController extends Controller
         }
     }
 
-    public function channelVideos($cid)
+    public function channelVideos($cid, $slug = null)
     {
         try {
 
@@ -165,20 +165,37 @@ class ChannelController extends Controller
 
             // categoryVideos
 
-            $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                    ->whereIn('category_id', $category_id)->where('active', 1)
-                    ->where('videos.status', 1)->where('videos.draft', 1);
+            $channel_partner_id = Channel::where('channel_slug',$slug)->pluck('id')->first(); 
+            if($slug == null){
+                $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                        ->whereIn('category_id', $category_id)->where('active', 1)
+                        ->where('videos.status', 1)->where('videos.draft', 1);
 
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
-                    $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
-                }
-                
-                if (videos_expiry_date_status() == 1 ) {
-                    $categoryVideos = $categoryVideos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
-                }
+                    if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                        $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+                    }
+                    
+                    if (videos_expiry_date_status() == 1 ) {
+                        $categoryVideos = $categoryVideos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    }
 
-            $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
-          
+                $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
+            }
+            else{
+                $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                    ->whereIn('category_id', $category_id)
+                    ->where('active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1)
+                    ->latest('videos.created_at')
+                    ->where('uploaded_by', 'Channel')->get();
+
+                    $categoryVideos = $categoryVideos->filter(function ($categoryVideoschannel) use ($channel_partner_id){
+                        if($categoryVideoschannel->user_id == $channel_partner_id){
+                            return $categoryVideoschannel;
+                        }
+                    });
+            }
             // Most_watched_country
 
             $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
@@ -337,7 +354,7 @@ class ChannelController extends Controller
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }

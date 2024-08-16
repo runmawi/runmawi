@@ -12,8 +12,8 @@
     }
     
     .channel-img img{
-        position:absolute !important;
-        bottom:35px !important;
+        /* position:absolute !important;
+        bottom:35px !important; */
         left: 3%;
     }
 </style>
@@ -25,60 +25,67 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 {{-- Channel Banner --}}
-<section class="channel-header" style="background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;">
-    <img src="{{ !empty($channel_partner->channel_banner) && ($channel_partner->channel_banner != null) ? $channel_partner->channel_banner : URL::to('public/uploads/images/' . $settings->default_horizontal_image) }}" alt="channel-banner" style="height:75vh;
-    width:93%;opacity:0.8;position:relative;left:3%;filter: brightness(0.8) contrast(0.8) saturate(0.6);border-radius:20px;" class="channel-banner">
-</section>
-    
-<div class="container-fluid" style="position:relative;bottom: 250px;">
+<div id="home-slider">
+    <section id="home-slider" class="channel-header h-100" style="position:relative;background:url('{{ !empty($channel_partner->channel_banner) && ($channel_partner->channel_banner != null) ? $channel_partner->channel_banner : URL::to('public/uploads/images/' . $settings->default_horizontal_image) }}');height:calc(100vh - 130px);background-color: rgba(0, 0, 0, 0.45);background-blend-mode: multiply;background-repeat:no-repeat;background-size:cover;">
 
-                {{-- Channel Logo --}}
-    <div class="position-relative">
-        <div class="channel-img  container-fluid">
-            <img src="{{ !empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null ? $channel_partner->channel_logo : URL::to('/public/uploads/images/' . $settings->default_video_image) }}"  width="150" alt="user">
+        <!-- Add black overlays using ::before and ::after pseudo-elements -->
+        <div style="position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none;">
+            <div style="position:absolute; top:0; left:0; width:3%; height:100%; background-color:black;"></div>
+            <div style="position:absolute; top:0; right:0; width:3%; height:100%; background-color:black;"></div>
         </div>
+        
+        <div class="container-fluid" style="position:absolute;bottom: -4%;">
 
-        <div class="mt-3 container-fluid">
-            <div class="channel-about">
-                @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                    <h6>{{ __('About Channel') }} : {{ $channel_partner->channel_about }} </h6> 
-                @endif
-            </div>
+            {{-- Channel Logo --}}
+            <div class="">
+            <div class="mt-3 container-fluid">
+                    <div class="col-12 p-0">
+                        @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                            <h6 style="line-height:1.5"> {{ $channel_partner->channel_about }} </h6> 
+                        @endif
+                    </div>
+                <div class="row align-items-center">
 
-            <div class="col-2 col-lg-2">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    @php include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php")); @endphp
-                </ul>
-            </div>
-            
-            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
-                <div class="col-2 col-lg-2 " style="max-width:20% !important;">
-                    <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
-                        <span class="text-white">
-                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
-                        </span>
-                    </a>
+                    <div class="pl-3">
+                        <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                            @php include(public_path("themes/{$current_theme}/views/partials/channel-social-share.php")); @endphp
+                        </ul>
+                    </div>
+                    
+                    @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
+                        <div class="" style="max-width:20% !important;">
+                            <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
+                                <span class="text-white">
+                                    <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                                </span>
+                            </a>
 
-                    <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog"  style='max-width: 800px;'>
-                            <div class="modal-content" style="background-color: transparent;border:none;">
-                                <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <div class="modal-body">
-                                    <video id="channel-intro-video-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls >
-                                        <source src="{{ @$channel_partner->intro_video }}" type="video/mp4" >
-                                    </video>
+                            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog"  style='max-width: 800px;'>
+                                    <div class="modal-content" style="background-color: transparent;border:none;">
+                                        <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <div class="modal-body">
+                                            <video id="channel-intro-video-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls >
+                                                <source src="{{ @$channel_partner->intro_video }}" type="video/mp4" >
+                                            </video>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
-            @endif
 
             </div>
+            <div class="channel-imgs  container-fluid">
+                <img src="{{ !empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null ? $channel_partner->channel_logo : URL::to('/public/uploads/images/' . $settings->default_video_image) }}"  width="150" alt="user" style="border-radius:25px;">
+            </div>
+
             </div>
         </div>
+    </section>
+</div>
 
-</section>
 
 @php 
 
@@ -94,7 +101,7 @@
                                 'channel_partner_slug' => isset($channel_partner) ? $channel_partner->channel_slug : null,
                             ];
 @endphp
-<div class='channel_home' >
+<div class='channel_home mt-5' >
      
     @forelse ($order_settings as $key => $item)
         
@@ -147,7 +154,7 @@
         @endif
 
         @if( $item->video_name == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-videos-based-categories", array_merge($homepage_array_data,['order_settings_list' => $order_settings_list,'channel_partner' => $channel_partner ]) )->content() !!}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/channel-videos-based-categories", array_merge($homepage_array_data,['data' => $VideoCategory]) )->content() !!}
         @endif
 
         @if(  $item->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
