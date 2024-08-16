@@ -23,17 +23,24 @@
               <div class="col-sm-12 ">
 
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h2 class="main-title">
-                                <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
-                                    {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
-                                </a>
-                            </h2> 
-                            @if($settings->homepage_views_all_button_status == 1)
+                            @if (!preg_match('/^channel\/.+$/', request()->path()))
                                 <h2 class="main-title">
-                                    <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}"> 
-                                        {{ __('View All') }}
+                                    <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
+                                        {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
                                     </a>
-                                </h2>
+                                </h2> 
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h2 class="main-title">
+                                        <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}"> 
+                                            {{ __('View All') }}
+                                        </a>
+                                    </h2>
+                                @endif
+                            @else
+                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Series_list/'.$channel_partner_slug) }}">{{ optional($order_settings_list[4])->header_name }}</a></h2>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Series_list/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h2>
+                                @endif
                             @endif
                         </div>
                 
