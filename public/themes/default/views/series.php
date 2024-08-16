@@ -145,7 +145,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
-    || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
+    || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber' || !Auth::guest() && $settings->enable_ppv_rent == 1 && Auth::user()->role == 'subscriber'):  ?>
 		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
@@ -732,20 +732,20 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                   <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
               <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
-            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+            <!-- <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                     class="view-count rent-video btn btn-primary">
-                    <?php echo __('Purchase Now'); ?> </button>
+                    <?php echo __('Purchase Now'); ?> </button> -->
+                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                <?php echo __('Purchase Now'); ?> </button>
+
             <?php elseif($series->ppv_status == 1 ): ?>
 
               <div class="d-flex">
               <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                   <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
-              <form action="">
-                  <button  data-toggle="modal" data-target="#exampleModalCenter"
-                    class="view-count rent-video btn btn-primary">
-                    <?php echo __('Purchase Now'); ?> </button>
-                    </form>
+              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                <?php echo __('Purchase Now'); ?> </button>
                     </div>
             <?php endif; ?></h2>
           </div>
@@ -916,224 +916,300 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
           ?>
 
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-center" id="exampleModalLongTitle"
+                style="">Rent Now</h4>
 
-                                            <div class="modal-header">
-                                                <h4 class="modal-title text-center" id="exampleModalLongTitle"
-                                                    style=""><?php echo __('Rent Now'); ?></h4>
+            <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
 
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+        </div>
 
-                                            </div>
+        <div class="modal-body">
+            <div class="row justify-content-between">
+                <div class="col-sm-4 p-0" style="">
+                    <img class="img__img w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $series->image; ?>"
+                        class="img-fluid" alt="">
+                </div>
 
-                                            <div class="modal-body">
-                                                <div class="row justify-content-between">
-                                                    <div class="col-sm-4 p-0" style="">
-                                                        <img class="img__img w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $series->image; ?>"
-                                                            class="img-fluid" alt="">
-                                                    </div>
+                <div class="col-sm-8">
+                    <h4 class=" text-black movie mb-3"><?php echo __($series->title); ?> ,
+                        <span
+                            class="trending-year mt-2"><?php if ($series->year == 0) {
+                                echo '';
+                            } else {
+                                echo $series->year;
+                            } ?></span>
+                    </h4>
+                    <span
+                        class="badge badge-secondary   mb-2"><?php echo __($series->age_restrict) . ' ' . '+'; ?></span>
+                    <span
+                        class="badge badge-secondary  mb-2"><?php echo __(isset($series->categories->name)); ?></span>
+                    <span
+                        class="badge badge-secondary  mb-2"><?php echo __(isset($series->languages->name)); ?></span>
+                    <span
+                        class="badge badge-secondary  mb-2 ml-1"><?php echo __($series->duration); ?></span><br>
 
-                                                    <div class="col-sm-8">
-                                                        <h4 class=" text-black movie mb-3"><?php echo __($series->title); ?> ,
-                                                            <span
-                                                                class="trending-year mt-2"><?php if ($series->year == 0) {
-                                                                    echo '';
+                    <a type="button" class="mb-3 mt-3" data-dismiss="modal"
+                        style="font-weight:400;">Amount: <span class="pl-2"
+                            style="font-size:20px;font-weight:700;">
+                            <?php if(@$series->access == 'ppv' && @$settings->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$settings->ppv_price)); }else if(@$series->access == 'ppv' && @$settings->ppv_price != null && $CurrencySetting == 0){ echo __(  currency_symbol() . @$settings->ppv_price) ; } ?></span></a><br>
+                    <label class="mb-0 mt-3 p-0" for="method">
+                        <h5 style="font-size:20px;line-height: 23px;"
+                            class="font-weight-bold text-black mb-2">Payment Method
+                            : </h5>
+                    </label>
+
+                    <?php $payment_type = App\PaymentSetting::get(); ?>
+
+                    <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+
+                    <?php  //foreach($payment_type as $payment){
+                        $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
+                        $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+                        $Paydunyapayment =  App\PaymentSetting::where('payment_type','=','Paydunya')->where('paydunya_status',1)->first();
+                        $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+                        $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+                        $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+
+
+
+                            if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
+                            || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
+
+                                if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
+                                                            <!-- Stripe -Live Mode -->
+
+                                                            <label
+                                                                class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                                <input type="radio" class="payment_btn"
+                                                                    id="tres_important" name="payment_method"
+                                                                    value=<?= $Stripepayment->payment_type ?>
+                                                                    data-value="stripe">
+                                                                <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                    echo $Stripepayment->stripe_lable;
                                                                 } else {
-                                                                    echo $series->year;
-                                                                } ?></span>
-                                                        </h4>
-                                                        <span
-                                                            class="badge badge-secondary   mb-2"><?php // echo __($series->age_restrict) . ' ' . '+'; ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2"><?php // echo __(isset($series->categories->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2"><?php // echo __(isset($series->languages->name)); ?></span>
-                                                        <span
-                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($series->duration); ?></span><br>
+                                                                    echo $Stripepayment->payment_type;
+                                                                } ?>
+                                                            </label> <?php }
 
-                                                        <a type="button" class="mb-3 mt-3" data-dismiss="modal"
-                                                            style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
-                                                                style="font-size:20px;font-weight:700;">
-                                                                <?php if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$settings->ppv_price)); }else if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 0){ echo __(@$settings->ppv_price) .' '.$currency->symbol ; } ?></span></a><br>
-                                                        <label class="mb-0 mt-3 p-0" for="method">
-                                                            <h5 style="font-size:20px;line-height: 23px;"
-                                                                class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?>
-                                                                : </h5>
-                                                        </label>
+                                elseif( $Stripepayment != null && $Stripepayment->live_mode == 0 && $Stripepayment->stripe_status == 1){ ?>
+                                                            <!-- Stripe - Test Mode -->
 
-                                                        <?php $payment_type = App\PaymentSetting::get(); ?>
+                                                            <label
+                                                                class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                                <input type="radio" class="payment_btn"
+                                                                    id="tres_important" name="payment_method"
+                                                                    value="<?= $Stripepayment->payment_type ?>"
+                                                                    data-value="stripe">
+                                                                <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
+                                                                <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                    echo $Stripepayment->stripe_lable;
+                                                                } else {
+                                                                    echo $Stripepayment->payment_type;
+                                                                } ?>
+                                                            </label> <?php }
+                    
+                                if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
+                                                            <!-- paypal - Live Mode -->
 
-                                                        <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+                                                            <label
+                                                                class="radio-inline mb-0 mt-3 d-flex align-items-center">
+                                                                <input type="radio" class="payment_btn" id="important"
+                                                                    name="payment_method"
+                                                                    value="<?= $PayPalpayment->payment_type ?>"
+                                                                    data-value="paypal">
+                                                                <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                                                    echo $PayPalpayment->paypal_lable;
+                                                                } else {
+                                                                    echo $PayPalpayment->payment_type;
+                                                                } ?>
+                                                            </label> <?php }
 
-                                                        <?php  //foreach($payment_type as $payment){
-                                        $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
-                                        $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+                                elseif( $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 0 && $PayPalpayment->paypal_status == 1){ ?>
+                                                            <!-- paypal - Test Mode -->
 
-                                              if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
-                                              || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
+                                        <label
+                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                            <input type="radio" class="payment_btn" id="important"
+                                                name="payment_method"
+                                                value="<?= $PayPalpayment->payment_type ?>"
+                                                data-value="paypal">
+                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                                echo $PayPalpayment->paypal_lable;
+                                            } else {
+                                                echo $PayPalpayment->payment_type;
+                                            } ?>
+                                </label> <?php  } ?>
 
-                                                  if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
-                                                        <!-- Stripe -Live Mode -->
+                                                            <!-- Razorpay -->
+                                    <?php if( $Razorpay_payment_settings != null && $Razorpay_payment_settings->payment_type == "Razorpay" && $Razorpay_payment_settings->status == 1){?>
+                                        <label
+                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                            <input type="radio" class="payment_btn" id="important"
+                                                name="payment_method"
+                                                value="<?= $Razorpay_payment_settings->payment_type ?>"
+                                                data-value="Razorpay">
+                                            <?php echo $Razorpay_payment_settings->payment_type; ?>
+                                        </label>
+                                    <?php } 
+                                                                                // <!-- Paystack -->
+                                if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
 
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn"
-                                                                id="tres_important" name="payment_method"
-                                                                value=<?= $Stripepayment->payment_type ?>
-                                                                data-value="stripe">
-                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
-                                                                echo $Stripepayment->stripe_lable;
-                                                            } else {
-                                                                echo $Stripepayment->payment_type;
-                                                            } ?>
-                                                        </label> <?php }
+                                        <label
+                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                            <input type="radio" class="payment_btn" id=""
+                                                name="payment_method"
+                                                value="<?= $Paystack_payment_settings->payment_type ?>"
+                                                data-value="Paystack">
+                                            <?= $Paystack_payment_settings->payment_type ?>
+                                        </label>
+                                    <?php } 
+                                                                            // <!-- CinetPay -->
+                                if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
 
-                              elseif( $Stripepayment != null && $Stripepayment->live_mode == 0 && $Stripepayment->stripe_status == 1){ ?>
-                                                        <!-- Stripe - Test Mode -->
+                                    <label
+                                        class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="" name="payment_method"  
+                                            value="<?= $CinetPay_payment_settings->payment_type ?>"
+                                            data-value="CinetPay">
+                                        <?= $CinetPay_payment_settings->payment_type ?>
+                                    </label>
+                                <?php }
 
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn"
-                                                                id="tres_important" name="payment_method"
-                                                                value="<?= $Stripepayment->payment_type ?>"
-                                                                data-value="stripe">
-                                                            <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
-                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
-                                                                echo $Stripepayment->stripe_lable;
-                                                            } else {
-                                                                echo $Stripepayment->payment_type;
-                                                            } ?>
-                                                        </label> <?php }
-                  
-                              if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
-                                                        <!-- paypal - Live Mode -->
+                                    if ( $Paydunyapayment != null && $Paydunyapayment->payment_type == 'Paydunya'  && $Paydunyapayment->status == 1 ){  ?>
 
-                                                        <label
-                                                            class="radio-inline mb-0 mt-3 d-flex align-items-center">
-                                                            <input type="radio" class="payment_btn" id="important"
-                                                                name="payment_method"
-                                                                value="<?= $PayPalpayment->payment_type ?>"
-                                                                data-value="paypal">
-                                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
-                                                                echo $PayPalpayment->paypal_lable;
-                                                            } else {
-                                                                echo $PayPalpayment->payment_type;
-                                                            } ?>
-                                                        </label> <?php }
-
-                              elseif( $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 0 && $PayPalpayment->paypal_status == 1){ ?>
-                                                        <!-- paypal - Test Mode -->
-
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id="important"
-                                                                name="payment_method"
-                                                                value="<?= $PayPalpayment->payment_type ?>"
-                                                                data-value="paypal">
-                                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
-                                                                echo $PayPalpayment->paypal_lable;
-                                                            } else {
-                                                                echo $PayPalpayment->payment_type;
-                                                            } ?>
-                                                        </label> <?php  } ?>
-
-                                                        <!-- Razorpay -->
-                                                        <?php if( $Razorpay_payment_settings != null && $Razorpay_payment_settings->payment_type == "Razorpay" && $Razorpay_payment_settings->status == 1){?>
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id="important"
-                                                                name="payment_method"
-                                                                value="<?= $Razorpay_payment_settings->payment_type ?>"
-                                                                data-value="Razorpay">
-                                                            <?php echo $Razorpay_payment_settings->payment_type; ?>
-                                                        </label>
-                                                        <?php } 
-                                                                              // <!-- Paystack -->
-                              if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
-
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id=""
-                                                                name="payment_method"
-                                                                value="<?= $Paystack_payment_settings->payment_type ?>"
-                                                                data-value="Paystack">
-                                                            <?= $Paystack_payment_settings->payment_type ?>
-                                                        </label>
-                                                        <?php } 
-                                                                        // <!-- CinetPay -->
-                              if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
-
-                                                        <label
-                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id="" name="payment_method"  
-                                                                name="payment_method"
-                                                                value="<?= $CinetPay_payment_settings->payment_type ?>"
-                                                                data-value="CinetPay">
-                                                            <?= $CinetPay_payment_settings->payment_type ?>
-                                                        </label>
-                                                        <?php }
-                              }
-                          else{
-                                echo "<small>Please Turn on Payment Mode to Purchase</small>";
-                                // break;
-                          // }
-                      }?>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <div class="Stripe_button">
-                                                    <!-- Stripe Button -->
-                                                    <!-- Currency_Convert(@$settings->ppv_price) -->
-                                                    <a onclick="pay(<?php if($series->ppv_status == 1 && $CurrencySetting == 1){ echo PPV_CurrencyConvert($settings->ppv_price); }else if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 0){ echo __(@$settings->ppv_price) ; } ?>)">
-                                                        <button type="button"
-                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
-                                                    </a>
-                                                </div>
-
-                                                <?php if( $series->ppv_status == 1   ){ ?>
-                                                <div class="Razorpay_button">
-                                                    <!-- Razorpay Button -->
-                                                    <button
-                                                        onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $series->id . '/' . $settings->ppv_price) ?>' ;"
-                                                        id="" class="btn2  btn-outline-primary">
-                                                        <?php echo __('Continue'); ?></button>
-                                                </div>
-                                                <?php }?>
+                                    <label
+                                        class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn"  name="payment_method"  value="<?= $Paydunyapayment->payment_type ?>" data-value="Paydunya">
+                                        <?= $Paydunyapayment->payment_type ?>
+                                    </label>
+                                <?php }
 
 
-                                                <?php if( $series->ppv_status == 1   ){ ?>
-                                                <div class="paystack_button">
-                                                    <!-- Paystack Button -->
-                                                    <button
-                                                        onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $series->id, 'amount' => $settings->ppv_price]) ?>' ;"
-                                                        id="" class="btn2  btn-outline-primary">
-                                                        <?php echo __('Continue'); ?></button>
-                                                </div>
-                                                <?php }?>
+                                }
+                            else{
+                                    echo "<small>Please Turn on Payment Mode to Purchase</small>";
+                                    // break;
+                            // }
+                        }?>
+                            </div>
+                        </div>
+                    </div>
 
-                                                <?php if( $series->ppv_status == 1 ){ ?>
-                                                <div class="cinetpay_button">
-                                                    <!-- CinetPay Button -->
-                                                    <button onclick="cinetpay_checkout()" id=""
-                                                        class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
-                                                </div>
-                                                <?php }?>
+                    <div class="modal-footer">
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " "  ){ ?>
 
+                            <div class="Stripe_button">
+                                    <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_series_PPV_Purchase/'.@$series->id.'/'.@$settings->ppv_price) ?>' ;" > Continue </button>
+                            </div>
+                            
+                        <?php } ?>
+
+                        <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " "  ){ ?>
+                            <div class="Razorpay_button">
+                                <!-- Razorpay Button -->
+                                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . @$series->id . '/' . @$settings->ppv_price) ?>' ;"
+                                    id="" class="btn2  btn-outline-primary"> Continue</button>
+                            </div>
+                        <?php }?>
+
+
+                        <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " "  ){ ?>
+                            <div class="paystack_button">
+                                <!-- Paystack Button -->
+                                <button
+                                    onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$series->id, 'amount' => @$settings->ppv_price]) ?>' ;"
+                                    id="" class="btn2  btn-outline-primary"> Continue</button>
+                            </div>
+                        <?php }?>
+
+                        <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " " || @$settings->ppv_price !=null  || @$series->global_ppv == 1){ ?>
+                            <div class="cinetpay_button">
+                                <!-- CinetPay Button -->
+                                <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
+                            </div>
+                        <?php }?>
+
+                        <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " "  ){ ?>
+                            <div class="Paydunya_button">   <!-- Paydunya Button -->
+                                <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Paydunya_series_checkout_Rent_payment/'.@$series->id.'/'.@$series->ppv_price) ?>' ;" > Continue </button>
+                            </div>
+                        <?php }?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="clear"></div>
+        <input type="hidden" id="episode_id" value="<?php echo @$episode->id; ?>">
+        <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+
+        <script>
+                        window.onload = function() {
+                            $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                        }
+
+                        $(document).ready(function() {
+
+                            $(".payment_btn").click(function() {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                let payment_gateway = $('input[name="payment_method"]:checked').val();
+                                // alert(payment_gateway);
+                                if (payment_gateway == "Stripe") {
+
+                                    $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                    $('.Stripe_button').show();
+
+
+                                } else if (payment_gateway == "Razorpay") {
+
+                                    $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                    $('.Razorpay_button').show();
+
+                                } else if (payment_gateway == "Paystack") {
+
+                                    $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                                    $('.paystack_button').show();
+                                } else if (payment_gateway == "CinetPay") {
+
+                                    $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                    $('.cinetpay_button').show();
+
+                                } else if (payment_gateway == "CinetPay") {
+
+                                    $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                    $('.cinetpay_button').show();
+
+                                } else if (payment_gateway == "Paydunya") {
+
+                                    $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                    $('.Paydunya_button').show();
+
+                                }
+                            });
+                        });
+                    </script>
+                                 
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
    
