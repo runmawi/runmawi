@@ -14647,7 +14647,14 @@ public function QRCodeMobileLogout(Request $request)
                                         ->where('active', '1')
                                         ->where('status', 1)
                                         ->limit($homepage_input_array['limit'])
-                                        ->get();
+                                        ->get()->map(function ($item) use ($homepage_default_image_url) {
+                                          $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                          $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+                                          $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $homepage_default_image_url['homepage_default_horizontal_image_url']  ;
+                                          $item['description'] = $item->description ;
+                                          $item['source']    = "Livestream";
+                                          return $item;
+                                      });
     
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
             if ($livestream->publish_type === 'recurring_program') {
