@@ -4853,15 +4853,15 @@ class ChannelController extends Controller
                         $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8').$adsvariable_url;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
                         break;
-                        
-                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
-                        $item['videos_url']   = $item->mp4_url ;
-                        $item['video_player_type'] =  'video/mp4' ;
-                        break;
 
                         case $item['type'] == " " && !is_null($item->transcoded_url) :
                         $item['videos_url']   = $item->transcoded_url.$adsvariable_url ;
                         $item['video_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
+                        case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+                        $item['videos_url']   = $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
                         break;
                         
                         case $item['type'] == null :
