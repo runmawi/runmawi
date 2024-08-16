@@ -858,7 +858,7 @@ class StripePaymentController extends Controller
     public function Stripe_payment_series_PPV_Purchase( $Series_id,$amount)
     {
         try {
-            $amount = 100 ;
+            // $amount = 100 ;
 
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$Series_id ) ;
