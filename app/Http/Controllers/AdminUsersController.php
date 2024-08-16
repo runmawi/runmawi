@@ -987,6 +987,33 @@ class AdminUsersController extends Controller
 
             $file->move($image_path, $user->avatar);
         }
+
+        $path = public_path() . '/uploads/ugc-banner/';
+        $image_path = public_path() . '/uploads/ugc-banner/';
+
+        $image_req = $request['ugc_banner'];
+
+        $image = (isset($image_req)) ? $image_req : '';
+
+        if ($image != '')
+        {
+            if ($image != '' && $image != null)    //code for remove old file
+            {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            $file = $image;                    //upload new file
+            // $user->avatar = $file->getClientOriginalName();
+            $user->ugc_banner = str_replace(' ', '_', $file->getClientOriginalName());
+
+            $file->move($image_path, $user->ugc_banner);
+        }
+
+
+
         $user->save();
 
         Auth::loginUsingId(Auth::user()->id);
@@ -3155,7 +3182,14 @@ class AdminUsersController extends Controller
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->paginate(9);
-            
+
+            $video_data = [];
+
+            foreach ($ugcvideo as $video) {
+                $video_data[] = [
+                    'profile_url' => route('profile.show', ['username' => $video->user->username]),
+                ];
+            }
 
             $updated_ugcvideos =  $this->handleViewCounts($ugcvideo);
             $totalViews = $user_details->ugcVideos()->sum('views');
@@ -3165,12 +3199,13 @@ class AdminUsersController extends Controller
                 'ugcvideos' => $ugcvideo,
                 'viewcount' =>  $updated_ugcvideos,
                 'totalViews' => $totalViews,
+                'video_data' => $video_data,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
                 'user' => $user_details,
                 'role_plan' => $role_plan,
                 'user_role' => $user_role,
-                'post_route' => URL::to('/profile/update') ,
+                'post_route' => URL::to('/profile/update'),
                 'preference_languages' => $language,
                 'profile_details' => $profile_details,
                 'Multiuser' => $Multiuser,

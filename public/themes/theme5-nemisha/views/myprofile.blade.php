@@ -104,7 +104,6 @@
 
     .sigk {
         background: linear-gradient(180deg, rgba(21, 30, 41, 0.85) 0%, rgba(21, 30, 41, 0) 100%);
-
         mix-blend-mode: normal;
         padding: 50px;
         border-radius: 20px;
@@ -259,7 +258,7 @@
 
     .ugc-videos img{
         width: 100%;
-        height: 150px;
+        height: 180px;
         border-radius: 15px;
     }
 
@@ -373,6 +372,10 @@
 
         .ugc-videos:hover .ugc-actions {
             display: block;
+        }
+
+        .shareprofile{
+            padding: 10px 0px;
         }
 
     a.edit-button.Text-white{color:#fff !important;}
@@ -505,20 +508,20 @@
         <!-- MainContent -->
 
         <div class="">
-            <section class="m-profile setting-wrapper pt-0">
-                <div class="container">
+            <section class="m-profile setting-wrapper pt-0 mx-3">
+                <div class="container-fluid">
         
                     {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
-        
+
                     <div class="row justify-content-center m-1">
-                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
+                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
                             <img
-                            src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:200px; " alt="banner" >
+                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
                         </a>
                     </div>
                     <div class="row justify-content-start mx-3">
                         <div >
-                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
+                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
                         src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
                         </a>
@@ -616,11 +619,27 @@
                                     <div>
                                     <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
                                     </div>
-
                                     <div class="shareprofile">
-                                        <div class="d-flex bg-white p-3"> 
-                                            <a href="" ><i class="ri-facebook-fill"></i></a>
-                                            <a href="" ><i class="ri-twitter-fill"></i></a>
+                                        <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
+                                            @foreach ($video_data as $video)
+                                            <div class="d-flex">
+
+                                            <div class="px-1">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $video['profile_url'] }}" target="_blank">
+                                                <i class="ri-facebook-fill"></i>
+                                            </a>
+                                            </div>
+                                            <div class="px-1">
+                                            <a href="https://twitter.com/intent/tweet?text={{ $video['profile_url'] }}" target="_blank">
+                                                <i class="ri-twitter-fill"></i>
+                                            </a>
+                                            </div>
+                                            <div class="px-1">
+                                               <a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill" ></i></a>
+                                               <input type="hidden" id="profile_url" value="{{ $video['profile_url'] }}">
+                                            </div>
+                                            </div>
+                                            @endforeach
                                          </div>
                                     </div>
                                 </div>
@@ -844,7 +863,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Profile</h4>
+                    <h4 class="modal-title" style="color: #000;" >Update Profile</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
 
@@ -898,6 +917,11 @@
                         <label> Profile Image:</label>
                             <input type="file" multiple="true" class="form-control"
                                 name="avatar" id="avatar" required />
+                        </div>
+                        <div class="form-group">
+                            <label> Banner Image:</label>
+                                <input type="file" multiple="true" class="form-control"
+                                    name="ugc_banner" id="ugc_banner" required />
                         </div>
                         <div class="form-group">
                             <label> DOB:</label>
@@ -1011,140 +1035,6 @@
         </form>
     </div>
 
-    <div class="modal fade" id="ugc-profile-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Update Profile</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="new-ugc-form" enctype="multipart/form-data" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}"
-                        method="post">
-                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                        <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-
-                        <div class="form-group">
-                            <label> Username:</label>
-                            <input type="text" id="username" name="username"
-                                value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>"
-                                class="form-control" placeholder="username">
-                        </div>
-
-                        <div class="form-group">
-                        <label> Profile Image:</label>
-                            <input type="file" multiple="true" class="form-control"
-                                name="avatar" id="avatar" required />
-                        </div>
-        
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" style="padding: 9px 30px !important;" class="btn btn-primary"
-                        data-dismiss="modal">Close</button>
-                    <button type="button" style="padding: 9px 30px !important;" class="btn btn-primary"
-                        id="submit-new-ugc">Save changes</button>
-                </div>
-            </div>
-        </div>
-        <style>
-            .form-control {
-                background-color: #fff;
-                border: 1px solid transparent;
-                height: 45px;
-                position: relative;
-                color: #000000 !important;
-                font-size: 16px;
-                width: 100%;
-                -webkit-border-radius: 6px;
-                height: 45px;
-                border-radius: 4px;
-                font-family: 'futuraheavy';
-            }
-            .sign-in-page .form-control:focus, .m-profile .form-control:focus{
-                background: #fff!important;
-            }
-        </style>
-
-
-        <div class="clear"></div>
-        <form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8"
-            file="1" enctype="multipart/form-data">
-            <div class="well row">
-
-                <!--popup-->
-                <div class="form-popup " id="myForm"
-                    style="background:url(<?php echo URL::to('/') . '/assets/img/Landban.png'; ?>) no-repeat;	background-size: cover;padding:40px;display:none;">
-                    <div class="col-sm-4 details-back">
-                        <div class="row data-back">
-                            <div class="well-in col-sm-12 col-xs-12">
-                                <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button"
-                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
-                                        snap!</strong> <?= $errors->first('name') ?></div><?php endif; ?>
-                                <label for="username" class="lablecolor"><?= __('Username') ?></label>
-                                <input type="text" class="form-control" name="name" id="name"
-                                    value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
-                            </div>
-                            <div class="well-in col-sm-12 col-xs-12">
-                                <?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button"
-                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
-                                        snap!</strong> <?= $errors->first('email') ?></div><?php endif; ?>
-                                <label for="email"><?= __('Email') ?></label>
-                                <input type="text" class="form-control" name="email" id="email"
-                                    value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
-                            </div>
-                            <div class="well-in col-sm-12 col-xs-12">
-                                <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button"
-                                        class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh
-                                        snap!</strong> <?= $errors->first('name') ?></div><?php endif; ?>
-                                <label for="username" class="lablecolor"><?= __('Phone Number') ?></label>
-                                <div class="row">
-                                    <div class="col-sm-6 col-xs-12">
-                                        {{-- <select name="ccode">
-                                            @foreach ($jsondata as $code)
-                                                <option value="{{ $code['dial_code'] }}" 
-                                                <?php 
-                                                    // if ($code['dial_code'] == $user->ccode) {
-                                                    //     echo "selected='selected'";
-                                                    // }
-                                                ?>
-                                                    {{ $code['name'] . ' (' . $code['dial_code'] . ')' }}</option>
-                                            @endforeach
-                                        </select> --}}
-                                    </div>
-                                    <div class="col-sm-6 col-xs-12">
-                                        <input type="text" class="form-control" name="mobile" id="mobile"
-                                            value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="well-in col-sm-12 col-xs-12">
-                                <label for="password"><?= __('Password') ?> (leave empty to keep your original
-                                    password)</label>
-                                <input type="password" class="form-control" name="password" id="password" />
-                            </div>
-                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                            <div class="col-sm-12 col-xs-12 mt-3">
-                                <input type="submit" value="<?= __('Update Profile') ?>" class="btn btn-primary" />
-                                <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row" id="subscribe">
-
-                </div>
-
-            </div>
-            <div class="clear"></div>
-        </form>
-    </div>
-
 
 
     </div>
@@ -1160,6 +1050,19 @@
     @php
         include public_path('themes/theme5-nemisha/views/footer.blade.php');
     @endphp
+
+<script>
+    function Copy() {
+    var profile_url = $('#profile_url').val();
+    var url =  navigator.clipboard.writeText(window.location.href);
+    var profile =  navigator.clipboard.writeText(profile_url);
+    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+           setTimeout(function() {
+            $('.add_watch').slideUp('fast');
+           }, 3000);
+    }
+  
+</script>  
 
     <script>
         $(document).ready(function() {

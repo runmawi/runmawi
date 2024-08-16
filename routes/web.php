@@ -2838,6 +2838,7 @@ Route::post('ugc/submit-ugctwitter', 'UGCController@SubmitUGCTwitter');
 // Route::post('comment/like/{id}', 'WebCommentController@likeComment')->name('comment.like');
 // Route::post('comment/dislike/{id}', 'WebCommentController@dislikeComment')->name('comment.dislike');
 Route::post('/comments/{comment}/like', 'WebCommentController@like')->name('comments.like');
+Route::get('/user/{id}/subscribers-count', 'UGCController@getSubscriberCount' );
 
 Route::post('ugc_watchlater', 'UGCController@ugc_watchlater')->name('ugc_watchlater');
 Route::post('ugc_wishlist', 'UGCController@ugc_wishlist')->name('ugc_wishlist');

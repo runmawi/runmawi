@@ -10,34 +10,25 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
     {{-- video-js Style --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-    <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
     <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" > --}}
-    {{-- <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" > --}}
-    {{-- <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" /> --}}
-
+    <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/ugc-videos-player.css') }}" rel="stylesheet" >
 
     {{-- video-js Script --}}
     <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
     <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script> --}}
     <script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
     <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script> --}}
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
-    {{-- <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script> --}}
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
-    {{-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> --}}
 
 <style>
    .ugc-videos img{
         width: 100%;
-        height: 200px;
+        height: 180px;
         border-radius: 15px;
     }
 
@@ -127,7 +118,11 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
         .my-video.vjs-fluid {
         padding-top: 0px !important;
+        height: 70vh !important;
     }
+
+    
+
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
     /* .staticback-btn{display:none;} */
@@ -140,8 +135,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8  ">
         <div class="mx-3 my-2"> 
         <div>
-            <div class="container-fluid p-0" style="position:relative;" >
-
+            <div class="container-fluid p-0" style="position:relative; " >
                 @if ( $videodetail->users_video_visibility_status)
         
                     @if ( $videodetail->type == "embed" )
@@ -156,26 +150,20 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
         
+                        <div style="padding-bottom: 10px;" >
                         <button class="custom-skip-forward-button">
                             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                         </button>  
-        
+                     
                         <button class="custom-skip-backward-button">
                             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                         </button>  
-        
+                        </div>
                         <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
                             poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
-                            autoplay>
+                            autoplay style="border-radius: 20px;" >
                             <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
-        
-                                            {{-- Subtitle --}}
-                                {{-- @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($subtitles) && count($subtitles) > 0)
-                                    @foreach($subtitles as $subtitles_file)
-                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
-                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
-                                    @endforeach
-                                @endif --}}
+
                         </video>
                     @endif
         
@@ -346,11 +334,13 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
     </div> --}}
 
+    @if( auth()->user()->id != $profileUser->id  )
     <div class="mx-3" >
     <button id="subscribe-toggle" data-user-id="{{ $profileUser->id }}" data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber btn-inactive" onclick="toggleSubscription(this)">
         Subscribe
     </button>
     </div>
+    @endif
 
     @if($videodetail->description)
     <div class="ugc-description m-3"  style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
@@ -390,23 +380,6 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         {{-- @endif --}}
     </div>
 
-    {{-- <div class="mx-4 text-white">
-        <div class="p-1" style="line-height: 25px;" >
-            <h6> Joseph Khumalo | 2 Months Ago  </h6>
-            <p class="pt-3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. </p>
-        </div>
-        <div>
-
-            <ul class="p-0 share-icons music-play-lists d-flex justify-content-start">
-                <li>
-                    <span><i class="ri-thumb-up-line active" aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like" data-authenticated="1"></i></span>
-                </li>
-                <li>
-                    <span><i class="ri-thumb-down-line" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1" id="dislike" data-authenticated="1"></i></span>
-                </li>
-            </ul>
-        </div>l
-    </div> --}}
 
     </div>
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
@@ -665,19 +638,7 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
         // console.log(media_path);
         // console.log(path);
     }
-    function EmbedCopy() {
-    // var media_path = $('#media_url').val();
-    var media_path = '<iframe width="853" height="480" src="https://localhost/flicknexs/category/videos/embed/little-dog" frameborder="0" allowfullscreen></iframe>';
-    var url =  navigator.clipboard.writeText(window.location.href);
-    var path =  navigator.clipboard.writeText(media_path);
-    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embedded URL</div>');
-           setTimeout(function() {
-            $('.add_watch').slideUp('fast');
-           }, 3000);
-    // console.log(url);
-    // console.log(media_path);
-    // console.log(path);
-    }
+  
 </script>  
 
 <script>
@@ -699,22 +660,6 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
         description.style.maxHeight = 'none';
     }
 }
-
-</script>
-
-<script>
-    function Copy() {
-        var media_path = $('#media_url').val();
-      var url =  navigator.clipboard.writeText(window.location.href);
-      var path =  navigator.clipboard.writeText(media_path);
-      $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
-                   setTimeout(function() {
-                    $('.add_watch').slideUp('fast');
-                   }, 3000);
-    // console.log(url);
-    // console.log(media_path);
-    // console.log(path);
-    }
 
 </script>
 

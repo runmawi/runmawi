@@ -551,151 +551,16 @@
                               </div>
 
                            </div>
-                           {{-- <div class="row">
-                              <div class="col-sm-6 form-group">
-                                 <label class="m-0">
-                                    Age Restrict :
-                                 </label>
-                                 <select class="video-form-control" style="border-radius: 7px;" id="age_restrict" name="age_restrict">
-                                    <option selected  value="0">Choose Age</option>
-                                    @foreach($age_categories as $age)
-                                    <option value="{{ $age->age }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
-                                    @endforeach
-                                 </select>
-                              </div>
-                              <div class="col-sm-6 form-group ">
-                                 <label class="m-0">Rating:</label>
-                                 <!-- <input type="text" class="video-form-control" style="border-radius: 7px;" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
-                                 <select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);">
-                                    <option value="1" >1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                 </select>
-                              </div>
-                           </div> --}}
+                         
                            <div class="row">
                               <div class="col-lg-12 form-group">
                                  <label class="m-0">Video Description:</label>
                                  <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
                                     placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                               </div>
-                              {{-- <div class="col-12 form-group">
-                                 <label class="m-0">Links &amp; Details:</label>
-                                 <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
-                                    placeholder="Link , and details">@if(!empty($video->details)){{ strip_tags($video->details) }}@endif</textarea>
-                              </div> --}}
+                          
                            </div>
-                           
-                            {{-- <div class="row">
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ gmdate('H:i:s', $video->skip_intro) }}@endif">
-                                 <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
-                              </div>
-
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ gmdate('H:i:s', $video->intro_start_time) }}@endif">
-                                 <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
-                              </div>
-
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ gmdate('H:i:s', $video->intro_end_time) }}@endif">
-                                 <span><p id="error_intro_end_time" style="color:red !important;">* Fill Intro End Time </p></span>
-                              </div>
-                           </div> --}}
-
-                           {{-- <div class="row">
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
-                                 <span> <small> Recap Time Always Lesser than video duration </small> </span>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ gmdate('H:i:s', $video->skip_recap) }}@endif">
-                              </div>
-
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
-                                 <span> <small> Start Time Always Lesser Than End Time </small> </span>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="recap_start_time" name="recap_start_time" value="@if(!empty($video->recap_start_time)){{ gmdate('H:i:s', $video->recap_start_time) }}@endif">
-                              </div>
-
-                              <div class="col-sm-4 form-group">
-                                 <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
-                                 <span> <small> Recap Time Always Greater than video duration </small> </span>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" id="recap_end_time" name="recap_end_time" value="@if(!empty($video->recap_end_time)){{ gmdate('H:i:s', $video->recap_end_time) }}@endif">
-                              </div>
-                           </div> --}}
-
-                           {{-- <div class="row">
-
-                              <div class="col-sm-6">
-                                 <label class="m-0"> Enable Free Duration <small>(Enable / Disable Free Duration)</small></label>                        
-                                 <div class="panel-body">
-                                     <div class="mt-1">
-                                         <label class="switch">
-                                          <input name="free_duration_status"  id="free_duration_status" type="checkbox" >
-                                          <span class="slider round"></span>
-                                         </label>
-                                     </div>
-                                 </div>
-                             </div>
-         
-                              <div class="col-sm-6 form-group">
-                                 <label class="m-0"> Free Duration <small>Enter The Live Stream Free Duration In (HH : MM : SS)</small></label>
-                                 <input type="text" class="video-form-control" style="border-radius: 7px;" placeholder="HH:MM:SS" name="free_duration" id="free_duration" >
-                              </div>
-                           </div> --}}
-
-                           {{-- <div class="row">
-                              <div class="col-sm-6 form-group">
-                                 <label class="mb-2" style="display:block;">Publish Type</label>
-                                 <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" > Publish Now <br>
-                                 <input type="radio" id="publish_later" name="publish_type" value = "publish_later" > Publish Later
-                              </div>
-                              <div class="col-sm-6 form-group" id="publishlater">
-                                 <label class="m-0">Publish Time</label>
-                                 <input type="datetime-local" class="video-form-control" style="border-radius: 7px;" id="publish_time" name="publish_time" >
-                              </div>
-                           </div>
-
-                           @if (videos_expiry_date_status() == 1)
-                              <div class="row">
-                                 <div class="col-sm-4 form-group mt-3" id="">
-                                    <label class="">Expiry Date & Time</label>
-                                    <input type="datetime-local" class="video-form-control" style="border-radius: 7px;" id="expiry_date" name="expiry_date" >
-                                 </div>
-                              </div>
-                           @endif --}}
-
-                           {{-- <div class="row">
-                              <div class="col-sm-6 form-group" >
-                                 <label class="m-0">Select Video Category :</label>
-                                 <select class="form-control js-example-basic-multiple" id="video_category_id" name="video_category_id[]" style="width: 100%;" multiple="multiple">
-                                    @foreach($video_categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                 </select>
-                                 <span><p id="error_video_Category" style="color:red !important; " >* Choose the Video Category </p></span>
-                              </div>
-                              <div class="col-sm-6 form-group">
-                                 <label class="m-0">Choose Language:</label>
-                                 <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
-                                    @foreach($languages as $language)
-                                    <option value="{{ $language->id }}" >{{ $language->name }}</option>
-                                    @endforeach
-                                 </select>
-                                 <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
-
-                              </div>
-                              
-                           </div> --}}
+                       
 
 
                             <div class="row">
@@ -978,42 +843,6 @@ $(document).ready(function(){
    });
 
 
-   	// $(document).ready(function(){
-      //  $('.js-example-basic-multiple').select2();
-      //  $('.js-example-basic-single').select2();
-       
-   	// 	$("#type").change(function(){
-   	// 		if($(this).val() == 'file'){
-   	// 			$('.new-video-file').show();
-   	// 			$('.new-video-embed').show();
-   
-   	// 		} else if($(this).val() == 'embed'){ 
-   	// 			$('.new-video-file').hide();
-   	// 			$('.new-video-embed').show();
-   
-   	// 		}else{
-   	// 			$('.new-video-file').hide();
-   	// 			$('.new-video-embed').hide();
-   				
-   	// 		}
-   	// 	});
-   
-   
-   	// 	tinymce.init({
-   	// 		relative_urls: false,
-   	// 	    selector: '#details',
-   	// 	    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
-   	// 	    plugins: [
-   	// 	         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
-   	// 	         "save table contextmenu directionality emoticons template paste textcolor code"
-   	// 	   ],
-   	// 	   menubar:false,
-   	// 	 });
-   
-   	// });
-   
-   	
-   
       function NumAndTwoDecimals(e , field) {
        //    alert(); 
            var val = field.value;

@@ -75,19 +75,6 @@
       <?php endif; ?>
 
 
-     <!-- User Generated Content -->
-      
-     <!-- <?php if(count($ugc_videos) > 0){ ?>
-         <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden">
-                  <div class="row">
-                     <div class="col-sm-12">
-                     <?php include 'partials/home/ugc-videos.blade.php'; ?>
-                     </div>
-                  </div>
-            </div>
-         </section>
-    <?php } ?> -->
 
     <!-- Preference By Genres -->
       <?php if( $item->video_name == 'live_videos' && $home_settings->live_videos == 1 ): ?>
