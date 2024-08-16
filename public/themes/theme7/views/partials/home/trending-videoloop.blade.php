@@ -23,15 +23,13 @@
 
                                 @foreach ($data as $featured_videos)
                                     <li>
-                                        <div class="block-images position-relative">
-                                            <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
-                                                <img src="{{ URL::to('public/uploads/images/' . $featured_videos->image) }}"
-                                                    class="img-fluid w-100" alt="">
+                                        <div>
+                                            <a class="block-images position-relative" href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
+                                                <img src="{{ URL::to('public/uploads/images/' . $featured_videos->image) }}" class="img-fluid w-100" alt="featured_videos">
                                             </a>
                                         </div>
                                     </li>
                                 @endforeach
-
                             </ul>
                         </div>
                     </div>

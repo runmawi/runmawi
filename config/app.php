@@ -215,7 +215,7 @@ return [
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
         Aws\Laravel\AwsServiceProvider::class,
         Laravelium\Sitemap\SitemapServiceProvider::class,
-
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -284,6 +284,7 @@ return [
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
         'AWS' => Aws\Laravel\AwsFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];

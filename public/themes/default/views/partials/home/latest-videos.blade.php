@@ -1,22 +1,21 @@
 @if (!empty($data) && $data->isNotEmpty())
-
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h2 class="main-title fira-sans-condensed-regular">
-                            <a href="{{ $order_settings_list[1]->header_name ? URL::to('/').'/'.$order_settings_list[1]->url : '' }}">
-                                {{ $order_settings_list[1]->header_name ? __($order_settings_list[1]->header_name) : '' }}
-                            </a>
-                        </h2>  
-                        @if($settings->homepage_views_all_button_status == 1)
-                            <h2 class="main-title fira-sans-condensed-regular">
-                                <a href="{{ $order_settings_list[1]->header_name ? URL::to('/').'/'.$order_settings_list[1]->url : '' }}">
-                                    {{ __('View All') }}
-                                </a>
-                            </h2>                    
+                        @if (!preg_match('/^channel\/.+$/', request()->path()))
+                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h2>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h2 class="main-title fira-sans-condensed-regular"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ 'View all' }}</a></h2>
+                                @endif
+                        @else
+                            <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[1])->header_name }}</a></h2>
+                            @if($settings->homepage_views_all_button_status == 1)
+                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h2>
+                            @endif
                         @endif
+                        
                     </div>
 
                     <div class="favorites-contens"> 

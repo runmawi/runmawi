@@ -292,13 +292,16 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // Page List
     Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('channel/latest-videos/{slug}', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
     Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
+    Route::get('channel/Featured_videos/{slug}', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
     Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
     Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
     Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
     Route::get('Live_categories', 'PageListController@Live_Category_list')->name('pagelist.live-category_list');
     Route::get('Audio_list', 'PageListController@Audio_list')->name('pagelist.audio_list');
     Route::get('Series_list', 'PageListController@Series_list')->name('pagelist.series_list');
+    Route::get('channel/Series_list/{slug}', 'PageListController@Series_list')->name('pagelist.series_list');
     Route::get('Channel_Partner_list', 'PageListController@ChannelPartner_list')->name('pagelist.channelpartner_list');
     Route::get('Content_Partner_list', 'PageListController@ContentPartner_list')->name('pagelist.contentpartner_list');
     Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
@@ -459,10 +462,14 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Stripe_payment_video_PPV_Purchase/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase')->name('Stripe_payment_video_PPV_Purchase');
     Route::get('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase_verify')->name('Stripe_payment_video_PPV_Purchase_verify');
 
-        // Stripe Video PPV Purchase
+        // Stripe Series Season PPV Purchase
     Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
     Route::get('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
     
+        // Stripe Series  PPV Purchase
+        Route::get('Stripe_payment_series_PPV_Purchase/{Series_id}/{amount}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase')->name('Stripe_payment_series_PPV_Purchase');
+        Route::get('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{Series_id}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
+        
     
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );

@@ -39,12 +39,12 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
 
 <style>
-
+    
  /* <!-- BREADCRUMBS  */
 
  .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
-          content: none;
-      }
+          content: none; 
+      } 
 
       ol.breadcrumb {
             color: white;
@@ -92,7 +92,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     @if (!Auth::guest())
             @if ( $free_episode > 0)
                 @if ( $free_episode > 0)
-
+                        
                     <div id="series_container" class="fitvid">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
                             <i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -100,7 +100,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                         <button class="custom-skip-forward-button">
                             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
-                        </button>
+                        </button>  
 
                         <button class="custom-skip-backward-button">
                             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
@@ -183,9 +183,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         <div class="container-fluid">
                             <h4 class=""> {{ $episode->title }}</h4>
                             <p class="mt-2 text-white" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
-
+                           
                             <div class="clear"></div>
-
+                       
                             <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4> -->
                             <div class="clear"></div>
@@ -207,10 +207,10 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                 </div>
                             @endif
                         </div>
-
+                        
 
                         </div>
-
+                       
                     </div>
                 @endif
             @else
@@ -264,7 +264,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                             </div>
                         @endif
                     </div>
-
+            
         @endif
         </div>
     </div>
@@ -293,16 +293,16 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                     </li>
                     <?php } ?>
 
-
+                    
 
                     <li class="breadcrumb-item">
                         <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>">
-                            <?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?>
+                            <?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> 
                         </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
-
+                    
 
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
                 </ol>
@@ -317,11 +317,11 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
 ?>
                 <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-
+                    
                     <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch thess
                             Series:</span>
-                        <?php
+                        <?php 
                   if($series->access == 'subscriber'): ?>  <?php elseif($series->access == 'registered'): ?>   <?php endif; ?>
                         </p>
                     </div>
@@ -332,19 +332,19 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         <?php if (@$Stripepayment->stripe_status == 1 ) {  ?>
                         <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
                             Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
-                        <?php } else if(@$PayPalpayment->paypal_status == 1){  ?>
+                        <?php } else if(@$PayPalpayment->paypal_status == 1){  ?> 
 
-                            <?php }else if(@$Razorpay_payment_settings->status == 1){ ?>
+                            <?php }else if(@$Razorpay_payment_settings->status == 1){ ?> 
 
-                            <?php } else if(@$Paystack_payment_settings->status == 1){ ?>
+                            <?php } else if(@$Paystack_payment_settings->status == 1){ ?> 
 
-                            <?php } else if(@$CinetPay_payment_settings->status == 1){ ?>
+                            <?php } else if(@$CinetPay_payment_settings->status == 1){ ?> 
                         <input type="hidden" id="ppv_price" name="ppv_price" value="<?php echo $season[0]->ppv_price; ?>">
 
                                 <button onclick="cinetpay_checkout()" id=""
                                                         class="btn2  btn-outline-primary">Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                                                 </div>
-                            <?php }  else{ ?>
+                            <?php }  else{ ?> 
                         <button class="btn btn-primary" id ="enable_any_payment">
                             Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                             <?php } ?>
@@ -355,7 +355,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                     <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
-                            <?php
+                            <?php 
                $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
                foreach($seasons as $key=>$seasons_value){
             ?>
@@ -498,7 +498,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         <div id="series_title">
             <div class="">
                 <div class="row align-items-center justify-content-between">
-                    <!-- <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){
+                    <!-- <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
                     <div class="col-md-6">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
@@ -577,7 +577,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
             <!-- Recommend Series Based on Category -->
             <?php  include public_path('themes/theme6/views/partials/Episode/Recommend_series_episode_page.blade.php'); ?>
-
+            
         </div>
     </div>
     <div class="clear">
@@ -667,8 +667,8 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                      $Paydunyapayment =  App\PaymentSetting::where('payment_type','=','Paydunya')->where('paydunya_status',1)->first();
 
 
-                          if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal"
-                          || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){
+                          if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
+                          || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
 
                               if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
                                                         <!-- Stripe -Live Mode -->
@@ -702,7 +702,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                                 echo $Stripepayment->payment_type;
                                                             } ?>
                                                         </label> <?php }
-
+                  
                               if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
                                                         <!-- paypal - Live Mode -->
 
@@ -745,7 +745,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             data-value="Razorpay">
                                         <?php echo $Razorpay_payment_settings->payment_type; ?>
                                     </label>
-                                <?php }
+                                <?php } 
                                                                               // <!-- Paystack -->
                               if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
 
@@ -757,13 +757,13 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             data-value="Paystack">
                                         <?= $Paystack_payment_settings->payment_type ?>
                                     </label>
-                                <?php }
+                                <?php } 
                                                                         // <!-- CinetPay -->
                               if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
 
                                 <label
                                     class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="" name="payment_method"
+                                    <input type="radio" class="payment_btn" id="" name="payment_method"  
                                         value="<?= $CinetPay_payment_settings->payment_type ?>"
                                         data-value="CinetPay">
                                     <?= $CinetPay_payment_settings->payment_type ?>
@@ -797,7 +797,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="Stripe_button">
                                 <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
                         </div>
-
+                        
                     <?php } ?>
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
@@ -842,7 +842,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
-
+    
     <script>
                     window.onload = function() {
                         $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
@@ -899,7 +899,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
 
     <script type="text/javascript">
-        // videojs('videoPlayer').videoJsResolutionSwitcher();
+        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -911,7 +911,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             alert('Please Enable Any Payment Mode');
         });
 
-
+    
     </script>
     <script type="text/javascript">
         $(".free_content").hide();
@@ -999,18 +999,18 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
     $SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
-
+    
     $StartParse = date_parse($start_time);
     $startSec = $StartParse['hour'] * 60 * 60 + $StartParse['minute'] * 60 + $StartParse['second'];
-
+    
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
-
+    
     $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
     $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
-
+    
     // dd($SkipIntroPermission);
-
+    
     ?>
     <script>
         var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
@@ -1064,16 +1064,16 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <!-- Recap video skip -->
     <?php
     $Recap_skip = App\Episode::where('id', $episode->id)->first();
-
+    
     $RecapStart_time = $Recap_skip->recap_start_time;
     $RecapEnd_time = $Recap_skip->recap_end_time;
-
+    
     $SkipRecapParse = date_parse($Recap_skip['skip_recap']);
     $skipRecapTime = $SkipRecapParse['hour'] * 60 * 60 + $SkipRecapParse['minute'] * 60 + $SkipRecapParse['second'];
-
+    
     $RecapStartParse = date_parse($RecapStart_time);
     $RecapstartSec = $RecapStartParse['hour'] * 60 * 60 + $RecapStartParse['minute'] * 60 + $RecapStartParse['second'];
-
+    
     $RecapEndParse = date_parse($RecapEnd_time);
     $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
     ?>
@@ -1387,7 +1387,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         });
 
 
-
+                                
                         CinetPay.getCheckout({
                             transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
                             amount: ppv_price,
@@ -1444,7 +1444,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     }
                 </script>
 
-<?php
+<?php 
     include public_path('themes/theme6/views/footer.blade.php');
     include public_path('themes/theme6/views/episode_player_script.blade.php');
 ?>

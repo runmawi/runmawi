@@ -18,7 +18,7 @@
 
                     const iconClass = response.data.watchlater_status == "Add" ? 'fal fa-minus' : 'fal fa-plus';
 
-                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
+                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0; top:13%;">${response.data.message}</div>`;
                         
                     $('.video-watchlater').removeClass('fal fa-minus fal fa-plus').addClass(iconClass);
 
@@ -51,7 +51,7 @@
 
                     const iconClass = response.data.wishlist_status == "Add" ? 'fa fa-heart' : 'fa fa-heart-o';
 
-                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
+                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;top:13%;">${response.data.message}</div>`;
                         
                     $('.video-wishlist').removeClass('fa fa-heart fa fa-heart-o').addClass(iconClass);
 
@@ -85,7 +85,7 @@
 
                     const iconClass = response.data.like_status == "Add" ? 'ri-thumb-up-fill' : 'ri-thumb-up-line';
 
-                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
+                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;top:13%;">${response.data.message}</div>`;
                         
                     $('.video-like').removeClass('ri-thumb-up-fill ri-thumb-up-line').addClass(iconClass);
 
@@ -122,7 +122,7 @@
 
                     const iconClass = response.data.dislike_status == "Add" ? 'ri-thumb-down-fill' : 'ri-thumb-down-line';
 
-                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
+                    const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;top:13%;">${response.data.message}</div>`;
                         
                     $('.video-dislike').removeClass('ri-thumb-down-fill ri-thumb-down-line').addClass(iconClass);
 

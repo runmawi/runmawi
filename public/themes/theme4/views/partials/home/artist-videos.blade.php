@@ -3,9 +3,9 @@
 
     $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode,$videos_expiry_date_status,$getfeching){
 
-        // Videos
+        // Videos 
 
-        $Videoartist = App\Videoartist::where('artist_id',$item->id)->groupBy('video_id')->pluck('video_id');
+        $Videoartist = App\Videoartist::where('artist_id',$item->id)->groupBy('video_id')->pluck('video_id'); 
 
         $item['artist_depends_videos'] = App\Video::select('id','title','description','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','player_image')
 
@@ -15,7 +15,7 @@
                                             {
                                                 $item['artist_depends_videos'] = $item['artist_depends_videos']->whereNotIn('videos.id',Block_videos());
                                             }
-
+                                            
                                             if ($check_Kidmode == 1) {
                                                 $item['artist_depends_videos']->whereBetween('videos.age_restrict', [0, 12]);
                                             }
@@ -31,9 +31,9 @@
                                         return $item;
                                     });
 
-        // Series
-
-        $Seriesartist = App\Seriesartist::where('artist_id',$item->id)->groupBy('series_id')->pluck('series_id');
+        // Series 
+        
+        $Seriesartist = App\Seriesartist::where('artist_id',$item->id)->groupBy('series_id')->pluck('series_id'); 
 
         $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
@@ -45,12 +45,12 @@
                                         $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                         $item['source']           = 'series';
                                         return $item;
-                                    });
+                                    });  
 
-
-        // Series
-
-        $Seriesartist = App\Seriesartist::where('artist_id',$item->id)->groupBy('series_id')->pluck('series_id');
+                                    
+        // Series 
+        
+        $Seriesartist = App\Seriesartist::where('artist_id',$item->id)->groupBy('series_id')->pluck('series_id'); 
 
         $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                             'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
@@ -62,11 +62,11 @@
                                 $item['episode_count']    =  App\Episode::where('series_id',$item->id)->count();
                                 $item['source']           = 'series';
                                 return $item;
-                            });
+                            });  
 
-        // Audio
-
-        $Audioartist = App\Audioartist::where('artist_id',$item->id)->groupBy('audio_id')->pluck('audio_id');
+        // Audio 
+        
+        $Audioartist = App\Audioartist::where('artist_id',$item->id)->groupBy('audio_id')->pluck('audio_id'); 
 
         $item['artist_depends_audios'] = App\Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image',
                                         'featured','player_image','details','description')
@@ -80,7 +80,7 @@
 
             $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) {
                             $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : $default_vertical_image_url ;
-                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : $default_horizontal_image_url ;
+                            $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : $default_horizontal_image_url ; 
                             return $item;
                         });
 
@@ -94,7 +94,7 @@
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
-
+                                    
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[8]->url ? URL::to($order_settings_list[8]->url) : null }} ">{{ optional($order_settings_list[8])->header_name }}</a></h4>
@@ -143,18 +143,18 @@
                                                     <a href="{{ URL::to('category/videos/'.$artist_content->slug) }}">
                                                         <div class=" position-relative">
                                                             <img src="{{ $artist_content->image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
-
+                                                                
                                                                 <a href="{{ URL::to('category/videos/'.$artist_content->slug) }}">
                                                                     <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                 </a>
 
                                                                 <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-videos-Modal-'.$key.'-'.$video_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-
+                                                                
                                                                 <p class="trending-dec" >
-                                                                    {{ optional($artist_content)->title   }}
+                                                                    {{ optional($artist_content)->title   }} 
                                                                     {!! (strip_tags(substr(optional($artist_content)->description, 0, 50))) !!}
                                                                 </p>
-
+                                                                
                                                             </div>
                                                         </div>
                                                     </a>
@@ -168,18 +168,18 @@
                                                     <a href="{{ URL::to('play_series/'.$artist_series_content->slug) }}">
                                                         <div class=" position-relative">
                                                             <img src="{{ $artist_series_content->image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
-
+                                                                
                                                                 <a href="{{ URL::to('play_series/'.$artist_series_content->slug) }}">
                                                                     <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                 </a>
 
                                                                 <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-
+                                                                
                                                                 <p class="trending-dec" >
                                                                     {{ optional($artist_series_content)->title}}
                                                                     {!! (strip_tags(substr(optional($artist_series_content)->description, 0, 50))) !!}
                                                                 </p>
-
+                                                                
                                                             </div>
                                                         </div>
                                                     </a>
@@ -193,18 +193,18 @@
                                                     <a href="{{ URL::to('audio/'.$artist_audios_content->slug) }}">
                                                         <div class=" position-relative">
                                                             <img src="{{ $artist_audios_content->image_url }}" class="img-fluid" alt="{{$artist_audios_content->title}}">                                                                                <div class="controls">
-
+                                                                
                                                                 <a href="{{ URL::to('audio/'.$artist_audios_content->slug) }}">
                                                                     <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                 </a>
 
                                                                 <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target=""><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-
+                                                                
                                                                 <p class="trending-dec" >
-                                                                    {{ optional($artist_audios_content)->title   }}
+                                                                    {{ optional($artist_audios_content)->title   }} 
                                                                     {!! (strip_tags(substr(optional($artist_audios_content)->description, 0, 50))) !!}
                                                                 </p>
-
+                                                                
                                                             </div>
                                                         </div>
                                                     </a>
@@ -290,9 +290,9 @@
                                                         </button>
                                                     </div>
                                                 </div>
-
+                                                
                                                 <div class="trending-dec mt-4" >
-                                                    {{ $artist_series_content->season_count ." Series ".$artist_series_content->episode_count .' Episodes' }}
+                                                    {{ $artist_series_content->season_count ." Series ".$artist_series_content->episode_count .' Episodes' }} 
                                                 </div>
 
                                                 @if (optional($artist_series_content)->description)
@@ -311,7 +311,7 @@
                 </div>
             @endforeach
         @endforeach
-
+        
     </section>
 @endif
 
@@ -333,24 +333,24 @@
             document.querySelectorAll('.artist-video .item').forEach(function(item) {
                 item.classList.remove('current');
             });
-
+    
             this.classList.add('current');
-
+    
             var index = this.getAttribute('data-index');
-
+    
             document.querySelectorAll('.artist-dropdown .caption').forEach(function(caption) {
                 caption.style.display = 'none';
             });
             document.querySelectorAll('.artist-dropdown .thumbnail').forEach(function(thumbnail) {
                 thumbnail.style.display = 'none';
             });
-
+    
             // Hide all sliders
             document.querySelectorAll('.artist-dropdown .network-depends-slider').forEach(function(slider) {
                 slider.style.display = 'none';
             });
-
-
+    
+                    
             var selectedSlider = document.querySelector('.artist-dropdown .network-depends-slider[data-index="' + index + '"]');
                 if (selectedSlider) {
                     selectedSlider.style.display = 'block';
@@ -364,18 +364,18 @@
                         });
                     }, 0);
                 }
-
+    
             var selectedCaption = document.querySelector('.artist-dropdown .caption[data-index="' + index + '"]');
             var selectedThumbnail = document.querySelector('.artist-dropdown .thumbnail[data-index="' + index + '"]');
             if (selectedCaption && selectedThumbnail) {
                 selectedCaption.style.display = 'block';
                 selectedThumbnail.style.display = 'block';
             }
-
+    
             document.getElementsByClassName('artist-dropdown')[0].style.display = 'flex';
         });
     });
-
+    
     $('body').on('click', '.drp-close', function() {
         $('.artist-dropdown').hide();
     });

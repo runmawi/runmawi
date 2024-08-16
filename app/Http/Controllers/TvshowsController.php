@@ -347,6 +347,7 @@ class TvshowsController extends Controller
                                 ->count();
                 $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
+                    
                     if (!Auth::guest() && !empty($free_episode)):
                         if (array_key_exists($episode_name, $free_episode) && $series->access != 'subscriber' || Auth::user()->role == 'admin' ||  
                         $season_details->access == 'free' && $series->access != 'subscriber' && $series->access != 'registered' || 
@@ -380,6 +381,7 @@ class TvshowsController extends Controller
                     $PpvPurchase = 0;
                     $SeriesPpvPurchase =0;
                 endif;
+                
                    // Free Interval Episodes
                 if ( !Auth::guest() && $season_details->access == 'ppv'
                  || !Auth::guest() &&  !empty($ppv_price) && !empty($ppv_interval) && $season_details->access == 'ppv'
@@ -485,7 +487,16 @@ class TvshowsController extends Controller
                     }
 
                 // endif;
-
+                }elseif (!Auth::guest() && $series->access == 'ppv' && $SeriesPpvPurchase == 0
+                || !Auth::guest() && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent == 0 && $series->access == 'ppv'  && $SeriesPpvPurchase == 0
+                 ) 
+                {
+                    $free_episode = 0;
+                }elseif (!Auth::guest() && $series->access == 'ppv' && $SeriesPpvPurchase == 0
+                    || !Auth::guest() && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent == 0 && $series->access == 'ppv'  && $SeriesPpvPurchase == 0
+                 ) 
+                {
+                    $free_episode = 0;
                 }elseif (!Auth::guest() && $series->access != 'subscriber' || !Auth::guest() && Auth::user()->role == 'admin' ||  
                     !Auth::guest() && $season_details->access == 'free' && $series->access == 'subscriber' && Auth::user()->role != 'registered' || 
                     $season_details->access == 'free' && $series->access == 'guest' && !Auth::guest() && Auth::user()->role == 'subscriber'  || 
@@ -510,7 +521,6 @@ class TvshowsController extends Controller
                 else {
                     $free_episode = 0;
                 } 
-
                     // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
                 $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
@@ -693,6 +703,11 @@ class TvshowsController extends Controller
                             $item['Episode_player_type'] =  'application/x-mpegURL' ;
                         break;
         
+                        case $item['type'] == "bunny_cdn":
+                            $item['Episode_url'] =  $item->url    ;
+                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
                         case $item['type'] == "aws_m3u8":
                           $item['Episode_url'] =  $item->path ;
                           $item['Episode_player_type'] =  'application/x-mpegURL' ;

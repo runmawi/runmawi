@@ -16,8 +16,14 @@ class SiteThemeTableseeder extends Seeder
         SiteTheme::truncate();
      
         $SiteTheme = array(
-            array(  'dark_bg_color' =>  "#a3a3a3",
-                    'light_bg_color' =>  "#f5b55c",
+            array(  'dark_bg_color' =>  "#000000",
+                    'light_bg_color' =>  "#ffffff",
+                    'dark_text_color' => "#ffffff",
+                    'light_text_color' => "#000000",
+                    'admin_dark_bg_color' => "#000000",
+                    'admin_light_bg_color' =>  "#ffffff",
+                    'admin_dark_text_color' => "#ffffff",
+                    'admin_light_text_color' => "#000000",
                     'dark_mode_logo' =>  "trail-logo.png", 
                     'light_mode_logo' => "trail-logo.png", 
                     'button_bg_color' => "#006AFF",

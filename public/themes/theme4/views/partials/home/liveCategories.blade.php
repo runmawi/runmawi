@@ -3,7 +3,7 @@
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
-
+                                    
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ optional($order_settings_list[12])->header_name }}</a></h4>
@@ -22,7 +22,7 @@
                                 @endforeach
                             </div>
                         </div>
-        
+                    
                         <div id="videoInfo" class="live-cate-dropdown" style="display:none;">
                             <button class="drp-close">×</button>
                             <div class="vib" style="display:block;">
@@ -38,15 +38,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                    
                                     <div class="thumbnail" data-index="{{ $key }}">
                                         <img src="{{ $livecategories->banner_image ?  URL::to('public/uploads/videocategory/'.$livecategories->banner_image) : $default_horizontal_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
                                     </div>
-
+                    
                                     <div id="{{ 'trending-slider-nav' }}" class="{{ 'series-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}">
                                         <?php
                                             $liveCategory = App\CategoryLive::where('category_id', $livecategories->id)->groupBy('live_id')->pluck('live_id');
-
+                    
                                             $live_stream_videos = App\LiveStream::select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type',
                                                 'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image',
                                                 'live_streams.description', 'live_streams.recurring_program', 'live_streams.program_start_time', 'live_streams.program_end_time', 'live_streams.recurring_timezone',
@@ -89,14 +89,10 @@
                             </div>
                         </div>
                     </div>
-
+                    
                 </div>
             </div>
         </div>
-
-
-
-
 
         @foreach ($data as $key => $livecategories)
 
@@ -134,7 +130,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-
+                                                
                                                 @if (optional($livestream_details)->description)
                                                     <div class="trending-dec mt-4">{!! html_entity_decode( optional($livestream_details)->description) !!}</div>
                                                 @endif
