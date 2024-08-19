@@ -460,7 +460,7 @@
                         @if(is_null($episode_Wishlist))
                             <span id="episode_add_wishlist_{{ $episode->id }}" class="episode_add_wishlist_" aria-hidden="true"
                                 data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodewishlist(this)"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                                onclick="episodewishlist(this)"><i class="fa ri-heart-line" aria-hidden="true"></i>
                             </span>
                         @else
                             <span id="episode_add_wishlist_{{ $episode->id }}" class="episode_add_wishlist_" aria-hidden="true"
@@ -1382,7 +1382,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
                             );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1394,7 +1394,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1431,10 +1431,10 @@
 
                         $(id).data('myval');
                         $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+                        $(id).find($(".fa")).toggleClass('fa ri-heart-line').toggleClass('fa fa-heart');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
                             );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1443,10 +1443,10 @@
                     } else if (data.message == "Add the Watch list") {
                         $(id).data('myval');
                         $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa ri-heart-line');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
