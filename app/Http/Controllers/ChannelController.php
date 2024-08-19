@@ -180,7 +180,7 @@ class ChannelController extends Controller
                 $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                         ->whereIn('category_id', $category_id)->where('active', 1)
                         ->where('videos.status', 1)->where('videos.draft', 1);
-
+                        
                     if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                         $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                     }
@@ -198,7 +198,7 @@ class ChannelController extends Controller
                     ->where('videos.status', 1)
                     ->where('videos.draft', 1)
                     ->latest('videos.created_at')
-                    ->where('uploaded_by', 'Channel')->paginate($this->videos_per_page);
+                    ->where('uploaded_by', 'Channel')->get();
 
                     $categoryVideos = $categoryVideos->filter(function ($categoryVideoschannel) use ($channel_partner_id){
                         if($categoryVideoschannel->user_id == $channel_partner_id){
@@ -3629,25 +3629,25 @@ class ChannelController extends Controller
             $ppv_gobal_price = null;
         }
 
-        $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-            ->where('category_id', '=', $request->category_id)
-            ->where('active', '=', '1');
+            $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                ->where('category_id', '=', $request->category_id)
+                ->where('active', '=', '1');
 
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
-        }
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+            }
 
-        if (!empty($request->rating)) {
-            $categoryVideos = $categoryVideos->WhereIn('videos.rating', $request->rating);
-        }
+            if (!empty($request->rating)) {
+                $categoryVideos = $categoryVideos->WhereIn('videos.rating', $request->rating);
+            }
 
-        if (!empty($request->age)) {
-            $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict', $request->age);
-        }
+            if (!empty($request->age)) {
+                $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict', $request->age);
+            }
 
-        if (!empty($request->sorting)) {
-            $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
-        }
+            if (!empty($request->sorting)) {
+                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
+            }
 
         $categoryVideos = $categoryVideos->paginate($this->videos_per_page);
 
