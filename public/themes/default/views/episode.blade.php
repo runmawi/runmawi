@@ -168,8 +168,13 @@
                     @else
                         <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                             <div class="container-fluid">
-                                <h4>{{ $episode->title }}</h4>
-                                <p class="text-white col-lg-8" style="margin:0 auto;">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
+                                <p class="epi-name text-left m-0 mt-2">
+                                    <?= __($episode->title) ?>
+                                </p>
+                           
+                                <p class="desc-name text-left m-0 mt-1">
+                                    <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                                </p>
                                 <h4>
                                     @if ($SeriesSeason->access == 'subscriber')
                                         {{ __('Subscribe to view more') }}
@@ -213,7 +218,7 @@
                                             </form>
                                         @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary mt-3">
+                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
                                             {{ __('Purchase Now') }}
                                         </button>
                                     </form>
@@ -455,7 +460,7 @@
                         @if(is_null($episode_Wishlist))
                             <span id="episode_add_wishlist_{{ $episode->id }}" class="episode_add_wishlist_" aria-hidden="true"
                                 data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodewishlist(this)"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                                onclick="episodewishlist(this)"><i class="fa ri-heart-line" aria-hidden="true"></i>
                             </span>
                         @else
                             <span id="episode_add_wishlist_{{ $episode->id }}" class="episode_add_wishlist_" aria-hidden="true"
@@ -606,10 +611,10 @@
 
                 <!-- Remaining Episodes -->
                 <!-- Recommend Series Based on Category -->
-                <?php
+                @php
                     include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
                     include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
-                ?>
+                @endphp
 
             </div>
         </div>
@@ -1377,7 +1382,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
                             );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1389,7 +1394,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1426,10 +1431,10 @@
 
                         $(id).data('myval');
                         $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+                        $(id).find($(".fa")).toggleClass('fa ri-heart-line').toggleClass('fa fa-heart');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
                             );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1438,10 +1443,10 @@
                     } else if (data.message == "Add the Watch list") {
                         $(id).data('myval');
                         $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+                        $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa ri-heart-line');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
