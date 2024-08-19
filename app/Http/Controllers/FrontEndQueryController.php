@@ -120,7 +120,6 @@ class FrontEndQueryController extends Controller
                 $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
-
         return $latest_videos ;
     }
 
