@@ -168,8 +168,13 @@
                     @else
                         <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                             <div class="container-fluid">
-                                <h4>{{ $episode->title }}</h4>
-                                <p class="text-white col-lg-8" style="margin:0 auto;">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
+                                <p class="epi-name text-left m-0 mt-2">
+                                    <?= __($episode->title) ?>
+                                </p>
+                           
+                                <p class="desc-name text-left m-0 mt-1">
+                                    <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                                </p>
                                 <h4>
                                     @if ($SeriesSeason->access == 'subscriber')
                                         {{ __('Subscribe to view more') }}
@@ -213,7 +218,7 @@
                                             </form>
                                         @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary mt-3">
+                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
                                             {{ __('Purchase Now') }}
                                         </button>
                                     </form>
@@ -606,10 +611,10 @@
 
                 <!-- Remaining Episodes -->
                 <!-- Recommend Series Based on Category -->
-                <?php
+                @php
                     include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
                     include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
-                ?>
+                @endphp
 
             </div>
         </div>
