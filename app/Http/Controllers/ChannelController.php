@@ -3673,9 +3673,8 @@ class ChannelController extends Controller
             'Episode_videos' => $Episode_videos,
         ];
 
-        $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/partials/categoryvids_section', ['categoryVideos' => $data])->render();
+        return Theme::load('public/themes/default/partials/categoryvids_section', ['categoryVideos' => $data])->render();
     }
 
     public function MovieList()
