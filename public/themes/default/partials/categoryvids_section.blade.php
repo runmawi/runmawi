@@ -118,8 +118,9 @@
     </ul>
 
       <div class="col-md-12 pagination justify-content-end">
-            {!! count($categoryVideos['categoryVideos']) != 0 ? $categoryVideos['categoryVideos']->links() : " "!!}
+         {!! $categoryVideos['categoryVideos']->links() !!}
       </div>
+
 
     
  </div>

@@ -91,6 +91,16 @@ class ChannelController extends Controller
         Theme::uses($this->HomeSetting->theme_choosen);
     }
 
+    function paginateCollection(Collection $items, $perPage)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $items->count(), $perPage);
+        $paginatedItems->setPath(request()->url());
+
+        return $paginatedItems;
+    }
+
     public function index()
     {
         $settings = Setting::first();
@@ -188,13 +198,16 @@ class ChannelController extends Controller
                     ->where('videos.status', 1)
                     ->where('videos.draft', 1)
                     ->latest('videos.created_at')
-                    ->where('uploaded_by', 'Channel')->get();
+                    ->where('uploaded_by', 'Channel')->paginate($this->videos_per_page);
 
                     $categoryVideos = $categoryVideos->filter(function ($categoryVideoschannel) use ($channel_partner_id){
                         if($categoryVideoschannel->user_id == $channel_partner_id){
                             return $categoryVideoschannel;
                         }
                     });
+
+                    $categoryVideos = $this->paginateCollection($categoryVideos, $this->videos_per_page);
+
             }
             // Most_watched_country
 
