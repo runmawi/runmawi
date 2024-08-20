@@ -244,7 +244,7 @@ $jsondata = json_decode($jsonString, true);
                             </div> 
                 
                         
-                                 <div class="col-md-8">
+                                 <div class="">
                                     <figure class="highcharts-figure">
                                     <!-- <div id="container"></div> -->
                                     <div id="google-line-chart" style="width: 700px; height: 500px"></div>
@@ -307,11 +307,11 @@ $jsondata = json_decode($jsonString, true);
                 google.charts.setOnLoadCallback(drawChart);
         
                 function drawChart() {
-                  var linechart = value.total_users;
-                  var data = new google.visualization.DataTable(linechart);
-                  var data = new google.visualization.DataTable();
-                  data.addColumn('string', 'Month');
-                  data.addColumn('number', 'User Count');
+                    var linechart = value.total_users;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'User Count');
 
                   linechart.forEach(function (row) {
                     data.addRow([
