@@ -72,14 +72,21 @@ class PageListController extends Controller
         }
     }
 
-    public function Featured_videos()
+    public function Featured_videos($slug = null)
     {
         try {
+
+            $channel_partner_id = Channel::where('channel_slug',$slug)->pluck('id')->first(); 
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
             
-            $featured_videos_pagelist = $FrontEndQueryController->featured_videos();
+
+            $featured_videos_pagelist = ($slug == null) ? $FrontEndQueryController->featured_videos() : $FrontEndQueryController->featured_videos()->filter(function ($featured_videos) use ($channel_partner_id) {
+                if ( $featured_videos->user_id == $channel_partner_id && $featured_videos->uploaded_by == "Channel" ) {
+                    return $featured_videos;
+                }
+            });;
             $featured_videos_paginate = $this->paginateCollection($featured_videos_pagelist, $this->videos_per_page);
 
             $data = array(
@@ -233,14 +240,20 @@ class PageListController extends Controller
         }
     }
 
-    public function Series_list()
+    public function Series_list($slug = null)
     {
         try {
+
+            $channel_partner_id = Channel::where('channel_slug',$slug)->pluck('id')->first(); 
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
             
-            $latest_series_pagelist = $FrontEndQueryController->latest_Series();
+            $latest_series_pagelist = ($slug == null) ? $FrontEndQueryController->latest_Series(): $FrontEndQueryController->latest_Series()->filter(function ($latest_Series) use ($channel_partner_id) {
+                if ( $latest_Series->user_id == $channel_partner_id && $latest_Series->uploaded_by == "Channel" ) {
+                    return $latest_Series;
+                }
+            });
             $latest_series_paginate = $this->paginateCollection($latest_series_pagelist, $this->videos_per_page);
 
             $data = array(

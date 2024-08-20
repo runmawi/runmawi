@@ -5,20 +5,27 @@
             <div class="row">
                 <div class="col-sm-12 ">
 
-                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                      <h2 class="main-title">
-                          <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
-                              {{ $order_settings_list[0]->header_name ? __($order_settings_list[0]->header_name) : '' }}
-                          </a>
-                      </h2>
-                      @if($settings->homepage_views_all_button_status == 1)
-                          <h2 class="main-title">
-                              <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
-                                  {{ __('View All') }}
-                              </a>
-                          </h2>
-                      @endif
-                  </div>
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        @if (!preg_match('/^channel\/.+$/', request()->path()))
+                            <h2 class="main-title">
+                                <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
+                                    {{ $order_settings_list[0]->header_name ? __($order_settings_list[0]->header_name) : '' }}
+                                </a>
+                            </h2>
+                            @if($settings->homepage_views_all_button_status == 1)
+                                <h2 class="main-title">
+                                    <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
+                                        {{ __('View All') }}
+                                    </a>
+                                </h2>
+                            @endif
+                        @else
+                        <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[0])->header_name }}</a></h2>
+                            @if($settings->homepage_views_all_button_status == 1)
+                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h2>
+                            @endif
+                        @endif
+                    </div>
 
                   <div class="favorites-contens">
                       <div class="featured-video home-sec list-inline row p-0 mb-0">

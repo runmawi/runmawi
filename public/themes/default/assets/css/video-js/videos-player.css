@@ -94,16 +94,17 @@
   object-fit: cover;
 }
 
-.my-video.video-js.vjs-playing .vjs-tech {
-  pointer-events: all;
+.my-video.video-js.vjs-playing{
+  pointer-events: auto;
 }
 
-.vjs-has-started .vjs-big-play-button {
-  pointer-events: none;
+.vjs-has-started .vjs-big-play-button,
+.my-video.vjs-has-started .vjs-big-play-button .vjs-icon-placeholder {
+  pointer-events: auto;
 }
 
 .vjs-paused .vjs-big-play-button {
-  pointer-events: all;
+  pointer-events: auto;
 }
 
 .my-video.vjs-theme-city .vjs-control-bar {
@@ -321,7 +322,7 @@ line-height: 2.1em;
   right: -0.4em;
   width: 1.7em;
   height: 1.5em;
-  pointer-events: none;
+  pointer-events: auto;
   line-height: 0.15em;
   z-index: 1;
 }
@@ -345,7 +346,7 @@ line-height: 2.1em;
 
 .my-video.vjs-paused .vjs-big-play-button {
   opacity: 1;
-  pointer-events: none;
+  pointer-events: auto;
   transition: opacity 0.5s;
 }
 
@@ -398,7 +399,7 @@ line-height: 2.1em;
   right: -0.4em;
   width: 0.9em;
   height: 0.9em;
-  pointer-events: none;
+  pointer-events: auto;
   line-height: 0.1em;
   z-index: 1;
 }
@@ -507,7 +508,7 @@ line-height: 2.1em;
   animation: wiggle 1s;
 } */
 
-.titlebutton {
+/* .titlebutton {
   pointer-events: auto;
   position: absolute;
   color: white;
@@ -522,25 +523,6 @@ line-height: 2.1em;
   font-size: 24px;
   font-family: Roboto;
   font-weight: 200;
-}
-
-/* .my-video.video-js .vjs-control.kk {
-position: relative;
-text-align: center;
-margin: 0;
-padding: 0;
-height: 100%;
-width: 1.2em;
-flex: none;
-background: none;
-line-height: 60px;
-font-size: 25px;
-border: none;
-top: -9px;
-left: 227%;
-margin-top: -35px;
-margin-left: -35px;
-color: #ffffff;
 } */
 
 .ad-information-card {
@@ -622,12 +604,12 @@ content: "" !important;
   transition: all 3s;
 }
 
-.my-video.video-js.vjs-user-active.vjs-big-play-button {
+/* .my-video.video-js.vjs-user-active.vjs-big-play-button {
   display: block !important;
   visibility: visible;
   opacity: 0;
   transition: visibility 1s, opacity 1s;
-}
+} */
 
 .my-video.vjs-controls-disabled .vjs-big-play-button .vjs-icon-placeholder,
 .my-video.vjs-has-started .vjs-big-play-button .vjs-icon-placeholder,
@@ -637,6 +619,7 @@ content: "" !important;
 
 .my-video.video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder {
   content: "\f103" !important;
+  pointer-events: auto;
 }
 
 /* .my-video.vjs-paused .vjs-big-play-button {
@@ -699,6 +682,7 @@ display: block !important;
 
 .my-video.video-js.vjs-playing .vjs-big-play-button .vjs-icon-placeholder:before {
   content: "\f103";
+  pointer-events: auto;
 }
 
 .vjs-icon-play,
@@ -951,6 +935,10 @@ display: block !important;
 
 /* For screens up to 600px */
 @media only screen and (max-width: 600px) {
+    .vjs-big-play-button {
+
+        visibility: visible !important;
+    }
   .custom-skip-backward-button {
     left: 20%;
     top: 46%;
@@ -1032,10 +1020,10 @@ display: block !important;
     line-height: 5.5em;
   }
 
-  /* .vjs-watermark{
+  .vjs-watermark{
     top: 65% !important;
     left: 80% !important;
-  } */
+  }
 }
 
 @media (max-width: 767px) {
@@ -1089,7 +1077,7 @@ display: block !important;
   .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before {
     content: "" !important;
     display: none !important;
-  } 
+  }
   .vjs-icon-cog:before {
     line-height: 4.5em;
     font-size: 10px;
