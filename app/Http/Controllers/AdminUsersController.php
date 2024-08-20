@@ -1860,8 +1860,8 @@ class AdminUsersController extends Controller
             ->groupBy('month_name')
             ->orderBy('createdAt', "DESC")
             ->get();
-        $total_user = User::where('role', '!=', 'admin')->orderBy('created_at', "DESC")->get();
-        // $total_user = User::where('role', '!=', 'admin')->paginate(10);
+        // $total_user = User::where('role', '!=', 'admin')->orderBy('created_at', "DESC")->get();
+        $total_user = User::where('role', '!=', 'admin')->paginate(10);
 
         $data1 = array(
             'admin_count' => $admin_count,
