@@ -6,7 +6,7 @@
 <div class="favorites-contens data" >
     <ul class="category-page list-inline  row p-0 mb-4">
         <?php if (count($categoryVideos['categoryVideos']) > 0) { ?>         
-                @forelse($categoryVideos['categoryVideos'] as $key => $videos) 
+                @forelse($categoryVideos['categoryVideos'] as $key => $videos)
 
                     <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $videos->slug ?>">
@@ -14,7 +14,7 @@
                                <div class="border-bg">
                                      <div class="img-box">
                                         <a class="playTrailer" href="{{ url('category/videos/' . $videos->slug) }}" aria-label="Movie">
-                                           <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $videos->image) }}" alt="{{ $videos->title}}">
+                                           <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $videos->image) }}" alt="<?= ($videos->title) ?>">
                                         </a>
                                         <!-- PPV price -->
                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -116,6 +116,11 @@
          <?php } ?>
 
     </ul>
+
+      <div class="col-md-12 pagination justify-content-end">
+         {!! $categoryVideos['categoryVideos']->links() !!}
+      </div>
+
 
     
  </div>

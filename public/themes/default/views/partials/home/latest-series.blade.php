@@ -98,12 +98,7 @@
                                                             @if($ThumbnailSetting->age == 1 && !($latest_serie->age_restrict == 0))
                                                                 <span class="position-relative badge p-1 mr-2">{{ $latest_serie->age_restrict}}</span>
                                                             @endif
-
-                                                            @if($ThumbnailSetting->duration == 1)
-                                                                <span class="position-relative text-white mr-2">
-                                                                    {{ (floor($latest_serie->duration / 3600) > 0 ? floor($latest_serie->duration / 3600) . 'h ' : '') . floor(($latest_serie->duration % 3600) / 60) . 'm' }}
-                                                                </span>
-                                                            @endif
+                                                            
                                                             @if($ThumbnailSetting->published_year == 1 && !($latest_serie->year == 0))
                                                                 <span class="position-relative badge p-1 mr-2">
                                                                     {{ __($latest_serie->year) }}
