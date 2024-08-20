@@ -10,7 +10,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('my-video', { // Video Js Player 
+        var player = videojs('my-video', { // Video Js Player
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
@@ -29,7 +29,7 @@
                 },
                 pictureInPictureToggle: true,
             },
-        }); 
+        });
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
@@ -49,13 +49,11 @@
             }
         });
 
-        // Hls Quality Selector - M3U8 
-        player.hlsQualitySelector({ 
+        // Hls Quality Selector - M3U8
+        player.hlsQualitySelector({
             displayCurrentQuality: true,
         });
 
-        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
@@ -73,7 +71,7 @@
 
             skipForwardButton.addEventListener('mouseenter',handleHover);
             skipBackwardButton.addEventListener('mouseenter',handleHover);
-            
+
             skipForwardButton.addEventListener('mouseleave',handleHover);
             skipBackwardButton.addEventListener('mouseleave',handleHover);
 
@@ -113,8 +111,18 @@
             }
         });
 
+        player.ready(() => {
+            playPauseButton.addEventListener('click', function() {
+                // console.log("play", player.pause());
+                if (player.pause() === undefined) {
+                    player.pause();
+                }
+            });
+        });
 
-        // Skip Intro & Skip Recap 
+
+
+        // Skip Intro & Skip Recap
 
         player.on("loadedmetadata", function() {
 
@@ -166,7 +174,7 @@
 
         player.on("loadedmetadata", function() {
 
-            const CheckPreAds  = '<?= $pre_advertisement ?>'; 
+            const CheckPreAds  = '<?= $pre_advertisement ?>';
             const CheckPostAds = '<?= $post_advertisement ?>';
             const midrollincreaseInterval = Number('<?= $video_js_mid_advertisement_sequence_time ?>');
             const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
@@ -180,7 +188,7 @@
                 if( !!CheckPreAds ){
                     markers.push({ time: 0 });
                 }
-                    
+
                 if(!!midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0 ){
                     for (let time = midrollincreaseInterval; time < total; time += midrollincreaseInterval) {
                         markers.push({ time });
@@ -190,7 +198,7 @@
                 if( !!CheckPostAds ){
                     markers.push({ time: total });
                 }
-                
+
                 var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);
 
                 for (var i = 0; i < markers.length; i++) {
@@ -219,7 +227,7 @@
 
         // Advertisement
 
-        var vastTagPreroll  = '<?= $pre_advertisement ?>'; 
+        var vastTagPreroll  = '<?= $pre_advertisement ?>';
         var vastTagPostroll = '<?= $post_advertisement ?>';
 
         var prerollTriggered = false;
@@ -259,14 +267,14 @@
         }
 
         var initial_current_time = 0;
-        var timeupdate_counter = 0; 
+        var timeupdate_counter = 0;
 
         player.on("timeupdate", function() {
 
             var currentTime = player.currentTime();
             var Player_duration = player.duration() ;
 
-            // Mid ads 
+            // Mid ads
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 
@@ -287,7 +295,7 @@
             if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
                 player.pause();
                 player.dispose();
-                player.off('timeupdate');  
+                player.off('timeupdate');
                 $('#visibilityMessage').show();
                 $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
             }
@@ -295,7 +303,7 @@
             // Free Duration - Live
 
             if ( Player_duration == "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime  ) {
-    
+
                 if (timeupdate_counter <= 2) {
                     initial_current_time = player.currentTime();
                     timeupdate_counter++;
@@ -307,7 +315,7 @@
                 if( round_off_time >=  free_duration_seconds ){
                     player.pause();
                     player.dispose();
-                    player.off('timeupdate');  
+                    player.off('timeupdate');
                     $('#visibilityMessage').show();
                     $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
                 }
@@ -364,11 +372,11 @@
         })
         // player.endcard({
         //     getRelatedContent: getRelatedContent,
-        //     // getNextVid: getNextVid, 
+        //     // getNextVid: getNextVid,
         //     count: 20
         // });
-    });   
-    
+    });
+
     function createRelatedContent(title ,slug, image) {
 
         var div = document.createElement('div');
@@ -440,4 +448,25 @@
         background: transparent;
         cursor: pointer;
     }
+
+    @media only screen and (max-width: 600px){
+        .vjs-fg-skip-button{
+            bottom: 5.6em !important;
+            right: 0.6em !important;
+        }
+        .video-js .vjs-fg-skip-button .vjs-fg-skip-button-label {
+            font-size: 10px;
+        }
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 991px){
+        .vjs-fg-skip-button{
+            bottom: 7.6em;
+            right: 1.6em;
+        }
+        .video-js .vjs-fg-skip-button .vjs-fg-skip-button-label {
+            font-size: 12px;
+        }
+    }
+
 </style>
