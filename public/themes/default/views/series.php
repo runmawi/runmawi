@@ -761,7 +761,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             <!-- <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                     class="view-count rent-video btn btn-primary">
                     <?php echo __('Purchase Now'); ?> </button> -->
-                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                 <?php echo __('Purchase Now'); ?> </button>
 
             <?php elseif($series->ppv_status == 1 ): ?>
@@ -770,7 +770,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
               <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                   <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
-              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                 <?php echo __('Purchase Now'); ?> </button>
                     </div>
             <?php endif; ?></h2>
