@@ -553,7 +553,7 @@ $settings  = App\Setting::first();?>
 									<p class="p1">{{ "Select Season Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
 								@endif
 								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
-								<input type="file" class="season_image" name="image" id="season_img" >
+								<input type="file" class="season_image" name="image" id="season_img" accept="image/png, image/webp, image/jpeg">
 								<p class="text-danger" id="season_img_error" style="display: none;color:red !important;">*Please upload the Season image.</p>
 								<span>
 									<p id="season_image_error_msg" style="color:red !important; display:none;">
@@ -803,16 +803,22 @@ $('#submit-new-cat').click(function(){
 		let title = document.forms["new-cat-form"]["series_seasons_name"].value;
         let seasonImage = document.forms["new-cat-form"]["image"].files.length;
         let isValid = true;
-		
+
 		if (title == "") {
             document.getElementById("season_title_error").style.display = "block";
             isValid = false;
         }
+		else{
+            document.getElementById("season_title_error").style.display = "none";
+		}
 
         if (seasonImage === 0) {
             document.getElementById("season_img_error").style.display = "block";
             isValid = false;
         }
+		else{
+            document.getElementById("season_img_error").style.display = "none";
+		}
 
         return isValid;
 	}
