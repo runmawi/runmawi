@@ -6013,9 +6013,9 @@ return response()->json($response, 200);
       $season_access = $season['access'];
 
       $episodes= Episode::where('season_id',$seasonid)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
-        $item['image'] = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
-        $item['player_image'] = !is_null($item->player_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
-        $item['tv_image'] = !is_null($item->player_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+        $item['image'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
+        $item['player_image'] = !is_null($item->player_image) && $item->player_image != "default_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+        $item['tv_image'] = !is_null($item->player_image) && $item->player_image != "default_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
         $item['episode_id'] =$item->id;
         $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
