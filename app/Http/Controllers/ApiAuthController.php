@@ -5989,8 +5989,19 @@ return response()->json($response, 200);
     $seriesid = $request->seriesid;
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
-    $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
-    $series_description = Series::where('id',$seriesid)->pluck('description')->first();
+
+    $series = Series::query()->where('id',$seriesid)->get()->map(function($item){
+
+      $item['categories'] =  SeriesCategory::select('series_categories.*','category_id','series_id','series_genre.name as name','series_genre.slug')
+                                                        ->join('series_genre','series_genre.id','=','series_categories.category_id')
+                                                        ->where('series_id', $item->id)->orderBy('series_genre.order')->get() ;
+
+      $item['Language']   =  SeriesLanguage::select('series_languages.*','language_id','series_id','name','languages.name')
+                                          ->join('languages','languages.id','=','series_languages.language_id')
+                                          ->where('series_languages.series_id', $item->id)->get() ;
+                                          
+      return $item ;
+    })->first();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
 
@@ -6019,8 +6030,9 @@ return response()->json($response, 200);
       $settings = Setting::first();
 
       $myData[] = array(
-        "seriestitle"   => $seriestitle,
-        "series_description"   => $series_description,
+        "seriestitle"   => $series->title,
+        "series_description"   => $series->description,
+        "series" => $series,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
         "series_image" => $image,
