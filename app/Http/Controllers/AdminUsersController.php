@@ -1860,8 +1860,8 @@ class AdminUsersController extends Controller
             ->groupBy('month_name')
             ->orderBy('createdAt', "DESC")
             ->get();
-        // $total_user = User::where('role', '!=', 'admin')->get();
-        $total_user = User::where('role', '!=', 'admin')->paginate(10);
+        $total_user = User::where('role', '!=', 'admin')->orderBy('created_at', "DESC")->get();
+        // $total_user = User::where('role', '!=', 'admin')->paginate(10);
 
         $data1 = array(
             'admin_count' => $admin_count,
@@ -1871,8 +1871,9 @@ class AdminUsersController extends Controller
             'ppvuser_count' => $ppvuser_count,
 
         );
-        return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
-    }
+            return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+            // return \View::make('admin.analytics.Userrevenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+        }
     }
 
     public function ListUsers(Request $request)
@@ -1954,6 +1955,7 @@ class AdminUsersController extends Controller
           <td>' . $role . '</td>
           <td>' . $phoneccode . '</td>
           <td>' . $provider . '</td>
+          <td>' . $row->DOB  . '</td>
           <td>' . $row->created_at . '</td>
           <td>' . $active . '</td>
 
