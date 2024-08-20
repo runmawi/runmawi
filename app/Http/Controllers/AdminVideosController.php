@@ -4546,6 +4546,7 @@ class AdminVideosController extends Controller
             $video->embed_code = $data["embed"];
             $video->type = "embed";
             $video->draft = 1;
+            $video->status = 1;
             $video->active = 1;
             $video->image = default_vertical_image();
             $video->video_tv_image = default_horizontal_image();
