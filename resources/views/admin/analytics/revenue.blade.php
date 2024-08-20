@@ -154,7 +154,23 @@ $jsondata = json_decode($jsonString, true);
                                       else
                                       {
                                           echo $data1['ppvuser_count'];
-                                      } ?></label>
+                                      } ?></label><br>
+                                    <label for="">Active Users : <?php if (!empty($data1['activeuser_count']))
+                                    {
+                                        echo $data1['activeuser_count'];
+                                    }
+                                    else
+                                    {
+                                        echo $data1['activeuser_count'];
+                                    } ?></label><br>
+                                  <label for="">IN-Active Users : <?php if (!empty($data1['inactiveuser_count']))
+                                    {
+                                        echo $data1['inactiveuser_count'];
+                                    }
+                                    else
+                                    {
+                                        echo $data1['inactiveuser_count'];
+                                    } ?></label>
                     </div>
                 </div>
                 </div>
@@ -171,7 +187,8 @@ $jsondata = json_decode($jsonString, true);
                                 <option value="subscriber">Subscriber</option>     
                                 <option value="admin" >Admin</option>
                                 <option value="ppv_users" >PPV Users</option>
-                              </select>
+                                <option value="active_users" >Active Users</option>
+                                </select>
                                 </div>
                                 <div class="col-md-4">
                                  <h5> User Count : <span id="user_tables"> </span></h5>
@@ -183,7 +200,7 @@ $jsondata = json_decode($jsonString, true);
 
                             <div class="row">
                                 <div class="col-md-12">
-                                <table class="table  table movie_table " id="user_tabledss" style="width:100%">
+                                <table class="table  table movie_table " id="user_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
@@ -473,7 +490,7 @@ $.ajaxSetup({
           success: function(data){
         $('tbody').html(data.table_data);
          $('#user_tables').text(data.total_data);  
-    $('#user_table').DataTable();
+          $('#user_table').DataTable();
 
         }
           });
