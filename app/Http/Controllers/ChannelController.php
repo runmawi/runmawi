@@ -91,6 +91,16 @@ class ChannelController extends Controller
         Theme::uses($this->HomeSetting->theme_choosen);
     }
 
+    function paginateCollection(Collection $items, $perPage)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $items->count(), $perPage);
+        $paginatedItems->setPath(request()->url());
+
+        return $paginatedItems;
+    }
+
     public function index()
     {
         $settings = Setting::first();
@@ -170,7 +180,7 @@ class ChannelController extends Controller
                 $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                         ->whereIn('category_id', $category_id)->where('active', 1)
                         ->where('videos.status', 1)->where('videos.draft', 1);
-
+                        
                     if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                         $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                     }
@@ -195,6 +205,9 @@ class ChannelController extends Controller
                             return $categoryVideoschannel;
                         }
                     });
+
+                    $categoryVideos = $this->paginateCollection($categoryVideos, $this->videos_per_page);
+
             }
             // Most_watched_country
 
@@ -3616,25 +3629,25 @@ class ChannelController extends Controller
             $ppv_gobal_price = null;
         }
 
-        $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-            ->where('category_id', '=', $request->category_id)
-            ->where('active', '=', '1');
+            $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                ->where('category_id', '=', $request->category_id)
+                ->where('active', '=', '1');
 
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
-        }
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+            }
 
-        if (!empty($request->rating)) {
-            $categoryVideos = $categoryVideos->WhereIn('videos.rating', $request->rating);
-        }
+            if (!empty($request->rating)) {
+                $categoryVideos = $categoryVideos->WhereIn('videos.rating', $request->rating);
+            }
 
-        if (!empty($request->age)) {
-            $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict', $request->age);
-        }
+            if (!empty($request->age)) {
+                $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict', $request->age);
+            }
 
-        if (!empty($request->sorting)) {
-            $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
-        }
+            if (!empty($request->sorting)) {
+                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
+            }
 
         $categoryVideos = $categoryVideos->paginate($this->videos_per_page);
 
@@ -3673,9 +3686,8 @@ class ChannelController extends Controller
             'Episode_videos' => $Episode_videos,
         ];
 
-        $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/partials/categoryvids_section', ['categoryVideos' => $data])->render();
+        return Theme::load('public/themes/default/partials/categoryvids_section', ['categoryVideos' => $data])->render();
     }
 
     public function MovieList()

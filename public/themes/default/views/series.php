@@ -343,13 +343,12 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             </div>
                             <div class="block-description" >
                               <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
-                              <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->player_image;  ?>" class=" img-fluid w-100" >
                                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                     
                                     <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                    <p class="p-tag"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                     <?php }elseif(!empty($seasons->ppv_price)){?>
-                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                    <p class="p-tag"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                     <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                       <p class="p-tag"><?php echo __("Free"); ?></p>
                                       <?php } ?>
@@ -357,32 +356,46 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                     
                                     <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                    <p class="p-tag"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                     <?php }elseif(!empty($seasons->ppv_price)){?>
-                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                    <p class="p-tag"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                     <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                       <p class="p-tag"><?php echo __("Free"); ?></p>
                                       <?php } ?>
                                   <?php } ?>
 
                                   <div class="hover-buttons text-white">
-                                      <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
-                                          <p class="epi-name text-left m-0">
-                                            <?php echo __($episodes->title); ?>
-                                          </p>
-                                            
-                                            <div class="movie-time d-flex align-items-center my-2">
-                                              <div class="badge badge-secondary p-1 mr-2"><?php echo $episodes->age_restrict.' '.'+' ?></div>
-                                              <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate("H:i:s", $episodes->duration); ?></span>
-                                            </div>
-                                      </a>
+                                            <a class="text-white" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <p class="epi-name text-left m-0 mt-4">
+                                                  <?php echo __(strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title); ?>
+                                                </p>
 
-                                  
-                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
-                                          </a>
-                                    </div>
+                                                <p class="desc-name text-left m-0 mt-1">
+                                                    <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                                                </p>
+                                                  
+                                                  <div class="movie-time d-flex align-items-center my-2">
+                                                    <div class="badge p-1 mr-2"><?php echo $episodes->age_restrict ?></div>
+                                                    <span class="text-white"><?= (floor($episodes->duration / 3600) > 0 ? floor($episodes->duration / 3600) . 'h ' : '') . floor(($episodes->duration % 3600) / 60) . 'm' ?></span>
+                                                  </div>
+                                                  <?php if($ThumbnailSetting->published_year == 1 && !($episodes->year == 0)) { ?>
+                                                    <span class="position-relative badge p-1 mr-2">
+                                                        <?= __($episodes->year) ?>
+                                                    </span>
+                                                  <?php } ?>
+                                                  <?php if($ThumbnailSetting->featured == 1 && $episodes->featured == 1) { ?>
+                                                            <span class="position-relative text-white">
+                                                                <?= __('Featured') ?>
+                                                            </span>
+                                                  <?php } ?>
+                                            </a>
+
+                                        
+                                              <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                <?= ('Watch Now') ?>
+                                                </a>
+                                          </div>
                             
                             </div>   
                           </a>
@@ -410,44 +423,57 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                  
                                   <div class="block-description" >
                                     <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->player_image;  ?>" class=" img-fluid w-100" >
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                           
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                            <p class="p-tag"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                            <p class="p-tag"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo __("Free"); ?></p>
-                                            <?php } ?>
+                                          <?php } ?>
                                         <?php } ?>
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                           
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                          <p class="p-tag"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
-                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                          <p class="p-tag"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo __("Free"); ?></p>
                                             <?php } ?>
                                         <?php } ?>
 
                                         <div class="hover-buttons text-white">
-                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
-                                                <p class="epi-name text-left m-0">
-                                                  <?php echo __($episodes->title); ?>
+                                            <a class="text-white" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <p class="epi-name text-left m-0 mt-4">
+                                                  <?php echo __(strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title); ?>
+                                                </p>
+
+                                                <p class="desc-name text-left m-0 mt-1">
+                                                    <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
                                                 </p>
                                                   
                                                   <div class="movie-time d-flex align-items-center my-2">
-                                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $episodes->age_restrict.' '.'+' ?></div>
-                                                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate("H:i:s", $episodes->duration); ?></span>
+                                                    <div class="badge p-1 mr-2"><?php echo $episodes->age_restrict ?></div>
+                                                    <span class="text-white"><?= (floor($episodes->duration / 3600) > 0 ? floor($episodes->duration / 3600) . 'h ' : '') . floor(($episodes->duration % 3600) / 60) . 'm' ?></span>
                                                   </div>
+                                                  <?php if($ThumbnailSetting->published_year == 1 && !($episodes->year == 0)) { ?>
+                                                    <span class="position-relative badge p-1 mr-2">
+                                                        <?= __($episodes->year) ?>
+                                                    </span>
+                                                  <?php } ?>
+                                                  <?php if($ThumbnailSetting->featured == 1 && $episodes->featured == 1) { ?>
+                                                            <span class="position-relative text-white">
+                                                                <?= __('Featured') ?>
+                                                            </span>
+                                                  <?php } ?>
                                             </a>
 
                                         
                                               <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
                                                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Watch Now
+                                                <?= ('Watch Now') ?>
                                                 </a>
                                           </div>
                                   

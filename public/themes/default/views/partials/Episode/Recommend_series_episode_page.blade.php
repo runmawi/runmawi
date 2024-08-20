@@ -62,21 +62,13 @@
                             <p class="epi-name text-left m-0 mt-2">
                                 <?php echo __($series_list->title); ?>
                             </p>
-                            <p class="desc-name text-left m-0 mt-1">
-                                <?= strlen($series_list->description) > 75 ? substr(html_entity_decode(strip_tags($series_list->description)), 0, 75) . '...' : $series_list->description ?>
-                            </p>
+                                <p class="desc-name text-left m-0 mt-1">
+                                    <?= strlen($series_list->description) > 75 ? substr(html_entity_decode(strip_tags($series_list->description)), 0, 75) . '...' : strip_tags($series_list->description) ?>
+                                </p>
                             <div class="movie-time d-flex align-items-center my-2">
 
                                 <?php if($ThumbnailSetting->age == 1 && !($series_list->age_restrict == 0)): ?>
                                     <span class="position-relative badge p-1 mr-2"><?php echo $series_list->age_restrict . ' +'; ?></span>
-                                <?php endif; ?>
-                            
-                                <?php if($ThumbnailSetting->duration == 1): ?>
-                                    <span class="position-relative text-white mr-2">
-                                        <?php 
-                                            echo (floor($series_list->duration / 3600) > 0 ? floor($series_list->duration / 3600) . 'h ' : '') . floor(($series_list->duration % 3600) / 60) . 'm'; 
-                                        ?>
-                                    </span>
                                 <?php endif; ?>
                             
                                 <?php if($ThumbnailSetting->published_year == 1 && !($series_list->year == 0)): ?>

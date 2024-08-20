@@ -65,13 +65,13 @@
                           <?= strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title ?>
                       </p>
                  
-                  <p class="desc-name text-left m-0 mt-1">
-                      <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : $episodes->episode_description ?>
-                  </p>
+                      <p class="desc-name text-left m-0 mt-1">
+                            <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                        </p>
 
                   <div class="movie-time d-flex align-items-center pt-1">
                     <?php if($ThumbnailSetting->age == 1 && !($episodes->age_restrict == 0)): ?>
-                        <span class="position-relative badge p-1 mr-2"><?php echo $episodes->age_restrict . ' +'; ?></span>
+                        <span class="position-relative badge p-1 mr-2"><?php echo $episodes->age_restrict ; ?></span>
                     <?php endif; ?>
                 
                     <?php if($ThumbnailSetting->duration == 1): ?>
