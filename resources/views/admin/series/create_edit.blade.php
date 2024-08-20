@@ -524,13 +524,14 @@ $settings  = App\Setting::first();?>
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/create/') }}" enctype="multipart/form-data" method="post">
+					<form name="new-cat-form" id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/create/') }}" onsubmit="return validateForm()" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="series_id" value="<?= $series->id ?>" />
 
 							<div class="form-group">
 								<label>Season Title:</label>
 								<input type="text" id="series_seasons_name" name="series_seasons_name" value="" placeholder="Enter the Season Title" class="form-control">
+								<p class="text-danger" id="season_title_error" style="display: none;color:red !important;">*Please enter the Season Title.</p>
 							</div>  
 
 							<div class="form-group" >
@@ -553,6 +554,7 @@ $settings  = App\Setting::first();?>
 								@endif
 								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
 								<input type="file" class="season_image" name="image" id="season_img" >
+								<p class="text-danger" id="season_img_error" style="display: none;color:red !important;">*Please upload the Season image.</p>
 								<span>
 									<p id="season_image_error_msg" style="color:red !important; display:none;">
 										* Please upload an image with the correct dimensions.
@@ -572,7 +574,7 @@ $settings  = App\Setting::first();?>
                             </div>
                       
                             <div class="form-group" id="ppv_price">
-							<label class="">PPV Price:</label>
+								<label class="">PPV Price:</label>
 								<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
 		                    </div>  
 
@@ -795,7 +797,27 @@ $('#submit-new-cat').click(function(){
 
 @section('javascript')
 
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+{{-- field validation --}}
+<script>
+	function validateForm() {
+		let title = document.forms["new-cat-form"]["series_seasons_name"].value;
+        let seasonImage = document.forms["new-cat-form"]["image"].files.length;
+        let isValid = true;
+		
+		if (title == "") {
+            document.getElementById("season_title_error").style.display = "block";
+            isValid = false;
+        }
+
+        if (seasonImage === 0) {
+            document.getElementById("season_img_error").style.display = "block";
+            isValid = false;
+        }
+
+        return isValid;
+	}
+</script>
+
 
 {{-- image validation --}}
 <script>
