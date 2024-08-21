@@ -138,7 +138,7 @@
         color: #fff;
         opacity: 1;
     }
-    .modal-content{
+    #Reels .modal-content{
         background: transparent !important;
         border: none !important;
     }

@@ -34,8 +34,13 @@
     body.light-theme .info {
         color: <?php echo GetLightText(); ?> !important;
     }
+    body.dark .modal.show .modal-dialog{background-color: <?php echo $GetLightBg; ?> !important;}
     body.light-theme .vpageBanner .opacity-layer {
         background:none;
+    }
+    #video-purchase-now-modal .modal-footer{
+            background: transparent;
+            border-top: 1px solid black;
     }
 </style>
 
@@ -187,7 +192,7 @@
                     <div class="row">
                         @if ( $videodetail->users_video_visibility_status == false )
                             @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
@@ -505,6 +510,115 @@
             @endif
 
         </div>
+
+                {{-- Rent Modal  --}}
+    @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) )
+        <div class="modal fade" id="video-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="video-purchase-now-modal-Title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center text-black" id="exampleModalLongTitle" >
+                            {{ __('Purchase Now') }}
+                        </h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-4 p-0" style="">
+                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="live-image">
+                            </div>
+
+                            <div class="col-sm-8">
+
+                                <h4 class=" text-black movie mb-3">{{ __(@$videodetail->title) }}</h4>
+                                <span class="badge badge-secondary  mb-2 ml-1">{{ $videodetail->duration != null ? gmdate('H:i:s', $videodetail->duration)  : null  }} </span><br>
+
+                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;">{{ __('Amount') }}:
+                                    <span class="pl-2" style="font-size:20px;font-weight:700;"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  $currency->symbol .$videodetail->ppv_price }}</span>
+                                </a><br>
+
+                                <label class="mb-0 mt-3 p-0" for="method">
+                                    <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
+                                </label>
+
+                                <!-- Stripe Button -->
+                                {{-- @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                        {{ $stripe_payment_setting->payment_type }}
+                                    </label>
+                                @endif --}}
+
+                                <!-- Razorpay Button -->
+                                {{-- @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                        {{ $Razorpay_payment_setting->payment_type }}
+                                    </label>
+                                @endif --}}
+
+                                <!-- Paystack Button -->
+                                {{-- @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $Paystack_payment_setting->payment_type }}" data-value="Paystack">
+                                        {{ $Paystack_payment_setting->payment_type }}
+                                    </label>
+                                @endif --}}
+
+                                <!-- CinetPay Button -->
+                                {{-- @if ( $CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay' && $CinetPay_payment_settings->status == 1)
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $CinetPay_payment_settings->payment_type }}" data-value="CinetPay">
+                                        {{ $CinetPay_payment_settings->payment_type }}
+                                    </label>
+                                @endif --}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <div class="Stripe_button"> <!-- Stripe Button -->
+                            <button class="btn btn-primary  btn-outline-primary  "
+                                onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
+                                {{ __('Continue') }}
+                            </button>
+                        </div>
+
+                        <div class="Razorpay_button"> <!-- Razorpay Button -->
+                            {{-- @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                <button class="btn btn-primary  btn-outline-primary  "
+                                    onclick="location.href ='{{ route('RazorpayLiveRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                    {{ __('Continue') }}
+                                </button>
+                            @endif --}}
+                        </div>
+
+                        <div class="paystack_button"> <!-- Paystack Button -->
+                            {{-- @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                <button class="btn btn-primary  btn-outline-primary "
+                                    onclick="location.href ='{{ route('Paystack_live_Rent', ['live_id' => $videodetail->id, 'amount' => $videodetail->ppv_price]) }}' ;">
+                                    {{ __('Continue') }}
+                                </button>
+                            @endif --}}
+                        </div>
+
+                        {{-- <div class="cinetpay_button"> <!-- Cinetpay Button -->
+                            @if ($CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay')
+                                <button onclick="cinetpay_checkout()" id=""
+                                    class="btn btn-primary  btn-outline-primary ">{{ __('Continue') }}</button>
+                            @endif
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
         <div class="videoPopup ">
             <div class="opacityLayer"></div>
