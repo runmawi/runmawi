@@ -193,7 +193,7 @@
                                                 <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
                                             </form>
                                         @endif
-                                        <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary mt-3">
+                                        <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                                             {{ __('Purchase Now') }}
                                         </button>
                                         <!-- <button  data-toggle="modal" data-target="#exampleModalCenter"
@@ -304,7 +304,7 @@
                                         </form>
                                     @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                    <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary mt-3">
+                                    <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
                                         {{ __('Purchase Now') }}
                                     </button>
                                     </form>
@@ -532,7 +532,6 @@
                     @if($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
                     @else
                         <div class="col-md-6 pl-4">
-                            <span class="text-white" style="font-size: 129%;font-weight: 700;">{{ __('Purchase to Watch the Series') }}:</span>
                             @if($series->access == 'subscriber')
                                 {{ __('Subscribers') }}
                             @elseif($series->access == 'registered')

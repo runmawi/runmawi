@@ -1860,7 +1860,7 @@ class AdminUsersController extends Controller
             ->groupBy('month_name')
             ->orderBy('createdAt', "DESC")
             ->get();
-        // $total_user = User::where('role', '!=', 'admin')->get();
+        // $total_user = User::where('role', '!=', 'admin')->orderBy('created_at', "DESC")->get();
         $total_user = User::where('role', '!=', 'admin')->paginate(10);
 
         $data1 = array(
@@ -1869,10 +1869,13 @@ class AdminUsersController extends Controller
             'registered_count' => $registered_count,
             'total_user' => $total_user,
             'ppvuser_count' => $ppvuser_count,
+            'activeuser_count' => User::where('active', 1)->count(),
+            'inactiveuser_count' => User::where('active',0)->orwhere('active',null)->count(),
 
         );
-        return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
-    }
+            return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+            // return \View::make('admin.analytics.Userrevenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+        }
     }
 
     public function ListUsers(Request $request)
@@ -1893,10 +1896,23 @@ class AdminUsersController extends Controller
         {
             $Users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->get();
         }
-        else
+        elseif ($role == "active_users")
+        {
+            $Users = User::where('active', 1)->get();
+        }
+        elseif ($role == "inactive_users")
+        {
+            $Users = User::where('active','!=',  1)->get();
+        }
+        elseif ($role == "admin")
         {
             $Users = User::where('role', 'admin')->get();
         }
+        else
+        {
+            $Users = User::get();
+        }
+
         $total_row = $Users->count();
         if (!empty($Users))
         {
@@ -1954,6 +1970,7 @@ class AdminUsersController extends Controller
           <td>' . $role . '</td>
           <td>' . $phoneccode . '</td>
           <td>' . $provider . '</td>
+          <td>' . $row->DOB  . '</td>
           <td>' . $row->created_at . '</td>
           <td>' . $active . '</td>
 
