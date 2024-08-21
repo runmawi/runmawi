@@ -374,8 +374,9 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
+        return $this->videos_details_jsplayer($slug);
+
         try {
-                return $this->videos_details_jsplayer($slug);
 
             $settings = Setting::first();
             if ($settings->access_free == 0 && Auth::guest())
@@ -4621,7 +4622,7 @@ class ChannelController extends Controller
 
             // Payment Gateway Stripe 
 
-            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->first();
+            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
 
             $mode = $Stripepayment->live_mode;
 
@@ -4642,6 +4643,8 @@ class ChannelController extends Controller
                     break;
             }
 
+            $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
+
             $data = array(
                 'videodetail'    => $videodetail ,
                 'video'          => $videodetail ,   // Videos - Working Social Login
@@ -4657,8 +4660,11 @@ class ChannelController extends Controller
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
-            );
 
+                'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                'stripe_payment_setting'   => $Stripepayment,
+                'current_theme'     => $this->HomeSetting->theme_choosen,
+            );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
