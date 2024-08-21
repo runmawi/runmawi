@@ -21,12 +21,15 @@ class RazorpayMiddleware
         $users_details =Auth::User();
 
         if($users_details != null){
-            $user_details =Auth::User();
+            $user_details = Auth::User();
         }else{
             $userEmailId = $request->session()->get('register.email');
             $user_details =User::where('email',$userEmailId)->first();        
         }
-        if($user_details != null){
+        if($user_details != null  ){
+            if( $users_details->role == "admin" ){
+                return redirect('home');
+            }
             return $next($request);
         }
         else{
