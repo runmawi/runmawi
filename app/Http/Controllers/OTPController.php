@@ -46,7 +46,7 @@ class OTPController extends Controller
 
     public function Sending_OTP(Request $request){
 
-        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->where('status',1)->first();
+        $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
 
@@ -58,31 +58,74 @@ class OTPController extends Controller
         try {
             
             $random_otp_number = random_int(1000, 9999);
-            $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
             $Mobile_number     = $request->mobile ;
 
             $user = User::where('mobile',$Mobile_number)->first();
 
-            $response = Http::withOptions(['verify' => false, ])  
-            ->get('https://www.fast2sms.com/dev/bulkV2', [
-                    'authorization'    => $fast2sms_API_key ,
-                    'variables_values' => $random_otp_number,
-                    'route'   => 'otp',
-                    'numbers' => $user->mobile ,
-                    'flash'   => 1 ,
+            if( $AdminOTPCredentials->otp_vai == "fast2sms" ){
+
+                $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
+
+                $response = Http::withOptions(['verify' => false, ])  
+                ->get('https://www.fast2sms.com/dev/bulkV2', [
+                        'authorization'    => $fast2sms_API_key ,
+                        'variables_values' => $random_otp_number,
+                        'route'   => 'otp',
+                        'numbers' => $user->mobile ,
+                        'flash'   => 1 ,
+                    ]);
+
+                    User::find($user->id)->update([
+                        'otp' => $random_otp_number ,
+                        'otp_request_id' => $response['request_id'] ,
+                        'otp_through' =>  $AdminOTPCredentials->otp_vai ,
+                    ]);
+            }
+
+            if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
+
+                $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
+
+                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
+                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+
+                $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', [
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $Mobile_number,
+                    'SenderID' => $SenderID,
+                    'Message' => $message,
+                    'ServiceName' => $ServiceName,
+                    'DLTTemplateID' => $DLTTemplateID,
                 ]);
 
-            User::find($user->id)->update([
-                'otp' => $random_otp_number ,
-                'otp_request_id' => $response['request_id'] ,
-                'otp_through' => 'fast2sms' ,
-            ]);
+                if (str_contains($response->body(), 'success')) {
 
+                    $parts = explode(':', $response->body());
+                    $msgId = $parts[1];
+
+                    User::find($user->id)->update([
+                        'otp' => $random_otp_number ,
+                        'otp_request_id' => $msgId ,
+                        'otp_through' =>  $AdminOTPCredentials->otp_vai ,
+                    ]);
+
+                }else {
+                    $msg = 'Some Error occuring while Sending, Please check this query with admin..';
+                    $url = URL::to('/Login');
+                    echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+                }         
+            
+            }
+           
             return redirect()->route('auth.otp.verify-otp', ['id'=> $user->id ] );
 
         } catch (\Throwable $th) {
             
-            return abort(404);
+            $msg = 'Some Error occuring while Sending, Please check this query with admin..';
+            $url = URL::to('/Login');
+            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
         }
     }
     
