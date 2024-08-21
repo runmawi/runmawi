@@ -5989,8 +5989,23 @@ return response()->json($response, 200);
     $seriesid = $request->seriesid;
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
-    $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
-    $series_description = Series::where('id',$seriesid)->pluck('description')->first();
+
+    $series = Series::query()->where('id',$seriesid)->get()->map(function($item){
+
+      $item['categories'] =  SeriesCategory::select('series_categories.*','category_id','series_id','series_genre.name as name','series_genre.slug')
+                                                        ->join('series_genre','series_genre.id','=','series_categories.category_id')
+                                                        ->where('series_id', $item->id)->orderBy('series_genre.order')->get() ;
+
+      $item['Language']   =  SeriesLanguage::select('series_languages.*','language_id','series_id','name','languages.name')
+                                          ->join('languages','languages.id','=','series_languages.language_id')
+                                          ->where('series_languages.series_id', $item->id)->get() ;
+
+      $item['image_url'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
+      $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+      $item['tv_image_url'] = !is_null($item->tv_image) && $item->tv_image != "default_image"? URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url();
+                                          
+      return $item ;
+    })->first();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
 
@@ -6002,7 +6017,11 @@ return response()->json($response, 200);
       $season_access = $season['access'];
 
       $episodes= Episode::where('season_id',$seasonid)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
-        $item['image'] = URL::to('public/uploads/images/'.$item->image);
+
+        $item['image'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
+        $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_horizontal_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+        $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+       
         $item['episode_id'] =$item->id;
         $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
@@ -6019,8 +6038,9 @@ return response()->json($response, 200);
       $settings = Setting::first();
 
       $myData[] = array(
-        "seriestitle"   => $seriestitle,
-        "series_description"   => $series_description,
+        "seriestitle"   => $series->title,
+        "series_description"   => $series->description,
+        "series" => $series,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
         "series_image" => $image,
@@ -15425,7 +15445,7 @@ public function QRCodeMobileLogout(Request $request)
             $category->category_videos->map(function ($video) {
                 $video->image_url = URL::to('/public/uploads/images/'.$video->image);
                 $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
-                $video->tv_image_url = URL::to('public/uploads/images/'.$item->video_tv_image) ; 
+                $video->tv_image_url = URL::to('public/uploads/images/'.$video->video_tv_image) ; 
                 $video->description  = $video->description ;
                 $video->source  = "Videos";
                 return $video;
