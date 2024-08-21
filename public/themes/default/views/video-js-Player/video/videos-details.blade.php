@@ -1,4 +1,4 @@
-@php  include public_path('themes/default/views/header.php'); @endphp
+@php  include public_path("themes/{$current_theme}/views/header.php"); @endphp
 
 <style>
     body.light-theme h4, body.light-theme p {
@@ -34,14 +34,19 @@
     body.light-theme .info {
         color: <?php echo GetLightText(); ?> !important;
     }
+    body.dark .modal.show .modal-dialog{background-color: <?php echo $GetLightBg; ?> !important;}
     body.light-theme .vpageBanner .opacity-layer {
         background:none;
+    }
+    #video-purchase-now-modal .modal-footer{
+            background: transparent;
+            border-top: 1px solid black;
     }
 </style>
 
 
 {{-- Style Link--}}
-    <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
+    <link rel="stylesheet" href="{{ asset("public/themes/{$current_theme}/assets/css/video-js/video-details.css") }}">
 
 
 
@@ -50,14 +55,14 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ asset('public/themes/{$current_theme}/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
 
 
-    <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/video.min.js") }}"></script>
+    <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-contrib-quality-levels.js") }}"></script>
+    <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-http-source-selector.js") }}"></script>
+    <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-hls-quality-selector.min.js") }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
 {{-- Section content --}}
@@ -187,7 +192,7 @@
                     <div class="row">
                         @if ( $videodetail->users_video_visibility_status == false )
                             @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
@@ -208,7 +213,7 @@
                             {{-- subscriber & PPV  --}}
 
                             @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
-                                <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
@@ -225,7 +230,7 @@
                         @endif
 
                             
-                        @php include public_path('themes/default/views/partials/social-share.php'); @endphp 
+                        @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
@@ -244,7 +249,7 @@
                                 </li>
                             </ul>
 
-                            @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                            @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
 
                         @endif
                         
@@ -329,7 +334,7 @@
                                                 <img src="{{ optional($videodetail)->image_url }}">
                                             </span>
 
-                                            @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                                            @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
 
                                         </div>
                                         
@@ -340,7 +345,7 @@
 
                             @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
                                                                     
-                                @php  include public_path('themes/default/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                                @php  include public_path("themes/{$current_theme}/views/video-js-Player/video/Reels-videos.blade.php"); @endphp
                             
                             @endif
 
@@ -366,7 +371,7 @@
                 <div class="sectionArtists">   
                     <div class="artistHeading"> {{ __('Comments') }} </div>
                         <div class="overflow-hidden">
-                            @php include public_path('themes/default/views/comments/index.blade.php') @endphp
+                            @php include public_path("themes/{$current_theme}/views/comments/index.blade.php") @endphp
                         </div>
                 </div>
             @endif
@@ -506,6 +511,86 @@
 
         </div>
 
+                {{-- Rent Modal  --}}
+    @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) )
+        <div class="modal fade" id="video-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="video-purchase-now-modal-Title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center text-black" id="exampleModalLongTitle" >
+                            {{ __('Purchase Now') }}
+                        </h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-4 p-0" style="">
+                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="live-image">
+                            </div>
+
+                            <div class="col-sm-8">
+
+                                <h4 class=" text-black movie mb-3">{{ __(@$videodetail->title) }}</h4>
+
+                                @if ( $videodetail->duration != null )
+                                    <span class="badge badge-secondary  mb-2 ml-1">{{ $videodetail->duration != null ? gmdate('H:i:s', $videodetail->duration)  : null  }} </span><br>
+                                @endif
+
+                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;">{{ __('Amount') }}:
+                                    <span class="pl-2" style="font-size:20px;font-weight:700;"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  $currency->symbol .$videodetail->ppv_price }}</span>
+                                </a><br>
+
+                                <label class="mb-0 mt-3 p-0" for="method">
+                                    <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
+                                </label>
+
+                                <!-- Stripe Button -->
+                                @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                        {{ $stripe_payment_setting->payment_type }}
+                                    </label>
+                                @endif
+
+                                <!-- Razorpay Button -->
+                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                        {{ $Razorpay_payment_setting->payment_type }}
+                                    </label>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <div class="Stripe_button"> <!-- Stripe Button -->
+                            <button class="btn btn-primary  btn-outline-primary  "
+                                onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
+                                {{ __('Continue') }}
+                            </button>
+                        </div>
+
+                        <div class="Razorpay_button"> <!-- Razorpay Button -->
+                            @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                <button class="btn btn-primary  btn-outline-primary  "
+                                    onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                    {{ __('Continue') }}
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
         <div class="videoPopup ">
             <div class="opacityLayer"></div>
             <div class="videoPlayer">
@@ -529,9 +614,31 @@
             imagesLoaded: true,
             lazyload:true,
         });
+
+        $(document).ready(function() {
+
+            $('.Razorpay_button,.Stripe_button').hide();
+
+            $(".payment_btn").click(function() {
+
+                $('.Razorpay_button,.Stripe_button').hide();
+
+                let payment_gateway = $('input[name="payment_method"]:checked').val();
+
+                if (payment_gateway == "Stripe") {
+
+                    $('.Stripe_button').show();
+
+                } else if (payment_gateway == "Razorpay") {
+
+                    $('.Razorpay_button').show();
+
+                } 
+            });
+        });
     </script>
 @php 
-    include public_path('themes/default/views/video-js-Player/video/videos-details-script-file.blade.php');
-    include public_path('themes/default/views/video-js-Player/video/videos-details-script-stripe.blade.php');
-    include public_path('themes/default/views/footer.blade.php'); 
+    include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-file.blade.php");
+    include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-stripe.blade.php");
+    include public_path("themes/{$current_theme}/views/footer.blade.php"); 
 @endphp

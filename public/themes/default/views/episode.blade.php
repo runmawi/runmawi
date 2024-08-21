@@ -532,7 +532,6 @@
                     @if($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
                     @else
                         <div class="col-md-6 pl-4">
-                            <span class="text-white" style="font-size: 129%;font-weight: 700;">{{ __('Purchase to Watch the Series') }}:</span>
                             @if($series->access == 'subscriber')
                                 {{ __('Subscribers') }}
                             @elseif($series->access == 'registered')
