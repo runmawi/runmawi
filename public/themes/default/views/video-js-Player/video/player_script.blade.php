@@ -111,14 +111,20 @@
             }
         });
 
-        player.ready(() => {
-            playPauseButton.addEventListener('click', function() {
-                // console.log("play", player.pause());
-                if (player.pause() === undefined) {
-                    player.pause();
-                }
-            });
-        });
+        // player.ready(() => {
+        //     playPauseButton.addEventListener('click', function() {
+        //         if (player.paused()) {
+        //             console.log("The video is paused.");
+        //         } if(player.play()) {
+        //             console.log("The video is playing.");
+        //         }
+        //         console.log("play", player.play());
+        //         if (player.pause() == undefined && player.play() != null) {
+        //             console.log("***8");
+        //             player.pause();
+        //         }
+        //     });
+        // });
 
 
 
