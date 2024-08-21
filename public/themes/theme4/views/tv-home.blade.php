@@ -71,7 +71,7 @@
                         <div class="col-sm-12">
 
                             @if ($value->video_name == 'Series_Genre')
-                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => $order_settings_list, ])->content() !!}
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], ])->content() !!}
                             @endif
 
                             @if ($value->video_name == 'Series_Genre_videos')
