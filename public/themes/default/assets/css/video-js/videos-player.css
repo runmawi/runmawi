@@ -94,17 +94,16 @@
   object-fit: cover;
 }
 
-.my-video.video-js.vjs-playing{
+/* .my-video.video-js.vjs-playing{
   pointer-events: auto;
-}
+} */
 
-.vjs-has-started .vjs-big-play-button,
-.my-video.vjs-has-started .vjs-big-play-button .vjs-icon-placeholder {
-  pointer-events: auto;
+.vjs-has-started .vjs-big-play-button{
+  pointer-events: none;
 }
 
 .vjs-paused .vjs-big-play-button {
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .my-video.vjs-theme-city .vjs-control-bar {
@@ -322,7 +321,7 @@ line-height: 2.1em;
   right: -0.4em;
   width: 1.7em;
   height: 1.5em;
-  pointer-events: auto;
+  pointer-events: none;
   line-height: 0.15em;
   z-index: 1;
 }
@@ -346,7 +345,7 @@ line-height: 2.1em;
 
 .my-video.vjs-paused .vjs-big-play-button {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: none;
   transition: opacity 0.5s;
 }
 
@@ -399,7 +398,7 @@ line-height: 2.1em;
   right: -0.4em;
   width: 0.9em;
   height: 0.9em;
-  pointer-events: auto;
+  pointer-events: none;
   line-height: 0.1em;
   z-index: 1;
 }
@@ -619,7 +618,7 @@ content: "" !important;
 
 .my-video.video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder {
   content: "\f103" !important;
-  pointer-events: auto;
+  /* pointer-events: auto; */
 }
 
 /* .my-video.vjs-paused .vjs-big-play-button {
@@ -682,7 +681,7 @@ display: block !important;
 
 .my-video.video-js.vjs-playing .vjs-big-play-button .vjs-icon-placeholder:before {
   content: "\f103";
-  pointer-events: auto;
+  /* pointer-events: all; */
 }
 
 .vjs-icon-play,

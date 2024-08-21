@@ -1,7 +1,7 @@
-<!-- <?php 
-    $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
-    $episode_id = $episode->id ; 
-    $advertisement_id = $episode->episode_ads ; 
+<!-- <?php
+    $user = !Auth::guest() ? Auth::User()->id : 'guest' ;
+    $episode_id = $episode->id ;
+    $advertisement_id = $episode->episode_ads ;
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
 ?> -->
 
@@ -12,7 +12,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('episode-player', { // Video Js Player 
+        var player = videojs('episode-player', { // Video Js Player
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
@@ -105,7 +105,7 @@
         }
         });
 
-        // Skip Intro & Skip Recap 
+        // Skip Intro & Skip Recap
 
         player.on("loadedmetadata", function() {
             // console.log("p",player);
@@ -154,7 +154,7 @@
             }
         });
 
-        player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ // Hls Quality Selector - M3U8
             displayCurrentQuality: true,
         });
 
