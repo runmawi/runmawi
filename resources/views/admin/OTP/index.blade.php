@@ -109,14 +109,16 @@
                                         </div>
                                     </div>
                                     <div class="panel-body" style="display: block;">
-                                       <select  class="form-control"  name="otp_vai" >
-                                          <option value="fast2sms"> fast2sms </option>
+                                       <select  class="form-control otp_vai"  name="otp_vai" >
+                                          <option value=" " > Select the OTP Through</option>
+                                          <option value="fast2sms" {{ @$AdminOTPCredentials->otp_vai == "fast2sms" ? 'selected' : null }}  > fast2sms </option>
+                                          <option value="24x7sms" {{ @$AdminOTPCredentials->otp_vai == "24x7sms" ? 'selected'  : null }}  > 24x7 sms </option>
                                        </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-7">
+                            <div class="col-md-7 fast2sms_div">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
                                         <div class="panel-title"><label> API KEY - fast2sms </label></div>
@@ -126,6 +128,20 @@
                                     </div>
                                     <div class="panel-body" style="display: block;">
                                         <input type="text" class="form-control" name="otp_fast2sms_api_key" id="otp_fast2sms_api_key" value="{{ !empty($AdminOTPCredentials->otp_fast2sms_api_key) ? $AdminOTPCredentials->otp_fast2sms_api_key : null }}" placeholder="fast2sms API Key" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-7 24x7sms_div">
+                                <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                        <div class="panel-title"><label> API KEY - 24x7sms </label></div>
+                                        <div class="panel-options">
+                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                        <input type="text" class="form-control" name="otp_24x7sms_api_key" id="otp_24x7sms_api_key" value="{{ !empty($AdminOTPCredentials->otp_24x7sms_api_key) ? $AdminOTPCredentials->otp_24x7sms_api_key : null }}" placeholder="24x7sms API Key" />
                                     </div>
                                 </div>
                             </div>
@@ -141,4 +157,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $( document ).ready(function() {
+
+            $('.24x7sms_div,.fast2sms_div').hide();
+
+            $('.otp_vai').on('change', function() {
+                $('.24x7sms_div,.fast2sms_div').hide();
+                
+                var otp_vai_div= ( $(this).find(":selected").val() );
+
+                $( '.' + otp_vai_div +'_div' ).show();
+            });
+        });
+
+    </script>
 @stop
