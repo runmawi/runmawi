@@ -1671,6 +1671,7 @@ class AdminVideosController extends Controller
                 'admin_videos_ads'        => $admin_videos_ads ,
                 'advertisements_category' => Adscategory::get(),
                 'compress_image_settings' => $compress_image_settings,
+                'theme_settings' => SiteTheme::first(),
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -2731,7 +2732,17 @@ class AdminVideosController extends Controller
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
         $video->ppv_option = $request->ppv_option;
-
+        // $video->ppv_price_240p = $data['ppv_price_240p'];
+        // $video->ppv_price_360p = $data['ppv_price_360p'];
+        $video->ppv_price_480p = $data['ppv_price_480p'];
+        $video->ppv_price_720p = $data['ppv_price_720p'];
+        $video->ppv_price_1080p = $data['ppv_price_1080p'];
+        // $video->ios_ppv_price_240p = $data['ios_ppv_price_240p'];
+        // $video->ios_ppv_price_360p = $data['ios_ppv_price_360p'];
+        $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
+        $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
+        $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
+        
         $video->save();
 
         if (
@@ -4069,6 +4080,12 @@ class AdminVideosController extends Controller
             $responsive_player_image = null;
             $responsive_tv_image = null;
         }
+        
+        if ($video->type == "embed") {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
 
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
@@ -4084,6 +4101,7 @@ class AdminVideosController extends Controller
         $video->uploaded_by = Auth::user()->role;
         $video->draft = 1;
         $video->active = 1;
+        $video->status = $status;
         $video->embed_code = $embed_code;
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -4106,6 +4124,16 @@ class AdminVideosController extends Controller
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
         $video->ppv_option = $request->ppv_option;
+        // $video->ppv_price_240p = $data['ppv_price_240p'];
+        // $video->ppv_price_360p = $data['ppv_price_360p'];
+        $video->ppv_price_480p = $data['ppv_price_480p'];
+        $video->ppv_price_720p = $data['ppv_price_720p'];
+        $video->ppv_price_1080p = $data['ppv_price_1080p'];
+        // $video->ios_ppv_price_240p = $data['ios_ppv_price_240p'];
+        // $video->ios_ppv_price_360p = $data['ios_ppv_price_360p'];
+        $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
+        $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
+        $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -4125,7 +4153,6 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
-
 
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
