@@ -4624,23 +4624,29 @@ class ChannelController extends Controller
 
             $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
 
-            $mode = $Stripepayment->live_mode;
+            $mode = !is_null($Stripepayment) ? $Stripepayment->live_mode : null;
 
-            switch ($mode) {
-                case 0:
-                    $secret_key = $Stripepayment->test_secret_key;
-                    $publishable_key = $Stripepayment->test_publishable_key;
-                    break;
+            $secret_key = null;
+            $publishable_key = null;
 
-                case 1:
-                    $secret_key = $Stripepayment->live_secret_key;
-                    $publishable_key = $Stripepayment->live_publishable_key;
-                    break;
-                
-                default:
-                    $secret_key = null;
-                    $publishable_key = null;
-                    break;
+            if (!is_null($mode)) {
+
+                switch ($mode) {
+                    case 0:
+                        $secret_key = $Stripepayment->test_secret_key;
+                        $publishable_key = $Stripepayment->test_publishable_key;
+                        break;
+    
+                    case 1:
+                        $secret_key = $Stripepayment->live_secret_key;
+                        $publishable_key = $Stripepayment->live_publishable_key;
+                        break;
+                    
+                    default:
+                        $secret_key = null;
+                        $publishable_key = null;
+                        break;
+                }            
             }
 
             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
