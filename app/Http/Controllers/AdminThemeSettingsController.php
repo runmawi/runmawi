@@ -282,6 +282,8 @@ class AdminThemeSettingsController extends Controller
         
         $theme_settings->admin_videoupload_limit_status       = !empty($data['admin_videoupload_limit_status']) ? '1' : '0';
 
+        $theme_settings->enable_ppv_plans       = !empty($data['enable_ppv_plans']) ? '1' : '0';
+        
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

@@ -374,8 +374,9 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
+        return $this->videos_details_jsplayer($slug);
+
         try {
-                return $this->videos_details_jsplayer($slug);
 
             $settings = Setting::first();
             if ($settings->access_free == 0 && Auth::guest())
@@ -4621,26 +4622,34 @@ class ChannelController extends Controller
 
             // Payment Gateway Stripe 
 
-            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->first();
+            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
 
-            $mode = $Stripepayment->live_mode;
+            $mode = !is_null($Stripepayment) ? $Stripepayment->live_mode : null;
 
-            switch ($mode) {
-                case 0:
-                    $secret_key = $Stripepayment->test_secret_key;
-                    $publishable_key = $Stripepayment->test_publishable_key;
-                    break;
+            $secret_key = null;
+            $publishable_key = null;
 
-                case 1:
-                    $secret_key = $Stripepayment->live_secret_key;
-                    $publishable_key = $Stripepayment->live_publishable_key;
-                    break;
-                
-                default:
-                    $secret_key = null;
-                    $publishable_key = null;
-                    break;
+            if (!is_null($mode)) {
+
+                switch ($mode) {
+                    case 0:
+                        $secret_key = $Stripepayment->test_secret_key;
+                        $publishable_key = $Stripepayment->test_publishable_key;
+                        break;
+    
+                    case 1:
+                        $secret_key = $Stripepayment->live_secret_key;
+                        $publishable_key = $Stripepayment->live_publishable_key;
+                        break;
+                    
+                    default:
+                        $secret_key = null;
+                        $publishable_key = null;
+                        break;
+                }            
             }
+
+            $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
 
             $data = array(
                 'videodetail'    => $videodetail ,
@@ -4657,8 +4666,11 @@ class ChannelController extends Controller
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
-            );
 
+                'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                'stripe_payment_setting'   => $Stripepayment,
+                'current_theme'     => $this->HomeSetting->theme_choosen,
+            );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 

@@ -113,48 +113,144 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::orderBy('id', 'asc')->get();
-
+            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,32])->orderBy('id', 'asc')->get();
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                'sliders'            => [], 
-                'live_banner'        => [],  
-                'video_banners'      => [], 
-                'live_event_banners' => [], 
-                'VideoCategory_banner' => [], 
             );   
 
-            $data = [
-                'current_page'   => 1,
-                'pagination_url' => '/series',
-                'settings'       => Setting::first(),
-                'currency'      => CurrencySetting::first(),
-                'pages'         => $pages,
-                'current_theme' => $this->Theme,
-                'free_series'   => (new FrontEndQueryController)->free_series() ,
-                'free_episodes' => (new FrontEndQueryController)->free_episodes() ,
-                'free_Contents' => (new FrontEndQueryController)->free_episodes() ,
-                'episodes'      => (new FrontEndQueryController)->latest_episodes() ,
-                'trendings'     => (new FrontEndQueryController)->trending_episodes() ,
-                'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes() ,
-                'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes(),
-                'latest_series'     =>  (new FrontEndQueryController)->latest_Series(),
-                'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
-                'banner'            =>  (new FrontEndQueryController)->Episode_sliders() ,
-                'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
-                'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
-                'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
-                'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks() ,
-                'ThumbnailSetting'  => ThumbnailSetting::first(),
-                'default_vertical_image_url' => default_vertical_image_url(),
-                'default_horizontal_image_url' => default_horizontal_image_url(),
-                'order_settings_list' => $OrderHomeSetting, 
-                'home_settings'  => HomeSetting::first() ,
-                'Slider_array_data' => $Slider_array_data ,
-            ];
+            if($this->Theme == "default"){
+                $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
+                                    ->where('active', '1')->latest()->get();
 
-            return Theme::view('tv-home', $data);
+                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
+                                                    'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
+                                                ->where('active', 1)->where('featured' ,1)->where('status', '1')
+                                                ->latest()
+                                                ->get()->map(function($item){
+                                                    $item['series'] = Series::where('id',$item->series_id)->first();
+                                                    return $item ;
+                                                });
+
+                $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+
+                    $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                                ->whereJsonContains('network_id', [(string)$item->id])
+                
+                                ->latest('series.created_at')->get()->map(function ($item) { 
+                        
+                        $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                        $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  $this->default_horizontal_image_url ;
+                
+                        $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                
+                        $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                
+                        $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                ->map(function ($item) {
+                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                                                                return $item;
+                                                            });
+                
+                        $item['source'] = 'Series';
+                        return $item;
+                                                                            
+                    });
+                    return $item;
+                });
+
+                $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    
+                    ->get();
+
+                    $Series_based_on_category->each(function ($category) {
+                        $category->category_series->transform(function ($item) {
+
+                            $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : $this->default_horizontal_image_url ;
+
+                            $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+
+                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                    ->map(function ($item) {
+                                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
+                                                                        return $item;
+                                                                });
+
+                            $item['source'] = 'Series';
+                            return $item;
+                        });
+                        $category->source = 'Series_Genre';
+                        return $category;
+                    });
+
+                    $SeriesGenre =  SeriesGenre::orderBy('order','ASC')->get();
+
+                    $data = [
+                        'current_page'   => 1,
+                        'pagination_url' => '/series',
+                        'settings'       => Setting::first(),
+                        'currency'      => CurrencySetting::first(),
+                        'pages'         => $pages,
+                        'current_theme' => $this->Theme,
+                        'featured_episodes' =>  $featured_episodes,
+                        'latest_series'     =>  $latest_series,
+                        'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
+                        'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
+                        'Series_based_on_category' => $Series_based_on_category ,
+                        'Series_based_on_Networks' => $Series_based_on_Networks ,
+                        'ThumbnailSetting'  => ThumbnailSetting::first(),
+                        'default_vertical_image_url' => default_vertical_image_url(),
+                        'default_horizontal_image_url' => default_horizontal_image_url(),
+                        'order_settings_list' => $OrderHomeSetting, 
+                        'home_settings'  => HomeSetting::first() ,
+                        'Slider_array_data' => $Slider_array_data ,
+                    ];
+        // dd('end');
+                    return Theme::view('tv-home', $data);
+
+            }
+            else{
+                $data = [
+                    'current_page'   => 1,
+                    'pagination_url' => '/series',
+                    'settings'       => Setting::first(),
+                    'currency'      => CurrencySetting::first(),
+                    'pages'         => $pages,
+                    'current_theme' => $this->Theme,
+                    'free_series'   => (new FrontEndQueryController)->free_series() ,
+                    'free_episodes' => (new FrontEndQueryController)->free_episodes() ,
+                    'free_Contents' => (new FrontEndQueryController)->free_episodes() ,
+                    'episodes'      => (new FrontEndQueryController)->latest_episodes() ,
+                    'trendings'     => (new FrontEndQueryController)->trending_episodes() ,
+                    'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes() ,
+                    'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes(),
+                    'latest_series'     =>  (new FrontEndQueryController)->latest_Series(),
+                    'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
+                    'banner'            =>  (new FrontEndQueryController)->Episode_sliders() ,
+                    'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
+                    'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
+                    'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
+                    'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks() ,
+                    'ThumbnailSetting'  => ThumbnailSetting::first(),
+                    'default_vertical_image_url' => default_vertical_image_url(),
+                    'default_horizontal_image_url' => default_horizontal_image_url(),
+                    'order_settings_list' => $OrderHomeSetting, 
+                    'home_settings'  => HomeSetting::first() ,
+                    'Slider_array_data' => $Slider_array_data ,
+                ];
+    
+                return Theme::view('tv-home', $data);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();

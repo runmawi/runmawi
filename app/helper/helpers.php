@@ -2038,3 +2038,9 @@ function Enable_4k_Conversion()
     $enable_4k_conversion = App\SiteTheme::pluck('enable_4k_conversion')->first();
     return $enable_4k_conversion ;
 }
+
+function Enable_PPV_Plans()
+{
+    $enable_ppv_plans = App\SiteTheme::pluck('enable_ppv_plans')->first();
+    return $enable_ppv_plans ;
+}
