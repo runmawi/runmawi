@@ -30,7 +30,7 @@ class OTPController extends Controller
     public function check_mobile_exist(Request $request)
     {
         $mobile = $request->input('mobile');
-        $ccode = $request->input('ccode');
+        $ccode = str_replace('+','',$request->input('ccode'));
 
         $user = User::where('mobile', $mobile)->where('ccode',$ccode)->first();
 
@@ -56,7 +56,7 @@ class OTPController extends Controller
         try {
             
             $random_otp_number = random_int(1000, 9999);
-            $ccode             = $request->ccode;
+            $ccode = str_replace('+','',$request->ccode );
             $mobile             = $request->mobile;
 
             $Mobile_number     = $ccode.$request->mobile ;
