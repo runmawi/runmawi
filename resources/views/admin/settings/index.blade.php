@@ -1508,26 +1508,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
 
             <br>
-            {{-- Login & signup OTP --}}
-
-            <div class="col-md-10">
-                <label for=""> Enable Login/Signup OTP :</label>
-                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                    
-                    <div style="color:red;">Disable</div>
-
-                    <div class="mt-1">
-                        <label class="switch">
-                            <input type="checkbox"  {{ $settings->login_Signup_otp_status == 1 ? 'checked' : null }} name="login_Signup_otp_status" id="login_Signup_otp_status">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-
-                    <div style="color:green;">Enable</div>
-                </div>
-                <div class="make-switch" data-on="success" data-off="warning"></div>
-            </div>
-        </div>
+            
     <!-- </div> -->
 
 										  

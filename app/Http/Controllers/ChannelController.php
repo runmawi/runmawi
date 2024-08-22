@@ -4379,11 +4379,17 @@ class ChannelController extends Controller
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
 
-                            if ($item->access == "ppv") {
+                            if ($item->access == "ppv" && Enable_PPV_Plans() == 0) {
 
                                 $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
 
-                            } elseif( Auth::user()->role == 'registered') {
+                            }elseif ($item->access == "ppv" && Enable_PPV_Plans() == 1) {
+
+                                $item['users_video_visibility_redirect_url1'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_480p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_480p ]) ;
+                                $item['users_video_visibility_redirect_url2'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_720p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_720p ]) ;
+                                $item['users_video_visibility_redirect_url3'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_1080p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_1080p ]) ;
+
+                            }elseif( Auth::user()->role == 'registered') {
 
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                             }
@@ -4675,7 +4681,7 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
