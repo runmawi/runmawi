@@ -254,6 +254,10 @@
                                                 <div class="text-center p-1">
                                                     <button type="submit" class="btn btn-hover ab" id="verify-button" style="line-height:20px" disabled >{{ __('VERIFY OTP') }}</button>
                                                 </div>
+
+                                                <div class="justify-content-end links">
+                                                    <a href="#" id="resend_otp_button">{{ __('Resend OTP') }}</a>
+                                                </div>
                                             </div>
                                     </form>
 
@@ -261,7 +265,7 @@
                                         <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
                                     </div>
 
-                                    <button type="submit" class="btn btn-hover ab" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('SEND OTP') }}</button>
+                                    <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('SEND OTP') }}</button>
                                 @else
                                     <form method="POST" action="{{ route('login') }}" class="mt-4">
                                         @csrf
@@ -431,7 +435,7 @@
 
                 $('.otp-div').hide();
 
-                $('#send_otp_button').click(function(){ 
+                $('#send_otp_button,#resend_otp_button').click(function(){ 
 
                     $('#mobile').attr('readonly', true);
                     $('#ccode').attr('disabled', true);

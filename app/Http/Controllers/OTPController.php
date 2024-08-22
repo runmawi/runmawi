@@ -95,15 +95,21 @@ class OTPController extends Controller
                 $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
                 $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
 
-
-                $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', [
+                $inputs = array(
                     'APIKEY' => $API_key_24x7sms,
                     'MobileNo' => $Mobile_number,
                     'SenderID' => $SenderID,
-                    'Message' => $message,
                     'ServiceName' => $ServiceName,
-                    'DLTTemplateID' => $DLTTemplateID,
-                ]);
+                );
+
+                if ($ServiceName == "TEMPLATE_BASED") {
+                    $inputs += array(
+                        // 'DLTTemplateID' => $DLTTemplateID,
+                        'Message' => $message,
+                    );
+                }
+
+                $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
                 if (str_contains($response->body(), 'success')) {
 
@@ -129,23 +135,14 @@ class OTPController extends Controller
 
         }
     }
-    
-    public function Verify_OTP(Request $request)
-    {
-        $data = array(
-            'user' => User::find($request->id),
-        );
-        
-        return Theme::view('auth.otp.verify-page',$data);
-    }
 
     public function otp_verification(Request $request)
     {
         try {
-            
+
             $otp = $request->input('otp_1') . $request->input('otp_2') . $request->input('otp_3') . $request->input('otp_4');
 
-            $user_verify = User::where('mobile',$request->mobile)->where('ccode',$request->ccode)->where('otp',$otp)->first();
+            $user_verify = User::where('mobile',$request->mobile)->where('otp',$otp)->first();
 
             if( !is_null($user_verify) ){
                         

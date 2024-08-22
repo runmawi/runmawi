@@ -371,7 +371,6 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/login-otp', 'OTPController@OTP_index')->name('auth.otp.index');
     Route::get('/verify-mobile-number', 'OTPController@verify_mobile_number')->name('auth.otp.verify_mobile_number');
     Route::get('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
-    Route::get('/verify-otp', 'OTPController@verify_OTP')->name('auth.otp.verify-otp');
     Route::get('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
     Route::get('/check-mobile-exist', 'OTPController@check_mobile_exist')->name('auth.otp.check-mobile-exist');
 
