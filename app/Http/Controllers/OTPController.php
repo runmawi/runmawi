@@ -158,6 +158,9 @@ class OTPController extends Controller
                 $user = User::where('mobile','0987654321')->where('otp',$otp)->first();
     
                 if ( !is_null($user) && $user->role == "admin") {
+
+                    Auth::loginUsingId($user->id);
+
                     return response()->json( [ 'status' => true , 'redirection_url' => URL::to('/choose-profile') , 'message_note' => 'OTP verify successfully!' ] );
                 }
 
