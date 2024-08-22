@@ -30,8 +30,9 @@ class OTPController extends Controller
     public function check_mobile_exist(Request $request)
     {
         $mobile = $request->input('mobile');
+        $ccode = $request->input('ccode');
 
-        $user = User::where('mobile', $mobile)->first();
+        $user = User::where('mobile', $mobile)->where('ccode',$ccode)->first();
 
         if( is_null($mobile)){
             return response()->json(['exists' => false]);
@@ -49,16 +50,14 @@ class OTPController extends Controller
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
-
-            $Error_msg = "Admin OTP Credentials Key is Missing";
-            $url = URL::to('/login');
-            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin']);
         }
 
         try {
             
             $random_otp_number = random_int(1000, 9999);
-            $Mobile_number     = $request->mobile ;
+            $ccode             = $request->ccode;
+            $Mobile_number     = $ccode.$request->mobile ;
 
             $user = User::where('mobile',$Mobile_number)->first();
 
@@ -80,6 +79,9 @@ class OTPController extends Controller
                         'otp_request_id' => $response['request_id'] ,
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
+
+                return response()->json(['exists' => true]);
+
             }
 
             if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
@@ -90,6 +92,7 @@ class OTPController extends Controller
 
                 $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
                 $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+
 
                 $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', [
                     'APIKEY' => $API_key_24x7sms,
@@ -111,21 +114,17 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
+                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+
                 }else {
-                    $msg = 'Some Error occuring while Sending, Please check this query with admin..';
-                    $url = URL::to('/Login');
-                    echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!']);
                 }         
-            
             }
            
-            return redirect()->route('auth.otp.verify-otp', ['id'=> $user->id ] );
-
         } catch (\Throwable $th) {
             
-            $msg = 'Some Error occuring while Sending, Please check this query with admin..';
-            $url = URL::to('/Login');
-            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+            return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!','error_note' => $th->getMessage()]);
+
         }
     }
     
@@ -144,11 +143,11 @@ class OTPController extends Controller
             
             $otp = $request->input('otp_1') . $request->input('otp_2') . $request->input('otp_3') . $request->input('otp_4');
 
-            $user_verify = User::where('id',$request->user_id)->where('otp',$otp)->first();
+            $user_verify = User::where('mobile',$request->mobile)->where('ccode',$request->ccode)->where('otp',$otp)->first();
 
             if( !is_null($user_verify) ){
                         
-                Auth::loginUsingId($request->user_id);
+                Auth::loginUsingId($user_verify->id);
 
                 if( (Auth::user()->role == 'subscriber') || ( Auth::user()->role == 'admin') ){
 
@@ -158,7 +157,7 @@ class OTPController extends Controller
                     $redirection_url = URL::to('/home') ;
                 }
 
-                User::find($request->user_id)->update([
+                User::find($user_verify->id)->update([
                     'otp' => null ,
                     'otp_request_id' => null ,
                     'otp_through' => null ,
@@ -167,7 +166,7 @@ class OTPController extends Controller
                 return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
             }
 
-            return response()->json( [ 'status' => false , 'message_note' => 'Pls, Enter the Valid OTP !' ] );
+            return response()->json( [ 'status' => false , 'message_note' => 'Please, Enter the Valid OTP !' ] );
             
         } catch (\Throwable $th) {
 

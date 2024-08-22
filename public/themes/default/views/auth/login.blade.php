@@ -13,6 +13,8 @@
 
     $AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
     
+    $CountryCode = App\CountryCode::get();
+
     if(Auth::guest()){
        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
        $userIp = $geoip->getip();
@@ -82,26 +84,59 @@
 
         <style>
 
+        .otp-input-fields {
+            margin: auto;
+            max-width: 400px;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+
+            input {
+                height: 40px;
+                width: 40px;
+                border-radius: 4px;
+                border: 1px solid #2f8f1f;
+                text-align: center;
+                outline: none;
+                font-size: 16px;
+
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                /* Firefox */
+                &[type=number] {
+                    -moz-appearance: textfield;
+                }
+            }
+        }
+
             .reveal{
-            margin-left: -57px;
-            height: 45px !important;
-            background: #ED553B !important;
-            color: #fff !important;
-            position: absolute;
-            right: 0px;
-            border-radius: 0!important;
-            top: -61px;
+                margin-left: -57px;
+                height: 45px !important;
+                background: #ED553B !important;
+                color: #fff !important;
+                position: absolute;
+                right: 0px;
+                border-radius: 0!important;
+                top: -61px;
             }
             .sign-in-page .btn{
-            border-radius: 0!important;
+                border-radius: 0!important;
             }
             h3 {font-size: 30px!important;}
             .from-control::placeholder{
-            color: #7b7b7b!important;
+                color: #7b7b7b!important;
             }
+
             .links{
-            color: #fff;
+                color: #fff;
             }
+
             .nv{
             font-size: 14px;
             color: #fff;
@@ -130,7 +165,10 @@
             border-radius: 15px;
             border: 2px dashed #51bce8;
             text-align: left;
-            }    
+            }   
+            
+            
+            
         </style>
     </head>
 
@@ -169,7 +207,6 @@
                                     <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
                                 @endif
                                 
-
                                 @if(count($errors) > 0)
                                     @foreach( $errors->all() as $message )
                                         <div class="alert alert-danger display-hide" id="successMessage" >
@@ -181,22 +218,50 @@
 
                                 @if (@$AdminOTPCredentials->status == 1)
 
-                                    <form method="POST" action="{{ route('auth.otp.sending-otp') }}" class="mt-4">
-                                        @csrf
-
-                                        <div class="form-group">  {{-- Mobile No --}}
-                                            <input id="mobile" type="number" class="form-control" name="mobile" placeholder="{{ __('Mobile Number') }}" value="{{ old('mobile') }}" autocomplete="email" autofocus required>
+                                    <form id="otpForm" class="otp-form" method="get">
+                                        <div class="row">
+                                            <div class="col-md-3 form-group">  {{-- Country Code --}}
+                                                <select class="form-control text-center text-black mobile_validation" id="ccode" name="ccode" required>
+                                                    @foreach ($CountryCode as $item)
+                                                        <option value="{{ $item->phonecode }}" style="color:black !important" > {{ $item->phonecode }} </option>
+                                                    @endforeach
+                                                 </select> 
+                                            </div>
+    
+                                            <div class="col-md-9 form-group">  {{-- Mobile No --}}
+                                                <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
+                                            </div>
                                         </div>
-                                                                    {{-- Mobile Exist Status --}}
-                                        <span class="mob_exist_status"></span>  
-
-                                        <div class="d-flex justify-content-end links">
-                                            <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-hover ab" id="send_otp_button" style="width:100%;color:#fff!important;" disabled >{{ __('SEND OTP') }}</button>
 
 
+                                            {{-- Mobile Exist Status --}}
+                                        <span class="mob_exist_status"></span> 
+                                        
+                                        <div class="mt-3" align="left"  >
+                                            <input type="checkbox" checked style="pointer-events: none;">
+                                            <label class="form-check-label text-white" for="remember">{{ __('Send OTP to Mobile') }}</label>
+                                        </div>  
+
+                                            <div class="otp-div">
+                                                <div class="otp-input-fields row">
+                                                    <input type="number" class="otp__digit otp__field__1" placeholder="-"  name="otp_1">
+                                                    <input type="number" class="otp__digit otp__field__2"  placeholder="-" name="otp_2">
+                                                    <input type="number" class="otp__digit otp__field__3"  placeholder="-" name="otp_3">
+                                                    <input type="number" class="otp__digit otp__field__4"  placeholder="-" name="otp_4">
+                                                    <p class="info otp_send_message"> </p>
+                                                </div>
+            
+                                                <div class="text-center p-1">
+                                                    <button type="submit" class="btn btn-hover ab" id="verify-button" style="line-height:20px" disabled >{{ __('VERIFY OTP') }}</button>
+                                                </div>
+                                            </div>
+                                    </form>
+
+                                    <div class="d-flex justify-content-end links">
+                                        <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-hover ab" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('SEND OTP') }}</button>
                                 @else
                                     <form method="POST" action="{{ route('login') }}" class="mt-4">
                                         @csrf
@@ -224,24 +289,20 @@
                                         <div class="d-flex justify-content-end links"> {{-- Reset_Password --}}     
                                             <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
                                         </div>
-                                @endif
-                            
-                            {{-- reCAPTCHA --}}
-                            @if(get_enable_captcha() == 1)   
-                                <div class="form-group text-left mt-4">
-                                    {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
-                                    {!! NoCaptcha::display() !!}
-                                </div>
-                            @endif
-                            
-                            <div class="sign-info">
 
-                                @if (@$AdminOTPCredentials->status == 1)
-                                    <button type="submit" class="btn btn-hover ab" id="send_otp_button" style="width:100%;color:#fff!important;" disabled >{{ __('SEND OTP') }}</button>
-                                @else
-                                    <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>                     
+                                         {{-- reCAPTCHA --}}
+                                        @if(get_enable_captcha() == 1)   
+                                            <div class="form-group text-left mt-4">
+                                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                                {!! NoCaptcha::display() !!}
+                                            </div>
+                                        @endif
+
+                                        <div class="sign-info">
+                                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>             
+                                        </div>
                                 @endif
-                            </div>
+                            
                         </form>
 
                         <div class="mt-3" align="left" style="" >
@@ -331,37 +392,142 @@
 
             // Mobile Exist Check 
 
-                $(document).ready(function() {
-                    $( "#mobile" ).on( "keyup", function() {
+            $(document).ready(function() {
 
-                        let mobileNumber = $('#mobile').val();
-                        $('.mob_exist_status').text("");
+                $(".mobile_validation").on("input", function() {
 
-                        if( mobileNumber !== "" ){
+                    let mobileNumber = $('#mobile').val();
+                    let ccode = $('#ccode').val();
+                    
+                    $('.mob_exist_status').text("");
 
-                            $.ajax({
-                                url: "{{ route('auth.otp.check-mobile-exist') }}",
-                                type: "get",
-                                data: { mobile: mobileNumber },
-                                dataType: "json",
+                    if( mobileNumber !== "" ){
 
-                                success: function(response) {
-                                    if (response.exists) {
-                                        document.getElementById("send_otp_button").removeAttribute("disabled");
-                                        $('.mob_exist_status').text("Mobile Number exists!").css('color', 'green');;
+                        $.ajax({
+                            url: "{{ route('auth.otp.check-mobile-exist') }}",
+                            type: "get",
+                            data: {
+                                mobile: mobileNumber,
+                                ccode: ccode
+                            },
+                            dataType: "json",
 
-                                    } else {
-                                        document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
-                                        $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
-                                    }
-                                },
-                                error: function(error) {
-                                    console.error('AJAX error:', error);
+                            success: function(response) {
+                                if (response.exists) {
+                                    document.getElementById("send_otp_button").removeAttribute("disabled");
+                                    $('.mob_exist_status').text("Mobile Number exists!").css('color', 'green');;
+
+                                } else {
+                                    document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
+                                    $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
                                 }
-                            });
+                            },
+                            error: function(error) {
+                                console.error('AJAX error:', error);
+                            }
+                        });
+                    }
+                });
+
+                $('.otp-div').hide();
+
+                $('#send_otp_button').click(function(){ 
+
+                    $('#mobile').attr('readonly', true);
+                    $('#ccode').attr('disabled', true);
+
+                    let mobileNumber = $('#mobile').val();
+                    let ccode = $('#ccode').val();
+                    $('.mob_exist_status').text("");
+
+                    $.ajax({
+                        url: "{{ route('auth.otp.sending-otp') }}",
+                        type: "get",
+                        data: {
+                                mobile: mobileNumber,
+                                ccode: ccode
+                            },
+                        dataType: "json",
+
+                        success: function(response) {
+                            if (response.exists) {
+                                $('.otp-div').show();
+                                $('#send_otp_button').hide();
+                                $('.mob_exist_status').text( response.message_note ).css('color', 'green');
+                            } else {
+                                $('.mob_exist_status').text( response.message_note ).css('color', 'red');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('AJAX error:', error);
                         }
                     });
                 });
+
+            });
+
+                
+        var otp_inputs = document.querySelectorAll(".otp__digit")
+        var mykey = "0123456789".split("")
+        otp_inputs.forEach((_) => {
+            _.addEventListener("keyup", handle_next_input)
+        })
+
+        function handle_next_input(event) {
+            let current = event.target
+            let index = parseInt(current.classList[1].split("__")[2])
+            current.value = event.key
+
+            if (event.keyCode == 8 && index > 1) {
+                current.previousElementSibling.focus()
+            }
+            if (index < 4 && mykey.indexOf("" + event.key + "") != -1) {
+                var next = current.nextElementSibling;
+                next.focus()
+            }
+            var _finalKey = ""
+            for (let {
+                    value
+                }
+                of otp_inputs) {
+                _finalKey += value
+            }
+
+            if (_finalKey.length == 4) {
+                document.getElementById("verify-button").removeAttribute("disabled");
+            } else {
+                document.getElementById("verify-button").setAttribute("disabled", "disabled");
+            }
+        }
+
+        $("#verify-button").click(function(e){
+            e.preventDefault();
+            let form = $('.otp-form')[0];
+            let data = new FormData(form);
+            $('.otp_send_message').text( " " );
+            
+            $.ajax({
+                url: "{{ route('auth.otp.otp_verification') }}",
+                type: "get",
+                data : data,
+                data: $('.otp-form').serialize(),
+                dataType:"JSON",
+                
+                success: function(response) {
+
+                    if( response.status == true ){
+
+                        window.location.href = response.redirection_url;
+
+                    }else if ( response.status == false ) {
+
+                        $('.otp__digit').val("");
+                        $('.otp_send_message').text( response.message_note ).css('color', 'red');
+                        document.getElementById("verify-button").setAttribute("disabled", "disabled");
+                    }
+                },
+            });
+        })
         </script>
 
     </body>
