@@ -57,9 +57,11 @@ class OTPController extends Controller
             
             $random_otp_number = random_int(1000, 9999);
             $ccode             = $request->ccode;
+            $mobile             = $request->mobile;
+
             $Mobile_number     = $ccode.$request->mobile ;
 
-            $user = User::where('mobile',$Mobile_number)->first();
+            $user = User::where('mobile',$mobile)->first();
 
             if( $AdminOTPCredentials->otp_vai == "fast2sms" ){
 
