@@ -13,7 +13,7 @@
 
     $AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
     
-    $CountryCode = App\CountryCode::get();
+    $country_json_data = json_decode(file_get_contents(base_path('assets/country_code.json')), true);
 
     if(Auth::guest()){
        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -167,8 +167,6 @@
             text-align: left;
             }   
             
-            
-            
         </style>
     </head>
 
@@ -219,16 +217,16 @@
                                 @if (@$AdminOTPCredentials->status == 1)
 
                                     <form id="otpForm" class="otp-form" method="get">
-                                        <div class="row">
-                                            <div class="col-md-3 form-group">  {{-- Country Code --}}
-                                                <select class="form-control text-center text-black mobile_validation" id="ccode" name="ccode" required>
-                                                    @foreach ($CountryCode as $item)
-                                                        <option value="{{ $item->phonecode }}" style="color:black !important" > {{ $item->phonecode }} </option>
+                                        <div class="row d-flex">
+                                            <div class="col-md-4 form-group">  {{-- Country Code --}}
+                                                <select class="form-control text-center mobile_validation" id="ccode" name="ccode" required>
+                                                    @foreach($country_json_data as $code)
+                                                        <option value="{{  $code['dial_code'] }}" style="background-color:rgba(0,0,0,0.5)!important; "> {{ "{$code['code']} ({$code['dial_code']})" }}</option>
                                                     @endforeach
                                                  </select> 
                                             </div>
-    
-                                            <div class="col-md-9 form-group">  {{-- Mobile No --}}
+
+                                            <div class="col-md-8 form-group">  {{-- Mobile No --}}
                                                 <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
                                             </div>
                                         </div>
@@ -508,7 +506,7 @@
             e.preventDefault();
             let form = $('.otp-form')[0];
             let data = new FormData(form);
-            $('.otp_send_message').text( " " );
+            $('.otp_send_message,.mob_exist_status').text( " " );
             
             $.ajax({
                 url: "{{ route('auth.otp.otp_verification') }}",
