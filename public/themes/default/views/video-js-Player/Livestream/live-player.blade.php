@@ -146,7 +146,7 @@
                         </div>
                     </a>
 
-                        {{-- subscriber & PPV  --}}
+                    {{-- subscriber & PPV  --}}
 
                     @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
                         <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}">
@@ -291,6 +291,48 @@
             </div>
         </div>
 
+            {{-- Subscribe & PPV --}}
+        @if($Livestream_details->users_video_visibility_status == false)
+            <div class="video" >
+                <div class="row container" style="padding-top:4em;">
+
+                                        {{-- Back Button --}}
+                    <!-- <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
+                    </button> -->
+
+                    <!-- <div class="col-2"></div> -->
+
+                    <!-- <div class="col-lg-3 col-6 mt-5">
+                        <img class="posterImg w-100"  src="{{ $Livestream_details->Thumbnail }}" >
+                    </div> -->
+
+                    <div class="col-lg-6 col-6 mt-5">
+                        <!-- <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br> -->
+                        <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
+
+                        <a class="btn" id="{{ $Livestream_details->users_video_visibility_redirect_url }}" href="{{ $Livestream_details->users_video_visibility_redirect_url != 'live-purchase-now-button' ? $Livestream_details->users_video_visibility_redirect_url : '#' }}">
+                            <div class="playbtn" style="gap:5px">
+                                {!! $play_btn_svg !!}
+                                <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
+                            </div>
+                        </a>
+
+                        {{-- subscriber & PPV  --}}
+
+                        @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
+                            <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                </div>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
+
     </div>
 
 @elseif( $live_publish_later_status == true )
@@ -366,6 +408,48 @@
             </div>
         </div>
 
+            {{-- Subscribe & PPV --}}
+        @if($Livestream_details->users_video_visibility_status == false)
+            <div class="video" >
+                <div class="row container" style="padding-top:4em;">
+
+                                        {{-- Back Button --}}
+                    <!-- <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                        <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
+                    </button> -->
+
+                    <!-- <div class="col-2"></div> -->
+
+                    <!-- <div class="col-lg-3 col-6 mt-5">
+                        <img class="posterImg w-100"  src="{{ $Livestream_details->Thumbnail }}" >
+                    </div> -->
+
+                    <div class="col-lg-6 col-6 mt-5">
+                        <!-- <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br> -->
+                        <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
+
+                        <a class="btn" id="{{ $Livestream_details->users_video_visibility_redirect_url }}" href="{{ $Livestream_details->users_video_visibility_redirect_url != 'live-purchase-now-button' ? $Livestream_details->users_video_visibility_redirect_url : '#' }}">
+                            <div class="playbtn" style="gap:5px">
+                                {!! $play_btn_svg !!}
+                                <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
+                            </div>
+                        </a>
+
+                        {{-- subscriber & PPV  --}}
+
+                        @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
+                            <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                </div>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
+
     </div>
 @endif
 
@@ -403,3 +487,9 @@
         }
     });
 </script>
+
+<style>
+    .text{
+        text-transform: capitalize;
+    }
+</style>
