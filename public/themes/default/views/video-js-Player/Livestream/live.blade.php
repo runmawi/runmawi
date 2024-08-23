@@ -266,7 +266,7 @@
                         {{-- Player --}}
     {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
 
-    @if($Livestream_details->publish_type !== "publish_later")
+    @if($Livestream_details->publish_type == "publish_now")
 
         <div class="container-fluid video-details">
             <div class="row">
