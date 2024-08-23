@@ -50,43 +50,90 @@
             }
         });
 
-        // Hls Quality Selector - M3U8
-        // player.hlsQualitySelector({
-        //     displayCurrentQuality: true,
-        // });
+
+        if( PPV_Plan == '480p' ||  PPV_Plan == '720p'  ){
+        
+        const enabledResolutions = PPV_Plan === '480p'
+            ? ['240p', '360p', '480p'] 
+            : ['240p', '360p', '480p', '720p']; 
 
 
-        var qualityLevels = player.qualityLevels();
+            player.on('loadeddata', () => {
+                const qualityLevels = player.qualityLevels();
+                const levels = Array.from(qualityLevels);
 
-        // Debugging: Log all available quality levels
-        console.log('Available Quality Levels:', qualityLevels);
-
-        // Function to disable quality levels that don't match the PPV_Plan
-        function filterQualityLevels() {
-            qualityLevels.forEach(function(level) {
-                var height = level.height;
-                console.log('Processing Level:', level);
-
-                if (PPV_Plan === '480p') {
-                    alert(height);
-                    level.enabled = (height <= 480); // Enable 480p and below, disable higher resolutions
-                } else {
-                    level.enabled = true; // Enable all resolutions if no specific PPV_Plan is set
+                function filterQualityLevels() {
+                    levels.forEach(level => {
+                        const resolution = level.height + 'p';
+                        if (enabledResolutions.includes(resolution)) {
+                            level.enabled = true;
+                        } else {
+                            level.enabled = false;
+                        }
+                    });
                 }
+
+                filterQualityLevels();
+
+                // Add custom quality selector button
+                const qualitySelector = document.createElement('div');
+                qualitySelector.className = 'vjs-quality-selector';
+                qualitySelector.innerHTML = '<button class="vjs-quality-btn">Quality</button>';
+
+                // Create the menu but keep it hidden initially
+                const menu = document.createElement('div');
+                menu.className = 'vjs-quality-menu list';
+                enabledResolutions.forEach(res => {
+                    const button = document.createElement('div');
+                    button.className = 'vjs-quality-menu-item';
+                    button.textContent = res;
+                    button.addEventListener('click', () => {
+                        const selectedResolution = res.split('p')[0];
+                        levels.forEach(level => {
+                            if (level.height === parseInt(selectedResolution, 10)) {
+                                level.enabled = true;
+                            } else {
+                                level.enabled = false;
+                            }
+                        });
+                        // Hide the menu after selection
+                        menu.style.display = 'none';
+                    });
+                    menu.appendChild(button);
+                });
+
+                qualitySelector.appendChild(menu);
+
+                qualitySelector.addEventListener('click', (event) => {
+                    // Toggle menu visibility
+                    if (menu.style.display === 'block') {
+                        menu.style.display = 'none';
+                    } else {
+                        menu.style.display = 'block';
+                    }
+                    event.stopPropagation(); // Prevent event bubbling
+                });
+
+                // Hide menu when clicking outside
+                document.addEventListener('click', () => {
+                    menu.style.display = 'none';
+                });
+
+                // Add the custom button to the player controls
+                player.controlBar.el().appendChild(qualitySelector);
+
+                // Force update or refresh the quality selector
+                player.trigger('qualityLevelschange');
+
+                console.log('Quality levels:', Array.from(player.qualityLevels()));
+            });
+        }else{
+            // Hls Quality Selector - M3U8
+            player.hlsQualitySelector({
+                displayCurrentQuality: true,
             });
         }
-
-        // Apply the filter
-        filterQualityLevels();
-
-        // Initialize HLS quality selector after filtering
-        player.hlsQualitySelector({
-            displayCurrentQuality: true,
-        });
-
-        // Debugging: Check the enabled quality levels after filtering
-        console.log('Enabled Quality Levels:', qualityLevels);  
-
+  
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
@@ -507,5 +554,39 @@
             font-size: 12px;
         }
     }
+
+    .video-js .vjs-quality-selector {
+    position: relative;
+}
+/* .vjs-quality-selector:hover .vjs-quality-menu.list {
+    display: block;
+} */
+button.vjs-quality-btn{line-height:4rem;}
+
+.vjs-quality-menu {
+    position: absolute;
+    bottom: 100%; /* Position the menu above the selector */
+    left: 0;
+    background: #2b333f;
+    /* border: 1px solid #ccc; */
+    border-radius:5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 100;
+    display: none;
+    width: 100%; /* Ensure it takes up the full width of the selector */
+}
+.vjs-quality-menu.list::after{
+    content: "";
+    margin-left: -5px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #2b333f transparent transparent transparent;
+}
+.vjs-quality-menu-item:hover{background-color:#095ae5;}
+
+.vjs-quality-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
 
 </style>
