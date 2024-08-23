@@ -574,9 +574,6 @@
                                 </a><br>
                                 @endif
 
-                                <!-- <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;" >{{ __('Amount') }}:
-                                    <span class="pl-2" style="font-size:20px;font-weight:700;" id="price-display"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  $currency->symbol .$videodetail->ppv_price }}</span>
-                                </a><br> -->
                                 <label class="mb-0 mt-3 p-0" for="method">
                                     <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
                                 </label>
@@ -592,21 +589,6 @@
                                         <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
                                         {{ $stripe_payment_setting->payment_type }}
                                     </label>
-
-                                    <!-- <div id="quality-options" style="display:none;">
-                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                            <input type="radio" class="quality_option" name="quality" value="480p" checked>
-                                            Low Quality
-                                        </label>
-                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                            <input type="radio" class="quality_option" name="quality" value="720p">
-                                            Medium Quality
-                                        </label>
-                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                            <input type="radio" class="quality_option" name="quality" value="1080p">
-                                            High Quality
-                                        </label>
-                                    </div> -->
 
                                     <div id="quality-options" style="display:none;">
                                         <label class="main-label">Choose Plan</label>
@@ -628,12 +610,37 @@
                                 @endif
 
                                 <!-- Razorpay Button -->
-                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+    
+                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 0)
+                                     <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                        {{ $Razorpay_payment_setting->payment_type }}
+                                    </label>
+                                @elseif( $Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 1 )
                                     <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                         <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
                                         {{ $Razorpay_payment_setting->payment_type }}
                                     </label>
+
+                                    <div id="razorpay-quality-options" style="display:none;">
+                                        <label class="main-label">Choose Plan</label>
+                                        <div class="quality-options-group">
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                Low Quality
+                                            </label>
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <input type="radio" class="quality_option" name="quality" value="720p">
+                                                Medium Quality
+                                            </label>
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                High Quality
+                                            </label>
+                                        </div>
+                                    </div>
                                 @endif
+
                             </div>
                         </div>
                     </div>
@@ -658,14 +665,20 @@
 
                         @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
 
-                        <div class="Razorpay_button"> <!-- Razorpay Button -->
-                            @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                <button class="btn btn-primary  btn-outline-primary  "
-                                    onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
-                                    {{ __('Continue') }}
-                                </button>
-                            @endif
-                        </div>
+                            <div class="Razorpay_button"> <!-- Razorpay Button -->
+                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                    <button class="btn btn-primary  btn-outline-primary  "
+                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                        {{ __('Continue') }}
+                                    </button>
+                                @endif
+                            </div>
+                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+
+                            <div class="Razorpay_button"> <!-- Razorpay Button -->
+
+                            </div>
+
                         @endif
 
                     </div>
@@ -709,15 +722,17 @@
                     var ppv_price_480p = '{{ $videodetail->ppv_price_480p }}';
 
                     $(".payment_btn").click(function() {
-                        $('.Razorpay_button, .Stripe_button, #quality-options').hide();
+                        $('.Razorpay_button, .Stripe_button, #quality-options, #razorpay-quality-options').hide();
 
                         let payment_gateway = $('input[name="payment_method"]:checked').val();
                         if (payment_gateway == "Stripe") {
                             $('#quality-options').show();
+                            $('#razorpay-quality-options').hide();
                             updateContinueButton();
                         } else if (payment_gateway == "Razorpay") {
+                            $('#razorpay-quality-options').show();
                             $('#quality-options').hide();
-                            $('.Razorpay_button').show();
+                            updateContinueButton();
                         }
                     });
 
@@ -726,6 +741,8 @@
                     });
 
                     function updateContinueButton() {
+                        let payment_gateway = $('input[name="payment_method"]:checked').val();
+
                         const selectedQuality = $('input[name="quality"]:checked').val() || '480p';
                         const ppv_price = selectedQuality === '480p' ? '{{ $videodetail->ppv_price_480p }}' :
                                             selectedQuality === '720p' ? '{{ $videodetail->ppv_price_720p }}' :
@@ -737,19 +754,40 @@
                         const isMultiCurrencyEnabled = {{ $currency->enable_multi_currency }};
                         const amount = isMultiCurrencyEnabled ? PPV_CurrencyConvert(ppv_price) : ppv_price;
 
-                        const routeUrl = `{{ route('Stripe_payment_video_PPV_Plan_Purchase', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                        if(payment_gateway == "Stripe"){
+
+                            const routeUrl = `{{ route('Stripe_payment_video_PPV_Plan_Purchase', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
                             .replace('__PPV_PLAN__', selectedQuality)
                             .replace('__VIDEO_ID__', videoId)
                             .replace('__AMOUNT__', amount);
 
-                        const continueButtonHtml = `
-                            <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
-                                onclick="location.href ='${routeUrl}';">
-                                {{ __('Continue') }}
-                            </button>
-                        `;
+                            const continueButtonHtml = `
+                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                    onclick="location.href ='${routeUrl}';">
+                                    {{ __('Continue') }}
+                                </button>
+                            `;
 
-                        $('.Stripe_button').html(continueButtonHtml).show();
+                            $('.Stripe_button').html(continueButtonHtml).show();
+
+                        }else if(payment_gateway == "Razorpay"){
+
+                            const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                            .replace('__PPV_PLAN__', selectedQuality)
+                            .replace('__VIDEO_ID__', videoId)
+                            .replace('__AMOUNT__', amount);
+
+                            const continueButtonHtml = `
+                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                    onclick="location.href ='${routeUrl}';">
+                                    {{ __('Continue') }}
+                                </button>
+                            `;
+
+                            $('.Razorpay_button').html(continueButtonHtml).show();
+
+                        }
+
                     }
 
                     $(".payment_btn:checked").trigger('click');
