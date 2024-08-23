@@ -163,7 +163,7 @@
 
 @elseif( $recurring_program_Status == true )
 
-    <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 150px 10px;">
+    <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
 
         <h2 class="banner-live-details">{{ ucwords($Livestream_details->title) }}</h2><br>
 
@@ -294,7 +294,7 @@
     </div>
 
 @elseif( $live_publish_later_status == true )
-    <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 150px 10px;">
+    <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
 
         <h2 class="banner-live-details">{{ ucwords($Livestream_details->title) }}</h2><br>
 
