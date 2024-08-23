@@ -508,8 +508,8 @@
         <!-- MainContent -->
 
         <div class="">
-            <section class="m-profile setting-wrapper pt-0 mx-3">
-                <div class="container-fluid">
+            <section class="m-profile setting-wrapper pt-0">
+                <div class="container">
         
                     {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
 
@@ -617,29 +617,27 @@
                                     <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                                     </div>
                                     <div>
-                                    <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
+                                    <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer;"  class="ugc-button" >Share Profile</button>
                                     </div>
                                     <div class="shareprofile">
                                         <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
-                                            @foreach ($video_data as $video)
                                             <div class="d-flex">
 
                                             <div class="px-1">
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $video['profile_url'] }}" target="_blank">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
                                                 <i class="ri-facebook-fill"></i>
                                             </a>
                                             </div>
                                             <div class="px-1">
-                                            <a href="https://twitter.com/intent/tweet?text={{ $video['profile_url'] }}" target="_blank">
+                                            <a href="https://twitter.com/intent/tweet?text={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
                                                 <i class="ri-twitter-fill"></i>
                                             </a>
                                             </div>
                                             <div class="px-1">
                                                <a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill" ></i></a>
-                                               <input type="hidden" id="profile_url" value="{{ $video['profile_url'] }}">
+                                               <input type="hidden" id="profile_url" value="{{ route('profile.show', ['username' => $user->username]) }}">
                                             </div>
                                             </div>
-                                            @endforeach
                                          </div>
                                     </div>
                                 </div>
@@ -694,18 +692,18 @@
                          <a href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
                                     <div class="ugc-videos" style="position: relative;" >
                                         <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
-                                        <div class="ugc-actions" >
-                                            <div style="border-radius: 7px; background-color:#ED563C; padding:2px 10px; " >
+                                        <div class="ugc-actions">
+                                            <div style="border-radius: 7px; background-color:#ED563C; padding:2px 5px;">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Meta"
                                                 data-original-title="Edit Meta" href="{{ URL::to('ugc-edit') . '/' . $eachugcvideos->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                                     <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
                                                     </svg>
                                                 </a>
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Video"
                                                 data-original-title="Edit Video" href="{{ URL::to('ugc-editvideo') . '/' . $eachugcvideos->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                    <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2m6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
                                                     </svg>
                                                 </a>
                                                 <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete Video"
@@ -1384,10 +1382,6 @@ if (isset($page) && $page == 'admin-dashboard') {
     $(".targetDiv").hide();
     $(".targetDiv#div1").show();
     $(".showSingle .dimg").hide();
-
-
-
-
     jQuery(function() {
         jQuery('#showall').click(function() {
             jQuery('.targetDiv').show();

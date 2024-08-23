@@ -2,12 +2,6 @@
     include public_path('themes/theme5-nemisha/views/header.php');
 @endphp
 
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- <title>Drag and Drop file upload with Dropzone in Laravel 7</title> -->
-
     <!-- Meta -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -54,9 +48,23 @@ border-radius: 0px 4px 4px 0px;
       border-radius:10px; 
       margin-top: 20px;
     }
-      </style>
-  </head>
-  <body>
+
+    .ugc-buttons {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+   }
+
+   .video-form-control{
+        width:100%;
+        background-color: #c9c8c888 ;
+        border:none;
+        padding: 5px 10px;
+        border-radius: 7px;
+    }
+
+
+</style>
     <div id=" content_videopage" class="content-page">
        
                 <div class="container-fluid p-0" id="content_videopage">
@@ -78,30 +86,30 @@ border-radius: 0px 4px 4px 0px;
             <div class="row">
                <div class="col-md-12">
                   <!-- M3u8 Video --> 
-                  <div id="m3u8_url" style="">
+                  <div id="m3u8_url" class="ugc-buttons" >
                      <div class="new-audio-file mt-3">
                         <label for="embed_code"><label>m3u8 URL:</label></label>
-                        <input type="text" class="form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
+                        <input type="text" class="video-form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_m3u8">Submit</button>
                      </div>
                   </div>
                   <!-- Embedded Video -->        
-                  <div id="embedvideo" style="">
+                  <div id="embedvideo" class="ugc-buttons" >
                      <div class="new-audio-file mt-3">
                         <label for="embed_code"><label>Embed URL:</label></label>
-                        <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+                        <input type="text" class="video-form-control" name="embed_code" id="embed_code" value="" />
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
                      </div>
                   </div>
                   <!-- MP4 Video -->        
-                  <div id="video_mp4" style="">
+                  <div id="video_mp4" class="ugc-buttons" >
                      <div class="new-audio-file mt-3" >
                         <label for="mp4_url"><label>Mp4 File URL:</label></label>
-                        <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                        <input type="text" class="video-form-control" name="mp4_url" id="mp4_url" value="" />
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_mp4">Submit</button>
@@ -155,9 +163,7 @@ border-radius: 0px 4px 4px 0px;
     </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
-
-      <script>
+ <script>
          $(document).ready(function(){
          	$('#video_upload').show();
          	$('#video_mp4').hide();
@@ -171,57 +177,29 @@ border-radius: 0px 4px 4px 0px;
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
-         
-         	$("#video_upload").addClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
-         
-         
          })
          $('#videomp4').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').show();
          	$('#embedvideo').hide();
-         	$('#m3u8_url').hide();
-         
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").addClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
-         
-         
+         	$('#m3u8_url').hide();   
          })
          $('#embed_video').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').hide();
          	$('#embedvideo').show();
-         	$('#m3u8_url').hide();
-         
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	//$("#embed_video").addClass('collapse');
-         	$("#m3u8").removeClass('m3u8');
-         
-         
+         	$('#m3u8_url').hide();  
          })
          $('#m3u8').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
-         	$('#m3u8_url').show();
-         	$("#video_upload").removeClass('collapse');
-         	$("#video_mp4").removeClass('collapse');
-         	$("#embed_video").removeClass('collapse');
-         	$("#m3u8").addClass('m3u8');
-         
+         	$('#m3u8_url').show();   
          })
          });
          
-      </script>
+</script>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $.ajaxSetup({
               headers: {
@@ -254,17 +232,8 @@ border-radius: 0px 4px 4px 0px;
        })
 
     });
-   	
-</script>
-<script>
-   $.ajaxSetup({
-      headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-   });
-   
-   
-   $(document).ready(function(){
+
+    $(document).ready(function(){
       var videoid = '<?= $video->id ?>' ;
 
        var url =$('#mp4url').val();
@@ -287,26 +256,18 @@ border-radius: 0px 4px 4px 0px;
            });
        })
    
-   });
-</script>
-<script>
-   $.ajaxSetup({
-              headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-       });
-   
-   
-   	$(document).ready(function(){
+   }); 
+     
+   $(document).ready(function(){
          var videoid = '<?= $video->id ?>' ;
    
-   var url =$('#embed_url').val();
-   $('#submit_embed').click(function(){
-   	// alert($('#embed_code').val());
-   	$.ajax({
+         var url =$('#embed_url').val();
+         $('#submit_embed').click(function(){
+   	   // alert($('#embed_code').val());
+   	   $.ajax({
            url: url,
            type: "post",
-   data: {
+         data: {
                   _token: '{{ csrf_token() }}',
                   embed: $('#embed_code').val(),
                   videoid: videoid,
@@ -322,9 +283,5 @@ border-radius: 0px 4px 4px 0px;
    })
    
    });
-   	// http://localhost/flicknexs/public/uploads/audios/23.mp3
+   	
 </script>
-
-  </body>
-</html>
-

@@ -119,28 +119,6 @@
                      </div>
                   </div>
                   
-                  <!-- BunnyCDN Video -->        
-                  <div id="bunnycdnvideo">
-                     <div class="new-audio-file mt-3">
-                        <label for="bunny_cdn_linked_video">BunnyCDN URL:</label>
-                        <!-- videolibrary -->
-                        <select class="phselect form-control" name="videolibrary" id="videolibrary" >
-                                 <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
-                                    @foreach($videolibrary as $library)
-                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
-                                    @endforeach
-                           </select>  
-                     </div>
-                           
-                     <div class="new-audio-file mt-3">
-                        <select class="form-control" id="bunny_cdn_linked_video" name="bunny_cdn_linked_video">
-                           <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
-                        </select>
-                     </div>
-                     <div class="new-audio-file mt-3">
-                        <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
-                     </div>
-                  </div>
                   <!-- MP4 Video -->        
                   <div id="video_mp4" class="ugc-buttons" >
                      <div class="new-audio-file" >
@@ -230,9 +208,9 @@
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code   
-                  @if(@$theme_settings->enable_bunny_cdn == 1)
+                  {{-- @if(@$theme_settings->enable_bunny_cdn == 1)
                      <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
-                  @endif
+                  @endif --}}
                   </div>
                </div>
          </div>
@@ -373,7 +351,6 @@
 
        var url =$('#m3u8url').val();
        $('#submit_m3u8').click(function(){
-        // alert($('#m3u8_video_url').val());
         $.ajax({
                url: url,
                type: "post",
@@ -391,20 +368,10 @@
        })
 
     });
-   	
-</script>
-<script>
-   $.ajaxSetup({
-      headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-   });
-   
-   
+
    $(document).ready(function(){
        var url =$('#mp4url').val();
        $('#submit_mp4').click(function(){
-       // alert($('#mp4_url').val());
        $.ajax({
            url: url,
            type: "post",
@@ -422,58 +389,47 @@
        })
    
    });
-</script>
-<script>
-   $.ajaxSetup({
-              headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-       });
-   
-   
-   	$(document).ready(function(){
-   
-   var url =$('#embed_url').val();
-   $('#submit_embed').click(function(){
-   	// alert($('#embed_code').val());
-   	$.ajax({
-           url: url,
-           type: "post",
-   data: {
-                  _token: '{{ csrf_token() }}',
-                  embed: $('#embed_code').val()
-   
-            },        success: function(value){
-   			console.log(value);
-               $('#Next').show();
-              $('#video_id').val(value.video_id);
-   
-           }
-       });
-   })
-   
 
+   $(document).ready(function(){
+      var url =$('#embed_url').val();
+      $('#submit_embed').click(function(){
+         // alert($('#embed_code').val());
+         $.ajax({
+            url: url,
+            type: "post",
+            data: {
+               _token: '{{ csrf_token() }}',
+               embed: $('#embed_code').val()
+
+            },        success: function(value){
+            console.log(value);
+               $('#Next').show();
+            $('#video_id').val(value.video_id);
+
+         }
+         });
+      })
       $('#submit_bunny_cdn').click(function(){
-   	// alert($('#embed_code').val());
-   	$.ajax({
-           url: '{{ URL::to('/admin/stream_bunny_cdn_video') }}',
-           type: "post",
-   data: {
+      $.ajax({
+         url: '{{ URL::to('/admin/stream_bunny_cdn_video') }}',
+         type: "post",
+         data: {
                   _token: '{{ csrf_token() }}',
                   bunny_cdn_linked_video: $('#bunny_cdn_linked_video').val()
-   
+
             },        success: function(value){
-   			console.log(value);
+            console.log(value);
                $('#Next').show();
-              $('#video_id').val(value.video_id);
-   
-           }
-       });
-   })
+            $('#video_id').val(value.video_id);
+
+         }
+      });
+      })
 
    });
-   	// http://localhost/flicknexs/public/uploads/audios/23.mp3
+   	
 </script>
+
 <div id="video_details">
    <style>
       .p1{
@@ -583,6 +539,30 @@
                                   @endif
                                </div>
                            </div>      
+
+                           <div class="row mt-5">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                 <div class="panel-heading col-sm-12">
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt)) :</h3></label>
+                                    </div>
+                                    <div class="panel-options"> 
+                                       <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                                    </div>
+                                 </div>
+                                 <div class="panel-body" style="display: block;">
+                                    @foreach($subtitles as $subtitle)
+                                    <div class="col-sm-6 form-group" style="float: left;">
+                                       <div class="align-items-center" style="clear:both;" >
+                                          <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                          <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                          <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                          <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                       </div>
+                                    </div>
+                                    @endforeach
+                                 </div>
+                              </div>
+                           </div>
        
                            @if(isset($video->id))
                            <input type="hidden" id="id" name="id" value="{{ $video->id }}" />
@@ -812,10 +792,6 @@ $(document).ready(function(){
 
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-{{-- <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script> --}}
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
@@ -905,12 +881,6 @@ $(document).ready(function(){
    
    $('#Next').hide();
    $('#video_details').hide();
-   //   $('#video_upload').hide();
-   //   $('#video_mp4').hide();
-   //   $('#embedvideo').hide();
-   //   $('#optionradio').hide();
-   //   $('.content_videopage').hide();
-   //   $('#content_videopage').hide();
    Dropzone.autoDiscover = false;
         var MAX_RETRIES = 3;
         var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
@@ -1003,7 +973,7 @@ $(document).ready(function(){
         });
          
  
-   $('#Next').click(function(){
+   $('#Next').click(function(){  
    $('#video_upload').hide();
    $('#video_mp4').hide();
    $('#embedvideo').hide();

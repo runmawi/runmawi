@@ -3,9 +3,7 @@
 if(isset($videodetail)):
     $media_title = $videodetail->title;
     $url = URL::to('ugc/video-player');
-    // $embed_url = URL::to('/category/videos/embed');
     $media_url = $url . '/' . $videodetail->slug;
-    // $embed_media_url = $embed_url . '/' . $videodetail->slug;
     $hidden = '<input type="hidden" value="'.$videodetail->id.'" id="videoid">';
 else:
     $media_title = '';
@@ -14,25 +12,18 @@ endif;
 $media_subject = $media_title;
 ?>
 
-<input type="hidden" value="<?= $media_url ?>" id="media_url">
+        <input type="hidden" value="<?= $media_url ?>" id="media_url">
 
-<!-- Buttons start here. Copy this ul to your document. -->
-<ul class="list-inline p-0 m-0 share-icons music-play-lists">
-                                        <!-- Share -->
-                                <li class="share sharemobres">
-                                    <span >
-                                    <i class="ri-share-fill"></i>
-                                    </span>
-                                    <div class="share-box">
-       <div class="d-flex"> 
-          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" ><i class="ri-facebook-fill"></i></a>
-          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" ><i class="ri-twitter-fill"></i></a>
-       </div>
-    </div>
-                                </li>
-                            </ul>
-
-
+        <ul class="list-inline p-0 m-0 share-icons music-play-lists">
+            <li class="share sharemobres"><span><i class="ri-share-fill"></i></span>
+                <div class="share-box">
+                    <div class="d-flex"> 
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" ><i class="ri-facebook-fill"></i></a>
+                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" ><i class="ri-twitter-fill"></i></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
 
 
 <script>

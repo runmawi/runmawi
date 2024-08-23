@@ -2841,16 +2841,12 @@ Route::post('ugc/submit-ugcabout', 'UGCController@SubmitUGCAbout');
 Route::post('ugc/submit-ugcfacebook', 'UGCController@SubmitUGCFacebook');
 Route::post('ugc/submit-ugcinstagram', 'UGCController@SubmitUGCInstagram');
 Route::post('ugc/submit-ugctwitter', 'UGCController@SubmitUGCTwitter');
-// Route::post('comment/like/{id}', 'WebCommentController@likeComment')->name('comment.like');
-// Route::post('comment/dislike/{id}', 'WebCommentController@dislikeComment')->name('comment.dislike');
-Route::post('/comments/{comment}/like', 'WebCommentController@like')->name('comments.like');
-Route::get('/user/{id}/subscribers-count', 'UGCController@getSubscriberCount' );
-
+Route::post('comments/{id}/like', 'WebCommentController@like')->name('comments.like');
+Route::post('comments/{id}/dislike', 'WebCommentController@dislike')->name('comments.dislike');
 Route::post('ugc_watchlater', 'UGCController@ugc_watchlater')->name('ugc_watchlater');
 Route::post('ugc_wishlist', 'UGCController@ugc_wishlist')->name('ugc_wishlist');
 Route::post('ugc_like', 'UGCController@ugc_like')->name('ugc_like');
 Route::post('ugc_dislike', 'UGCController@ugc_dislike')->name('ugc_dislike');
-// Route::post('ugc_subscribe','UGCController@ugc_subscribe')->name('ugc_subscribe');
 Route::get('/profile/{username}', 'UGCController@showugcprofile')->name('profile.show');
 Route::post('/subscribe', 'UGCController@subscribe')->name('subscribe');
 Route::post('/unsubscribe', 'UGCController@unsubscribe')->name('unsubscribe');

@@ -74,11 +74,7 @@ border-radius: 0px 4px 4px 0px;
                                     <td>{{ $video->user ? $video->user->username : '' }}</td>
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->created_at }}</td>
-                                    <td>{{ gmdate('H:i:s', $video->duration) }}</td>
-                                    {{-- <td>{{ $video->name }}</td> --}}
-                                    {{-- <td>{{ $video->description }}</td> --}}
-                                    {{-- <td>{{ $video->access }}</td> --}}
-                                    
+                                    <td>{{ gmdate('H:i:s', $video->duration) }}</td>    
                                     <td>
                                     <?php if($video->active == 0){
                                         echo "Pending"; ?>
@@ -101,14 +97,21 @@ border-radius: 0px 4px 4px 0px;
                               </tbody>
                            </table>
                            <div class="clear"></div>
-		
-		</div>
+                           <div class="pagination-outter mt-3 pull-right" >
+                              <!-- showing 1 to 5 of 2095 -->
+                              <h6>Showing {{ $videos->firstItem() }} - {{ $videos->lastItem() }} of {{ $videos->total() }} </h6>
+                              <!-- (for page {{ $videos->currentPage() }} ) -->
+                              <?= $videos->appends(Request::only('s'))->render(); ?>
+                           </div>
+                              
                         </div>
-                     </div>
+		               </div>
+               </div>
+         </div>
 
 <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       
-         <script>
+<script>
 $(document).ready(function(){
    $('#videocpp').DataTable();
 
@@ -152,37 +155,7 @@ $(document).ready(function(){
 
 	</script>
 
-<script>
-$.ajaxSetup({
-           headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-
-	$(document).ready(function(){
-
-$('#cpp_user_videos').change(function(){
-   var val = $('#cpp_user_videos').val();
-   if(val == "cpp_videos"){
-	$.ajax({
-   url:"{{ URL::to('admin/cppusers_videodata') }}",
-   method:'get',
-   data:{query:val},
-   dataType:'json',
-   success:function(data)
-   {
-    $('tbody').html(data.table_data);
-    $('#total_records').text(data.total_data);
-   }
-    });
-   }
-})
-
-});
-	
-</script>
-	@stop
+@stop
 
 @stop
 

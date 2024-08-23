@@ -4,9 +4,9 @@
 $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 @endphp
 
-<head>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
-</head>
+
 
     {{-- video-js Style --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
@@ -81,7 +81,6 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
     .ugc-subscriber{
         margin: 5px;
-        /* padding: 3px 30px; */
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         border-top-right-radius: 8px;
@@ -89,7 +88,8 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         background:#ED563C!important;
         color: #fff!important;
         padding: 5px 100px!important;
-        margin:0%; cursor:pointer;"
+        margin:0%; 
+        cursor:pointer;"
     }
 
     .ugc-description {
@@ -119,6 +119,10 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         .my-video.vjs-fluid {
         padding-top: 0px !important;
         height: 70vh !important;
+    }
+
+    .vjs-control-bar{
+        border-radius: 20px;
     }
 
     
@@ -164,63 +168,17 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             autoplay style="border-radius: 20px;" >
                             <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
 
+                            {{-- Subtitle --}}
+                            {{-- @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($subtitles) && count($subtitles) > 0) --}}
+                                @foreach($subtitles as $subtitles_file)
+                                <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                    label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                @endforeach
+                            {{-- @endif --}}
+
+
                         </video>
                     @endif
-        
-                    {{-- <div class="video" id="visibilityMessage" style="color: white; display: none; background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
-                        <div class="row container" style="padding-top:4em;">
-                            <div class="col-2"></div>
-        
-                            <div class="col-lg-3 col-6 mt-5">
-                                <img class="posterImg w-100"  src="{{ $videodetail->image_url }}" >
-                            </div>
-        
-                            <div class="col-lg-6 col-6 mt-5">
-        
-                                <h2 class="title">{{ optional($videodetail)->title }} </h2><br>
-                                <h5 class="title"> {{ $videodetail->users_video_visibility_status_message }}</h5><br>
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
-        
-                                    <div class="playbtn" style="gap:5px">
-                                        {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
-                                    </div>
-                                </a>
-        
-                            </div>
-                        </div>
-                    </div> --}}
-        
-               
-        
-                    {{-- <div class="video" style="background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
-                        <div class="row container" style="padding-top:4em;">
-                            <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                                <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
-                            </button>
-        
-                            <div class="col-2"></div>
-        
-                            <div class="col-lg-3 col-6 mt-5">
-                                <img class="posterImg w-100"  src="{{ $videodetail->image_url }}" >
-                            </div>
-        
-                            <div class="col-lg-6 col-6 mt-5">
-        
-                                <h2 class="title">{{ optional($videodetail)->title }} </h2><br>
-        
-                                <h5 class="title"> {{ $videodetail->users_video_visibility_status_message }}</h5><br>
-        
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
-                                    <div class="playbtn" style="gap:5px">
-                                        {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
-                                    </div>
-                                </a>
-        
-                            </div>
-                        </div>
-                    </div> --}}
                 @endif
             </div>
            
@@ -229,12 +187,6 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
             // include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_ads.blade.php');
             // include public_path('themes/theme5-nemisha/views/footer.blade.php'); 
             @endphp
-
-            {{-- @if(isset($setting) && $setting->video_clip_enable == 1 && count($videoURl) > 0)
-            @php include public_path('themes/theme5-nemisha/views/video-js-Player/video/Concat_Player_Script.blade.php'); @endphp
-            @else --}}
-            {{-- @php include public_path('themes/theme5-nemisha/views/video-js-Player/video/player_script.blade.php'); @endphp --}}
-            {{-- @endif --}}
 
         </div>
         <div class="py-2" style="font-size: 30px; font-weight:bold; color:white;" >
@@ -248,8 +200,8 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                         </span>
                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
-                            <div class="playbtn"  data-toggle="modal">  
-                                <span class="text" style="background-color: transparent; font-size: 14px; width:100%;">{{ __('Add To Watchlist') }}</span>
+                            <div class=""  data-toggle="modal">  
+                                <span class="text" style="background-color: transparent; font-size: 12px; width:100%;">{{ __('Add To Watchlist') }}</span>
                             </div>
                         </div>
                     </li>
@@ -259,8 +211,8 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                         </span>
                         <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
-                            <div class="playbtn"  data-toggle="modal">  
-                                <span class="text" style="background-color: transparent; font-size: 14px; width:100%;">{{ __('Add To Wishlist') }}</span>
+                            <div class=""  data-toggle="modal">  
+                                <span class="text" style="background-color: transparent; font-size: 12px; width:100%;">{{ __('Add To Wishlist') }}</span>
                             </div>
                         </div>
                     </li>
@@ -296,57 +248,48 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         <div >
             <a  href="{{ route('profile.show', ['username' => $videodetail->user->username]) }}" class="m-1">
         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-        src="<?= $videodetail->user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $videodetail->user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="comment" style="height: 80px; width: 80px;">
+        src="<?= $videodetail->user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $videodetail->user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="{{$videodetail->user->username}}" style="height: 80px; width: 80px;">
             </a>
         </div>
        <div class="col" style="padding-top: 40px;" >
         <a  href="{{ route('profile.show', ['username' => $videodetail->user->username]) }}" >
         <div>
-        <h4>{{$videodetail->user->username}}</h4>
+        <h6>{{$videodetail->user->username}}</h6>
         </div>
         <div class="py-2" >
             @if($subscriber_count == 0 )
-               <h6>No Subscribers</h6>
+               <p style="color: white; font-size:18px;" >No Subscribers</p>
             @elseif($subscriber_count == 1 )
-               <h6>1 Member Subscribed</h6>
+               <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
             @else
-            <h6>
+            <p style="color: white; font-size:18px;" >
                 <span class="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
-            </h6>
+            </p>
             @endif
         </div>
         </a>
        </div>
     </div>
-    {{-- <div class="mx-3" >
-        @if( auth()->user()->id != $profileUser->id  )
-        <button
-        id="subscribe-toggle"
-        data-user-id="{{ $profileUser->id }}"
-        data-subscriber-id="{{ auth()->user()->id }}"
-        class="ugc-subscriber {{ $isSubscribed ? 'btn-active' : 'btn-inactive' }}"
-        onclick="toggleSubscription(this)"
-        style="background:#ED563C!important; color: #fff!important; padding: 5px 100px!important; margin:0%; cursor:pointer;"
-    >
-        {{ $isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
-    </button>
-        @endif
-
-    </div> --}}
-
-    @if( auth()->user()->id != $profileUser->id  )
+  
+    {{-- @if( auth()->user()->id != $profileUser->id  ) --}}
     <div class="mx-3" >
-    <button id="subscribe-toggle" data-user-id="{{ $profileUser->id }}" data-subscriber-id="{{ auth()->user()->id }}" class="ugc-subscriber btn-inactive" onclick="toggleSubscription(this)">
-        Subscribe
+        <button 
+        id="subscribe-toggle" 
+        data-user-id="{{ $profileUser->id }}" 
+        data-subscriber-id="{{ auth()->user()->id }}" 
+        class="ugc-subscriber" style="border: none;"
+        aria-pressed="{{ $subscribe_button ? 'true' : 'false' }}" 
+        onclick="toggleSubscription(this)">
+        {{ $subscribe_button == true ? 'Unsubscribe' : 'Subscribe' }}
     </button>
     </div>
-    @endif
+    {{-- @endif --}}
 
     @if($videodetail->description)
     <div class="ugc-description m-3"  style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
 
         <p class="desc" id="description" class="description-text">
-            {{ $videodetail->description }}
+            {!! html_entity_decode($videodetail->description) !!} 
         </p>
 
         @if(strlen($videodetail->description) > 300)
@@ -356,19 +299,6 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
     </div>
     @endif
-
-    {{-- <div class="row mx-3">
-        <div class="col-2" >
-        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
-        <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
-        </a>
-        </div>
-       <div class=" ugc-commentsection col-10 my-auto">
-        <textarea name="" id="" rows="2"></textarea>
-        </div>
-     
-    </div> --}}
 
      <div class="mx-3">
         {{-- @if( $CommentSection != null && $CommentSection->videos == 1 ) --}}
@@ -395,7 +325,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
            
       <div class="mx-3">
          @foreach ($ugcvideos as $eachugcvideos)
-         <div class="px-3" >
+         <div class="px-3" class="video-item" data-user-id="{{ $eachugcvideos->user->id }}"  >
               <a  href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
                          <div class="ugc-videos">
                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
@@ -421,9 +351,6 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
 
 <script>
     let video_url = "<?php echo $videodetail->videos_url; ?>";
-    // let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
-    // let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
-
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
     var remainingDuration = false;
@@ -439,14 +366,13 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
                 volumePanel: { inline: false },
                 children: {
                     'playToggle': {},
-                    // 'currentTimeDisplay': {},
                     'liveDisplay': {},
                     'flexibleWidthSpacer': {},
                     'progressControl': {},
                     'remainingTimeDisplay': {},
+                    'subtitlesButton': {},
                     'fullscreenToggle': {},
                     'playbackRateMenuButton': {},
-                    // 'audioTrackButton': {},
                 },
                 pictureInPictureToggle: true,
             },
@@ -460,8 +386,6 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
-        // console.log("remainingDuration",remainingDuration);
-
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
         });
@@ -481,11 +405,9 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
             function handleHover(event) {
                 const element = event.target;
                 if (event.type === 'mouseenter') {
-                    // console.log("hovered");
                     hovered = true;
                     skipButton = true;
                 } else if (event.type === 'mouseleave') {
-                    // console.log("not hovered");
                     hovered = false;
                     skipButton = false;
                 }
@@ -518,112 +440,6 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
 </script>
 
 
-<script>
-    $('#like').click(function(){
-        var  videoid = $("#videoid").val();
-        var user_id = $("#user_id").val();
-        if($(this).data('authenticated')){
-            $(this).toggleClass('active');
-            if($(this).hasClass('active')){
-                var like = 1;
-                //$(this).css('color','#34c1d8');
-                $.ajax({
-                url: "https://localhost/flicknexs/like-video",
-                type: "POST",
-                data: {like: like,videoid:videoid,user_id:user_id, _token: '0I3W3oqEa79ehGp5x4dsergE7ZlnfOwHogiPB843'},
-                dataType: "html",
-                success: function(data) {
-                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-                    
-                }
-            });
-            // $(this).html('<i class="ri-thumb-up-fill"></i>');
-    
-            // $(this).replaceClass('ri-thumb-up-line ri-thumb-up-fill');
-    
-            }else{
-                var like = 0;
-                //$(this).css('color','#4895d1');
-                $.ajax({
-                url: "https://localhost/flicknexs/like-video",
-                type: "POST",
-                data: {like: like,videoid:videoid,user_id:user_id, _token: '0I3W3oqEa79ehGp5x4dsergE7ZlnfOwHogiPB843'},
-                dataType: "html",
-                success: function(data) {
-               $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
-                setTimeout(function() {
-                    $('.remove_watch').slideUp('fast');
-                     }, 3000);
-                }
-            });
-            // $(this).html('<i class="ri-thumb-up-line"></i>');
-    
-                // $(this).replaceClass('ri-thumb-up-fill ri-thumb-up-line');
-            }
-           
-        } else {
-          window.location = 'https://localhost/flicknexs/login';
-      }
-    });
-    
-    
-    
-    $('#dislike').click(function(){
-        var  videoid = $("#videoid").val();
-        var user_id = $("#user_id").val();
-        if($(this).data('authenticated')){
-            $(this).toggleClass('active');
-            if($(this).hasClass('active')){
-                var dislike = 1;
-                //$(this).css('color','#34c1d8');
-                
-                    $.ajax({
-                        url: "https://localhost/flicknexs/dislike-video",
-                        type: "POST",
-                        data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '0I3W3oqEa79ehGp5x4dsergE7ZlnfOwHogiPB843'},
-                        dataType: "html",
-                        success: function(data) {
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have disliked this media</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-                //     $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Removed From Dislike </div>');
-                // setTimeout(function() {
-                //     $('.remove_watch').slideUp('fast');
-                //      }, 300);
-                
-                    }
-                });
-
-            }else{
-                var dislike = 0;
-                //$(this).css('color','#4895d1');
-                $.ajax({
-            url: "https://localhost/flicknexs/dislike-video",
-            type: "POST",
-            data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '0I3W3oqEa79ehGp5x4dsergE7ZlnfOwHogiPB843'},
-            dataType: "html",
-            success: function(data) {
-                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from disliked this media</div>');
-                setTimeout(function() {
-                    $('.remove_watch').slideUp('fast');
-                     }, 3000);
-                
-            }
-        });
-            }
-            // alert('test');
-        
-          
-        } else {
-          window.location = 'https://localhost/flicknexs/login';
-      }
-        });
-</script>
-
 
 <script>
     function Copy() {
@@ -634,11 +450,7 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
            setTimeout(function() {
             $('.add_watch').slideUp('fast');
            }, 3000);
-        // console.log(url);
-        // console.log(media_path);
-        // console.log(path);
     }
-  
 </script>  
 
 <script>
@@ -667,77 +479,90 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
     // Read CSRF token from meta tag
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    // Debounce timeout variable
+    let debounceTimeout;
+
     function toggleSubscription(ele) {
-        let userId = $(ele).data('user-id');
-        let subscriberId = $(ele).data('subscriber-id');
-        let isSubscribed = $(ele).hasClass('btn-active');
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(function() {
+            let userId = $(ele).data('user-id');
+            let subscriberId = $(ele).data('subscriber-id');
+            let isSubscribed = $(ele).hasClass('btn-active');
+            
+            let url = isSubscribed ? '{{ route('unsubscribe') }}' : '{{ route('subscribe') }}';
 
-        let url = isSubscribed ? '{{ route('unsubscribe') }}' : '{{ route('subscribe') }}';
+            $.ajax({
+                url: url,
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                data: {
+                    user_id: userId,
+                    subscriber_id: subscriberId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        const messageClass = isSubscribed ? 'alert-danger' : 'alert-success';
+                        const message = isSubscribed ? 'Unsubscribed successfully!' : 'Subscribed successfully!';
+                        
+                        const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
+                        
+                        $('.subscriber-count').text(response.count);
+                        $('#message-note').html(messageNote).slideDown('fast');
+                        
+                        setTimeout(function() {
+                            $('#message-note').slideUp('fast');
+                        }, 2000);
 
-        $.ajax({
-            url: url,
-            method: 'post',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                user_id: userId,
-                subscriber_id: subscriberId
-            },
-            success: function(response) {
-                if (response.success) {
-                    const messageClass = isSubscribed ? 'alert-danger' : 'alert-success';
-                    const message = isSubscribed ? 'Unsubscribed successfully!' : 'Subscribed successfully!';
-                    
-                    const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
-                    
-                    $('.subscriber-count').text(response.count);
+                        // Toggle button state
+                        if (isSubscribed) {
+                            $(ele).removeClass('btn-active').addClass('btn-inactive').text('Subscribe');
+                            $(ele).attr('aria-pressed', 'false');
+                        } else {
+                            $(ele).removeClass('btn-inactive').addClass('btn-active').text('Unsubscribe');
+                            $(ele).attr('aria-pressed', 'true');
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                    const errorMessage = 'An error occurred. Please try again.';
+                    const messageNote = `<div id="message-note" class="alert alert-danger col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${errorMessage}</div>`;
                     $('#message-note').html(messageNote).slideDown('fast');
-                    
+
                     setTimeout(function() {
                         $('#message-note').slideUp('fast');
                     }, 2000);
-
-                    // Toggle button state
-                    if (isSubscribed) {
-                        $(ele).removeClass('btn-active').addClass('btn-inactive').text('Subscribe');
-                    } else {
-                        $(ele).removeClass('btn-inactive').addClass('btn-active').text('Unsubscribe');
-                    }
                 }
-            }
-        });
+            });
+        }, 300); // 300 ms debounce delay
     }
 </script>
 
+
 {{-- <script>
-    
-    function toggleSubscription() {
-        $.ajax({
-            url: '{{ route('ugc_subscribe') }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.subscribed) {
-                    $('#subscribe-button').text('Unsubscribe');
-                    $('#subscription-message').text('You are now subscribed!').show().fadeOut(3000);
-                } else {
-                    $('#subscribe-button').text('Subscribe');
-                    $('#subscription-message').text('You are now unsubscribed!').show().fadeOut(3000);
+    $(document).ready(function() {
+        // Handle click event on video
+        $('.video-item').on('click', function() {
+            var userId = $(this).data('user-id'); // Get the user ID from the data attribute
+            
+            $.ajax({
+                url: '/user/' + userId + '/subscriptions-count', // Ensure this URL is correct
+                type: 'GET',
+                success: function(response) {
+                    // Update the subscriber count on the page if needed
+                    $('.subscriber-count').text(response.subscriptions_count);
+                },
+                error: function(xhr) {
+                    console.log('Error:', xhr.responseText);
+                    alert('An error occurred while fetching the subscription count.');
                 }
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-            }
+            });
         });
-    }
-
-
+    });
 </script> --}}
 
 @php
  include public_path('themes/theme5-nemisha/views/UserGeneratedContent/videos-details-script-file.blade.php');
 @endphp
-

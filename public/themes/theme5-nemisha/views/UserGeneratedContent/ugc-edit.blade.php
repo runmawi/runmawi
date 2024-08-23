@@ -80,14 +80,6 @@
 
     }
 
-    .form-control1 {
-	 display: block;
-	 width: 100%;
-	 font-size: 14px;
-	 height: 34px;
-	 padding: 4px 8px;
-	 margin-bottom: 15px;
-}
  *, *:before, *:after {
 	 box-sizing: border-box;
 }
@@ -217,6 +209,15 @@
    display: grid;
    grid-template-columns: repeat(5, calc(100% / 5));
 }
+
+.video-form-control{
+        width:100%;
+        background-color: #c9c8c888 ;
+        border:none;
+        padding: 5px 10px;
+        border-radius: 7px;
+    }
+
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -348,7 +349,7 @@
                <div class="row">
                    <div class="col-sm-6 form-group" >
                         <label class="m-0">Title :</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
+                        <input type="text" class="video-form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
                    </div>
 
                   <div class="col-sm-6 form-group" >
@@ -357,7 +358,7 @@
                            <i class="las la-exclamation-circle"></i>
                         </a>:
                      </label>
-                     <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
+                     <input type="text"   class="video-form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
                      <span><p id="slug_error" style="color:red;">This slug already used </p></span>
 
                   </div>
@@ -366,12 +367,12 @@
                <div class="row">
                    <div class="col-lg-12 form-group">
                         <label class="m-0">Video Description:</label>
-                        <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
+                        <textarea  rows="5" class="video-form-control mt-2" name="description" id="summary-ckeditor"
                       placeholder="Description">@if(!empty($video->description)){{ ($video->description) }}@endif</textarea>
                    </div>
                    {{-- <div class="col-12 form-group">
                         <label class="m-0">Links &amp; Details</label>
-                        <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
+                        <textarea   rows="5" class="video-form-control mt-2" name="details" id="links-ckeditor"
                       placeholder="Link and details">@if(!empty($video->details)){{ ($video->details) }}@endif</textarea>
                    </div> --}}
                </div>
@@ -435,7 +436,52 @@
                  </div>
 
                </div>
-               <div class="">
+
+               <div class="row">    
+                  <div class="panel panel-primary" data-collapsed="0"> 
+                  <div class="panel-heading"> 
+                  <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt))
+                  <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                  <i class="las la-exclamation-circle"></i>
+                  </a>:</h3>
+                  </div> 
+                  <div class="panel-options"> 
+                  <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                  </div>
+                  </div> 
+                  <div class="panel-body" style="display: block;"> 
+                  @foreach($subtitles as $subtitle)
+   
+                  <div class="col-sm-6 form-group" style="float: left;">
+                  <div class="align-items-center" style="clear:both;" >
+                  <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                  <?php //dd($movies_subtitles->sub_language); ?>
+                  @if(@$subtitlescount > 0)
+                     @foreach($MoviesSubtitles as $movies_subtitles)
+   
+                        @if(@$movies_subtitles->sub_language == $subtitle->language)
+   
+                        Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                           data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/subtitle/delete') . '/' . $movies_subtitles->id }}">
+                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                     @endif
+   
+                     @endforeach
+                  @endif
+   
+                  <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                  <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                  <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                  </div>
+                  </div>
+                  @endforeach
+                  </div> 
+                   </div>
+               </div>
+
+               <div >
                <button type="submit" style = "float: right; margin: 10px 5px 10px 0px; vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                </div>
                {{-- <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button> --}}
@@ -566,80 +612,7 @@
    color: gray;
    text-align: left
    }
-   .progress {height:0.25rem !important;}
-   #progressbar {
-   margin-bottom: 10px;
-   overflow: hidden;
-   color: black;
-   /* border: 1px solid #f5f5f5; /
-   border-radius: 5px;
-   box-shadow: 0px 0px 15px #e1e1e1; */
-       padding: 0;
-   }
-   #progressbar li.active {
-   color: #000000!important; font-weight:500;
-   }
-   #progressbar li {
-   list-style-type: none;
-   font-size: 15px;
-   width: 16%;
-   float: left;
-   position: relative;
-   font-weight: 400;
-   background-color: white;
-   padding: 10px;
-       line-height: 19px;
-   }
-   #progressbar #videot:before {
-   font-family: FontAwesome;
-   content: "\f03d"
-   }
-   #progressbar #account:before {
-   font-family: FontAwesome;
-   content: "\f129"
-   } 
-   #progressbar #personal:before {
-   font-family: FontAwesome;
-   content: "\f007"
-   }
-   #progressbar #payment:before {
-   font-family: FontAwesome;
-   content: "\f03e"
-   }
-   #progressbar #confirm:before {
-   font-family: FontAwesome;
-   content: "\f03d"
-   }
-   #progressbar li:before {
-   width: 50px;
-   height: 50px;
-   line-height: 45px;
-   display: block;
-   font-size: 20px;
-   color: #ffffff;
-   background: lightgray;
-   border-radius: 50%;
-   margin: 0 auto 10px auto;
-   padding: 2px;
-       display: none;
-       
-   }
-    #progressbar li img{
-        width: 125px;
-    }
-   #progressbar li:after {
-   content: '';
-   width: 100%;
-   height: 2px;
-   background: lightgray;
-   position: absolute;
-   left: 0;
-   top: 25px;
-   z-index: -1
-   }
-   #progressbar li.active:before, #progressbar li.active:after {
-   background: #48bbe5;
-   }
+
    .fit-image {
    width: 100%;
    object-fit: cover
@@ -819,29 +792,7 @@ $(document).ready(function(){
 
 
    var SITEURL = "{{URL('/')}}";
-   // $(function() {
-   //     $(document).ready(function()
-   //     {
-   //         var bar = $('.bar');
-   //         var percent = $('.percent');
-   //           $('#form').ajaxForm({
-   //             beforeSend: function() {
-   //                 var percentVal = '0%';
-   //                 bar.width(percentVal)
-   //                 percent.html(percentVal);
-   //             },
-   //             uploadProgress: function(event, position, total, percentComplete) {
-   //                 var percentVal = percentComplete + '%';
-   //                 bar.width(percentVal)
-   //                 percent.html(percentVal);
-   //             },
-   //             complete: function(xhr) {
-   //                 alert('Successfully Updated Video!');
-   //                 window.location.href = "{{ URL::to('admin/videos') }}";
-   //             }
-   //           });
-   //     }); 
-   //  }); 
+
    
    if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
    	setInterval(function(){ 
@@ -1221,7 +1172,7 @@ $(document).ready(function(){
   const videom3u8 = document.querySelector('#videom3u8');
   // alert(video);
   const sources = videom3u8.getElementsByTagName("source")[0].src;
-//   alert(sources);
+   //   alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
@@ -1247,15 +1198,15 @@ $(document).ready(function(){
     window.hlstwo = hlstwo;
   }
 
-  function updateQuality(newQuality) {
-    window.hlstwo.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hlstwo.currentLevel = levelIndex;
-      }
-    });
-  }
-});
+   function updateQuality(newQuality) {
+      window.hlstwo.levels.forEach((level, levelIndex) => {
+         if (level.height === newQuality) {
+         console.log("Found quality match with " + newQuality);
+         window.hlstwo.currentLevel = levelIndex;
+         }
+      });
+   }
+   });
 
   }
    

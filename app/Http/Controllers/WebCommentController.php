@@ -66,7 +66,7 @@ class WebCommentController extends Controller
         );
         
         WebComment::create($inputs);
-        
+
         try {
             \Mail::send('emails.comment_admin_approval', 
                 array(
@@ -182,55 +182,104 @@ class WebCommentController extends Controller
         return Redirect::back();
     }
 
-//     public function likeComment($id)
-// {
-//     $comment = WebComment::findOrFail($id);
-//     if ($comment) {
-//         $comment->increment('likes');
-//         return response()->json([
-//             'message' => 'Comment liked!',
-//             'likes' => $comment->likes
-//         ]);
-//     } else {
-//         return response()->json(['message' => 'Comment not found!'], 404);
-//     }
-// }
-
-// public function dislikeComment($id)
-// {
-//     $comment = WebComment::findOrFail($id);
-//     if ($comment) {
-//         $comment->increment('dislikes');
-//         return response()->json([
-//             'message' => 'Comment disliked!',
-//             'dislikes' => $comment->dislikes
-//         ]);
-//     } else {
-//         return response()->json(['message' => 'Comment not found!'], 404);
-//     }
-// }
-
-public function like(Request $request, $commentId)
+    public function like(Request $request, $id)
 {
-    $comment = Comment::find($commentId);
-    if (!$comment) {
-        return response()->json(['message' => 'Comment not found'], 404);
+    $userId = auth()->id(); // Get the authenticated user's ID
+
+    try {
+        // Find the comment
+        $comment = WebComment::find($id);
+        if (!$comment) {
+            return response()->json(['status' => false, 'message' => 'Comment not found.']);
+        }
+
+        // Determine current like and dislike states
+        $hasLiked = $comment->has_liked; // Check if the user has liked the comment
+        $hasDisliked = $comment->has_disliked; // Check if the user has disliked the comment
+
+        // Update like and dislike counts based on current state
+        if ($hasLiked) {
+            // Remove like
+            $comment->comment_like -= 1;
+            $comment->has_liked = false;
+        } else {
+            // Add like
+            $comment->comment_like += 1;
+            $comment->has_liked = true;
+
+            // Remove dislike if exists
+            if ($hasDisliked) {
+                $comment->comment_dislike -= 1;
+                $comment->has_disliked = false;
+            }
+        }
+
+        // Ensure counts are not negative
+        $comment->comment_like = max($comment->comment_like, 0);
+        $comment->comment_dislike = max($comment->comment_dislike, 0);
+
+        // Save the updated comment
+        $comment->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Like toggled.',
+            'new_like_count' => $comment->comment_like,
+            'new_dislike_count' => $comment->comment_dislike,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
     }
+}
 
-    $isLike = $request->input('is_like');
-    
-    if ($isLike) {
-        $comment->likes_count++;
-    } else {
-        $comment->dislikes_count++;
+public function dislike(Request $request, $id)
+{
+    $userId = auth()->id(); // Get the authenticated user's ID
+
+    try {
+        // Find the comment
+        $comment = WebComment::find($id);
+        if (!$comment) {
+            return response()->json(['status' => false, 'message' => 'Comment not found.']);
+        }
+
+        // Determine current like and dislike states
+        $hasLiked = $comment->has_liked; // Check if the user has liked the comment
+        $hasDisliked = $comment->has_disliked; // Check if the user has disliked the comment
+
+        // Update like and dislike counts based on current state
+        if ($hasDisliked) {
+            // Remove dislike
+            $comment->comment_dislike -= 1;
+            $comment->has_disliked = false;
+        } else {
+            // Add dislike
+            $comment->comment_dislike += 1;
+            $comment->has_disliked = true;
+
+            // Remove like if exists
+            if ($hasLiked) {
+                $comment->comment_like -= 1;
+                $comment->has_liked = false;
+            }
+        }
+
+        // Ensure counts are not negative
+        $comment->comment_like = max($comment->comment_like, 0);
+        $comment->comment_dislike = max($comment->comment_dislike, 0);
+
+        // Save the updated comment
+        $comment->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Dislike toggled.',
+            'new_like_count' => $comment->comment_like,
+            'new_dislike_count' => $comment->comment_dislike,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
     }
-
-    $comment->save();
-
-    return response()->json([
-        'likes_count' => $comment->likes_count,
-        'dislikes_count' => $comment->dislikes_count
-    ]);
 }
 
 }

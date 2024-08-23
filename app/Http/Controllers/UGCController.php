@@ -18,6 +18,7 @@ use Validator;
 use App\Artist;
 use App\Episode;
 use App\Playerui;
+use App\Subtitle;
 use App\UGCVideo;
 use App\Wishlist;
 use App\SiteTheme;
@@ -44,6 +45,7 @@ use App\CompressImage;
 use App\EmailTemplate;
 use App\InappPurchase;
 use App\LanguageVideo;
+use App\UGCSubscriber;
 use GuzzleHttp\Client;
 use App\CommentSection;
 use App\Jobs\VideoClip;
@@ -64,7 +66,6 @@ use Illuminate\Http\Request;
 use App\AdsVideo as AdsVideo;
 use App\DefaultSchedulerData;
 use App\Language as Language;
-use App\Subtitle as Subtitle;
 use App\TimeZone as TimeZone;
 use App\VideoExtractedImages;
 use Aws\S3\MultipartUploader;
@@ -197,9 +198,9 @@ class UGCController extends Controller
 
     public function UGCvideosIndex()
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
+        // if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        //     return redirect('/admin/restrict');
+        // }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -583,8 +584,14 @@ class UGCController extends Controller
         
         $viewcount = $this->handleViewCounts($ugcvideos);
         $totalViews = $user->ugcVideos()->sum('views');
+        $data = [
+            'user' => $user,
+            'ugcvideos' => $ugcvideos,
+            'viewcount' => $viewcount,
+            'totalViews' => $totalViews,
+        ];
 
-        return Theme::view("UserGeneratedContent.showugcprofile", compact('user', 'ugcvideos', 'viewcount', 'totalViews'));
+        return Theme::view("UserGeneratedContent.showugcprofile", $data );
     }
     
     public function PlayUGCVideos( Request $request, $slug )
@@ -596,6 +603,8 @@ class UGCController extends Controller
             $video = UGCVideo::where('slug', $slug)->latest()->firstOrFail();
             $video_id = $video->id;
             $profileUser = User::find($video->user_id);
+            $subtitle = MoviesSubtitles::where('movie_id', '=', $video_id)->get();
+            // dd($subtitle);
             $videodetail = UGCVideo::where('id',$video_id)->latest()
                                     ->get()->map(function ($item) use ( $video_id , $setting ,  $geoip )  {
 
@@ -617,7 +626,7 @@ class UGCController extends Controller
                 
                 $item['view_increment'] = $this->handleViewCount_ugc($video_id);
                 // Videos URL 
-
+                                        
                 if ($item['users_video_visibility_status'] == true ) {
 
                     switch (true) {
@@ -712,28 +721,33 @@ class UGCController extends Controller
 
             $user_id = Auth::user()->id;
 
-            $user_data = User::where('id',$user_id)
-            ->withCount('subscribers')
-            ->first();
-
-            // dd($user_data);
+            $user_data = User::withCount('subscribers')->find($profileUser->id);
 
             $user_details = User::find($user_id);
     
             $ugcvideo = UGCVideo::withCount([
                 'likesDislikes as like_count' => function ($query) {
                     $query->where('type', 'liked');
-                },
+                }
             ])
+            ->with(['user' => function ($query) {
+                $query->withCount('subscribers');
+            }])
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->paginate(9);
+    
+            $subscribe_button = UGCSubscriber::where('user_id', $profileUser->id)
+                            ->where('subscriber_id', auth()->user()->id)
+                            ->exists();
 
             $data = array(
                 'user' => $user_details,
                 'ugcvideos' => $ugcvideo,
+                'subtitles' => $subtitle ,
                 'videodetail' => $videodetail ,
                 'profileUser' =>  $profileUser,
+                'subscribe_button' => $subscribe_button,
                 'subscriber_count' => $user_data->subscribers_count ?? 0,
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
@@ -754,133 +768,63 @@ class UGCController extends Controller
         }
     }
 
-
+    
     public function subscribe(Request $request)
     {
-        $user = User::find($request->user_id);
-        $subscriber = User::find($request->subscriber_id);
+        try {
+            $user = User::find($request->user_id);
+            $subscriber = User::find($request->subscriber_id);
 
-        if (!$user || !$subscriber) {
-            return response()->json(['success' => false, 'message' => 'User or Subscriber not found'], 404);
-        }
+            $exists = UGCSubscriber::where('user_id', $user->id)
+                ->where('subscriber_id', $subscriber->id)
+                ->exists();
 
-        $exists = DB::table('ugc_subscribers')
-            ->where('user_id', $user->id)
-            ->where('subscriber_id', $subscriber->id)
-            ->exists();
-
-        if (!$exists) {
-            DB::table('ugc_subscribers')->insert([
-                'user_id' => $user->id,
-                'subscriber_id' => $subscriber->id,
-            ]);
-        }
-
-        return response()->json(['success' => true, 'count' => $user->subscribers()->count()]);
-    }
-  
-    public function unsubscribe(Request $request)
-    {
-        $user = User::find($request->user_id);
-        $subscriber = User::find($request->subscriber_id);
-
-        if (!$user || !$subscriber) {
-            return response()->json(['success' => false, 'message' => 'User or Subscriber not found'], 404);
-        }
-
-        DB::table('ugc_subscribers')
-            ->where('user_id', $user->id)
-            ->where('subscriber_id', $subscriber->id)
-            ->delete();
-
-        return response()->json(['success' => true, 'count' => $user->subscribers()->count()]);
-    }
-    
-    public function Embed_play_videos($slug)
-    {
-        $data['password_hash'] = '';
-        $data = session()->all();
-
-        if (!Auth::guest()) {
-            $get_video_id = \App\UGCVideo::where('slug', $slug)->first();
-
-            $vid = $get_video_id->id;
-
-            $current_date = date('Y-m-d h:i:s a', time());
-            $view_increment = $this->handleViewCount_movies($vid);
-
-            if (!Auth::guest()) {
-                $sub_user = Session::get('subuser_id');
-
-                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-                $userIp = $geoip->getip();
-                $countryName = $geoip->getCountry();
-                $regionName = $geoip->getregion();
-                $cityName = $geoip->getcity();
-
-                $view = new RecentView();
-                $view->video_id = $vid;
-                $view->user_id = Auth::user()->id;
-                $view->country_name = $countryName;
-                // $view->videos_category_id = $get_video_id->video_category_id;
-                if ($sub_user != null) {
-                    $view->sub_user = $sub_user;
-                }
-                $view->visited_at = date('Y-m-d');
-                $view->save();
-
-                $wishlisted = false;
-                if (!Auth::guest()):
-                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
-                        ->where('video_id', '=', $vid)
-                        ->where('type', '=', 'channel')
-                        ->first();
-                endif;
-                $watchlater = false;
-                if (!Auth::guest()):
-                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
-                        ->where('video_id', '=', $vid)
-                        ->where('type', '=', 'channel')
-                        ->first();
-                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
-                        ->where('video_id', '=', $vid)
-                        ->get();
-                endif;
-
-             
-                $data = [
-                    // 'currency' => $currency,
-                    // 'video' => $categoryVideos,
-                    'watchlatered' => $watchlater,
-                    'mywishlisted' => $wishlisted,
-                    'watched_time' => $watchtime,
-                    'like_dislike' => $like_dislike,
-                    // 'playerui_settings' => $playerui,
-                
-                ];
-            } else {
-                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-                $userIp = $geoip->getip();
-                $countryName = $geoip->getCountry();
-                $regionName = $geoip->getregion();
-                $cityName = $geoip->getcity();
-                // dd($data);
-
-                $data = [
-                    'watched_time' => 0,
-                ];
+            if (!$exists) {
+                UGCSubscriber::create([
+                    'user_id' => $user->id,
+                    'subscriber_id' => $subscriber->id,
+                ]);
             }
 
-            return Theme::view('embedvideo', $data);
-        } else {
-            $data = [
-                'video' => \App\Video::where('slug', $slug)->first(),
-                'settings' => Setting::first(),
-            ];
-            return Theme::view('iframeembedvideo', $data);
+            return response()->json(['success' => true]);
+
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database error occurred.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
         }
     }
 
+    public function unsubscribe(Request $request)
+    {
+        try {
+            $user = User::find($request->user_id);
+            $subscriber = User::find($request->subscriber_id);
+
+
+            $exists = UGCSubscriber::where('user_id', $user->id)
+                ->where('subscriber_id', $subscriber->id)
+                ->exists();
+
+            if ($exists) {
+                $deleted = UGCSubscriber::where('user_id', $user->id)
+                    ->where('subscriber_id', $subscriber->id)
+                    ->delete();
+            }
+
+            if ($deleted) {
+                return response()->json(['success' => true]);
+            }
+
+            return response()->json(['error' => 'Subscription not found'], 404);
+
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database error occurred.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+    
 
     // public function filedelete($id)
     // {
@@ -1502,7 +1446,6 @@ class UGCController extends Controller
         
         $id = $data['video_id'];
         $video = UGCVideo::findOrFail($id);
-        // UGCVideo::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if (!empty($video->embed_code)) {
             $embed_code = $video->embed_code;
@@ -1515,6 +1458,8 @@ class UGCController extends Controller
         } else {
             $data['slug'] = $this->createSlug($data['slug']);
         }
+
+        $files = isset($data['subtitle_upload']) ? $data['subtitle_upload'] : '';
         $image_path = public_path() . '/uploads/images/';
 
         // Image
@@ -1614,18 +1559,6 @@ class UGCController extends Controller
             $data['active'] = 0;
         }
 
-        if (empty($data['webm_url'])) {
-            $data['webm_url'] = 0;
-        } else {
-            $data['webm_url'] = $data['webm_url'];
-        }
-
-        if (empty($data['ogg_url'])) {
-            $data['ogg_url'] = 0;
-        } else {
-            $data['ogg_url'] = $data['ogg_url'];
-        }
-
         $package = User::where('id', 1)->first();
         $pack = $package->package;
 
@@ -1661,11 +1594,7 @@ class UGCController extends Controller
             $video->embed_code = '';
         }
     
-        if ($request->pdf_file != null) {
-            $pdf_files = time() . '.' . $request->pdf_file->extension();
-            $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
-            $video->pdf_files = $pdf_files;
-        }
+
 
         //URL Link
         $url_link = $request->url_link;
@@ -1763,7 +1692,8 @@ class UGCController extends Controller
 
 
         $video->description = $data['description'];
-       
+        $shortcodes = $request['short_code'];
+        $languages = $request['sub_language'];
         $video->uploaded_by = Auth::user()->role;
         $video->draft = 1;
         $video->active = 1;
@@ -1776,11 +1706,64 @@ class UGCController extends Controller
 
             // Define the convertTimeFormat function globally
 
+        
             function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
                 $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
                 $formattedTime = gmdate("H:i:s", $totalSeconds);
                 $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
                 return "{$formattedTime},{$formattedMilliseconds}";
+            }
+
+            if (!empty($files != "" && $files != null)) {
+                foreach ($files as $key => $val) {
+                    if (!empty($files[$key])) {
+                        $destinationPath = "public/uploads/subtitles/";
+
+                        if (!file_exists($destinationPath)) {
+                            mkdir($destinationPath, 0755, true);
+                        }
+
+                        $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+
+                        MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+
+                        // Move uploaded file to destination path
+                        move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+
+                        // Read contents of the uploaded file
+                        $contents = file_get_contents($destinationPath . $filename);
+
+                        // Convert time format and add line numbers
+                        $lineNumber = 0;
+                        $convertedContents = preg_replace_callback(
+                            '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
+                            function ($matches) use (&$lineNumber) {
+                                // Increment line number for each match
+                                $lineNumber++;
+                                // Convert time format and return with the line number
+                                return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
+                            },
+                            $contents
+                        );
+
+                        // Store converted contents to a new file
+                        $newDestinationPath = "public/uploads/convertedsubtitles/";
+                        if (!file_exists($newDestinationPath)) {
+                            mkdir($newDestinationPath, 0755, true);
+                        }
+                        file_put_contents($newDestinationPath . $filename, $convertedContents);
+
+                        // Save subtitle data to database
+                        $subtitle_data = [
+                            "movie_id" => $video->id,
+                            "shortcode" => $shortcodes[$key],
+                            "sub_language" => $languages[$key],
+                            "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                            "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                        ];
+                        $video_subtitle = MoviesSubtitles::create($subtitle_data);
+                    }
+                }
             }
 
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
@@ -1878,6 +1861,20 @@ class UGCController extends Controller
                 $ads_category = Adscategory::get();
                 $related_videos = UGCVideo::get();
                 $compress_image_settings = CompressImage::first();
+                $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+
+                $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['movie_id' => $id])
+                ->count();
+            
+                if ($subtitlescount > 0) {
+                    $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                        ->where(['movie_id' => $id])
+                        ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
+                } else {
+                    $subtitles = Subtitle::all();
+                }
+
     
                 $data = [
                     "headline" => '<i class="fa fa-edit"></i> Edit Video',
@@ -1886,14 +1883,10 @@ class UGCController extends Controller
                     "post_route"  => URL::to("ugc/update"),
                     "button_text" => "Update Video",
                     "admin_user"  => Auth::user(),
-                    "video_categories" => VideoCategory::all(),
-                    "ads" => Advertisement::where("status", "=", 1)->get(),
-                    "video_subtitle" => VideosSubtitle::all(),
+                    "MoviesSubtitles" => $MoviesSubtitles ,
+                    "subtitlescount" => $subtitlescount,
                     "subtitles" => Subtitle::all(),
-                    "languages" => Language::all(),
-                    "artists" => Artist::all(),
                     "settings" => $settings,
-                    "related_videos" => UGCVideo::get(),
                     'compress_image_settings' => $compress_image_settings,
                 ];
     
@@ -1954,8 +1947,8 @@ class UGCController extends Controller
             $path = public_path() . "/uploads/videos/";
     
             $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4", $file);
-            $file_folder_name = $newfile[0];
+            // $newfile = explode(".mp4", $file);
+            // $file_folder_name = $newfile[0];
     
             $package = User::where("id", 1)->first();
             $pack = $package->package;
@@ -1983,28 +1976,28 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new UGCVideo();
+                // $video = new Video();
                 $video->disk = "public";
-                $video->title = $file_folder_name;
+                // $video->title = $file_folder_name;
                 $video->original_name = "public";
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = "mp4_url";
-                $video->draft = 0;
+                // $video->draft = 0;
                 $video->duration = $Video_duration;
                 $video->save();
     
                 $video_id = $video->id;
-                $video_title = UGCVideo::find($video_id);
-                $title = $video_title->title;
+                // $video_title = Video::find($video_id);
+                // $title = $video_title->title;
     
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+                // $value["video_title"] = $title;
     
                 // return $value;
-                return redirect("/admin/videos");
+                return Redirect::back();
     
             } elseif (
                 $mp4_url != "" &&
@@ -2028,16 +2021,16 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                 $video = new UGCVideo();
+                //  $video = new Video();
                 $video->disk = "public";
                 $video->status = 0;
                 $video->original_name = "public";
                 $video->path = $path;
                 $video->old_path_mp4 = $path;
-                $video->title = $file_folder_name;
+                // $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
                 //  $video->draft = 0;
-                $video->type = "mp4_url";
+                $video->type = "";
                 //  $video->image = 'default_image.jpg';
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
@@ -2059,13 +2052,13 @@ class UGCController extends Controller
                     }
                 }          
                 $video_id = $video->id;
-                $video_title = Video::find($video_id);
-                $title = $video_title->title;
+                // $video_title = Video::find($video_id);
+                // $title = $video_title->title;
     
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
+                // $value["video_title"] = $title;
     
                 return $value;
                 // return redirect("/admin/videos");
@@ -2093,9 +2086,9 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                $video = new UGCVideo();
+                // $video = new Video();
                 $video->disk = "public";
-                $video->title = $file_folder_name;
+                // $video->title = $file_folder_name;
                 $video->original_name = "public";
                 $video->path = $path;
                 $video->mp4_url = $storepath;
@@ -2105,22 +2098,19 @@ class UGCController extends Controller
                 $video->save();
     
                 $video_id = $video->id;
-                $video_title = UGCVideo::find($video_id);
-                $title = $video_title->title;
+                // $video_title = Video::find($video_id);
+                // $title = $video_title->title;
     
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
-    
-                dd($value);
+                // $value["video_title"] = $title;
                 return $value;
             } else {
                 $value["success"] = 2;
                 $value["message"] = "File not uploaded.";
                 return response()->json($value);
                 // return redirect("/admin/videos");
-    
             }
     
             // return response()->json($value);
@@ -2691,6 +2681,9 @@ class UGCController extends Controller
                     $trailer_Video
                 );
             }
+
+            $shortcodes = $request["short_code"];
+            $languages = $request["sub_language"];
     
             if (!empty($files != "" && $files != null)) {
                 foreach ($files as $key => $val) {
@@ -2726,7 +2719,7 @@ class UGCController extends Controller
 
     
             \LogActivity::addVideoUpdateLog("Update Video.", $video->id);
-    
+
             return Redirect::to("ugc-edit" . "/" . $id)->with([
                 "message" => "Successfully Updated Video!",
                 "note_type" => "success",
@@ -2764,85 +2757,6 @@ class UGCController extends Controller
                 ->get();
         }
     
-        public function build_video_thumbnail($video_path, $movie, $thumb_path)
-        {
-            // Create a temp directory for building.
-            $temp = storage_path("app/public") . "/build";
-            if (!file_exists($temp)) {
-                File::makeDirectory($temp);
-            }
-    
-            // Use FFProbe to get the duration of the video.
-            $ffprobe = \FFMpeg\FFProbe::create();
-            $duration = $ffprobe
-                ->streams($video_path)
-                ->videos()
-                ->first()
-                ->get("duration");
-            // If we couldn't get the direction or it was zero, exit.
-            if (empty($duration)) {
-                return;
-            }
-    
-            // Create an FFMpeg instance and open the video.
-    
-            // This array holds our "points" that we are going to extract from the
-            // video. Each one represents a percentage into the video we will go in
-            // extracitng a frame. 0%, 10%, 20% ..
-            $points = range(0, 100, 10);
-    
-            // This will hold our finished frames.
-            $frames = [];
-    
-            foreach ($points as $point) {
-                $video = FFMpeg::fromDisk("public")->open($movie);
-    
-                // Point is a percent, so get the actual seconds into the video.
-                $time_secs = floor($duration * ($point / 100));
-    
-                // Created a var to hold the point filename.
-                $point_file = "$temp/$point.jpg";
-                // Extract the frame.
-                $frame = $video->frame(TimeCode::fromSeconds($time_secs));
-                $frame->save($point_file);
-    
-                // If the frame was successfully extracted, resize it down to
-                // 320x200 keeping aspect ratio.
-                if (file_exists($point_file)) {
-                    $img = Image::make($point_file)->resize(150, 150, function (
-                        $constraint
-                    ) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
-                    $img->save($point_file, 40);
-                    $img->destroy();
-                }
-                // If the resize was successful, add it to the frames array.
-                if (file_exists($point_file)) {
-                    $frames[] = $point_file;
-                }
-            }
-            // If we have frames that were successfully extracted.
-            if (!empty($frames)) {
-                // We show each frame for 100 ms.
-                $durations = array_fill(0, count($frames), 100);
-                // Create a new GIF and save it.
-                $gc = new GifCreator();
-                $gc->create($frames, $durations, 0);
-                file_put_contents(
-                    storage_path("app/public") . "/" . $thumb_path . ".gif",
-                    $gc->getGif()
-                );
-    
-                // Remove all the temporary frames.
-                foreach ($frames as $file) {
-                    unlink($file);
-                }
-            }
-        }
-    
-      
         public function Mp4url(Request $request)
         {
             $data = $request->all();
@@ -3185,7 +3099,7 @@ class UGCController extends Controller
                 $video->mp4_url = $data["mp4_url"];
                 $video->type = "mp4_url";
                 // $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->user_id = Auth::user()->id;
                 $video->save();
     
@@ -3198,9 +3112,10 @@ class UGCController extends Controller
                 // return $value;
                 return Theme::view("UserGeneratedContent.ugc-create");
     
+                }
             }
         }
-        }
+
         public function Updatem3u8url(Request $request)
         {
             $data = $request->all();
@@ -3276,31 +3191,9 @@ class UGCController extends Controller
                 $value["video_id"] = $video_id;
                 // return $value;
                 return Theme::view("UserGeneratedContent.ugc-create", $data);
-    
+                }
             }
         }
-        }
-        
-        // public function video_slug_validate(Request $request)
-        // {
-        //     $video_slug_validate = Video::where("slug", $request->slug)->count();
-    
-        //     if ($request->type == "create") {
-        //         $validate_status = $video_slug_validate > 0 ? "true" : "false";
-        //     } elseif ($request->type == "edit") {
-        //         $video_slug_count = Video::where("id", $request->video_id)
-        //             ->where("slug", $request->slug)
-        //             ->count();
-    
-        //         if ($video_slug_count == 1) {
-        //             $validate_status = $video_slug_validate > 1 ? "true" : "false";
-        //         } else {
-        //             $validate_status = $video_slug_validate > 0 ? "true" : "false";
-        //         }
-        //     }
-        //     return response()->json(["message" => $validate_status]);
-        // }
-    
             
         public function BunnycdnVideolibrary(Request $request)
         {

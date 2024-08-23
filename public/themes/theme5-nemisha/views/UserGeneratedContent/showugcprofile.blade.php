@@ -171,16 +171,16 @@
             {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
 
             <div class="row justify-content-center m-1">
-                <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
+                <a class="Text-white" href="javascript:;">
                     <img
-                    src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:200px; " alt="banner" >
+                    src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:auto; width:100%; cursor:auto;" alt="banner" >
                 </a>
             </div>
             <div class="row justify-content-start mx-3">
                 <div >
-                <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#ugc-profile-modal').modal('show');">
+                <a class="Text-white" href="javascript:;">
                 <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+                src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px; cursor:auto; ">
                 </a>
                 </div>
                <div class="col" style="padding-top: 40px;" >
@@ -206,7 +206,7 @@
 
                         <div class="input-container" style="position: relative" >
                             <form>
-                                <textarea id="ugc-about" name="ugc-about" value=""  disabled placeholder="Enter About You">{{ $user->ugc_about ? $user->ugc_about : '' }}</textarea>
+                                <textarea id="ugc-about" name="ugc-about" value=""  disabled placeholder="-">{{ $user->ugc_about ? $user->ugc_about : '' }}</textarea>
                             </form>
                         </div>
                     </div>
@@ -217,7 +217,7 @@
                         <p style="color: white">
                             <div class="ugc-social-media" style="position: relative" >
                                 <form>
-                                    <textarea id="ugc-facebook" disabled name="ugc-instagram" value="" placeholder="Enter About You" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
+                                    <textarea id="ugc-facebook" disabled name="ugc-instagram" value="" placeholder="-" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
                                 </form>
                             </div>
                         </p>
@@ -227,7 +227,7 @@
                         <p style="color: white">
                             <div class="ugc-social-media" style="position: relative" >
                                 <form>
-                                    <textarea id="ugc-instagram" disabled name="ugc-instagram" placeholder="Enter About You" rows="1" >{{ $user->ugc_instagram ? $user->ugc_instagram : '' }}</textarea>
+                                    <textarea id="ugc-instagram" disabled name="ugc-instagram" placeholder="-" rows="1" >{{ $user->ugc_instagram ? $user->ugc_instagram : '' }}</textarea>
                                 </form>
                             </div>
                         </p>
@@ -237,7 +237,7 @@
                         <p style="color: white">
                             <div class="ugc-social-media" style="position: relative" >
                                 <form>
-                                    <textarea id="ugc-twitter" disabled name="ugc-twitter" placeholder="Enter About You" rows="1" >{{ $user->ugc_twitter ? $user->ugc_twitter : '' }}</textarea>
+                                    <textarea id="ugc-twitter" disabled name="ugc-twitter" placeholder="-" rows="1" >{{ $user->ugc_twitter ? $user->ugc_twitter : '' }}</textarea>
                                 </form>
                             </div>
                         </p>
@@ -262,45 +262,30 @@
                             <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                             </div>
                             <div>
-                            <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0% "  class="ugc-button" >Share Profile</button>
+                            <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; "  class="ugc-button" >Share Profile</button>
+                            </div>
+                            <div class="shareprofile">
+                                <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
+                                    <div class="d-flex">
+                                    <div class="px-1">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                    </div>
+                                    <div class="px-1">
+                                    <a href="https://twitter.com/intent/tweet?text={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
+                                        <i class="ri-twitter-fill"></i>
+                                    </a>
+                                    </div>
+                                    <div class="px-1">
+                                       <a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill" ></i></a>
+                                       <input type="hidden" id="profile_url" value="{{ route('profile.show', ['username' => $user->username]) }}">
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        {{-- <div class="col-lg-6 col-md-12 mb-4 mx-auto" > 
-                                <h2>My Acount
-                                    <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');"><i class="fa fa-plus-circle"></i>
-                                        <span style="font-size:15px;" >Edit</span>
-                                    </a>
-                                </h2>
-                                <div class=" text-white pt-4">
-                                <p style="font-weight: 600; font-size: 18px;">First Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
-                                </div>
-                                <div class=" text-white">
-                                <p style="font-weight: 600; font-size: 18px;">User Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
-                                </div>
-                                <div class=" text-white">
-                                <p style="font-weight: 600; font-size: 18px;">Email-id: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p> 
-                                </div>
-                                <div class=" text-white">
-                                <p style="font-weight: 600; font-size: 18px;">Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
-                                </div>
-                                <div class=" text-white">
-                                    <p class="row">
-                                        <span class="col-lg-2 text-left" style="font-weight: 600; font-size: 18px;">Gender:</span>
-                                        <span class="col-lg-5 text-left"> 
-                                            <select class="form-control" id="gender" name="gender">
-                                                <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
-                                                <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
-                                                <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                                <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
-                                            </select>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class=" text-white">
-                                <p style="font-weight: 600; font-size: 18px;">DOB: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span></p> 
-                                </div>
-                        </div> --}}
                     </div>
 
                     
@@ -343,7 +328,7 @@
 
                             <div class="text-white pt-3">
                                 <h6>{{$eachugcvideos->title}}</h6>
-                                <p style="margin:5px 0px;">{{$user->name}}</p>
+                                <p style="margin:5px 0px;">{{$user->username}}</p>
                                 <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
                                     | 90k Likes</p>
                             </div>
@@ -394,7 +379,7 @@
     
                                 <div class="text-white pt-3">
                                     <h6>{{$eachugcvideos->title}}</h6>
-                                    <p style="margin:5px 0px;">{{$user->name}}</p>
+                                    <p style="margin:5px 0px;">{{$user->username}}</p>
                                     <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
                                         | 90k Likes</p>
                                 </div>
@@ -418,6 +403,19 @@
 </div>
 
 <script>
+    function Copy() {
+    var profile_url = $('#profile_url').val();
+    var url =  navigator.clipboard.writeText(window.location.href);
+    var profile =  navigator.clipboard.writeText(profile_url);
+    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+           setTimeout(function() {
+            $('.add_watch').slideUp('fast');
+           }, 3000);
+    }
+  
+</script>  
+
+<script>
     $(document).ready(function(){
         
         $('ul.ugc-tabs li').click(function(){
@@ -431,4 +429,11 @@
         })
     
     })
+</script>
+
+<script>
+    $('.shareprofile').hide()
+    jQuery('.ugc-button').on('click',function(){
+    jQuery('.shareprofile').toggle();
+})    
 </script>
