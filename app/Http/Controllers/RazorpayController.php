@@ -339,6 +339,8 @@ class RazorpayController extends Controller
             'description'    =>   null,
             'address'        =>   null ,
             'Video_slug'     => $Video_slug ,
+            'address'        =>   null ,
+            'ppv_plan'       =>   null ,
         );
 
         return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
@@ -406,6 +408,7 @@ class RazorpayController extends Controller
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
+            $purchase->ppv_plan = $request->ppv_plan;
             $purchase->save();
 
             $respond=array(
@@ -784,5 +787,40 @@ class RazorpayController extends Controller
         }
     }
 
+
+    
+    public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
+
+        $recept_id = Str::random(10);
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->amount * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+
+        $Video_slug = Video::where('id',$request->video_id)->pluck('slug')->first();
+
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->amount * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'video_id'       =>  $request->video_id,
+            'user_id'        =>  Auth::user()->id ,
+            'description'    =>   null,
+            'address'        =>   null ,
+            'Video_slug'     => $Video_slug ,
+            'ppv_plan'       => $ppv_plan ,
+        );
+
+        return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
+    }
 
 }
