@@ -704,42 +704,43 @@
 
             $('.Razorpay_button,.Stripe_button').hide();
 
-            if(Enable_PPV_Plans == 1){
-                   
-                var ppv_price_480p = '{{ $videodetail->ppv_price_480p }}'; 
-                
-                $(".payment_btn").click(function() {
-                $('.Razorpay_button, .Stripe_button, #quality-options').hide();
+            if (Enable_PPV_Plans == 1) {
+                    // Only execute this block if PPV plans are enabled
+                    var ppv_price_480p = '{{ $videodetail->ppv_price_480p }}';
+
+                    $(".payment_btn").click(function() {
+                        $('.Razorpay_button, .Stripe_button, #quality-options').hide();
 
                         let payment_gateway = $('input[name="payment_method"]:checked').val();
                         if (payment_gateway == "Stripe") {
-                            $('#quality-options').show(); 
-                            updateContinueButton(); 
+                            $('#quality-options').show();
+                            updateContinueButton();
                         } else if (payment_gateway == "Razorpay") {
-                            $('#quality-options').hide(); 
+                            $('#quality-options').hide();
                             $('.Razorpay_button').show();
                         }
                     });
 
                     $("input[name='quality']").change(function() {
-                        updateContinueButton(); 
+                        updateContinueButton();
                     });
 
-                    // Function to update the continue button based on the selected quality
                     function updateContinueButton() {
-                        // const selectedQuality = $('input[name="quality"]:checked').val();
                         const selectedQuality = $('input[name="quality"]:checked').val() || '480p';
                         const ppv_price = selectedQuality === '480p' ? '{{ $videodetail->ppv_price_480p }}' :
                                             selectedQuality === '720p' ? '{{ $videodetail->ppv_price_720p }}' :
                                             '{{ $videodetail->ppv_price_1080p }}';
 
-                        $('#price-display').text('{{ $currency->symbol }}'+' '+ ppv_price);
+                        $('#price-display').text('{{ $currency->symbol }}' + ' ' + ppv_price);
 
                         const videoId = '{{ $videodetail->id }}';
                         const isMultiCurrencyEnabled = {{ $currency->enable_multi_currency }};
-                        const routeUrl = isMultiCurrencyEnabled ? 
-                                `{{ route('Stripe_payment_video_PPV_Purchase', ['video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`.replace('__VIDEO_ID__', videoId).replace('__AMOUNT__', PPV_CurrencyConvert(ppv_price)) :
-                                `{{ route('Stripe_payment_video_PPV_Purchase', ['video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`.replace('__VIDEO_ID__', videoId).replace('__AMOUNT__', ppv_price);
+                        const amount = isMultiCurrencyEnabled ? PPV_CurrencyConvert(ppv_price) : ppv_price;
+
+                        const routeUrl = `{{ route('Stripe_payment_video_PPV_Plan_Purchase', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                            .replace('__PPV_PLAN__', selectedQuality)
+                            .replace('__VIDEO_ID__', videoId)
+                            .replace('__AMOUNT__', amount);
 
                         const continueButtonHtml = `
                             <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
@@ -752,8 +753,8 @@
                     }
 
                     $(".payment_btn:checked").trigger('click');
-
-            }else{
+                }
+                else{
                 $(".payment_btn").click(function() {
 
                     $('.Razorpay_button,.Stripe_button').hide();

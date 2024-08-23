@@ -4385,10 +4385,7 @@ class ChannelController extends Controller
 
                             }elseif ($item->access == "ppv" && Enable_PPV_Plans() == 1) {
 
-                                $item['users_video_visibility_redirect_url1'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_480p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_480p ]) ;
-                                $item['users_video_visibility_redirect_url2'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_720p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_720p ]) ;
-                                $item['users_video_visibility_redirect_url3'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price_1080p) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price_1080p ]) ;
-
+                               
                             }elseif( Auth::user()->role == 'registered') {
 
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
@@ -4416,6 +4413,7 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_status']         = true ;
                                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
+                                $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                             }
                             elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
                                 $item['users_video_visibility_status'] = true ;
@@ -4432,7 +4430,6 @@ class ChannelController extends Controller
                             }
                         }
                     }
-
                         // Free duration
                     if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                         if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4809,6 +4806,7 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_status']         = true ;
                                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
+                                $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                             }
                             elseif(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){  // Free duration
                                 $item['users_video_visibility_status'] = true ;
@@ -4875,6 +4873,12 @@ class ChannelController extends Controller
                 $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
                 $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
                 $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+                
+                if($item['access'] == 'ppv' && Auth::user()->role == "registered" || $item['access'] == 'ppv' && Auth::user()->role == "subscriber"){
+                    $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                }else{
+                    $item['PPV_Plan']   = '';
+                }
 
                 // Videos URL
 
@@ -4933,7 +4937,6 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
-
             $videoURl = [];
 
             if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
