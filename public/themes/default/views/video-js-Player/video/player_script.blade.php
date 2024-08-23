@@ -3,6 +3,7 @@
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
+    let PPV_Plan   = "<?php echo $videodetail->PPV_Plan; ?>";
 
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
@@ -50,9 +51,41 @@
         });
 
         // Hls Quality Selector - M3U8
+        // player.hlsQualitySelector({
+        //     displayCurrentQuality: true,
+        // });
+
+
+        var qualityLevels = player.qualityLevels();
+
+        // Debugging: Log all available quality levels
+        console.log('Available Quality Levels:', qualityLevels);
+
+        // Function to disable quality levels that don't match the PPV_Plan
+        function filterQualityLevels() {
+            qualityLevels.forEach(function(level) {
+                var height = level.height;
+                console.log('Processing Level:', level);
+
+                if (PPV_Plan === '480p') {
+                    alert(height);
+                    level.enabled = (height <= 480); // Enable 480p and below, disable higher resolutions
+                } else {
+                    level.enabled = true; // Enable all resolutions if no specific PPV_Plan is set
+                }
+            });
+        }
+
+        // Apply the filter
+        filterQualityLevels();
+
+        // Initialize HLS quality selector after filtering
         player.hlsQualitySelector({
             displayCurrentQuality: true,
         });
+
+        // Debugging: Check the enabled quality levels after filtering
+        console.log('Enabled Quality Levels:', qualityLevels);  
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
