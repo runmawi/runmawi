@@ -50,12 +50,11 @@
             }
         });
 
-
         if( PPV_Plan == '480p' ||  PPV_Plan == '720p'  ){
-        
+
         const enabledResolutions = PPV_Plan === '480p'
-            ? ['240p', '360p', '480p'] 
-            : ['240p', '360p', '480p', '720p']; 
+            ? ['240p', '360p', '480p']
+            : ['240p', '360p', '480p', '720p'];
 
 
             player.on('loadeddata', () => {
@@ -133,7 +132,7 @@
                 displayCurrentQuality: true,
             });
         }
-  
+
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
@@ -566,7 +565,7 @@ button.vjs-quality-btn{line-height:4rem;}
 .vjs-quality-menu {
     position: absolute;
     bottom: 100%; /* Position the menu above the selector */
-    left: 0;
+    left: -10px;
     background: #2b333f;
     /* border: 1px solid #ccc; */
     border-radius:5px;
@@ -577,16 +576,38 @@ button.vjs-quality-btn{line-height:4rem;}
 }
 .vjs-quality-menu.list::after{
     content: "";
-    margin-left: -5px;
+    top: 1.95em !important;
+    margin-left: 32px;
     border-width: 8px;
+    position: relative;
     border-style: solid;
     border-color: #2b333f transparent transparent transparent;
 }
-.vjs-quality-menu-item:hover{background-color:#095ae5;}
+.vjs-quality-menu-item:hover,
+.vjs-quality-menu-item .vjs-selected{
+    background-color:#095ae5;
+}
 
 .vjs-quality-menu-item {
     padding: 8px 12px;
     cursor: pointer;
+    list-style: none;
+    margin: 0;
+    padding: 0.6em 0;
+    line-height: 1.2em;
+    font-size: 1.2em;
+    font-family: Roboto;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.vjs-quality-menu.list{
+    position: absolute;
+    /* bottom: 5.9em; */
+    max-height: 20em;
+    background-color: #2b333f;
+    border-radius: 5px;
+    width: 8em;
 }
 
 </style>
