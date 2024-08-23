@@ -1,7 +1,7 @@
 @php
      include(public_path('themes/default/views/header.php'));
      include( public_path('themes/default/views/video-js-Player/Livestream/live-ads.blade.php'));
-     include( public_path('themes/default/views/video-js-Player/Livestream/live-player-script.blade.php'));    
+     include( public_path('themes/default/views/video-js-Player/Livestream/live-player-script.blade.php'));
 @endphp
 
 <style type="text/css">
@@ -10,7 +10,7 @@
        color: red;
        text-shadow: none;
     }
- 
+
     .come-from-modal.left .modal-dialog,
     .come-from-modal.right .modal-dialog {
        margin: auto;
@@ -22,19 +22,19 @@
        -o-transform: translate3d(0%, 0, 0);
        transform: translate3d(0%, 0, 0);
     }
- 
+
     .come-from-modal.left .modal-content,
     .come-from-modal.right .modal-content {
        height: 100%;
        overflow-y: auto;
        border-radius: 0px;
     }
- 
+
     .come-from-modal.left .modal-body,
     .come-from-modal.right .modal-body {
        padding: 15px 15px 80px;
     }
- 
+
     .come-from-modal.right.fade .modal-dialog {
        right: 0;
        -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
@@ -42,11 +42,11 @@
        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
        transition: opacity 0.3s linear, right 0.3s ease-out;
     }
- 
+
     .come-from-modal.right.fade.in .modal-dialog {
        right: 0;
     }
- 
+
     #sidebar-wrapper {
        height: calc(100vh - 80px - 75px) !important;
        border-radius: 10px;
@@ -54,31 +54,31 @@
        color: #fff;
        transition: margin 0.25s ease-out;
     }
- 
+
     .list-group-item-action:hover {
        color: #000 !important;
     }
- 
+
     .list-group-item-light {
        background-color: transparent;
     }
- 
+
     .list-group-item-light:hover {
        background-color: #fff;
        color: #000 !important;
     }
- 
+
     a.list-group-item {
        border: none;
     }
- 
+
     .list-group-flush::-webkit-scrollbar-thumb {
        background-color: red;
        border-radius: 2px;
        border: 2px solid red;
        width: 2px;
     }
- 
+
     .list-group-flush {
        overflow-x: hidden !important;
        overflow: scroll;
@@ -86,26 +86,26 @@
        scroll-behavior: auto;
        scrollbar-color: rebeccapurple green !important;
     }
- 
+
     .list-group-flush::-webkit-scrollbar {
        width: 8px;
     }
- 
+
     .list-group-flush::-webkit-scrollbar-track {
        background: rgba(255, 255, 255, 0.2);
- 
+
     }
- 
+
     #sidebar-wrapper .sidebar-heading {
        padding: 10px 10px;
        font-size: 1.2rem;
- 
+
     }
- 
+
     .plyr__video-embed {
        position: relative;
     }
- 
+
     #video_bg_dim {
        position: absolute;
        top: 0;
@@ -113,7 +113,7 @@
        left: 0;
        right: 0;
     }
- 
+
     .countdown {
        text-align: center;
        font-size: 60px;
@@ -123,65 +123,65 @@
 
     .favorites-slider .slick-prev, #trending-slider-nav .slick-prev {color: var(--iq-white); left: 0;top: 38%;}
     .favorites-slider .slick-next, #trending-slider-nav .slick-next {color: var(--iq-white);right: 0;top: 38%;}
-    
+
     .fp-ratio {
        padding-top: 64% !important;
     }
- 
+
     h2 {
        text-align: center;
        font-size: 35px;
        margin-top: 0px;
        font-weight: 400;
     }
- 
+
     h3 {
        text-align: center;
        font-size: 25px;
        margin-top: 0px;
        font-weight: 400;
     }
- 
+
     #videoPlayer {
        width: 100%;
        height: 100%;
        margin: 20px auto;
     }
- 
+
     .plyr audio,.plyr iframe,.plyr video {
        display: block;
     }
- 
+
     .plyr--video {
        height: calc(100vh - 80px - 75px);
        max-width: none;
        width: 100%;
     }
- 
+
     .custom-skip-forward-button, .custom-skip-backward-button{
      top: 23% !important;
     }
- 
+
     /* <!-- BREADCRUMBS  */
- 
+
     .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
        content: none;
     }
- 
+
     ol.breadcrumb {
        color: white;
        background-color: transparent !important;
        font-size: revert;
     }
- 
+
     .vjs-skin-hotdog-stand {
        color: #FF0000;
     }
- 
+
     .vjs-skin-hotdog-stand .vjs-control-bar {
        background: #FFFF00;
     }
- 
+
     .vjs-skin-hotdog-stand .vjs-play-progress {
        background: #FF0000;
     }
@@ -195,7 +195,7 @@
 
     body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
     body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
- 
+
     div#video\ sda{position:relative;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     @media (max-width: 500px) {
@@ -266,82 +266,87 @@
                         {{-- Player --}}
     {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
 
-    <div class="container-fluid video-details">
-        <div class="row">
+    @if($Livestream_details->publish_type == "publish_now")
 
-                        {{-- BREADCRUMBS --}}
-            <div class="col-sm-12 col-md-12 col-xs-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bc-icons-2">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a class="black-text"  href="{{ route('liveList') }}"> {{ucwords(__('Livestreams')) }}</a>
-                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                </li>
+        <div class="container-fluid video-details">
+            <div class="row">
 
-                                @empty($category_name)
-                                    @foreach ($category_name as $key => $video_category_name) 
-                                        <?php $category_name_length = count($category_name); ?>
-                                        <li class="breadcrumb-item">
-                                            <a class="black-text"
-                                                href= "{{route ('LiveCategory', [$video_category_name->categories_slug])}} ">
-                                                {{ ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '')}} 
-                                            </a>
-                                        </li>
-                                    @endforeach
+                            {{-- BREADCRUMBS --}}
 
-                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                @endempty
+                <div class="col-sm-12 col-md-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bc-icons-2">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a class="black-text"  href="{{ route('liveList') }}"> {{ucwords(__('Livestreams')) }}</a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
 
-                                <li class="breadcrumb-item"><a class="black-text">{{ strlen($video->title) > 50 ? ucwords(substr($video->title, 0, 120) . '...') : ucwords($video->title) }}</a></li>
-                            </ol>
+                                    @empty($category_name)
+                                        @foreach ($category_name as $key => $video_category_name)
+                                            <?php $category_name_length = count($category_name); ?>
+                                            <li class="breadcrumb-item">
+                                                <a class="black-text"
+                                                    href= "{{route ('LiveCategory', [$video_category_name->categories_slug])}} ">
+                                                    {{ ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '')}}
+                                                </a>
+                                            </li>
+                                        @endforeach
+
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    @endempty
+
+                                    <li class="breadcrumb-item"><a class="black-text">{{ strlen($video->title) > 50 ? ucwords(substr($video->title, 0, 120) . '...') : ucwords($video->title) }}</a></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9 col-md-9 col-xs-12">
+                    <h1 class="trending-text big-title text-uppercase mt-3">
+                        {!!  optional($Livestream_details)->title !!}
+                    </h1>
+                </div>
+
+                <div class="col-sm-3 col-md-3 col-xs-12">
+                    <div class=" d-flex mt-4 pull-right">
+                        <div class="views">
+                            <span class="view-count"><i class="fa fa-eye"></i>
+                                {{ isset($view_increment) && $view_increment ? $video->views + 1 : $video->views }} {{  __('Views')  }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-9 col-md-9 col-xs-12">
-                <h1 class="trending-text big-title text-uppercase mt-3">
-                    {!!  optional($Livestream_details)->title !!}
-                </h1>
+                    <!-- languages, categories time, public_current_time ,age_restrict -->
+            <div class=" align-items-center text-white text-detail p-0">
+                <span class="badge badge-secondary p-2">{{ __(@$video->languages->name) }}</span>
+                <span class="badge badge-secondary p-2">{{ __(@$video->categories->name) }}</span>
+                <span class="badge badge-secondary p-2">{{ __('Published On :'. $Livestream_details->public_current_time ) }} </span>
+                <span class="badge badge-secondary p-2">{{ __(@$Livestream_details->age_restrict) }}</span>
             </div>
 
-            <div class="col-sm-3 col-md-3 col-xs-12">
-                <div class=" d-flex mt-4 pull-right">
-                    <div class="views">
-                        <span class="view-count"><i class="fa fa-eye"></i>
-                            {{ isset($view_increment) && $view_increment ? $video->views + 1 : $video->views }} {{  __('Views')  }}
-                        </span>
-                    </div>
+                    <!-- Social Share, Like Dislike -->
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-socail-share", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
+                    </ul>
                 </div>
             </div>
         </div>
 
-                <!-- languages, categories time, public_current_time ,age_restrict -->
-        <div class=" align-items-center text-white text-detail p-0">
-            <span class="badge badge-secondary p-2">{{ __(@$video->languages->name) }}</span>
-            <span class="badge badge-secondary p-2">{{ __(@$video->categories->name) }}</span>
-            <span class="badge badge-secondary p-2">{{ __('Published On :'. $Livestream_details->public_current_time ) }} </span>
-            <span class="badge badge-secondary p-2">{{ __(@$Livestream_details->age_restrict) }}</span>
-        </div>
-
-                <!-- Social Share, Like Dislike -->
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-xs-12">
-                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-socail-share", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
-                </ul>
+                {{-- Description --}}
+        <div class="container-fluid">
+            <div class="text-white col-md-6 p-0">
+                <p class="trending-dec w-100 mb-0 text-white"> {!! html_entity_decode(__($video->description)) !!}</p>
+                <p class="trending-dec w-100 mb-3 text-white">{!! html_entity_decode(__($video->details)) !!}</p>
             </div>
         </div>
-    </div>
-
-            {{-- Description --}}
-    <div class="container-fluid">
-        <div class="text-white col-md-6 p-0">
-            <p class="trending-dec w-100 mb-0 text-white"> {!! html_entity_decode(__($video->description)) !!}</p>
-            <p class="trending-dec w-100 mb-3 text-white">{!! html_entity_decode(__($video->details)) !!}</p>
-        </div>
-    </div>
+        
+    @endif
 
             {{-- CommentSection  --}}
 
@@ -472,7 +477,7 @@
             </div>
         </div>
     @endif
-    
+
     <div class="clear"></div>
 </div>
 
@@ -523,7 +528,7 @@
                 slidesToShow: 2,
                 dots: true
             }
-            }, 
+            },
             {
             breakpoint: 300,
             settings: "unslick" // destroys slick
@@ -613,7 +618,7 @@
             $("#live-purchase-now-modal").modal();
         });
 
-    });
+     });
 </script>
 
     {{-- CinePay Payment --}}
@@ -633,7 +638,7 @@
     function cinetpay_checkout() {
         CinetPay.setConfig({
             apikey: CinetPay_APIKEY,
-            site_id: CinetPay_SITE_ID, 
+            site_id: CinetPay_SITE_ID,
             notify_url: window.location.href,
             return_url: window.location.href,
             // mode: 'PRODUCTION'
