@@ -294,7 +294,7 @@
             {{-- Subscribe & PPV --}}
         @if($Livestream_details->users_video_visibility_status == false)
             <div class="video" >
-                <div class="row container" style="padding-top:4em;">
+                <div class="row container">
 
                                         {{-- Back Button --}}
                     <!-- <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -307,7 +307,7 @@
                         <img class="posterImg w-100"  src="{{ $Livestream_details->Thumbnail }}" >
                     </div> -->
 
-                    <div class="col-lg-6 col-6 mt-5">
+                    <div class="col-lg-6 col-6 mt-5" style="padding: 0 40px;">
                         <!-- <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br> -->
                         <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
 
@@ -411,7 +411,7 @@
             {{-- Subscribe & PPV --}}
         @if($Livestream_details->users_video_visibility_status == false)
             <div class="video" >
-                <div class="row container" style="padding-top:4em;">
+                <div class="row container">
 
                                         {{-- Back Button --}}
                     <!-- <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -424,7 +424,7 @@
                         <img class="posterImg w-100"  src="{{ $Livestream_details->Thumbnail }}" >
                     </div> -->
 
-                    <div class="col-lg-6 col-6 mt-5">
+                    <div class="col-lg-6 col-6 mt-5" style="padding: 0 40px;">
                         <!-- <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br> -->
                         <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
 
@@ -491,5 +491,11 @@
 <style>
     .text{
         text-transform: capitalize;
+        font-size: 20px !important;
+        font-weight: 500;
+    }
+    .banner-live-details{
+        text-align: left !important;
+        padding: 0 40px;
     }
 </style>
