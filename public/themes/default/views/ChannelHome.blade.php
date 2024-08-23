@@ -111,11 +111,7 @@
 
         @if(  $item->video_name == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
             <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/trending-videoloop", array_merge($homepage_array_data, ['data' => $featured_videos]) )->content() !!} </div>
-        @endif     
-
-        @if(  $item->video_name == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}} 
-            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/videoCategories",  array_merge($homepage_array_data, ['data' => $genre_video_display]) )->content() !!}</div>
-        @endif
+        @endif    
 
         @if(  $item->video_name == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
             <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/artist-videos",  array_merge($homepage_array_data) )->content() !!} </div>

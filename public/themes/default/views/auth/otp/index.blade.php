@@ -162,7 +162,7 @@ $theme = App\SiteTheme::first();
                     <span class="mob_exist_status"> </span>
 
                     <div class="d-flex justify-content-end links">
-                        <a href="{{ route('login') }}" class="f-link">{{ __('Login vai E-Mail').' ?' }}</a> &nbsp; &nbsp;
+                        {{-- <a href="{{ route('login') }}" class="f-link">{{ __('Login vai E-Mail').' ?' }}</a> &nbsp; &nbsp; --}}
                         <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password') . ' ?' }}</a>
                     </div>
 

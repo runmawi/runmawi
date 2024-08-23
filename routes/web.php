@@ -369,9 +369,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // OTP (March 2024)
     Route::get('/login-otp', 'OTPController@OTP_index')->name('auth.otp.index');
     Route::get('/verify-mobile-number', 'OTPController@verify_mobile_number')->name('auth.otp.verify_mobile_number');
-    Route::post('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
-    Route::get('/verify-otp', 'OTPController@verify_OTP')->name('auth.otp.verify-otp');
-    Route::post('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
+    Route::get('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
+    Route::get('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
     Route::get('/check-mobile-exist', 'OTPController@check_mobile_exist')->name('auth.otp.check-mobile-exist');
 
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
@@ -462,6 +461,10 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
         // Stripe Video PPV Purchase
     Route::get('Stripe_payment_video_PPV_Purchase/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase')->name('Stripe_payment_video_PPV_Purchase');
     Route::get('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase_verify')->name('Stripe_payment_video_PPV_Purchase_verify');
+    
+    
+    Route::get('Stripe_payment_video_PPV_Plan_Purchase/{ppv_plan}/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase')->name('Stripe_payment_video_PPV_Plan_Purchase');
+    Route::get('Stripe_payment_video_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}/{ppv_plan}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase_verify')->name('Stripe_payment_video_PPV_Plan_Purchase_verify');
 
         // Stripe Series Season PPV Purchase
     Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
@@ -2357,6 +2360,8 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 
     Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
     Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
+
+    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
 
     Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');

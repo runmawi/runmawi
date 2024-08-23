@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLoginSignupOtpStatusToSettingsTable extends Migration
+class AddPpvPlanToPpvPurchases extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddLoginSignupOtpStatusToSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->tinyInteger('login_Signup_otp_status')->default(0);
+        Schema::table('ppv_purchases', function (Blueprint $table) {
+            $table->string('ppv_plan')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddLoginSignupOtpStatusToSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->dropColumn('login_Signup_otp_status');
+        Schema::table('ppv_purchases', function (Blueprint $table) {
+            $table->dropColumn('ppv_plan');
         });
     }
 }

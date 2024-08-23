@@ -21,7 +21,12 @@ class AdminOTPCredentialsController extends Controller
 
         $inputs = array(
             'otp_vai' => $request->otp_vai ,
-            'otp_fast2sms_api_key' => $request->otp_fast2sms_api_key ,
+            'otp_fast2sms_api_key'   => $request->otp_fast2sms_api_key ,
+            'otp_24x7sms_api_key'    => $request->otp_24x7sms_api_key ,
+            'otp_24x7sms_sender_id'  => $request->otp_24x7sms_sender_id ,
+            'otp_24x7sms_sevicename' => $request->otp_24x7sms_sevicename ,
+            'DLTTemplateID'    => $request->DLTTemplateID ,
+            'template_message' => $request->template_message ,
             'status' => !empty($request->status) && $request->status == "on" ? 1 : 0  ,
         );
 
