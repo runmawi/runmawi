@@ -934,9 +934,11 @@ display: block !important;
 
 /* For screens up to 600px */
 @media only screen and (max-width: 600px) {
-    .vjs-big-play-button {
-
-        visibility: visible !important;
+    .my-video.vjs-paused .vjs-big-play-button {
+        pointer-events: auto;
+    }
+    .vjs-has-started .vjs-big-play-button{
+        pointer-events: auto;
     }
   .custom-skip-backward-button {
     left: 20%;
