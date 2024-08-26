@@ -2241,19 +2241,6 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // Landing page  category videos
     Route::get('landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
 
-    // Channel List
-    Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-    Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
-    Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
-    Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
-    Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
-    Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
-    Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
-    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
-    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
-    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
-    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
-
     // Content Partner List
     Route::get('contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
     //   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
@@ -2351,6 +2338,21 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
     Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList')->name('ContinueWatchingList');
 });
+
+
+    // Channel List
+    Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+    Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+    Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
+    Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+    Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+    Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+    Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
+    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
+    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
+    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
+    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
+
 
 // Razorpay
 Route::group(['middleware' => ['RazorpayMiddleware']], function () {
