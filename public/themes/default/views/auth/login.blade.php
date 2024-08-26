@@ -221,7 +221,7 @@
                                             <div class="col-md-4 form-group">  {{-- Country Code --}}
                                                 <select class="form-control text-center mobile_validation" id="ccode" name="ccode" required>
                                                     @foreach($country_json_data as $code)
-                                                        <option value="{{  $code['dial_code'] }}" style="background-color:rgba(0,0,0,0.5)!important; "> {{ "{$code['code']} ({$code['dial_code']})" }}</option>
+                                                        <option value="{{  $code['dial_code'] }}" style="background-color:rgba(0,0,0,0.5)!important;" {{ $code['name'] == "India" ? 'selected' : ''}} > {{ "{$code['code']} ({$code['dial_code']})" }}</option>
                                                     @endforeach
                                                  </select> 
                                             </div>

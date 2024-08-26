@@ -351,7 +351,7 @@ i.fa.fa-google-plus {
                                                 <select class="form-control mobile_validation" name="ccode" id="ccode" >
                                                     <option>{{ __('Select Country') }}</option>
                                                     @foreach($jsondata as $code)
-                                                        <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                                        <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "India" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
