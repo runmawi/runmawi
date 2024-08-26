@@ -5,14 +5,6 @@ $settings = App\Setting::first();
 @endphp
 
 <style>
-
-.left-card, .right-card{/*background-color: #131313;*/background-color: #000 ;padding-right: 15px;padding-left: 15px;}
-.left-card{flex-grow: 3;}
-.right-card{flex-grow: 4;}
-p.phone-mail {margin-bottom: 0.3rem;}
-span.details {border-radius: 3px;padding: 5px 15px;background: #1F1F1F;font-size: 14px;}
-button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color: #fff;margin-top: 2rem;border: transparent;border-radius: 25px;}
-   .m-profile .sign-user_card{background-color: var(--iq-body-bg);box-shadow: unset;}
     #main-header{ color: #fff; }
     .svg{ color: #fff; } 
     .form-control {
@@ -233,13 +225,17 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
       @endif
 
          <div class="sign-user_card">
-        <div class="row" style="gap:10px;">
+        <div class="row align-items-center">
            
-            <div class="left-card mb-3 bdr">
+            <div class="col-lg-4 mb-3 bdr">
+                <h3>Account Settings</h3>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
-                        <li><a class="showSingle" target="1">{{ __('Account Info') }}</a></li>
-                        <li><a class="showSingle" target="2">{{ __('Plan Details') }}</a></li>
+                      <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
+                          <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
+                         <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
+                        <li><a class="showSingle" target="1">Manage Profile details</a></li>
+                        <li><a class="showSingle" target="2">Plan details</a></li>
                         <li><a class="showSingle" target="5">Preference for videos</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
                         <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
@@ -248,37 +244,16 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                     </ul>
                 </div>
             </div>
-            <div class="right-card mb-3">
-               <div class="targetDiv" id="div1">
-                  <div class="profile-pic-name d-flex align-items-center m-5">
-                     @php 
-                        $data =  Session::all()
-                     @endphp
-                     @if($user->provider != 'facebook' || $user->provider != 'google')
-                        <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;"/>
-                     @else
-                        <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;object-fit:cover;"/>
-                     @endif
-                     <h4 class="pl-3">{{ __($user->username)}}</h4>
-                  </div>
-                  <div class="phone-email-details row ml-4">
-                     <div class="col-3">
-                        <p class="phone-mail">{{ __('Phone Number') }}</p>
-                        <span class="details">{{ $user->mobile }}</span>
-                        <button class="edit-details">{{ __('Edit') }}</button>
-                     </div>
-                     <div class="col-3">
-                        <p class="phone-mail">{{ __('Email ID') }}</p>
-                        <span class="details">{{ __($user->email) }}</span>
-                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
-
-                        <button class="edit-details">{{ __('Edit') }}</button>
-                     </div>
-
-                  </div>
-
-
-
+            <div class="col-lg-8 mb-3">
+                <div class="targetDiv" id="div1">
+                <div class=" d-flex justify-content-between mb-3">
+                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
+                    <?php }else{ ?> 
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;object-fit:cover;"/>
+                     <?php } ?>
+                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                   </div>
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                 <div class="" id="personal_det">
                 <div class="" >
