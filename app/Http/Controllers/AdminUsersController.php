@@ -947,15 +947,31 @@ class AdminUsersController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-
-
-        $user->username = $request->get('name');
-        $user->mobile = $request->get('mobile');
-        $user->email = $request->get('email');
-        $user->DOB = $request->get('DOB');
-        $user->ccode = $request->get('ccode');
-        $user->username = $request->get('username');
-        $user->gender = $request->get('gender');
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+    
+        if ($request->has('mobile')) {
+            $user->mobile = $request->get('mobile');
+        }
+    
+        if ($request->has('email')) {
+            $user->email = $request->get('email');
+        }
+    
+        if ($request->has('DOB')) {
+            $user->DOB = $request->get('DOB');
+        }
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+        if ($request->has('ccode')) {
+            $user->ccode = $request->get('ccode');
+        }
+    
+        if ($request->has('gender')) {
+            $user->gender = $request->get('gender');
+        }
 
 
         if ($request->get('password') != null)
@@ -3019,8 +3035,9 @@ class AdminUsersController extends Controller
 
             $user_id = Auth::user()->id;
             $user_role = Auth::user()->role;
-            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                ->get();
+            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)->get();
+            $video_quality = SubscriptionPlan::all();
+
             $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
@@ -3138,10 +3155,11 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
+                'video_quality'  => $video_quality,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
             );
-            
+
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
                 return Theme::view('myprofile', $data);
             }else{

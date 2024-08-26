@@ -12,7 +12,7 @@ $settings = App\Setting::first();
 p.phone-mail {margin-bottom: 0.3rem;}
 span.details {border-radius: 3px;padding: 5px 15px;background: #1F1F1F;font-size: 14px;}
 button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color: #fff;margin-top: 2rem;border: transparent;border-radius: 25px;}
-   .m-profile .sign-user_card{background-color: var(--iq-body-bg);box-shadow: unset;}
+.my-profile .sign-user_card{background-color: var(--iq-body-bg);box-shadow: unset;}
     #main-header{ color: #fff; }
     .svg{ color: #fff; } 
     .form-control {
@@ -105,7 +105,7 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
     .modal-open .modal{
       overflow: hidden;
     }
-    .m-profile .form-group {
+    .my-profile .form-group {
          margin-bottom: 0.5rem;
       }
       .modal-header{padding:1rem 1rem 0 1rem;}
@@ -224,7 +224,7 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
   
 
     <!-- MainContent -->
-<section class="m-profile  setting-wrapper pt-0 p-3">        
+<section class="my-profile  setting-wrapper pt-0 p-3">        
     <div class="container">
        
                      {{-- message --}}
@@ -249,234 +249,73 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                 </div>
             </div>
             <div class="right-card mb-3">
-               <div class="targetDiv" id="div1">
-                  <div class="profile-pic-name d-flex align-items-center m-5">
-                     @php 
-                        $data =  Session::all()
-                     @endphp
-                     @if($user->provider != 'facebook' || $user->provider != 'google')
-                        <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;"/>
-                     @else
-                        <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;object-fit:cover;"/>
-                     @endif
-                     <h4 class="pl-3">{{ __($user->username)}}</h4>
-                  </div>
-                  <div class="phone-email-details row ml-4">
-                     <div class="col-3">
-                        <p class="phone-mail">{{ __('Phone Number') }}</p>
-                        <span class="details">{{ $user->mobile }}</span>
-                        <button class="edit-details">{{ __('Edit') }}</button>
+                  <div class="targetDiv" id="div1">
+                     <div class="profile-pic-name d-flex align-items-center m-5">
+                        @php 
+                           $data =  Session::all()
+                        @endphp
+                        @if($user->provider != 'facebook' || $user->provider != 'google')
+                           <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;"/>
+                        @else
+                           <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;object-fit:cover;"/>
+                        @endif
+                        <h4 class="pl-3">{{ __($user->username)}}</h4>
                      </div>
-                     <div class="col-3">
-                        <p class="phone-mail">{{ __('Email ID') }}</p>
-                        <span class="details">{{ __($user->email) }}</span>
-                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
-
-                        <button class="edit-details">{{ __('Edit') }}</button>
-                     </div>
-
-                  </div>
-
-
-
-                     <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
-                <div class="" id="personal_det">
-                <div class="" >
-                    <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
-                        </div></div>
-                    </div>
-                    <div class="a-border"></div>
-                   <div class="a-border"></div>
-                      <div class="row jusitfy-content-center">
-                        <div class="col-md-3 mt-3">
-                            <h5>Account Details</h5>
-                          </div>
-                        <div class="col-md-9">
-                             <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Email</span>
-                            <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
-                        </div>   
-                    </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Username</span>
-                            <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
-                        </div>   
-                    </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Password</span>
-                            <p class="mb-0">***********</p>
-                        </div>
-                    </div>
-                    
-                  
-                       
-                   
-                          </div>
-                    </div>
-                      <div class="a-border"></div>
-                    <div class="row">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-9">
-                             <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
-                            <span class="text-light font-size-13">Phone</span>
-                            <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
-                        </div>
-                    </div> 
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">DOB</span>
-                            <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
-                              
-                        </div>
-                    </div>
-                  
-                        </div>
-                    </div>
-                   
-                        </div>
-                          <div class="a-border"></div>
-                         
-                          <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
-                              <div class="col-md-9"> 
-                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                     @csrf
-                        <div class="row align-items-center">
-                           <div class="col-sm-6">
-                              <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                              <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
-                              <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                     <div class="phone-email-details row ml-4">
+                        <div class="col-3">
+                           <div id="phone-no-edit">
+                              <p class="phone-mail">{{ __('Phone Number') }}</p>
+                              <span class="details">{{ $user->mobile }}</span>
+                              <button id="phone-edit-btn" class="edit-details">{{ __('Edit') }}</button>
                            </div>
-                           <div class="col-sm-6">
-                                 <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                                 <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                           <div id="phone-no-submit" style="display: none;">
+                              <form id="phone-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+                                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                 <p class="phone-mail">{{ __('Phone Number') }}</p>
+                                 <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="{{ $user->mobile }}" class="form-control" placeholder="{{ __('Mobile Number') }}">
+                              </form>
+                              <button id="submit-phone" class="edit-details">{{ __('Submit') }}</button>
                            </div>
                         </div>
-                                  
-                     </form>	
+                     
+                        <div class="col-3">
+                              <div id="email-edit">
+                                 <p class="phone-mail">{{ __('Email ID') }}</p>
+                                 <span class="details">{{ $user->email }}</span>
+                                 <button id="email-edit-btn" class="edit-details">{{ __('Edit') }}</button>
+                              </div>
+                              <div id="email-submit" style="display: none;">
+                                 <form id="email-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                                    <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                    <p class="phone-mail">{{ __('Email ID') }}</p>
+                                    <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control" placeholder="{{ __('Email') }}">
+                                 </form>
+                                 <button id="submit-email" class="edit-details">{{ __('Submit') }}</button>
+                              </div>
+                        </div>
+
+                     </div>
+
                   </div>
-                              <div class="col-md-3"></div></div>
-                   
-                      
-                </div>
-                    <!-- Add New Modal -->
-<div class="modal fade" id="add-profile">
-  <div class="modal-dialog">
-     <div class="modal-content">
-        
-        <div class="modal-header">
-                <h4 class="modal-title text-black">Update Profile</h4>
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-           
-        </div>
-        
-        <div class="modal-body">
-            <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
-              <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-              <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                            
-                  <div class="form-group">
-                          <label> Username:</label>
-                          <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
-                        </div>
-                    
-                        <div class="form-group">
-                          <label> Email:</label>
-                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
-                        </div> 
-                    
-                    
-                        <div class="form-group position-relative">
-                          <label>Password:</label><br>
-                          <input type="password" id="pass_log_id"  name="password"   placeholder="Password"  class="form-control"  >
-                            <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
-
-                      </div> 
-                    
-                    
-                        <div class="form-group">
-                           <label> Phone:</label>
-                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
-                        </div>
-                        <div class="form-group">
-                        <label> DOB:</label>
-                        <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
-                           <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
-                        </div>
-
-            </form>
-        </div>
-        
-        <div class="modal-footer">
-           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
-        </div>
-     </div>
-  </div>
-</div>
-                    </div>
 
          
-                <div class="col-sm-12 text-center targetDiv" id="div2">
-                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;"/></div>
-                        <?php }else{ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;" /></div>
-                           <?php } ?>
-                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                      <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
-                      <h4 class="mb-3"></h4>
-                    
-      <div class="text-center">
-                   <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .'(Free)'; ?> Subscription</h6>                                       
-                          <h6></h6>                                       
-                       <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
-                          <br>       
-                       <h5 class="card-title mb-0">Available Specification :</h5><br>
-                       <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                       <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                       <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
-                          <!--<h6>Subscription</h6>-->
-                       <?php } ?>
-                       </div>
-                         
-                         <!-- -->
-                  <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-12 col-md-12 col-lg-12 ">
-                        <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
-                     </div>
+               <div class="col-sm-12 targetDiv" id="div2">
+                  <div class="current-plan m-5">
+                     <h4>{{ __('Current Plan') }}</h4>
+                     <h4 class="text-primary mt-5 mb-4">{{ __($user->plan_name) }}</h4>
+                     @php
+                        $deviceNames = $alldevices->pluck('device_name')->toArray();
+                        $deviceList = implode(', ', $deviceNames);
+                     @endphp
+                     <span>
+                        {{ __('Good video quality in HD ('. $video_quality->first()->video_quality.'). Watch ad-free on '.$deviceList.'.' ) }}
+                     </span><br>
 
-                        
-                        <div class="col-sm-4 text-center mt-3">
-                           @if(Auth::user()->role == "subscriber")
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
-                           
-                           @elseif( Auth::user()->role == "admin")
-
-                           @else
-                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
-                           @endif
-                        </div>
-
-                        @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
-                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >Cancel Membership</a>
-                        @endif
-
-                        @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
-                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > Cancel Membership </a>
-                        @endif
-
-                    </div>
+                     <a class="btn btn-primary mt-4" href="{{ URL::to('/becomesubscriber')}}">{{ __('Change Plan') }}</a>
                   </div>
+               </div>
                 
                 <div class="targetDiv" id="div3">
                     <div class="row align-items-center justify-content-between mb-3 mt-3">
@@ -710,6 +549,38 @@ border-radius: 4px;
         
 
   </div>
+
+ 
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+       var phoneEditBtn = document.getElementById('phone-edit-btn');
+       var emailEditBtn = document.getElementById('email-edit-btn');
+       var phoneNoEdit = document.getElementById('phone-no-edit');
+       var emailEdit = document.getElementById('email-edit');
+       var phoneNoSubmit = document.getElementById('phone-no-submit');
+       var emailSubmit = document.getElementById('email-submit');
+
+       phoneEditBtn.addEventListener('click', function(event) {
+           event.preventDefault();
+           phoneNoEdit.style.display = 'none';
+           phoneNoSubmit.style.display = 'block';
+       });
+
+       emailEditBtn.addEventListener('click', function(event) {
+           event.preventDefault();
+           emailEdit.style.display = 'none';
+           emailSubmit.style.display = 'block';
+       });
+
+       document.getElementById('submit-phone').addEventListener('click', function() {
+           document.getElementById('phone-form').submit();
+       });
+
+       document.getElementById('submit-email').addEventListener('click', function() {
+           document.getElementById('email-form').submit();
+       });
+   });
+</script>
   
   <?php $settings = App\Setting::first(); ?>
 
@@ -1035,9 +906,12 @@ jQuery(document).ready(function($){
 
 
 // Add New Category
-$('#submit-new-cat').click(function(){
-  $('#new-cat-form').submit();
-});
+   $('#submit-new-cat').click(function(){
+      $('#new-cat-form').submit();
+   });
+   $('#submit-email-cat').click(function(){
+      $('#new-cat-form').submit();
+   });
 });
 
     $(document).ready(function(){
@@ -1055,6 +929,9 @@ $('#submit-new-cat').click(function(){
     input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
 });
 </script>
+
+
+
 @php
-include(public_path('themes/theme6/views/footer.blade.php'));
+   include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
