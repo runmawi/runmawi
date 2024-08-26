@@ -4,7 +4,7 @@
    $order_settings_list = App\OrderHomeSetting::get();
    $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
    $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
-   
+
 ?>
 
 <!-- Slider Start -->
@@ -15,7 +15,7 @@
                   <?php
                      if ($slider_choosen == 2) {
                         include 'partials/home/slider-2.php';
-                     } 
+                     }
                      else {
                         include 'partials/home/slider-1.php';
                      }
@@ -35,7 +35,7 @@
 
 
 
-<div class="main-content" id="home_sections" next-page-url="<?php echo $order_settings->nextPageUrl() ?> ">
+<div class="main-content" id="home_sections">
 
    <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
       <section id="iq-continue overflow-hidden">
@@ -47,7 +47,7 @@
                </div>
          </div>
       </section>
-   <?php  } ?> 
+   <?php  } ?>
 
    <?php foreach($order_settings as $key => $item): ?>
       <?php if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1' ): ?>
@@ -144,7 +144,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'latest_viewed_Livestream' && $home_settings->latest_viewed_Livestream == 1): ?>
@@ -156,7 +156,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'latest_viewed_Episode' && $home_settings->latest_viewed_Episode == 1): ?>
@@ -168,7 +168,7 @@
                      </div>
                   </div>
             </div>
-         </section>         
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1): ?>
@@ -177,13 +177,13 @@
                <?php
                   $DataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
                   $countDataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
-                  if ($countDataFreeseriesCategories > 0 ) {   
+                  if ($countDataFreeseriesCategories > 0 ) {
 
                         $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
                                     ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
                                     ->where('active', '=', '1');
                         $series = $series->latest('series.created_at')->get();
-                  
+
                   }else{
                      $series = [];
                   }
@@ -200,7 +200,7 @@
       <?php if ($item->video_name == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1): ?>
          <section id="iq-favorites">
             <div class="row">
-               
+
                <?php
                   $parentCategories = App\AudioCategory::all();
                   foreach($parentCategories as $category) {
@@ -213,12 +213,12 @@
                      ?>
 
                      <div class="col-sm-12 ">
-                        <?php if (count($audios) > 0) { 
+                        <?php if (count($audios) > 0) {
                            include('partials/home/audiocategoryloop.php');
-                        } 
+                        }
                         else {?>
                            <p class="no_audio"></p>
-                        <?php } 
+                        <?php }
                   }?>
                   </div>
             </div>
@@ -229,23 +229,23 @@
          <?php if ( GetCategoryLiveStatus() == 1 ) {  ?>
             <div class="">
                <?php
-                     
+
                $Multiuser=Session('subuser_id');
                $Multiprofile= App\Multiprofile::where('id',$Multiuser)->first();
 
                $parentCategories = App\LiveCategory::orderBy('order','ASC')->groupBy('name')->get();
                foreach($parentCategories as $category) {
-                        
+
                               $live_streams = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
                                  ->where('category_id','=',$category->id)->where('live_streams.active', '=', '1')
                                  ->where('live_streams.status', '=', '1');
-                              
+
                               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                                  $live_streams = $live_streams  ->whereNotIn('live_streams.id',Block_videos());
                               }
 
                               $live_streams = $live_streams->orderBy('live_streams.created_at','desc')->get(); ?>
-                              <?php if (count($live_streams) > 0 ) { 
+                              <?php if (count($live_streams) > 0 ) {
                                           include('partials/home/live-category.php');
                               } else { ?>
                                  <p class="no_video">
@@ -263,16 +263,16 @@
                <?php
                   $DataFreeliveCategories = App\LiveCategory::where('slug','datafree')->first();
                   $countDataFreeliveCategories = App\LiveCategory::where('slug','datafree')->count();
-                  if ($countDataFreeliveCategories > 0 ) {   
+                  if ($countDataFreeliveCategories > 0 ) {
 
                         $live_streams = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
                                     ->where('category_id','=',@$DataFreeliveCategories->id)->where('active', '=', '1')
                                     ->where('status', '=', '1');
                         $live_streams = $live_streams->latest('live_streams.created_at')->get();
-                  
+
                   }else{
                      $live_streams = [];
-                  } 
+                  }
                ?>
                <div class="row">
                   <div class="col-sm-12">
@@ -292,7 +292,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'series' && $home_settings->series == 1): ?>
@@ -304,7 +304,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'ChannelPartner' && $home_settings->channel_partner == 1): ?>
@@ -317,7 +317,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'latest_viewed_Videos' && $home_settings->latest_viewed_Videos == 1): ?>
@@ -329,7 +329,7 @@
                      </div>
                   </div>
             </div>
-         </section> 
+         </section>
       <?php endif; ?>
 
       <?php if ($item->video_name == 'latest_viewed_Audios' && $home_settings->latest_viewed_Audios == 1): ?>
@@ -350,21 +350,21 @@
                <?php
                   $DataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
                   $countDataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
-                  if ($countDataFreeseriesCategories > 0 ) {   
+                  if ($countDataFreeseriesCategories > 0 ) {
 
                         $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
                                     ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
                                     ->where('active', '=', '1');
                         $series = $series->latest('series.created_at')->get();
-                  
+
                   }else{
                      $series = [];
                   }
                ?>
                <div class="row">
                   <div class="col-sm-12">
-                     <?php if (count($series) > 0 ) {  
-                        include 'partials/home/datafree-series.php'; 
+                     <?php if (count($series) > 0 ) {
+                        include 'partials/home/datafree-series.php';
                      } ?>
                   </div>
                </div>
@@ -494,43 +494,7 @@
 </div>
 
 
-<script>      
-   var isFetching = false; 
-   var scrollFetch; 
-
-   $(window).scroll(function () {
-      clearTimeout(scrollFetch);
-
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#home_sections").attr('next-page-url');
-         console.log("scrolled");
-         console.log("url",page_url);
-         
-
-         if (page_url != null && !isFetching) {
-               isFetching = true; 
-               
-               $.ajax({
-                  url: page_url,
-                  // beforeSend: function () {
-                  //    $('.auto-load').show();
-                  // },
-                  success: function (data) {
-                     console.log("data",data);
-                     
-                     $("#home_sections").append(data.view);
-                     $("#home_sections").attr('next-page-url', data.url);
-                  },
-                  // complete: function () {
-                  //    isFetching = false; 
-                  //    $('.theme4-slider').hide();
-                  //    $('.auto-load').hide();
-                  // }
-               });
-         }
-      }, 100);
-   });
-
+<script>
 
     document.addEventListener("DOMContentLoaded", function() {
         var lazyloadImages = document.querySelectorAll("img.lazy");
@@ -562,7 +526,7 @@
         window.addEventListener("orientationChange", lazyload);
     });
 
-    //  family & Kids Mode Restriction   
+    //  family & Kids Mode Restriction
 
     $(document).ready(function() {
         $('.kids_mode').click(function() {
