@@ -33,10 +33,15 @@
 
             @if ( $videodetail->type == "embed" )
 
-                <iframe class="responsive-iframe" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </button>
+
+                    <iframe class="" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen style="width: 100%; height: 75vh;">
+                    </iframe>
+           
             @else
 
                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
