@@ -31,9 +31,8 @@ class OTPController extends Controller
     public function check_mobile_exist(Request $request)
     {
         $mobile = $request->input('mobile');
-        $ccode = str_replace('+','',$request->input('ccode'));
 
-        $user = User::where('mobile', $mobile)->where('ccode',$ccode)->first();
+        $user = User::where('mobile', $mobile)->first();
 
         if( is_null($mobile)){
             return response()->json(['exists' => false]);
@@ -204,9 +203,8 @@ class OTPController extends Controller
     public function Signup_check_mobile_exist(Request $request)
     {
         $mobile = $request->input('mobile');
-        $ccode = str_replace('+','',$request->input('ccode'));
 
-        $user = User::where('mobile', $mobile)->where('ccode',$ccode)->first();
+        $user = User::where('mobile', $mobile)->first();
 
         if( is_null($mobile)){
             return response()->json(['exists' => false]);
@@ -322,7 +320,7 @@ class OTPController extends Controller
     {
         try {
 
-            $user_verify = SignupOtp::where('mobile_number',$request->mobileNumber)->where('ccode',$request->ccode)->where('otp',$request->otp)->first();
+            $user_verify = SignupOtp::where('mobile_number',$request->mobileNumber)->where('otp',$request->otp)->first();
 
             if( !is_null($user_verify) ){
 
