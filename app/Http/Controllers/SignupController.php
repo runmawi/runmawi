@@ -29,6 +29,7 @@ use App\HomeSetting;
 use Session;
 use Theme;
 use App\SiteTheme;
+use App\AdminOTPCredentials;
 
 class SignupController extends Controller
 {
@@ -196,8 +197,10 @@ class SignupController extends Controller
                 'AllCountry' => \App\AllCountry::get(),
                 'AllCity' => \App\AllCities::get(),
                 'AllState' => \App\AllStates::get(),
-
+                'AllState' => \App\AllStates::get(),
+                'AdminOTPCredentials' =>  AdminOTPCredentials::where('status',1)->first(),
             );
+
             if($settings->free_registration == 1) {
                 return Theme::view('register.signup_step1',$data);
             } else {
