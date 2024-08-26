@@ -271,7 +271,7 @@
         $startTime = Carbon\Carbon::parse($Livestream_details->program_start_time)->isoFormat('h:mm A');
         $recurring_program_Status = false;
 
-        if($Current_time == $startTime){
+        if($Current_time == $startTime || $startTime <= $Current_time){
             $recurring_program_Status = true;
         }
     @endphp
