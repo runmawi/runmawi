@@ -228,6 +228,38 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         color-scheme: dark;
     }
+
+    .otp-input-fields {
+            margin: auto;
+            max-width: 400px;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+
+            input {
+                height: 40px;
+                width: 40px;
+                border-radius: 4px;
+                border: 1px solid #2f8f1f;
+                text-align: center;
+                outline: none;
+                font-size: 16px;
+
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                /* Firefox */
+                &[type=number] {
+                    -moz-appearance: textfield;
+                }
+            }
+        }
+
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;background-attachment: fixed;background-color:#000;background-size:cover;">
@@ -309,33 +341,64 @@ i.fa.fa-google-plus {
                                 </div>
                                 @endif
                             
-                            
+                                        {{-- Signup Menu - Mobile --}}
+
                                 @if(!empty($SignupMenu) && $SignupMenu->mobile == 1)
-                                 <div class="col-md-12">
-                                            <div class="row">
-                               
-                            <div class="col-md-5 col-sm-12">
-                              <select class="phselect form-control" name="ccode" id="ccode" >
-                              <option>{{ __('Select Country') }}</option>
-                              @foreach($jsondata as $code)
-                                <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                @endforeach
-                            </select>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                            
+                                            <div class="col-md-5 col-sm-12">
+                                                <select class="form-control mobile_validation" name="ccode" id="ccode" >
+                                                    <option>{{ __('Select Country') }}</option>
+                                                    @foreach($jsondata as $code)
+                                                        <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                            <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="12" minlength="10" class="form-control" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
-                                 @error('mobile')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                               
-                            </div></div>
-						
+                                            <div class="col-md-7 col-sm-8">
+                                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" required pattern="\d*" maxlength="15" inputmode="numeric" minlength="10" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
+                                                @error('mobile')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror                               
+                                            </div>
+                                            </div>
 
-                                </div>
-                                
+                                            @if (@$AdminOTPCredentials->status == 1)
+                                                
+                                                {{-- Mobile Exist Status --}}
+
+                                                <div class="" style="text-align: right;">
+                                                    <span style="color: var(--iq-white); font-size: 14px;" class="mob_exist_status"></span>
+                                                </div>
+
+                                                <div class="mt-2 d-flex justify-content-end links">
+                                                    <button type="button" class="btn btn-hover ab" id="send_otp_button" data-toggle="collapse" data-target="#demo" style="line-height:20px" disabled>Send OTP</button>
+                                                </div>                        
+
+                                                <span id="demo" class="collapse">
+
+                                                    <div class="otp-div">
+                                                        <div class="otp-input-fields row">
+                                                            <input type="number" class="otp__digit otp__field__1" placeholder="-"  name="otp_1">
+                                                            <input type="number" class="otp__digit otp__field__2"  placeholder="-" name="otp_2">
+                                                            <input type="number" class="otp__digit otp__field__3"  placeholder="-" name="otp_3">
+                                                            <input type="number" class="otp__digit otp__field__4"  placeholder="-" name="otp_4">
+                                                            <p class="otp_send_message m-0 p-0" > </p>
+                                                        </div>
+                    
+                                                        <div class=" verify-div text-center p-0">
+                                                            <button type="submit" class="btn btn-hover ab" id="verify-button" style="line-height:20px" disabled >{{ __('Verify OTP') }}</button>
+                                                            <a href="#" id="resend_otp_button" class="text-primary ml-2">{{ __('Resend OTP') }}</a>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
@@ -347,12 +410,9 @@ i.fa.fa-google-plus {
                                  @endif
                            
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="{{ __('Choose DOB') }}"  >
-
-                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
-                                <label id="fileLabel">Choose Profile DOB</label> -->
-                                 </div>
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="{{ __('Choose DOB') }}"  >
+                                    </div>
                                  @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
@@ -487,9 +547,14 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="sign-up-buttons col-md-12 ">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
-                                  <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <button id = "profileUpdate"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
+
+                                @if (@$AdminOTPCredentials->status == 1)
+                                    <button type="submit" id="profileUpdate"  class="btn btn-hover btn-primary btn-block signup signup_submit_otp_button" style="display: block;" name="create-account" disabled >{{ __('Sign Up Today') }}</button>
+                                @else
+                                    <button id = "profileUpdate"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                @endif
+
                                 </div>
                             </div>
                         
@@ -594,47 +659,38 @@ i.fa.fa-google-plus {
 <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 
 <script>
-        $(document).ready(function(){
-        // $('#message').fadeOut(120);
+    $(document).ready(function(){
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 5000);
-    })
-        var onloadCallback = function(){
-      
-    }
+        
+    });
 
+    var onloadCallback = function(){}
 
-
-$('form[id="stripe_plan"]').validate({
-    ignore: [],
-    rules: {
-        username: 'required',
-        email: {
-            required: true,
-            email: true,
-            normalizer: function(value) {
-                // Trim leading and trailing spaces from the email address
-                return $.trim(value);
-            }
+    $('form[id="stripe_plan"]').validate({
+        ignore: [],
+        rules: {
+            username: 'required',
+            email: {
+                required: true,
+                email: true,
+                normalizer: function(value) {
+                    return $.trim(value);
+                }
+            },
         },
-    },
-    messages: {
-        username: 'This field is required',
-        email: {
-            required: 'Email address is required',
-            // email: 'Please enter a valid email address',
+        messages: {
+            username: 'This field is required',
+            email: {
+                required: 'Email address is required',
+                // email: 'Please enter a valid email address',
+            },
         },
-    },
-    submitHandler: function(form) {
-        form.submit();
-    }
-});
-
-
-     </script>
-
-<script>
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
 
     
 var specialKeys = new Array();
@@ -1213,6 +1269,164 @@ function format(item, state) {
 //     $.validator.addMethod("regx", function(value, element, regexpr) {          
 //     return regexpr.test(value);
 // }, "Please enter a valid pasword.");
+    </script>
+
+    <script>
+
+        var otp_inputs = document.querySelectorAll(".otp__digit")
+        var mykey = "0123456789".split("")
+        otp_inputs.forEach((_) => {
+            _.addEventListener("keyup", handle_next_input)
+        })
+
+        function handle_next_input(event) {
+            let current = event.target
+            let index = parseInt(current.classList[1].split("__")[2])
+            current.value = event.key
+
+            if (event.keyCode == 8 && index > 1) {
+                current.previousElementSibling.focus()
+            }
+            if (index < 4 && mykey.indexOf("" + event.key + "") != -1) {
+                var next = current.nextElementSibling;
+                next.focus()
+            }
+            var _finalKey = ""
+            for (let {
+                    value
+                }
+                of otp_inputs) {
+                _finalKey += value
+            }
+
+            if (_finalKey.length == 4) {
+                document.getElementById("verify-button").removeAttribute("disabled");
+            } else {
+                document.getElementById("verify-button").setAttribute("disabled", "disabled");
+            }
+        }
+
+        $(document).ready(function(){
+
+            $(".mobile_validation").on("input", function() {
+
+                $('.signup_submit_otp_button').prop('disabled', false);
+
+                let mobileNumber = $('#mobile').val();
+                let mobileNumber_count = mobileNumber.length;
+                let ccode = $('#ccode').val();
+
+                $('.mob_exist_status').text("");
+
+                if( mobileNumber !== "" && mobileNumber_count > 9 ){
+
+                    $.ajax({
+                        url: "{{ route('auth.otp.signup-check-mobile-exist') }}",
+                        type: "get",
+                        data: {
+                            mobile: mobileNumber,
+                            ccode: ccode
+                        },
+                        dataType: "json",
+
+                        success: function(response) {
+                            if (response.exists) {
+                                document.getElementById("send_otp_button").removeAttribute("disabled");
+                                $('.mob_exist_status').text("Mobile Number Not Exist, Pls verify Number vai OTP!").css('color', 'green');;
+
+                            } else {
+                                document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
+                                $('.mob_exist_status').text("Mobile Number Already exists !").css('color', 'red');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('AJAX error:', error);
+                            $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
+                        }
+                    });
+                }
+            });
+
+            $('#send_otp_button,#resend_otp_button').click(function(){ 
+
+                $('#mobile').attr('readonly', true);
+                $('#ccode').attr('disabled', true);
+
+                $('.otp_send_message').text("");
+
+                let mobileNumber = $('#mobile').val();
+                let ccode = $('#ccode').val();
+                $('.mob_exist_status').text("");
+
+                $.ajax({
+                    url: "{{ route('auth.otp.signup-sending-otp') }}",
+                    type: "get",
+                    data: {
+                            mobile: mobileNumber,
+                            ccode: ccode
+                        },
+                    dataType: "json",
+
+                    success: function(response) {
+                        if (response.exists) {
+                            $("#send_otp_button").hide();
+                            $('.mob_exist_status').text( response.message_note ).css('color', 'green');
+                            $('.otp-div').show();
+                        } else {
+                            $('.mob_exist_status').text( response.message_note ).css('color', 'red');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('AJAX error:', error);
+                    }
+                });
+            });
+
+            $("#verify-button").click(function(e){
+                e.preventDefault();
+
+                let otp = [
+                    $('.otp__field__1').val(),
+                    $('.otp__field__2').val(),
+                    $('.otp__field__3').val(),
+                    $('.otp__field__4').val()
+                ].join('');
+
+                let mobileNumber = $('#mobile').val();
+                let ccode = $('#ccode').val();
+
+                $('.otp_send_message,.mob_exist_status').text("");
+
+                $.ajax({
+                    url: "{{ route('auth.otp.signup_otp_verification') }}",
+                    type: "GET",
+                    data: {
+                        mobileNumber: mobileNumber,
+                        ccode:ccode,
+                        otp: otp,
+                    },
+                    dataType: "JSON",
+                    
+                    success: function(response) {
+                        if (response.status === true) {
+                            $('.otp_send_message').text(response.message_note).css('color', 'green');
+                            $('#verify-button').prop('disabled', true);
+                            $('.verify-div').hide();
+                            $('.signup_submit_otp_button').prop('disabled', false);
+                        } else if (response.status === false) {
+                            $('.otp__digit').val("");
+                            $('.otp_send_message').text(response.message_note).css('color', 'red');
+                            $('#verify-button').prop('disabled', false);
+                        }
+                    },
+                    error: function() {
+                        $('.otp_send_message').text("An error occurred. Please try again.").css('color', 'red');
+                        $('#verify-button').prop('disabled', false);
+                    }
+                });
+            });
+        });
+
     </script>
 
 
