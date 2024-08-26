@@ -19,6 +19,7 @@ class CreateSignupOtpsTable extends Migration
             $table->string('mobile_number', 20)->nullable();
             $table->string('otp_request_id', 100)->nullable();
             $table->string('otp_through', 20)->nullable();
+            $table->string('ccode', 20)->nullable();
             $table->timestamps();
         });
     }

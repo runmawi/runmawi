@@ -285,14 +285,7 @@ class OTPController extends Controller
                     );
                 }
 
-                // SignupOtp::updateOrCreate(['id' => $user->id ?? null], array(
-                //     'mobile_number' => $request->mobile,
-                //     'otp' => $random_otp_number ,
-                //     // 'otp_request_id' => $msgId ,
-                //     'otp_through' =>  $AdminOTPCredentials->otp_vai ,
-                // ));
 
-                // return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
 
                 $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
@@ -306,6 +299,7 @@ class OTPController extends Controller
                         'otp' => $random_otp_number ,
                         'otp_request_id' => $msgId ,
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
+                        'ccode'       => $request->ccode,
                     );
 
                     SignupOtp::updateOrCreate(['id' => $user->id ?? null], $SignupOtp_inputs);

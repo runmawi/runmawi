@@ -348,7 +348,7 @@ i.fa.fa-google-plus {
                                         <div class="row">
                             
                                             <div class="col-md-5 col-sm-12">
-                                                <select class="phselect form-control mobile_validation" name="ccode" id="ccode" >
+                                                <select class="form-control mobile_validation" name="ccode" id="ccode" >
                                                     <option>{{ __('Select Country') }}</option>
                                                     @foreach($jsondata as $code)
                                                         <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
@@ -357,7 +357,7 @@ i.fa.fa-google-plus {
                                             </div>
 
                                             <div class="col-md-7 col-sm-8">
-                                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="12" minlength="10" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" required pattern="\d*" maxlength="15" inputmode="numeric" minlength="10" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                                 @error('mobile')
                                                     <span class="invalid-feedback" role="alert">
@@ -371,15 +371,13 @@ i.fa.fa-google-plus {
                                                 
                                                 {{-- Mobile Exist Status --}}
 
-                                                <div class="mt-0 m-0 p-0" style="text-align: right;">
+                                                <div class="" style="text-align: right;">
                                                     <span style="color: var(--iq-white); font-size: 14px;" class="mob_exist_status"></span>
                                                 </div>
 
-                                                <div  id="send_otp_button">
-                                                    <div class="d-flex justify-content-end links">
-                                                        <a href="#" class="text-primary ml-2" data-toggle="collapse" data-target="#demo">{{ __('Send OTP') }}</a>
-                                                    </div>                        
-                                                </div>
+                                                <div class="mt-2 d-flex justify-content-end links">
+                                                    <button type="button" class="btn btn-hover ab" id="send_otp_button" data-toggle="collapse" data-target="#demo" style="line-height:20px" disabled>Send OTP</button>
+                                                </div>                        
 
                                                 <span id="demo" class="collapse">
 
@@ -552,7 +550,7 @@ i.fa.fa-google-plus {
                                 <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
 
                                 @if (@$AdminOTPCredentials->status == 1)
-                                    <button id = "profileUpdate signup-submit-otp-button"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account" disabled >{{ __('Sign Up Today') }}</button>
+                                    <button type="submit" id="profileUpdate"  class="btn btn-hover btn-primary btn-block signup signup_submit_otp_button" style="display: block;" name="create-account" disabled >{{ __('Sign Up Today') }}</button>
                                 @else
                                     <button id = "profileUpdate"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 @endif
@@ -1310,16 +1308,17 @@ function format(item, state) {
 
         $(document).ready(function(){
 
-            $("#send_otp_button").hide();
-
             $(".mobile_validation").on("input", function() {
 
+                $('.signup_submit_otp_button').prop('disabled', false);
+
                 let mobileNumber = $('#mobile').val();
+                let mobileNumber_count = mobileNumber.length;
                 let ccode = $('#ccode').val();
 
                 $('.mob_exist_status').text("");
 
-                if( mobileNumber !== "" ){
+                if( mobileNumber !== "" && mobileNumber_count > 9 ){
 
                     $.ajax({
                         url: "{{ route('auth.otp.signup-check-mobile-exist') }}",
@@ -1332,11 +1331,11 @@ function format(item, state) {
 
                         success: function(response) {
                             if (response.exists) {
-                                $("#send_otp_button").show();
-                                $('.mob_exist_status').text("Mobile Number Verify!").css('color', 'green');;
+                                document.getElementById("send_otp_button").removeAttribute("disabled");
+                                $('.mob_exist_status').text("Mobile Number Not Exist, Pls verify Number vai OTP!").css('color', 'green');;
 
                             } else {
-                                $("#send_otp_button").hide();
+                                document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
                                 $('.mob_exist_status').text("Mobile Number Already exists !").css('color', 'red');
                             }
                         },
@@ -1350,8 +1349,9 @@ function format(item, state) {
 
             $('#send_otp_button,#resend_otp_button').click(function(){ 
 
-                // $('#mobile').attr('readonly', true);
-                // $('#ccode').attr('disabled', true);
+                $('#mobile').attr('readonly', true);
+                $('#ccode').attr('disabled', true);
+
                 $('.otp_send_message').text("");
 
                 let mobileNumber = $('#mobile').val();
@@ -1369,9 +1369,9 @@ function format(item, state) {
 
                     success: function(response) {
                         if (response.exists) {
-                            $('.otp-div').show();
-                            $('#send_otp_button').hide();
+                            $("#send_otp_button").hide();
                             $('.mob_exist_status').text( response.message_note ).css('color', 'green');
+                            $('.otp-div').show();
                         } else {
                             $('.mob_exist_status').text( response.message_note ).css('color', 'red');
                         }
@@ -1411,9 +1411,8 @@ function format(item, state) {
                         if (response.status === true) {
                             $('.otp_send_message').text(response.message_note).css('color', 'green');
                             $('#verify-button').prop('disabled', true);
-                            $('#signup-submit-otp-button').prop('disabled', false);
                             $('.verify-div').hide();
-                            
+                            $('.signup_submit_otp_button').prop('disabled', false);
                         } else if (response.status === false) {
                             $('.otp__digit').val("");
                             $('.otp_send_message').text(response.message_note).css('color', 'red');
