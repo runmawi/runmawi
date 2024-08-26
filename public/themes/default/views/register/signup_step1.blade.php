@@ -1308,9 +1308,9 @@ function format(item, state) {
 
         $(document).ready(function(){
 
-            $(".mobile_validation").on("input", function() {
+            $('.signup_submit_otp_button').prop('disabled', true);
 
-                $('.signup_submit_otp_button').prop('disabled', false);
+            $(".mobile_validation").on("input", function() {
 
                 let mobileNumber = $('#mobile').val();
                 let mobileNumber_count = mobileNumber.length;
