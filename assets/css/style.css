@@ -83,7 +83,7 @@ h1{font-weight:500}
 .slider-description{position:absolute;top:15%;left:80px}
 #home-slider h1.slider-text{font-size:50px;margin:15px 0}
 #home-slider p{margin:5px 0;width:75%;color:#bbb7b7;font-size:13px;}
-#home-slider .container-fluid.position-relative.h-100{background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 46%, transparent 50%);}
+#home-slider .container-fluid.position-relative.h-100{background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%);}
 
 
 #home-slider .s-bg-1{width:100%;background-size:contain!important; background-position: right !important;background-repeat:no-repeat !important;position:relative;z-index:1}

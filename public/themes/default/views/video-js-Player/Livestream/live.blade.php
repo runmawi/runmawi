@@ -266,7 +266,17 @@
                         {{-- Player --}}
     {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
 
-    @if($Livestream_details->publish_type == "publish_now")
+    @php
+        $Current_time = Carbon\Carbon::now(current_timezone())->isoFormat('h:mm A');
+        $startTime = Carbon\Carbon::parse($Livestream_details->program_start_time)->isoFormat('h:mm A');
+        $recurring_program_Status = false;
+
+        if($Current_time == $startTime || $startTime <= $Current_time){
+            $recurring_program_Status = true;
+        }
+    @endphp
+
+    @if(($Livestream_details->publish_type == "publish_now") || ($recurring_program_Status == true))
 
         <div class="container-fluid video-details">
             <div class="row">
@@ -345,7 +355,7 @@
                 <p class="trending-dec w-100 mb-3 text-white">{!! html_entity_decode(__($video->details)) !!}</p>
             </div>
         </div>
-        
+
     @endif
 
             {{-- CommentSection  --}}

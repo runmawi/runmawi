@@ -190,20 +190,13 @@
             }
         });
 
-        // player.ready(() => {
-        //     playPauseButton.addEventListener('click', function() {
-        //         if (player.paused()) {
-        //             console.log("The video is paused.");
-        //         } if(player.play()) {
-        //             console.log("The video is playing.");
-        //         }
-        //         console.log("play", player.play());
-        //         if (player.pause() == undefined && player.play() != null) {
-        //             console.log("***8");
-        //             player.pause();
-        //         }
-        //     });
-        // });
+        player.ready(() => {
+            var started = document.querySelector('.vjs-has-started');
+            started.addEventListener('click', e=> {
+                console.log("pause triggered");
+                player.pause();
+            })
+        });
 
 
 
