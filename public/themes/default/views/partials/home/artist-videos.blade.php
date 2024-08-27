@@ -86,7 +86,7 @@
                         </h4>
                         @if($settings->homepage_views_all_button_status == 1)
                             <h4 class="main-title">
-                                <a>{{ __('View All') }}</a>
+                                <a>{{ __('View all') }}</a>
                             </h4>
                         @endif
                     </div>
@@ -119,7 +119,7 @@
                                                     @endif  
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" alt="ply" /> {{ __('Watch Now') }}
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
