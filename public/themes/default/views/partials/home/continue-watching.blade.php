@@ -13,7 +13,7 @@
                   </h2>
                   @if($settings->homepage_views_all_button_status == 1)
                         <h2 class="main-title">
-                           <a href="{{ url('continue-watching-list') }}">{{ __('View All') }}</a>
+                           <a href="{{ url('continue-watching-list') }}">{{ __('View all') }}</a>
                         </h2>
                   @endif
                </div>

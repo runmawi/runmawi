@@ -86,7 +86,7 @@
                         </h4>
                         @if($settings->homepage_views_all_button_status == 1)
                             <h4 class="main-title">
-                                <a>{{ __('View All') }}</a>
+                                <a>{{ __('View all') }}</a>
                             </h4>
                         @endif
                     </div>

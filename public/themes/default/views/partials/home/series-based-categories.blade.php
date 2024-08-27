@@ -47,7 +47,7 @@
                             @if($settings->homepage_views_all_button_status == 1)
                                 <h2 class="main-title">
                                     <a href="{{ route('SeriesCategory',[$series_genre->slug] )}}"> 
-                                        {{ __('View All') }}
+                                        {{ __('View all') }}
                                     </a>
                                 </h2>
                             @endif

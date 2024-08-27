@@ -13,7 +13,7 @@
                         </h4>
                         @if($settings->homepage_views_all_button_status == 1)
                             <h4 class="main-title">
-                                <a href="{{ $order_settings_list[3]->header_name ? URL::to('/') . '/' . $order_settings_list[3]->url : '' }}">{{ __('View All') }}</a>
+                                <a href="{{ $order_settings_list[3]->header_name ? URL::to('/') . '/' . $order_settings_list[3]->url : '' }}">{{ __('View all') }}</a>
                             </h4>
                         @endif
                     </div>

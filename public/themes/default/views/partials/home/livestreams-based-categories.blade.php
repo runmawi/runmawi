@@ -61,7 +61,7 @@ $data->each(function ($category) {
                             </a>
                             @if($settings->homepage_views_all_button_status == 1)
                                 <h4 class="main-title">
-                                    <a href="{{ URL::to('/live/category/') . '/' . $live_Category->slug }}">{{ __('View All') }}</a>
+                                    <a href="{{ URL::to('/live/category/') . '/' . $live_Category->slug }}">{{ __('View all') }}</a>
                                 </h4>
                             @endif
                         </div>

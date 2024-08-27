@@ -48,7 +48,7 @@ else
                         @if($settings->homepage_views_all_button_status == 1)
                             <h2 class="main-title">
                                 <a href="{{ $order_settings_list[15]->header_name ? URL::to('/') . '/' . $order_settings_list[15]->url : '' }}">
-                                    {{ __('View All') }}
+                                    {{ __('View all') }}
                                 </a>
                             </h2>
                         @endif
