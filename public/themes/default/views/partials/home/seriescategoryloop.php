@@ -195,7 +195,7 @@
                                   
                                             <a class="epi-name mt-3 mb-0 btn" type="button" 
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                     width="10%" height="10%" /><?= __('Watch Now') ?>
                                             </a>
                                         </div>

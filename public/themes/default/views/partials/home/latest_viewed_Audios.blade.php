@@ -91,7 +91,7 @@
                                                 
                                                 </a>
                                                 <a class="epi-name mt-2 mb-0 btn" href="{{ url('audio/' . $latest_view_audio->slug) }}">
-                                                    <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Play Now') }}
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Play Now') }}
                                                 </a>
                                             </div>
                                         </div>

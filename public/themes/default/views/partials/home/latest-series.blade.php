@@ -129,7 +129,7 @@
                                                       </div>
                                                   </a>
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                      <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Series') }}
+                                                      <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                   </a>
                                               </div>
                                           </div>

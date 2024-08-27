@@ -46,7 +46,7 @@
                         </div>
                         <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
                         <div class="parallax-buttons">
-                            <a href="{{ URL::to('category/videos/'.$data->slug ) }}" class="btn btn-hover">Play Now</a>
+                            <a href="{{ URL::to('category/videos/'.$data->slug ) }}" class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</a>
                         </div>
                     </div>
                     <div class="col-lg-8">

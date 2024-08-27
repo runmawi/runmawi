@@ -137,7 +137,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/') . '/live/' . $video->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                         {{ __('Live Now') }}
                                                     </a>
                                                 </div>
