@@ -61,7 +61,7 @@ $data->each(function ($category) {
                             </a>
                             @if($settings->homepage_views_all_button_status == 1)
                                 <h4 class="main-title">
-                                    <a href="{{ URL::to('/live/category/') . '/' . $live_Category->slug }}">{{ __('View All') }}</a>
+                                    <a href="{{ URL::to('/live/category/') . '/' . $live_Category->slug }}">{{ __('View all') }}</a>
                                 </h4>
                             @endif
                         </div>
@@ -191,7 +191,7 @@ $data->each(function ($category) {
 
                                                     <a class="epi-name mt-2 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                                     href="{{ URL::to('/') . '/live/' . $livestream->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/') . '/assets/img/default_play_buttons.svg' }}" width="10%" height="10%" /> {{ __('Watch Now') }}
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

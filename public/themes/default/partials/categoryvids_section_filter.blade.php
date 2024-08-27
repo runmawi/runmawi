@@ -32,6 +32,7 @@
     body.light-theme input{
         color: <?php echo GetLightText(); ?> !important;
     }
+    .selectpicker{display: none;}
     @media (max-width:1200px){
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){width: 100% !important;}
     }
@@ -83,6 +84,6 @@
     <input type="hidden" id="category_id" value={{ $category_id }} name="category_id">
 
     <div class="col-lg-1 col-md-2 col-2 text-right p-0" id="mob1">
-        <button type="submit" class="btn btn-primary filter">  {{ __('Filter') }}</button>
+        <button type="submit" class="btn bd filter">  {{ __('Filter') }}</button>
     </div>
 </div>

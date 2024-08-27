@@ -20,7 +20,7 @@
                         @if($settings->homepage_views_all_button_status == 1)
                             <h4 class="main-title">
                                 <a href="{{ $my_play_list_settings_list->header_name ? url('/' . $my_play_list_settings_list->url) : '' }}">
-                                    {{ __('View All') }}
+                                    {{ __('View all') }}
                                 </a>
                             </h4>
                         @endif

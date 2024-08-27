@@ -8,7 +8,7 @@
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title">{{ __('Featured Episodes') }}</h4>
                         @if($settings->homepage_views_all_button_status == 1)
-                            <h4 class="main-title"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View All') }}</a> </h4>
+                            <h4 class="main-title"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View all') }}</a> </h4>
                         @endif
                     </div>
 
@@ -63,7 +63,7 @@
                                                     </a>
                                                 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('episode/'. $featured_episodes->series_title->slug.'/'.$featured_episodes->slug ) }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Watch Now') }}
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>
