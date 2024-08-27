@@ -262,7 +262,7 @@ i.fa.fa-google-plus {
 
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;background-attachment: fixed;background-color:#000;background-size:cover;">
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;background-attachment: fixed;background-color:#000;background-size:cover;height:auto;min-height:100%;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -419,7 +419,8 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                        <p id="password-error" style="color: red;font-size:13px;"></p>
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -429,9 +430,9 @@ i.fa.fa-google-plus {
                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
-                                        <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
+                                        {{-- <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
                                             <strong>{{ __('Password Not matching') }}.</strong>
-                                        </span>
+                                        </span> --}}
                                      
                                          </div>
                             </div>
@@ -442,7 +443,9 @@ i.fa.fa-google-plus {
                             <div class="col-md-12">
                                 <div class="row">
                                      <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                        <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                        <p id="confirm-password-error" style="color: red;font-size:13px;"></p>
+                                
                             </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
@@ -453,7 +456,7 @@ i.fa.fa-google-plus {
                                  </span>
                                     </div>
                                 </div>
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
+                                {{-- <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span> --}}
                             </div>
      
                             </div>            
@@ -658,6 +661,52 @@ i.fa.fa-google-plus {
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 
+{{-- password length validation --}}
+<script>
+    function checkPass() {
+        var pass1 = document.getElementById('password');
+        var pass2 = document.getElementById('password-confirm');
+        var passwordError = document.getElementById('password-error');
+        var confirmPasswordError = document.getElementById('confirm-password-error');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+
+        // Regular expression to test the password strength
+        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
+        // Test the password against the regex
+        if (strongRegex.test(pass1.value)) {
+            pass1.style.backgroundColor = goodColor;
+            passwordError.style.color = goodColor;
+            passwordError.innerHTML = "Strong password";
+            $('#password-confirm').prop('disabled', false);
+            $('#profileUpdate').prop('disabled', false);
+        } else {
+            pass1.style.backgroundColor = badColor;
+            passwordError.style.color = badColor;
+            $('#password-confirm').prop('disabled', true);
+            $('#profileUpdate').prop('disabled', true);
+            passwordError.innerHTML = "Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.";
+        }
+
+        // Check if the password and confirm password match only if confirm password is not empty
+        if (pass2.value !== "") {
+            if (pass1.value == pass2.value) {
+                pass2.style.backgroundColor = goodColor;
+                confirmPasswordError.style.color = goodColor;
+                confirmPasswordError.innerHTML = "Password created successfully";
+            } else {
+                pass2.style.backgroundColor = badColor;
+                confirmPasswordError.style.color = badColor;
+                confirmPasswordError.innerHTML = "Passwords did not match";
+            }
+        } else {
+            // Clear the message if confirm password is empty
+            confirmPasswordError.innerHTML = "";
+        }
+    }
+</script>
+
 <script>
     $(document).ready(function(){
         setTimeout(function() {
@@ -772,11 +821,11 @@ $('#country').on('change', function() {
         },
         dataType : 'json',
         success: function(result){
-        $('#state-dropdown').html('<option value="">Select State</option>'); 
+        $('#state-dropdown').html('<option value="">{{ __('Select State') }}</option>'); 
         $.each(result.states,function(key,value){
         $("#state-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
         });
-        $('#city-dropdown').html('<option value="">Select State First</option>'); 
+        $('#city-dropdown').html('<option value="">{{ __('Select State First') }}</option>'); 
         }
     });
 
@@ -1308,9 +1357,9 @@ function format(item, state) {
 
         $(document).ready(function(){
 
-            $(".mobile_validation").on("input", function() {
+            $('.signup_submit_otp_button').prop('disabled', true);
 
-                $('.signup_submit_otp_button').prop('disabled', false);
+            $(".mobile_validation").on("input", function() {
 
                 let mobileNumber = $('#mobile').val();
                 let mobileNumber_count = mobileNumber.length;
