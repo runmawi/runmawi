@@ -72,7 +72,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
                             <div class="modal-body">
-                                <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/store') }}" method="post" enctype="multipart/form-data">
+                                <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/videos/categories/store') }}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
                                     <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -122,7 +122,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                                 <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                                     <label>Image:</label>
-                                    <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                    <input type="file" class="form-control" name="image" id="image" required/>
+                                    <span id="image-error" style="color:red; display:none;">Please upload an image.</span>
+                                   
                                 </div>
 
                                 <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
@@ -223,6 +225,16 @@ border-radius: 0px 4px 4px 0px;
     </div>
 	@section('javascript')
 
+    <script>
+        function validateForm() {
+            var imageInput = document.getElementById('image').value;
+            if (!imageInput) {
+                document.getElementById('image-error').style.display = 'inline';
+                return false;
+            }
+            return true;
+        }
+    </script>
     
 	<script>
 		function update_category(ele){

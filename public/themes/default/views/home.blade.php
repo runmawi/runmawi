@@ -195,6 +195,9 @@ color: #ff0000;
 cursor: pointer;
 margin-bottom: 10px;}
 .video_title_images{width: 50%;}
+@media (min-width:2400px){
+   .descp{max-height: 320px !important;}
+}
 </style>
 
 <!-- flickity -->
