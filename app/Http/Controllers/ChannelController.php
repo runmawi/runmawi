@@ -4323,7 +4323,7 @@ class ChannelController extends Controller
 
     public function videos_details_jsplayer( $slug )
     {
-        // try {
+        try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4684,10 +4684,10 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_fullplayer( Request $request, $slug )
