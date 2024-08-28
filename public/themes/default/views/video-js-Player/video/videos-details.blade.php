@@ -62,7 +62,11 @@
 .quality-options-group .radio-inline {
     margin-right: 0; 
 }
-
+@media (min-width: 1400px) and (max-width: 2565px) {
+    .my-video.vjs-fluid{
+        height: 50vh !important;
+    }
+}
 
 </style>
 
