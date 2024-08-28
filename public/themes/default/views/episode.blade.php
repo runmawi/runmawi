@@ -543,7 +543,7 @@
                     </li>
 
                     <li>
-                        <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
+                        <a onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
                     </li>
                 </ul>
             </div>
@@ -1618,7 +1618,7 @@
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 14%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;z-index:99;">Copied Embed URL</div>'
                 );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');
