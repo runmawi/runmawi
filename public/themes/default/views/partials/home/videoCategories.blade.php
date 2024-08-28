@@ -18,7 +18,7 @@
                      @if($settings->homepage_views_all_button_status == 1)
                         <h4 class="main-title">
                               <a href="{{ $order_settings_list[11]->header_name ? url('/' . $order_settings_list[11]->url) : '' }}">
-                                 {{ __('View All') }}
+                                 {{ __('View all') }}
                               </a>
                         </h4>
                      @endif
@@ -58,7 +58,7 @@
 
                                                    </a>
                                                    <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                         <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
+                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                    </a>
                                                 </div>
                                              </a>

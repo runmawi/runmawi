@@ -190,13 +190,13 @@
             }
         });
 
-        player.ready(() => {
-            var started = document.querySelector('.vjs-has-started');
-            started.addEventListener('click', e=> {
-                console.log("pause triggered");
-                player.pause();
-            })
-        });
+        // player.ready(() => {
+        //     var started = document.querySelector('.vjs-has-started');
+        //     started.addEventListener('click', e=> {
+        //         console.log("pause triggered");
+        //         player.pause();
+        //     })
+        // });
 
 
 

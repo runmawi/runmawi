@@ -13,7 +13,7 @@
                   </h2>
                   @if($settings->homepage_views_all_button_status == 1)
                         <h2 class="main-title">
-                           <a href="{{ url('continue-watching-list') }}">{{ __('View All') }}</a>
+                           <a href="{{ url('continue-watching-list') }}">{{ __('View all') }}</a>
                         </h2>
                   @endif
                </div>
@@ -110,7 +110,7 @@
                                                 </div>
                                           </a>
                                           <a class="epi-name mt-2 mb-0 btn" href="{{ url('category/videos/' . $cont_video->slug) }}">
-                                                <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />{{ __('Watch Now') }}
+                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Watch Now') }}
                                           </a>
                                        </div>
                                     </div>

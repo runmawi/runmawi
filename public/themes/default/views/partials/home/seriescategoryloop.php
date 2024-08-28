@@ -43,7 +43,7 @@
                     </h4>
                 </a>
                 <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
-                    <h4 class="main-title"><a href="<?php echo URL::to('/series/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
+                    <h4 class="main-title"><a href="<?php echo URL::to('/series/category') . '/' . $category->slug; ?>"><?php echo (__('View all')); ?></a></h4>
                 <?php endif; ?>    
             </div>
             <div class="favorites-contens">
@@ -195,7 +195,7 @@
                                   
                                             <a class="epi-name mt-3 mb-0 btn" type="button" 
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                     width="10%" height="10%" /><?= __('Watch Now') ?>
                                             </a>
                                         </div>
