@@ -119,12 +119,11 @@
 
     .responsive-iframe {
         position: relative !important;
+        height: calc(100vh - 80px) !important;
     }
-    .fitvid{
-        height: 80vh;
-    }
-    .my-video.vjs-fluid{
-        height: 70vh !important;
+
+    .my-video.vjs-fluid {
+        height: calc(100vh - 80px) !important;
     }
 </style>
 
