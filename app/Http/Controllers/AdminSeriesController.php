@@ -4426,6 +4426,7 @@ class AdminSeriesController extends Controller
             $Episode->season_id = $data["season_id"];
             $Episode->type = "bunny_cdn";
             $Episode->active = 1;
+            $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
             $Episode->image = default_vertical_image();
             $Episode->tv_image = default_horizontal_image();
             $Episode->player_image = default_horizontal_image();
