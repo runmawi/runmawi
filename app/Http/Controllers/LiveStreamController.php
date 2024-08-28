@@ -66,7 +66,7 @@ class LiveStreamController extends Controller
     public function Index()
     {
 
-    //   try {
+      try {
 
           $current_timezone = current_timezone();
 
@@ -168,11 +168,11 @@ class LiveStreamController extends Controller
 
           return Theme::view('liveCategoryVideos',$data);
             
-    //   } catch (\Throwable $th) {
+      } catch (\Throwable $th) {
 
-    //     return $th->getMessage();
-    //     return abort(404);
-    //   }
+        return $th->getMessage();
+        return abort(404);
+      }
     }
     
     public function Play(Request $request,$vid)
