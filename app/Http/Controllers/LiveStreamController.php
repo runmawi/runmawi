@@ -66,7 +66,7 @@ class LiveStreamController extends Controller
     public function Index()
     {
 
-      try {
+    //   try {
 
           $current_timezone = current_timezone();
 
@@ -102,7 +102,7 @@ class LiveStreamController extends Controller
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                     break;
 
                     case 'daily':
@@ -168,11 +168,11 @@ class LiveStreamController extends Controller
 
           return Theme::view('liveCategoryVideos',$data);
             
-      } catch (\Throwable $th) {
+    //   } catch (\Throwable $th) {
 
-        return $th->getMessage();
-        return abort(404);
-      }
+    //     return $th->getMessage();
+    //     return abort(404);
+    //   }
     }
     
     public function Play(Request $request,$vid)
