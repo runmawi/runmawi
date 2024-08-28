@@ -87,7 +87,7 @@
 
 .my-video.vjs-fluid {
   padding-top: 0 !important;
-  height: 100vh !important;
+  height: calc(100vh - 85px)!important;
 }
 
 .my-video.video-js .vjs-tech {
