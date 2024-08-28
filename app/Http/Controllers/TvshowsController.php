@@ -756,7 +756,7 @@ class TvshowsController extends Controller
                                     ->where('series.id',$series->id)->pluck('series_categories.category_id');
     
             $series_lists = Series::join('series_categories', 'series.id', '=', 'series_categories.series_id')
-                ->whereIn('series_categories.category_id',$series_categories)->first()
+                ->whereIn('series_categories.category_id',$series_categories)
                 ->where('series.id','!=',$series->id)
                 ->where('series.active',1)
                 ->groupBy('series.id')->get();
