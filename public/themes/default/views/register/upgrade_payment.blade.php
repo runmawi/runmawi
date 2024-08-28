@@ -569,9 +569,9 @@
     <section class="flick p-4">
 
         <div class="col-sm-12">
-            <a href="{{ route('home') }}">
+            <button href="" onclick="history.back()" style="background: transparent;border:none;cursor: pointer;">
                 <svg style="{{ 'color:'. front_End_text_color() }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
-            </a>
+            </button>
         </div>
 
         <div class="container">
@@ -722,13 +722,13 @@
                                                 {{-- Payment Buttons --}}
                            
                             {{-- Stripe --}}  
-                            <div class="col-md-12 stripe_payment">
+                            <div class="col-md-12 stripe_payment" style="display: none;">
                                 <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
                             </div>
                            
 
                             {{-- Razorpay --}}
-                            <div class="col-md-12 Razorpay_payment">
+                            <div class="col-md-12 Razorpay_payment" style="display: none;">
                                 <button type="submit"
                                     class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
                                     Pay Now
@@ -736,7 +736,7 @@
                             </div>
 
                             {{-- Paystack --}}
-                            <div class="col-md-12 paystack_payment">
+                            <div class="col-md-12 paystack_payment" style="display: none;">
                                 <button type="submit"
                                     class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
                                     Pay Now
@@ -744,7 +744,7 @@
                             </div>
 
                             {{-- CinetPay --}}
-                            <div class="col-md-12 cinetpay_payment">
+                            <div class="col-md-12 cinetpay_payment" style="display: none;">
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                     class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
                                     Pay Now
@@ -752,14 +752,14 @@
                             </div>
 
                             {{-- Paydunya --}}
-                            <div class="col-md-12 Paydunya_payment">
+                            <div class="col-md-12 Paydunya_payment" style="display: none;">
                                 <button  type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
                                     {{ __('Pay Now') }}
                                 </button>
                             </div>
 
                             {{-- Recurly --}}
-                            <div class="col-md-12 Recurly_payment">
+                            <div class="col-md-12 Recurly_payment" style="display: none;">
                                 <form action="{{ route('Recurly.checkout_page') }}" method="post">
                                     @csrf
                                     <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">

@@ -3600,7 +3600,9 @@ class ChannelController extends Controller
     {
         try {
             $settings = Setting::first();
-
+            $category_list = VideoCategory::latest()->get();
+            $default_vertical_image_url = default_vertical_image_url();
+           
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
                 $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : 'landing-page';
@@ -3608,12 +3610,17 @@ class ChannelController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug);
             }
 
+            $category_list = $this->paginateCollection($category_list, $this->videos_per_page);
+
+
             $data = [
-                'category_list' => VideoCategory::all(),
+                'category_list' => $category_list,
+                'default_vertical_image_url' => $default_vertical_image_url,
             ];
 
             return Theme::view('categoryList', $data);
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -4316,7 +4323,7 @@ class ChannelController extends Controller
 
     public function videos_details_jsplayer( $slug )
     {
-        // try {
+        try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4677,10 +4684,10 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_fullplayer( Request $request, $slug )

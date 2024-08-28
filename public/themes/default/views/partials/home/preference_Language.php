@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
         <h4 class="main-title"><a href=""><?php echo (__('Preference By language')); ?> </a></h4>
         <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
-            <h4 class="main-title"><a  href=""><?php echo (__('View All')); ?></a></h4> 
+            <h4 class="main-title"><a  href=""><?php echo (__('View all')); ?></a></h4> 
         <?php endif; ?>                         
 </div>
     <div class="favorites-contens">
@@ -169,7 +169,7 @@
                                     
                                    
                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/><?= __('Watch Now') ?>
+                                       <i class="fa fa-play mr-1" aria-hidden="true"></i><?= __('Watch Now') ?>
                                       </a>
                                 </div>
                             </div>

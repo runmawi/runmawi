@@ -195,17 +195,27 @@
                                     </li>
 
                                 <!-- Like -->
-                                <li>
+                                <li class="share">
                                     <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
                                         <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
                                     </span>
+                                    <div class="share-box box-watchtrailer " onclick="video_like(this)" style="top:41px">
+                                        <div class="playbtn"  data-toggle="modal">  
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Like video') }}</span>
+                                        </div>
+                                    </div>
                                 </li>
 
                                 <!-- Dislike -->
-                                <li>
+                                <li class="share">
                                     <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
                                         <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
                                     </span>
+                                    <div class="share-box box-watchtrailer " onclick="video_dislike(this)" style="top:41px">
+                                        <div class="playbtn"  data-toggle="modal">  
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Dislike video') }}</span>
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

@@ -40,7 +40,7 @@
                         ?>
                     </h4>
                     <?php if( $settings->homepage_views_all_button_status == 1 ):?>
-                        <h4 class="main-title"><a href="<?php echo URL::to('/document/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
+                        <h4 class="main-title"><a href="<?php echo URL::to('/document/category') . '/' . $category->slug; ?>"><?php echo (__('View all')); ?></a></h4>
                     <?php endif; ?>
                     </a>
             </div>
@@ -80,8 +80,7 @@
                                     </a>
                                 <a type="button" class="epi-name mt-3 mb-0 btn"
                                 target="_blank" href="<?php URL::to('public/uploads/Document/'.$Document->document) ?>">
-                                    <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                        width="10%" height="10%" /> <?= __('View Now') ?>
+                                    <i class="fa fa-play mr-1" aria-hidden="true"></i> <?= __('View Now') ?>
                                 </a>
                             </div>
                         </div>
