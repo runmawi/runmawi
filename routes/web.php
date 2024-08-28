@@ -25,6 +25,8 @@ Route::get('/video-chat', function () {
 Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
 Route::get('/ffplayout-channel', 'AdminFFplayoutController@GetChannels');
+Route::get('/getvideocihperdata', 'AdminVideosController@getvideocihperdata');
+Route::get('/videocihperplayer', 'AdminVideosController@videocihperplayer');
 
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
