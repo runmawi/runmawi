@@ -47,7 +47,7 @@
                             @if($settings->homepage_views_all_button_status == 1)
                                 <h2 class="main-title">
                                     <a href="{{ route('SeriesCategory',[$series_genre->slug] )}}"> 
-                                        {{ __('View All') }}
+                                        {{ __('View all') }}
                                     </a>
                                 </h2>
                             @endif
@@ -155,7 +155,7 @@
                                                     </a>
 
                                                     <a class="epi-name mt-2 mb-0 btn" type="button" href="{{ URL::to('play_series/'.$series_video->slug) }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ url('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }}
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                     </a>
                                                 </div>
                                             </div>

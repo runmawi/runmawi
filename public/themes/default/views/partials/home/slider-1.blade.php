@@ -79,7 +79,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23 mt-3">
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
