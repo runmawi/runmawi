@@ -191,7 +191,6 @@ $(".home-search").hide();
 
 .des-more-less-btns{border: none;
 background: transparent;
-color: #ff0000;
 cursor: pointer;
 margin-bottom: 10px;}
 .video_title_images{width: 50%;}
