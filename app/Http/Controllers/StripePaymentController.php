@@ -749,7 +749,9 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            // 'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' => round($payment_amount)* 100, 
+
                         ],
                         'quantity' => 1,
                     ],
@@ -933,7 +935,8 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            // 'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' => round($payment_amount)* 100, 
                         ],
                         'quantity' => 1,
                     ],
