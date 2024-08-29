@@ -228,7 +228,7 @@
                     <div class="row">
                         @if ( $videodetail->users_video_visibility_status == false )
                             @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
-                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
@@ -565,7 +565,7 @@
                     <div class="modal-body">
                         <div class="row justify-content-between">
                             <div class="col-sm-4 p-0" style="">
-                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="live-image">
+                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="video-image">
                             </div>
 
                             <div class="col-sm-8">
@@ -579,7 +579,7 @@
                                 @if (Enable_PPV_Plans() == 0)
 
                                 <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;" >{{ __('Amount') }}:
-                                    <span class="pl-2" style="font-size:20px;font-weight:700;" id="price-display"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  $currency->symbol .$videodetail->ppv_price }}</span>
+                                    <span class="pl-2" style="font-size:20px;font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  "{$currency->symbol} {$videodetail->ppv_price}" }}</span>
                                 </a><br>
                                 @elseif( Enable_PPV_Plans() == 1 )
                                 <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;" >{{ __('Amount') }}:
@@ -660,7 +660,7 @@
 
                         <div class="modal-footer">
 
-                        @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
+                        @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
                                 <div class="Stripe_button"> <!-- Stripe Button -->
                                     <button class="btn btn-primary  btn-outline-primary  "
                                         onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
