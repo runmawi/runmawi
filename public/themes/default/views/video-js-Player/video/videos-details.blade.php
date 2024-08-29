@@ -547,8 +547,7 @@
 
         </div>
 
-                {{-- Rent Modal  --}}
-    @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) || Enable_PPV_Plans() == 1)
+                {{-- Rent Modal  --}}                
         <div class="modal fade" id="video-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="video-purchase-now-modal-Title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -699,7 +698,6 @@
                 </div>
             </div>
         </div>
-    @endif
 
         <div class="videoPopup ">
             <div class="opacityLayer"></div>
@@ -713,6 +711,18 @@
     </div>
 
     <script>
+
+        $(document).ready(function() {
+            $('.open-modal-btn').click(function() {
+                var title = $(this).data('title');
+                var message = $(this).data('message');
+                console.log(title);
+                console.log(message);
+                $('#modalTitle').text(title);
+                $('#modalMessage').text(message);
+            });
+        });
+
         var elem = document.querySelector('.recommended-video');
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
