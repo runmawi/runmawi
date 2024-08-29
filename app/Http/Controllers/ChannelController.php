@@ -4429,7 +4429,7 @@ class ChannelController extends Controller
                             }
                             else{
                                 $item['users_video_visibility_status'] = false ;
-                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_status_button']    =  "Subscribe Now"   ;
                                 $item['users_video_visibility_Rent_button']      =   true  ;
                                 $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                                 $item['users_video_visibility_register_button']  = false ;
@@ -4821,7 +4821,7 @@ class ChannelController extends Controller
                             }
                             else{
                                 $item['users_video_visibility_status'] = false ;
-                                $item['users_video_visibility_status_button']    =  "Subscriber Now"   ;
+                                $item['users_video_visibility_status_button']    =  "Subscribe Now"   ;
                                 $item['users_video_visibility_Rent_button']      =   true  ;
                                 $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                                 $item['users_video_visibility_register_button']  = false ;
