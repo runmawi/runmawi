@@ -7,7 +7,7 @@
     $series = App\series::where('id', $episode->series_id)->first();
     $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
-    
+
 ?>
 
 <!-- video-js Style  -->
@@ -36,12 +36,12 @@
 <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
 
     <style>
-        
+
     /* <!-- BREADCRUMBS  */
 
     .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
-            content: none; 
-        } 
+            content: none;
+        }
 
         ol.breadcrumb {
                 color: white;
@@ -69,6 +69,9 @@
     .slick-arrow{z-index: 99;}
     .slick-next{right:0;}
     .slick-prev{left:10px;}
+    .view-count .rent-video .btn .btn-primary{
+        text-transform: uppercase;
+    }
     @media (min-width:601px){
         .my-video.vjs-fluid{height: calc(100vh - 85px)!important;}
     }
@@ -123,7 +126,7 @@
             @if(!Auth::guest())
                 @if($free_episode > 0)
                     @if($free_episode > 0)
-                        
+
                             <div id="series_container">
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -131,13 +134,13 @@
 
                                 <button class="custom-skip-forward-button">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
-                                </button>  
+                                </button>
 
                                 <button class="custom-skip-backward-button">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                                 </button>
 
-                                <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
+                                <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
                                     width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
                                     autoplay>
                                         <source src="<?= $episode_details->Episode_url ?>"
@@ -174,7 +177,7 @@
                                 <p class="epi-name text-left m-0 mt-2">
                                     <?= __($episode->title) ?>
                                 </p>
-                           
+
                                 <p class="desc-name text-left m-0 mt-1">
                                     <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
                                 </p>
@@ -197,7 +200,7 @@
                                             </form>
                                         @endif
                                         <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                            {{ __('Purchase Now') }}
+                                            {{ __('PURCHASE NOW') }}
                                         </button>
                                         <!-- <button  data-toggle="modal" data-target="#exampleModalCenter"
                                             class="view-count rent-video btn btn-primary">
@@ -222,7 +225,7 @@
                                         @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
                                         <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                            {{ __('Purchase Now') }}
+                                            {{ __('PURCHASE NOW') }}
                                         </button>
                                     </form>
 
@@ -287,7 +290,7 @@
                                         </form>
                                     @endif
                                     <a onclick="pay({{ $SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1 ? PPV_CurrencyConvert($SeriesSeason->ppv_price) : ($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0 ? __($SeriesSeason->ppv_price) : '') }})">
-                                        <button type="button" class="btn2 btn-outline-primary">{{ __('Purchase Now') }}</button>
+                                        <button type="button" class="btn2 btn-outline-primary">{{ __('PURCHASE NOW') }}</button>
                                     </a>
                                 </div>
                             </div>
@@ -308,7 +311,7 @@
                                     @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
                                     <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                        {{ __('Purchase Now') }}
+                                        {{ __('PURCHASE NOW') }}
                                     </button>
                                     </form>
                                 </div>
@@ -419,7 +422,7 @@
                                 <a class="black-text" href="{{ route('series.tv-shows') }}">{{ ucwords(__('Series')) }}</a>
                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
-        
+
                             @foreach($category_name as $key => $series_category_name)
                                 @php $category_name_length = count($category_name); @endphp
                                 <li class="breadcrumb-item">
@@ -429,14 +432,14 @@
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
                             @endforeach
-        
+
                             <li class="breadcrumb-item">
                                 <a class="black-text" href="{{ route('play_series', [$series->slug]) }}">
                                     {{ strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title) }}
                                 </a>
                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
-        
+
                             <li class="breadcrumb-item">
                                 <a class="black-text">
                                     {{ strlen($episode->title) > 50 ? ucwords(substr($episode->title, 0, 120) . '...') : ucwords($episode->title) }}
@@ -451,8 +454,8 @@
                 <span class="text-white" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
                 <p class="mb-0" style="font-size: 80%;color: white;">
                     @php
-                        $seasons = App\SeriesSeason::where('series_id', '=', $SeriesSeason->series_id)->with('episodes')->get();                        
-                        $Episode = App\Episode::where('season_id', '=', $SeriesSeason->id)->where('series_id', '=', $SeriesSeason->series_id)->get();                        
+                        $seasons = App\SeriesSeason::where('series_id', '=', $SeriesSeason->series_id)->with('episodes')->get();
+                        $Episode = App\Episode::where('season_id', '=', $SeriesSeason->id)->where('series_id', '=', $SeriesSeason->series_id)->get();
                     @endphp
 
                     @foreach($seasons as $key => $seasons_value)
@@ -478,12 +481,12 @@
                         @if(is_null($episode_watchlater))
                             <span id="episode_add_watchlist_{{ $episode->id }}" class="slider_add_watchlist" aria-hidden="true"
                                 data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodewatchlater(this)"> <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                                onclick="episodewatchlater(this)"> <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             </span>
                         @else
                             <span id="episode_add_watchlist_{{ $episode->id }}" class="slider_add_watchlist" aria-hidden="true"
                                 data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle" aria-hidden="true"></i> 
+                                onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle" aria-hidden="true"></i>
                             </span>
                         @endif
                     </li>
@@ -528,7 +531,7 @@
                                 onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i>
                             </span>
                         @endif
-                    </li>                    
+                    </li>
 
                     <li class="share">
                         <span><i class="ri-share-fill"></i></span>
@@ -573,10 +576,10 @@
                         <div class="col-md-6">
                             @if (!empty($season))
                                 <input type="hidden" id="season_id" name="season_id" value="{{ $season[0]->id }}">
-                                <!-- 
+                                <!--
                                 <button class="btn btn-primary" onclick="pay({{ $season[0]->ppv_price }})">
                                     {{ __('Purchase For') }} {{ $currency->symbol . ' ' . $season[0]->ppv_price }}
-                                </button> 
+                                </button>
                                 -->
                             @endif
                         </div>
@@ -699,7 +702,7 @@
                         <div class="col-sm-4">
                             <span class="badge badge-secondary p-2">{{ __($episodes->title) }}</span>
                             <span class="badge badge-secondary p-2">{{ __($episodes->age_restrict) . ' ' . '+' }}</span>
-            
+
                             <span class="trending-year">{{ $episode->year != 0 ? $episode->year : '' }}</span>
                             <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __($currency->symbol . ' ' . $episodes->ppv_price) }}</button>
                             <label for="method">
@@ -745,7 +748,7 @@
         </div>
     </div> -->
 
-    
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -812,8 +815,8 @@
 
 
 
-                          if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
-                          || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
+                          if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal"
+                          || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){
 
                               if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
                                                         <!-- Stripe -Live Mode -->
@@ -847,7 +850,7 @@
                                                                 echo $Stripepayment->payment_type;
                                                             } ?>
                                                         </label> <?php }
-                  
+
                               if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
                                                         <!-- paypal - Live Mode -->
 
@@ -890,7 +893,7 @@
                                             data-value="Razorpay">
                                         <?php echo $Razorpay_payment_settings->payment_type; ?>
                                     </label>
-                                <?php } 
+                                <?php }
                                                                               // <!-- Paystack -->
                               if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
 
@@ -902,13 +905,13 @@
                                             data-value="Paystack">
                                         <?= $Paystack_payment_settings->payment_type ?>
                                     </label>
-                                <?php } 
+                                <?php }
                                                                         // <!-- CinetPay -->
                               if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
 
                                 <label
                                     class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="" name="payment_method"  
+                                    <input type="radio" class="payment_btn" id="" name="payment_method"
                                         value="<?= $CinetPay_payment_settings->payment_type ?>"
                                         data-value="CinetPay">
                                     <?= $CinetPay_payment_settings->payment_type ?>
@@ -942,7 +945,7 @@
                         <div class="Stripe_button">
                                 <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
                         </div>
-                        
+
                     <?php } ?>
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
@@ -1101,7 +1104,7 @@
                 amount: amount * 100
             });
         }
-    
+
         $(".free_content").hide();
         var duration = <?php echo json_encode($free_content_duration); ?>;
         var access = <?php echo json_encode($user_access); ?>;
@@ -1127,7 +1130,7 @@
 
     <!-- <script src="https://checkout.stripe.com/checkout.js"></script>
     <script type="text/javascript">
-        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
+        // videojs('videoPlayer').videoJsResolutionSwitcher();
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -1280,18 +1283,18 @@
     $start_time = $Intro_skip->intro_start_time;
     $end_time = $Intro_skip->intro_end_time;
     $SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
-    
+
     $StartParse = date_parse($start_time);
     $startSec = $StartParse['hour'] * 60 * 60 + $StartParse['minute'] * 60 + $StartParse['second'];
-    
+
     $EndParse = date_parse($end_time);
     $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
-    
+
     $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
     $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
-    
+
     // dd($SkipIntroPermission);
-    
+
 ?>
     <script>
         var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
@@ -1345,16 +1348,16 @@
     <!-- Recap video skip -->
 <?php
     $Recap_skip = App\Episode::where('id', $episode->id)->first();
-    
+
     $RecapStart_time = $Recap_skip->recap_start_time;
     $RecapEnd_time = $Recap_skip->recap_end_time;
-    
+
     $SkipRecapParse = date_parse($Recap_skip['skip_recap']);
     $skipRecapTime = $SkipRecapParse['hour'] * 60 * 60 + $SkipRecapParse['minute'] * 60 + $SkipRecapParse['second'];
-    
+
     $RecapStartParse = date_parse($RecapStart_time);
     $RecapstartSec = $RecapStartParse['hour'] * 60 * 60 + $RecapStartParse['minute'] * 60 + $RecapStartParse['second'];
-    
+
     $RecapEndParse = date_parse($RecapEnd_time);
     $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 + $RecapEndParse['second'];
 ?>
@@ -1668,7 +1671,7 @@
                         });
 
 
-                                
+
                         CinetPay.getCheckout({
                             transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
                             amount: ppv_price,
