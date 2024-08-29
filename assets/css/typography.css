@@ -158,7 +158,7 @@ button:focus { outline: none; }
 Text Color
 ------------------------------------------------*/
 .text-body { color: var(--iq-body-text) !important; }
-.text-primary { color: var(--iq-primary) !important; }
+/* .text-primary { color: var(--iq-primary); } */
 .text-white { color: var(--iq-white) !important; }
 .text-black { color: var(--iq-black) !important; }
 .text-gold { color: var(--iq-gold) !important; }
