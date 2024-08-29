@@ -31,8 +31,8 @@ use App\Series;
 use App\Artist;
 use App\Audio;
 use App\Channel;
-// use App\Watchlater;
-// use App\Wishlist;
+use App\Watchlater;
+use App\Wishlist;
 use App\ModeratorsUser;
 use App\Slider;
 use App\User;
@@ -119,7 +119,6 @@ class FrontEndQueryController extends Controller
                 $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
-
         return $latest_videos ;
     }
 
@@ -345,11 +344,9 @@ class FrontEndQueryController extends Controller
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', 1)
                                         ->where('status', 1)
-                                        ->latest()
-                                        
                                         ->get();
-    
-        $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+        $livestreams_live = $livestreams->filter(function ($livestream) use ($current_timezone) {
 
             $Current_time = Carbon::now($current_timezone);
 
@@ -358,59 +355,33 @@ class FrontEndQueryController extends Controller
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
-        
-                switch ($livestream->recurring_program) {
-                    case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                        break;
-                    case 'daily':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    case 'weekly':
-                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                        break;
-                    case 'monthly':
-                        $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    default:
-                        $recurring_program_Status = false;
-                        break;
-                }
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                        break;
+                        return $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
                     case 'daily':
-                        $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
+                        return $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
                     case 'weekly':
-                        $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
+                        return $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
                     case 'monthly':
-                        $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
+                        return $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
                     default:
-                        $recurring_program_live_animation = false;
-                        break;
+                        return false;
                 }
-
-                $livestream->recurring_program_live_animation = $recurring_program_live_animation;
-        
-                return $recurring_program_Status;
             }
 
-            if( $livestream->publish_type === 'publish_later' ){
-
-                $publish_later_Status = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-
-                return $publish_later_Status;
+            if ($livestream->publish_type === 'publish_later') {
+                return Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i') <= $Current_time->format('Y-m-d\TH:i');
             }
+
             return true;
         });
 
-        return $livestreams ;
+        $livestreams_upcoming = $livestreams->diff($livestreams_live);
+
+        return $livestreams_live->merge($livestreams_upcoming);
     }
+
 
     public function LiveCategory()
     {
@@ -956,22 +927,212 @@ class FrontEndQueryController extends Controller
         return $content_Partner ;
     }
 
-    // public function watchLater() {
-    //     $Watchlater_data = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
-    //     $Watchlater = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-    //                                 'expiry_date','active','status','draft')
-    //                                 ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater_data);
-    //     return $Watchlater;
+    public function watchLater() {
+        if (!Auth::guest()) {
+   
+            $Watchlater = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+        
+            $check_Kidmode = 0 ;
+        
+            $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                            'expiry_date','active','status','draft')
+        
+            ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Watchlater);
+        
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+        
+            if( !Auth::guest() && $check_Kidmode == 1 )
+            {
+                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+            }
+        
+            $data = $data->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['source_type']        = "Videos" ;
+                return $item;
+            });
+        }else{
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function wishlist() {
+        if (!Auth::guest()) {
+    
+            $Wishlist = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
+    
+            $check_Kidmode = 0 ;
+    
+            $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                                            'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
+                                            'expiry_date','active','status','draft')
+    
+            ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist);
+    
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+    
+            if( !Auth::guest() && $check_Kidmode == 1 )
+            {
+                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+            }
+    
+            $data = $data->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['source_type']        = "Videos" ;
+                return $item;
+            });
+        }else{
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function latestViewedEpisode() {
+        if (Auth::guest() != true) {
+            $data = RecentView::Select('episodes.*', 'episodes.slug as episode_slug', 'series.id', 'series.slug as series_slug', 'recent_views.episode_id', 'recent_views.user_id')
+                ->join('episodes', 'episodes.id', '=', 'recent_views.episode_id')
+                ->join('series', 'series.id', '=', 'episodes.series_id')
+                ->where('recent_views.user_id', Auth::user()->id)
+                ->groupBy('recent_views.episode_id')
+                ->get();
+        } else {
+            $data = [];
+        }
+        return $data;
+    }
+
+    public function latestViewedAudio() {
+        if(Auth::guest() != true ){
+
+            $data =  RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
+                ->where('recent_views.user_id',Auth::user()->id)
+                ->groupBy('recent_views.audio_id');
+    
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    $data = $data  ->whereNotIn('audio.id',Block_audios());
+                }
+                $data = $data->limit(15)->get();
+       }
+       else
+       {
+            $data = array() ;
+       }
+       return $data;
+    }
+
+    public function latestViewedLive() {
+        if(Auth::guest() != true ){
+            $data =  RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
+                    ->where('recent_views.user_id',Auth::user()->id)
+                    ->groupBy('recent_views.live_id')
+                    ->limit(15)
+                    ->get();
+        }
+        else
+        {
+            $data = array() ;
+        }
+        return $data;
+    }
+
+    public function latestViewedVideo(){
+        $check_Kidmode = 0 ;
+
+        if(Auth::guest() != true ){
+
+            $data =  RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('recent_views.user_id',Auth::user()->id)
+                ->groupBy('recent_views.video_id');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    $data = $data  ->whereNotIn('videos.id',Block_videos());
+                }
+                
+                // if( $videos_expiry_date_status == 1 ){
+                //     $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                // }
+
+                if( !Auth::guest() && $check_Kidmode == 1 )
+                {
+                    $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+                }
+                
+                $data = $data->limit(15)->get();
+        }
+        else
+        {
+            $data = array() ;
+        }
+        return $data;
+    }
+
+    // public function continueWatching(){
+    //     if ($multiuser != null)
+    //     {
+    //         $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
+            
+    //         $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //                                 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')
+    //                                 ->where('active', '1')->where('status', '1')
+    //                                 ->where('draft', '1')->where('type','!=','embed')
+    //                                 ->whereIn('id', $getcnt_watching)
+    //                                 ->limit(15)->get();
+    //     }
+    //     elseif (!Auth::guest())
+    //     {
+
+    //         $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
+
+    //         if ($continue_watching != null && $continue_watching->multiuser == null)
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+    //         else
+    //         {
+    //             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+    //                 ->where('multiuser', 'data')
+    //                 ->pluck('videoid')
+    //                 ->toArray();
+
+    //             $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
+    //             'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+    //             ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
+
+    //             if ($getfeching != null && $getfeching->geofencing == 'ON')
+    //             {
+    //                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+    //             }
+    //             $cnt_watching = $cnt_watching->limit(15)->get();
+    //         }
+
+    //     }
+    //     else
+    //     {
+    //         $cnt_watching = '';
+    //     }
+
+    //     return $cnt_watching;
     // }
 
-    // public function wishlist() {
-    //     $Wishlist_data = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->pluck('video_id');
-    //     // $Wishlist = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-    //     //                                 'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-    //     //                                 'expiry_date','active','status','draft')
-
-    //     // ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$Wishlist_data);
-    //     return $Wishlist_data;
-    // }
 }

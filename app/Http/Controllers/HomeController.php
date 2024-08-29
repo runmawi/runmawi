@@ -452,7 +452,7 @@ class HomeController extends Controller
                 'suggested_videos'    => $trending_videos,
                 'video_categories'    => $genre_video_display ,
                 'home_settings'       => $this->HomeSetting ,
-                'livetream'           => $livestreams,
+                'livetream'              => $FrontEndQueryController->livestreams()->take(15),
                 'audios'              => $latest_audios ,
                 'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
                 'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
@@ -1173,7 +1173,7 @@ class HomeController extends Controller
                         'video_categories'      => $genre_video_display  ,
                         'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
                         'home_settings'         => $this->HomeSetting ,
-                        'livetream'             => $livestreams ,
+                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
                         'audios'                => $latest_audios ,
                         'albums'                => AudioAlbums::latest()->limit(15)->get() ,
                         'countryName'            => $countryName,
@@ -1238,6 +1238,26 @@ class HomeController extends Controller
     
         $ppv_gobal_price = $settings->ppv_status == 1 ? $settings->ppv_price : null;
 
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+
+        // blocked videos
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
         if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
         
             unset($data['password_hash']);
@@ -1273,9 +1293,7 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])){
 
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();
-            $countryName = $geoip->getCountry();
+
 
             $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)->where('device_name', '=', 'desktop')->first();
 
@@ -1620,7 +1638,7 @@ class HomeController extends Controller
                     'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
                     'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
                     'trending_audios'           => $FrontEndQueryController->trending_audios()->take(15),
-                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners()->take(15),
+                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
                     'sliders'            => $FrontEndQueryController->sliders(), 
                     'live_banner'        => $FrontEndQueryController->live_banners(),  
                     'video_banners'      => $FrontEndQueryController->video_banners(), 
@@ -2558,6 +2576,8 @@ class HomeController extends Controller
     {
         try {
             
+            $FrontEndQueryController = new FrontEndQueryController();
+
             $LanguageVideo = LanguageVideo::where('language_id',$lanid)->groupBy('video_id')->pluck('video_id');
 
             $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
@@ -2612,18 +2632,20 @@ class HomeController extends Controller
                                         ->where('banner', '1')->latest()
                                         ->get() ;
 
+                                        
+
             $data = array(
                 'lang_videos' => $language_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'     => $top_most_watched ,
-                'video_banners'        => $video_banners ,
+                'video_banners'        => $FrontEndQueryController->video_banners(),
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first() 
             );
 
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
 

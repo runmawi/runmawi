@@ -59,11 +59,11 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center mb-2" data-animation-in="fadeInUp" data-delay-in="1">
                                 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                    <span class="badge  p-2">
+                                    <span class="">
                                         <ul class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
                                             @php $rating = ($item->rating / 2) ; @endphp
                                             @for ($i = 1; $i <= 5; $i++)
@@ -155,10 +155,10 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                <span class="ml-3"> {{ App\SeriesSeason::where('series_id', $item->id)->count() }} Seasons</span>
+                                <span class=""> {{ App\SeriesSeason::where('series_id', $item->id)->count() }} Seasons</span>
                                 <span class="ml-3"> {{ App\Episode::where('series_id', $item->id)->count() }} Episodes </span>
                             </div>
                             <div class="descript">
@@ -166,7 +166,7 @@
                             </div>
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
+                                aria-hidden="true"></i>{{ __('Play Now')}}</a>
                                 {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
@@ -235,7 +235,7 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>

@@ -12,7 +12,7 @@
 
                         <div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
                             @if( optional($data)->rating )
-                                <ul class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                <ul class="ratting-start list-inline text-primary d-flex align-items-center justify-content-left">
                                     @php $rating = ($data->rating / 2) ; @endphp
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($rating >= $i)

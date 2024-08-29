@@ -105,6 +105,17 @@ use App\EPGSchedulerData;
 
 class AdminVideosController extends Controller
 {
+
+    private $apiKey;
+    private $client ;
+
+
+    public function __construct()
+    {
+        $this->client = new Client();
+        $this->apiKey = '9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE'; 
+    }
+
     public function index()
     {
 
@@ -508,6 +519,10 @@ class AdminVideosController extends Controller
         $client = new Client();
 
         $storage_settings = StorageSetting::first();
+
+        return $this->UploadVideoStreamVideoCipher( $storage_settings,$mp4_url);
+   
+
         if($site_theme->enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
                 return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
@@ -1671,6 +1686,7 @@ class AdminVideosController extends Controller
                 'admin_videos_ads'        => $admin_videos_ads ,
                 'advertisements_category' => Adscategory::get(),
                 'compress_image_settings' => $compress_image_settings,
+                'theme_settings' => SiteTheme::first(),
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -2731,7 +2747,17 @@ class AdminVideosController extends Controller
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
         $video->ppv_option = $request->ppv_option;
-
+        // $video->ppv_price_240p = $data['ppv_price_240p'];
+        // $video->ppv_price_360p = $data['ppv_price_360p'];
+        $video->ppv_price_480p = $data['ppv_price_480p'];
+        $video->ppv_price_720p = $data['ppv_price_720p'];
+        $video->ppv_price_1080p = $data['ppv_price_1080p'];
+        // $video->ios_ppv_price_240p = $data['ios_ppv_price_240p'];
+        // $video->ios_ppv_price_360p = $data['ios_ppv_price_360p'];
+        $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
+        $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
+        $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
+        
         $video->save();
 
         if (
@@ -4069,6 +4095,12 @@ class AdminVideosController extends Controller
             $responsive_player_image = null;
             $responsive_tv_image = null;
         }
+        
+        if ($video->type == "embed") {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
 
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
@@ -4084,6 +4116,7 @@ class AdminVideosController extends Controller
         $video->uploaded_by = Auth::user()->role;
         $video->draft = 1;
         $video->active = 1;
+        $video->status = $status;
         $video->embed_code = $embed_code;
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -4106,6 +4139,16 @@ class AdminVideosController extends Controller
         $video->responsive_player_image = $responsive_player_image;
         $video->responsive_tv_image = $responsive_tv_image;
         $video->ppv_option = $request->ppv_option;
+        // $video->ppv_price_240p = $data['ppv_price_240p'];
+        // $video->ppv_price_360p = $data['ppv_price_360p'];
+        $video->ppv_price_480p = $data['ppv_price_480p'];
+        $video->ppv_price_720p = $data['ppv_price_720p'];
+        $video->ppv_price_1080p = $data['ppv_price_1080p'];
+        // $video->ios_ppv_price_240p = $data['ios_ppv_price_240p'];
+        // $video->ios_ppv_price_360p = $data['ios_ppv_price_360p'];
+        $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
+        $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
+        $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -4125,7 +4168,6 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
-
 
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
@@ -4545,7 +4587,8 @@ class AdminVideosController extends Controller
             $video->title = $data["embed"];
             $video->embed_code = $data["embed"];
             $video->type = "embed";
-            $video->draft = 0;
+            $video->draft = 1;
+            $video->status = 1;
             $video->active = 1;
             $video->image = default_vertical_image();
             $video->video_tv_image = default_horizontal_image();
@@ -11540,5 +11583,285 @@ class AdminVideosController extends Controller
             return $value ;
         }
     }
+
+
+    private  function UploadVideoStreamVideoCipher(  $storage_settings,$mp4_url){
+      
+            
+         try {
+            // 008fb53adbd94e11889bfd3994899bf5
+
+
+
+            $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://dev.vdocipher.com/api/videos/008fb53adbd94e11889bfd3994899bf5/12345678",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode([
+                    "ttl" => 300,
+                ]),
+                CURLOPT_HTTPHEADER => array(
+                    "Accept: application/json",
+                    "Authorization: Apisecret 008fb53adbd94e11889bfd3994899bf5",
+                    "Content-Type: application/json"
+                ),
+                ));
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                echo "cURL Error #:" . $err;
+                } else {
+                echo $response;
+                }
+
+                exit;
+
+            // $response = $this->client->request('POST', "https://dev.vdocipher.com/api/videos/008fb53adbd94e11889bfd3994899bf5/12345678", [
+            //     'headers' => [
+            //         'Authorization' => "Apisecret {$this->apiKey}",
+            //     ],
+            //         'json' => [
+            //             'title' => $title,
+            //             'folderId' => 'YOUR_FOLDER_ID', 
+            //         ],
+            // ]);
+
+                // $response = $this->client->request('POST', 'https://dev.vdocipher.com/api/videos', [
+                //     'headers' => [
+                //         'Authorization' => "Apisecret {$this->apiKey}",
+                //     ],
+                //     'json' => [
+                //         'title' => $title,
+                //         'folderId' => 'YOUR_FOLDER_ID', 
+                //     ],
+                // ]);
+
+                return json_decode($response->getBody());
+             } catch (\Exception $e) {
+                    return response()->json(['message' => 'Video upload failed!', 'error' => $e->getMessage()], 500);
+            }
+
+
+        
+                // $curl = curl_init();
+
+                // curl_setopt_array($curl, array(
+                // CURLOPT_URL => "https://dev.vdocipher.com/api/videos?title=$mp4_url&folderId=633c60bd04514ebd8af551c77274c974",
+                // CURLOPT_RETURNTRANSFER => true,
+                // CURLOPT_ENCODING => "",
+                // CURLOPT_MAXREDIRS => 10,
+                // CURLOPT_TIMEOUT => 30,
+                // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                // CURLOPT_CUSTOMREQUEST => "PUT",
+                // CURLOPT_HTTPHEADER => array(
+                //     "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE"
+                // ),
+                // ));
+
+                // $response = curl_exec($curl);
+                // $err = curl_error($curl);
+
+                // curl_close($curl);
+
+                // if ($err) {
+                // echo "cURL Error #:" . $err;
+                // } else {
+                //     echo "<pre>";
+                // echo $response;
+                // }
+                // exit;
+                // $video = $mp4_url;
+                // $videoPath = $video->getPathname();
+        
+                // try {
+                //     $response = $this->client->request('POST', 'https://dev.vdocipher.com/api/v3/upload', [
+                //         'headers' => [
+                //             'Authorization' => "Apisecret {$this->apiKey}",
+                //         ],
+                //         'multipart' => [
+                //             [
+                //                 'name' => 'file',
+                //                 'contents' => fopen($videoPath, 'r'),
+                //                 'filename' => $video->getClientOriginalName(),
+                //             ]
+                //         ]
+                //     ]);
+        
+                //     $data = json_decode($response->getBody(), true);
+        
+                //     return response()->json(['message' => 'Video uploaded successfully!', 'data' => $data]);
+                // } catch (\Exception $e) {
+                //     return response()->json(['message' => 'Video upload failed!', 'error' => $e->getMessage()], 500);
+                // }
+            }
+
+            public function getvideocihperdata(){
+
+
+
+                $videoId = "597244970fe8487ab2b6d026719397ac"; 
+                $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => json_encode([
+                        "ttl" => 300, // 5 minutes TTL
+                        // "whitelisthref" => "https://localhost/flicknexs"
+                    ]),
+                    CURLOPT_HTTPHEADER => array(
+                        "Accept: application/json",
+                        "Authorization: Apisecret $apiKey",
+                        "Content-Type: application/json"
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $responseObj = json_decode($response, true);
+                    dd($responseObj);
+                    // if (isset($responseObj['otp'])) {
+                    //     // Use the OTP in your embed code
+                    //     echo "responseObj OTP: " . $responseObj;
+                        
+                    // } else {
+                    //     echo "Error: " . $responseObj['error']['message'];
+                    // }
+                }
+
+                // $curl = curl_init();
+
+                // curl_setopt_array($curl, array(
+                // CURLOPT_URL => "https://dev.vdocipher.com/api/videos/597244970fe8487ab2b6d026719397ac/otp",
+                // CURLOPT_RETURNTRANSFER => true,
+                // CURLOPT_ENCODING => "",
+                // CURLOPT_MAXREDIRS => 10,
+                // CURLOPT_TIMEOUT => 30,
+                // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                // CURLOPT_CUSTOMREQUEST => "POST",
+                // CURLOPT_POSTFIELDS => json_encode([
+                //     "ttl" => 300,
+                //     // "whitelisthref" => "https://localhost/flicknexs"
+                // ]),
+                // CURLOPT_HTTPHEADER => array(
+                //     "Accept: application/json",
+                //     "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE",
+                //     "Content-Type: application/json"
+                // ),
+                // ));
+
+                // $response = curl_exec($curl);
+                // $err = curl_error($curl);
+
+                // curl_close($curl);
+                // echo "<pre>";
+                // if ($err) {
+                // echo "cURL Error #:" . $err;
+                // } else {
+                    
+                // echo $response;
+                // }
+
+                exit;
+
+            //     $curl = curl_init();
+
+            //     curl_setopt_array($curl, array(
+            //     CURLOPT_URL => "https://dev.vdocipher.com/api/videos?title=title&folderId=633c60bd04514ebd8af551c77274c974",
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => "",
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 30,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => "PUT",
+            //     CURLOPT_HTTPHEADER => array(
+            //         "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE"
+            //     ),
+            //     ));
+
+            //     $response = curl_exec($curl);
+            //     $err = curl_error($curl);
+
+            //     curl_close($curl);
+
+            //     if ($err) {
+            //     echo "cURL Error #:" . $err;
+            //     } else {
+            //         echo "<pre>";
+            //     echo $response;
+            //     }
+
+            }
+
+        public function videocihperplayer(){
+
+            $videoId = "597244970fe8487ab2b6d026719397ac"; 
+            $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode([
+                    "ttl" => 30000, 
+                ]),
+                CURLOPT_HTTPHEADER => array(
+                    "Accept: application/json",
+                    "Authorization: Apisecret $apiKey",
+                    "Content-Type: application/json"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                $responseObj = json_decode($response, true);
+
+            }
+
+
+            $data = [
+                'otp' =>  $responseObj['otp'],
+                'playbackInfo' =>  $responseObj['playbackInfo'],
+            ];
+            
+            return View("admin.videos.videocipher", $data);
+
+        }
+
 }
     

@@ -25,6 +25,8 @@ Route::get('/video-chat', function () {
 Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
 Route::get('/ffplayout-channel', 'AdminFFplayoutController@GetChannels');
+Route::get('/getvideocihperdata', 'AdminVideosController@getvideocihperdata');
+Route::get('/videocihperplayer', 'AdminVideosController@videocihperplayer');
 
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
@@ -233,7 +235,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('favorite', 'ThemeAudioController@add_favorite');
     Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
     Route::get('/videos-categories/{category_slug}', 'ChannelController@Parent_video_categories')->name('Parent_video_categories');
-    Route::get('/category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
+    Route::get('category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
+    Route::get('category/{cid}/channel/{slug}', 'ChannelController@channelVideos')->name('video_categories_channel');
     Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 
     //theme 3 full Player
@@ -293,20 +296,35 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // Page List
     Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('channel/latest-videos/{slug}', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
     Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
+    Route::get('channel/Featured_videos/{slug}', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
     Route::get('Video_categories', 'PageListController@Video_categories')->name('pagelist.category-videos-videos');
     Route::get('Live_list', 'PageListController@Live_list')->name('pagelist.live_list');
     Route::get('Albums_list', 'PageListController@Albums_list')->name('pagelist.albums_list');
     Route::get('Live_categories', 'PageListController@Live_Category_list')->name('pagelist.live-category_list');
     Route::get('Audio_list', 'PageListController@Audio_list')->name('pagelist.audio_list');
     Route::get('Series_list', 'PageListController@Series_list')->name('pagelist.series_list');
+    Route::get('channel/Series_list/{slug}', 'PageListController@Series_list')->name('pagelist.series_list');
     Route::get('Channel_Partner_list', 'PageListController@ChannelPartner_list')->name('pagelist.channelpartner_list');
+    Route::get('Content_Partner_list', 'PageListController@ContentPartner_list')->name('pagelist.contentpartner_list');
     Route::get('latest_viewed_audio_list', 'PageListController@LatestViewedAudio_list')->name('pagelist.latestviewed-audio');
     Route::get('epg_list', 'PageListController@epg_list')->name('pagelist.epg_list');
     Route::get('Series_genre_list', 'PageListController@SeriesGenre_list')->name('pagelist.seriesgenre');
+    Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
+    Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('audio_genre_list', 'PageListController@AudioGenre_list')->name('pagelist.audiogenre');
+    Route::get('latest_viewed_episode_list', 'PageListController@LatestViewedEpisode_list')->name('pagelist.latestviewed-episode');
+    Route::get('latest_viewed_live_list', 'PageListController@LatestViewedLive_list')->name('pagelist.latestviewed-live');
+    Route::get('latest_viewed_video_list', 'PageListController@LatestViewedVideo_list')->name('pagelist.latestviewed-video');
     Route::get('Featured_episodes', 'PageListController@Featured_episodes')->name('pagelist.Featured_episodes');
-    // Route::get('watchlater_list', 'PageListController@Watchlater_list')->name('pagelist.watchlater');
-    // Route::get('wishlist_list', 'PageListController@Wishlist_list')->name('pagelist.wishlist');
+    Route::get('Video_based_categories', 'PageListController@VideoBasedCategories_list')->name('pagelist.video-based-categories');
+    Route::get('Most_watched_country_videos', 'PageListController@MostWatchedCountryVideos_list')->name('pagelist.most-watched-videos-country');
+    Route::get('Most_watched_users_videos', 'PageListController@MostWatchedUserVideos_list')->name('pagelist.most-watched-videos-users');
+    Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
+    // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
+    // Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    //Top most Watched Videos need to add
 
     
     // TV-shows
@@ -354,10 +372,13 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // OTP (March 2024)
     Route::get('/login-otp', 'OTPController@OTP_index')->name('auth.otp.index');
     Route::get('/verify-mobile-number', 'OTPController@verify_mobile_number')->name('auth.otp.verify_mobile_number');
-    Route::post('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
-    Route::get('/verify-otp', 'OTPController@verify_OTP')->name('auth.otp.verify-otp');
-    Route::post('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
     Route::get('/check-mobile-exist', 'OTPController@check_mobile_exist')->name('auth.otp.check-mobile-exist');
+    Route::get('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
+    Route::get('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
+
+    Route::get('/signup-sending-otp', 'OTPController@Signup_Sending_OTP')->name('auth.otp.signup-sending-otp');
+    Route::get('/signup-otp-verification', 'OTPController@signup_otp_verification')->name('auth.otp.signup_otp_verification');
+    Route::get('/signup-check-mobile-exist', 'OTPController@Signup_check_mobile_exist')->name('auth.otp.signup-check-mobile-exist');
 
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
     Route::post('/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
@@ -422,6 +443,9 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
     Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
 
+    Route::post('video_js_Like_episode', 'TvshowsController@video_js_Like_episode')->name('video-js.video_js_Like_episode');
+    Route::post('video_js_dislike_episode', 'TvshowsController@video_js_disLike_episode')->name('video-js.video_js_disLike_episode');
+
     Route::post('/like-episode', 'TvshowsController@LikeEpisode');
     Route::post('/remove_like-episode', 'TvshowsController@RemoveLikeEpisode');
 
@@ -447,11 +471,19 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
         // Stripe Video PPV Purchase
     Route::get('Stripe_payment_video_PPV_Purchase/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase')->name('Stripe_payment_video_PPV_Purchase');
     Route::get('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase_verify')->name('Stripe_payment_video_PPV_Purchase_verify');
+    
+    
+    Route::get('Stripe_payment_video_PPV_Plan_Purchase/{ppv_plan}/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase')->name('Stripe_payment_video_PPV_Plan_Purchase');
+    Route::get('Stripe_payment_video_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}/{ppv_plan}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase_verify')->name('Stripe_payment_video_PPV_Plan_Purchase_verify');
 
-        // Stripe Video PPV Purchase
+        // Stripe Series Season PPV Purchase
     Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
     Route::get('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
     
+        // Stripe Series  PPV Purchase
+        Route::get('Stripe_payment_series_PPV_Purchase/{Series_id}/{amount}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase')->name('Stripe_payment_series_PPV_Purchase');
+        Route::get('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{Series_id}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
+        
     
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
@@ -2214,19 +2246,6 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // Landing page  category videos
     Route::get('landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
 
-    // Channel List
-    Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-    Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
-    Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
-    Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
-    Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
-    Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
-    Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
-    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
-    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
-    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
-    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
-
     // Content Partner List
     Route::get('contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
     //   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
@@ -2325,6 +2344,21 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList')->name('ContinueWatchingList');
 });
 
+
+    // Channel List
+    Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+    Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+    Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
+    Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+    Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+    Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+    Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
+    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
+    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
+    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
+    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
+
+
 // Razorpay
 Route::group(['middleware' => ['RazorpayMiddleware']], function () {
     Route::get('Razorpay', 'RazorpayController@Razorpay');
@@ -2338,6 +2372,8 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 
     Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
     Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
+
+    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
 
     Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');

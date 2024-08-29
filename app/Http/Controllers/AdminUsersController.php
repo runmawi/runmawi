@@ -947,15 +947,31 @@ class AdminUsersController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-
-
-        $user->username = $request->get('name');
-        $user->mobile = $request->get('mobile');
-        $user->email = $request->get('email');
-        $user->DOB = $request->get('DOB');
-        $user->ccode = $request->get('ccode');
-        $user->username = $request->get('username');
-        $user->gender = $request->get('gender');
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+    
+        if ($request->has('mobile')) {
+            $user->mobile = $request->get('mobile');
+        }
+    
+        if ($request->has('email')) {
+            $user->email = $request->get('email');
+        }
+    
+        if ($request->has('DOB')) {
+            $user->DOB = $request->get('DOB');
+        }
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+        if ($request->has('ccode')) {
+            $user->ccode = $request->get('ccode');
+        }
+    
+        if ($request->has('gender')) {
+            $user->gender = $request->get('gender');
+        }
 
 
         if ($request->get('password') != null)
@@ -1860,7 +1876,7 @@ class AdminUsersController extends Controller
             ->groupBy('month_name')
             ->orderBy('createdAt', "DESC")
             ->get();
-        // $total_user = User::where('role', '!=', 'admin')->get();
+        // $total_user = User::where('role', '!=', 'admin')->orderBy('created_at', "DESC")->get();
         $total_user = User::where('role', '!=', 'admin')->paginate(10);
 
         $data1 = array(
@@ -1869,10 +1885,13 @@ class AdminUsersController extends Controller
             'registered_count' => $registered_count,
             'total_user' => $total_user,
             'ppvuser_count' => $ppvuser_count,
+            'activeuser_count' => User::where('active', 1)->count(),
+            'inactiveuser_count' => User::where('active',0)->orwhere('active',null)->count(),
 
         );
-        return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
-    }
+            return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+            // return \View::make('admin.analytics.Userrevenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+        }
     }
 
     public function ListUsers(Request $request)
@@ -1893,10 +1912,23 @@ class AdminUsersController extends Controller
         {
             $Users = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->get();
         }
-        else
+        elseif ($role == "active_users")
+        {
+            $Users = User::where('active', 1)->get();
+        }
+        elseif ($role == "inactive_users")
+        {
+            $Users = User::where('active','!=',  1)->get();
+        }
+        elseif ($role == "admin")
         {
             $Users = User::where('role', 'admin')->get();
         }
+        else
+        {
+            $Users = User::get();
+        }
+
         $total_row = $Users->count();
         if (!empty($Users))
         {
@@ -1954,6 +1986,7 @@ class AdminUsersController extends Controller
           <td>' . $role . '</td>
           <td>' . $phoneccode . '</td>
           <td>' . $provider . '</td>
+          <td>' . $row->DOB  . '</td>
           <td>' . $row->created_at . '</td>
           <td>' . $active . '</td>
 
@@ -3002,8 +3035,9 @@ class AdminUsersController extends Controller
 
             $user_id = Auth::user()->id;
             $user_role = Auth::user()->role;
-            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                ->get();
+            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)->get();
+            $video_quality = SubscriptionPlan::all();
+
             $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
@@ -3121,10 +3155,11 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
+                'video_quality'  => $video_quality,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
             );
-            
+
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
                 return Theme::view('myprofile', $data);
             }else{

@@ -19,7 +19,7 @@
                             @endforeach
                         </ul>
                         <div class="vertical_s">
-                            <ul id="top-ten-slider-nav" class="list-inline p-0 m-0  d-flex align-items-center">
+                            <ul id="top-ten-slider-nav" class="list-inline d-flex align-items-center">
 
                                 @foreach ($data as $featured_videos)
                                     <li>

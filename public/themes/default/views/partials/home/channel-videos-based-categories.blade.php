@@ -1,62 +1,4 @@
-@php
-    $check_Kidmode = 0 ;
 
-
-    $data = App\VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode,$channel_partner) {
-        $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1)->where('videos.user_id', $channel_partner->id)->where('videos.uploaded_by','Channel');
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $query->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $query->whereBetween('videos.age_restrict', [0, 12]);
-        }
-    })
-
-    ->with(['category_videos' => function ($videos) use ($check_Kidmode,$channel_partner) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
-            ->where('videos.active', 1)
-            ->where('videos.status', 1)
-            ->where('videos.draft', 1)
-            ->where('videos.user_id', $channel_partner->id)
-            ->where('videos.uploaded_by','Channel');
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $videos->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $videos->whereBetween('videos.age_restrict', [0, 12]);
-        }
-
-        $videos->latest('videos.created_at')->get();
-    }])
-    ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
-    ->where('video_categories.in_home', 1)
-    ->whereHas('category_videos', function ($query) use ($check_Kidmode,$channel_partner) {
-        $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1)->where('videos.user_id', $channel_partner->id)->where('videos.uploaded_by','Channel');
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $query->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $query->whereBetween('videos.age_restrict', [0, 12]);
-        }
-    })
-    ->orderBy('video_categories.order')
-    ->get()
-    ->map(function ($category) {
-        $category->category_videos->map(function ($video) {
-            $video->image_url = URL::to('/public/uploads/images/'.$video->image);
-            $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
-            return $video;
-        });
-        $category->source =  "category_videos" ;
-        return $category;
-    });
-@endphp
 
 
 @if (!empty($data) && $data->isNotEmpty())
@@ -68,8 +10,13 @@
 
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
-                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
+                            @if((!preg_match('/^channel\/.+$/', request()->path())))
+                                <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                                <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
+                            @else
+                                <h4 class="main-title"><a href="{{ URL::to('category/'.$video_category->slug.'/channel/'.$channel_partner_slug) }}">{{ optional($video_category)->name }}</a></h4>
+                                <h4 class="main-title"><a href="{{ URL::to('category/'.$video_category->slug.'/channel/'.$channel_partner_slug) }}">{{ 'view all' }}</a></h4>
+                            @endif
                         </div>
 
                         <div class="favorites-contens">
@@ -219,7 +166,7 @@
                                                         </a>
 
                                                         <a type="button" class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                            <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" /> {{ __('Watch Now') }} 
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }} 
                                                         </a>
                                                     </div>
                                                 </div>

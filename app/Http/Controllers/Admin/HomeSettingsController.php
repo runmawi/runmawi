@@ -398,6 +398,7 @@ class HomeSettingsController extends Controller
         $settings->wishlist_videos = !empty($request->wishlist_videos) ?  "1" : "0" ;
         $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->live_artist = !empty($request->live_artist) ?  "1" : "0" ;
+        $settings->epg = !empty($request->epg) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');

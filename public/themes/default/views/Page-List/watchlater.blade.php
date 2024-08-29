@@ -15,7 +15,6 @@
                 </div>
 
                 @if (($watchlater_pagelist)->isNotEmpty())
-                <?php dd($watchlater_pagelist)?>
 
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">

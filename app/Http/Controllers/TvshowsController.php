@@ -113,48 +113,144 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::orderBy('id', 'asc')->get();
-
+            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,32])->orderBy('id', 'asc')->get();
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
-                'sliders'            => [], 
-                'live_banner'        => [],  
-                'video_banners'      => [], 
-                'live_event_banners' => [], 
-                'VideoCategory_banner' => [], 
             );   
 
-            $data = [
-                'current_page'   => 1,
-                'pagination_url' => '/series',
-                'settings'       => Setting::first(),
-                'currency'      => CurrencySetting::first(),
-                'pages'         => $pages,
-                'current_theme' => $this->Theme,
-                'free_series'   => (new FrontEndQueryController)->free_series() ,
-                'free_episodes' => (new FrontEndQueryController)->free_episodes() ,
-                'free_Contents' => (new FrontEndQueryController)->free_episodes() ,
-                'episodes'      => (new FrontEndQueryController)->latest_episodes() ,
-                'trendings'     => (new FrontEndQueryController)->trending_episodes() ,
-                'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes() ,
-                'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes(),
-                'latest_series'     =>  (new FrontEndQueryController)->latest_Series(),
-                'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
-                'banner'            =>  (new FrontEndQueryController)->Episode_sliders() ,
-                'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
-                'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
-                'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
-                'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks() ,
-                'ThumbnailSetting'  => ThumbnailSetting::first(),
-                'default_vertical_image_url' => default_vertical_image_url(),
-                'default_horizontal_image_url' => default_horizontal_image_url(),
-                'order_settings_list' => $OrderHomeSetting, 
-                'home_settings'  => HomeSetting::first() ,
-                'Slider_array_data' => $Slider_array_data ,
-            ];
+            if($this->Theme == "default"){
+                $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
+                                    ->where('active', '1')->latest()->get();
 
-            return Theme::view('tv-home', $data);
+                $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
+                                                    'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
+                                                ->where('active', 1)->where('featured' ,1)->where('status', '1')
+                                                ->latest()
+                                                ->get()->map(function($item){
+                                                    $item['series'] = Series::where('id',$item->series_id)->first();
+                                                    return $item ;
+                                                });
+
+                $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+
+                    $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                                ->whereJsonContains('network_id', [(string)$item->id])
+                
+                                ->latest('series.created_at')->get()->map(function ($item) { 
+                        
+                        $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                        $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  $this->default_horizontal_image_url ;
+                
+                        $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+                
+                        $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                
+                        $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                ->map(function ($item) {
+                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                                                                return $item;
+                                                            });
+                
+                        $item['source'] = 'Series';
+                        return $item;
+                                                                            
+                    });
+                    return $item;
+                });
+
+                $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    
+                    ->get();
+
+                    $Series_based_on_category->each(function ($category) {
+                        $category->category_series->transform(function ($item) {
+
+                            $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : $this->default_horizontal_image_url ;
+
+                            $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+
+                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+
+                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                                    ->map(function ($item) {
+                                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
+                                                                        return $item;
+                                                                });
+
+                            $item['source'] = 'Series';
+                            return $item;
+                        });
+                        $category->source = 'Series_Genre';
+                        return $category;
+                    });
+
+                    $SeriesGenre =  SeriesGenre::orderBy('order','ASC')->get();
+
+                    $data = [
+                        'current_page'   => 1,
+                        'pagination_url' => '/series',
+                        'settings'       => Setting::first(),
+                        'currency'      => CurrencySetting::first(),
+                        'pages'         => $pages,
+                        'current_theme' => $this->Theme,
+                        'featured_episodes' =>  $featured_episodes,
+                        'latest_series'     =>  $latest_series,
+                        'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
+                        'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
+                        'Series_based_on_category' => $Series_based_on_category ,
+                        'Series_based_on_Networks' => $Series_based_on_Networks ,
+                        'ThumbnailSetting'  => ThumbnailSetting::first(),
+                        'default_vertical_image_url' => default_vertical_image_url(),
+                        'default_horizontal_image_url' => default_horizontal_image_url(),
+                        'order_settings_list' => $OrderHomeSetting, 
+                        'home_settings'  => HomeSetting::first() ,
+                        'Slider_array_data' => $Slider_array_data ,
+                    ];
+        // dd('end');
+                    return Theme::view('tv-home', $data);
+
+            }
+            else{
+                $data = [
+                    'current_page'   => 1,
+                    'pagination_url' => '/series',
+                    'settings'       => Setting::first(),
+                    'currency'      => CurrencySetting::first(),
+                    'pages'         => $pages,
+                    'current_theme' => $this->Theme,
+                    'free_series'   => (new FrontEndQueryController)->free_series() ,
+                    'free_episodes' => (new FrontEndQueryController)->free_episodes() ,
+                    'free_Contents' => (new FrontEndQueryController)->free_episodes() ,
+                    'episodes'      => (new FrontEndQueryController)->latest_episodes() ,
+                    'trendings'     => (new FrontEndQueryController)->trending_episodes() ,
+                    'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes() ,
+                    'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes(),
+                    'latest_series'     =>  (new FrontEndQueryController)->latest_Series(),
+                    'series_sliders'    =>  (new FrontEndQueryController)->series_sliders(),
+                    'banner'            =>  (new FrontEndQueryController)->Episode_sliders() ,
+                    'SeriesGenre'       =>  (new FrontEndQueryController)->SeriesGenre() ,
+                    'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image() ,
+                    'Series_based_on_category' => (new FrontEndQueryController)->Series_based_on_category() ,
+                    'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks() ,
+                    'ThumbnailSetting'  => ThumbnailSetting::first(),
+                    'default_vertical_image_url' => default_vertical_image_url(),
+                    'default_horizontal_image_url' => default_horizontal_image_url(),
+                    'order_settings_list' => $OrderHomeSetting, 
+                    'home_settings'  => HomeSetting::first() ,
+                    'Slider_array_data' => $Slider_array_data ,
+                ];
+    
+                return Theme::view('tv-home', $data);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
@@ -347,6 +443,7 @@ class TvshowsController extends Controller
                                 ->count();
                 $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
+                    
                     if (!Auth::guest() && !empty($free_episode)):
                         if (array_key_exists($episode_name, $free_episode) && $series->access != 'subscriber' || Auth::user()->role == 'admin' ||  
                         $season_details->access == 'free' && $series->access != 'subscriber' && $series->access != 'registered' || 
@@ -380,6 +477,7 @@ class TvshowsController extends Controller
                     $PpvPurchase = 0;
                     $SeriesPpvPurchase =0;
                 endif;
+                
                    // Free Interval Episodes
                 if ( !Auth::guest() && $season_details->access == 'ppv'
                  || !Auth::guest() &&  !empty($ppv_price) && !empty($ppv_interval) && $season_details->access == 'ppv'
@@ -485,7 +583,16 @@ class TvshowsController extends Controller
                     }
 
                 // endif;
-
+                }elseif (!Auth::guest() && $series->access == 'ppv' && $SeriesPpvPurchase == 0
+                || !Auth::guest() && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent == 0 && $series->access == 'ppv'  && $SeriesPpvPurchase == 0
+                 ) 
+                {
+                    $free_episode = 0;
+                }elseif (!Auth::guest() && $series->access == 'ppv' && $SeriesPpvPurchase == 0
+                    || !Auth::guest() && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent == 0 && $series->access == 'ppv'  && $SeriesPpvPurchase == 0
+                 ) 
+                {
+                    $free_episode = 0;
                 }elseif (!Auth::guest() && $series->access != 'subscriber' || !Auth::guest() && Auth::user()->role == 'admin' ||  
                     !Auth::guest() && $season_details->access == 'free' && $series->access == 'subscriber' && Auth::user()->role != 'registered' || 
                     $season_details->access == 'free' && $series->access == 'guest' && !Auth::guest() && Auth::user()->role == 'subscriber'  || 
@@ -510,7 +617,6 @@ class TvshowsController extends Controller
                 else {
                     $free_episode = 0;
                 } 
-
                     // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
                 $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
@@ -1020,6 +1126,7 @@ class TvshowsController extends Controller
             }
         
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -1126,6 +1233,112 @@ class TvshowsController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
+    }
+    public function video_js_Like_episode(Request $request)
+    {
+        try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'episode_id' => $request->episode_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'disliked'   => 0 ,
+            ];
+
+            $check_Like_exist = LikeDislike::where('episode_id', $request->episode_id)->where('liked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
+
+
+            $Like_exist = LikeDislike::where('episode_id', $request->episode_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]);
+    }
+
+    public function video_js_disLike_episode(Request $request)
+    {
+        try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'episode_id' => $request->episode_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'liked'      => 0 ,
+            ];
+
+            $check_dislike_exist = LikeDislike::where('episode_id', $request->episode_id)->where('disliked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
+
+
+            $dislike_exists = LikeDislike::where('episode_id', $request->episode_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+
+            !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]);
     }
 
     public function LikeEpisode(Request $request)

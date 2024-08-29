@@ -80,7 +80,7 @@ class ThemeAudioController extends Controller{
     public function index($slug,$name = '')
       {
 
-        if(Auth::guest()):
+        if(Auth::guest() && $this->Theme != "theme5-nemisha"):
             return Redirect::to('/login');
         endif;
 
@@ -160,11 +160,14 @@ class ThemeAudioController extends Controller{
             $audio = "";
             }
 
-            $view = new RecentView;
-            $view->audio_id = $audio;
-            $view->user_id = Auth::user()->id;
-            $view->visited_at = date('Y-m-d');
-            $view->save();
+            if ( !Auth::guest()) {
+                $view = new RecentView;
+                $view->audio_id = $audio;
+                $view->user_id = Auth::user()->id;
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+            }
+
              if (!empty($audio)) {
               $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
               $albumID = $check_audio_details->album_id;
@@ -238,7 +241,11 @@ class ThemeAudioController extends Controller{
             if (!empty($audio_details)) {
                 // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
 
-                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+                if (!Auth::guest()) {
+                    $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+                }else{
+                    $ppv_status = 0 ;
+                }
 
                 // dd($ppv_status);
 
@@ -937,7 +944,7 @@ class ThemeAudioController extends Controller{
             return Theme::view('artist', $data);
 
         } catch (\Throwable $th) {
-           
+            // return $th->getMessage();
             return abort(404);
         }
       

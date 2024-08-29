@@ -12,8 +12,8 @@
 
 @if (!empty($data) && $data->isNotEmpty())
     @php
-        $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
-        $order_settings_list = App\OrderHomeSetting::get(); 
+        $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
+        $order_settings_list = App\OrderHomeSetting::get();
         $ThumbnailSetting = App\ThumbnailSetting::first();
     @endphp
 
@@ -23,20 +23,27 @@
               <div class="col-sm-12 ">
 
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h2 class="main-title">
-                                <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
-                                    {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
-                                </a>
-                            </h2> 
-                            @if($settings->homepage_views_all_button_status == 1)
+                            @if (!preg_match('/^channel\/.+$/', request()->path()))
                                 <h2 class="main-title">
-                                    <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}"> 
-                                        {{ __('View All') }}
+                                    <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
+                                        {{ $order_settings_list[4]->header_name ? __($order_settings_list[4]->header_name) : '' }}
                                     </a>
                                 </h2>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h2 class="main-title">
+                                        <a href="{{ $order_settings_list[4]->header_name ? URL::to('/') . '/' . $order_settings_list[4]->url : '' }}">
+                                            {{ __('View all') }}
+                                        </a>
+                                    </h2>
+                                @endif
+                            @else
+                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Series_list/'.$channel_partner_slug) }}">{{ optional($order_settings_list[4])->header_name }}</a></h2>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Series_list/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h2>
+                                @endif
                             @endif
                         </div>
-                
+
                   <div class="favorites-contens">
                         <div class="latest-series-video home-sec list-inline row p-0 mb-0">
                           @if(isset($data))
@@ -80,7 +87,7 @@
                                                       @endif
                                                   @endif
                                               </a>
-                                              <div class="hover-buttons text-white"> 
+                                              <div class="hover-buttons text-white">
                                                   <a class="text-white" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
                                                       <p class="epi-name text-left m-0 mt-2">{{ __($latest_serie->title) }}</p>
                                                         <p class="desc-name text-left m-0 mt-1">
@@ -92,11 +99,6 @@
                                                                 <span class="position-relative badge p-1 mr-2">{{ $latest_serie->age_restrict}}</span>
                                                             @endif
 
-                                                            @if($ThumbnailSetting->duration == 1)
-                                                                <span class="position-relative text-white mr-2">
-                                                                    {{ (floor($latest_serie->duration / 3600) > 0 ? floor($latest_serie->duration / 3600) . 'h ' : '') . floor(($latest_serie->duration % 3600) / 60) . 'm' }}
-                                                                </span>
-                                                            @endif
                                                             @if($ThumbnailSetting->published_year == 1 && !($latest_serie->year == 0))
                                                                 <span class="position-relative badge p-1 mr-2">
                                                                     {{ __($latest_serie->year) }}
@@ -111,14 +113,15 @@
 
                                                         <div class="movie-time d-flex align-items-center my-2">
                                                             <span class="position-relative badge p-1 mr-2">
-                                                                @php 
-                                                                    $SeriesSeason = App\SeriesSeason::where('series_id', $latest_serie->id)->count(); 
+                                                                @php
+                                                                    $SeriesSeason = App\SeriesSeason::where('series_id', $latest_serie->id)->count();
                                                                     echo $SeriesSeason . ' Season';
                                                                 @endphp
                                                             </span>
                                                             <span class="position-relative badge p-1 mr-2">
-                                                                @php 
-                                                                    $Episode = App\Episode::where('series_id', $latest_serie->id)->count(); 
+
+                                                                @php
+                                                                    $Episode = App\Episode::where('series_id', $latest_serie->id)->count();
                                                                     echo $Episode . ' Episodes';
                                                                 @endphp
                                                             </span>
@@ -126,7 +129,7 @@
                                                       </div>
                                                   </a>
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                      <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Series') }}
+                                                      <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                   </a>
                                               </div>
                                           </div>

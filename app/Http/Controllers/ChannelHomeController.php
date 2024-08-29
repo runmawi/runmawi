@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
@@ -75,7 +77,20 @@ class ChannelHomeController extends Controller
         $this->videos_per_page = $this->settings->videos_per_page;
 
         $this->HomeSetting = HomeSetting::first();
-        Theme::uses($this->HomeSetting->theme_choosen);
+
+        $this->current_theme = $this->HomeSetting->theme_choosen ;
+        Theme::uses($this->current_theme);
+
+    }
+
+    function paginateCollection(Collection $items, $perPage)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $items->count(), $perPage);
+        $paginatedItems->setPath(request()->url());
+
+        return $paginatedItems;
     }
     
     public function ChannelHome($slug)
@@ -108,10 +123,63 @@ class ChannelHomeController extends Controller
                 }
             });
 
-            $genre_video_display = $FrontEndQueryController->genre_video_display()->filter(function ($genre_video_display) use ($channel_partner) {
-                if ( $genre_video_display->user_id == $channel_partner->id && $genre_video_display->uploaded_by == "Channel" ) {
-                    return $genre_video_display;
+            
+            $check_Kidmode = 0 ;
+
+
+            $genre_video_display = VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode,$channel_partner) {
+                $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1)->where('videos.user_id', $channel_partner->id)->where('videos.uploaded_by','Channel');
+
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', Block_videos());
                 }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+
+            ->with(['category_videos' => function ($videos) use ($check_Kidmode,$channel_partner) {
+                $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+                    ->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1)
+                    ->where('videos.user_id', $channel_partner->id)
+                    ->where('videos.uploaded_by','Channel');
+
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                    $videos->whereNotIn('videos.id', Block_videos());
+                }
+
+                if ($check_Kidmode == 1) {
+                    $videos->whereBetween('videos.age_restrict', [0, 12]);
+                }
+
+                $videos->latest('videos.created_at')->get();
+            }])
+            ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+            ->where('video_categories.in_home', 1)
+            ->whereHas('category_videos', function ($query) use ($check_Kidmode,$channel_partner) {
+                $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1)->where('videos.user_id', $channel_partner->id)->where('videos.uploaded_by','Channel');
+
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                    $query->whereNotIn('videos.id', Block_videos());
+                }
+
+                if ($check_Kidmode == 1) {
+                    $query->whereBetween('videos.age_restrict', [0, 12]);
+                }
+            })
+            ->orderBy('video_categories.order')
+            ->get()
+            ->map(function ($category) {
+                $category->category_videos->map(function ($video) {
+                    $video->image_url = URL::to('/public/uploads/images/'.$video->image);
+                    $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
+                    return $video;
+                });
+                $category->source =  "category_videos" ;
+                return $category;
             });
 
             // Series & Episode
@@ -239,6 +307,7 @@ class ChannelHomeController extends Controller
             return abort(404);
         }
     }
+
     public function ChannelList()
     {
         // if (Auth::guest() && !isset($data['user']))

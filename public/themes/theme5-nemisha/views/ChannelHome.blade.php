@@ -15,6 +15,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .slick-track{
         display: flex;
     }
+    .container-fluid.overflow-hidden{padding-left: 0;}
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -50,7 +51,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
 <section class="mt-5 mb-5">
     <div class="container-fluid">
-        <div class="row ">
+        <div class="row align-items-center">
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
@@ -59,102 +60,110 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                 </ul>
             </div>
             @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
-            <div class="col-2 col-lg-2">
-            <a data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
-                <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
-                </span>
-            </a>
-
-
-            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog"  style='max-width: 800px;'>
-                    <div class="modal-content" style="background-color: transparent;border:none;">
-                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-body">
-                        <video id="videoPlayer1" 
-                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
-                        </video>
+                <div class="col-2 col-lg-2">
+                    <a data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+                        <span class="text-white">
+                        <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
+                        </span>
+                    </a>
+                    <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog"  style='max-width: 800px;'>
+                            <div class="modal-content" style="background-color: transparent;border:none;">
+                                <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="modal-body">
+                                    <video id="videoPlayer1" 
+                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                        type="video/mp4" src="{{ @$channel_partner->intro_video }}">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+            
                 </div>
-                </div>
-            </div>
-      
-        </div>
-        @endif
-            </div>
+            @endif
         </div>
     </div>
 </section>
-<section class="channel_nav ">
-    <div class="container-fluid">
-    <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
-  <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
-  </li>
-  <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
-  </li>
-        <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
-  </li>
-  <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
-  </li>
-         <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
-  </li>
-</ul>
-<div class="tab-content container-fluid" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
-      
-      <div class="Video_Categorynav">
-                            @foreach ($VideoCategory as $key => $videos_category)
-                                <div>
-                                <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
-                                    data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
-                                    href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                    aria-selected="false"><?php echo $videos_category->name; ?></a>
-</div>
-                                    @endforeach 
-                        </div></div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($VideoCategory as $key => $videos_category) { ?>
- <div>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                               role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $videos_category->name; ?></a></div>
-                            <?php }  ?>
-      
-                        </div></div>
-  <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
-     
-      <div class="Audio_Categorynav d-flex">
-                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
+<div class="channel_nav ">
+    <div class="">
+        <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
+            <li class="nav-item Allnav">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
+            </li>
+            <li class="nav-item videonav">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
+            </li>
+            <li class="nav-item livenav">
+                <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
+            </li>
+            <li class="nav-item seriesnav">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
+            </li>
+            <li class="nav-item audionav">
+                <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
+            </li>
+        </ul>
 
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
+        <div class="tab-content container-fluid" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <hr >
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <hr>      
+                <div class="Video_Categorynav">
+                    @foreach ($VideoCategory as $key => $videos_category)
+                        <div>
+                            <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
+                                data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
                                 href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                aria-selected="false"><?php echo $audios_category->name; ?></a>
-
-                            <?php }  ?>
-                        </div></div>
-    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
-     
-      <div class="Live_Categorynav d-flex">
-                            <?php foreach ($LiveCategory as $key => $live_category) { ?>
-                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?></a>
-
-                            <?php }  ?>
+                                aria-selected="false"><?php echo $videos_category->name; ?>
+                            </a>
                         </div>
-</div></div>
-</div>
+                    @endforeach 
+                </div>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <hr>
+                <div class="Series_Categorynav ">
+                    <?php foreach ($VideoCategory as $key => $videos_category) { ?>
+                        <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                                data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
+                               role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $videos_category->name; ?>
+                        </a>
+                    <?php }  ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab">
+            <hr>     
+            <div class="Audio_Categorynav d-flex">
+                <?php foreach ($AudioCategory as $key => $audios_category) { ?>
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
+                        href="#pills-kids" role="tab" aria-controls="pills-kids"
+                        aria-selected="false"><?php echo $audios_category->name; ?>
+                    </a>
+                <?php }  ?>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab">
+            <hr>
+            <div class="Live_Categorynav d-flex">
+                <?php foreach ($LiveCategory as $key => $live_category) { ?>
+                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                        data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
+                        role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $live_category->name; ?>
+                    </a>
+
+                <?php }  ?>
+            </div>
+        </div>
+    </div>
    
-</section>
+</div>
 <!--<section class="">
     <div class="sec-3">
         <div class="container-fluid mt-5">

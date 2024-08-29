@@ -7,11 +7,8 @@
     <div class="d-flex justify-content-center">
         <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
     </div>
-</div><div class="col-lg-12  h-100">
-    <div class="d-flex justify-content-center">
-        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
-    </div>
 </div>
+
 
 <script>
 var options = {
@@ -66,6 +63,7 @@ document.getElementById('rzp-button1').onclick = function(e){
         <input type="text"  name="user_id"   value= {{ $response['user_id'] }} />
         <input type="text"  name="video_id"  value= {{ $response['video_id'] }} />
         <input type="text"  name="amount"    value= {{ $response['amount'] }} />
+        <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">{{ __('Submit')  }}</button>
 </form>

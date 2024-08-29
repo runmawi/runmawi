@@ -22,10 +22,10 @@ class CheckAuthTheme5
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
 
-        if( Auth::guest() && $Theme == "theme5-nemisha" && Route::currentRouteName() != 'FirstLanging' ){
+        // if( Auth::guest() && $Theme == "theme5-nemisha" && Route::currentRouteName() != 'FirstLanging' ){
             
-            return redirect('login');
-        }
+        //     return redirect('login');
+        // }
         
         return $next($request);
     }

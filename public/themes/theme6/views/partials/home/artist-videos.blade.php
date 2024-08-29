@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <ul class="favorites-slider list-inline">
                             @foreach ( $data as $key => $artist_details)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('artist') . '/' . $artist_details->artist_slug }}">

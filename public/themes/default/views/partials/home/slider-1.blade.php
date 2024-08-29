@@ -1,6 +1,6 @@
 
 
-<?php 
+<?php
     $play_button_svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1" />
         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
@@ -13,8 +13,9 @@
 {{-- Admin Slider  --}}
 @if (!empty($sliders) && $sliders->isNotEmpty())
     @foreach ($sliders as $slider_video)
-            <div class="s-bg-1 lazyload" data-bgset="{{ URL::to('/public/uploads/videocategory/' . $slider_video->slider) }}" style="background-position: right;">
-                <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+            <!-- <div class="s-bg-1 lazyload" data-bgset="{{ URL::to('/public/uploads/videocategory/' . $slider_video->slider) }}" style="background-position: right;"> -->
+            <div class="s-bg-1 lazyload" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/videocategory/' . $slider_video->slider) }}')">
+                <div class="container-fluid position-relative h-100" style="padding:0px 100px;">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
@@ -39,11 +40,11 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1" style="  background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 45%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
+        <div class="s-bg-1" style=" background-image: url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" > 
+                        <div class="col-xl-4 col-lg-12 col-md-12 bgc" >
 
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                                 <!-- Video thumbnail image -->
@@ -78,17 +79,17 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23 mt-3">
                                 <a href="{{ url('/category/videos/' . $videos->slug) }}" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
 
-                                @php 
+                                @php
                                     include(public_path('themes/default/views/partials/home/Trailer-slider.blade.php'))
                                 @endphp
                             </div>
                         </div>
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,7 +100,7 @@
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $key => $slider_video)
 
-        <div class="s-bg-1 lazyload"  style="background:url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
+        <div class="s-bg-1 lazyload"  style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -123,7 +124,7 @@
                                     @endif
                                 </div>
                             </div>
-                            
+
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('play_series/'. $slider_video->slug) }}" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Watch Now') }}
@@ -166,7 +167,7 @@
         ->first();
     ?>
 
-    <div class="s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;" id="image-container">
+    <div class="s-bg-1 lazyload" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}');" id="image-container">
 
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -260,7 +261,7 @@
 {{-- Live Stream --}}
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $slider_video)
-        <div class="s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
+        <div class="s-bg-1 lazyload" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -271,7 +272,7 @@
                             </h1>
                             <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color: #fff; display: -webkit-box;
                                 -webkit-line-clamp: 3;
-                                -webkit-box-orient: vertical;  
+                                -webkit-box-orient: vertical;
                                 overflow: hidden;">
                                 {{ __($slider_video->description) }}
                             </div>
@@ -294,7 +295,7 @@
 {{-- Live Event --}}
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $live_event_banner)
-        <div class="s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
+        <div class="s-bg-1 lazyload" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}');">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -335,11 +336,11 @@
 
 @if (!empty($VideoCategory_banner) && $VideoCategory_banner->isNotEmpty())
     @forelse ($VideoCategory_banner as $key => $videos)
-        <div class="s-bg-1 lazyload" style="background:url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');background-size:contain !important;background-repeat:no-repeat !important; background-position: right;">
+        <div class="s-bg-1 lazyload" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" > 
+                        <div class="col-xl-6 col-lg-12 col-md-12 bgc" >
 
                             @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                                 <!-- Video thumbnail image -->
@@ -379,7 +380,7 @@
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play Now') }}
                                 </a>
 
-                                @php 
+                                @php
                                     include(public_path('themes/default/views/partials/home/Trailer-slider.blade.php'))
                                 @endphp
                             </div>
