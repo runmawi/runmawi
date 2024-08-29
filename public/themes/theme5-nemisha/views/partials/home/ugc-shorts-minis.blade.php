@@ -11,7 +11,7 @@
             width: 35px;
             position: absolute;
             z-index: 9999;
-            top: 90%;
+            top: 50%;
             right: 0;
             background: #ED563C;
             transition: width 0.8s, height 0.8s, margin-right 0.8s;
@@ -35,10 +35,16 @@
         </div>
     </div>
     <div id="shorts-content" style="display: none;" >
+
+         <!-- Close Button -->
+        <button id="close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;">
+            &times;
+        </button>
+
         <div style="padding: 10px 0px 10px 10px;" >
         <h5>Shorts & Minis</h5>
         </div>
-        <p style="text-align: right; cusrsor:pointer;" > 
+        <p style="text-align: right; cusrsor:pointer; padding:10px;" > 
             <a href="<?php echo URL::to('ugc') ?><?= '/view_all_profile/' ?>" target="_blank" >View All Profile </a>
         </p>
        
@@ -93,20 +99,58 @@
     var mini = true;
     
     function toggleShortsMinis() {
+        var screenWidth = window.innerWidth;
 
         if (mini) {
-            document.getElementById("ShortsMinis").style.width = "500px";
-            document.getElementById("ShortsMinis").style.height = "100vh";
+            // Desktop and tablet styling
+            if (screenWidth > 768) {
+                document.getElementById("ShortsMinis").style.width = "500px";
+                document.getElementById("ShortsMinis").style.height = "100%";
+            } else { 
+                // Mobile styling
+                document.getElementById("ShortsMinis").style.width = "100%";
+                document.getElementById("ShortsMinis").style.height = "100%";
+            }
+
             document.getElementById("shorts-content").style.display = "block";
             document.querySelector("#ShortsMinis .text-center").style.display = "none";
-            
             this.mini = false;
+        } else {
+            // Revert to minimized view for both desktop and mobile
+            if (screenWidth > 768) {
+                document.getElementById("ShortsMinis").style.width = "35px";
+                document.getElementById("ShortsMinis").style.height = "170px";
             } else {
-            document.getElementById("ShortsMinis").style.width = "35px";
-            document.getElementById("ShortsMinis").style.height = "170px";
+                document.getElementById("ShortsMinis").style.width = "35px";
+                document.getElementById("ShortsMinis").style.height = "170px";
+            }
+
             document.getElementById("shorts-content").style.display = "none";
             document.querySelector("#ShortsMinis .text-center").style.display = "block";
             this.mini = true;
         }
     }
+
+    function closeShortsMinis(event) {
+        event.stopPropagation(); // Prevent triggering the toggle function when clicking the close button
+        document.getElementById("ShortsMinis").style.width = "35px";
+        document.getElementById("ShortsMinis").style.height = "170px";
+        document.getElementById("shorts-content").style.display = "none";
+        document.querySelector("#ShortsMinis .text-center").style.display = "block";
+        mini = true;
+    }
+
+    window.addEventListener('resize', function() {
+        if (!mini) {
+            toggleShortsMinis(); 
+        }
+    });
+
+
+
+    window.addEventListener('resize', function() {
+        if (!mini) {
+            toggleShortsMinis(); 
+        }
+    });
 </script>

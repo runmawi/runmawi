@@ -947,8 +947,13 @@ class FrontEndQueryController extends Controller
 
     public function UGCUsers()
     {
-        $users = User::has('ugcVideos')->limit(5)->get();
-        return $users ;
+        $users = User::has('ugcVideos')
+            ->with(['ugcVideos' => function ($query) {
+                $query->where('active', 1); // Load only active ugcVideos within the query
+            }])
+            ->limit(5)
+            ->get();
+         return $users;
     }
 
     public function watchLater() {

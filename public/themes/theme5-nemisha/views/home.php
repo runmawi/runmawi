@@ -39,7 +39,7 @@
 
 <div class="main-content" id="home_sections">
 
-<?php if(count($ugc_videos) > 0){ ?>
+   <?php if(count($ugc_videos) > 0){ ?>
             <section id="iq-continue overflow-hidden">
                <div class="container-fluid ">
                      <div class="row">
