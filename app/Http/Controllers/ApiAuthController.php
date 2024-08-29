@@ -14679,6 +14679,9 @@ public function QRCodeMobileLogout(Request $request)
                                       });
     
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+            $livestream->live_animation = 'true' ;
+
             if ($livestream->publish_type === 'recurring_program') {
         
                 $Current_time = Carbon::now($current_timezone);
@@ -14710,6 +14713,8 @@ public function QRCodeMobileLogout(Request $request)
                 }
 
                 $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+
+                $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
         
                 return $recurring_program_Status;
             }
@@ -14722,6 +14727,8 @@ public function QRCodeMobileLogout(Request $request)
                 $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
                 $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
                 return $publish_later_Status;
             }
