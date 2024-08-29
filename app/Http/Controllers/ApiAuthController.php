@@ -14389,6 +14389,15 @@ public function QRCodeMobileLogout(Request $request)
           $source_type = "Series" ;
         }
 
+        if($OrderHomeSetting['video_name'] == "EPG"){      // EPG
+
+          $data = $this->All_Homepage_EPG($homepage_input_array);
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "EPG" ;
+        }
+
 
         $result[] = array(
           "source"      => $source,
@@ -14548,6 +14557,10 @@ public function QRCodeMobileLogout(Request $request)
 
     if($Homesetting->SeriesGenre_videos == 1 && $this->All_Homepage_Series_based_on_genre($homepage_input_array)->isNotEmpty() ){
       array_push($input,'Series_Genre_videos');
+    }
+
+    if($Homesetting->epg == 1 && $this->All_Homepage_EPG($homepage_input_array)->isNotEmpty() ){
+      array_push($input,'epg');
     }
 
     return $input;
@@ -15713,6 +15726,64 @@ public function QRCodeMobileLogout(Request $request)
 
     return $data;
   }
+
+  private static function All_Homepage_EPG($homepage_input_array){
+
+    $epg_status = $homepage_input_array['MobileHomeSetting']->latest_videos;
+    $homepage_geofencing = $homepage_input_array['Geofencing'];
+
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
+
+    if (is_null($epg_status) && $epg_status == 0 ) {
+
+      return $data ;
+
+    }else{
+
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+        $carbon_current_time =  $carbon_now->format('H:i:s');
+        $carbon_today =  $carbon_now->format('n-j-Y');
+
+        $data =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                    
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+          $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+          $item['tv_image_url']     = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+          $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                              
+          $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                      ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                          $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                                          $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                          ->copy()->tz( $current_timezone );
+
+                                                                          $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                          ->copy()->tz( $current_timezone );
+
+                                                                          if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                              $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                              $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                              $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                              return $item ;
+                                                                          }
+
+                                                                      })->filter()->first();
+
+
+          return $item;
+        });
+    }
+    
+    return $data;
+  } 
+
+  // Page List
 
   public function All_Pagelist(Request $request)
   {
