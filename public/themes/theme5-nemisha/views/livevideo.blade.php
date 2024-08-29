@@ -76,7 +76,7 @@
         /* width: 100%; */
     }
 
-   
+
 
     .modal {
         position: fixed;
@@ -104,19 +104,27 @@
         background: #FF0000;
     }
 
-      /* <!-- BREADCRUMBS  */
+    /* <!-- BREADCRUMBS  */
 
-      .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
-          content: none; 
-      } 
+    .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+        content: none;
+    }
 
-      ol.breadcrumb {
-            color: white;
-            background-color: transparent !important  ;
-            font-size: revert;
-      }
-      .staticback-btn{position: relative !important; display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
-      
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important  ;
+        font-size: revert;
+    }
+    .staticback-btn{position: relative !important; display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
+
+    .responsive-iframe {
+        position: relative !important;
+        height: calc(100vh - 80px) !important;
+    }
+
+    .my-video.vjs-fluid {
+        height: calc(100vh - 80px) !important;
+    }
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="{{ $video->id }}">
@@ -130,7 +138,7 @@
 @php
     include(public_path('themes/theme5-nemisha/views/livevideo_ads.blade.php'));
 @endphp
-<?php   
+<?php
 
 $str = $video->mp4_url;
 
@@ -153,7 +161,7 @@ if(empty($new_date)){
     if(!Auth::guest()){
         if(!empty($password_hash)){ ?>
             <?php if ($ppv_exist > 0 ||  ( Auth::user()->role == "subscriber" && $video->access != "ppv" ) ||  ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 )  || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-                <div id="video_bg"> 
+                <div id="video_bg">
                     <div class="">
                         <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -173,7 +181,7 @@ if(empty($new_date)){
                                 <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                             </video>
 
-                        <?php endif; ?>  
+                        <?php endif; ?>
 
                         <div class="playertextbox hide">
                             <p> <?php if (isset($videonext)) { ?>
@@ -191,9 +199,9 @@ if(empty($new_date)){
                         </div>
                 </div>
 
-                <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
+                <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>
 
-                <div id="video_bg"> 
+                <div id="video_bg">
                 <div class="">
                     <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -210,9 +218,9 @@ if(empty($new_date)){
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                         </video>
 
-                    <?php endif; ?>  
+                    <?php endif; ?>
 
-            <?php  } else {  ?>       
+            <?php  } else {  ?>
                 <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
@@ -237,10 +245,10 @@ if(empty($new_date)){
                 </div>
         <?php } }
     }
-    else{  
-        
+    else{
+
         if (Auth::guest() && empty($video->ppv_price) && $video->free_duration_status == 0  ) { ?>
-            <div id="video_bg"> 
+            <div id="video_bg">
             <div class="">
                 <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -258,11 +266,11 @@ if(empty($new_date)){
                     </video>
 
                 <?php endif; ?>
-                    
 
-        <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
-            <div id="video_bg"> 
+        <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>
+
+            <div id="video_bg">
             <div class="">
                 <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
@@ -281,9 +289,9 @@ if(empty($new_date)){
                     </video>
 
                 <?php endif; ?>
-                
 
-        <?php  } else { ?>       
+
+        <?php  } else { ?>
             <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                 <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                 <div class="row justify-content-center pay-live">
@@ -330,7 +338,7 @@ if(empty($new_date)){
                                                 <?php $category_name_length = count($category_name); ?>
                                                 <li class="breadcrumb-item">
                                                     <a class="black-text" href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                                        <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                                        <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -393,7 +401,7 @@ if(empty($new_date)){
                                     @endphp
                                 </ul>
                             </div>
-  
+
                             <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
                             <!--
                   <div class="d-flex align-items-center series mb-4">
@@ -406,8 +414,8 @@ if(empty($new_date)){
                             <!-- Subscribe -->
                             <!--
                     <li>
-                        <?php     
-                            $user = Auth::user(); 
+                        <?php
+                            $user = Auth::user();
                             if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
                                 <a href="<?php echo URL::to('/becomesubscriber'); ?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe'); ?> </span></a>
                         <?php } ?>
@@ -417,7 +425,7 @@ if(empty($new_date)){
                             </ul>
                         </div>
 
-                  
+
 
                     <?php } ?>
 
@@ -463,16 +471,16 @@ if(empty($new_date)){
 
                             </ul>
                         </div>
-                    </div></div> 
+                    </div></div>
                     <?php   }?> </div>
                     <div class="container-fluid">
                         <div class="text-white col-md-6 p-0">
                             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding: 0 10px;">
                         <div class="col-sm-12 col-md-12 col-xs-12">
-                            <div class="video-details-container">
+                            <div class="video-details-container" style="padding: 0 40px;">
                                 <?php if (!empty($video->details)) { ?>
                                 <h6 class="mt-3 mb-1">Live Details</h6>
                                 <p class="trending-dec w-100 mb-3 text-white"><?= $video->details ?></p>
@@ -493,7 +501,7 @@ if(empty($new_date)){
                 </div>
                 <?php endif; ?>
 
-                <div class="row">
+                <div class="row" style="padding: 0 11px;">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos'); ?></h4>
                         <div class="slider">
@@ -881,7 +889,7 @@ if(empty($new_date)){
         document.getElementById("demo").innerHTML = days + "d " + hours + "h " +
             minutes + "m " + seconds + "s ";
 
-        // If the count down is over, write some text 
+        // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("demo").innerHTML = "EXPIRED";

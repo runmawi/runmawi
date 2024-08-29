@@ -407,19 +407,50 @@
                     @endif
                     @endif -->
             </div>
+
+            <div class="">
+                <div class="container-fluid" id="nav-tab" role="tablist">
+                    <div class="bc-icons-2">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a class="black-text" href="{{ route('series.tv-shows') }}">{{ ucwords(__('Series')) }}</a>
+                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                            </li>
+        
+                            @foreach($category_name as $key => $series_category_name)
+                                @php $category_name_length = count($category_name); @endphp
+                                <li class="breadcrumb-item">
+                                    <a class="black-text" href="{{ route('SeriesCategory', [$series_category_name->categories_slug]) }}">
+                                        {{ ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' ' : '') }}
+                                    </a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                </li>
+                            @endforeach
+        
+                            <li class="breadcrumb-item">
+                                <a class="black-text" href="{{ route('play_series', [$series->slug]) }}">
+                                    {{ strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title) }}
+                                </a>
+                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                            </li>
+        
+                            <li class="breadcrumb-item">
+                                <a class="black-text">
+                                    {{ strlen($episode->title) > 50 ? ucwords(substr($episode->title, 0, 120) . '...') : ucwords($episode->title) }}
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
             <div class="container-fluid description">
                 <span class="text-white" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
                 <p class="mb-0" style="font-size: 80%;color: white;">
-                    <?php
-                        $seasons = App\SeriesSeason::where('series_id', '=', $SeriesSeason->series_id)
-                            ->with('episodes')
-                            ->get();
-                        
-                        $Episode = App\Episode::where('season_id', '=', $SeriesSeason->id)
-                            ->where('series_id', '=', $SeriesSeason->series_id)
-                            ->get();
-                        
-                    ?>
+                    @php
+                        $seasons = App\SeriesSeason::where('series_id', '=', $SeriesSeason->series_id)->with('episodes')->get();                        
+                        $Episode = App\Episode::where('season_id', '=', $SeriesSeason->id)->where('series_id', '=', $SeriesSeason->series_id)->get();                        
+                    @endphp
 
                     @foreach($seasons as $key => $seasons_value)
                         @if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id)
@@ -434,9 +465,7 @@
                     @endforeach
                 </p>
 
-                <p class="" style="font-size: 100%;color: white;font-weight: 700;">
-                    {{ $episode->title }}
-                </p>
+                <p class="" style="font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
                 <p class="desc">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
             </div>
 
@@ -496,7 +525,7 @@
                                 onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i>
                             </span>
                         @endif
-                    </li>
+                    </li>                    
 
                     <li class="share">
                         <span><i class="ri-share-fill"></i></span>
@@ -514,7 +543,7 @@
                     </li>
 
                     <li>
-                        <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
+                        <a onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
                     </li>
                 </ul>
             </div>
@@ -1589,7 +1618,7 @@
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 14%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;z-index:99;">Copied Embed URL</div>'
                 );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');

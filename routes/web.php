@@ -25,6 +25,8 @@ Route::get('/video-chat', function () {
 Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
 Route::get('/ffplayout-channel', 'AdminFFplayoutController@GetChannels');
+Route::get('/getvideocihperdata', 'AdminVideosController@getvideocihperdata');
+Route::get('/videocihperplayer', 'AdminVideosController@videocihperplayer');
 
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
@@ -439,6 +441,9 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
     Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
+
+    Route::post('video_js_Like_episode', 'TvshowsController@video_js_Like_episode')->name('video-js.video_js_Like_episode');
+    Route::post('video_js_dislike_episode', 'TvshowsController@video_js_disLike_episode')->name('video-js.video_js_disLike_episode');
 
     Route::post('/like-episode', 'TvshowsController@LikeEpisode');
     Route::post('/remove_like-episode', 'TvshowsController@RemoveLikeEpisode');

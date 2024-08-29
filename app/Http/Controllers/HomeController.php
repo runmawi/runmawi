@@ -1239,6 +1239,26 @@ class HomeController extends Controller
     
         $ppv_gobal_price = $settings->ppv_status == 1 ? $settings->ppv_price : null;
 
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+
+        // blocked videos
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
         if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
         
             unset($data['password_hash']);
@@ -1274,9 +1294,7 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])){
 
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();
-            $countryName = $geoip->getCountry();
+
 
             $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)->where('device_name', '=', 'desktop')->first();
 

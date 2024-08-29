@@ -1234,6 +1234,112 @@ class TvshowsController extends Controller
             return abort(404);
         }
     }
+    public function video_js_Like_episode(Request $request)
+    {
+        try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'episode_id' => $request->episode_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'disliked'   => 0 ,
+            ];
+
+            $check_Like_exist = LikeDislike::where('episode_id', $request->episode_id)->where('liked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
+
+
+            $Like_exist = LikeDislike::where('episode_id', $request->episode_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]);
+    }
+
+    public function video_js_disLike_episode(Request $request)
+    {
+        try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'episode_id' => $request->episode_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'liked'      => 0 ,
+            ];
+
+            $check_dislike_exist = LikeDislike::where('episode_id', $request->episode_id)->where('disliked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
+
+
+            $dislike_exists = LikeDislike::where('episode_id', $request->episode_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+
+            !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]);
+    }
 
     public function LikeEpisode(Request $request)
     {
